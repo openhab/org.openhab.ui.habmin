@@ -1,0 +1,188 @@
+<binding>
+    <binding.config>
+        <setting>
+            <name>cache</name>
+            <label>Cache Timeout</label>
+            <description>Sets the cache timeout in milliseconds.</description>
+            <optional>true</optional>
+            <default>5000</default>
+            <minimum>250</minimum>
+            <maximum>20000</maximum>
+            <values></values>
+        </setting>
+        <setting>
+            <name>timeout</name>
+            <label>Timeout</label>
+            <description>Sets the number of milliseconds that the binding will wait for a response.</description>
+            <optional>true</optional>
+            <default>5000</default>
+            <minimum>500</minimum>
+            <maximum>10000</maximum>
+            <values></values>
+        </setting>
+        <setting>
+            <name>granularity</name>
+            <label>Granularity</label>
+            <description>Set the time between each of the OWServer item update checks (in milliseconds).</description>
+            <optional>true</optional>
+            <default>1000</default>
+            <minimum>100</minimum>
+            <maximum>10000</maximum>
+            <values></values>
+        </setting>
+        <setting>
+            <name>.host</name>
+            <label>IP Address</label>
+            <description>Set the IP address of the OW Server.</description>
+            <optional>false</optional>
+            <default></default>
+            <minimum></minimum>
+            <maximum></maximum>
+            <values></values>
+        </setting>
+        <setting>
+            <name>.port</name>
+            <label>IP Port</label>
+            <description>Set the IP Port number of the OW Server.</description>
+            <optional>true</optional>
+            <default>80</default>
+            <minimum>1</minimum>
+            <maximum>65535</maximum>
+            <values></values>
+        </setting>
+    </binding.config>
+
+    <binding.items>
+        <binding.io>
+            <type>Input (GET)</type>
+            <description></description>
+            <parameters>
+                <parameter>
+                    <name>Address</name>
+                    <description>Sets the IP address of the SNMP device.</description>
+                    <optional>false</optional>
+                    <default></default>
+                    <minimum></minimum>
+                    <maximum></maximum>
+                    <values></values>
+                </parameter>
+                <parameter>
+                    <name>Community</name>
+                    <description>Sets the SNMP community for the GET request.</description>
+                    <optional>false</optional>
+                    <default></default>
+                    <minimum></minimum>
+                    <maximum></maximum>
+                    <values></values>
+                </parameter>
+                <parameter>
+                    <name>OID</name>
+                    <description>Sets the Object ID for the SNMP GET.</description>
+                    <optional>false</optional>
+                    <default></default>
+                    <minimum></minimum>
+                    <maximum></maximum>
+                    <values></values>
+                </parameter>
+                <parameter>
+                    <name>Polling period</name>
+                    <description>Sets polling period (in milliseconds between each request.</description>
+                    <optional>false</optional>
+                    <default>5000</default>
+                    <minimum></minimum>
+                    <maximum></maximum>
+                    <values></values>
+                </parameter>
+            </parameters>
+        </binding.io>
+        <binding.io>
+            <type>Input (TRAP)</type>
+            <description></description>
+            <parameters>
+                <parameter>
+                    <name>Address</name>
+                    <description>Sets the IP address of the SNMP device.</description>
+                    <optional>false</optional>
+                    <default></default>
+                    <minimum></minimum>
+                    <maximum></maximum>
+                    <values></values>
+                </parameter>
+                <parameter>
+                    <name>Community</name>
+                    <description>Sets the SNMP community for the GET request.</description>
+                    <optional>false</optional>
+                    <default></default>
+                    <minimum></minimum>
+                    <maximum></maximum>
+                    <values></values>
+                </parameter>
+                <parameter>
+                    <name>OID</name>
+                    <description>Sets the Object ID for the SNMP GET.</description>
+                    <optional>false</optional>
+                    <default></default>
+                    <minimum></minimum>
+                    <maximum></maximum>
+                    <values></values>
+                </parameter>
+            </parameters>
+        </binding.io>
+        <binding.io>
+            <type>Output (SET)</type>
+            <description></description>
+            <parameters>
+                <parameter>
+                    <name>Command String</name>
+                    <description>Sets the command string that will appear in the openHAB GUI.</description>
+                    <optional>false</optional>
+                    <default></default>
+                    <minimum></minimum>
+                    <maximum></maximum>
+                    <values></values>
+                </parameter>
+                <parameter>
+                    <name>Address</name>
+                    <description>Sets the IP address of the SNMP device.</description>
+                    <optional>false</optional>
+                    <default></default>
+                    <minimum></minimum>
+                    <maximum></maximum>
+                    <values></values>
+                </parameter>
+                <parameter>
+                    <name>Community</name>
+                    <description>Sets the SNMP community for the SET request.</description>
+                    <optional>false</optional>
+                    <default></default>
+                    <minimum></minimum>
+                    <maximum></maximum>
+                    <values></values>
+                </parameter>
+                <parameter>
+                    <name>OID</name>
+                    <description>Sets the Object ID for the SNMP SET.</description>
+                    <optional>false</optional>
+                    <default></default>
+                    <minimum></minimum>
+                    <maximum></maximum>
+                    <values></values>
+                </parameter>
+                <parameter>
+                    <name>Value</name>
+                    <description>Sets the command value for the SNMP SET.</description>
+                    <optional>false</optional>
+                    <default></default>
+                    <minimum></minimum>
+                    <maximum></maximum>
+                    <values></values>
+                </parameter>
+            </parameters>
+        </binding.io>
+    </binding.items>
+</binding>
+
+
+
+
+
