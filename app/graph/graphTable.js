@@ -60,11 +60,15 @@ Ext.define('openHAB.graph.graphTable', {
 		columns[0] = [];
 		columns[0].text = 'Time';
 		columns[0].dataIndex = 'time';
-		
+		columns[0].xtype = 'datecolumn';
+		columns[0].format = 'H:i:s d M Y';
+
 		var fields = [];
 		fields[0] = [];
 		fields[0].name = 'time';
-		
+		fields[0].type = 'date';
+		fields[0].dateFormat = 'time';
+
 		for(var c = 0; c < data.length;c++) {
 			fields[c+1] = [];
 			fields[c+1].name = data[c].item;
