@@ -1,4 +1,6 @@
 /**
+ * HABmin - the openHAB admin interface
+ *
  * openHAB, the open Home Automation Bus.
  * Copyright (C) 2010-2013, openHAB.org <admin@openhab.org>
  *
@@ -110,10 +112,6 @@ Ext.define('openHAB.graph.graphHighcharts', {
             }
         };
 
-
-
-
-
         function toolbarEnable() {
             Ext.getCmp('chartTb-zoomIn').enable();
             Ext.getCmp('chartTb-zoomOut').enable();
@@ -146,7 +144,6 @@ Ext.define('openHAB.graph.graphHighcharts', {
             if(isNaN(stop))
                 stop = 0;
 
-
             if (start == 0 || stop == 0) {
                 var ts = Math.round((new Date()).getTime());
                 chartMin = ts - (2 * 86400000);
@@ -163,6 +160,9 @@ Ext.define('openHAB.graph.graphHighcharts', {
                 chartOptions.yAxis[cnt] = [];
                 chartOptions.yAxis[cnt].title = "";
             }
+			
+			// Clear the raw data
+			this.rawData = [];
 
             Ext.Ajax.request({
                 url:'/rest/history/'+channels[0].name,
@@ -200,7 +200,7 @@ Ext.define('openHAB.graph.graphHighcharts', {
 //                    graphInfoItems[0].name = "openHAB Processing Time";
 //                    graphInfoItems[0].value = Math.floor(json.procTime * 1000) + " ms";
 
-                    var options = chartOptions;		// Keep a copy of the options - NOT REALLY DOING THIS!!!
+                    var options = chartOptions;	
 
                     options.series = [];
 
@@ -215,10 +215,16 @@ Ext.define('openHAB.graph.graphHighcharts', {
                         newSeries[i][1] = parseFloat(json.data[i].value);
                     }
                     var seriesData = newSeries;
+					
 
 //            if (json.series) {
 //                for (var s = 0; s < json.series.length; s++) {
                     var s = 0;
+					
+					// Keep a record of the raw data
+					// This gets used in the table view
+					this.rawData[s].item = json.name;
+					this.rawData[s].data = seriesData;
 
 //                    graphInfoItems[4 + s] = [];
 //                    graphInfoItems[4 + s].name = json.series[s].label + " points";
