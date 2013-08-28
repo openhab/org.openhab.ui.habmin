@@ -1,4 +1,6 @@
+<!-- Binding configuration for the EDS One Wire Server binding in openHAB -->
 <binding>
+    <!-- Binding configuration settings -->
     <binding.config>
         <setting>
             <name>port</name>
@@ -46,13 +48,15 @@
         </setting>
     </binding.config>
 
+    <!-- Item binding configuration -->
     <binding.items>
         <binding.io>
             <type>Input (GET)</type>
             <description></description>
             <parameters>
                 <parameter>
-                    <name>Address</name>
+                    <name>address</name>
+                    <label>IP Address</label>
                     <description>Sets the IP address of the SNMP device.</description>
                     <optional>false</optional>
                     <default></default>
@@ -61,7 +65,8 @@
                     <values></values>
                 </parameter>
                 <parameter>
-                    <name>Community</name>
+                    <name>community</name>
+                    <label>SNMP Community</label>
                     <description>Sets the SNMP community for the GET request.</description>
                     <optional>false</optional>
                     <default></default>
@@ -70,7 +75,8 @@
                     <values></values>
                 </parameter>
                 <parameter>
-                    <name>OID</name>
+                    <name>oid</name>
+                    <label>Object ID</label>
                     <description>Sets the Object ID for the SNMP GET.</description>
                     <optional>false</optional>
                     <default></default>
@@ -79,7 +85,8 @@
                     <values></values>
                 </parameter>
                 <parameter>
-                    <name>Polling period</name>
+                    <name>period</name>
+                    <label>Polling period</label>
                     <description>Sets polling period (in milliseconds between each request.</description>
                     <optional>false</optional>
                     <default>5000</default>
@@ -94,7 +101,8 @@
             <description></description>
             <parameters>
                 <parameter>
-                    <name>Address</name>
+                    <name>address</name>
+                    <label>IP Address</label>
                     <description>Sets the IP address of the SNMP device.</description>
                     <optional>false</optional>
                     <default></default>
@@ -103,7 +111,8 @@
                     <values></values>
                 </parameter>
                 <parameter>
-                    <name>Community</name>
+                    <name>community</name>
+                    <label>SNMP Community</label>
                     <description>Sets the SNMP community for the GET request.</description>
                     <optional>false</optional>
                     <default></default>
@@ -112,7 +121,8 @@
                     <values></values>
                 </parameter>
                 <parameter>
-                    <name>OID</name>
+                    <name>oid</name>
+                    <label>Object ID</label>
                     <description>Sets the Object ID for the SNMP GET.</description>
                     <optional>false</optional>
                     <default></default>
@@ -127,7 +137,8 @@
             <description></description>
             <parameters>
                 <parameter>
-                    <name>Command String</name>
+                    <name>command</name>
+                    <label>Command String</label>
                     <description>Sets the command string that will appear in the openHAB GUI.</description>
                     <optional>false</optional>
                     <default></default>
@@ -136,7 +147,8 @@
                     <values></values>
                 </parameter>
                 <parameter>
-                    <name>Address</name>
+                    <name>address</name>
+                    <label>IP Address</label>
                     <description>Sets the IP address of the SNMP device.</description>
                     <optional>false</optional>
                     <default></default>
@@ -145,7 +157,8 @@
                     <values></values>
                 </parameter>
                 <parameter>
-                    <name>Community</name>
+                    <name>community</name>
+                    <label>SNMP Community</label>
                     <description>Sets the SNMP community for the SET request.</description>
                     <optional>false</optional>
                     <default></default>
@@ -154,7 +167,8 @@
                     <values></values>
                 </parameter>
                 <parameter>
-                    <name>OID</name>
+                    <name>oid</name>
+                    <label>Object ID</label>
                     <description>Sets the Object ID for the SNMP SET.</description>
                     <optional>false</optional>
                     <default></default>
@@ -163,7 +177,8 @@
                     <values></values>
                 </parameter>
                 <parameter>
-                    <name>Value</name>
+                    <name>value</name>
+                    <label>Value</label>
                     <description>Sets the command value for the SNMP SET.</description>
                     <optional>false</optional>
                     <default></default>

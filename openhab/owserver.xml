@@ -1,4 +1,6 @@
+<!-- Binding configuration for the SNMP binding in openHAB -->
 <binding>
+    <!-- Binding configuration settings -->
     <binding.config>
         <setting>
             <name>cache</name>
@@ -30,6 +32,8 @@
             <maximum>10000</maximum>
             <values></values>
         </setting>
+
+        <!-- The following lines specify the communications interface settings. These may be repeated multiple times -->
         <setting>
             <name>.host</name>
             <label>IP Address</label>
@@ -52,14 +56,16 @@
         </setting>
     </binding.config>
 
+    <!-- Item binding configuration -->
     <binding.items>
         <binding.io>
-            <type>Input (GET)</type>
+            <type>Input</type>
             <description></description>
             <parameters>
                 <parameter>
-                    <name>Address</name>
-                    <description>Sets the IP address of the SNMP device.</description>
+                    <name>interface</name>
+                    <label>Communications Interface</label>
+                    <description>Set the symbolic name of the communication interface.</description>
                     <optional>false</optional>
                     <default></default>
                     <minimum></minimum>
@@ -67,8 +73,9 @@
                     <values></values>
                 </parameter>
                 <parameter>
-                    <name>Community</name>
-                    <description>Sets the SNMP community for the GET request.</description>
+                    <name>romid</name>
+                    <label>ROM ID</label>
+                    <description>Set the ROM ID of the One Wire device.</description>
                     <optional>false</optional>
                     <default></default>
                     <minimum></minimum>
@@ -76,8 +83,9 @@
                     <values></values>
                 </parameter>
                 <parameter>
-                    <name>OID</name>
-                    <description>Sets the Object ID for the SNMP GET.</description>
+                    <name>parameter</name>
+                    <label>Parameter Name</label>
+                    <description>Sets the Parameter Name from the One Wire device.</description>
                     <optional>false</optional>
                     <default></default>
                     <minimum></minimum>
@@ -95,94 +103,5 @@
                 </parameter>
             </parameters>
         </binding.io>
-        <binding.io>
-            <type>Input (TRAP)</type>
-            <description></description>
-            <parameters>
-                <parameter>
-                    <name>Address</name>
-                    <description>Sets the IP address of the SNMP device.</description>
-                    <optional>false</optional>
-                    <default></default>
-                    <minimum></minimum>
-                    <maximum></maximum>
-                    <values></values>
-                </parameter>
-                <parameter>
-                    <name>Community</name>
-                    <description>Sets the SNMP community for the GET request.</description>
-                    <optional>false</optional>
-                    <default></default>
-                    <minimum></minimum>
-                    <maximum></maximum>
-                    <values></values>
-                </parameter>
-                <parameter>
-                    <name>OID</name>
-                    <description>Sets the Object ID for the SNMP GET.</description>
-                    <optional>false</optional>
-                    <default></default>
-                    <minimum></minimum>
-                    <maximum></maximum>
-                    <values></values>
-                </parameter>
-            </parameters>
-        </binding.io>
-        <binding.io>
-            <type>Output (SET)</type>
-            <description></description>
-            <parameters>
-                <parameter>
-                    <name>Command String</name>
-                    <description>Sets the command string that will appear in the openHAB GUI.</description>
-                    <optional>false</optional>
-                    <default></default>
-                    <minimum></minimum>
-                    <maximum></maximum>
-                    <values></values>
-                </parameter>
-                <parameter>
-                    <name>Address</name>
-                    <description>Sets the IP address of the SNMP device.</description>
-                    <optional>false</optional>
-                    <default></default>
-                    <minimum></minimum>
-                    <maximum></maximum>
-                    <values></values>
-                </parameter>
-                <parameter>
-                    <name>Community</name>
-                    <description>Sets the SNMP community for the SET request.</description>
-                    <optional>false</optional>
-                    <default></default>
-                    <minimum></minimum>
-                    <maximum></maximum>
-                    <values></values>
-                </parameter>
-                <parameter>
-                    <name>OID</name>
-                    <description>Sets the Object ID for the SNMP SET.</description>
-                    <optional>false</optional>
-                    <default></default>
-                    <minimum></minimum>
-                    <maximum></maximum>
-                    <values></values>
-                </parameter>
-                <parameter>
-                    <name>Value</name>
-                    <description>Sets the command value for the SNMP SET.</description>
-                    <optional>false</optional>
-                    <default></default>
-                    <minimum></minimum>
-                    <maximum></maximum>
-                    <values></values>
-                </parameter>
-            </parameters>
-        </binding.io>
     </binding.items>
 </binding>
-
-
-
-
-
