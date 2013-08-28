@@ -1,4 +1,6 @@
 /**
+ * HABmin - the openHAB admin interface
+ *
  * openHAB, the open Home Automation Bus.
  * Copyright (C) 2010-2013, openHAB.org <admin@openhab.org>
  *
@@ -73,7 +75,16 @@ Ext.define('openHAB.graph.graph', {
             region:'center',
             layout:'fit',
             tabPosition: 'bottom',
-            items:[chartGraph, chartTable]
+            items:[chartGraph, chartTable],
+			listeners: {
+				tabchange:function (tabPanel, newCard, oldCard, eOpts) {
+					// Detect if we've changed to the table view
+					if (newCard.id == 'graphTableData') {
+						Ext.getCmp("graphTableData").updateData();
+					}
+				}
+			}
+			
         });
 
         this.items = [accordion, tabPanel];
