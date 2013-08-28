@@ -1,4 +1,6 @@
 /**
+ * HABmin - the openHAB admin interface
+ *
  * openHAB, the open Home Automation Bus.
  * Copyright (C) 2010-2013, openHAB.org <admin@openhab.org>
  *
@@ -36,74 +38,55 @@ Ext.define('openHAB.graph.graphTable', {
     extend:'Ext.panel.Panel',
     layout:'fit',
     tabTip:'Show and edit graph data',
-    id:'graphData',
+    id:'graphTableData',
     title:'Table',
     icon:'images/table-export.png',
 
     initComponent:function () {
+        this.callParent();
+    },
+	updateData:function () {
+		// Remove the current grid
+		this.removeAll();
 
+		// Retrieve the data from the graph object
+		var data = Ext.getCmp("highchartsChart").rawData;
+		if(data == null)
+			return;
+		if(data.length == 0)
+			return;
+		
+		var columns = [];
+		columns[0] = [];
+		columns[0].text = 'Time';
+		columns[0].dataIndex = 'time';
+		
+		var fields = [];
+		fields[0] = [];
+		fields[0].name = 'time';
+		
+		for(var c = 0; c < data.length;c++) {
+			fields[c+1] = [];
+			fields[c+1].name = data[c].item;
+			columns[c+1] = [];
+			columns[c+1].text = data[c].item;
+			columns[c+1].dataIndex = data[c].item;
+		}
+
+		// Create a model
         Ext.define('GraphTableModel', {
             extend:'Ext.data.Model',
-            fields:[
-                {name:'name'},
-                {name:'state'},
-                {name:'type'},
-                {name:'link'},
-                {name:'binding'},
-                {name:'groups'}
-            ]
+            fields:fields
         });
 
-        // Create the Item data store
-        var dataStore = Ext.create('Ext.data.ArrayStore', {
-            model:'GraphTableModel'
-        });
-
-
-
-
-
-        var itemsTree = Ext.create('Ext.grid.Panel', {
-            id:'configItemTree',
-            store:itemStore,
-            header:false,
-            split:true,
-            collapsible:false,
+        var dataGrid = Ext.create('Ext.grid.Panel', {
+            store:{model:'GraphTableModel', data:data[0].data},
             multiSelect:false,
-            columns:[
-                {
-                    text:'Item',
-                    flex:5,
-                    dataIndex:'name'
-                },
-                {
-                    text:'Type',
-                    flex:2,
-                    dataIndex:'type',
-                    renderer:function (value, metaData, record, row, col, store, gridView) {
-                        var img = 'node.png';
-                        if (record.get("type") != null)
-                            img = getItemTypeIcon(record.get("type"));
-                        return '<img src="' + img +'" align="left" height="16">&nbsp;&nbsp;' + value;
-                    }
-                },
-                {
-                    text:'Time',
-                    flex:2,
-                    dataIndex:'binding'
-                },
-                {
-                    text:'State',
-                    flex:2,
-                    dataIndex:'state'
-                }
-            ]
+            columns:columns
         });
 
+		this.add(dataGrid);
 
-
-
-        this.callParent();
-    }
+	}
 })
 ;
