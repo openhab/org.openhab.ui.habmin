@@ -1,4 +1,6 @@
 /**
+ * HABmin - the openHAB admin interface
+ *
  * openHAB, the open Home Automation Bus.
  * Copyright (C) 2010-2013, openHAB.org <admin@openhab.org>
  *
@@ -39,9 +41,15 @@ Ext.define('openHAB.config.bindingProperties', {
     tabTip:'Binding Properties',
     header:false,
     binding:"",
+	interfaceConfig:[]
 
     initComponent:function () {
-
+		// Sanity check that a binding name has been specified!
+		if(binding == null)
+			return;
+		if(binding == "")
+			return;
+	
         var tbProperties = Ext.create('Ext.toolbar.Toolbar', {
             items:[
                 {
@@ -50,15 +58,10 @@ Ext.define('openHAB.config.bindingProperties', {
                     text:'Cancel',
                     cls:'x-btn-icon',
                     disabled:true,
-                    tooltip:'Cancel changes made to the variable configuration',
+                    tooltip:'Cancel changes made to the configuration',
                     handler:function () {
                         Ext.getCmp("configPropTb-save").disable();
                         Ext.getCmp("configPropTb-cancel").disable();
-
-                        // Reset to the current data
-                        var prop = Ext.getCmp('configProperties').getStore();
-                        var Service = prop.getAt(1).get('value');
-                        var Variable = prop.getAt(2).get('value');
                     }
                 },
                 {
@@ -71,6 +74,27 @@ Ext.define('openHAB.config.bindingProperties', {
                     handler:function () {
                         Ext.getCmp("configPropTb-save").disable();
                         Ext.getCmp("configPropTb-cancel").disable();
+                    }
+                },
+                {
+                    icon:'images/plus.png',
+                    id:'configPropTb-add',
+                    text:'Add Interface',
+                    cls:'x-btn-icon',
+                    disabled:true,
+                    tooltip:'Add an interface to the binding configuration',
+                    handler:function () {
+						// Pop up a dialogue box asking for the interface name
+						Ext.MessageBox.prompt('Interface Name', 'Please enter the new interface name:', function(btn, text){
+									if (btn == 'ok') {
+										// Add a new property sheet to the panel
+										
+										// process text value and close...
+										for(var c=0;c<interfaceConfig.length;c++) {
+											
+										}
+									}
+								});
                     }
                 }
             ]
@@ -85,6 +109,7 @@ Ext.define('openHAB.config.bindingProperties', {
         Ext.define('BindingConfigModel', {
             extend:'Ext.data.Model',
             fields:[
+                {name:'pid'},
                 {name:'name'},
                 {name:'label'},
                 {name:'value'},
@@ -115,7 +140,7 @@ Ext.define('openHAB.config.bindingProperties', {
             },
             autoLoad:true,
             listeners:{
-                load:function(store, records, successful, operation, eOpts ){
+                load:function(store, records, successful, operation, eOpts) {
                     // If there's no config for this binding, records will be null
                     if(records == null)
                         return;
@@ -124,14 +149,21 @@ Ext.define('openHAB.config.bindingProperties', {
                     var sourceConfig = [];
                     for(var c = 0; c < records.length; c++) {
                         var id = records[c].get('name');
-                        sourceConfig[id] = {};
-                        sourceConfig[id].displayName = records[c].get('label');
+						// Handle interface (second level) config - start with .
+						if(id.charAt(0) == '.') {
+							// Put these into the interfaceConfig array for later use
+							this.interfaceConfig.push(id);
+						}
+						else {
+							sourceConfig[id] = {};
+							sourceConfig[id].displayName = records[c].get('label');
 
-                        if(records[c].get('value') != null)
-                            source[id] = records[c].get('value');
-                        else
-                            source[id] = "";
-                    }
+							if(records[c].get('value') != null)
+								source[id] = records[c].get('value');
+							else
+								source[id] = "";
+						}
+					}
 
                     var bindingProperties = Ext.create('Ext.grid.property.Grid', {
                         title:'Properties',
@@ -165,10 +197,20 @@ Ext.define('openHAB.config.bindingProperties', {
                     });
 
                     tabs.add(bindingProperties);
+					
+					// If there are interface configurations available, then enable the "add interface" button
+	
+					// Handle special bindings
+					if(binding == 'zwave') {
+						var zwaveDevices = Ext.create('openHAB.config.zwaveDeviceList');
+						var zwaveNetwork = Ext.create('openHAB.config.zwaveNetwork');
+
+						tabs.add([zwaveDevices, zwaveNetwork]);
+					}
                 }
             }
         });
-
+		
         var tabs = Ext.create('Ext.tab.Panel', {
             layout:'fit',
             border:false,
@@ -178,10 +220,6 @@ Ext.define('openHAB.config.bindingProperties', {
         this.items = tabs;
 
         this.callParent();
-
-        // Class members.
-        this.setItem = function (newItem) {
-        }
     }
 })
 ;
