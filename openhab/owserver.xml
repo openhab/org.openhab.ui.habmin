@@ -32,8 +32,10 @@
             <maximum>10000</maximum>
             <values></values>
         </setting>
+    </binding.config>
 
-        <!-- The following lines specify the communications interface settings. These may be repeated multiple times -->
+    <!-- The following lines specify the communications interface settings. These may be repeated multiple times -->
+    </binding.interface>
         <setting>
             <name>.host</name>
             <label>IP Address</label>
@@ -54,7 +56,7 @@
             <maximum>65535</maximum>
             <values></values>
         </setting>
-    </binding.config>
+    </binding.interface>
 
     <!-- Item binding configuration -->
     <binding.items>
