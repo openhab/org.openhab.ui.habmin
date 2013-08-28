@@ -116,6 +116,10 @@ Ext.define('openHAB.config.bindingProperties', {
             autoLoad:true,
             listeners:{
                 load:function(store, records, successful, operation, eOpts ){
+                    // If there's no config for this binding, records will be null
+                    if(records == null)
+                        return;
+
                     var source = [];
                     var sourceConfig = [];
                     for(var c = 0; c < records.length; c++) {
