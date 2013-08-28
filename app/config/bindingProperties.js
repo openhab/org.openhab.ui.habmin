@@ -76,6 +76,12 @@ Ext.define('openHAB.config.bindingProperties', {
             ]
         });
 
+        var bbDescription = Ext.create('Ext.toolbar.TextItem', {text: ''});
+        var bbProperties = Ext.create('Ext.ux.StatusBar', {
+            text:'Binding: '+this.binding,
+            items: [bbDescription]
+        });
+
         Ext.define('BindingConfigModel', {
             extend:'Ext.data.Model',
             fields:[
@@ -128,6 +134,7 @@ Ext.define('openHAB.config.bindingProperties', {
                         id:'configItemProperties',
                         icon:'images/gear.png',
                         tbar:tbProperties,
+                        bbar:bbProperties,
                         hideHeaders:true,
                         sortableColumns:false,
                         nameColumnWidth:300,
@@ -141,6 +148,14 @@ Ext.define('openHAB.config.bindingProperties', {
                             propertychange:function (source, recordId, value, oldValue, eOpts) {
                                 Ext.getCmp("configPropTb-save").enable();
                                 Ext.getCmp("configPropTb-cancel").enable();
+                            },
+                            itemmouseenter:function(grid, record, item, index, e, eOpts ) {
+                                var name = record.get("name");
+                                var srec = configBindingStore.findExact("name", name);
+                                bbDescription.setText(configBindingStore.getAt(srec).get("description"));
+                            },
+                            itemmouseleave:function(grid, record, item, index, e, eOpts ) {
+                                bbDescription.setText("");
                             }
                         }
                     });
