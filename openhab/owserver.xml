@@ -1,7 +1,8 @@
-<!-- Binding configuration for the SNMP binding in openHAB -->
+<!-- Binding configuration for the OWServer binding in openHAB -->
 <binding>
     <!-- Binding configuration settings -->
     <binding.config>
+		<pid>owserver</pid>
         <setting>
             <name>cache</name>
             <label>Cache Timeout</label>
@@ -36,8 +37,9 @@
 
     <!-- The following lines specify the communications interface settings. These may be repeated multiple times -->
     </binding.interface>
+		<pid>owserver</pid>
         <setting>
-            <name>.host</name>
+            <name>host</name>
             <label>IP Address</label>
             <description>Set the IP address of the OW Server.</description>
             <optional>false</optional>
@@ -47,7 +49,7 @@
             <values></values>
         </setting>
         <setting>
-            <name>.port</name>
+            <name>port</name>
             <label>IP Port</label>
             <description>Set the IP Port number of the OW Server.</description>
             <optional>true</optional>
@@ -60,6 +62,7 @@
 
     <!-- Item binding configuration -->
     <binding.items>
+		<pid>owserver</pid>
         <binding.io>
             <type>Input</type>
             <description></description>
