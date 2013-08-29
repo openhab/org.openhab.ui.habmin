@@ -1,5 +1,18 @@
 <!-- Binding configuration for the EDS One Wire Server binding in openHAB -->
 <binding>
+	<!-- Full name presented to the user -->
+	<name>SNMP - Simple Network Management Protocol<name>
+	<!-- PID name used within the OSGi layer -->
+	<pid>snmp</pid>
+	<!-- Binding type: protocol, ui -->
+	<type>protocol</type>
+	<!-- Author -->
+	<author>Chris Jackson<author>
+	<!-- Current version of the binding to which the file is applicable -->
+	<version>1.3.0</version>
+	<!-- Minimum version of openHAB required to run this binding -->
+	<oh_version>1.3</oh_version>
+
     <!-- Binding configuration settings -->
     <binding.config>
         <setting>
