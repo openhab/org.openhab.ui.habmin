@@ -1,4 +1,5 @@
 Overview
+--------
 HABmin is a web administration console for openHAB. It aims to provide a complete interface to administer openHAB, including the following features -:
 •	General configuration (openHAB.cfg)
 •	Configure bindings
