@@ -2,12 +2,43 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>openHAB Administration Interface</title>  
+    <title>openHAB Administration Interface</title>
+    <link rel="shortcut icon" href="../images/favicon.ico" />
+
+    <link rel="stylesheet" type="text/css" href="resources/css/ext-all.css" />
+    <link rel="stylesheet" type="text/css" href="./app/habmin.css" />
     <script type="text/javascript" src="./js/ext-all.js"></script>
-    <script type="text/javascript" src="./s/jquery-1.6.4.js"></script>
+    <script type="text/javascript" src="./js/jquery.min.js"></script>
+    <script type="text/javascript" src="./js/highcharts.js"></script>
+    <script type="text/javascript" src="./js/highcharts-more.js"></script>
     <script type="text/javascript" src="./js/jquery.atmosphere.js"></script>
-    <script type="text/javascript" src="./app/app-min.js"></script>
+    <script type="text/javascript" src="./app/app.js"></script>
 </head>
 <body>
+
+<div id="HABmin">
+</div>
+<div id="splashscreen" class="splashscreen">
+    <div style="display:block;position:absolute;width:99%;top:40%; text-align: center;">
+        <div style="display:inline-block">
+        <img src="/images/app-icon.png">
+        </div>
+        <div style="display:inline-block;vertical-align:top;margin-top: 20px;">
+            <p id="loadingText" style="font-family:Verdana,Helvetica,sans-serif;font-size: 10px;">
+            Loading <b><i>HABmin</i></b> web administration console
+        </p>
+        <p style="font-family:Verdana,Helvetica,sans-serif;font-size: 10px;">openHAB Version: <span id="openHABVersion">---</span></p>
+            <p style="font-family:Verdana,Helvetica,sans-serif;font-size: 10px;">HABmin Version: <span id="HABminVersion">---</span></p>
+        </div>
+    </div>
+    <div style="display:block;position:absolute;width:99%;top:45%; text-align: center;">
+        <p id="startWarning" style="display:none;font-family:Verdana,Helvetica,sans-serif;font-size: 10px;">
+            <span><img style="margin-top:-4px;" src="images/exclamation.png" alt="Error..." /></span><span id="warningText" style="margin-left: 4px; vertical-align: top;"></span>
+        </p>
+    </div>
+</div>
+
+
+
 </body>
 </html>
