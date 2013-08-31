@@ -41,15 +41,15 @@ Ext.define('openHAB.config.bindingProperties', {
     tabTip:'Binding Properties',
     header:false,
     binding:"",
-	interfaceConfig:[]
+	interfaceConfig:[],
 
     initComponent:function () {
 		// Sanity check that a binding name has been specified!
-		if(binding == null)
+		if(this.binding == null)
 			return;
-		if(binding == "")
+		if(this.binding == "")
 			return;
-	
+
         var tbProperties = Ext.create('Ext.toolbar.Toolbar', {
             items:[
                 {
