@@ -42,13 +42,43 @@ Ext.define('openHAB.system.systemBindings', {
     icon:'images/chain.png',
 
     initComponent:function () {
+        Ext.define('BundlesModel', {
+            extend:'Ext.data.Model',
+            fields:[
+                {name:'id'},
+                {name:'name'},
+                {name:'version'},
+                {name:'state'},
+                {name:'modified', type:'int'},
+                {name:'link'}
+            ]
+        });
+
+        // Create the Bundles data store
+        var bundleStore = Ext.create('Ext.data.ArrayStore', {
+            model:'BundlesModel',
+            proxy:{
+                type:'rest',
+                url:'/rest/bundle',
+                reader:{
+                    type:'json',
+                    root:'bundle'
+                },
+                headers:{'Accept':'application/json'},
+                pageParam:undefined,
+                startParam:undefined,
+                sortParam:undefined,
+                limitParam:undefined
+            },
+            autoLoad:true
+        });
 
         var bindings = Ext.create('Ext.grid.Panel', {
-            store:bindingStore,
+            store:bundleStore,
             header:false,
             disableSelection:true,
             columns:[
-                {
+
                     text:'ID',
                     hideable:false,
                     flex:1,

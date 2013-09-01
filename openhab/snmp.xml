@@ -1,21 +1,21 @@
 <!-- Binding configuration for the EDS One Wire Server binding in openHAB -->
 <binding>
 	<!-- Full name presented to the user -->
-	<name>SNMP - Simple Network Management Protocol<name>
+	<name>SNMP - Simple Network Management Protocol</name>
 	<!-- PID name used within the OSGi layer -->
 	<pid>snmp</pid>
 	<!-- Binding type: protocol, ui -->
 	<type>protocol</type>
 	<!-- Author -->
-	<author>Chris Jackson<author>
+	<author>Chris Jackson</author>
 	<!-- Current version of the binding to which the file is applicable -->
 	<version>1.3.0</version>
 	<!-- Minimum version of openHAB required to run this binding -->
-	<oh_version>1.3</oh_version>
+	<oh_version>1.3.0</oh_version>
 
     <!-- Binding configuration settings -->
     <binding.config>
-        <setting>
+        <config.setting>
             <name>port</name>
             <label>IP Port</label>
             <description>Sets the IP port number on which the binding will listen.</description>
@@ -24,8 +24,8 @@
             <minimum>1</minimum>
             <maximum>65535</maximum>
             <values></values>
-        </setting>
-        <setting>
+        </config.setting>
+        <config.setting>
             <name>community</name>
             <label>SNMP Community</label>
             <description>Sets the SNMP community to listen to for TRAPs.</description>
@@ -34,8 +34,8 @@
             <minimum></minimum>
             <maximum></maximum>
             <values></values>
-        </setting>
-        <setting>
+        </config.setting>
+        <config.setting>
             <name>timeout</name>
             <label>Request timeout</label>
             <description>Sets the maximum timeout (in milliseconds) that the binding will wait for a response before
@@ -46,8 +46,8 @@
             <minimum>100</minimum>
             <maximum>5000</maximum>
             <values></values>
-        </setting>
-        <setting>
+        </config.setting>
+        <config.setting>
             <name>retries</name>
             <label>Request Retries</label>
             <description>Sets the maximum number of retries the binding will send before aborting the request. Set to 0
@@ -58,7 +58,7 @@
             <minimum>0</minimum>
             <maximum>5</maximum>
             <values></values>
-        </setting>
+        </config.setting>
     </binding.config>
 
     <!-- Item binding configuration -->
