@@ -27,7 +27,7 @@
         </config.setting>
         <config.setting>
             <name>timeout</name>
-            <label>Timeout</label>
+            <label>Request Timeout</label>
             <description>Sets the number of milliseconds that the binding will wait for a response.</description>
             <optional>true</optional>
             <default>5000</default>

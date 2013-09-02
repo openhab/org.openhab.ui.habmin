@@ -87,7 +87,7 @@ Ext.define('openHAB.config.bindingList', {
                 select:function (grid, record, index, eOpts) {
                     // Remove the current editor
                     Ext.getCmp('configPropertyContainer').removeProperty();
-                    
+
                     if (record == null)
                         return;
 

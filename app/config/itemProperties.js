@@ -112,20 +112,6 @@ Ext.define('openHAB.config.itemProperties', {
                 ItemName:{
                     displayName:"Item Name"
                 },
-                GraphType:{
-                    displayName:"Graph Type",
-                    renderer:function (v) {
-//                        return getGraphType(v);
-                    },
-                    editor:Ext.create('Ext.form.ComboBox', {
-                        store:graphTypeStore,
-                        queryMode:'local',
-                        typeAhead:false,
-                        editable:false,
-                        displayField:'name',
-                        valueField:'id'
-                    })
-                },
                 Icon:{
                     renderer:function (v) {
                         var icon = getIconByValue(v);
@@ -142,6 +128,37 @@ Ext.define('openHAB.config.itemProperties', {
                         editable:false,
                         displayField:'name',
                         valueField:'id',
+                        forceSelection:true,
+                        editable:false,
+                        allowBlank:false,
+                        listConfig:{
+                            getInnerTpl:function () {
+                                var tpl = '<div>' +
+                                    '<img src="{icon}" align="left" height="16">&nbsp;&nbsp;' +
+                                    '{name}</div>';
+                                return tpl;
+                            }
+                        }
+                    })
+                },
+                Type:{
+                    displayName:"Item Type",
+                    renderer:function (v) {
+                        var ref = itemTypeStore.findExact("name", v);
+                        if(ref == -1)
+                            return;
+                        var icon = itemTypeStore.getAt(ref).get("icon");
+                        return '<div>' +
+                            '<img src="'+icon+'" align="left" height="16">&nbsp;&nbsp;' +
+                            v+'</div>';
+                    },
+                    editor:Ext.create('Ext.form.ComboBox', {
+                        store:itemTypeStore,
+                        queryMode:'local',
+                        typeAhead:false,
+                        editable:false,
+                        displayField:'name',
+                        valueField:'name',
                         forceSelection:true,
                         editable:false,
                         allowBlank:false,
@@ -174,8 +191,8 @@ Ext.define('openHAB.config.itemProperties', {
             },
             listeners:{
                 propertychange:function (source, recordId, value, oldValue, eOpts) {
-                    Ext.getCmp("configPropTb-save").enable();
-                    Ext.getCmp("configPropTb-cancel").enable();
+                    //Ext.getCmp("save").enable();
+                    //Ext.getCmp("cancel").enable();
                 }
             }
         });

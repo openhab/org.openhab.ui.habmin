@@ -92,6 +92,7 @@ var statusTooltip;
 
 // Global data stores from openHAB
 var itemStore;
+var itemTypeStore;
 var sitemapStore;
 var bindingStore;
 
@@ -103,6 +104,17 @@ var iconTypeArray = [
     {'id':4, 'icon':'../images/switch.png', 'name':'Switch'}
 ];
 
+var itemTypeArray = [
+    {name:"GroupItem", icon: "images/category-group.png"},
+    {name:"SwitchItem", icon: "images/switch.png"},
+    {name:"NumberItem", icon: "images/counter.png"},
+    {name: "ColorItem", icon: "images/color.png"},
+    {name:"ContactItem", icon:"images/door-open.png"},
+    {name:"DateTimeItem", icon:"images/clock.png"},
+    {name:"DimmerItem",icon:"images/ui-slider.png"},
+    {name:"RollerShutterItem", icon:"images/curtain.png"},
+    {name:"StringItem",icon:"images/edit.png"}
+];
 
 var initState = 0;
 var initList = [
@@ -168,6 +180,7 @@ function loadNextConfig() {
         }
     });
 }
+
 function loadError(errorText) {
 }
 
@@ -310,24 +323,11 @@ function getIconByValue(value) {
 
 // Return an icon based on the ItemType
 function getItemTypeIcon(type) {
-    if (type == "GroupItem")
-        return "images/category-group.png";
-    if (type == "SwitchItem")
-        return "images/switch.png";
-    if (type == "NumberItem")
-        return "images/counter.png";
-    if (type == "ColorItem")
-        return "images/color.png";
-    if (type == "ContactItem")
-        return "images/door-open.png";
-    if (type == "DateTimeItem")
-        return "images/clock.png";
-    if (type == "DimmerItem")
-        return "images/ui-slider.png";
-    if (type == "RollerShutterItem")
-        return "images/curtain.png";
-    if (type == "StringItem")
-        return "images/edit.png";
+    var ref = itemTypeStore.findExact("name", type);
+    if(ref == -1)
+        return "";
+    else
+        return itemTypeStore.getAt(ref).get('icon');
 }
 
 var iterationCnt = 0;
@@ -373,6 +373,22 @@ function makeItemGroupTree(parent, group) {
 
 function createUI() {
     delete Ext.tip.Tip.prototype.minWidth;
+
+    Ext.define('ItemTypeModel', {
+        extend:'Ext.data.Model',
+        fields:[
+            {name:'name'},
+            {name:'label'},
+            {name:'icon'}
+        ]
+    });
+
+    // Create the Item data store
+    itemTypeStore = Ext.create('Ext.data.ArrayStore', {
+        model:'ItemTypeModel'
+    });
+    itemTypeStore.loadData(itemTypeArray);
+
 
     Ext.define('ItemsModel', {
         extend:'Ext.data.Model',
