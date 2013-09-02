@@ -1,4 +1,6 @@
 /**
+ * HABmin - the openHAB admin interface
+ *
  * openHAB, the open Home Automation Bus.
  * Copyright (C) 2010-2013, openHAB.org <admin@openhab.org>
  *
@@ -42,7 +44,6 @@ Ext.define('openHAB.config.itemList', {
     initComponent:function () {
 
         var itemsTree = Ext.create('Ext.grid.Panel', {
-            id:'configItemTree',
             store:itemStore,
             header:false,
             split:true,

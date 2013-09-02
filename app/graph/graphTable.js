@@ -38,59 +38,86 @@ Ext.define('openHAB.graph.graphTable', {
     extend:'Ext.panel.Panel',
     layout:'fit',
     tabTip:'Show and edit graph data',
+    // TODO: Does this need to be 'id'?
     id:'graphTableData',
     title:'Table',
     icon:'images/table-export.png',
+    lastUpdate:0,
+    deferredRender: true,
 
     initComponent:function () {
         this.callParent();
-    },
-	updateData:function () {
-		// Remove the current grid
-		this.removeAll();
 
-		// Retrieve the data from the graph object
-		var data = Ext.getCmp("highchartsChart").getData();
-		if(data == null)
-			return;
-		if(data.length == 0)
-			return;
-		
-		var columns = [];
-		columns[0] = [];
-		columns[0].text = 'Time';
-		columns[0].dataIndex = 'time';
-		columns[0].xtype = 'datecolumn';
-		columns[0].format = 'H:i:s d M Y';
+        this.updateData = function () {
+            // Detect if the graph data has been updated
+            // Don't update the table if it's old data!
+            if (Ext.getCmp("highchartsChart").lastUpdate() < this.lastUpdate)
+                return;
+            this.lastUpdate = (new Date()).getTime();
 
-		var fields = [];
-		fields[0] = [];
-		fields[0].name = 'time';
-		fields[0].type = 'date';
-		fields[0].dateFormat = 'time';
+            // Retrieve the data from the graph object
+            var data = Ext.getCmp("highchartsChart").getData();
+            if (data == null)
+                return;
+            if (data.length == 0)
+                return;
 
-		for(var c = 0; c < data.length;c++) {
-			fields[c+1] = [];
-			fields[c+1].name = data[c].item;
-			columns[c+1] = [];
-			columns[c+1].text = data[c].item;
-			columns[c+1].dataIndex = data[c].item;
-		}
+            // Remove the current grid
+            this.removeAll();
 
-		// Create a model
-        Ext.define('GraphTableModel', {
-            extend:'Ext.data.Model',
-            fields:fields
-        });
+            Ext.MessageBox.show({
+                msg:'Producing table array...',
+                width:100,
+                height:40,
+                icon:'graph-download',
+                draggable:false,
+                closable:false
+            });
 
-        var dataGrid = Ext.create('Ext.grid.Panel', {
-            store:{model:'GraphTableModel', data:data[0].data},
-            multiSelect:false,
-            columns:columns
-        });
+            var columns = [];
+            columns[0] = [];
+            columns[0].text = 'Time';
+            columns[0].dataIndex = 'time';
+            columns[0].xtype = 'datecolumn';
+            columns[0].format = 'H:i:s d M Y';
 
-		this.add(dataGrid);
+            var fields = [];
+            fields[0] = [];
+            fields[0].name = 'time';
+            fields[0].type = 'date';
+            fields[0].dateFormat = 'time';
 
-	}
+            for (var c = 0; c < data.length; c++) {
+                fields[c + 1] = [];
+                fields[c + 1].name = data[c].item;
+                columns[c + 1] = [];
+                columns[c + 1].text = data[c].item;
+                columns[c + 1].dataIndex = data[c].item;
+            }
+
+            // Create a model
+            Ext.define('GraphTableModel', {
+                extend:'Ext.data.Model',
+                fields:fields
+            });
+
+            var dataGrid = Ext.create('Ext.grid.Panel', {
+                store:{model:'GraphTableModel', data:data[0].data},
+                multiSelect:false,
+                columns:columns
+            });
+
+            this.add(dataGrid);
+
+            Ext.MessageBox.hide();
+        }
+        this.isUpdateRequired = function () {
+            // Detect if the graph data has been updated
+            // Don't update the table if it's old data!
+            if (Ext.getCmp("highchartsChart").lastUpdate() < this.lastUpdate)
+                return false;
+            return true;
+        }
+    }
 })
 ;

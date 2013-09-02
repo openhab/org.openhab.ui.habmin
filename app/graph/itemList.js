@@ -1,4 +1,6 @@
 /**
+ * HABmin - the openHAB admin interface
+ *
  * openHAB, the open Home Automation Bus.
  * Copyright (C) 2010-2013, openHAB.org <admin@openhab.org>
  *
@@ -45,21 +47,24 @@ Ext.define('openHAB.graph.itemList', {
             items:[
                 {
                     icon:'images/cross.png',
-                    id:'chartChanTb-clear',
+                    itemId:'clear',
                     text:'Reset Graph',
                     cls:'x-btn-icon',
                     disabled:false,
                     tooltip:'Clear Selected Channels and Reset Period',
                     handler:function () {
                         var selectedChanList = [];
-                        Ext.getCmp("graphItemGrid").clearSelection();
-                        Ext.getCmp('chartChanTb-update').disable();
-                        Ext.getCmp('chartChanTb-save').disable();
+                        itemToolbar.getComponent('update').disable();
+                        itemToolbar.getComponent('save').disable();
+
+                        //Ext.getCmp("graphItemGrid").clearSelection();
+                        //Ext.getCmp('chartChanTb-update').disable();
+                        //Ext.getCmp('chartChanTb-save').disable();
                     }
                 },
                 {
                     icon:'images/disk.png',
-                    id:'chartChanTb-save',
+                    itemId:'save',
                     text:'Save Graph',
                     cls:'x-btn-icon',
                     disabled:true,
@@ -69,7 +74,7 @@ Ext.define('openHAB.graph.itemList', {
                 },
                 {
                     icon:'images/external.png',
-                    id:'chartChanTb-update',
+                    itemId:'update',
                     text:'Update',
                     cls:'x-btn-icon',
                     disabled:true,
@@ -85,7 +90,6 @@ Ext.define('openHAB.graph.itemList', {
         });
 
         var itemList = Ext.create('Ext.grid.Panel', {
-            id:'graphItemGrid',
             store:itemStore,
             tbar:itemToolbar,
             header:false,
@@ -173,8 +177,8 @@ Ext.define('openHAB.graph.itemList', {
                             newRec.axis = 0;
                             selectedChanList.push(newRec);
 
-                            Ext.getCmp('chartChanTb-update').enable();
-                            Ext.getCmp('chartChanTb-save').enable();
+                            itemToolbar.getComponent('update').enable();
+                            itemToolbar.getComponent('save').enable();
 
                             this.getView().refreshNode(index);
                             el.frame();
@@ -183,8 +187,8 @@ Ext.define('openHAB.graph.itemList', {
                     else {
                         selectedChanList.splice(chanRef,1);
                         if (selectedChanList.length == 0) {
-                            Ext.getCmp('chartChanTb-update').disable();
-                            Ext.getCmp('chartChanTb-save').disable();
+                            itemToolbar.getComponent('update').disable();
+                            itemToolbar.getComponent('save').disable();
                         }
 
                         this.getView().refreshNode(index);
@@ -196,8 +200,8 @@ Ext.define('openHAB.graph.itemList', {
                 selectedChanList = [];
                 this.getView().refresh();
 
-                Ext.getCmp('chartChanTb-update').disable();
-                Ext.getCmp('chartChanTb-save').disable();
+                itemToolbar.getComponent('update').disable();
+                itemToolbar.getComponent('save').disable();
             }
         });
 

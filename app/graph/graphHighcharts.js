@@ -40,9 +40,11 @@ Ext.define('openHAB.graph.graphHighcharts', {
     icon:'images/chart-up.png',
     layout:'fit',
     header: false,
+    // TODO: does this need to be 'id'?
     id:'highchartsChart',
 
     initComponent:function () {
+        var lastUpdate = 0;
         var rawData = [];
         var chartObject = null;
         var chartMin = 0;
@@ -114,6 +116,7 @@ Ext.define('openHAB.graph.graphHighcharts', {
         };
 
         function toolbarEnable() {
+            //TODO: Change to use toolbar.getComponent
             Ext.getCmp('chartTb-zoomIn').enable();
             Ext.getCmp('chartTb-zoomOut').enable();
             Ext.getCmp('chartTb-scrollLeft').enable();
@@ -172,6 +175,10 @@ Ext.define('openHAB.graph.graphHighcharts', {
                 method:'GET',
                 headers:{'Accept': 'application/json'},
                 success:function (response, opts) {
+                    // Remember the time of the last data update
+                    // This allows the table to detect if data is dirty
+                    lastUpdate = (new Date()).getTime();
+
                     // Reset the info store
                     graphInfoItems = [];
 
@@ -547,6 +554,9 @@ Ext.define('openHAB.graph.graphHighcharts', {
         }
         this.getData=function() {
             return rawData;
+        }
+        this.lastUpdate=function() {
+            return lastUpdate;
         }
     }
 })

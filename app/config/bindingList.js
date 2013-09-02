@@ -58,7 +58,7 @@ Ext.define('openHAB.config.bindingList', {
                 {
                     text:'Name',
                     hideable:false,
-                    flex:3,
+                    flex:4,
                     sortable:true,
                     dataIndex:'name'
                 },

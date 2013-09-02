@@ -69,19 +69,20 @@ Ext.define('openHAB.graph.graph', {
         var chartGraph = Ext.create('openHAB.graph.graphHighcharts');
         var chartTable = Ext.create('openHAB.graph.graphTable');
 
+        // Create the tab bar to select between graph and table
         var tabPanel = Ext.create('Ext.tab.Panel', {
-            id:'tabPersistence',
             plain:false,
             region:'center',
             layout:'fit',
             tabPosition: 'bottom',
             items:[chartGraph, chartTable],
 			listeners: {
-				tabchange:function (tabPanel, newCard, oldCard, eOpts) {
+				beforetabchange:function (tabPanel, newCard, oldCard, eOpts) {
 					// Detect if we've changed to the table view
 					if (newCard.id == 'graphTableData') {
-						Ext.getCmp("graphTableData").updateData();
-					}
+                        if(Ext.getCmp("graphTableData").isUpdateRequired())
+                            Ext.getCmp("graphTableData").updateData();
+                    }
 				}
 			}
 			

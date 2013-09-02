@@ -38,7 +38,6 @@ Ext.define('openHAB.system.systemBundles', {
     extend:'Ext.panel.Panel',
     layout:'fit',
     tabTip:'OSGi Bundles',
-//    id:'configBindingList',
     title:'Bundles',
     header:true,
     icon:'images/chain.png',

@@ -1,4 +1,6 @@
 /**
+ * HABmin - the openHAB admin interface
+ *
  * openHAB, the open Home Automation Bus.
  * Copyright (C) 2010-2013, openHAB.org <admin@openhab.org>
  *
@@ -35,7 +37,6 @@
 Ext.define('openHAB.config.sitemapProperties', {
     extend:'Ext.panel.Panel',
     layout:'fit',
-    id:'sitemapProperties',
     tabTip:'Sitemap Properties',
     header:false,
 
@@ -68,6 +69,7 @@ Ext.define('openHAB.config.sitemapProperties', {
         var configRootNode = sitemapItemStore.setRootNode(rootHere);
 
         var itemsTree = Ext.create('Ext.tree.Panel', {
+            // TODO: Does this need to be 'id'?
             id:'sitemapItemTree',
             store:sitemapItemStore,
             header:true,
@@ -106,6 +108,7 @@ Ext.define('openHAB.config.sitemapProperties', {
         });
 
         var sitemapTree = Ext.create('Ext.tree.Panel', {
+            // TODO: Does this need to be 'id'
             id:'sitemapSitemapTree',
 //            store:sitemapItemStore,
             header:true,
@@ -156,7 +159,6 @@ Ext.define('openHAB.config.sitemapProperties', {
         var sitemapDesign = Ext.create('Ext.panel.Panel', {
             itemId:'sitemapPanel',
             title:'Properties',
-            id:'sitemapPanel',
             icon:'images/maps-stack.png',
             xtype:'panel',
 //                tbar:highchartsToolbar,
@@ -174,7 +176,6 @@ Ext.define('openHAB.config.sitemapProperties', {
         var tabs = Ext.create('Ext.tab.Panel', {
             layout:'fit',
             border:false,
-            id:'tabsSitemapProperties',
             items:[sitemapDesign]
         });
 

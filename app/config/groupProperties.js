@@ -1,4 +1,6 @@
 /**
+ * HABmin - the openHAB admin interface
+ *
  * openHAB, the open Home Automation Bus.
  * Copyright (C) 2010-2013, openHAB.org <admin@openhab.org>
  *
@@ -55,28 +57,28 @@ Ext.define('openHAB.config.groupProperties', {
             items:[
                 {
                     icon:'images/cross.png',
-                    id:'configPropTb-cancel',
+                    itemId:'cancel',
                     text:'Cancel',
                     cls:'x-btn-icon',
                     disabled:true,
                     tooltip:'Cancel changes made to the group configuration',
                     handler:function () {
-                        Ext.getCmp("configPropTb-save").disable();
-                        Ext.getCmp("configPropTb-cancel").disable();
+//                        Ext.getCmp("configPropTb-save").disable();
+//                        Ext.getCmp("configPropTb-cancel").disable();
 
                         // Reset to the current data
                     }
                 },
                 {
                     icon:'images/disk.png',
-                    id:'configPropTb-save',
+                    itemId:'save',
                     text:'Save',
                     cls:'x-btn-icon',
                     disabled:true,
                     tooltip:'Save changes to the group configuration',
                     handler:function () {
-                        Ext.getCmp("configPropTb-save").disable();
-                        Ext.getCmp("configPropTb-cancel").disable();
+//                        Ext.getCmp("configPropTb-save").disable();
+//                        Ext.getCmp("configPropTb-cancel").disable();
                     }
                 }
             ]
@@ -84,7 +86,6 @@ Ext.define('openHAB.config.groupProperties', {
 
         var groupOptions = Ext.create('Ext.grid.property.Grid', {
             title:'Properties',
-            id:'configGroupProperties',
             icon:'images/gear.png',
             tbar:tbProperties,
             hideHeaders:true,
@@ -143,7 +144,6 @@ Ext.define('openHAB.config.groupProperties', {
         var tabs = Ext.create('Ext.tab.Panel', {
             layout:'fit',
             border:false,
-            id:'tabsGroupProperties',
             items:[groupOptions]
         });
 

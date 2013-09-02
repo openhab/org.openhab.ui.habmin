@@ -1,4 +1,6 @@
 /**
+ * HABmin - the openHAB admin interface
+ *
  * openHAB, the open Home Automation Bus.
  * Copyright (C) 2010-2013, openHAB.org <admin@openhab.org>
  *
@@ -33,6 +35,8 @@
  */
 
 var force_transport = 'auto';
+
+Ext.Container.prototype.bufferResize = false;
 
 Ext.Loader.setConfig({
     enabled:true,
@@ -484,7 +488,6 @@ function createUI() {
     });
 
     var tabMain = Ext.create('Ext.tab.Panel', {
-        id:'mainTab',
         layout:'fit',
         items:[chartTab, configTab, automationTab, systemTab],
         listeners:{

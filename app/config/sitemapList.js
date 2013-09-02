@@ -1,4 +1,6 @@
 /**
+ * HABmin - the openHAB admin interface
+ *
  * openHAB, the open Home Automation Bus.
  * Copyright (C) 2010-2013, openHAB.org <admin@openhab.org>
  *
@@ -36,14 +38,12 @@ Ext.define('openHAB.config.sitemapList', {
     extend:'Ext.panel.Panel',
     layout:'fit',
     tabTip:'Sitemap list',
-    id:'sitemapList',
     title:'Sitemaps',
     icon:'images/maps-stack.png',
 
     initComponent:function () {
 
         var sitemapList = Ext.create('Ext.grid.Panel', {
-            id:'configSitemapList',
             store:sitemapStore,
             header:false,
             columns:[

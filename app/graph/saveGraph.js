@@ -1,4 +1,6 @@
 /**
+ * HABmin - the openHAB admin interface
+ *
  * openHAB, the open Home Automation Bus.
  * Copyright (C) 2010-2013, openHAB.org <admin@openhab.org>
  *
@@ -74,7 +76,6 @@ Ext.define('openHAB.graph.saveGraph', {
             clicksToEdit:1
         });
         var chanList = Ext.create('Ext.grid.Panel', {
-            id:'saveChanGrid',
             store:saveGraphStore,
             selType:'cellmodel',
             hideHeaders:false,
@@ -160,7 +161,7 @@ Ext.define('openHAB.graph.saveGraph', {
                             columnWidth:0.5,
                             margin:'0 10 0 0',
                             xtype:'textfield',
-                            id:'graphRef',
+                            itemId:'graphRef',
                             fieldLabel:'Quickview reference',
                             maxLength:15,
                             enforceMaxLength:true,
@@ -171,7 +172,7 @@ Ext.define('openHAB.graph.saveGraph', {
                             columnWidth:0.5,
                             margin:'0 0 0 10',
                             xtype:'textfield',
-                            id:'graphDuration',
+                            itemId:'graphDuration',
                             fieldLabel:'Duration (days)',
                             maxLength:5,
                             enforceMaxLength:true,
@@ -190,7 +191,7 @@ Ext.define('openHAB.graph.saveGraph', {
                             margin:'0 5 0 0',
                             xtype:'combobox',
                             fieldLabel:'Icon',
-                            id:'graphIcon',
+                            itemId:'graphIcon',
                             name:'graphIcon',
                             store:{model:'Icons', data:dataTypeArray},
                             allowBlank:false,
@@ -292,7 +293,7 @@ Ext.define('openHAB.graph.saveGraph', {
                 Ext.getCmp('graphRef').setValue(options.Reference);
         }
 
-        this.items = itemsTree;
+//        this.items = itemsTree;
 
         this.callParent();
     }

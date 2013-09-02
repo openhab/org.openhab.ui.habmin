@@ -1,4 +1,6 @@
 /**
+ * HABmin - the openHAB admin interface
+ *
  * openHAB, the open Home Automation Bus.
  * Copyright (C) 2010-2013, openHAB.org <admin@openhab.org>
  *
@@ -36,7 +38,6 @@ Ext.define('openHAB.config.mappingList', {
     extend:'Ext.panel.Panel',
     layout:'fit',
     tabTip:'Mapping list',
-    id:'mappingList',
     title:'Mapping',
     icon:'images/tables-relation.png',
 

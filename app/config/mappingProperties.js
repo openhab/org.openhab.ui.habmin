@@ -1,4 +1,6 @@
 /**
+ * HABmin - the openHAB admin interface
+ *
  * openHAB, the open Home Automation Bus.
  * Copyright (C) 2010-2013, openHAB.org <admin@openhab.org>
  *
@@ -61,16 +63,16 @@ Ext.define('openHAB.config.mappingProperties', {
             items:[
                 {
                     icon:'images/cross.png',
-                    id:'configLookupTb-cancel',
+                    itemId:'cancel',
                     text:'Cancel',
                     cls:'x-btn-icon',
                     disabled:true,
                     tooltip:'Cancel changes made to the lookup table',
                     handler:function () {
-                        Ext.getCmp("configLookupTb-save").disable();
-                        Ext.getCmp("configLookupTb-cancel").disable();
-                        Ext.getCmp("configLookupTb-add").enable();
-                        Ext.getCmp("configLookupTb-delete").disable();
+                        //Ext.getCmp("configLookupTb-save").disable();
+                        //Ext.getCmp("configLookupTb-cancel").disable();
+                        //Ext.getCmp("configLookupTb-add").enable();
+                        //Ext.getCmp("configLookupTb-delete").disable();
 
                         // Reset to the current data
                         var prop = Ext.getCmp('configProperties').getStore();
@@ -81,28 +83,28 @@ Ext.define('openHAB.config.mappingProperties', {
                 },
                 {
                     icon:'images/disk.png',
-                    id:'configLookupTb-save',
+                    itemId:'save',
                     text:'Save',
                     cls:'x-btn-icon',
                     disabled:true,
                     tooltip:'Save changes to the lookup table',
                     handler:function () {
-                        Ext.getCmp("configLookupTb-save").disable();
-                        Ext.getCmp("configLookupTb-cancel").disable();
-                        Ext.getCmp("configLookupTb-add").enable();
+                        //Ext.getCmp("configLookupTb-save").disable();
+                        //Ext.getCmp("configLookupTb-cancel").disable();
+                        //Ext.getCmp("configLookupTb-add").enable();
                         SaveConfigVariableData();
                     }
                 },
                 {
                     icon:'images/plus-button.png',
-                    id:'configLookupTb-add',
+                    itemId:'add',
                     text:'Add',
                     cls:'x-btn-icon',
                     disabled:true,
                     tooltip:'Add a row to the lookup table',
                     handler:function () {
-                        Ext.getCmp("configLookupTb-save").enable();
-                        Ext.getCmp("configLookupTb-cancel").enable();
+                        //Ext.getCmp("configLookupTb-save").enable();
+                        //Ext.getCmp("configLookupTb-cancel").enable();
 
                         var newVar = {};
                         newVar.value = 0;
@@ -113,16 +115,16 @@ Ext.define('openHAB.config.mappingProperties', {
                 },
                 {
                     icon:'images/minus-button.png',
-                    id:'configLookupTb-delete',
+                    itemId:'delete',
                     text:'Delete',
                     cls:'x-btn-icon',
                     disabled:true,
                     tooltip:'Remove highlighted row from the lookup table',
                     handler:function () {
-                        Ext.getCmp("configLookupTb-save").enable();
-                        Ext.getCmp("configLookupTb-cancel").enable();
-                        Ext.getCmp("configLookupTb-add").enable();
-                        Ext.getCmp("configLookupTb-delete").disable();
+                        //Ext.getCmp("configLookupTb-save").enable();
+                        //Ext.getCmp("configLookupTb-cancel").enable();
+                        //Ext.getCmp("configLookupTb-add").enable();
+                        //Ext.getCmp("configLookupTb-delete").disable();
 
                         var selection = Ext.getCmp("gridLookup").getView().getSelectionModel().getSelection()[0];
                         if (selection) {
@@ -139,7 +141,6 @@ Ext.define('openHAB.config.mappingProperties', {
 
         var itemMapping  = Ext.create('Ext.grid.Panel', {
             xtype:'cell-editing',
-            id:'gridLookup',
             title: 'Mapping Properties',
             icon:'images/tables-relation.png',
             header:false,
@@ -202,7 +203,6 @@ Ext.define('openHAB.config.mappingProperties', {
         var tabs = Ext.create('Ext.tab.Panel', {
             layout:'fit',
             border:false,
-            id:'tabsMappingProperties',
             items:[itemMapping]
         });
 

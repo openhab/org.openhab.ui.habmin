@@ -51,7 +51,6 @@ Ext.define('openHAB.system.system', {
             plain:false,
             layout:'fit',
             border:false,
-            id:'tabsSystemProperties',
             items:[bindings, logViewer]
         });
 
