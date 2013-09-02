@@ -19,6 +19,8 @@ In addition to the REST interface, it is imperative to define files that describ
 
 While HABmin is a supporting project to OpenHAB,  providing access to OpenHAB's features, since the existing REST interface does not support most of the functionality required by HABmin, HABmin may drive this part of openHAB to some extent. It is also expected that as functionality is added to OpenHAB,  HABmin will need to have its backend modified to reflect the final interfaces implemented in OpenHAB. 
 
+![Binding Config Screen](https://raw.github.com/wiki/cdjackson/HABmin/habmin_bindingconfig.png)
+
 ###Status
 The project is just getting started. Currently implemented is the graphing of data from the persistence store and a lot of the initial user interface has been boilerplated and some work has started on the REST interface for configuring bindings.
 
