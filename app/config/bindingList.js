@@ -1,4 +1,6 @@
 /**
+ * HABmin - the openHAB admin interface
+ *
  * openHAB, the open Home Automation Bus.
  * Copyright (C) 2010-2013, openHAB.org <admin@openhab.org>
  *
@@ -47,12 +49,32 @@ Ext.define('openHAB.config.bindingList', {
             header:false,
             columns:[
                 {
-                    text:'Binding Name',
+                    text:'Bundle',
                     hideable:false,
-                    flex:1,
-                    width:75,
+                    flex:3,
+                    sortable:true,
+                    dataIndex:'bundle'
+                },
+                {
+                    text:'Name',
+                    hideable:false,
+                    flex:3,
                     sortable:true,
                     dataIndex:'name'
+                },
+                {
+                    text:'Version',
+                    hideable:false,
+                    flex:1,
+                    sortable:true,
+                    dataIndex:'osgiVersion'
+                },
+                {
+                    text:'Author',
+                    hideable:false,
+                    flex:1,
+                    sortable:true,
+                    dataIndex:'author'
                 }
             ],
             layout:'fit',
@@ -66,12 +88,10 @@ Ext.define('openHAB.config.bindingList', {
                     if (record == null)
                         return;
 
-                    var newName = record.get('name');
-                    var pid = newName.slice(newName.lastIndexOf(".")+1);
+                    var pid = record.get('pid');
 
                     // Create a new bindingProperties
                     var newProperties = Ext.create('openHAB.config.bindingProperties', {binding: pid});
-                    newProperties.setItem(newName);
 
                     if(newProperties != null)
                         Ext.getCmp('configPropertyContainer').setNewProperty(newProperties);

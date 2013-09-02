@@ -41,7 +41,6 @@ Ext.define('openHAB.config.bindingProperties', {
     tabTip:'Binding Properties',
     header:false,
     binding:"",
-	interfaceConfig:[],
 
     initComponent:function () {
 		// Sanity check that a binding name has been specified!
@@ -77,7 +76,7 @@ Ext.define('openHAB.config.bindingProperties', {
                     }
                 },
                 {
-                    icon:'images/plus.png',
+                    icon:'images/plus-button.png',
                     id:'configPropTb-add',
                     text:'Add Interface',
                     cls:'x-btn-icon',
@@ -90,7 +89,7 @@ Ext.define('openHAB.config.bindingProperties', {
 										// Add a new property sheet to the panel
 										
 										// process text value and close...
-										for(var c=0;c<interfaceConfig.length;c++) {
+										for(var c=0;c<this.interfaceConfig.length;c++) {
 											
 										}
 									}
@@ -127,10 +126,10 @@ Ext.define('openHAB.config.bindingProperties', {
             model:'BindingConfigModel',
             proxy:{
                 type:'rest',
-                url:'/rest/config/binding/'+this.binding,
+                url:'/rest/bindings/'+this.binding,
                 reader:{
                     type:'json',
-                    root:'config'
+                    root:'generalconfig'
                 },
                 headers:{'Accept':'application/json'},
                 pageParam:undefined,
@@ -145,8 +144,9 @@ Ext.define('openHAB.config.bindingProperties', {
                     if(records == null)
                         return;
 
-                    var source = [];
-                    var sourceConfig = [];
+                    this.source = [];
+                    this.sourceConfig = [];
+                    this.interfaceConfig = [];
                     for(var c = 0; c < records.length; c++) {
                         var id = records[c].get('name');
 						// Handle interface (second level) config - start with .
@@ -155,13 +155,13 @@ Ext.define('openHAB.config.bindingProperties', {
 							this.interfaceConfig.push(id);
 						}
 						else {
-							sourceConfig[id] = {};
-							sourceConfig[id].displayName = records[c].get('label');
+							this.sourceConfig[id] = {};
+							this.sourceConfig[id].displayName = records[c].get('label');
 
 							if(records[c].get('value') != null)
-								source[id] = records[c].get('value');
+								this.source[id] = records[c].get('value');
 							else
-								source[id] = "";
+								this.source[id] = "";
 						}
 					}
 
@@ -175,8 +175,8 @@ Ext.define('openHAB.config.bindingProperties', {
                         sortableColumns:false,
                         nameColumnWidth:300,
                         split:true,
-                        source: source,
-                        sourceConfig:sourceConfig,
+                        source: this.source,
+                        sourceConfig:this.sourceConfig,
                         viewConfig:{
                             markDirty:false
                         },
@@ -201,7 +201,7 @@ Ext.define('openHAB.config.bindingProperties', {
 					// If there are interface configurations available, then enable the "add interface" button
 	
 					// Handle special bindings
-					if(binding == 'zwave') {
+					if(this.binding == 'zwave') {
 						var zwaveDevices = Ext.create('openHAB.config.zwaveDeviceList');
 						var zwaveNetwork = Ext.create('openHAB.config.zwaveNetwork');
 
@@ -220,6 +220,10 @@ Ext.define('openHAB.config.bindingProperties', {
         this.items = tabs;
 
         this.callParent();
+
+        // Class members.
+        this.setItem = function (newItem) {
+        }
     }
 })
 ;

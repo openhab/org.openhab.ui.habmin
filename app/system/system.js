@@ -1,4 +1,6 @@
 /**
+ * HABmin - the openHAB admin interface
+ *
  * openHAB, the open Home Automation Bus.
  * Copyright (C) 2010-2013, openHAB.org <admin@openhab.org>
  *
@@ -42,7 +44,7 @@ Ext.define('openHAB.system.system', {
     cls:'empty',
 
     initComponent:function () {
-        var bindings  = Ext.create('openHAB.system.systemBindings');
+        var bindings  = Ext.create('openHAB.system.systemBundles');
         var logViewer  = Ext.create('openHAB.system.logViewer');
 
         var tabs = Ext.create('Ext.tab.Panel', {

@@ -1,4 +1,6 @@
 /**
+ * HABmin - the openHAB admin interface
+ *
  * openHAB, the open Home Automation Bus.
  * Copyright (C) 2010-2013, openHAB.org <admin@openhab.org>
  *
@@ -32,12 +34,12 @@
  * @author Chris Jackson
  */
 
-Ext.define('openHAB.system.systemBindings', {
+Ext.define('openHAB.system.systemBundles', {
     extend:'Ext.panel.Panel',
     layout:'fit',
-    tabTip:'System Bindings',
+    tabTip:'OSGi Bundles',
 //    id:'configBindingList',
-    title:'Bindings',
+    title:'Bundles',
     header:true,
     icon:'images/chain.png',
 
@@ -78,7 +80,7 @@ Ext.define('openHAB.system.systemBindings', {
             header:false,
             disableSelection:true,
             columns:[
-
+                {
                     text:'ID',
                     hideable:false,
                     flex:1,

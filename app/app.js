@@ -36,9 +36,10 @@ var force_transport = 'auto';
 
 Ext.Loader.setConfig({
     enabled:true,
-    disableCaching:true, // For debug only
+    disableCaching:false, // For debug only
     'paths':{
         'Ext.ux':'js/extux',
+        'Ext.ux.grid.property':'js/extux/propertygrid',
         'openHAB':'app'
     }
 });
@@ -76,7 +77,7 @@ Ext.require([
     'openHAB.config.sitemapProperties',
     'openHAB.system.system',
     'openHAB.system.logViewer',
-    'openHAB.system.systemBindings',
+    'openHAB.system.systemBundles',
     'openHAB.automation.automation',
     'openHAB.automation.notificationList',
     'openHAB.automation.ruleList'
@@ -428,27 +429,30 @@ function createUI() {
         autoLoad:true
     });
 
-    Ext.define('BundlesModel', {
+    Ext.define('BindingsModel', {
         extend:'Ext.data.Model',
         fields:[
-            {name:'id'},
+            {name:'bundle'},
             {name:'name'},
+            {name:'pid'},
+            {name:'type'},
+            {name:'author'},
             {name:'version'},
-            {name:'state'},
-            {name:'modified', type:'int'},
-            {name:'link'}
+            {name:'ohversion'},
+            {name:'link'},
+            {name:'osgiVersion'}
         ]
     });
 
-    // Create the Item data store
+    // Create the Bindings data store
     bindingStore = Ext.create('Ext.data.ArrayStore', {
-        model:'BundlesModel',
+        model:'BindingsModel',
         proxy:{
             type:'rest',
-            url:'/rest/bundle',
+            url:'/rest/bindings',
             reader:{
                 type:'json',
-                root:'bundle'
+                root:'binding'
             },
             headers:{'Accept':'application/json'},
             pageParam:undefined,
@@ -499,19 +503,9 @@ function createUI() {
                     });
                 }
                 else if (newCard.id == 'maintabSystem') {
-                    bindingStore.clearFilter();
                 }
                 else if (newCard.id == 'maintabConfig') {
                     itemStore.clearFilter();
-                    bindingStore.filterBy(function (rec) {
-                        if (rec.get('name').substring(0, 19) == "org.openhab.binding")
-                            return true;
-                        if (rec.get('name').substring(0, 18) == "org.openhab.action")
-                            return true;
-                        if (rec.get('name').substring(0, 23) == "org.openhab.persistence")
-                            return true;
-                        return false;
-                    });
                 }
             }
         }

@@ -43,6 +43,7 @@ Ext.define('openHAB.graph.graphHighcharts', {
     id:'highchartsChart',
 
     initComponent:function () {
+        var rawData = [];
         var chartObject = null;
         var chartMin = 0;
         var chartMax = 0;
@@ -162,7 +163,7 @@ Ext.define('openHAB.graph.graphHighcharts', {
             }
 			
 			// Clear the raw data
-			this.rawData = [];
+			rawData = [];
 
             Ext.Ajax.request({
                 url:'/rest/history/'+channels[0].name,
@@ -223,8 +224,9 @@ Ext.define('openHAB.graph.graphHighcharts', {
 					
 					// Keep a record of the raw data
 					// This gets used in the table view
-					this.rawData[s].item = json.name;
-					this.rawData[s].data = seriesData;
+                    rawData[s] = [];
+					rawData[s].item = json.name;
+					rawData[s].data = seriesData;
 
 //                    graphInfoItems[4 + s] = [];
 //                    graphInfoItems[4 + s].name = json.series[s].label + " points";
@@ -542,6 +544,9 @@ Ext.define('openHAB.graph.graphHighcharts', {
 
         this.chartUpdate=function(channels, start, stop) {
             updateChart(channels, start, stop);
+        }
+        this.getData=function() {
+            return rawData;
         }
     }
 })

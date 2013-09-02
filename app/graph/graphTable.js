@@ -50,7 +50,7 @@ Ext.define('openHAB.graph.graphTable', {
 		this.removeAll();
 
 		// Retrieve the data from the graph object
-		var data = Ext.getCmp("highchartsChart").rawData;
+		var data = Ext.getCmp("highchartsChart").getData();
 		if(data == null)
 			return;
 		if(data.length == 0)
