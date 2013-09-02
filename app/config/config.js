@@ -73,6 +73,10 @@ Ext.define('openHAB.config.config', {
 
                 // Display the property sheet
                 this.add(newProperties);
+            },
+            removeProperty:function() {
+                // Remove the current editor
+                this.removeAll(true);
             }
         });
 

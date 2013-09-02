@@ -43,6 +43,48 @@ Ext.define('openHAB.config.bindingProperties', {
     binding:"",
 
     initComponent:function () {
+        var bindingConfig;
+        var source;
+        var sourceConfig;
+
+        // Add the records into the source/sourceConfig arrays
+        function addBindingProperty(name, label, value) {
+            var id = name;
+            sourceConfig[id] = {};
+            sourceConfig[id].displayName = label;
+
+            if (value != null)
+                source[id] = value;
+            else
+                source[id] = "";
+        }
+
+        function resetBindingProperties() {
+            var records = bindingConfig.generalconfig;
+
+            // Add the records into the source/sourceConfig arrays
+            source = [];
+            sourceConfig = [];
+            for (var c = 0; c < records.length; c++) {
+                addBindingProperty(records[c].name, records[c].label, records[c].value);
+            }
+            bindingProperties.setSource(source, sourceConfig);
+        }
+
+        function getBindingProperty(name) {
+            for(var c=0; c < bindingConfig.generalconfig.length; c++) {
+                if(bindingConfig.generalconfig[c].name == name)
+                    return bindingConfig.generalconfig[c];
+            }
+
+            for(var c=0; c < bindingConfig.interfaceconfig.length; c++) {
+                if(bindingConfig.interfaceconfig[c].name == name)
+                    return bindingConfig.interfaceconfig[c];
+            }
+
+            return null;
+        }
+
         // Sanity check that a binding name has been specified!
         if (this.binding == null)
             return;
@@ -59,6 +101,7 @@ Ext.define('openHAB.config.bindingProperties', {
                     disabled:true,
                     tooltip:'Cancel changes made to the configuration',
                     handler:function () {
+                        resetBindingProperties();
                         tbProperties.getComponent('save').disable();
                         tbProperties.getComponent('cancel').disable();
                     }
@@ -87,11 +130,16 @@ Ext.define('openHAB.config.bindingProperties', {
                         Ext.MessageBox.prompt('Interface Name', 'Please enter the new interface name:', function (btn, text) {
                             if (btn == 'ok') {
                                 // Add a new property sheet to the panel
+                                if(text.indexOf('.') != -1) {
+                                    Ext.MessageBox("Error", "Interface name can only contain alphanumeric characters.");
+                                }
 
                                 // process text value and close...
-                                for (var c = 0; c < this.interfaceConfig.length; c++) {
-
+                                for (var c = 0; c < bindingConfig.interfaceconfig.length; c++) {
+                                    addBindingProperty(text+'.'+bindingConfig.interfaceconfig[c].name, text+': '+bindingConfig.interfaceconfig[c].label)
                                 }
+                                bindingProperties.setSource(source, sourceConfig);
+                                tbProperties.getComponent('cancel').enable();
                             }
                         });
                     }
@@ -121,6 +169,40 @@ Ext.define('openHAB.config.bindingProperties', {
             ]
         });
 
+        var bindingProperties = Ext.create('Ext.grid.property.Grid', {
+            title:'Properties',
+            icon:'images/gear.png',
+            tbar:tbProperties,
+            bbar:bbProperties,
+            hideHeaders:true,
+            sortableColumns:false,
+            nameColumnWidth:300,
+            split:true,
+            source:source,
+            sourceConfig:sourceConfig,
+            viewConfig:{
+                markDirty:false
+            },
+            listeners:{
+                propertychange:function (source, recordId, value, oldValue, eOpts) {
+                    tbProperties.getComponent('save').enable();
+                    tbProperties.getComponent('cancel').enable();
+                },
+                itemmouseenter:function (grid, record, item, index, e, eOpts) {
+                    var name = record.get("name");
+                    var parts = name.split(".");
+                    var srec = getBindingProperty(parts[parts.length-1]);
+
+                    if(srec == null)
+                        return;
+                    bbDescription.setText(srec.description);
+                },
+                itemmouseleave:function (grid, record, item, index, e, eOpts) {
+                    bbDescription.setText("");
+                }
+            }
+        });
+
         Ext.Ajax.request({
             url:'/rest/bindings/' + this.binding,
             timeout:5000,
@@ -132,6 +214,9 @@ Ext.define('openHAB.config.bindingProperties', {
                 if (json == null)
                     return;
 
+                // Remember the configuration
+                bindingConfig = json;
+
                 if(json.interfaceconfig != null)
                     tbProperties.getComponent('add').enable();
                 else
@@ -140,53 +225,7 @@ Ext.define('openHAB.config.bindingProperties', {
                 if (json.generalconfig == null)
                     return;
 
-                var records = json.generalconfig;
-
-                this.source = [];
-                this.sourceConfig = [];
-                this.interfaceConfig = [];
-                for (var c = 0; c < records.length; c++) {
-                    var id = records[c].name;
-                    this.sourceConfig[id] = {};
-                    this.sourceConfig[id].displayName = records[c].label;
-
-                    if (records[c].value != null)
-                        this.source[id] = records[c].value;
-                    else
-                        this.source[id] = "";
-                }
-
-                var bindingProperties = Ext.create('Ext.grid.property.Grid', {
-                    title:'Properties',
-                    icon:'images/gear.png',
-                    tbar:tbProperties,
-                    bbar:bbProperties,
-                    hideHeaders:true,
-                    sortableColumns:false,
-                    nameColumnWidth:300,
-                    split:true,
-                    source:this.source,
-                    sourceConfig:this.sourceConfig,
-                    viewConfig:{
-                        markDirty:false
-                    },
-                    listeners:{
-                        propertychange:function (source, recordId, value, oldValue, eOpts) {
-                            tbProperties.getComponent('save').enable();
-                            tbProperties.getComponent('cancel').enable();
-                        },
-                        itemmouseenter:function (grid, record, item, index, e, eOpts) {
-                            var name = record.get("name");
-                            var srec = configBindingStore.findExact("name", name);
-                            bbDescription.setText(configBindingStore.getAt(srec).get("description"));
-                        },
-                        itemmouseleave:function (grid, record, item, index, e, eOpts) {
-                            bbDescription.setText("");
-                        }
-                    }
-                });
-
-                tabs.add(bindingProperties);
+                resetBindingProperties();
 
                 // If there are interface configurations available, then enable the "add interface" button
 
@@ -200,10 +239,10 @@ Ext.define('openHAB.config.bindingProperties', {
             }
         });
 
-
         var tabs = Ext.create('Ext.tab.Panel', {
             layout:'fit',
-            border:false
+            border:false,
+            items:bindingProperties
         });
 
         this.items = tabs;

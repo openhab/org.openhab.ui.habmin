@@ -85,10 +85,15 @@ Ext.define('openHAB.config.bindingList', {
             },
             listeners:{
                 select:function (grid, record, index, eOpts) {
+                    // Remove the current editor
+                    Ext.getCmp('configPropertyContainer').removeProperty();
+                    
                     if (record == null)
                         return;
 
                     var pid = record.get('pid');
+                    if(pid == "")
+                        return;
 
                     // Create a new bindingProperties
                     var newProperties = Ext.create('openHAB.config.bindingProperties', {binding: pid});
