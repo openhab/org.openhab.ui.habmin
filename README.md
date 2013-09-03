@@ -13,11 +13,16 @@ HABmin is a web administration console for openHAB. It aims to provide a complet
 
 The interface is a modern browser based system providing point and click, and drag and drop input. 
 
+
+![Item Config Screen](https://raw.github.com/wiki/cdjackson/HABmin/habmin_itemconfig.png)
+
 HABmin interfaces to OpenHAB through the REST interface.  In its current state, the openHAB REST interfaces do not support configuration and as such work with HABmin is inevitably closely linked to the definition of these interfaces within the openHAB project.
 
 In addition to the REST interface, it is imperative to define files that describe the configurable features of OpenHAB. These files describe the configuration required for a binding or an item and are used within openHAB and exposed through the REST interface. The files are defined in XML format and are not directly accessed by HABmin.
 
 While HABmin is a supporting project to OpenHAB,  providing access to OpenHAB's features, since the existing REST interface does not support most of the functionality required by HABmin, HABmin may drive this part of openHAB to some extent. It is also expected that as functionality is added to OpenHAB,  HABmin will need to have its backend modified to reflect the final interfaces implemented in OpenHAB. 
+
+![Binding Config Screen](https://raw.github.com/wiki/cdjackson/HABmin/habmin_bindingconfig.png)
 
 ###Status
 The project is just getting started. Currently implemented is the graphing of data from the persistence store and a lot of the initial user interface has been boilerplated and some work has started on the REST interface for configuring bindings.
