@@ -86,9 +86,9 @@ Ext.define('openHAB.config.itemProperties', {
             fields:['id', 'name']
         });
         var graphTypes = [
-            {id:0,name:'Spline'},
-            {id:1,name:'Line'},
-            {id:2,name:'Bar'}
+            {id:0, name:'Spline'},
+            {id:1, name:'Line'},
+            {id:2, name:'Bar'}
         ];
 
         graphTypeStore.loadData(graphTypes);
@@ -102,11 +102,13 @@ Ext.define('openHAB.config.itemProperties', {
             nameColumnWidth:300,
             split:true,
             source:{
-                "ItemName":"",
-                "Type":"",
-                "Label":"",
-                "Units":"",
-                "Icon":""
+                ItemName:"",
+                Type:"",
+                Label:"",
+                Units:"",
+                Format:"",
+                Map:"",
+                Icon:""
             },
             sourceConfig:{
                 ItemName:{
@@ -114,12 +116,16 @@ Ext.define('openHAB.config.itemProperties', {
                 },
                 Icon:{
                     renderer:function (v) {
-                        var icon = getIconByValue(v);
-                        if(icon == null)
-                            return null;
-                        return '<div>' +
-                            '<img src="'+icon.icon+'" align="left" height="16">&nbsp;&nbsp;' +
-                            icon.name+'</div>';
+                        var icon="";
+                        var resp = '<div width="30">';
+                        var ref = itemConfigStore.findExact("icon", v);
+                        if(ref != -1) {
+                            if(itemConfigStore.getAt(ref).get('icon') != "")
+                                icon = '<img src="../images/'+itemConfigStore.getAt(ref).get('icon')+'.png" align="left" height="16">';
+                        }
+
+                        resp += '</div>' + v;
+                        return '<div>' + icon + '</div><div style="margin-left:20px">' + v +'</div>';
                     },
                     editor:Ext.create('Ext.form.ComboBox', {
                         store:{model:'ItemIcons', data:iconTypeArray},
@@ -145,12 +151,12 @@ Ext.define('openHAB.config.itemProperties', {
                     displayName:"Item Type",
                     renderer:function (v) {
                         var ref = itemTypeStore.findExact("name", v);
-                        if(ref == -1)
+                        if (ref == -1)
                             return;
                         var icon = itemTypeStore.getAt(ref).get("icon");
                         return '<div>' +
-                            '<img src="'+icon+'" align="left" height="16">&nbsp;&nbsp;' +
-                            v+'</div>';
+                            '<img src="' + icon + '" align="left" height="16" width:"46">&nbsp;&nbsp;' +
+                            v + '</div>';
                     },
                     editor:Ext.create('Ext.form.ComboBox', {
                         store:itemTypeStore,
@@ -165,7 +171,7 @@ Ext.define('openHAB.config.itemProperties', {
                         listConfig:{
                             getInnerTpl:function () {
                                 var tpl = '<div>' +
-                                    '<img src="{icon}" align="left" height="16">&nbsp;&nbsp;' +
+                                    '<img src="{icon}" align="left" height="16" width:"16";>&nbsp;&nbsp;' +
                                     '{name}</div>';
                                 return tpl;
                             }
@@ -211,14 +217,20 @@ Ext.define('openHAB.config.itemProperties', {
 
         // Class members.
         this.setItem = function (newItem) {
-            var item = itemStore.findExact("name", newItem);
-            if(item == -1)
+            var item = itemConfigStore.findExact("name", newItem);
+            if (item == -1)
                 return;
 
-            var rec = itemStore.getAt(item);
+            var rec = itemConfigStore.getAt(item);
 
             itemOptions.setProperty("ItemName", rec.get('name'));
             itemOptions.setProperty("Type", rec.get('type'));
+            if(rec.get('icon') != null)
+                itemOptions.setProperty("Icon", rec.get('icon'));
+            itemOptions.setProperty("Label", rec.get('label'));
+            itemOptions.setProperty("Units", rec.get('units'));
+            itemOptions.setProperty("Format", rec.get('format'));
+            itemOptions.setProperty("Map", rec.get('map'));
         }
     }
 })

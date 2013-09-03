@@ -95,6 +95,7 @@ var itemStore;
 var itemTypeStore;
 var sitemapStore;
 var bindingStore;
+var itemConfigStore;
 
 var iconTypeArray = [
     {'id':0, 'icon':'../images/bluetooth.png', 'name':'Bluetooth'},
@@ -408,6 +409,44 @@ function createUI() {
         proxy:{
             type:'rest',
             url:'/rest/items',
+            reader:{
+                type:'json',
+                root:'item'
+            },
+            headers:{'Accept':'application/json'},
+            pageParam:undefined,
+            startParam:undefined,
+            sortParam:undefined,
+            limitParam:undefined
+        },
+        autoLoad:true
+    });
+
+    Ext.define('ItemConfigModel', {
+        extend:'Ext.data.Model',
+        fields:[
+            {name:'name'},
+            {name:'type'},
+            {name:'icon'},
+            {name:'type'},
+            {name:'label'},
+            {name:'format'},
+            {name:'map'},
+            {name:'binding'},
+            {name:'units'},
+            {name:'format'},
+//            {name:'groups'},
+//            {name:'bindings'},
+            {name:'link'}
+        ]
+    });
+
+    // Create the Item data store
+    itemConfigStore = Ext.create('Ext.data.ArrayStore', {
+        model:'ItemConfigModel',
+        proxy:{
+            type:'rest',
+            url:'/rest/config/items',
             reader:{
                 type:'json',
                 root:'item'

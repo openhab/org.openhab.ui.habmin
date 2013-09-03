@@ -44,7 +44,7 @@ Ext.define('openHAB.config.itemList', {
     initComponent:function () {
 
         var itemsTree = Ext.create('Ext.grid.Panel', {
-            store:itemStore,
+            store:itemConfigStore,
             header:false,
             split:true,
             collapsible:false,
@@ -52,8 +52,23 @@ Ext.define('openHAB.config.itemList', {
             columns:[
                 {
                     text:'Item',
-                    flex:5,
-                    dataIndex:'name'
+                    flex:3,
+                    dataIndex:'name',
+                    renderer:function (v) {
+                        var icon = "";
+                        var ref = itemConfigStore.findExact("name", v);
+                        if(ref != -1) {
+                            if(itemConfigStore.getAt(ref).get('icon') != "")
+                                icon = '<img src="../images/'+itemConfigStore.getAt(ref).get('icon')+'.png" align="left" height="16">';
+                        }
+
+                        return '<div>' + icon + '</div><div style="margin-left:20px">' + v +'</div>';
+                    }
+                },
+                {
+                    text:'Label',
+                    flex:4,
+                    dataIndex:'label'
                 },
                 {
                     text:'Type',
@@ -70,11 +85,6 @@ Ext.define('openHAB.config.itemList', {
                     text:'Binding',
                     flex:2,
                     dataIndex:'binding'
-                },
-                {
-                    text:'State',
-                    flex:2,
-                    dataIndex:'state'
                 }
             ],
             listeners:{
