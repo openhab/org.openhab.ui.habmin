@@ -70,7 +70,7 @@ Ext.define('openHAB.config.sitemapList', {
                     // Create a new itemProperties
                     var newProperties = Ext.create('openHAB.config.sitemapProperties');
                     var newName = record.get('name');
-//                    newProperties.setItem(newName);
+                    newProperties.setItem(newName);
 
                     Ext.getCmp('configPropertyContainer').setNewProperty(newProperties);
                 }

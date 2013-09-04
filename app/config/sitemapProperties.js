@@ -43,38 +43,42 @@ Ext.define('openHAB.config.sitemapProperties', {
     initComponent:function () {
         var configTree = [];
 
-        makeItemGroupTree(configTree, "All");
-
         // We want to setup a model and store instead of using dataUrl
-        Ext.define('ItemTree', {
+        Ext.define('SitemapTree', {
             extend:'Ext.data.Model',
             fields:[
-                {name:'Parent', type:'string'},
-                {name:'State', type:'string'},
-                {name:'Type', type:'string'}
+                {name:'item'},
+                {name:'type'},
+                {name:'description'},
+                {name:'icon'}
             ]
         });
 
         var sitemapItemStore = Ext.create('Ext.data.TreeStore', {
-            model:'ItemTree',
+            model:'SitemapTree',
             proxy:{
                 type:'memory'
             },
             folderSort:true
         });
 
-        var rootHere = [];
-        rootHere.text = "ROOT!!!";
-        rootHere.children = configTree;
-        var configRootNode = sitemapItemStore.setRootNode(rootHere);
+        var propertyContainer = Ext.create('Ext.panel.Panel', {
+            region:'east',
+//            id:'configPropertyContainer',
+            flex:1,
+            collapsible:false,
+            header:false,
+            border:false,
+            layout:'fit'
+        });
 
-        var itemsTree = Ext.create('Ext.tree.Panel', {
+        var itemsTree = Ext.create('Ext.grid.Panel', {
             // TODO: Does this need to be 'id'?
             id:'sitemapItemTree',
-            store:sitemapItemStore,
+            store:itemConfigStore,
             header:true,
             title:"Items",
-            split:true,
+            region:'center',
             flex:1,
             collapsible:false,
             useArrows:false,
@@ -82,8 +86,8 @@ Ext.define('openHAB.config.sitemapProperties', {
             rootVisible:false,
             multiSelect:false,
             viewConfig:{
-                allowCopy: true,
-                copy: true,
+                allowCopy:true,
+                copy:true,
                 plugins:{
                     ptype:'gridviewdragdrop',
                     dragGroup:'sitemapItemTree',
@@ -94,10 +98,9 @@ Ext.define('openHAB.config.sitemapProperties', {
             },
             columns:[
                 {
-                    xtype:'treecolumn', //this is so we know which column will show the tree
                     text:'Item',
                     flex:5,
-                    dataIndex:'Parent'
+                    dataIndex:'name'
                 },
                 {
                     text:'Type',
@@ -110,11 +113,11 @@ Ext.define('openHAB.config.sitemapProperties', {
         var sitemapTree = Ext.create('Ext.tree.Panel', {
             // TODO: Does this need to be 'id'
             id:'sitemapSitemapTree',
-//            store:sitemapItemStore,
+            store:sitemapItemStore,
             header:true,
             title:"Sitemap Configuration",
-            split:true,
-            flex:3,
+            region:'south',
+            flex:4,
             collapsible:false,
             useArrows:false,
             lines:true,
@@ -146,7 +149,7 @@ Ext.define('openHAB.config.sitemapProperties', {
                     xtype:'treecolumn', //this is so we know which column will show the tree
                     text:'Item',
                     flex:5,
-                    dataIndex:'Parent'
+                    dataIndex:'item'
                 },
                 {
                     text:'Type',
@@ -160,17 +163,13 @@ Ext.define('openHAB.config.sitemapProperties', {
             itemId:'sitemapPanel',
             title:'Properties',
             icon:'images/maps-stack.png',
-            xtype:'panel',
-//                tbar:highchartsToolbar,
-            maintainFlex:true,
-            border:false,
-            layout:'fit',
-            layout:{
-                type:'hbox',
-                align:'stretch'
-                //,                padding: 5
+            defaults:{
+                split:true//,
+//                bodyStyle: 'padding:15px'
             },
-            items:[itemsTree, sitemapTree]
+            border:false,
+            layout:'border',
+            items:[itemsTree, sitemapTree, propertyContainer]
         });
 
         var tabs = Ext.create('Ext.tab.Panel', {
@@ -182,6 +181,61 @@ Ext.define('openHAB.config.sitemapProperties', {
         this.items = tabs;
 
         this.callParent();
+
+        this.setItem = function (newSitemap) {
+            Ext.Ajax.request({
+                url:"/rest/config/sitemap/" + newSitemap,
+                headers:{'Accept':'application/json'},
+                success:function (response, opts) {
+                    var json = Ext.decode(response.responseText);
+                    // If there's no config for this sitemap, records will be null
+                    if (json == null)
+                        return;
+
+                    var sitemapRoot = [];
+                    sitemapRoot.children = [];
+                    sitemapRoot.text = "Sitemap";
+                    iterateTree(sitemapRoot.children, json.homepage.widget, 0);
+
+                    var sitemapRootNode = sitemapItemStore.setRootNode(sitemapRoot);
+
+                    function iterateTree(parent, tree, iterationCnt) {
+                        // Keep track of the number of iterations
+                        iterationCnt++;
+                        if (iterationCnt == 8)
+                            return;
+
+                        // Loop through the configuration
+                        var numWidgets = tree.length;
+                        for (var iItem = 0; iItem < numWidgets; ++iItem) {
+                            var newItem = [];
+                            var newItemPnt;
+
+                            // Create the new item
+                            newItem.item = tree[iItem].item;
+                            newItem.type = tree[iItem].type;
+//                                newItem.Type = openHABItems.item[iItem].type;
+                            newItem.iconCls = 'node-device';
+                            newItem.children = [];
+
+                            // Check if this is a group
+                            if (tree[iItem].type == "Group") {
+                                newItem.item = tree[iItem].label;
+                                iterateTree(newItem.children, tree[iItem].linkedPage.widget, iterationCnt);
+                            }
+                            if (tree[iItem].type == "Frame") {
+                                newItem.item = tree[iItem].label;
+                                iterateTree(newItem.children, tree[iItem].widget, iterationCnt);
+                            }
+
+                            parent.push(newItem);
+                        }
+
+                    }
+
+                }
+            });
+        }
     }
 })
 ;
