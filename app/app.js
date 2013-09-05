@@ -93,6 +93,7 @@ var statusTooltip;
 // Global data stores from openHAB
 var itemStore;
 var itemTypeStore;
+var widgetStore;
 var sitemapStore;
 var bindingStore;
 var itemConfigStore;
@@ -109,12 +110,26 @@ var itemTypeArray = [
     {name:"GroupItem", icon: "images/category-group.png"},
     {name:"SwitchItem", icon: "images/switch.png"},
     {name:"NumberItem", icon: "images/counter.png"},
-    {name: "ColorItem", icon: "images/color.png"},
+    {name:"ColorItem", icon: "images/color.png"},
     {name:"ContactItem", icon:"images/door-open.png"},
     {name:"DateTimeItem", icon:"images/clock.png"},
     {name:"DimmerItem",icon:"images/ui-slider.png"},
     {name:"RollerShutterItem", icon:"images/curtain.png"},
     {name:"StringItem",icon:"images/edit.png"}
+];
+
+var widgetTypeArray = [
+    {name:"Group", icon: "images/ui-scroll-pane.png"},
+    {name:"Frame", icon: "images/ui-group-box.png"},
+    {name:"Image", icon: "images/.png"},
+    {name:"Selection", icon: "images/.png"},
+    {name:"Slider", icon: "images/.png"},
+    {name:"Video", icon: "images/.png"},
+    {name:"Webview", icon: "images/.png"},
+    {name:"Setpoint", icon: "images/ui-scroll-bar.png"},
+    {name:"Switch", icon: "images/switch.png"},
+    {name:"ColorPicker", icon: "images/color.png"},
+    {name:"Text",icon:"images/edit.png"}
 ];
 
 var initState = 0;
@@ -421,6 +436,20 @@ function createUI() {
         },
         autoLoad:true
     });
+
+    Ext.define('WidgetsModel', {
+        extend:'Ext.data.Model',
+        fields:[
+            {name:'name'},
+            {name:'icon'}
+        ]
+    });
+
+    // Create the Widgets data store
+    widgetStore = Ext.create('Ext.data.ArrayStore', {
+        model:'WidgetsModel'
+    });
+    widgetStore.loadData(widgetTypeArray);
 
     Ext.define('ItemConfigModel', {
         extend:'Ext.data.Model',
