@@ -119,17 +119,17 @@ var itemTypeArray = [
 ];
 
 var widgetTypeArray = [
-    {name:"Group", icon: "images/ui-scroll-pane.png"},
-    {name:"Frame", icon: "images/ui-group-box.png"},
-    {name:"Image", icon: "images/.png"},
-    {name:"Selection", icon: "images/.png"},
-    {name:"Slider", icon: "images/.png"},
-    {name:"Video", icon: "images/.png"},
-    {name:"Webview", icon: "images/.png"},
-    {name:"Setpoint", icon: "images/ui-scroll-bar.png"},
-    {name:"Switch", icon: "images/switch.png"},
-    {name:"ColorPicker", icon: "images/color.png"},
-    {name:"Text",icon:"images/edit.png"}
+    {type:"Group", icon: "images/ui-scroll-pane.png", iconCls:"widget-group"},
+    {type:"Frame", icon: "images/ui-group-box.png", iconCls:"widget-frame"},
+    {type:"Image", icon: "images/.png", iconCls:"widget-image"},
+    {type:"Selection", icon: "images/.png", iconCls:"widget-selection"},
+    {type:"Slider", icon: "images/ui-slider.png", iconCls:"widget-slider"},
+    {type:"Video", icon: "images/film.png", iconCls:"widget-video"},
+    {type:"Webview", icon: "images/.png", iconCls:"widget-webview"},
+    {type:"Setpoint", icon: "images/ui-scroll-bar.png", iconCls:"widget-setpoint"},
+    {type:"Switch", icon: "images/switch.png", iconCls:"widget-switch"},
+    {type:"ColorPicker", icon: "images/color.png", iconCls:"widget-colorpicker"},
+    {type:"Text",icon:"images/edit.png", iconCls:"widget-text"}
 ];
 
 var initState = 0;
@@ -390,6 +390,7 @@ function makeItemGroupTree(parent, group) {
 function createUI() {
     delete Ext.tip.Tip.prototype.minWidth;
 
+    //======= Item Type Store
     Ext.define('ItemTypeModel', {
         extend:'Ext.data.Model',
         fields:[
@@ -406,6 +407,7 @@ function createUI() {
     itemTypeStore.loadData(itemTypeArray);
 
 
+    //======= Items Store
     Ext.define('ItemsModel', {
         extend:'Ext.data.Model',
         fields:[
@@ -418,7 +420,6 @@ function createUI() {
         ]
     });
 
-    // Create the Item data store
     itemStore = Ext.create('Ext.data.ArrayStore', {
         model:'ItemsModel',
         proxy:{
@@ -437,11 +438,14 @@ function createUI() {
         autoLoad:true
     });
 
+
+    //======= Widgets Store
     Ext.define('WidgetsModel', {
         extend:'Ext.data.Model',
         fields:[
-            {name:'name'},
-            {name:'icon'}
+            {name:'type'},
+            {name:'icon'},
+            {name:'iconCls'}
         ]
     });
 
@@ -451,6 +455,8 @@ function createUI() {
     });
     widgetStore.loadData(widgetTypeArray);
 
+
+    //======= Item Config Store
     Ext.define('ItemConfigModel', {
         extend:'Ext.data.Model',
         fields:[
@@ -470,7 +476,6 @@ function createUI() {
         ]
     });
 
-    // Create the Item data store
     itemConfigStore = Ext.create('Ext.data.ArrayStore', {
         model:'ItemConfigModel',
         proxy:{
@@ -489,6 +494,8 @@ function createUI() {
         autoLoad:true
     });
 
+
+    //======= Sitemap Store
     Ext.define('SitemapsModel', {
         extend:'Ext.data.Model',
         fields:[
@@ -498,7 +505,6 @@ function createUI() {
         ]
     });
 
-    // Create the Sitemap data store
     sitemapStore = Ext.create('Ext.data.ArrayStore', {
         model:'SitemapsModel',
         proxy:{
@@ -517,6 +523,8 @@ function createUI() {
         autoLoad:true
     });
 
+
+    //======= Bindings Store
     Ext.define('BindingsModel', {
         extend:'Ext.data.Model',
         fields:[
