@@ -18,6 +18,8 @@ The interface is a modern browser based system providing point and click, and dr
 
 HABmin interfaces to OpenHAB through the REST interface.  In its current state, the openHAB REST interfaces do not support configuration and as such work with HABmin is inevitably closely linked to the definition of these interfaces within the openHAB project.
 
+![Sitemap Config Screen](https://raw.github.com/wiki/cdjackson/HABmin/habmin_sitemap.png)
+
 In addition to the REST interface, it is imperative to define files that describe the configurable features of OpenHAB. These files describe the configuration required for a binding or an item and are used within openHAB and exposed through the REST interface. The files are defined in XML format and are not directly accessed by HABmin.
 
 
