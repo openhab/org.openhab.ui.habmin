@@ -41,11 +41,12 @@ Ext.define('openHAB.config.groupTree', {
     title:'Groups',
     icon:'images/category-group.png',
     header:false,
+    hideHeaders:true,
     columns:[
         {
             // The tree column
             xtype:'treecolumn',
-            text:'Widget',
+            text:'Group',
             flex:2,
             dataIndex:'group'
         }

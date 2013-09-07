@@ -37,15 +37,129 @@
 
 Ext.define('openHAB.config.itemBindings', {
     extend:'Ext.panel.Panel',
-    layout:'fit',
     icon:'images/chain.png',
     title: 'Bindings',
+    defaults:{
+        split:true
+    },
+    border:false,
+    layout:'border',
 
     initComponent:function () {
 
-//        this.items = itemsTree;
+        Ext.define('ItemBindingModel', {
+            extend:'Ext.data.Model',
+            fields:[
+                {name:'string'}
+            ]
+        });
 
+        // Create the Widgets data store
+        var store = Ext.create('Ext.data.ArrayStore', {
+            model:'ItemBindingModel'
+        });
+
+        var toolbar = Ext.create('Ext.toolbar.Toolbar', {
+            items:[
+                {
+                    icon:'images/minus-button.png',
+                    itemId:'delete',
+                    text:'Delete Binding',
+                    cls:'x-btn-icon',
+                    disabled:true,
+                    tooltip:'Delete the item binding',
+                    handler:function () {
+                        toolbar.getComponent('delete').disable();
+                    }
+                },
+                {
+                    icon:'images/plus-button.png',
+                    itemId:'add',
+                    text:'Add New Binding',
+                    cls:'x-btn-icon',
+                    disabled:false,
+                    tooltip:'Add a new item binding',
+                    handler:function () {
+                    }
+                }
+            ]
+        });
+
+        var list = Ext.create('Ext.grid.Panel', {
+            store:store,
+            region:"center",
+            flex:1,
+            header:false,
+            split:true,
+            tbar:toolbar,
+            collapsible:false,
+            multiSelect:false,
+            columns:[
+                {
+                    text:'String',
+                    flex:3,
+                    dataIndex:'string'
+                }
+            ],
+            listeners:{
+                select:function (grid, record, index, eOpts) {
+                    if (record == null)
+                        return;
+
+                    var newName = record.get('name');
+                }
+            }
+        });
+
+        var properties = Ext.create('Ext.grid.property.Grid', {
+            title:'Properties',
+            region:"south",
+            flex:1,
+            icon:'images/gear.png',
+            hideHeaders:true,
+            sortableColumns:false,
+            nameColumnWidth:300,
+            split:true,
+            source:{
+                String:""
+            },
+            sourceConfig:{
+                String:{
+                    displayName:"Binding String"
+                }
+            },
+            viewConfig:{
+                markDirty:false
+            },
+            listeners:{
+                propertychange:function (source, recordId, value, oldValue, eOpts) {
+                    //Ext.getCmp("save").enable();
+                    //Ext.getCmp("cancel").enable();
+                },
+                beforeedit : function(editor, e) {
+                    var rec = e.record;
+                    // Make some properties read-only
+//                    if (rec.get('name') == 'Groups')
+//                        e.cancel=true;
+                }
+            }
+        });
+
+        this.items = [list, properties];
         this.callParent();
+
+
+        this.setBindings = function(bindings) {
+            var rec = [];
+
+            for(var cnt = 0; cnt < bindings.length; cnt++) {
+                rec[cnt] = {};
+                rec[cnt].id  = cnt;
+                rec[cnt].string = bindings[cnt];
+            }
+            store.loadData(rec);
+        }
+
     }
 })
 ;

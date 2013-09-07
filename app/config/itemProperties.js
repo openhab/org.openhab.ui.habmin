@@ -202,6 +202,12 @@ Ext.define('openHAB.config.itemProperties', {
                 propertychange:function (source, recordId, value, oldValue, eOpts) {
                     //Ext.getCmp("save").enable();
                     //Ext.getCmp("cancel").enable();
+                },
+                beforeedit : function(editor, e) {
+                    var rec = e.record;
+                    // Make some properties read-only
+                    if (rec.get('name') == 'Groups')
+                        e.cancel=true;
                 }
             }
         });
@@ -228,6 +234,7 @@ Ext.define('openHAB.config.itemProperties', {
 
             var rec = itemConfigStore.getAt(item);
 
+            // Set the main item properties
             itemOptions.setProperty("ItemName", rec.get('name'));
             itemOptions.setProperty("Type", rec.get('type'));
             if(rec.get('icon') != null)
@@ -241,9 +248,16 @@ Ext.define('openHAB.config.itemProperties', {
             // Ensure the groups is an array!
             var groups = [].concat(rec.get('groups'));
 
+            // Set the groups
             itemGroups.resetGroups();
             for(var cnt = 0; cnt < groups.length; cnt++)
                 itemGroups.setGroup(groups[cnt]);
+
+            // Ensure the groups is an array!
+            var bindings = [].concat(rec.get('bindings'));
+
+            // Set the binding strings
+            itemBindings.setBindings(bindings);
         }
     }
 })
