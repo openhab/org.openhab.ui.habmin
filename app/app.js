@@ -69,6 +69,7 @@ Ext.require([
     'openHAB.config.config',
     'openHAB.config.bindingList',
     'openHAB.config.bindingProperties',
+    'openHAB.config.groupTree',
     'openHAB.config.groupProperties',
     'openHAB.config.itemBindings',
     'openHAB.config.itemList',
@@ -470,8 +471,8 @@ function createUI() {
             {name:'binding'},
             {name:'units'},
             {name:'format'},
-//            {name:'groups'},
-//            {name:'bindings'},
+            {name:'groups'},
+            {name:'bindings'},
             {name:'link'}
         ]
     });

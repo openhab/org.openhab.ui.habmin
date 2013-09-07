@@ -34,9 +34,6 @@
  * @author Chris Jackson
  */
 
-
-var lookupStore;
-
 Ext.define('openHAB.config.groupProperties', {
     extend:'Ext.panel.Panel',
     layout:'fit',

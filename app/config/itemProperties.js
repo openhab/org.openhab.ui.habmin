@@ -108,7 +108,8 @@ Ext.define('openHAB.config.itemProperties', {
                 Units:"",
                 Format:"",
                 Map:"",
-                Icon:""
+                Icon:"",
+                Groups:""
             },
             sourceConfig:{
                 ItemName:{
@@ -146,6 +147,8 @@ Ext.define('openHAB.config.itemProperties', {
                             }
                         }
                     })
+                },
+                Groups:{
                 },
                 Type:{
                     displayName:"Item Type",
@@ -203,12 +206,14 @@ Ext.define('openHAB.config.itemProperties', {
             }
         });
 
+        var itemGroups = Ext.create('openHAB.config.groupTree');
+
         var itemBindings = Ext.create('openHAB.config.itemBindings');
 
         var tabs = Ext.create('Ext.tab.Panel', {
             layout:'fit',
             border:false,
-            items:[itemOptions, itemBindings]
+            items:[itemOptions, itemGroups, itemBindings]
         });
 
         this.items = tabs;
@@ -231,6 +236,14 @@ Ext.define('openHAB.config.itemProperties', {
             itemOptions.setProperty("Units", rec.get('units'));
             itemOptions.setProperty("Format", rec.get('format'));
             itemOptions.setProperty("Map", rec.get('map'));
+            itemOptions.setProperty("Groups", rec.get('groups'));
+
+            // Ensure the groups is an array!
+            var groups = [].concat(rec.get('groups'));
+
+            itemGroups.resetGroups();
+            for(var cnt = 0; cnt < groups.length; cnt++)
+                itemGroups.setGroup(groups[cnt]);
         }
     }
 })
