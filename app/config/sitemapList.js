@@ -42,10 +42,36 @@ Ext.define('openHAB.config.sitemapList', {
     icon:'images/maps-stack.png',
 
     initComponent:function () {
+        var toolbar = Ext.create('Ext.toolbar.Toolbar', {
+            items:[
+                {
+                    icon:'images/minus-button.png',
+                    itemId:'delete',
+                    text:'Delete Sitemap',
+                    cls:'x-btn-icon',
+                    disabled:true,
+                    tooltip:'Delete the sitemap from openHAB',
+                    handler:function () {
+                        toolbar.getComponent('delete').disable();
+                    }
+                },
+                {
+                    icon:'images/plus-button.png',
+                    itemId:'add',
+                    text:'Add New Sitemap',
+                    cls:'x-btn-icon',
+                    disabled:false,
+                    tooltip:'Add a new sitemap to openHAB',
+                    handler:function () {
+                    }
+                }
+            ]
+        });
 
         var sitemapList = Ext.create('Ext.grid.Panel', {
             store:sitemapStore,
             header:false,
+            tbar:toolbar,
             columns:[
                 {
                     text:'Sitemap Name',
@@ -73,6 +99,9 @@ Ext.define('openHAB.config.sitemapList', {
                     newProperties.setItem(newName);
 
                     Ext.getCmp('configPropertyContainer').setNewProperty(newProperties);
+
+                    // Allow this sitemap to be deleted
+                    toolbar.getComponent('delete').disable();
                 }
             }
         });

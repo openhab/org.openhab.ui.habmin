@@ -104,28 +104,35 @@ Ext.define('openHAB.config.sitemapProperties', {
                 type:'tick',
                 tooltip: 'Update data',
                 handler: function(event, toolEl, panel) {
-                    function getPropertyValue(prop, name) {
-                        var index = prop.find('name', name);
-                        return prop.getAt(index).get('value');
-                    }
-
+                    // Save button pressed - update the sitemap tree with the updated properties
                     var node = sitemapTree.getSelectionModel().getSelection()[0];
                     if(node == null)
                         return;
 
                     var prop = propertySheet.getStore();
+                    // Update all items - even if they aren't set for this widget type
+                    // The display system, and validation code will resolve this later
                     node.set('label', getPropertyValue(prop, 'Label'));
                     node.set('item', getPropertyValue(prop, 'Item'));
+                    node.set('icon', getPropertyValue(prop, 'Icon'));
+                    node.set('mapping', getPropertyValue(prop, 'Mapping'));
+                    node.set('minValue', getPropertyValue(prop, 'Minimum'));
+                    node.set('maxValue', getPropertyValue(prop, 'Maximum'));
+                    node.set('step', getPropertyValue(prop, 'Step'));
+
+                    // Function to get a property value given the name
+                    // Returns null if property not found
+                    function getPropertyValue(prop, name) {
+                        var index = prop.find('name', name);
+                        if(index != -1)
+                            return prop.getAt(index).get('value');
+                        else
+                            return null;
+                    }
                 }
             }],
             viewConfig:{
                 markDirty:false
-            },
-            listeners:{
-                propertychange:function (source, recordId, value, oldValue, eOpts) {
-                    //Ext.getCmp("save").enable();
-                    //Ext.getCmp("cancel").enable();
-                }
             }
         });
 
@@ -182,7 +189,7 @@ Ext.define('openHAB.config.sitemapProperties', {
             title:"Sitemap Configuration",
             region:'south',
             icon:'images/maps-stack.png',
-            flex:3,
+            flex:2,
             collapsible:false,
             useArrows:false,
             lines:true,
@@ -195,6 +202,7 @@ Ext.define('openHAB.config.sitemapProperties', {
             rootVisible:true,
             multiSelect:false,
             viewConfig:{
+                stripeRows:true,
                 plugins:{
                     ptype:'treeviewdragdrop',
                     dropGroup:'sitemapSitemapTree',
@@ -209,31 +217,26 @@ Ext.define('openHAB.config.sitemapProperties', {
 //                        return 0;
                     },
                     drop:function (node, data, dropRec, dropPosition) {
-                        var dropOn = dropRec ? 'DROP: ' + dropPosition + ' ' + dropRec.get('item') : ' on empty view';
+                        // Set default data
+                        // Most of this is done automatically based on store names
                         console.log(dropOn);
                         var record = data.records[0];
-//                        var index = g1.getView().indexOf(record);
-//                        console.log("&&& "+record.get("type"));
                         record.set('icon', '');
-
-//                        Ext.example.msg('Drag from right to left', 'Dropped ' + data.records[0].get('name') + dropOn);
                     },
                     nodedragover:function (targetNode, position, dragData, e, eOpts) {
+                        // Make sure we can only append to groups and frames
                         if (position == "append") {
                             if (targetNode.get('type') == 'Group' | targetNode.get('type') == 'Frame')
                                 return true;
                             return false
                         }
-                        var dropOn = 'DRAG: ' + position + ' ' + targetNode.get('item');
-                        console.log(dropOn);
-//                        return false;
                     }
                 }
-
             },
             columns:[
                 {
-                    xtype:'treecolumn', //this is so we know which column will show the tree
+                    // The tree column
+                    xtype:'treecolumn',
                     text:'Widget',
                     flex:2,
                     dataIndex:'type'
@@ -255,6 +258,7 @@ Ext.define('openHAB.config.sitemapProperties', {
                         var icon = record.get("itemicon");
                         var item = record.get("item");
                         var ref = itemConfigStore.findExact("name", item);
+                        var labelClass = "sitemap-label-set";
 
                         if (ref != -1) {
                             if (label == "") {
@@ -263,17 +267,19 @@ Ext.define('openHAB.config.sitemapProperties', {
 
                             if (icon == "") {
                                 icon = itemConfigStore.getAt(ref).get('icon');
+                                labelClass = "sitemap-label-default";
                             }
                         }
                         if (icon != "")
                             icon = '<img src="../images/' + icon + '.png" align="left" height="16">';
 
-                        return '<div>' + icon + '</div><div style="margin-left:20px">' + label + '</div>';
+                        return '<div>' + icon + '</div><div class="' + labelClass + '">' + label + '</div>';
                     }
                 }
             ],
             listeners:{
                 itemclick:function (grid, record, item, index, element, eOpts) {
+                    // ToDo: We really should check if the properties are dirty and warn the user before setting the new values
                     if (record.get("type") == "Setpoint")
                         showSetpointProperties(record);
                     else if (record.get("type") == "Switch")
@@ -289,8 +295,7 @@ Ext.define('openHAB.config.sitemapProperties', {
             title:'Properties',
             icon:'images/maps-stack.png',
             defaults:{
-                split:true//,
-//                bodyStyle: 'padding:15px'
+                split:true
             },
             border:false,
             layout:'border',
@@ -298,6 +303,7 @@ Ext.define('openHAB.config.sitemapProperties', {
         });
 
         var tabs = Ext.create('Ext.tab.Panel', {
+
             layout:'fit',
             border:false,
             items:[sitemapDesign]
@@ -378,33 +384,6 @@ Ext.define('openHAB.config.sitemapProperties', {
                     }
                 }
             });
-        }
-
-        function getIconClass(widget) {
-            if (widget == "Group")
-                return 'sitemap-widget-group';
-            if (widget == "Frame")
-                return 'sitemap-widget-frame';
-            if (widget == "Switch")
-                return 'sitemap-widget-switch';
-            if (widget == "Text")
-                return 'sitemap-widget-text';
-            if (widget == "Setpoint")
-                return 'sitemap-widget-setpoint';
-            if (widget == "ColorPicker")
-                return 'sitemap-widget-colorpicker';
-            if (widget == "Webview")
-                return 'sitemap-widget-webview';
-            if (widget == "Image")
-                return 'sitemap-widget-image';
-            if (widget == "Selection")
-                return 'sitemap-widget-selection';
-            if (widget == "Slider")
-                return 'sitemap-widget-slider';
-            if (widget == "Video")
-                return 'sitemap-widget-video';
-
-
         }
 
         function showTextProperties(widget) {

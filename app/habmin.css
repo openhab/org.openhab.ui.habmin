@@ -24,13 +24,13 @@
     background-image: url(../images/chart_yaxis.png);
 }
 .x-action-col-cell img.chartAxis2 {
-    background-image: url(images/chart_yaxis2.png);
+    background-image: url(../images/chart_yaxis2.png);
 }
 .x-ie6 .x-action-col-cell img.chartAxis1 {
-    background-image: url(images/chart_yaxis.png);
+    background-image: url(../images/chart_yaxis.png);
 }
 .x-ie6.x-action-col-cell img.chartAxis2 {
-    background-image: url(images/chart_yaxis2.png);
+    background-image: url(../images/chart_yaxis2.png);
 }
 
 .x-ie6 .x-action-col-cell img {
@@ -76,10 +76,18 @@
 }
 .x-tree-lines img.widget-selection {
     width:16px;
-    background-image:url(../images/ui-.png)
+    background-image:url(../images/ui-combo-box-blue.png)
+}
+.x-tree-lines img.widget-image {
+    width:16px;
+    background-image:url(../images/picture.png)
+}
+.x-tree-lines img.widget-webview {
+    width:16px;
+    background-image:url(../images/globe.png)
 }
 
-.x-tree-row-selected-override .x-grid-cell{
+.x-tree-row-selected-override .x-grid-cell {
     background-image:url(../images/tick-small.png);
     background-repeat:no-repeat;
     z-index: 999;
@@ -108,4 +116,18 @@
 .x-message-box .graph-download-warning {
     background: url("../images/exclamation-24.png") no-repeat scroll 6px 0px transparent;
     height: 24px!important;
+}
+
+
+
+
+
+
+
+.sitemap-label-default {
+    margin-left:20px;
+    color:#C0C0C0
+}
+.sitemap-label-set {
+    margin-left:20px;
 }
