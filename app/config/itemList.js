@@ -42,11 +42,37 @@ Ext.define('openHAB.config.itemList', {
     title:'Items and Groups',
 
     initComponent:function () {
+        var toolbar = Ext.create('Ext.toolbar.Toolbar', {
+            items:[
+                {
+                    icon:'images/minus-button.png',
+                    itemId:'delete',
+                    text:'Delete Item',
+                    cls:'x-btn-icon',
+                    disabled:true,
+                    tooltip:'Delete the item from openHAB',
+                    handler:function () {
+                        toolbar.getComponent('delete').disable();
+                    }
+                },
+                {
+                    icon:'images/plus-button.png',
+                    itemId:'add',
+                    text:'Add New Item',
+                    cls:'x-btn-icon',
+                    disabled:false,
+                    tooltip:'Add a new item to openHAB',
+                    handler:function () {
+                    }
+                }
+            ]
+        });
 
         var itemsTree = Ext.create('Ext.grid.Panel', {
             store:itemConfigStore,
             header:false,
             split:true,
+            tbar:toolbar,
             collapsible:false,
             multiSelect:false,
             columns:[
