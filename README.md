@@ -40,7 +40,12 @@ HABmin is an open source project. It makes use of a number of libraries under GP
 
 Installation
 ------------
-Download the project zip file from GitHub and unzip files in a directory webapps/habmin. Place the org.openhab.io.rest.??.jar file into the system/plugins directory and remove the existing jar file starting with org.openhab.io.rest. You will probably need to restart OpenHAB for the new REST interface to take affect. (note that this needs clarification!).
+* Download the project zip file from GitHub and unzip files in the directory webapps/habmin (this will not exist in a standard openHAB installation).
+* Place the org.openhab.io.rest.*.jar file into the addons directory.
+* Remove the existing jar file starting with org.openhab.io.rest from the system/plugins directory.
+
+You will probably need to restart OpenHAB for the new REST interface to take affect.
+
 
 Contributing
 ------------
