@@ -63,6 +63,26 @@ Ext.define('openHAB.config.sitemapList', {
                     disabled:false,
                     tooltip:'Add a new sitemap to openHAB',
                     handler:function () {
+                        // Pop up a dialogue box asking for the sitemap name
+                        Ext.MessageBox.prompt('Sitemap Name', 'Please enter the new sitemap name:', function (btn, text) {
+                            if (btn == 'ok') {
+                                if(text.indexOf('.') != -1) {
+                                    Ext.MessageBox("Error", "Sitemap name can only contain alphanumeric characters.");
+                                }
+
+                                // Create a new itemProperties
+                                var newProperties = Ext.create('openHAB.config.sitemapProperties');
+                                newProperties.setItem(text);
+
+                                Ext.getCmp('configPropertyContainer').setNewProperty(newProperties);
+
+                                // Add to the store so it appears in the list
+
+
+                                // Allow this sitemap to be deleted!
+                                toolbar.getComponent('delete').enable();
+                            }
+                        });
                     }
                 }
             ]
@@ -101,7 +121,7 @@ Ext.define('openHAB.config.sitemapList', {
                     Ext.getCmp('configPropertyContainer').setNewProperty(newProperties);
 
                     // Allow this sitemap to be deleted
-                    toolbar.getComponent('delete').disable();
+                    toolbar.getComponent('delete').enable();
                 }
             }
         });
