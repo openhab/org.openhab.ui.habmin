@@ -103,18 +103,23 @@
 }
 
 
-.x-message-box .graph-download {
+.x-message-box .icon-download {
     background: url("../images/system-monitor-24.png") no-repeat scroll 6px 0px transparent;
     height: 24px!important;
 }
 
-.x-message-box .graph-download-error {
+.x-message-box .icon-error {
      background: url("../images/cross-circle-24.png") no-repeat scroll 6px 0px transparent;
      height: 24px!important;
  }
 
-.x-message-box .graph-download-warning {
+.x-message-box .icon-warning {
     background: url("../images/exclamation-24.png") no-repeat scroll 6px 0px transparent;
+    height: 24px!important;
+}
+
+.x-message-box .icon-ok {
+    background: url("../images/tick-24.png") no-repeat scroll 6px 0px transparent;
     height: 24px!important;
 }
 

@@ -138,7 +138,7 @@ Ext.define('openHAB.graph.graphHighcharts', {
                 msg:'Downloading graph data...',
                 width:100,
                 height:40,
-                icon:'graph-download',
+                icon:'icon-download',
                 draggable:false,
                 closable:false
             });
@@ -195,7 +195,7 @@ Ext.define('openHAB.graph.graphHighcharts', {
                             msg:'Warning: No data returned',
                             width:200,
                             draggable:false,
-                            icon:'graph-download-warning',
+                            icon:'icon-warning',
                             closable:false
                         });
                         setTimeout(function () {
@@ -318,7 +318,7 @@ Ext.define('openHAB.graph.graphHighcharts', {
                             msg:'Warning: ' + json.error,
                             width:200,
                             draggable:false,
-                            icon:'graph-download-warning',
+                            icon:'icon-warning',
                             closable:false
                         });
                         setTimeout(function () {
@@ -332,7 +332,7 @@ Ext.define('openHAB.graph.graphHighcharts', {
                         msg:'Error downloading data from Vera: Response ' + response.status,
                         width:200,
                         draggable:false,
-                        icon:'graph-download-error',
+                        icon:'icon-error',
                         closable:false
                     });
                     setTimeout(function () {

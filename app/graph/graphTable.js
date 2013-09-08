@@ -68,7 +68,7 @@ Ext.define('openHAB.graph.graphTable', {
                 msg:'Producing table array...',
                 width:100,
                 height:40,
-                icon:'graph-download',
+                icon:'icon-download',
                 draggable:false,
                 closable:false
             });
