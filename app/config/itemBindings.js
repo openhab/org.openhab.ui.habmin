@@ -69,7 +69,14 @@ Ext.define('openHAB.config.itemBindings', {
                     disabled:true,
                     tooltip:'Delete the item binding',
                     handler:function () {
+                        // Remove the record from the store
+                        var record = list.getSelectionModel().getSelection()[0];
+                        if (record == null)
+                            return;
+                        store.remove(record);
+
                         toolbar.getComponent('delete').disable();
+                        properties.setProperty("String", "");
                     }
                 },
                 {
@@ -80,6 +87,8 @@ Ext.define('openHAB.config.itemBindings', {
                     disabled:false,
                     tooltip:'Add a new item binding',
                     handler:function () {
+                        store.add({string:"New Binding"});
+                        toolbar.getComponent('delete').enable();
                     }
                 }
             ]
@@ -98,7 +107,8 @@ Ext.define('openHAB.config.itemBindings', {
                 {
                     text:'String',
                     flex:3,
-                    dataIndex:'string'
+                    dataIndex:'string',
+                    renderer: Ext.util.Format.htmlEncode
                 }
             ],
             listeners:{
@@ -106,7 +116,10 @@ Ext.define('openHAB.config.itemBindings', {
                     if (record == null)
                         return;
 
-                    var newName = record.get('name');
+                    properties.setProperty("String", record.get('string'));
+
+                    // Enable delete button
+                    toolbar.getComponent('delete').enable();
                 }
             }
         });
@@ -131,6 +144,31 @@ Ext.define('openHAB.config.itemBindings', {
             viewConfig:{
                 markDirty:false
             },
+            tools:[
+                {
+                    type:'tick',
+                    tooltip:'Update data',
+                    handler:function (event, toolEl, panel) {
+                        // Save button pressed - update the sitemap tree with the updated properties
+                        var record = list.getSelectionModel().getSelection()[0];
+                        if (record == null)
+                            return;
+
+                        var prop = properties.getStore();
+                        record.set("string", getPropertyValue(prop, "String"));
+
+                        // Function to get a property value given the name
+                        // Returns null if property not found
+                        function getPropertyValue(prop, name) {
+                            var index = prop.find('name', name);
+                            if (index != -1)
+                                return prop.getAt(index).get('value');
+                            else
+                                return null;
+                        }
+                    }
+                }
+            ],
             listeners:{
                 propertychange:function (source, recordId, value, oldValue, eOpts) {
                     //Ext.getCmp("save").enable();

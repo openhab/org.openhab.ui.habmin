@@ -54,14 +54,7 @@ Ext.define('openHAB.config.groupTree', {
     rootVisible:false,
     multiSelect:true,
     viewConfig:{
-        stripeRows:true,
-        plugins:{
-            ptype:'treeviewdragdrop',
-            dropGroup:'sitemapSitemapTree',
-            dragGroup:'sitemapSitemapTree',
-            enableDrag:true,
-            enableDrop:true
-        }
+        stripeRows:true
     },
 
     initComponent:function () {
@@ -142,15 +135,13 @@ Ext.define('openHAB.config.groupTree', {
             }
         }
 
-        this.resetGroups = function (node, isCheck) {
-            if (node) {
-                var args = [isCheck];
-                node.cascade(function () {
-                    var c = args[0];
-                    this.ui.toggleCheck(c);
-                    this.attributes.checked = c;
-                }, null, args);
-            }
+        this.resetGroups = function () {
+            this.getRootNode().cascadeBy(function (node) {
+                if(node == null)
+                    return;
+
+                node.set('checked', false);
+            });
         }
 
         this.setGroup = function (group) {
@@ -159,6 +150,20 @@ Ext.define('openHAB.config.groupTree', {
                 return;
 
             rec.set("checked", true);
+        }
+
+        this.getSelected = function() {
+            var selList = [];
+
+            this.getRootNode().cascadeBy(function (node) {
+                if(node == null)
+                    return;
+
+                if(node.get('checked') == true)
+                    selList.push(node.get('group'));
+            });
+
+            return selList;
         }
 
     }

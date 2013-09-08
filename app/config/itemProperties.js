@@ -96,6 +96,7 @@ Ext.define('openHAB.config.itemProperties', {
         var itemOptions = Ext.create('Ext.grid.property.Grid', {
             title:'Properties',
             icon:'images/gear.png',
+            itemId:'itemProperties',
             tbar:tbProperties,
             hideHeaders:true,
             sortableColumns:false,
@@ -216,10 +217,19 @@ Ext.define('openHAB.config.itemProperties', {
 
         var itemBindings = Ext.create('openHAB.config.itemBindings');
 
+        // Create the tab container for the item configuration
         var tabs = Ext.create('Ext.tab.Panel', {
             layout:'fit',
             border:false,
-            items:[itemOptions, itemGroups, itemBindings]
+            items:[itemOptions, itemGroups, itemBindings],
+            listeners: {
+                beforetabchange:function (tabPanel, newCard, oldCard, eOpts) {
+                    // Detect if we've changed view so we can collate the data from the sub-tabs
+                    if (newCard.itemId == 'itemProperties') {
+                        itemOptions.setProperty("Groups", itemGroups.getSelected());
+                    }
+                }
+            }
         });
 
         this.items = tabs;
@@ -253,6 +263,8 @@ Ext.define('openHAB.config.itemProperties', {
             for(var cnt = 0; cnt < groups.length; cnt++)
                 itemGroups.setGroup(groups[cnt]);
 
+            var y = rec.get('groups');
+            var x = rec.get('bindings');
             // Ensure the groups is an array!
             var bindings = [].concat(rec.get('bindings'));
 

@@ -449,8 +449,6 @@ Ext.define('openHAB.config.sitemapProperties', {
 
                             // Create the new item
                             // Allows translation of local and remote naming
-
-
                             var properties = widgetConfig[tree[iItem].type];
                             if (properties != null) {
                                 newItem.type = tree[iItem].type;
@@ -461,16 +459,6 @@ Ext.define('openHAB.config.sitemapProperties', {
                                     newItem[properties[pcnt]] = tree[iItem][property];
                                 }
                             }
-
-                            newItem.id = tree[iItem].widgetId;
-                            newItem.item = tree[iItem].item;
-                            newItem.type = tree[iItem].type;
-                            newItem.label = tree[iItem].label;
-                            newItem.minValue = tree[iItem].minValue;
-                            newItem.maxValue = tree[iItem].maxValue;
-                            newItem.step = tree[iItem].step;
-                            newItem.mapping = tree[iItem].mapping;
-                            newItem.itemicon = tree[iItem].icon;
 
                             var widget = widgetStore.findExact('type', newItem.type);
                             if (widget != -1)
