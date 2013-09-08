@@ -79,9 +79,9 @@ Ext.define('openHAB.graph.graph', {
 			listeners: {
 				beforetabchange:function (tabPanel, newCard, oldCard, eOpts) {
 					// Detect if we've changed to the table view
-					if (newCard.id == 'graphTableData') {
-                        if(Ext.getCmp("graphTableData").isUpdateRequired())
-                            Ext.getCmp("graphTableData").updateData();
+					if (newCard.itemId == 'graphTableData') {
+                        if(chartTable.isUpdateRequired())
+                            chartTable.updateData();
                     }
 				}
 			}

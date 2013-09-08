@@ -38,8 +38,7 @@ Ext.define('openHAB.graph.graphTable', {
     extend:'Ext.panel.Panel',
     layout:'fit',
     tabTip:'Show and edit graph data',
-    // TODO: Does this need to be 'id'?
-    id:'graphTableData',
+    itemId:'graphTableData',
     title:'Table',
     icon:'images/table-export.png',
     lastUpdate:0,
