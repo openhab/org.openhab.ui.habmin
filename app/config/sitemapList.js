@@ -52,7 +52,25 @@ Ext.define('openHAB.config.sitemapList', {
                     disabled:true,
                     tooltip:'Delete the sitemap from openHAB',
                     handler:function () {
-                        toolbar.getComponent('delete').disable();
+                        // Get the sitemap name to delete
+                        var record = sitemapList.getSelectionModel().getSelection()[0];
+                        if (record == null)
+                            return;
+
+                        // Make sure we really want to do this!!!
+                        var sitemapName = record.get('name');
+                        Ext.Msg.show({
+                            title:"Confirm Delete",
+                            msg:'Are you sure you want to delete the sitemap "' + sitemapName + '"?',
+                            buttons:Ext.Msg.YESNO,
+                            config:{
+                                obj:this,
+                                name:sitemapName
+                            },
+                            fn:deleteSitemap,
+                            icon:Ext.MessageBox.QUESTION
+                        });
+
                     }
                 },
                 {
@@ -64,25 +82,7 @@ Ext.define('openHAB.config.sitemapList', {
                     tooltip:'Add a new sitemap to openHAB',
                     handler:function () {
                         // Pop up a dialogue box asking for the sitemap name
-                        Ext.MessageBox.prompt('Sitemap Name', 'Please enter the new sitemap name:', function (btn, text) {
-                            if (btn == 'ok') {
-                                if(text.indexOf('.') != -1) {
-                                    Ext.MessageBox("Error", "Sitemap name can only contain alphanumeric characters.");
-                                }
-
-                                // Create a new itemProperties
-                                var newProperties = Ext.create('openHAB.config.sitemapProperties');
-                                newProperties.setItem(text);
-
-                                Ext.getCmp('configPropertyContainer').setNewProperty(newProperties);
-
-                                // Add to the store so it appears in the list
-
-
-                                // Allow this sitemap to be deleted!
-                                toolbar.getComponent('delete').enable();
-                            }
-                        });
+                        Ext.MessageBox.prompt('Sitemap Name', 'Please enter the new sitemap name:', newSitemap);
                     }
                 }
             ]
@@ -129,6 +129,101 @@ Ext.define('openHAB.config.sitemapList', {
         this.items = sitemapList;
 
         this.callParent();
+
+        function deleteSitemap(button, text, options) {
+            if (button !== 'yes')
+                return;
+
+            // Tell OH to Remove the sitemap
+            Ext.Ajax.request({
+                url:"/rest/config/sitemap/" + options.config.name,
+                headers:{'Accept':'application/json'},
+                method:'DELETE',
+                success:function (response, opts) {
+                    Ext.MessageBox.show({
+                        msg:'Sitemap deleted',
+                        width:200,
+                        draggable:false,
+                        icon:'icon-ok',
+                        closable:false
+                    });
+                    setTimeout(function () {
+                        Ext.MessageBox.hide();
+                    }, 2500);
+
+                    // Reload the store
+                    sitemapStore.reload();
+
+                    // Clear the sitemap properties
+                    Ext.getCmp('configPropertyContainer').removeProperty();
+
+                    // Disable delete
+                    toolbar.getComponent('delete').disable();
+                },
+                failure:function (result, request) {
+                    Ext.MessageBox.show({
+                        msg:'Error deleting sitemap',
+                        width:200,
+                        draggable:false,
+                        icon:'icon-error',
+                        closable:false
+                    });
+                    setTimeout(function () {
+                        Ext.MessageBox.hide();
+                    }, 2500);
+                }
+            });
+        }
+
+        function newSitemap(button, text) {
+            if (button !== 'ok')
+                return;
+
+            if (text.indexOf('.') != -1) {
+                Ext.MessageBox("Error", "Sitemap name can only contain alphanumeric characters.");
+                return;
+            }
+
+            // Tell OH to add the new sitemap
+            Ext.Ajax.request({
+                url:"/rest/config/sitemap/" + text,
+                headers:{'Accept':'application/json'},
+                method:'PUT',
+                success:function (response, opts) {
+                    Ext.MessageBox.show({
+                        msg:'Sitemap created',
+                        width:200,
+                        draggable:false,
+                        icon:'icon-ok',
+                        closable:false
+                    });
+                    setTimeout(function () {
+                        Ext.MessageBox.hide();
+                    }, 2500);
+
+                    // Reload the store
+                    sitemapStore.reload();
+
+                    // Clear the sitemap properties
+                    Ext.getCmp('configPropertyContainer').removeProperty();
+
+                    // Disable delete
+                    toolbar.getComponent('delete').disable();
+                },
+                failure:function (result, request) {
+                    Ext.MessageBox.show({
+                        msg:'Error creating new sitemap',
+                        width:200,
+                        draggable:false,
+                        icon:'icon-error',
+                        closable:false
+                    });
+                    setTimeout(function () {
+                        Ext.MessageBox.hide();
+                    }, 2500);
+                }
+            });
+        }
     }
 })
 ;

@@ -40,9 +40,9 @@ Ext.define('openHAB.config.bindingProperties', {
     layout:'fit',
     tabTip:'Binding Properties',
     header:false,
-    binding:"",
 
     initComponent:function () {
+        var bindingName;
         var bindingConfig;
         var source;
         var sourceConfig;
@@ -85,13 +85,7 @@ Ext.define('openHAB.config.bindingProperties', {
             return null;
         }
 
-        // Sanity check that a binding name has been specified!
-        if (this.binding == null)
-            return;
-        if (this.binding == "")
-            return;
-
-        var tbProperties = Ext.create('Ext.toolbar.Toolbar', {
+        var toolbar = Ext.create('Ext.toolbar.Toolbar', {
             items:[
                 {
                     icon:'images/cross.png',
@@ -102,8 +96,8 @@ Ext.define('openHAB.config.bindingProperties', {
                     tooltip:'Cancel changes made to the configuration',
                     handler:function () {
                         resetBindingProperties();
-                        tbProperties.getComponent('save').disable();
-                        tbProperties.getComponent('cancel').disable();
+                        toolbar.getComponent('save').disable();
+                        toolbar.getComponent('cancel').disable();
                     }
                 },
                 {
@@ -114,8 +108,7 @@ Ext.define('openHAB.config.bindingProperties', {
                     disabled:true,
                     tooltip:'Save changes to the binding configuration',
                     handler:function () {
-                        tbProperties.getComponent('save').disable();
-                        tbProperties.getComponent('cancel').disable();
+                        saveBinding();
                     }
                 },
                 {
@@ -139,7 +132,7 @@ Ext.define('openHAB.config.bindingProperties', {
                                     addBindingProperty(text+'.'+bindingConfig.interfaceconfig[c].name, text+': '+bindingConfig.interfaceconfig[c].label)
                                 }
                                 bindingProperties.setSource(source, sourceConfig);
-                                tbProperties.getComponent('cancel').enable();
+                                toolbar.getComponent('cancel').enable();
                             }
                         });
                     }
@@ -172,7 +165,7 @@ Ext.define('openHAB.config.bindingProperties', {
         var bindingProperties = Ext.create('Ext.grid.property.Grid', {
             title:'Properties',
             icon:'images/gear.png',
-            tbar:tbProperties,
+            tbar:toolbar,
             bbar:bbProperties,
             hideHeaders:true,
             sortableColumns:false,
@@ -185,8 +178,8 @@ Ext.define('openHAB.config.bindingProperties', {
             },
             listeners:{
                 propertychange:function (source, recordId, value, oldValue, eOpts) {
-                    tbProperties.getComponent('save').enable();
-                    tbProperties.getComponent('cancel').enable();
+                    toolbar.getComponent('save').enable();
+                    toolbar.getComponent('cancel').enable();
                 },
                 itemmouseenter:function (grid, record, item, index, e, eOpts) {
                     var name = record.get("name");
@@ -203,42 +196,6 @@ Ext.define('openHAB.config.bindingProperties', {
             }
         });
 
-        Ext.Ajax.request({
-            url:'/rest/bindings/' + this.binding,
-            timeout:5000,
-            method:'GET',
-            headers:{'Accept':'application/json'},
-            success:function (response, opts) {
-                var json = Ext.decode(response.responseText);
-                // If there's no config for this binding, records will be null
-                if (json == null)
-                    return;
-
-                // Remember the configuration
-                bindingConfig = json;
-
-                if(json.interfaceconfig != null)
-                    tbProperties.getComponent('add').enable();
-                else
-                    tbProperties.getComponent('add').disable();
-
-                if (json.generalconfig == null)
-                    return;
-
-                resetBindingProperties();
-
-                // If there are interface configurations available, then enable the "add interface" button
-
-                // Handle special bindings
-                if (this.binding == 'zwave') {
-                    var zwaveDevices = Ext.create('openHAB.config.zwaveDeviceList');
-                    var zwaveNetwork = Ext.create('openHAB.config.zwaveNetwork');
-
-                    tabs.add([zwaveDevices, zwaveNetwork]);
-                }
-            }
-        });
-
         var tabs = Ext.create('Ext.tab.Panel', {
             layout:'fit',
             border:false,
@@ -250,7 +207,105 @@ Ext.define('openHAB.config.bindingProperties', {
         this.callParent();
 
         // Class members.
-        this.setItem = function (newItem) {
+        this.setBinding = function (name) {
+            // Sanity check that a binding name has been specified!
+            if (name == null)
+                return;
+            if (name == "")
+                return;
+
+            bindingName = name;
+            Ext.Ajax.request({
+                url:'/rest/config/bindings/' + bindingName,
+                timeout:5000,
+                method:'GET',
+                headers:{'Accept':'application/json'},
+                success:function (response, opts) {
+                    var json = Ext.decode(response.responseText);
+                    // If there's no config for this binding, records will be null
+                    if (json == null)
+                        return;
+
+                    // Remember the configuration
+                    bindingConfig = json;
+
+                    // If there are interface configurations available, then enable the "add interface" button
+                    if(json.interfaceconfig != null)
+                        toolbar.getComponent('add').enable();
+                    else
+                        toolbar.getComponent('add').disable();
+
+                    if (json.generalconfig == null)
+                        return;
+
+                    resetBindingProperties();
+
+                    // Handle special bindings
+                    if (this.binding == 'zwave') {
+                        var zwaveDevices = Ext.create('openHAB.config.zwaveDeviceList');
+                        var zwaveNetwork = Ext.create('openHAB.config.zwaveNetwork');
+
+                        tabs.add([zwaveDevices, zwaveNetwork]);
+                    }
+                }
+            });
+        }
+
+        function saveBinding () {
+            toolbar.getComponent('save').disable();
+            toolbar.getComponent('cancel').disable();
+
+            // Get the property data
+            var prop = bindingProperties.getSource();
+            if(prop == null)
+                return;
+
+            // The following may not be completely necessary, but it cleans up the response
+            // by only returning settings that actually have values.
+            var jsonArray = {};
+            jsonArray.pid = bindingName;
+            jsonArray.config = [];
+            var objects = Object.keys(prop);
+            for(var cnt = 0; cnt < objects.length; cnt++) {
+                if(prop[objects[cnt]] != "") {
+                    var config = {};
+                    config.name = objects[cnt];
+                    config.value = prop[objects[cnt]];
+                    jsonArray.config.push(config);
+                }
+            }
+
+            // Send the request to openHAB
+            Ext.Ajax.request({
+                url:'/rest/config/bindings/' + bindingName,
+                headers:{'Accept':'application/json'},
+                method:'PUT',
+                jsonData: jsonArray,
+                success:function (response, opts) {
+                    Ext.MessageBox.show({
+                        msg:'Binding configuration saved',
+                        width:200,
+                        draggable:false,
+                        icon:'icon-ok',
+                        closable:false
+                    });
+                    setTimeout(function () {
+                        Ext.MessageBox.hide();
+                    }, 2500);
+                },
+                failure:function (result, request) {
+                    Ext.MessageBox.show({
+                        msg:'Error saving binding configuration',
+                        width:200,
+                        draggable:false,
+                        icon:'icon-error',
+                        closable:false
+                    });
+                    setTimeout(function () {
+                        Ext.MessageBox.hide();
+                    }, 2500);
+                }
+            });
         }
     }
 })

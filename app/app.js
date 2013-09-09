@@ -546,7 +546,7 @@ function createUI() {
         model:'BindingsModel',
         proxy:{
             type:'rest',
-            url:'/rest/bindings',
+            url:'/rest/config/bindings',
             reader:{
                 type:'json',
                 root:'binding'

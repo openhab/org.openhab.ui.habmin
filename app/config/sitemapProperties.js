@@ -45,17 +45,19 @@ Ext.define('openHAB.config.sitemapProperties', {
         // ExtJS uses the keyword "icon" to allow the user to set the icon in the tree!
         var widgetConfig = {
             Sitemap:["label"],
+            Chart:["item", "label", "itemicon", "service", "period", "refresh"],
             Colorpicker:["item", "label", "itemicon"],
-            Frame:["label"],
+            Frame:["label","itemicon"],
             Group:["item", "label", "itemicon"],
-            Image:["label", "url"],
-            Switch:["item", "label", "itemicon", "mapping"],
-            Selection:["item", "label", "itemicon", "mapping"],
+            Image:["label", "itemicon", "url", "refresh"],
+            List:["item", "label","itemicon", "separator"],
+            Switch:["item", "label", "itemicon", "command", "mappings"],
+            Selection:["item", "label", "itemicon", "mappings"],
             Setpoint:["item", "label", "itemicon", "minValue", "maxValue", "step"],
-            Slider:["item", "label", "itemicon"],
+            Slider:["item", "label", "itemicon", "sendFrequency", "switchSupport"],
             Text:["item", "label", "itemicon"],
             Video:["label", "url"],
-            Webview:["label", "url"]
+            Webview:["label", "url", "height"]
         };
 
         var configTranslate = {
@@ -95,7 +97,13 @@ Ext.define('openHAB.config.sitemapProperties', {
             mapping:{displayName:"Mapping"},
             maxValue:{displayName:"Maximum"},
             minValue:{displayName:"Minimum"},
-            step:{displayName:"Step"}
+            command:{displayName:"Command"},
+            mappings:{displayName:"Mappings"},
+            sendFrequency:{displayName:"Send Frequency"},
+            switchSupport:{displayName:"Switch Support"},
+            url:{displayName:"URL"},
+            height:{displayName:"Height"},
+            refresh:{displayName:"Refresh Period"}
         };
 
 
@@ -107,13 +115,19 @@ Ext.define('openHAB.config.sitemapProperties', {
                 {name:'item'},
                 {name:'label'},
                 {name:'type'},
-                {name:'description'},
                 {name:'itemicon'},
                 {name:'maxValue'},
                 {name:'minValue'},
                 {name:'step'},
-                {name:'mapping'},
-                {name:'leaf'}
+                {name:'mappings'},
+                {name:'leaf'},
+                {name:'sendFrequency'},
+                {name:'switchSupport'},
+                {name:'height'},
+                {name:'refresh'},
+                {name:'service'},
+                {name:'period'},
+                {name:'command'}
             ]
         });
 
@@ -231,7 +245,7 @@ Ext.define('openHAB.config.sitemapProperties', {
                     tooltip:'Save sitemap',
                     handler:function (event, toolEl, panel) {
                         // Make sure we're loaded!
-                        if(sitemapName == null)
+                        if (sitemapName == null)
                             return;
 
                         var root = sitemapTree.getRootNode();
@@ -248,18 +262,29 @@ Ext.define('openHAB.config.sitemapProperties', {
                             method:'PUT',
                             jsonData:jsonArray,
                             success:function (response, opts) {
+                                Ext.MessageBox.show({
+                                    msg:'Sitemap configuration saved',
+                                    width:200,
+                                    draggable:false,
+                                    icon:'icon-ok',
+                                    closable:false
+                                });
+                                setTimeout(function () {
+                                    Ext.MessageBox.hide();
+                                }, 2500);
                             },
                             failure:function (result, request) {
                                 Ext.MessageBox.show({
                                     msg:'Error saving sitemap',
                                     width:200,
                                     draggable:false,
-                                    icon:'graph-download-error',
+                                    icon:'icon-error',
                                     closable:false
                                 });
                                 setTimeout(function () {
                                     Ext.MessageBox.hide();
-                                }, 2500);                            }
+                                }, 2500);
+                            }
                         });
 
                         function iterateStore(node, json, iterateCnt) {
@@ -410,6 +435,7 @@ Ext.define('openHAB.config.sitemapProperties', {
             Ext.Ajax.request({
                 url:"/rest/config/sitemap/" + newSitemap,
                 headers:{'Accept':'application/json'},
+                method:'GET',
                 success:function (response, opts) {
                     var json = Ext.decode(response.responseText);
                     // If there's no config for this sitemap, records will be null
@@ -467,8 +493,8 @@ Ext.define('openHAB.config.sitemapProperties', {
                             // Check if this is a group
                             if (tree[iItem].type == "Group") {
                                 newItem.children = [];
-                                if (tree[iItem].linkedPage != null)
-                                    iterateTree(newItem.children, tree[iItem].linkedPage.widget, iterationCnt);
+                                if (tree[iItem].widget != null)
+                                    iterateTree(newItem.children, tree[iItem].widget, iterationCnt);
                             }
                             if (tree[iItem].type == "Frame") {
                                 newItem.children = [];
@@ -485,19 +511,6 @@ Ext.define('openHAB.config.sitemapProperties', {
                     }
                 }
             });
-        }
-
-        this.newItem = function (newSitemap) {
-            // Create the root item
-            var sitemapRoot = [];
-            sitemapRoot.id = "root";
-            sitemapRoot.label = "Main Menu";
-            sitemapRoot.iconCls = "sitemap-sitemap";
-            sitemapRoot.type = "Sitemap";
-            sitemapRoot.children = [];
-
-            // Load the tree and expand all nodes
-            sitemapItemStore.setRootNode(sitemapRoot);
         }
 
         function showWidgetProperties(widget) {

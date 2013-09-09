@@ -96,10 +96,12 @@ Ext.define('openHAB.config.bindingList', {
                         return;
 
                     // Create a new bindingProperties
-                    var newProperties = Ext.create('openHAB.config.bindingProperties', {binding: pid});
+                    var newProperties = Ext.create('openHAB.config.bindingProperties');
 
-                    if(newProperties != null)
+                    if(newProperties != null) {
+                        newProperties.setBinding(pid);
                         Ext.getCmp('configPropertyContainer').setNewProperty(newProperties);
+                    }
                 }
             }
         });
