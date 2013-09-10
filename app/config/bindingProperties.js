@@ -72,13 +72,13 @@ Ext.define('openHAB.config.bindingProperties', {
         }
 
         function getBindingProperty(name) {
-            for(var c=0; c < bindingConfig.generalconfig.length; c++) {
-                if(bindingConfig.generalconfig[c].name == name)
+            for (var c = 0; c < bindingConfig.generalconfig.length; c++) {
+                if (bindingConfig.generalconfig[c].name == name)
                     return bindingConfig.generalconfig[c];
             }
 
-            for(var c=0; c < bindingConfig.interfaceconfig.length; c++) {
-                if(bindingConfig.interfaceconfig[c].name == name)
+            for (var c = 0; c < bindingConfig.interfaceconfig.length; c++) {
+                if (bindingConfig.interfaceconfig[c].name == name)
                     return bindingConfig.interfaceconfig[c];
             }
 
@@ -123,13 +123,13 @@ Ext.define('openHAB.config.bindingProperties', {
                         Ext.MessageBox.prompt('Interface Name', 'Please enter the new interface name:', function (btn, text) {
                             if (btn == 'ok') {
                                 // Add a new property sheet to the panel
-                                if(text.indexOf('.') != -1) {
+                                if (text.indexOf('.') != -1) {
                                     Ext.MessageBox("Error", "Interface name can only contain alphanumeric characters.");
                                 }
 
                                 // process text value and close...
                                 for (var c = 0; c < bindingConfig.interfaceconfig.length; c++) {
-                                    addBindingProperty(text+'.'+bindingConfig.interfaceconfig[c].name, text+': '+bindingConfig.interfaceconfig[c].label)
+                                    addBindingProperty(text + '.' + bindingConfig.interfaceconfig[c].name, text + ': ' + bindingConfig.interfaceconfig[c].label)
                                 }
                                 bindingProperties.setSource(source, sourceConfig);
                                 toolbar.getComponent('cancel').enable();
@@ -184,9 +184,9 @@ Ext.define('openHAB.config.bindingProperties', {
                 itemmouseenter:function (grid, record, item, index, e, eOpts) {
                     var name = record.get("name");
                     var parts = name.split(".");
-                    var srec = getBindingProperty(parts[parts.length-1]);
+                    var srec = getBindingProperty(parts[parts.length - 1]);
 
-                    if(srec == null)
+                    if (srec == null)
                         return;
                     bbDescription.setText(srec.description);
                 },
@@ -230,7 +230,7 @@ Ext.define('openHAB.config.bindingProperties', {
                     bindingConfig = json;
 
                     // If there are interface configurations available, then enable the "add interface" button
-                    if(json.interfaceconfig != null)
+                    if (json.interfaceconfig != null)
                         toolbar.getComponent('add').enable();
                     else
                         toolbar.getComponent('add').disable();
@@ -251,13 +251,13 @@ Ext.define('openHAB.config.bindingProperties', {
             });
         }
 
-        function saveBinding () {
+        function saveBinding() {
             toolbar.getComponent('save').disable();
             toolbar.getComponent('cancel').disable();
 
             // Get the property data
             var prop = bindingProperties.getSource();
-            if(prop == null)
+            if (prop == null)
                 return;
 
             // The following may not be completely necessary, but it cleans up the response
@@ -266,13 +266,11 @@ Ext.define('openHAB.config.bindingProperties', {
             jsonArray.pid = bindingName;
             jsonArray.config = [];
             var objects = Object.keys(prop);
-            for(var cnt = 0; cnt < objects.length; cnt++) {
-                if(prop[objects[cnt]] != "") {
-                    var config = {};
-                    config.name = objects[cnt];
-                    config.value = prop[objects[cnt]];
-                    jsonArray.config.push(config);
-                }
+            for (var cnt = 0; cnt < objects.length; cnt++) {
+                var config = {};
+                config.name = objects[cnt];
+                config.value = prop[objects[cnt]];
+                jsonArray.config.push(config);
             }
 
             // Send the request to openHAB
@@ -280,7 +278,7 @@ Ext.define('openHAB.config.bindingProperties', {
                 url:'/rest/config/bindings/' + bindingName,
                 headers:{'Accept':'application/json'},
                 method:'PUT',
-                jsonData: jsonArray,
+                jsonData:jsonArray,
                 success:function (response, opts) {
                     Ext.MessageBox.show({
                         msg:'Binding configuration saved',
