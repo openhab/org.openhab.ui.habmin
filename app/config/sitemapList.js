@@ -188,7 +188,7 @@ Ext.define('openHAB.config.sitemapList', {
             Ext.Ajax.request({
                 url:"/rest/config/sitemap/" + text,
                 headers:{'Accept':'application/json'},
-                method:'PUT',
+                method:'POST',
                 success:function (response, opts) {
                     Ext.MessageBox.show({
                         msg:'Sitemap created',
@@ -221,6 +221,9 @@ Ext.define('openHAB.config.sitemapList', {
                     setTimeout(function () {
                         Ext.MessageBox.hide();
                     }, 2500);
+
+                    // Reload the store
+                    sitemapStore.reload();
                 }
             });
         }
