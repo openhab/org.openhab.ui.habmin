@@ -249,11 +249,11 @@ Ext.define('openHAB.config.sitemapProperties', {
                             return;
 
                         var root = sitemapTree.getRootNode();
-                        var jsonArray = [];
+                        var jsonArray = {};
 
+                        jsonArray.name = sitemapName;
                         // Iterate through the store to generate the sitemap
-                        iterateStore(root, jsonArray, 0);
-                        jsonArray[0].id = root.get('id');
+                        jsonArray.widget = iterateStore(root, 0);
 
                         // Send the sitemap to openHAB
                         Ext.Ajax.request({
@@ -287,7 +287,7 @@ Ext.define('openHAB.config.sitemapProperties', {
                             }
                         });
 
-                        function iterateStore(node, json, iterateCnt) {
+                        function iterateStore(node, iterateCnt) {
                             iterateCnt++;
                             if (iterateCnt >= 9)
                                 return;
@@ -298,7 +298,7 @@ Ext.define('openHAB.config.sitemapProperties', {
                                 return;
 
                             // Get the widget properties
-                            var newNode = [];
+                            var newNode = {};
                             newNode.type = node.get('type');
                             for (var pcnt = 0; pcnt < properties.length; pcnt++) {
                                 var property = properties[pcnt];
@@ -309,16 +309,16 @@ Ext.define('openHAB.config.sitemapProperties', {
 
                             // Check for children
                             if (node.hasChildNodes()) {
-                                newNode.widgets = [];
+                                newNode.widget = [];
                                 for (var cnt = 0; cnt < 1000; cnt++) {
                                     var child = node.getChildAt(cnt);
                                     if (child == null)
                                         break;
 
-                                    iterateStore(child, newNode.widgets, iterateCnt);
+                                    newNode.widget.push(iterateStore(child, iterateCnt));
                                 }
                             }
-                            json.push(newNode);
+                            return newNode;
                         }
                     }
                 }
@@ -442,18 +442,17 @@ Ext.define('openHAB.config.sitemapProperties', {
                     if (json == null)
                         return;
 
-                    sitemapName = json.name;
+                    sitemapName = newSitemap;
 
                     // Create the root item
                     var sitemapRoot = [];
-                    sitemapRoot.id = json.homepage.id;
-                    sitemapRoot.label = json.homepage.title;
+//                    sitemapRoot.id = json.homepage.id;
+                    sitemapRoot.label = json.label;
                     sitemapRoot.iconCls = "sitemap-sitemap";
                     sitemapRoot.type = "Sitemap";
                     sitemapRoot.children = [];
 
-                    if (json.homepage != null)
-                        iterateTree(sitemapRoot.children, json.homepage.widget, 0);
+                    iterateTree(sitemapRoot.children, json.widget, 0);
 
                     // Load the tree and expand all nodes
                     sitemapItemStore.setRootNode(sitemapRoot);
