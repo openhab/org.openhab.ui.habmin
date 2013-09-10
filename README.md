@@ -11,7 +11,7 @@ HABmin is a web administration console for openHAB. It aims to provide a complet
 * View OSGi binding status
 * View log files
 
-The interface is a modern browser based system providing point and click, and drag and drop input. 
+The interface is a modern browser based system providing point and click, and drag and drop input. As features are added, the wiki is being updated - please take a look.
 
 
 ![Item Config Screen](https://raw.github.com/wiki/cdjackson/HABmin/habmin_itemconfig.png)
@@ -29,6 +29,7 @@ While HABmin is a supporting project to OpenHAB,  providing access to OpenHAB's 
 
 ![Binding Config Screen](https://raw.github.com/wiki/cdjackson/HABmin/habmin_bindingconfig.png)
 
+
 ###Status
 The project is just getting started. Currently implemented is the graphing of data from the persistence store and a lot of the initial user interface has been boilerplated and some work has started on the REST interface for configuring bindings.
 
@@ -40,8 +41,8 @@ HABmin is an open source project. It makes use of a number of libraries under GP
 
 Installation
 ------------
-* Download the project zip file from GitHub and unzip files in the directory webapps/habmin (this will not exist in a standard openHAB installation).
-* Place the org.openhab.io.rest.*.jar file into the addons directory.
+* Download the project zip file from GitHub and unzip files in the directory webapps/habmin (you will need to create this directory).
+* Place the org.openhab.io.rest.*.jar file into the addons directory (this is stored in the addons directory in the repository).
 * Remove the existing jar file starting with org.openhab.io.rest from the system/plugins directory.
 
 You will probably need to restart OpenHAB for the new REST interface to take affect.
