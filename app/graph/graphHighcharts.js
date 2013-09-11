@@ -329,7 +329,7 @@ Ext.define('openHAB.graph.graphHighcharts', {
                 failure:function (response, opts) {
                     Ext.MessageBox.hide();
                     Ext.MessageBox.show({
-                        msg:'Error downloading data from Vera: Response ' + response.status,
+                        msg:'Error downloading data: Response ' + response.status,
                         width:200,
                         draggable:false,
                         icon:'icon-error',
