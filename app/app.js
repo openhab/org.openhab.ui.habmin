@@ -461,6 +461,7 @@ function createUI() {
     Ext.define('ItemConfigModel', {
         extend:'Ext.data.Model',
         fields:[
+            {name:'model'},
             {name:'name'},
             {name:'type'},
             {name:'icon'},
@@ -473,6 +474,7 @@ function createUI() {
             {name:'format'},
             {name:'groups'},
             {name:'bindings'},
+            {name:'persistence'},
             {name:'link'}
         ]
     });
