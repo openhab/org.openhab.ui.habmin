@@ -57,9 +57,6 @@ Ext.define('openHAB.graph.itemList', {
                         itemToolbar.getComponent('update').disable();
                         itemToolbar.getComponent('save').disable();
 
-                        //Ext.getCmp("graphItemGrid").clearSelection();
-                        //Ext.getCmp('chartChanTb-update').disable();
-                        //Ext.getCmp('chartChanTb-save').disable();
                     }
                 },
                 {
@@ -90,7 +87,7 @@ Ext.define('openHAB.graph.itemList', {
         });
 
         var itemList = Ext.create('Ext.grid.Panel', {
-            store:itemStore,
+            store:itemConfigStore,
             tbar:itemToolbar,
             header:false,
             disableSelection:true,
@@ -102,12 +99,10 @@ Ext.define('openHAB.graph.itemList', {
                     width:24,
                     hidden:false,
                     resizable:false,
-                    dataIndex:'DataType',
+                    dataIndex:'icon',
                     renderer:function (value, metaData, record, row, col, store, gridView) {
-                        if (record.get("type") != null)
-                            return '<img src="' + getItemTypeIcon(record.get("type")) + '">';
-                        else
-                            return '<img src="images/node.png">';
+                        if (value != "")
+                            return '<img src="../images/'+value+'.png" height="16">';
                     }
                 },
                 {
@@ -116,7 +111,14 @@ Ext.define('openHAB.graph.itemList', {
                     flex:1,
                     width:75,
                     sortable:true,
-                    dataIndex:'name'
+                    dataIndex:'label',
+                    renderer:function (value, metaData, record, row, col, store, gridView) {
+                        if (value != "")
+                            return value;
+                        if(record == null)
+                            return "";
+                        return record.get('name');
+                    }
                 },
                 {
                     text:'Last Value',
@@ -211,7 +213,11 @@ Ext.define('openHAB.graph.itemList', {
     },
     listeners:{
         activate:function (grid, eOpts) {
-            itemStore.filter("type", "GroupItem");
+            itemConfigStore.filterBy(function myfilter(record) {
+                if(record.get("persistence") == "")
+                    return false;
+                return true;
+            });
         }
     }
 })

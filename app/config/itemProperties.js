@@ -182,8 +182,8 @@ Ext.define('openHAB.config.itemProperties', {
                         }
                     })
                 },
-                Mapping:{
-                    displayName:"Mapping",
+                Map:{
+                    displayName:"Translation Map",
                     renderer:function (v) {
                     },
                     editor:Ext.create('Ext.form.ComboBox', {

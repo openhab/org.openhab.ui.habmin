@@ -594,8 +594,8 @@ function createUI() {
             },
             tabchange:function (tabPanel, newCard, oldCard, eOpts) {
                 if (newCard.id == 'maintabGraph') {
-                    itemStore.filterBy(function (rec) {
-                        if (rec.get('type').substring(0, 19) == "GroupItem")
+                    itemConfigStore.filterBy(function myfilter(record) {
+                        if(record.get("persistence") == "")
                             return false;
                         return true;
                     });
@@ -603,7 +603,7 @@ function createUI() {
                 else if (newCard.id == 'maintabSystem') {
                 }
                 else if (newCard.id == 'maintabConfig') {
-                    itemStore.clearFilter();
+                    itemConfigStore.clearFilter();
                 }
             }
         }
