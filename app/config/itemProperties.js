@@ -42,6 +42,8 @@ Ext.define('openHAB.config.itemProperties', {
     header:false,
 
     initComponent:function () {
+        var thisItem;
+
         Ext.define('ItemIcons', {
             extend:'Ext.data.Model',
             fields:[
@@ -51,7 +53,7 @@ Ext.define('openHAB.config.itemProperties', {
             ]
         });
 
-        var tbProperties = Ext.create('Ext.toolbar.Toolbar', {
+        var toolbar = Ext.create('Ext.toolbar.Toolbar', {
             items:[
                 {
                     icon:'images/cross.png',
@@ -61,10 +63,11 @@ Ext.define('openHAB.config.itemProperties', {
                     disabled:true,
                     tooltip:'Cancel changes made to the item configuration',
                     handler:function () {
-                        //Ext.getCmp("configPropTb-save").disable();
-                        //Ext.getCmp("configPropTb-cancel").disable();
+                        toolbar.getComponent('cancel').disable();
+                        toolbar.getComponent('save').disable();
 
                         // Reset to the current data
+                        this.setItem(thisItem);
                     }
                 },
                 {
@@ -75,8 +78,63 @@ Ext.define('openHAB.config.itemProperties', {
                     disabled:true,
                     tooltip:'Save changes to the item configuration',
                     handler:function () {
-                        //Ext.getCmp("configPropTb-save").disable();
-                        //Ext.getCmp("configPropTb-cancel").disable();
+                        var rec = itemConfigStore.findExact("name", thisItem);
+                        if (rec == -1)
+                            return;
+                        var item = itemConfigStore.getAt(rec);
+
+                        var jsonArray = {};
+                        jsonArray.model = item.get("model");
+                        jsonArray.binding = item.get("binding");
+                        jsonArray.groups = itemGroups.getSelected();
+
+                        var prop = itemOptions.getSource();
+                        if (prop == null)
+                            return;
+
+                        jsonArray.type = prop.Type;
+                        jsonArray.name = prop.ItemName;
+                        jsonArray.icon = prop.Icon;
+                        jsonArray.label = prop.Label;
+                        jsonArray.units = prop.Units;
+                        jsonArray.format = prop.Format;
+                        jsonArray.map = prop.Map;
+//                        jsonArray.bindings = ;
+
+                        // Send the sitemap to openHAB
+                        Ext.Ajax.request({
+                            url:"/rest/config/items/" + thisItem,
+                            headers:{'Accept':'application/json'},
+                            method:'PUT',
+                            jsonData:jsonArray,
+                            success:function (response, opts) {
+                                Ext.MessageBox.show({
+                                    msg:'Item configuration saved',
+                                    width:200,
+                                    draggable:false,
+                                    icon:'icon-ok',
+                                    closable:false
+                                });
+                                setTimeout(function () {
+                                    Ext.MessageBox.hide();
+                                }, 2500);
+                            },
+                            failure:function (result, request) {
+                                Ext.MessageBox.show({
+                                    msg:'Error saving item',
+                                    width:200,
+                                    draggable:false,
+                                    icon:'icon-error',
+                                    closable:false
+                                });
+                                setTimeout(function () {
+                                    Ext.MessageBox.hide();
+                                }, 2500);
+                            }
+                        });
+
+                        toolbar.getComponent('cancel').disable();
+                        toolbar.getComponent('save').disable();
                     }
                 }
             ]
@@ -97,7 +155,7 @@ Ext.define('openHAB.config.itemProperties', {
             title:'Properties',
             icon:'images/gear.png',
             itemId:'itemProperties',
-            tbar:tbProperties,
+            tbar:toolbar,
             hideHeaders:true,
             sortableColumns:false,
             nameColumnWidth:300,
@@ -110,7 +168,8 @@ Ext.define('openHAB.config.itemProperties', {
                 Format:"",
                 Map:"",
                 Icon:"",
-                Groups:""
+                Groups:"",
+                Persistence:""
             },
             sourceConfig:{
                 ItemName:{
@@ -184,13 +243,13 @@ Ext.define('openHAB.config.itemProperties', {
                 },
                 Map:{
                     displayName:"Translation Map",
-                    renderer:function (v) {
-                    },
+//                    renderer:function (v) {
+//                    },
                     editor:Ext.create('Ext.form.ComboBox', {
 //                        store:graphTypeStore,
                         queryMode:'local',
                         typeAhead:false,
-                        editable:false,
+                        editable:true,
                         displayField:'name',
                         valueField:'id'
                     })
@@ -201,13 +260,16 @@ Ext.define('openHAB.config.itemProperties', {
             },
             listeners:{
                 propertychange:function (source, recordId, value, oldValue, eOpts) {
-                    //Ext.getCmp("save").enable();
-                    //Ext.getCmp("cancel").enable();
+                    toolbar.getComponent('cancel').enable();
+                    toolbar.getComponent('save').enable();
+
                 },
                 beforeedit : function(editor, e) {
                     var rec = e.record;
                     // Make some properties read-only
                     if (rec.get('name') == 'Groups')
+                        e.cancel=true;
+                    if (rec.get('name') == 'Persistence')
                         e.cancel=true;
                 }
             }
@@ -236,11 +298,18 @@ Ext.define('openHAB.config.itemProperties', {
 
         this.callParent();
 
+        function blah() {
+
+        }
+
         // Class members.
         this.setItem = function (newItem) {
+            blah();
             var item = itemConfigStore.findExact("name", newItem);
             if (item == -1)
                 return;
+
+            thisItem = newItem;
 
             var rec = itemConfigStore.getAt(item);
 
@@ -254,6 +323,21 @@ Ext.define('openHAB.config.itemProperties', {
             itemOptions.setProperty("Format", rec.get('format'));
             itemOptions.setProperty("Map", rec.get('map'));
             itemOptions.setProperty("Groups", rec.get('groups'));
+
+            // Ensure the persistence is an array!
+            if(rec.get('persistence') != "") {
+                var persistenceIn = [].concat(rec.get('persistence'));
+                var persistenceOut = "";
+
+                for(var cnt = 0; cnt < persistenceIn.length; cnt++) {
+                    persistenceOut += persistenceIn[cnt].service;
+                    if(persistenceIn[cnt].strategies != null)
+                        persistenceOut += "[" + persistenceIn[cnt].strategies + "] ";
+                    else
+                        persistenceOut += "[default] ";
+                }
+            }
+            itemOptions.setProperty("Persistence", persistenceOut);
 
             // Ensure the groups is an array!
             var groups = [].concat(rec.get('groups'));
