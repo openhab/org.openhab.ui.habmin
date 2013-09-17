@@ -65,6 +65,16 @@
             <maximum></maximum>
             <values></values>
         </config.setting>
+        <config.setting>
+            <name>directionssharedconnections</name>
+            <label>Share connections</label>
+            <description>Share connections between directions</description>
+            <optional>true</optional>
+            <default>false</default>
+            <minimum></minimum>
+            <maximum></maximum>
+            <values></values>
+        </config.setting>
     </binding.config>
 
     <!-- Item binding configuration -->
