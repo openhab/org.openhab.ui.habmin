@@ -39,7 +39,7 @@ Ext.define('openHAB.graph.graphHighcharts', {
     title:'Chart',
     icon:'images/chart-up.png',
     layout:'fit',
-    header: false,
+    header:false,
     // TODO: does this need to be 'id'?
     id:'highchartsChart',
 
@@ -126,11 +126,174 @@ Ext.define('openHAB.graph.graphHighcharts', {
             Ext.getCmp('chartTb-viewMonth').enable();
             Ext.getCmp('chartTb-viewYear').enable();
             Ext.getCmp('chartTb-info').enable();
-        };
+        }
+
+        ;
+
+        function addGraphData(channel, json) {
+            // Remember the time of the last data update
+            // This allows the table to detect if data is dirty
+            lastUpdate = (new Date()).getTime();
+
+            // Reset the info store
+            graphInfoItems = [];
+
+            graphInfoItems[1] = [];
+            graphInfoItems[1].name = "Response Time";
+            graphInfoItems[1].value = (new Date()).getTime() - timeStart + " ms";
+
+            timeStart = (new Date()).getTime();
+
+            if(json == null)
+                return;
+
+            if (json.data == null) {
+                Ext.MessageBox.show({
+                    msg:'Warning: No data returned',
+                    width:200,
+                    draggable:false,
+                    icon:'icon-warning',
+                    closable:false
+                });
+                setTimeout(function () {
+                    Ext.MessageBox.hide();
+                }, 2500);
+
+                return;
+            }
+//                    graphInfoItems[0] = [];
+//                    graphInfoItems[0].name = "openHAB Processing Time";
+//                    graphInfoItems[0].value = Math.floor(json.procTime * 1000) + " ms";
+
+            var options = chartOptions;
+
+            options.series = [];
+
+            var cnt, tot;
+            cnt = 0;
+            tot = 0;
+
+            // Convert the format. Hopefully the openHAB json can be changed to make this unnecessary
+            var newSeries = [];
+            for (var i = 0; i < json.data.length; i++) {
+                newSeries[i] = [];
+                newSeries[i][0] = parseInt(json.data[i].time);
+                newSeries[i][1] = parseFloat(json.data[i].value);
+            }
+            var seriesData = newSeries;
+
+            // Keep a record of the raw data
+            // This gets used in the table view
+            rawData[channel] = {}
+            rawData[channel].received = true;
+            //TODO: This is already set before the call - maybe just double check it's the same?
+            rawData[channel].item = json.name;
+            rawData[channel].data = seriesData;
+
+            // TODO: Check if all channels received. If so, display the graph.
+
+//            if (json.series) {
+//                for (var s = 0; s < json.series.length; s++) {
+
+
+//                    graphInfoItems[4 + s] = [];
+//                    graphInfoItems[4 + s].name = json.series[s].label + " points";
+//                    graphInfoItems[4 + s].value = json.series[s].pointsRet + " / " + json.series[s].pointsTot;
+
+            // Get the configuration data from the itemConfigStore
+//                    var dmDev = getDMDevice(json.series[s].Id);
+
+            // Get the axis
+//                    var yAxis = 0;
+//                    for (var c = 0; c < channels.length; c++) {
+//                        if (channels[c].value == dmDev.Id) {
+//                            yAxis = channels[c].axis;
+//                            break;
+//                        }
+//                    }
+
+
+            // If ticks are provided, add categories to the graph
+//                    if (json.series[s].ticks) {
+//                        if(json.series[s].ticks.length > 0) {
+//                            chartOptions.yAxis[yAxis].categories = new Array();
+//                            for (var t = 0; t < json.series[s].ticks.length; t++) {
+//                                chartOptions.yAxis[yAxis].categories[json.series[s].ticks[t][1]] = json.series[s].ticks[t][0];
+//                            }
+//                        }
+//                    }
+
+            options.series[s] = [];
+            options.series[s].data = seriesData;
+            // TODO: Use the item label, not name
+            options.series[s].name = json.name;//json.series[s].label;
+            options.series[s].yAxis = 0;//yAxis;
+//                    options.series[s].color = '#FF0000';
+            //options.series[s].marker = true;
+
+//                    if (dmDev == null)
+            options.series[s].type = "spline";
+            /*                    else {
+             switch (dmDev.Type) {
+             case 1:
+             options.series[s].type = "line";
+             break;
+             case 2:
+             options.series[s].type = "scatter";
+             //                                chartOptions.scatter.marker.enabled = true;
+             break;
+             case 3:
+             case 4:
+             options.series[s].type = "area";
+             break;
+             default:
+             options.series[s].type = "spline";
+             break;
+             }
+             }*/
+//                }
+
+            this.chartObject = new Highcharts.Chart(options);
+//            }
+            if (json.timestart) {
+                chartMin = parseInt(json.timestart);
+                chartMax = parseInt(json.timeend);
+
+                if ((chartMax - chartMin) < 300)
+                    Ext.getCmp('chartTb-zoomIn').disable();
+                else
+                    Ext.getCmp('chartTb-zoomIn').enable();
+            }
+
+            graphInfoItems[2] = [];
+            graphInfoItems[2].name = "Render Time";
+            graphInfoItems[2].value = (new Date()).getTime() - timeStart + " ms";
+            graphInfoItems[3] = [];
+            graphInfoItems[3].name = "Total Time";
+            graphInfoItems[3].value = (new Date()).getTime() - timeInit + " ms";
+
+            Ext.MessageBox.hide();
+
+            toolbarEnable();
+            if (json.error) {
+                Ext.MessageBox.show({
+                    msg:'Warning: ' + json.error,
+                    width:200,
+                    draggable:false,
+                    icon:'icon-warning',
+                    closable:false
+                });
+                setTimeout(function () {
+                    Ext.MessageBox.hide();
+                }, 2500);
+            }
+        }
 
 
         function updateChart(channels, start, stop) {
             chartChannels = channels;
+
+            // TODO: Something needs to be done about the timers and graph information - do this at the same time as the success/fail calls
             var timeStart = (new Date()).getTime();
             var timeInit = timeStart;
 
@@ -143,9 +306,9 @@ Ext.define('openHAB.graph.graphHighcharts', {
                 closable:false
             });
 
-            if(isNaN(start))
+            if (isNaN(start))
                 start = 0;
-            if(isNaN(stop))
+            if (isNaN(stop))
                 stop = 0;
 
             if (start == 0 || stop == 0) {
@@ -160,187 +323,51 @@ Ext.define('openHAB.graph.graphHighcharts', {
 
             // Remove the categories from the yAxis
             chartOptions.yAxis = [];
-            for(var cnt = 0; cnt < 4; cnt++) {
+            for (var cnt = 0; cnt < 4; cnt++) {
                 chartOptions.yAxis[cnt] = [];
                 chartOptions.yAxis[cnt].title = "";
             }
-			
-			// Clear the raw data
-			rawData = [];
 
-            Ext.Ajax.request({
-                url:'/rest/history/'+channels[0].name,
-                timeout:20000,
-                params:parms,
-                method:'GET',
-                headers:{'Accept': 'application/json'},
-                success:function (response, opts) {
-                    // Remember the time of the last data update
-                    // This allows the table to detect if data is dirty
-                    lastUpdate = (new Date()).getTime();
+            // Clear the raw data
+            rawData = [];
 
-                    // Reset the info store
-                    graphInfoItems = [];
+            // Loop through all channels and request data via Ajax
+            for (var chan = 0; chan < channels.length; chan++) {
+                rawData[chan].received = false;
+                rawData[chan].item = channels[chan].name;
 
-                    graphInfoItems[1] = [];
-                    graphInfoItems[1].name = "Response Time";
-                    graphInfoItems[1].value = (new Date()).getTime() - timeStart + " ms";
+                Ext.Ajax.request({
+                    url:'/rest/history/' + channels[chan].name,
+                    timeout:20000,
+                    params:parms,
+                    method:'GET',
+                    headers:{'Accept':'application/json'},
+                    success:function (response, opts) {
+                        var json = Ext.decode(response.responseText);
+                        addGraphData(chan, json);
+                    },
+                    failure:function (response, opts) {
+                        // Calling addGraphData allows us to correlate all requests and display a consolidated status
+                        addGraphData(chan, null);
 
-                    timeStart = (new Date()).getTime();
-
-                    var json = Ext.decode(response.responseText);
-
-                    if(json.data == null) {
-                        Ext.MessageBox.show({
-                            msg:'Warning: No data returned',
-                            width:200,
-                            draggable:false,
-                            icon:'icon-warning',
-                            closable:false
-                        });
-                        setTimeout(function () {
-                            Ext.MessageBox.hide();
-                        }, 2500);
-
-                        return;
-                    }
-//                    graphInfoItems[0] = [];
-//                    graphInfoItems[0].name = "openHAB Processing Time";
-//                    graphInfoItems[0].value = Math.floor(json.procTime * 1000) + " ms";
-
-                    var options = chartOptions;	
-
-                    options.series = [];
-
-                    var cnt, tot;
-                    cnt = 0;
-                    tot = 0;
-
-                    var newSeries = [];
-                    for (var i = 0; i < json.data.length; i++) {
-                        newSeries[i] = [];
-                        newSeries[i][0] = parseInt(json.data[i].time);
-                        newSeries[i][1] = parseFloat(json.data[i].value);
-                    }
-                    var seriesData = newSeries;
-					
-
-//            if (json.series) {
-//                for (var s = 0; s < json.series.length; s++) {
-                    var s = 0;
-					
-					// Keep a record of the raw data
-					// This gets used in the table view
-                    rawData[s] = [];
-					rawData[s].item = json.name;
-					rawData[s].data = seriesData;
-
-//                    graphInfoItems[4 + s] = [];
-//                    graphInfoItems[4 + s].name = json.series[s].label + " points";
-//                    graphInfoItems[4 + s].value = json.series[s].pointsRet + " / " + json.series[s].pointsTot;
-
-                    // Get the configuration data
-//                    var dmDev = getDMDevice(json.series[s].Id);
-
-                    // Get the axis
-//                    var yAxis = 0;
-//                    for (var c = 0; c < channels.length; c++) {
-//                        if (channels[c].value == dmDev.Id) {
-//                            yAxis = channels[c].axis;
-//                            break;
-//                        }
-//                    }
-
-
-                    // If ticks are provided, add categories to the graph
-//                    if (json.series[s].ticks) {
-//                        if(json.series[s].ticks.length > 0) {
-//                            chartOptions.yAxis[yAxis].categories = new Array();
-//                            for (var t = 0; t < json.series[s].ticks.length; t++) {
-//                                chartOptions.yAxis[yAxis].categories[json.series[s].ticks[t][1]] = json.series[s].ticks[t][0];
-//                            }
-//                        }
-//                    }
-
-                    options.series[s] = [];
-                    options.series[s].data = seriesData;
-                    options.series[s].name = json.name;//json.series[s].label;
-                    options.series[s].yAxis = 0;//yAxis;
-//                    options.series[s].color = '#FF0000';
-                    //options.series[s].marker = true;
-
-//                    if (dmDev == null)
-                    options.series[s].type = "spline";
-                    /*                    else {
-                     switch (dmDev.Type) {
-                     case 1:
-                     options.series[s].type = "line";
-                     break;
-                     case 2:
-                     options.series[s].type = "scatter";
-                     //                                chartOptions.scatter.marker.enabled = true;
-                     break;
-                     case 3:
-                     case 4:
-                     options.series[s].type = "area";
-                     break;
-                     default:
-                     options.series[s].type = "spline";
-                     break;
-                     }
-                     }*/
-//                }
-
-                    this.chartObject = new Highcharts.Chart(options);
-//            }
-            if (json.timestart) {
-                    chartMin = parseInt(json.timestart);
-                    chartMax = parseInt(json.timeend);
-
-                if ((chartMax - chartMin) < 300)
-                    Ext.getCmp('chartTb-zoomIn').disable();
-                else
-                    Ext.getCmp('chartTb-zoomIn').enable();
-            }
-
-                    graphInfoItems[2] = [];
-                    graphInfoItems[2].name = "Render Time";
-                    graphInfoItems[2].value = (new Date()).getTime() - timeStart + " ms";
-                    graphInfoItems[3] = [];
-                    graphInfoItems[3].name = "Total Time";
-                    graphInfoItems[3].value = (new Date()).getTime() - timeInit + " ms";
-
-                    Ext.MessageBox.hide();
-
-                    toolbarEnable();
-                    if (json.error) {
-                        Ext.MessageBox.show({
-                            msg:'Warning: ' + json.error,
-                            width:200,
-                            draggable:false,
-                            icon:'icon-warning',
-                            closable:false
-                        });
-                        setTimeout(function () {
-                            Ext.MessageBox.hide();
-                        }, 2500);
-                    }
-                },
-                failure:function (response, opts) {
-                    Ext.MessageBox.hide();
-                    Ext.MessageBox.show({
-                        msg:'Error downloading data: Response ' + response.status,
-                        width:200,
-                        draggable:false,
-                        icon:'icon-error',
-                        closable:false
-                    });
-                    setTimeout(function () {
+                        //TODO: Move to addGraphData
                         Ext.MessageBox.hide();
-                    }, 2500);
-                }
-            });
-        };
+                        Ext.MessageBox.show({
+                            msg:'Error downloading data: Response ' + response.status,
+                            width:200,
+                            draggable:false,
+                            icon:'icon-error',
+                            closable:false
+                        });
+                        setTimeout(function () {
+                            Ext.MessageBox.hide();
+                        }, 2500);
+                    }
+                });
+            }
+        }
+
+        ;
 
         function redrawChart() {
             if (this.chartObject != null) {
@@ -352,13 +379,16 @@ Ext.define('openHAB.graph.graphHighcharts', {
             options.chart.animation = false;
             this.chartObject = new Highcharts.Chart(options);
             options.chart.animation = true;
-        };
+        }
+
+        ;
 
         function doGraphTime(days) {
             var ts = Math.round((new Date()).getTime());
             updateChart(chartChannels, ts - (days * 86400000), ts);
-        };
+        }
 
+        ;
 
 
         // -----------------------
@@ -549,13 +579,13 @@ Ext.define('openHAB.graph.graphHighcharts', {
 
         this.callParent();
 
-        this.chartUpdate=function(channels, start, stop) {
+        this.chartUpdate = function (channels, start, stop) {
             updateChart(channels, start, stop);
         }
-        this.getData=function() {
+        this.getData = function () {
             return rawData;
         }
-        this.lastUpdate=function() {
+        this.getLastUpdate = function () {
             return lastUpdate;
         }
     }

@@ -113,7 +113,7 @@ Ext.define('openHAB.graph.graphTable', {
         this.isUpdateRequired = function () {
             // Detect if the graph data has been updated
             // Don't update the table if it's old data!
-            if (Ext.getCmp("highchartsChart").lastUpdate() < this.lastUpdate)
+            if (Ext.getCmp("highchartsChart").getLastUpdate() < this.lastUpdate)
                 return false;
             return true;
         }
