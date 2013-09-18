@@ -46,8 +46,8 @@ Ext.define('openHAB.config.sitemapProperties', {
         var widgetConfig = {
             Sitemap:["label"],
             Chart:["item", "label", "itemicon", "service", "period", "refresh"],
-            Colorpicker:["item", "label", "itemicon"],
-            Frame:["label","itemicon"],
+            Colorpicker:["item", "label", "itemicon", "sendFrequency"],
+            Frame:["item", "label","itemicon"],
             Group:["item", "label", "itemicon"],
             Image:["label", "itemicon", "url", "refresh"],
             List:["item", "label","itemicon", "separator"],
@@ -56,8 +56,8 @@ Ext.define('openHAB.config.sitemapProperties', {
             Setpoint:["item", "label", "itemicon", "minValue", "maxValue", "step"],
             Slider:["item", "label", "itemicon", "sendFrequency", "switchSupport"],
             Text:["item", "label", "itemicon"],
-            Video:["label", "url"],
-            Webview:["label", "url", "height"]
+            Video:["label", "url", "itemicon"],
+            Webview:["label", "url", "height", "itemicon"]
         };
 
         var configTranslate = {
