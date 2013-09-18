@@ -1,4 +1,4 @@
-<!-- Binding configuration for the EDS One Wire Server binding in openHAB -->
+<!-- Binding configuration for the Z-Wave binding in openHAB -->
 <binding>
 	<!-- Full name presented to the user -->
 	<name>ZWAVE - Z-Wave Binding</name>
