@@ -1,4 +1,4 @@
-<!-- Binding configuration for the EDS One Wire Server binding in openHAB -->
+<!-- Binding configuration for the TCP binding in openHAB -->
 <binding>
 	<!-- Full name presented to the user -->
 	<name>TCP - TCP Protocol Binding</name>
