@@ -47,10 +47,10 @@ Ext.define('openHAB.config.sitemapProperties', {
             Sitemap:["label"],
             Chart:["item", "label", "itemicon", "service", "period", "refresh"],
             Colorpicker:["item", "label", "itemicon", "sendFrequency"],
-            Frame:["item", "label","itemicon"],
+            Frame:["item", "label", "itemicon"],
             Group:["item", "label", "itemicon"],
             Image:["label", "itemicon", "url", "refresh"],
-            List:["item", "label","itemicon", "separator"],
+            List:["item", "label", "itemicon", "separator"],
             Switch:["item", "label", "itemicon", "command", "mappings"],
             Selection:["item", "label", "itemicon", "mappings"],
             Setpoint:["item", "label", "itemicon", "minValue", "maxValue", "step"],
@@ -58,6 +58,25 @@ Ext.define('openHAB.config.sitemapProperties', {
             Text:["item", "label", "itemicon"],
             Video:["label", "url", "itemicon"],
             Webview:["label", "url", "height", "itemicon"]
+        };
+
+        var widgetHelp = {
+            command:"?",
+            height:"Set the height of the widget in the UI",
+            item: "Select the item attached to this widget",
+            itemicon: "Override the item icon. Leave blank to use the default for this item",
+            label: "Override the item label. Leave blank to use the default for this item",
+            mappings: "?",
+            maxValue: "Set the maximum allowable value",
+            minValue: "Set the minimum allowable value",
+            period: "?",
+            refresh: "?",
+            sendFrequency: "?",
+            separator:"?",
+            service: "?",
+            step: "Set the step value",
+            switchSupport: "?",
+            url: "Set the URL attached to this widget"
         };
 
         var configTranslate = {
@@ -107,7 +126,7 @@ Ext.define('openHAB.config.sitemapProperties', {
         };
 
 
-        // We want to setup a model and store instead of using dataUrl
+        // Sitemap model
         Ext.define('SitemapTree', {
             extend:'Ext.data.Model',
             fields:[
@@ -179,6 +198,15 @@ Ext.define('openHAB.config.sitemapProperties', {
             ],
             viewConfig:{
                 markDirty:false
+            },
+            listeners:{
+                itemmouseenter:function (grid, record, item, index, e, eOpts) {
+                    var name = record.get("name");
+                    statusBar.setText(widgetHelp[name]);
+                },
+                itemmouseleave:function (grid, record, item, index, e, eOpts) {
+                    statusBar.setText("-");
+                }
             }
         });
 
@@ -408,9 +436,15 @@ Ext.define('openHAB.config.sitemapProperties', {
             }
         });
 
+        var statusDescription = Ext.create('Ext.toolbar.TextItem', {text:' '});
+        var statusBar = Ext.create('Ext.ux.StatusBar', {
+            text:'-'
+        });
+
         var sitemapDesign = Ext.create('Ext.panel.Panel', {
             itemId:'sitemapPanel',
             title:'Properties',
+            bbar:statusBar,
             icon:'images/maps-stack.png',
             defaults:{
                 split:true
@@ -421,7 +455,6 @@ Ext.define('openHAB.config.sitemapProperties', {
         });
 
         var tabs = Ext.create('Ext.tab.Panel', {
-
             layout:'fit',
             border:false,
             items:[sitemapDesign]
