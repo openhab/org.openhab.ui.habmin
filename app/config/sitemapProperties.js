@@ -202,10 +202,10 @@ Ext.define('openHAB.config.sitemapProperties', {
             listeners:{
                 itemmouseenter:function (grid, record, item, index, e, eOpts) {
                     var name = record.get("name");
-                    statusBar.setText(widgetHelp[name]);
+                    helpStatusText.setText(widgetHelp[name]);
                 },
                 itemmouseleave:function (grid, record, item, index, e, eOpts) {
-                    statusBar.setText("-");
+                    helpStatusText.setText("");
                 }
             }
         });
@@ -436,10 +436,8 @@ Ext.define('openHAB.config.sitemapProperties', {
             }
         });
 
-        var statusDescription = Ext.create('Ext.toolbar.TextItem', {text:' '});
-        var statusBar = Ext.create('Ext.ux.StatusBar', {
-            text:'-'
-        });
+        var helpStatusText = Ext.create('Ext.toolbar.TextItem', {text:''});
+        var statusBar = Ext.create('Ext.ux.StatusBar', {text:'Sitemap:', items:[helpStatusText]});
 
         var sitemapDesign = Ext.create('Ext.panel.Panel', {
             itemId:'sitemapPanel',
@@ -476,10 +474,10 @@ Ext.define('openHAB.config.sitemapProperties', {
                         return;
 
                     sitemapName = newSitemap;
+                    statusBar.setStatus({text: "Sitemap: " + newSitemap});
 
                     // Create the root item
                     var sitemapRoot = [];
-//                    sitemapRoot.id = json.homepage.id;
                     sitemapRoot.label = json.label;
                     sitemapRoot.iconCls = "sitemap-sitemap";
                     sitemapRoot.type = "Sitemap";

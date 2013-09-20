@@ -84,6 +84,18 @@ Ext.define('openHAB.config.sitemapList', {
                         // Pop up a dialogue box asking for the sitemap name
                         Ext.MessageBox.prompt('Sitemap Name', 'Please enter the new sitemap name:', newSitemap);
                     }
+                },
+                {
+                    icon:'images/document-copy.png',
+                    itemId:'copy',
+                    text:'Copy Sitemap',
+                    cls:'x-btn-icon',
+                    disabled:true,
+                    tooltip:'Copy the selected sitemap as a new sitemap',
+                    handler:function () {
+                        // Pop up a dialogue box asking for the sitemap name
+                        Ext.MessageBox.prompt('Sitemap Name', 'Please enter the new sitemap name:', copySitemap);
+                    }
                 }
             ]
         });
@@ -120,8 +132,9 @@ Ext.define('openHAB.config.sitemapList', {
 
                     Ext.getCmp('configPropertyContainer').setNewProperty(newProperties);
 
-                    // Allow this sitemap to be deleted
+                    // Allow this sitemap to be deleted and copied
                     toolbar.getComponent('delete').enable();
+                    toolbar.getComponent('copy').enable();
                 }
             }
         });
@@ -175,20 +188,43 @@ Ext.define('openHAB.config.sitemapList', {
             });
         }
 
+        function copySitemap(button, text) {
+            if (button !== 'ok')
+                return;
+
+            // Get the selected sitemap
+            var record = sitemapList.getSelectionModel().getSelection()[0];
+            if (record == null)
+                return;
+
+            var sitemapName = record.get('name');
+            doNewSitemap(text, sitemapName);
+        }
+
         function newSitemap(button, text) {
             if (button !== 'ok')
                 return;
 
-            if (text.indexOf('.') != -1) {
+            doNewSitemap(text, null);
+        }
+
+        function doNewSitemap(newName, copyName) {
+            if (newName.indexOf('.') != -1) {
                 Ext.MessageBox("Error", "Sitemap name can only contain alphanumeric characters.");
                 return;
             }
 
+            var parms = {};
+            if (copyName != null)
+                parms.copy = copyName;
+
             // Tell OH to add the new sitemap
             Ext.Ajax.request({
-                url:"/rest/config/sitemap/" + text,
+                url:"/rest/config/sitemap/" + newName,
                 headers:{'Accept':'application/json'},
                 method:'POST',
+//                jsonData:parms,
+                params:parms,
                 success:function (response, opts) {
                     Ext.MessageBox.show({
                         msg:'Sitemap created',
@@ -207,8 +243,9 @@ Ext.define('openHAB.config.sitemapList', {
                     // Clear the sitemap properties
                     Ext.getCmp('configPropertyContainer').removeProperty();
 
-                    // Disable delete
+                    // Disable delete and copy
                     toolbar.getComponent('delete').disable();
+                    toolbar.getComponent('copy').disable();
                 },
                 failure:function (result, request) {
                     Ext.MessageBox.show({
