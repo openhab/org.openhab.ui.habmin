@@ -66,7 +66,7 @@ Ext.define('openHAB.config.sitemapProperties', {
             item: "Select the item attached to this widget",
             itemicon: "Override the item icon. Leave blank to use the default for this item",
             label: "Override the item label. Leave blank to use the default for this item",
-            mappings: "?",
+            mappings: "Override the default map data. Leave blank to use the default for this item",
             maxValue: "Set the maximum allowable value",
             minValue: "Set the minimum allowable value",
             period: "?",
@@ -91,8 +91,22 @@ Ext.define('openHAB.config.sitemapProperties', {
         sourceConfig = {
             item:{
                 displayName:"Item",
+                renderer:function (v) {
+                    var icon = "";
+                    var id = itemConfigStore.findExact("name", v);
+                    if(id != -1) {
+                        var type = itemConfigStore.getAt(id).get('type');
+                        if(type != "") {
+                            id = itemTypeStore.findExact("name", type);
+                            if(id != -1)
+                                icon = '<img src="'+itemTypeStore.getAt(id).get('icon')+'" align="left" height="16">';
+                        }
+                    }
+
+                    return '<div>' + icon + '</div><div style="margin-left:20px">' + v +'</div>';
+                },
                 editor:Ext.create('Ext.form.ComboBox', {
-                    store:itemStore,
+                    store:itemConfigStore,
                     queryMode:'local',
                     typeAhead:false,
                     editable:false,
@@ -100,15 +114,19 @@ Ext.define('openHAB.config.sitemapProperties', {
                     valueField:'name',
                     forceSelection:true,
                     editable:false,
-                    allowBlank:false,
+                    allowBlank:false/*,
                     listConfig:{
                         getInnerTpl:function () {
-                            var tpl = '<div>' +
-                                '<img src="{icon}" align="left" height="16" width:"16";>&nbsp;&nbsp;' +
-                                '{name}</div>';
-                            return tpl;
+                            var icon = "";
+                            var id = itemTypeStore.findExact("name");
+                            if(id != -1) {
+                                if(itemTypeStore.getAt(ref).get('icon') != "")
+                                    icon = '<img src="../images/'+itemTypeStore.getAt(ref).get('icon')+'.png" align="left" height="16">';
+                            }
+
+                            return '<div>' + icon + '</div><div style="margin-left:20px">' + v +'</div>';
                         }
-                    }
+                    }*/
                 })
             },
             itemicon:{displayName:"Icon"},
@@ -169,6 +187,7 @@ Ext.define('openHAB.config.sitemapProperties', {
             tools:[
                 {
                     type:'tick',
+                    disabled: true,
                     tooltip:'Update data',
                     handler:function (event, toolEl, panel) {
                         // Save button pressed - update the sitemap tree with the updated properties
@@ -197,16 +216,19 @@ Ext.define('openHAB.config.sitemapProperties', {
                 }
             ],
             viewConfig:{
-                markDirty:false
+                markDirty:true
             },
             listeners:{
+                propertychange:function (source, recordId, value, oldValue, eOpts) {
+                    propertySheet.getHeader().getTools()[0].enable();
+                }/*,
                 itemmouseenter:function (grid, record, item, index, e, eOpts) {
                     var name = record.get("name");
                     helpStatusText.setText(widgetHelp[name]);
                 },
                 itemmouseleave:function (grid, record, item, index, e, eOpts) {
-                    helpStatusText.setText("");
-                }
+                    helpStatusText.setStatus({text: ""});
+                }*/
             }
         });
 
@@ -556,6 +578,7 @@ Ext.define('openHAB.config.sitemapProperties', {
             }
 
             propertySheet.setSource(source, sourceConfig);
+            propertySheet.getHeader().getTools()[0].disable();
         }
     }
 })
