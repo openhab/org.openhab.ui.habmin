@@ -45,6 +45,10 @@ Installation
 * Place the org.openhab.io.rest.*.jar file into the addons directory (this is stored in the addons directory in the repository).
 * Remove the existing jar file starting with org.openhab.io.rest from the system/plugins directory.
 
+Optionally, in order to get the graphing to work, you need to also install a new core.persistence JAR. This includes a method to return data from a persistence query. This should work with any queryable persistence service, although I've only tried it with mySQL.
+* Place the org.openhab.core.persistence.*.jar file into the addons directory (this is stored in the addons directory in the repository).
+* Remove the existing jar file starting with org.openhab.core.persistence from the system/plugins directory.
+
 You will probably need to restart OpenHAB for the new REST interface to take affect.
 
 
