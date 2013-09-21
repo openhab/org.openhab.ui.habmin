@@ -98,6 +98,9 @@
 .x-tool-tick {
     background-image: url(../images/tick.png) !important;
 }
+.x-tool-cross {
+    background-image: url(../images/cross.png) !important;
+}
 .x-tool-disk {
     background-image: url(../images/disk.png) !important;
 }

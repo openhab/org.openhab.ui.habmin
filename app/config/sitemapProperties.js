@@ -292,6 +292,24 @@ Ext.define('openHAB.config.sitemapProperties', {
                                 return null;
                         }
                     }
+                },
+                {
+                    type:'cross',
+                    disabled:true,
+                    tooltip:'Delete this widget and its children',
+                    handler:function (event, toolEl, panel) {
+                        Ext.Msg.show({
+                            title:"Confirm Delete",
+                            msg:'Are you sure you want to delete the selected widget and all its children?',
+                            buttons:Ext.Msg.YESNO,
+                            config:{
+                                obj:this,
+                                name:sitemapName
+                            },
+                            fn:deleteWidget,
+                            icon:Ext.MessageBox.QUESTION
+                        });
+                    }
                 }
             ],
             viewConfig:{
@@ -645,6 +663,19 @@ Ext.define('openHAB.config.sitemapProperties', {
             });
         }
 
+        // Delete the currently selected widget
+        function deleteWidget(button, text, options) {
+            if (button !== 'yes')
+                return;
+
+            // Delete button pressed - update the sitemap tree
+            var node = sitemapTree.getSelectionModel().getSelection()[0];
+            if (node == null)
+                return;
+
+            node.parentNode.removeChild(node);
+        }
+
         function showWidgetProperties(widget) {
             var source = [];
             var properties = widgetConfig[widget.get("type")];
@@ -670,6 +701,8 @@ Ext.define('openHAB.config.sitemapProperties', {
                 return true;
             });
 
+            // Enable delete button
+            propertySheet.getHeader().getTools()[1].enable();
         }
     }
 })
