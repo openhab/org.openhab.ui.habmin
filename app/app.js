@@ -505,8 +505,6 @@ function createUI() {
             {name:'units'},
             {name:'format'},
             {name:'groups'},
-            {name:'bindings'},
-            {name:'persistence'},
             {name:'link'}
         ]
     });

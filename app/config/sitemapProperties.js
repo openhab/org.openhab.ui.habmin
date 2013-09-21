@@ -182,7 +182,7 @@ Ext.define('openHAB.config.sitemapProperties', {
                     }
                     else {
                         // If we get here, we're using an icon that isn't known to the REST service
-                        icon = '<img src="../images/"' + v + '.png" align="left" height="16">';
+                        icon = '<img src="../images/' + v + '.png" align="left" height="16">';
                         label = v + " (manually set)";
                     }
 

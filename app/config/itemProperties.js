@@ -42,7 +42,7 @@ Ext.define('openHAB.config.itemProperties', {
     header:false,
 
     initComponent:function () {
-        var thisItem;
+        var itemData;
 
         Ext.define('ItemIcons', {
             extend:'Ext.data.Model',
@@ -63,11 +63,8 @@ Ext.define('openHAB.config.itemProperties', {
                     disabled:true,
                     tooltip:'Cancel changes made to the item configuration',
                     handler:function () {
-                        toolbar.getComponent('cancel').disable();
-                        toolbar.getComponent('save').disable();
-
                         // Reset to the current data
-                        this.setItem(thisItem);
+                        updateItem(itemData);
                     }
                 },
                 {
@@ -78,35 +75,29 @@ Ext.define('openHAB.config.itemProperties', {
                     disabled:true,
                     tooltip:'Save changes to the item configuration',
                     handler:function () {
-                        var rec = itemConfigStore.findExact("name", thisItem);
-                        if (rec == -1)
-                            return;
-                        var item = itemConfigStore.getAt(rec);
-
-                        var jsonArray = {};
-                        jsonArray.model = item.get("model");
-                        jsonArray.binding = item.get("binding");
-                        jsonArray.groups = itemGroups.getSelected();
-
                         var prop = itemOptions.getSource();
                         if (prop == null)
                             return;
 
-                        jsonArray.type = prop.Type;
-                        jsonArray.name = prop.ItemName;
-                        jsonArray.icon = prop.Icon;
-                        jsonArray.label = prop.Label;
-                        jsonArray.units = prop.Units;
-                        jsonArray.format = prop.Format;
-                        jsonArray.map = prop.Map;
-//                        jsonArray.bindings = ;
+//                        itemData.model = ;
+//                        itemData.binding = item.get("binding");
+                        itemData.groups = itemGroups.getSelected();
+
+                        itemData.type = prop.Type;
+                        itemData.name = prop.ItemName;
+                        itemData.icon = prop.Icon;
+                        itemData.label = prop.Label;
+                        itemData.units = prop.Units;
+                        itemData.format = prop.Format;
+                        itemData.map = prop.Map;
+//                        itemData.bindings = ;
 
                         // Send the sitemap to openHAB
                         Ext.Ajax.request({
-                            url:"/rest/config/items/" + thisItem,
+                            url:"/rest/config/items/" + itemData.name,
                             headers:{'Accept':'application/json'},
                             method:'PUT',
-                            jsonData:jsonArray,
+                            jsonData:itemData,
                             success:function (response, opts) {
                                 Ext.MessageBox.show({
                                     msg:'Item configuration saved',
@@ -118,6 +109,13 @@ Ext.define('openHAB.config.itemProperties', {
                                 setTimeout(function () {
                                     Ext.MessageBox.hide();
                                 }, 2500);
+
+                                var json = Ext.decode(response.responseText);
+                                // If there's no config for this binding, records will be null
+                                if (json == null)
+                                    return;
+
+                                updateItem(json);
                             },
                             failure:function (result, request) {
                                 Ext.MessageBox.show({
@@ -151,11 +149,15 @@ Ext.define('openHAB.config.itemProperties', {
 
         graphTypeStore.loadData(graphTypes);
 
+        var helpStatusText = Ext.create('Ext.toolbar.TextItem', {text:''});
+        var statusBar = Ext.create('Ext.ux.StatusBar', {text:'-', items:[helpStatusText]});
+
         var itemOptions = Ext.create('Ext.grid.property.Grid', {
             title:'Properties',
             icon:'images/gear.png',
             itemId:'itemProperties',
             tbar:toolbar,
+            bbar:statusBar,
             hideHeaders:true,
             sortableColumns:false,
             nameColumnWidth:300,
@@ -191,8 +193,8 @@ Ext.define('openHAB.config.itemProperties', {
                         }
                         else {
                             // If we get here, we're using an icon that isn't known to the REST service
-                            icon = "../images/" + v + ".png";
-                            label = v + "  (manually set)";
+                            icon = '<img src="../images/' + v + '.png" align="left" height="16">';
+                            label = v + " (manually set)";
                         }
 
                         resp += '</div>' + v;
@@ -253,10 +255,8 @@ Ext.define('openHAB.config.itemProperties', {
                 },
                 Map:{
                     displayName:"Translation Map",
-//                    renderer:function (v) {
-//                    },
+
                     editor:Ext.create('Ext.form.ComboBox', {
-//                        store:graphTypeStore,
                         queryMode:'local',
                         typeAhead:false,
                         editable:true,
@@ -308,35 +308,44 @@ Ext.define('openHAB.config.itemProperties', {
 
         this.callParent();
 
-        function blah() {
+        // Class members.
+        this.setItem = function (itemName) {
 
+            bindingName = name;
+            Ext.Ajax.request({
+                url:'/rest/config/items/' + itemName,
+                timeout:5000,
+                method:'GET',
+                headers:{'Accept':'application/json'},
+                success:function (response, opts) {
+                    var json = Ext.decode(response.responseText);
+                    // If there's no config for this binding, records will be null
+                    if (json == null)
+                        return;
+
+                    updateItem(json);
+                }
+            });
         }
 
-        // Class members.
-        this.setItem = function (newItem) {
-            blah();
-            var item = itemConfigStore.findExact("name", newItem);
-            if (item == -1)
-                return;
-
-            thisItem = newItem;
-
-            var rec = itemConfigStore.getAt(item);
+        function updateItem(json) {
+            itemData = json;
+            statusBar.setText("Item: "+json.name);
 
             // Set the main item properties
-            itemOptions.setProperty("ItemName", rec.get('name'));
-            itemOptions.setProperty("Type", rec.get('type'));
-            if(rec.get('icon') != null)
-                itemOptions.setProperty("Icon", rec.get('icon'));
-            itemOptions.setProperty("Label", rec.get('label'));
-            itemOptions.setProperty("Units", rec.get('units'));
-            itemOptions.setProperty("Format", rec.get('format'));
-            itemOptions.setProperty("Map", rec.get('map'));
-            itemOptions.setProperty("Groups", rec.get('groups'));
+            itemOptions.setProperty("ItemName", json.name);
+            itemOptions.setProperty("Type", json.type);
+            if(json.icon != null)
+                itemOptions.setProperty("Icon", json.icon);
+            itemOptions.setProperty("Label", json.label);
+            itemOptions.setProperty("Units", json.units);
+            itemOptions.setProperty("Format", json.format);
+            itemOptions.setProperty("Map", json.map);
+            itemOptions.setProperty("Groups", json.groups);
 
             // Ensure the persistence is an array!
-            if(rec.get('persistence') != "") {
-                var persistenceIn = [].concat(rec.get('persistence'));
+            if(json.persistence != null) {
+                var persistenceIn = [].concat(json.persistence);
                 var persistenceOut = "";
 
                 for(var cnt = 0; cnt < persistenceIn.length; cnt++) {
@@ -350,20 +359,21 @@ Ext.define('openHAB.config.itemProperties', {
             itemOptions.setProperty("Persistence", persistenceOut);
 
             // Ensure the groups is an array!
-            var groups = [].concat(rec.get('groups'));
+            var groups = [].concat(json.groups);
 
             // Set the groups
             itemGroups.resetGroups();
             for(var cnt = 0; cnt < groups.length; cnt++)
                 itemGroups.setGroup(groups[cnt]);
 
-            var y = rec.get('groups');
-            var x = rec.get('bindings');
             // Ensure the groups is an array!
-            var bindings = [].concat(rec.get('bindings'));
+            var bindings = [].concat(json.bindings);
 
             // Set the binding strings
             itemBindings.setBindings(bindings);
+
+            toolbar.getComponent('cancel').disable();
+            toolbar.getComponent('save').disable();
         }
     }
 })

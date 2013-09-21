@@ -1,16 +1,16 @@
-<!-- Binding configuration for the TCP binding in openHAB -->
+<!-- Icon set configuration for openHAB  -->
 <iconset>
     <!-- Short name of this icon set -->
     <name>Standard</name>
-	<!-- Full label presented to the user -->
-	<description>Standard openHAB icons</description>
-	<!-- Size -->
+    <!-- Full label presented to the user -->
+    <description>Standard openHAB icons</description>
+    <!-- Size -->
     <height></height>
     <width></width>
     <!-- Author -->
-	<author></author>
-	<!-- License information -->
-	<license></license>
+    <author></author>
+    <!-- License information -->
+    <license></license>
 
     <!-- Icon list-->
     <icons>
@@ -264,6 +264,12 @@
             <menuicon>switch.png</menuicon>
             <name>switch</name>
             <label>Switch</label>
+            <description></description>
+        </icon>
+        <icon>
+            <menuicon>temperature.png</menuicon>
+            <name>temperature</name>
+            <label>Temperature</label>
             <description></description>
         </icon>
         <icon>

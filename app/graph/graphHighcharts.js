@@ -149,7 +149,7 @@ Ext.define('openHAB.graph.graphHighcharts', {
 
                     // If we have data, process it into the right format for highcharts
                     // This will probably run in parallel with the next channel being received
-                    if(json != null && json.datapoints > 1) {
+                    if(json != null) {
                         // Convert the format. Hopefully the openHAB json can be changed to make this unnecessary
                         var newSeries = [];
                         for (var i = 0; i < json.data.length; i++) {
@@ -159,8 +159,6 @@ Ext.define('openHAB.graph.graphHighcharts', {
                         }
                         rawData[chan].data = newSeries;
                     }
-
-                    break;
                 }
             }
 
@@ -188,13 +186,12 @@ Ext.define('openHAB.graph.graphHighcharts', {
             tot = 0;
 
             // Process all the data
-            var series = -1;
+            var series = 0;
             for (var chan = 0; chan < rawData.length; chan++) {
                 // Check if this channel has data
                 if(rawData[chan].data == null)
                     continue;
 
-                series++;
                 options.series[series] = {};
 
 //                    graphInfoItems[4 + s] = [];
@@ -217,7 +214,7 @@ Ext.define('openHAB.graph.graphHighcharts', {
 
                 options.series[series].data = rawData[chan].data;
                 // TODO: Use the item label, not name
-                options.series[series].name = rawData[chan].item;
+                options.series[series].name = rawData[chan].name;
                 options.series[series].yAxis = rawData[chan].yAxis;
 //                    options.series[s].color = '#FF0000';
                 //options.series[series].marker = true;

@@ -60,7 +60,8 @@ Ext.define('openHAB.config.bindingProperties', {
         }
 
         function resetBindingProperties() {
-            var records = bindingConfig.generalconfig;
+            // Ensure config records are an array
+            var records = [].concat(bindingConfig.generalconfig);
 
             // Add the records into the source/sourceConfig arrays
             source = [];
@@ -142,7 +143,7 @@ Ext.define('openHAB.config.bindingProperties', {
 
         var bbDescription = Ext.create('Ext.toolbar.TextItem', {text:''});
         var bbProperties = Ext.create('Ext.ux.StatusBar', {
-            text:'Binding: ' + this.binding,
+            text:'-',
             items:[bbDescription]
         });
 
@@ -206,6 +207,32 @@ Ext.define('openHAB.config.bindingProperties', {
 
         this.callParent();
 
+        function updateBinding(json) {
+            // Remember the configuration
+            bindingConfig = json;
+
+            bbProperties.setText("Binding: " + bindingName);
+
+            // If there are interface configurations available, then enable the "add interface" button
+            if (json.interfaceconfig != null)
+                toolbar.getComponent('add').enable();
+            else
+                toolbar.getComponent('add').disable();
+
+            if (json.generalconfig == null)
+                return;
+
+            resetBindingProperties();
+
+            // Handle special bindings
+            if (this.binding == 'zwave') {
+                var zwaveDevices = Ext.create('openHAB.config.zwaveDeviceList');
+                var zwaveNetwork = Ext.create('openHAB.config.zwaveNetwork');
+
+                tabs.add([zwaveDevices, zwaveNetwork]);
+            }
+        }
+
         // Class members.
         this.setBinding = function (name) {
             // Sanity check that a binding name has been specified!
@@ -226,27 +253,7 @@ Ext.define('openHAB.config.bindingProperties', {
                     if (json == null)
                         return;
 
-                    // Remember the configuration
-                    bindingConfig = json;
-
-                    // If there are interface configurations available, then enable the "add interface" button
-                    if (json.interfaceconfig != null)
-                        toolbar.getComponent('add').enable();
-                    else
-                        toolbar.getComponent('add').disable();
-
-                    if (json.generalconfig == null)
-                        return;
-
-                    resetBindingProperties();
-
-                    // Handle special bindings
-                    if (this.binding == 'zwave') {
-                        var zwaveDevices = Ext.create('openHAB.config.zwaveDeviceList');
-                        var zwaveNetwork = Ext.create('openHAB.config.zwaveNetwork');
-
-                        tabs.add([zwaveDevices, zwaveNetwork]);
-                    }
+                    updateBinding(json);
                 }
             });
         }
@@ -290,6 +297,12 @@ Ext.define('openHAB.config.bindingProperties', {
                     setTimeout(function () {
                         Ext.MessageBox.hide();
                     }, 2500);
+
+                    var json = Ext.decode(response.responseText);
+                    // If there's no config for this binding, records will be null
+                    if (json == null)
+                        return;
+                    updateBinding(json);
                 },
                 failure:function (result, request) {
                     Ext.MessageBox.show({
