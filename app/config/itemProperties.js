@@ -177,32 +177,42 @@ Ext.define('openHAB.config.itemProperties', {
                 },
                 Icon:{
                     renderer:function (v) {
+                        if(v == "")
+                            return "";
                         var icon="";
+                        var label="";
                         var resp = '<div width="30">';
-                        var ref = itemConfigStore.findExact("icon", v);
+                        var ref = itemIconStore.findExact("name", v);
                         if(ref != -1) {
-                            if(itemConfigStore.getAt(ref).get('icon') != "")
-                                icon = '<img src="../images/'+itemConfigStore.getAt(ref).get('icon')+'.png" align="left" height="16">';
+                            if(itemIconStore.getAt(ref).get('menuicon') != "")
+                                icon = '<img src="../images/'+itemIconStore.getAt(ref).get('menuicon')+'" align="left" height="16">';
+                            if(itemIconStore.getAt(ref).get('label') != "")
+                                label = itemIconStore.getAt(ref).get('label');
+                        }
+                        else {
+                            // If we get here, we're using an icon that isn't known to the REST service
+                            icon = "../images/" + v + ".png";
+                            label = v + "  (manually set)";
                         }
 
                         resp += '</div>' + v;
-                        return '<div>' + icon + '</div><div style="margin-left:20px">' + v +'</div>';
+                        return '<div>' + icon + '</div><div style="margin-left:20px">' + label +'</div>';
                     },
                     editor:Ext.create('Ext.form.ComboBox', {
-                        store:{model:'ItemIcons', data:iconTypeArray},
+                        store:itemIconStore,
                         queryMode:'local',
                         typeAhead:false,
                         editable:false,
-                        displayField:'name',
-                        valueField:'id',
+                        displayField:'label',
+                        valueField:'name',
                         forceSelection:true,
                         editable:false,
                         allowBlank:false,
                         listConfig:{
                             getInnerTpl:function () {
                                 var tpl = '<div>' +
-                                    '<img src="{icon}" align="left" height="16">&nbsp;&nbsp;' +
-                                    '{name}</div>';
+                                    '<img src="../images/{menuicon}" align="left" height="16">&nbsp;&nbsp;' +
+                                    '{label}</div>';
                                 return tpl;
                             }
                         }

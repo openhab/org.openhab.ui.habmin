@@ -94,6 +94,7 @@ var statusTooltip;
 // Global data stores from openHAB
 var itemStore;
 var itemTypeStore;
+var itemIconStore;
 var widgetStore;
 var sitemapStore;
 var bindingStore;
@@ -439,6 +440,37 @@ function createUI() {
         autoLoad:true
     });
 
+
+    //======= Item Icon Store
+    Ext.define('ItemIconModel', {
+        extend:'Ext.data.Model',
+        fields:[
+            {name:'name'},
+            {name:'menuicon'},
+            {name:'label'},
+            {name:'description'},
+            {name:'height'},
+            {name:'width'}
+        ]
+    });
+
+    itemIconStore = Ext.create('Ext.data.ArrayStore', {
+        model:'ItemIconModel',
+        proxy:{
+            type:'rest',
+            url:'/rest/config/icons',
+            reader:{
+                type:'json',
+                root:'icon'
+            },
+            headers:{'Accept':'application/json'},
+            pageParam:undefined,
+            startParam:undefined,
+            sortParam:undefined,
+            limitParam:undefined
+        },
+        autoLoad:true
+    });
 
     //======= Widgets Store
     Ext.define('WidgetsModel', {

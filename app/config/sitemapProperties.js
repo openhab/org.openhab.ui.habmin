@@ -60,23 +60,40 @@ Ext.define('openHAB.config.sitemapProperties', {
             Webview:["label", "url", "height", "itemicon"]
         };
 
+        var widgetItemTypes = {
+            Sitemap:[""],
+            Chart:["NumberItem", "SwitchItem"],
+            Colorpicker:[""],
+            Frame:["GroupItem", ""],
+            Group:["GroupItem"],
+            Image:[""],
+            List:[""],
+            Switch:["SwitchItem"],
+            Selection:[""],
+            Setpoint:["NumberItem"],
+            Slider:["NumberItem"],
+            Text:["GroupItem", "NumberItem", "StringItem"],
+            Video:[""],
+            Webview:[""]
+        };
+
         var widgetHelp = {
             command:"?",
             height:"Set the height of the widget in the UI",
-            item: "Select the item attached to this widget",
-            itemicon: "Override the item icon. Leave blank to use the default for this item",
-            label: "Override the item label. Leave blank to use the default for this item",
-            mappings: "Override the default map data. Leave blank to use the default for this item",
-            maxValue: "Set the maximum allowable value",
-            minValue: "Set the minimum allowable value",
-            period: "?",
-            refresh: "?",
-            sendFrequency: "?",
+            item:"Select the item attached to this widget",
+            itemicon:"Override the item icon. Leave blank to use the default for this item",
+            label:"Override the item label. Leave blank to use the default for this item",
+            mappings:"Override the default map data. Leave blank to use the default for this item",
+            maxValue:"Set the maximum allowable value",
+            minValue:"Set the minimum allowable value",
+            period:"?",
+            refresh:"?",
+            sendFrequency:"?",
             separator:"?",
-            service: "?",
-            step: "Set the step value",
-            switchSupport: "?",
-            url: "Set the URL attached to this widget"
+            service:"?",
+            step:"Set the step value",
+            switchSupport:"?",
+            url:"Set the URL attached to this widget"
         };
 
         var configTranslate = {
@@ -86,6 +103,24 @@ Ext.define('openHAB.config.sitemapProperties', {
 
         var sitemapName;
 
+        var itemComboStore = Ext.create('Ext.data.ArrayStore', {
+            model:'ItemConfigModel',
+            proxy:{
+                type:'rest',
+                url:'/rest/config/items',
+                reader:{
+                    type:'json',
+                    root:'item'
+                },
+                headers:{'Accept':'application/json'},
+                pageParam:undefined,
+                startParam:undefined,
+                sortParam:undefined,
+                limitParam:undefined
+            },
+            autoLoad:true
+        });
+
         var configTree = [];
         var sourceConfig = [];
         sourceConfig = {
@@ -93,20 +128,20 @@ Ext.define('openHAB.config.sitemapProperties', {
                 displayName:"Item",
                 renderer:function (v) {
                     var icon = "";
-                    var id = itemConfigStore.findExact("name", v);
-                    if(id != -1) {
-                        var type = itemConfigStore.getAt(id).get('type');
-                        if(type != "") {
+                    var id = itemComboStore.findExact("name", v);
+                    if (id != -1) {
+                        var type = itemComboStore.getAt(id).get('type');
+                        if (type != "") {
                             id = itemTypeStore.findExact("name", type);
-                            if(id != -1)
-                                icon = '<img src="'+itemTypeStore.getAt(id).get('icon')+'" align="left" height="16">';
+                            if (id != -1)
+                                icon = '<img src="' + itemTypeStore.getAt(id).get('icon') + '" align="left" height="16">';
                         }
                     }
 
-                    return '<div>' + icon + '</div><div style="margin-left:20px">' + v +'</div>';
+                    return '<div>' + icon + '</div><div style="margin-left:20px">' + v + '</div>';
                 },
                 editor:Ext.create('Ext.form.ComboBox', {
-                    store:itemConfigStore,
+                    store:itemComboStore,
                     queryMode:'local',
                     typeAhead:false,
                     editable:false,
@@ -114,22 +149,66 @@ Ext.define('openHAB.config.sitemapProperties', {
                     valueField:'name',
                     forceSelection:true,
                     editable:false,
-                    allowBlank:false/*,
-                    listConfig:{
-                        getInnerTpl:function () {
-                            var icon = "";
-                            var id = itemTypeStore.findExact("name");
-                            if(id != -1) {
-                                if(itemTypeStore.getAt(ref).get('icon') != "")
-                                    icon = '<img src="../images/'+itemTypeStore.getAt(ref).get('icon')+'.png" align="left" height="16">';
-                            }
+                    allowBlank:false
+                    /*,
+                     listConfig:{
+                     getInnerTpl:function () {
+                     var icon = "";
+                     var id = itemTypeStore.findExact("name");
+                     if(id != -1) {
+                     if(itemTypeStore.getAt(ref).get('icon') != "")
+                     icon = '<img src="../images/'+itemTypeStore.getAt(ref).get('icon')+'.png" align="left" height="16">';
+                     }
 
-                            return '<div>' + icon + '</div><div style="margin-left:20px">' + v +'</div>';
-                        }
-                    }*/
+                     return '<div>' + icon + '</div><div style="margin-left:20px">' + v +'</div>';
+                     }
+                     }*/
                 })
             },
-            itemicon:{displayName:"Icon"},
+            itemicon:{
+                displayName:"Icon",
+                renderer:function (v) {
+                    if(v == "")
+                        return "";
+                    var icon = "";
+                    var label = "";
+                    var resp = '<div width="30">';
+                    var ref = itemIconStore.findExact("name", v);
+                    if (ref != -1) {
+                        if (itemIconStore.getAt(ref).get('menuicon') != "")
+                            icon = '<img src="../images/' + itemIconStore.getAt(ref).get('menuicon') + '" align="left" height="16">';
+                        if (itemIconStore.getAt(ref).get('label') != "")
+                            label = itemIconStore.getAt(ref).get('label');
+                    }
+                    else {
+                        // If we get here, we're using an icon that isn't known to the REST service
+                        icon = "../images/" + v + ".png";
+                        label = v + "  (manually set)";
+                    }
+
+                    resp += '</div>' + v;
+                    return '<div>' + icon + '</div><div style="margin-left:20px">' + label + '</div>';
+                },
+                editor:Ext.create('Ext.form.ComboBox', {
+                    store:itemIconStore,
+                    queryMode:'local',
+                    typeAhead:false,
+                    editable:false,
+                    displayField:'label',
+                    valueField:'name',
+                    forceSelection:true,
+                    editable:false,
+                    allowBlank:false,
+                    listConfig:{
+                        getInnerTpl:function () {
+                            var tpl = '<div>' +
+                                '<img src="../images/{menuicon}" align="left" height="16">&nbsp;&nbsp;' +
+                                '{label}</div>';
+                            return tpl;
+                        }
+                    }
+                })
+            },
             label:{displayName:"Label"},
             mapping:{displayName:"Mapping"},
             maxValue:{displayName:"Maximum"},
@@ -187,7 +266,7 @@ Ext.define('openHAB.config.sitemapProperties', {
             tools:[
                 {
                     type:'tick',
-                    disabled: true,
+                    disabled:true,
                     tooltip:'Update data',
                     handler:function (event, toolEl, panel) {
                         // Save button pressed - update the sitemap tree with the updated properties
@@ -222,13 +301,13 @@ Ext.define('openHAB.config.sitemapProperties', {
                 propertychange:function (source, recordId, value, oldValue, eOpts) {
                     propertySheet.getHeader().getTools()[0].enable();
                 }/*,
-                itemmouseenter:function (grid, record, item, index, e, eOpts) {
-                    var name = record.get("name");
-                    helpStatusText.setText(widgetHelp[name]);
-                },
-                itemmouseleave:function (grid, record, item, index, e, eOpts) {
-                    helpStatusText.setStatus({text: ""});
-                }*/
+                 itemmouseenter:function (grid, record, item, index, e, eOpts) {
+                 var name = record.get("name");
+                 helpStatusText.setText(widgetHelp[name]);
+                 },
+                 itemmouseleave:function (grid, record, item, index, e, eOpts) {
+                 helpStatusText.setStatus({text: ""});
+                 }*/
             }
         });
 
@@ -496,7 +575,7 @@ Ext.define('openHAB.config.sitemapProperties', {
                         return;
 
                     sitemapName = newSitemap;
-                    statusBar.setStatus({text: "Sitemap: " + newSitemap});
+                    statusBar.setStatus({text:"Sitemap: " + newSitemap});
 
                     // Create the root item
                     var sitemapRoot = [];
@@ -579,6 +658,17 @@ Ext.define('openHAB.config.sitemapProperties', {
 
             propertySheet.setSource(source, sourceConfig);
             propertySheet.getHeader().getTools()[0].disable();
+
+            itemComboStore.filterBy(function myfilter(record) {
+                var t = widget.get("type");
+                var x = widgetItemTypes[widget.get("type")];
+                var a = record.get("type");
+
+                if (widgetItemTypes[widget.get("type")].indexOf(record.get("type")) == -1)
+                    return false;
+                return true;
+            });
+
         }
     }
 })
