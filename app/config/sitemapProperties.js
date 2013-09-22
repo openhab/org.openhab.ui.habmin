@@ -61,20 +61,20 @@ Ext.define('openHAB.config.sitemapProperties', {
         };
 
         var widgetItemTypes = {
-            Sitemap:[""],
-            Chart:["NumberItem", "SwitchItem"],
-            Colorpicker:[""],
-            Frame:["GroupItem", ""],
-            Group:["GroupItem"],
-            Image:[""],
-            List:[""],
-            Switch:["SwitchItem"],
-            Selection:[""],
+            Sitemap:["ColorItem","ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
+            Chart:["ColorItem","ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
+            Colorpicker:["ColorItem","ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
+            Frame:["GroupItem", "StringItem"],
+            Group:["GroupItem", "StringItem"],
+            Image:["ColorItem","ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
+            List:["ColorItem","ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
+            Switch:["DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
+            Selection:["ColorItem","ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
             Setpoint:["NumberItem"],
-            Slider:["NumberItem"],
-            Text:["GroupItem", "NumberItem", "StringItem"],
-            Video:[""],
-            Webview:[""]
+            Slider:["ColorItem","ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
+            Text:["ColorItem","ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
+            Video:["ColorItem","ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
+            Webview:["ColorItem","ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"]
         };
 
         var widgetHelp = {
@@ -122,8 +122,7 @@ Ext.define('openHAB.config.sitemapProperties', {
         });
 
         var configTree = [];
-        var sourceConfig = [];
-        sourceConfig = {
+        var sourceConfig = {
             item:{
                 displayName:"Item",
                 renderer:function (v) {
@@ -213,6 +212,8 @@ Ext.define('openHAB.config.sitemapProperties', {
             mapping:{displayName:"Mapping"},
             maxValue:{displayName:"Maximum"},
             minValue:{displayName:"Minimum"},
+            service:{displayName:"Service"},
+            step:{displayName:"Step"},
             command:{displayName:"Command"},
             mappings:{displayName:"Mappings"},
             sendFrequency:{displayName:"Send Frequency"},
