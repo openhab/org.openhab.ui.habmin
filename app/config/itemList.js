@@ -118,18 +118,11 @@ Ext.define('openHAB.config.itemList', {
                     if (record == null)
                         return;
 
-                    var newName = record.get('name');
                     var newProperties = null;
-                    if (record.get("type") == "GroupItem") {
-                        // Create a new groupProperties
-                        newProperties = Ext.create('openHAB.config.groupProperties');
-                        newProperties.setItem(newName);
-                    }
-                    else {
-                        // Create a new itemProperties
-                        newProperties = Ext.create('openHAB.config.itemProperties');
-                        newProperties.setItem(newName);
-                    }
+
+                    // Create a new itemProperties
+                    newProperties = Ext.create('openHAB.config.itemProperties');
+                    newProperties.setItem(record.get('name'));
 
                     if(newProperties != null)
                         Ext.getCmp('configPropertyContainer').setNewProperty(newProperties);

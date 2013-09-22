@@ -70,7 +70,6 @@ Ext.require([
     'openHAB.config.bindingList',
     'openHAB.config.bindingProperties',
     'openHAB.config.groupTree',
-    'openHAB.config.groupProperties',
     'openHAB.config.itemBindings',
     'openHAB.config.itemList',
     'openHAB.config.itemProperties',
@@ -624,16 +623,10 @@ function createUI() {
             },
             tabchange:function (tabPanel, newCard, oldCard, eOpts) {
                 if (newCard.id == 'maintabGraph') {
-                    itemConfigStore.filterBy(function myfilter(record) {
-                        if(record.get("persistence") == "")
-                            return false;
-                        return true;
-                    });
                 }
                 else if (newCard.id == 'maintabSystem') {
                 }
                 else if (newCard.id == 'maintabConfig') {
-                    itemConfigStore.clearFilter();
                 }
             }
         }

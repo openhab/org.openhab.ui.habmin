@@ -42,6 +42,117 @@ Ext.define('openHAB.config.itemProperties', {
     header:false,
 
     initComponent:function () {
+        var itemHelp = {
+            ItemName:"Set the item name.",
+            Type:"Set the item type.",
+            Label:"Specify the default label used in the UI.",
+            Units:"Specify the unit for this item. This is printed after the value.",
+            Format:"Specify the default format that is used for printing values.",
+            Map:"Define the mapping list applicable for the item.",
+            Icon:"Define the default icon for the item. This is used for the UI.",
+            Groups:"List groups that this item is entered. Groups must be changed in the 'Groups' tab.",
+            Persistence:"Lists persistence services configured for this item."
+        };
+
+        var sourceConfig = {
+            ItemName:{
+                displayName:"Item Name"
+            },
+            Icon:{
+                renderer:function (v) {
+                    if (v == "")
+                        return "";
+                    var icon = "";
+                    var label = "";
+                    var resp = '<div width="30">';
+                    var ref = itemIconStore.findExact("name", v);
+                    if (ref != -1) {
+                        if (itemIconStore.getAt(ref).get('menuicon') != "")
+                            icon = '<img src="../images/' + itemIconStore.getAt(ref).get('menuicon') + '" align="left" height="16">';
+                        if (itemIconStore.getAt(ref).get('label') != "")
+                            label = itemIconStore.getAt(ref).get('label');
+                    }
+                    else {
+                        // If we get here, we're using an icon that isn't known to the REST service
+                        icon = '<img src="../images/' + v + '.png" align="left" height="16">';
+                        label = v + " (manually set)";
+                    }
+
+                    resp += '</div>' + v;
+                    return '<div>' + icon + '</div><div style="margin-left:20px">' + label + '</div>';
+                },
+                editor:Ext.create('Ext.form.ComboBox', {
+                    store:itemIconStore,
+                    queryMode:'local',
+                    typeAhead:false,
+                    editable:false,
+                    displayField:'label',
+                    valueField:'name',
+                    forceSelection:true,
+                    editable:false,
+                    allowBlank:false,
+                    listConfig:{
+                        getInnerTpl:function () {
+                            var tpl = '<div>' +
+                                '<img src="../images/{menuicon}" align="left" height="16">&nbsp;&nbsp;' +
+                                '{label}</div>';
+                            return tpl;
+                        }
+                    }
+                })
+            },
+            Groups:{
+            },
+            Type:{
+                displayName:"Item Type",
+                renderer:function (v) {
+                    var ref = itemTypeStore.findExact("name", v);
+                    if (ref == -1)
+                        return;
+                    var icon = itemTypeStore.getAt(ref).get("icon");
+                    return '<div>' +
+                        '<img src="' + icon + '" align="left" height="16" width:"46">&nbsp;&nbsp;' +
+                        v + '</div>';
+                },
+                editor:Ext.create('Ext.form.ComboBox', {
+                    store:itemTypeStore,
+                    queryMode:'local',
+                    typeAhead:false,
+                    editable:false,
+                    displayField:'name',
+                    valueField:'name',
+                    forceSelection:true,
+                    editable:false,
+                    allowBlank:false,
+                    listConfig:{
+                        getInnerTpl:function () {
+                            var tpl = '<div>' +
+                                '<img src="{icon}" align="left" height="16" width:"16";>&nbsp;&nbsp;' +
+                                '{name}</div>';
+                            return tpl;
+                        }
+                    }
+                })
+            },
+            Map:{
+                displayName:"Translation Map",
+
+                editor:Ext.create('Ext.form.ComboBox', {
+                    queryMode:'local',
+                    typeAhead:false,
+                    editable:true,
+                    displayField:'name',
+                    valueField:'id'
+                })
+            },
+            Persistence:{
+                displayName:"Persistence"
+            },
+            Groups:{
+                displayName:"Groups"
+            }
+        };
+
         var itemData;
 
         Ext.define('ItemIcons', {
@@ -79,7 +190,6 @@ Ext.define('openHAB.config.itemProperties', {
                         if (prop == null)
                             return;
 
-//                        itemData.model = ;
 //                        itemData.binding = item.get("binding");
                         itemData.groups = itemGroups.getSelected();
 
@@ -157,130 +267,32 @@ Ext.define('openHAB.config.itemProperties', {
             icon:'images/gear.png',
             itemId:'itemProperties',
             tbar:toolbar,
-            bbar:statusBar,
             hideHeaders:true,
             sortableColumns:false,
             nameColumnWidth:300,
             split:true,
-            source:{
-                ItemName:"",
-                Type:"",
-                Label:"",
-                Units:"",
-                Format:"",
-                Map:"",
-                Icon:"",
-                Groups:"",
-                Persistence:""
-            },
-            sourceConfig:{
-                ItemName:{
-                    displayName:"Item Name"
-                },
-                Icon:{
-                    renderer:function (v) {
-                        if(v == "")
-                            return "";
-                        var icon="";
-                        var label="";
-                        var resp = '<div width="30">';
-                        var ref = itemIconStore.findExact("name", v);
-                        if(ref != -1) {
-                            if(itemIconStore.getAt(ref).get('menuicon') != "")
-                                icon = '<img src="../images/'+itemIconStore.getAt(ref).get('menuicon')+'" align="left" height="16">';
-                            if(itemIconStore.getAt(ref).get('label') != "")
-                                label = itemIconStore.getAt(ref).get('label');
-                        }
-                        else {
-                            // If we get here, we're using an icon that isn't known to the REST service
-                            icon = '<img src="../images/' + v + '.png" align="left" height="16">';
-                            label = v + " (manually set)";
-                        }
-
-                        resp += '</div>' + v;
-                        return '<div>' + icon + '</div><div style="margin-left:20px">' + label +'</div>';
-                    },
-                    editor:Ext.create('Ext.form.ComboBox', {
-                        store:itemIconStore,
-                        queryMode:'local',
-                        typeAhead:false,
-                        editable:false,
-                        displayField:'label',
-                        valueField:'name',
-                        forceSelection:true,
-                        editable:false,
-                        allowBlank:false,
-                        listConfig:{
-                            getInnerTpl:function () {
-                                var tpl = '<div>' +
-                                    '<img src="../images/{menuicon}" align="left" height="16">&nbsp;&nbsp;' +
-                                    '{label}</div>';
-                                return tpl;
-                            }
-                        }
-                    })
-                },
-                Groups:{
-                },
-                Type:{
-                    displayName:"Item Type",
-                    renderer:function (v) {
-                        var ref = itemTypeStore.findExact("name", v);
-                        if (ref == -1)
-                            return;
-                        var icon = itemTypeStore.getAt(ref).get("icon");
-                        return '<div>' +
-                            '<img src="' + icon + '" align="left" height="16" width:"46">&nbsp;&nbsp;' +
-                            v + '</div>';
-                    },
-                    editor:Ext.create('Ext.form.ComboBox', {
-                        store:itemTypeStore,
-                        queryMode:'local',
-                        typeAhead:false,
-                        editable:false,
-                        displayField:'name',
-                        valueField:'name',
-                        forceSelection:true,
-                        editable:false,
-                        allowBlank:false,
-                        listConfig:{
-                            getInnerTpl:function () {
-                                var tpl = '<div>' +
-                                    '<img src="{icon}" align="left" height="16" width:"16";>&nbsp;&nbsp;' +
-                                    '{name}</div>';
-                                return tpl;
-                            }
-                        }
-                    })
-                },
-                Map:{
-                    displayName:"Translation Map",
-
-                    editor:Ext.create('Ext.form.ComboBox', {
-                        queryMode:'local',
-                        typeAhead:false,
-                        editable:true,
-                        displayField:'name',
-                        valueField:'id'
-                    })
-                }
-            },
             viewConfig:{
-                markDirty:false
+                markDirty:true
             },
             listeners:{
                 propertychange:function (source, recordId, value, oldValue, eOpts) {
                     toolbar.getComponent('cancel').enable();
                     toolbar.getComponent('save').enable();
-
                 },
-                beforeedit : function(editor, e) {
+                beforeedit:function (editor, e) {
                     var rec = e.record;
                     // Make some properties read-only
                     if (rec.get('name') == 'Groups')
-                        e.cancel=true;
+                        e.cancel = true;
                     if (rec.get('name') == 'Persistence')
-                        e.cancel=true;
+                        e.cancel = true;
+                },
+                itemmouseenter:function (grid, record, item, index, e, eOpts) {
+                    var name = record.get("name");
+                    helpStatusText.setText(itemHelp[name]);
+                },
+                itemmouseleave:function (grid, record, item, index, e, eOpts) {
+                    helpStatusText.setText("");
                 }
             }
         });
@@ -292,13 +304,28 @@ Ext.define('openHAB.config.itemProperties', {
         // Create the tab container for the item configuration
         var tabs = Ext.create('Ext.tab.Panel', {
             layout:'fit',
+            bbar:statusBar,
             border:false,
             items:[itemOptions, itemGroups, itemBindings],
-            listeners: {
+            listeners:{
                 beforetabchange:function (tabPanel, newCard, oldCard, eOpts) {
                     // Detect if we've changed view so we can collate the data from the sub-tabs
                     if (newCard.itemId == 'itemProperties') {
-                        itemOptions.setProperty("Groups", itemGroups.getSelected());
+                        // Only update the property grid if it's changed.
+                        // Otherwise the cell gets marked dirty when it's not!
+                        var newGroups = itemGroups.getSelected();
+                        if (itemData.groups != newGroups) {
+                            var groupsOut = "";
+                            newGroups = [].concat(newGroups);
+                            for (var cnt = 0; cnt < newGroups.length; cnt++) {
+                                itemGroups.setGroup(newGroups[cnt]);
+                                if(groupsOut.length != 0)
+                                    groupsOut += ", ";
+                                groupsOut += newGroups[cnt];
+                            }
+
+                            itemOptions.setProperty("Groups", groupsOut);
+                        }
                     }
                 }
             }
@@ -310,8 +337,6 @@ Ext.define('openHAB.config.itemProperties', {
 
         // Class members.
         this.setItem = function (itemName) {
-
-            bindingName = name;
             Ext.Ajax.request({
                 url:'/rest/config/items/' + itemName,
                 timeout:5000,
@@ -330,43 +355,59 @@ Ext.define('openHAB.config.itemProperties', {
 
         function updateItem(json) {
             itemData = json;
-            statusBar.setText("Item: "+json.name);
+            statusBar.setText("Item: " + json.name);
 
             // Set the main item properties
-            itemOptions.setProperty("ItemName", json.name);
-            itemOptions.setProperty("Type", json.type);
-            if(json.icon != null)
-                itemOptions.setProperty("Icon", json.icon);
-            itemOptions.setProperty("Label", json.label);
-            itemOptions.setProperty("Units", json.units);
-            itemOptions.setProperty("Format", json.format);
-            itemOptions.setProperty("Map", json.map);
-            itemOptions.setProperty("Groups", json.groups);
+            var source = {};
+            source.ItemName = setValue(json.name);
+            source.Type = setValue(json.type);
+            source.Icon = setValue(json.icon);
+            source.Label = setValue(json.label);
+            source.Units = setValue(json.units);
+            source.Format = setValue(json.format);
+            source.Map = setValue(json.map);
 
             // Ensure the persistence is an array!
-            if(json.persistence != null) {
+            var persistenceOut = "";
+            if (json.persistence != null) {
                 var persistenceIn = [].concat(json.persistence);
-                var persistenceOut = "";
 
-                for(var cnt = 0; cnt < persistenceIn.length; cnt++) {
+                for (var cnt = 0; cnt < persistenceIn.length; cnt++) {
                     persistenceOut += persistenceIn[cnt].service;
-                    if(persistenceIn[cnt].strategies != null)
+                    if (persistenceIn[cnt].strategies != null)
                         persistenceOut += "[" + persistenceIn[cnt].strategies + "] ";
                     else
                         persistenceOut += "[default] ";
                 }
             }
-            itemOptions.setProperty("Persistence", persistenceOut);
+            source.Persistence = persistenceOut;
 
             // Ensure the groups is an array!
             var groups = [].concat(json.groups);
 
             // Set the groups
+            var groupsOut = "";
             itemGroups.resetGroups();
-            for(var cnt = 0; cnt < groups.length; cnt++)
+            for (var cnt = 0; cnt < groups.length; cnt++) {
                 itemGroups.setGroup(groups[cnt]);
+                if(groupsOut.length != 0)
+                    groupsOut += ", ";
+                groupsOut += groups[cnt];
+            }
 
-            // Ensure the groups is an array!
+            source.Groups = setValue(groupsOut);
+
+            // If this is a group, remove all non applicable properties
+            if(json.type == "GroupItem") {
+                // Block the "Bindings" tab
+                tabs.remove(itemBindings, true);
+                // TODO: Maybe nothing? Needs to account for active groups!
+            }
+
+            // Update the property grid
+            itemOptions.setSource(source, sourceConfig);
+
+            // Ensure the bindings is an array!
             var bindings = [].concat(json.bindings);
 
             // Set the binding strings
@@ -374,6 +415,13 @@ Ext.define('openHAB.config.itemProperties', {
 
             toolbar.getComponent('cancel').disable();
             toolbar.getComponent('save').disable();
+
+            // Helper function to make above code more readable
+            function setValue(val) {
+                if (val == null)
+                    return "";
+                return val;
+            }
         }
     }
 })
