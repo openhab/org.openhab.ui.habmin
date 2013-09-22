@@ -31,13 +31,21 @@ While HABmin is a supporting project to OpenHAB,  providing access to OpenHAB's 
 
 
 ###Status
-The project is just getting started. Currently implemented is the graphing of data from the persistence store and a lot of the initial user interface has been boilerplated and some work has started on the REST interface for configuring bindings.
+The project is just getting started. Currently implemented are the following -:
+* Graphing of data from the persistence store
+* Sitemap editor
+* General binding configuration (ie binding configuration in the openhab.cfg file)
+* OSGI bundle status viewer
+
+Additionally, lot of the initial user interface has been boilerplated and some work has started on the REST interface for configuring bindings.
 
 Technology
 ----------
 HABmin is an open source project. It makes use of a number of libraries under GPL license. The following major libraries are used -:
 * ExtJS from Sencha
 * Highcharts from Highsoft
+
+![Bundles Screen](https://raw.github.com/wiki/cdjackson/HABmin/habmin_systembundles.png)
 
 Installation
 ------------
