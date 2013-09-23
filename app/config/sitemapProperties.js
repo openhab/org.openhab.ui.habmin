@@ -619,6 +619,9 @@ Ext.define('openHAB.config.sitemapProperties', {
                         if (iterationCnt == 8)
                             return;
 
+                        // Ensure tree is an array!
+                        tree = [].concat(tree);
+
                         // Loop through the configuration
                         var numWidgets = tree.length;
                         for (var iItem = 0; iItem < numWidgets; ++iItem) {
