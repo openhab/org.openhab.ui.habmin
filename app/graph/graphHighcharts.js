@@ -126,7 +126,9 @@ Ext.define('openHAB.graph.graphHighcharts', {
             toolbar.getComponent('viewMonth').enable();
             toolbar.getComponent('viewYear').enable();
             toolbar.getComponent('info').enable();
-        };
+        }
+
+        ;
 
         function addGraphData(item, json) {
             // Remember the time of the last data update
@@ -143,28 +145,33 @@ Ext.define('openHAB.graph.graphHighcharts', {
 
             // Find this channel in rawData
             for (var chan = 0; chan < rawData.length; chan++) {
-                if(rawData[chan].item == item) {
+                if (rawData[chan].item == item) {
                     // Mark that we've received this channel
                     rawData[chan].received = true;
 
                     // If we have data, process it into the right format for highcharts
                     // This will probably run in parallel with the next channel being received
-                    if(json != null) {
-                        // Convert the format. Hopefully the openHAB json can be changed to make this unnecessary
-                        var newSeries = [];
-                        for (var i = 0; i < json.data.length; i++) {
-                            newSeries[i] = [];
-                            newSeries[i][0] = parseInt(json.data[i].time);
-                            newSeries[i][1] = parseFloat(json.data[i].value);
+                    if (json != null) {
+                        if (json.datapoints < 2) {
+
                         }
-                        rawData[chan].data = newSeries;
+                        else {
+                            // Convert the format. Hopefully the openHAB json can be changed to make this unnecessary
+                            var newSeries = [];
+                            for (var i = 0; i < json.datapoints; i++) {
+                                newSeries[i] = [];
+                                newSeries[i][0] = parseInt(json.data[i].time);
+                                newSeries[i][1] = parseFloat(json.data[i].value);
+                            }
+                            rawData[chan].data = newSeries;
+                        }
                     }
                 }
             }
 
             // Check if all requests have completed
             for (var chan = 0; chan < rawData.length; chan++) {
-                if(rawData[chan].received == false)
+                if (rawData[chan].received == false)
                     return;
             }
 
@@ -186,12 +193,13 @@ Ext.define('openHAB.graph.graphHighcharts', {
             tot = 0;
 
             // Process all the data
-            var series = 0;
+            var series = -1;
             for (var chan = 0; chan < rawData.length; chan++) {
                 // Check if this channel has data
-                if(rawData[chan].data == null)
+                if (rawData[chan].data == null)
                     continue;
 
+                series++;
                 options.series[series] = {};
 
 //                    graphInfoItems[4 + s] = [];
@@ -213,8 +221,12 @@ Ext.define('openHAB.graph.graphHighcharts', {
 //                    }
 
                 options.series[series].data = rawData[chan].data;
-                // TODO: Use the item label, not name
-                options.series[series].name = rawData[chan].name;
+
+                var ref = persistenceStore.findExact("name", rawData[chan].item);
+                if (ref != -1)
+                    options.series[series].name = persistenceStore.getAt(ref).get("label");
+                else
+                    options.series[series].name = rawData[chan].item;
                 options.series[series].yAxis = rawData[chan].yAxis;
 //                    options.series[s].color = '#FF0000';
                 //options.series[series].marker = true;
@@ -241,9 +253,9 @@ Ext.define('openHAB.graph.graphHighcharts', {
                  }*/
 
                 // Keep track of the min/max times
-                if(chartMin < rawData[chan].timestart)
+                if (chartMin < rawData[chan].timestart)
                     chartMin = rawData[chan].timestart;
-                if(chartMax > rawData[chan].timeend)
+                if (chartMax > rawData[chan].timeend)
                     chartMax = rawData[chan].timeend;
             }
 
@@ -338,12 +350,12 @@ Ext.define('openHAB.graph.graphHighcharts', {
                     success:function (response, opts) {
                         var item = opts.url.split('/');
                         var json = Ext.decode(response.responseText);
-                        addGraphData(item[item.length-1], json);
+                        addGraphData(item[item.length - 1], json);
                     },
                     failure:function (response, opts) {
                         var item = opts.url.split('/');
                         // Calling addGraphData allows us to correlate all requests and display a consolidated status
-                        addGraphData(item[item.length-1], null);
+                        addGraphData(item[item.length - 1], null);
                     }
                 });
             }

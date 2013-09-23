@@ -87,7 +87,7 @@ Ext.define('openHAB.graph.itemList', {
         });
 
         var itemList = Ext.create('Ext.grid.Panel', {
-            store:itemConfigStore,
+            store:persistenceStore,
             tbar:itemToolbar,
             header:false,
             disableSelection:true,
@@ -147,7 +147,7 @@ Ext.define('openHAB.graph.itemList', {
             },
             listeners:{
                 activate:function (grid, eOpts) {
-                    itemStore.filter("type", "GroupItem");
+                    persistenceStore.filter("type", "GroupItem");
                 },
                 itemclick:function (grid, record, item, index, element, eOpts) {
                     if(selectedChanList == null)
@@ -172,7 +172,7 @@ Ext.define('openHAB.graph.itemList', {
                         if (selectedChanList.length < 8) {
                             var newRec = {};
                             var Max = -1;
-                            var Total = itemStore.getCount();
+                            var Total = persistenceStore.getCount();
                             var chanCnt = 0;
 
                             newRec.name = name;

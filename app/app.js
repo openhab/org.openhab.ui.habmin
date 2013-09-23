@@ -91,7 +91,7 @@ var viewPort;
 var statusTooltip;
 
 // Global data stores from openHAB
-var itemStore;
+var persistenceStore;
 var itemTypeStore;
 var itemIconStore;
 var widgetStore;
@@ -357,7 +357,7 @@ function makeItemGroupTree(parent, group) {
         return;
 
     // Loop through the configuration
-    openHABItems = itemStore.getProxy().getReader().getResponseData();
+    openHABItems = persistenceStore.getProxy().getReader().getResponseData();
     var numItems = openHABItems.item.length;
     for (var iItem = 0; iItem < numItems; ++iItem) {
         var newItem = [];
@@ -409,23 +409,25 @@ function createUI() {
 
 
     //======= Items Store
-    Ext.define('ItemsModel', {
+    Ext.define('PersistenceModel', {
         extend:'Ext.data.Model',
         fields:[
             {name:'name'},
+            {name:'label'},
             {name:'state'},
+            {name:'icon'},
             {name:'type'},
             {name:'link'},
-            {name:'binding'},
+            {name:'persistence'},
             {name:'groups'}
         ]
     });
 
-    itemStore = Ext.create('Ext.data.ArrayStore', {
-        model:'ItemsModel',
+    persistenceStore = Ext.create('Ext.data.ArrayStore', {
+        model:'PersistenceModel',
         proxy:{
             type:'rest',
-            url:'/rest/items',
+            url:'/rest/history',
             reader:{
                 type:'json',
                 root:'item'
