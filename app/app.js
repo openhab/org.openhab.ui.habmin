@@ -127,9 +127,9 @@ var widgetTypeArray = [
 ];
 
 var formatLookupArray = [
-    {format:'%.1f', label:'Float: 1 decimal place'},
-    {format:'%.2f', label:'Float: 2 decimal place'},
-    {format:'%.3f', label:'Float: 3 decimal place'},
+    {format:'%.1f', label:'Float (1 decimal place)'},
+    {format:'%.2f', label:'Float (2 decimal place)'},
+    {format:'%.3f', label:'Float (3 decimal place)'},
     {format:'%d', label:'Integer'},
     {format:'%b', label:'Boolean (lower case)'},
     {format:'%B', label:'Boolean (upper case)'},
@@ -148,7 +148,6 @@ var formatLookupArray = [
 var initState = 0;
 var initList = [
     {type:0, name:"openHAB Version", variable:"openHABVersion", url:"/static/version", fatal:true, notify:"Unable to get openHAB version"}//,
-//    {type:1, name:"openHAB Version", variable:"openHABItems", url:"/rest/items", fatal:true, notify:"Unable to get openHAB items"}
 ];
 
 

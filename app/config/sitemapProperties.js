@@ -61,20 +61,20 @@ Ext.define('openHAB.config.sitemapProperties', {
         };
 
         var widgetItemTypes = {
-            Sitemap:["ColorItem","ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
-            Chart:["ColorItem","ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
-            Colorpicker:["ColorItem","ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
+            Sitemap:["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
+            Chart:["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
+            Colorpicker:["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
             Frame:["GroupItem", "StringItem"],
             Group:["GroupItem", "StringItem"],
-            Image:["ColorItem","ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
-            List:["ColorItem","ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
+            Image:["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
+            List:["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
             Switch:["DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
-            Selection:["ColorItem","ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
+            Selection:["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
             Setpoint:["NumberItem"],
-            Slider:["ColorItem","ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
-            Text:["ColorItem","ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
-            Video:["ColorItem","ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
-            Webview:["ColorItem","ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"]
+            Slider:["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
+            Text:["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
+            Video:["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
+            Webview:["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"]
         };
 
         var widgetHelp = {
@@ -147,13 +147,28 @@ Ext.define('openHAB.config.sitemapProperties', {
                     displayField:'name',
                     valueField:'name',
                     forceSelection:true,
-                    allowBlank:true
+                    allowBlank:true,
+                    listConfig:{
+                        getInnerTpl:function () {
+                            var tpl = '<div>' +
+                                '<img src="../images/{icon}.png" align="left" height="16">&nbsp;&nbsp;' +
+                                '{name}</div>';
+                            return tpl;
+                        }
+                    },
+//                    hideTrigger:true,
+                    listeners:{
+                        beforequery:function (record) {
+                            record.query = new RegExp(record.query, 'i');
+                            record.forceAll = true;
+                        }
+                    }
                 })
             },
             itemicon:{
                 displayName:"Icon",
                 renderer:function (v) {
-                    if(v == "")
+                    if (v == "")
                         return "";
                     var icon = "";
                     var label = "";
