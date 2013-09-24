@@ -142,26 +142,12 @@ Ext.define('openHAB.config.sitemapProperties', {
                 editor:Ext.create('Ext.form.ComboBox', {
                     store:itemComboStore,
                     queryMode:'local',
-                    typeAhead:false,
-                    editable:false,
+                    typeAhead:true,
+                    editable:true,
                     displayField:'name',
                     valueField:'name',
                     forceSelection:true,
-                    editable:false,
-                    allowBlank:false
-                    /*,
-                     listConfig:{
-                     getInnerTpl:function () {
-                     var icon = "";
-                     var id = itemTypeStore.findExact("name");
-                     if(id != -1) {
-                     if(itemTypeStore.getAt(ref).get('icon') != "")
-                     icon = '<img src="../images/'+itemTypeStore.getAt(ref).get('icon')+'.png" align="left" height="16">';
-                     }
-
-                     return '<div>' + icon + '</div><div style="margin-left:20px">' + v +'</div>';
-                     }
-                     }*/
+                    allowBlank:true
                 })
             },
             itemicon:{

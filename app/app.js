@@ -98,14 +98,7 @@ var widgetStore;
 var sitemapStore;
 var bindingStore;
 var itemConfigStore;
-
-var iconTypeArray = [
-    {'id':0, 'icon':'../images/bluetooth.png', 'name':'Bluetooth'},
-    {'id':1, 'icon':'../images/heating.png', 'name':'Heating'},
-    {'id':2, 'icon':'../images/lock.png', 'name':'Lock'},
-    {'id':3, 'icon':'../images/temperature.png', 'name':'Temperature'},
-    {'id':4, 'icon':'../images/switch.png', 'name':'Switch'}
-];
+var itemFormatStore;
 
 var itemTypeArray = [
     {name:"GroupItem", icon: "images/category-group.png"},
@@ -131,6 +124,25 @@ var widgetTypeArray = [
     {type:"Switch", icon: "images/switch.png", iconCls:"widget-switch"},
     {type:"ColorPicker", icon: "images/color.png", iconCls:"widget-colorpicker"},
     {type:"Text",icon:"images/edit.png", iconCls:"widget-text"}
+];
+
+var formatLookupArray = [
+    {format:'%.1f', label:'Float: 1 decimal place'},
+    {format:'%.2f', label:'Float: 2 decimal place'},
+    {format:'%.3f', label:'Float: 3 decimal place'},
+    {format:'%d', label:'Integer'},
+    {format:'%b', label:'Boolean (lower case)'},
+    {format:'%B', label:'Boolean (upper case)'},
+    {format:'%s', label:'String (lower case)'},
+    {format:'%S', label:'String (upper case)'},
+    {format:'%x', label:'Hexadecimal (lower case)'},
+    {format:'%X', label:'Hexadecimal (upper case)'},
+    {format:'%o', label:'Octal'},
+    {format:'%tR', label:'Time (HH:MM)'},
+    {format:'%tT', label:'Time (HH:MM:SS)'},
+    {format:'%td %tb %tY', label:'Date (dd MMM YYYY)'},
+    {format:'%td %tb %tY %tT', label:'Date/Time (dd MMM YYYY HH:MM:SS)'},
+    {format:'%tT %td %tb %tY', label:'Date/Time (HH:MM:SS dd MMM YYYY)'}
 ];
 
 var initState = 0;
@@ -327,17 +339,6 @@ function loadSitemapList() {
     });
 }
 
-function getIconByValue(value) {
-    var numIcons = iconTypeArray.length;
-    for (var iIcon = 0; iIcon < numIcons; ++iIcon) {
-        if (iconTypeArray[iIcon].id == value) {
-            return iconTypeArray[iIcon];
-        }
-    }
-
-    return null;
-}
-
 // Return an icon based on the ItemType
 function getItemTypeIcon(type) {
     var ref = itemTypeStore.findExact("name", type);
@@ -488,6 +489,22 @@ function createUI() {
         model:'WidgetsModel'
     });
     widgetStore.loadData(widgetTypeArray);
+
+
+    //======= Item Format Store
+    Ext.define('FormatModel', {
+        extend:'Ext.data.Model',
+        fields:[
+            {name:'format'},
+            {name:'label'}
+        ]
+    });
+
+    // Create the Widgets data store
+    itemFormatStore = Ext.create('Ext.data.ArrayStore', {
+        model:'FormatModel'
+    });
+    itemFormatStore.loadData(formatLookupArray);
 
 
     //======= Item Config Store

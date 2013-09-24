@@ -101,6 +101,32 @@ Ext.define('openHAB.config.itemProperties', {
                     }
                 })
             },
+            Format:{
+                renderer:function (v) {
+                    var label = "";
+                    var ref = itemFormatStore.findExact("format", v);
+                    if (ref != -1) {
+                        if (itemFormatStore.getAt(ref).get('label') != "")
+                            label = itemFormatStore.getAt(ref).get('label');
+                    }
+                    else {
+                        // If we get here, we're using a format that isn't defined
+                        label = v;
+                    }
+
+                    return label;
+                },
+                editor:Ext.create('Ext.form.ComboBox', {
+                    store:itemFormatStore,
+                    queryMode:'local',
+                    typeAhead:true,
+                    displayField:'label',
+                    valueField:'format',
+                    forceSelection:false,
+                    editable:true,
+                    allowBlank:true
+                })
+            },
             Groups:{
             },
             Type:{
