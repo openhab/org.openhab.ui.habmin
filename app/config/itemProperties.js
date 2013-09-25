@@ -389,8 +389,8 @@ Ext.define('openHAB.config.itemProperties', {
             source.Type = setValue(json.type);
             source.Icon = setValue(json.icon);
             source.Label = setValue(json.label);
-            source.Units = setValue(json.units);
             source.Format = setValue(json.format);
+            source.Units = setValue(json.units);
             source.Map = setValue(json.map);
 
             // Ensure the persistence is an array!
