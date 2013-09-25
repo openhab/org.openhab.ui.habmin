@@ -517,12 +517,10 @@ function createUI() {
             {name:'type'},
             {name:'label'},
             {name:'format'},
+            {name:'units'},
             {name:'map'},
             {name:'binding'},
-            {name:'units'},
-            {name:'format'},
-            {name:'groups'},
-            {name:'link'}
+            {name:'groups'}
         ]
     });
 

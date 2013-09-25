@@ -45,19 +45,19 @@ Ext.define('openHAB.config.sitemapProperties', {
         // ExtJS uses the keyword "icon" to allow the user to set the icon in the tree!
         var widgetConfig = {
             Sitemap:["label"],
-            Chart:["item", "label", "itemicon", "service", "period", "refresh"],
-            Colorpicker:["item", "label", "itemicon", "sendFrequency"],
-            Frame:["item", "label", "itemicon"],
-            Group:["item", "label", "itemicon"],
-            Image:["label", "itemicon", "url", "refresh"],
-            List:["item", "label", "itemicon", "separator"],
-            Switch:["item", "label", "itemicon", "command", "mappings"],
-            Selection:["item", "label", "itemicon", "mappings"],
-            Setpoint:["item", "label", "itemicon", "minValue", "maxValue", "step"],
-            Slider:["item", "label", "itemicon", "sendFrequency", "switchSupport"],
-            Text:["item", "label", "itemicon"],
-            Video:["label", "url", "itemicon"],
-            Webview:["label", "url", "height", "itemicon"]
+            Chart:["item", "label", "format", "units", "itemicon", "service", "period", "refresh"],
+            Colorpicker:["item", "label", "format", "units", "itemicon", "sendFrequency"],
+            Frame:["item", "label", "format", "units", "itemicon"],
+            Group:["item", "label", "format", "units", "itemicon"],
+            Image:["label", "itemicon", "format", "units", "url", "refresh"],
+            List:["item", "label", "format", "units", "itemicon", "separator"],
+            Switch:["item", "label", "format", "units", "itemicon", "command", "mappings"],
+            Selection:["item", "label", "format", "units", "itemicon", "mappings"],
+            Setpoint:["item", "label", "format", "units", "itemicon", "minValue", "maxValue", "step"],
+            Slider:["item", "label", "format", "units", "itemicon", "sendFrequency", "switchSupport"],
+            Text:["item", "label", "format", "units", "itemicon"],
+            Video:["label", "format", "units", "url", "itemicon"],
+            Webview:["label", "format", "units", "url", "height", "itemicon"]
         };
 
         var widgetItemTypes = {
@@ -83,6 +83,8 @@ Ext.define('openHAB.config.sitemapProperties', {
             item:"Select the item attached to this widget",
             itemicon:"Override the item icon. Leave blank to use the default for this item",
             label:"Override the item label. Leave blank to use the default for this item",
+            format:"Overrides the item formatting. Must be used with label.",
+            units:"Overrides the item formatting. Must be used with label.",
             mappings:"Override the default map data. Leave blank to use the default for this item",
             maxValue:"Set the maximum allowable value",
             minValue:"Set the minimum allowable value",
@@ -156,7 +158,6 @@ Ext.define('openHAB.config.sitemapProperties', {
                             return tpl;
                         }
                     },
-//                    hideTrigger:true,
                     listeners:{
                         beforequery:function (record) {
                             record.query = new RegExp(record.query, 'i');
@@ -209,6 +210,34 @@ Ext.define('openHAB.config.sitemapProperties', {
                     }
                 })
             },
+            format:{
+                displayName:"Format",
+                renderer:function (v) {
+                    var label = "";
+                    var ref = itemFormatStore.findExact("format", v);
+                    if (ref != -1) {
+                        if (itemFormatStore.getAt(ref).get('label') != "")
+                            label = itemFormatStore.getAt(ref).get('label');
+                    }
+                    else {
+                        // If we get here, we're using a format that isn't defined
+                        label = v;
+                    }
+
+                    return label;
+                },
+                editor:Ext.create('Ext.form.ComboBox', {
+                    store:itemFormatStore,
+                    queryMode:'local',
+                    typeAhead:true,
+                    displayField:'label',
+                    valueField:'format',
+                    forceSelection:false,
+                    editable:true,
+                    allowBlank:true
+                })
+            },
+            units:{displayName:"Units"},
             label:{displayName:"Label"},
             mapping:{displayName:"Mapping"},
             maxValue:{displayName:"Maximum"},
@@ -232,6 +261,9 @@ Ext.define('openHAB.config.sitemapProperties', {
                 {name:'id'},
                 {name:'item'},
                 {name:'label'},
+                {name:'format'},
+                {name:'units'},
+                {name:'map'},
                 {name:'type'},
                 {name:'itemicon'},
                 {name:'maxValue'},
