@@ -128,6 +128,8 @@ Ext.define('openHAB.config.sitemapProperties', {
             item:{
                 displayName:"Item",
                 renderer:function (v) {
+                    if(v == null)
+                        return;
                     var icon = "";
                     var id = itemComboStore.findExact("name", v);
                     if (id != -1) {
@@ -148,14 +150,13 @@ Ext.define('openHAB.config.sitemapProperties', {
                     editable:true,
                     displayField:'name',
                     valueField:'name',
+                    emptyText:'',
                     forceSelection:true,
                     allowBlank:true,
                     listConfig:{
                         getInnerTpl:function () {
-                            var tpl = '<div>' +
-                                '<img src="../images/{icon}.png" align="left" height="16">&nbsp;&nbsp;' +
+                            return '<div><tpl if="icon.length"><img height="16px" src="../images/{icon}.png"></tpl>' +
                                 '{name}</div>';
-                            return tpl;
                         }
                     },
                     listeners:{
@@ -312,9 +313,15 @@ Ext.define('openHAB.config.sitemapProperties', {
                         var properties = widgetConfig[node.get("type")];
                         if (properties != null) {
                             for (var pcnt = 0; pcnt < properties.length; pcnt++) {
-                                node.set(properties[pcnt], getPropertyValue(prop, properties[pcnt]));
+                                var val = getPropertyValue(prop, properties[pcnt]);
+                                if(val == null)
+                                    val = "";
+                                node.set(properties[pcnt], val);
                             }
                         }
+
+                        // Disable the save button
+                        propertySheet.getHeader().getTools()[0].disable();
 
                         // Function to get a property value given the name
                         // Returns null if property not found
@@ -711,6 +718,10 @@ Ext.define('openHAB.config.sitemapProperties', {
                 return;
 
             node.parentNode.removeChild(node);
+
+            // Disable the buttons
+            propertySheet.getHeader().getTools()[0].disable();
+            propertySheet.getHeader().getTools()[1].disable();
         }
 
         function showWidgetProperties(widget) {
