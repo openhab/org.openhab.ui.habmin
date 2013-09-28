@@ -50,7 +50,8 @@ Ext.define('openHAB.config.itemBindings', {
         Ext.define('ItemBindingModel', {
             extend:'Ext.data.Model',
             fields:[
-                {name:'string'}
+                {name:'string'},
+                {name:'binding'}
             ]
         });
 
@@ -87,7 +88,11 @@ Ext.define('openHAB.config.itemBindings', {
                     disabled:false,
                     tooltip:'Add a new item binding',
                     handler:function () {
-                        store.add({string:"New Binding"});
+                        var binding = "binding";
+                        if(store.getCount() != 0)
+                            binding = store.getAt(0).get("binding");
+
+                        store.add({binding: binding, string:"New Binding"});
                         toolbar.getComponent('delete').enable();
                     }
                 }
@@ -105,8 +110,13 @@ Ext.define('openHAB.config.itemBindings', {
             multiSelect:false,
             columns:[
                 {
+                    text:'Binding',
+                    flex:1,
+                    dataIndex:'binding'
+                },
+                {
                     text:'String',
-                    flex:3,
+                    flex:4,
                     dataIndex:'string',
                     renderer: Ext.util.Format.htmlEncode
                 }
@@ -116,7 +126,8 @@ Ext.define('openHAB.config.itemBindings', {
                     if (record == null)
                         return;
 
-                    properties.setProperty("String", record.get('string'));
+                    properties.setProperty("binding", record.get('binding'));
+                    properties.setProperty("string", record.get('string'));
 
                     // Enable delete button
                     toolbar.getComponent('delete').enable();
@@ -134,10 +145,14 @@ Ext.define('openHAB.config.itemBindings', {
             nameColumnWidth:300,
             split:true,
             source:{
-                String:""
+                binding:"",
+                string:""
             },
             sourceConfig:{
-                String:{
+                binding:{
+                    displayName:"Binding Name"
+                },
+                string:{
                     displayName:"Binding String"
                 }
             },
@@ -155,7 +170,8 @@ Ext.define('openHAB.config.itemBindings', {
                             return;
 
                         var prop = properties.getStore();
-                        record.set("string", getPropertyValue(prop, "String"));
+                        record.set("binding", getPropertyValue(prop, "binding"));
+                        record.set("string", getPropertyValue(prop, "string"));
 
                         // Function to get a property value given the name
                         // Returns null if property not found
@@ -171,14 +187,12 @@ Ext.define('openHAB.config.itemBindings', {
             ],
             listeners:{
                 propertychange:function (source, recordId, value, oldValue, eOpts) {
-                    //Ext.getCmp("save").enable();
-                    //Ext.getCmp("cancel").enable();
                 },
                 beforeedit : function(editor, e) {
                     var rec = e.record;
-                    // Make some properties read-only
-//                    if (rec.get('name') == 'Groups')
-//                        e.cancel=true;
+                    // Make the binding name read-only if there's more than 1 binding
+                    if(rec.get('name') == 'binding' && store.getCount() > 1)
+                        e.cancel=true;
                 }
             }
         });
@@ -187,17 +201,64 @@ Ext.define('openHAB.config.itemBindings', {
         this.callParent();
 
 
-        this.setBindings = function(bindings) {
+        this.setBindings = function(name, bindings) {
             var rec = [];
 
             for(var cnt = 0; cnt < bindings.length; cnt++) {
                 rec[cnt] = {};
                 rec[cnt].id  = cnt;
+                rec[cnt].binding = name;
                 rec[cnt].string = bindings[cnt];
             }
             store.loadData(rec);
         }
 
+        this.getBindings = function() {
+            var rec = [];
+
+            var store = list.getStore();
+            if(store == null)
+                return rec;
+
+            for(var cnt = 0; cnt < store.getCount(); cnt++) {
+                rec[cnt] = store.getAt(cnt).get("string");
+            }
+
+            return rec;
+        }
+
+        // Get the binding name.
+        // Assumes they are always the same
+        this.getBindingName = function() {
+            var rec = [];
+
+            var store = list.getStore();
+            if(store == null)
+                return rec;
+
+            if(store.getCount() == 0)
+                return "";
+
+            return store.getAt(0).get("binding");
+        }
+
+        // Return true if the binding data has changed
+        this.isDirty = function() {
+            var store = list.getStore();
+            if(store == null)
+                return false;
+
+            var records = store.getRange();
+            for(var i =0; i < records.length; i++){
+                var rec = records[i];
+
+                if(rec.dirty == true){
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 })
 ;

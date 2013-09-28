@@ -216,8 +216,9 @@ Ext.define('openHAB.config.itemProperties', {
                         if (prop == null)
                             return;
 
-//                        itemData.binding = item.get("binding");
                         itemData.groups = itemGroups.getSelected();
+                        itemData.bindings = itemBindings.getBindings();
+                        itemData.binding = itemBindings.getBindingName();
 
                         itemData.type = prop.Type;
                         itemData.name = prop.ItemName;
@@ -226,7 +227,6 @@ Ext.define('openHAB.config.itemProperties', {
                         itemData.units = prop.Units;
                         itemData.format = prop.Format;
                         itemData.map = prop.Map;
-//                        itemData.bindings = ;
 
                         // Send the sitemap to openHAB
                         Ext.Ajax.request({
@@ -356,6 +356,12 @@ Ext.define('openHAB.config.itemProperties', {
 
                             itemOptions.setProperty("Groups", groupsOut);
                         }
+
+                        // Just detect if the bindings have changed
+                        if(itemBindings.isDirty()) {
+                            toolbar.getComponent('cancel').enable();
+                            toolbar.getComponent('save').enable();
+                        }
                     }
                 }
             }
@@ -452,10 +458,10 @@ Ext.define('openHAB.config.itemProperties', {
             // Ensure the bindings is an array!
             var bindings = [];
             if(json.bindings)
-                [].concat(json.bindings);
+                bindings = [].concat(json.bindings);
 
             // Set the binding strings
-            itemBindings.setBindings(bindings);
+            itemBindings.setBindings(json.binding, bindings);
 
             var cancel = toolbar.getComponent('cancel');
             if(cancel)
