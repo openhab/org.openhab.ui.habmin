@@ -122,7 +122,7 @@ var widgetTypeArray = [
     {type:"Webview", icon: "images/globe.png", iconCls:"widget-webview"},
     {type:"Setpoint", icon: "images/ui-scroll-bar.png", iconCls:"widget-setpoint"},
     {type:"Switch", icon: "images/switch.png", iconCls:"widget-switch"},
-    {type:"ColorPicker", icon: "images/color.png", iconCls:"widget-colorpicker"},
+    {type:"Colorpicker", icon: "images/color.png", iconCls:"widget-colorpicker"},
     {type:"Text",icon:"images/edit.png", iconCls:"widget-text"}
 ];
 
