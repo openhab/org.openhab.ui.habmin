@@ -33,6 +33,7 @@ While HABmin is a supporting project to OpenHAB,  providing access to OpenHAB's 
 ###Status
 The project is just getting started. Currently implemented are the following -:
 * Graphing of data from the persistence store
+* Item editor
 * Sitemap editor
 * General binding configuration (ie binding configuration in the openhab.cfg file)
 * OSGI bundle status viewer
