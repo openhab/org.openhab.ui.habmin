@@ -264,6 +264,10 @@ Ext.define('openHAB.config.itemProperties', {
                                 setTimeout(function () {
                                     Ext.MessageBox.hide();
                                 }, 2500);
+                            },
+                            callback:function (options, success, response) {
+                                // Reload the store
+                                itemConfigStore.reload();
                             }
                         });
 
@@ -379,6 +383,16 @@ Ext.define('openHAB.config.itemProperties', {
             });
         }
 
+        // Create a new item
+        this.newItem = function (modelName) {
+            var json = {};
+            json.model = modelName;
+            json.groups = "";
+
+            updateItem(json);
+        }
+
+        // Update the item properties
         function updateItem(json) {
             itemData = json;
             statusBar.setText("Item: " + json.name);
@@ -409,7 +423,9 @@ Ext.define('openHAB.config.itemProperties', {
             source.Persistence = persistenceOut;
 
             // Ensure the groups is an array!
-            var groups = [].concat(json.groups);
+            var groups = [];
+            if(json.groups)
+                var groups = [].concat(json.groups);
 
             // Set the groups
             var groupsOut = "";
@@ -434,13 +450,19 @@ Ext.define('openHAB.config.itemProperties', {
             itemOptions.setSource(source, sourceConfig);
 
             // Ensure the bindings is an array!
-            var bindings = [].concat(json.bindings);
+            var bindings = [];
+            if(json.bindings)
+                [].concat(json.bindings);
 
             // Set the binding strings
             itemBindings.setBindings(bindings);
 
-            toolbar.getComponent('cancel').disable();
-            toolbar.getComponent('save').disable();
+            var cancel = toolbar.getComponent('cancel');
+            if(cancel)
+                cancel.disable();
+            var save = toolbar.getComponent('save');
+            if(save)
+                save.disable();
 
             // Helper function to make above code more readable
             function setValue(val) {

@@ -52,8 +52,24 @@ Ext.define('openHAB.config.itemList', {
                     disabled:true,
                     tooltip:'Delete the item from openHAB',
                     handler:function () {
-                        toolbar.getComponent('delete').disable();
-                    }
+                        // Get the item name to delete
+                        var record = itemsList.getSelectionModel().getSelection()[0];
+                        if (record == null)
+                            return;
+
+                        // Make sure we really want to do this!!!
+                        var itemName = record.get('name');
+                        Ext.Msg.show({
+                            title:"Confirm Delete",
+                            msg:'Are you sure you want to delete the item "' + itemName + '"?',
+                            buttons:Ext.Msg.YESNO,
+                            config:{
+                                obj:this,
+                                name:itemName
+                            },
+                            fn:deleteItem,
+                            icon:Ext.MessageBox.QUESTION
+                        });                    }
                 },
                 {
                     icon:'images/plus-button.png',
@@ -63,12 +79,120 @@ Ext.define('openHAB.config.itemList', {
                     disabled:false,
                     tooltip:'Add a new item to openHAB',
                     handler:function () {
+                        Ext.define('ItemModelsModel', {
+                            extend:'Ext.data.Model',
+                            fields:[
+                                {name:'name'},
+                                {name:'icon'},
+                                {name:'iconCls'}
+                            ]
+                        });
+
+                        var models = [];
+                        var ocnt = 0;
+                        for(var cnt = 0; cnt < itemConfigStore.getTotalCount(); cnt++ ){
+                            var found = false;
+                            var name = itemConfigStore.getAt(cnt).get("model");
+                            for(var mcnt = 0; mcnt < models.length; mcnt++) {
+                                if(models[mcnt].name == name) {
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            if(found == false) {
+                                models[ocnt] = {};
+                                models[ocnt].name = name;
+                                ocnt++;
+                            }
+                        }
+
+                        var form = Ext.widget('form', {
+                            layout:{
+                                type:'vbox',
+                                align:'stretch'
+                            },
+                            border:false,
+                            bodyPadding:10,
+                            fieldDefaults:{
+                                labelAlign:'top',
+                                labelWidth:100,
+                                labelStyle:'font-weight:bold'
+                            },
+                            defaults:{
+                                margins:'0 0 10 0'
+                            },
+                            items:[
+                                {
+                                    margin:'0 0 0 0',
+                                    xtype:'combobox',
+                                    fieldLabel:'Select model:',
+                                    itemId:'model',
+                                    name:'model',
+                                    store:{model:'ItemModelsModel', data:models},
+                                    allowBlank:false,
+                                    //value:0,
+                                    valueField:'name',
+                                    displayField:'name',
+                                    queryMode:'local',
+                                    forceSelection:false,
+                                    editable:true,
+                                    typeAhead:true,
+                                    queryMode:'local'
+                                }
+                            ],
+                            buttons:[
+                                {
+                                    text:'Cancel',
+                                    handler:function () {
+                                        this.up('window').destroy();
+                                    }
+                                },
+                                {
+                                    text:'Create Item',
+                                    handler:function () {
+                                        if (this.up('form').getForm().isValid()) {
+                                            // Read the model name
+                                            var model = form.getForm().findField('model').getSubmitValue();
+
+                                            var newProperties = null;
+
+                                            // Create a new itemProperties
+                                            newProperties = Ext.create('openHAB.config.itemProperties');
+                                            newProperties.newItem(model);
+
+                                            if (newProperties != null)
+                                                Ext.getCmp('configPropertyContainer').setNewProperty(newProperties);
+
+                                            this.up('window').destroy();
+                                        }
+                                    }
+                                }
+                            ]
+                        });
+
+                        var saveWin = Ext.widget('window', {
+                            title:'Select Item Model',
+                            closeAction:'destroy',
+                            width:225,
+                            height:135,
+                            layout:'fit',
+                            resizable:false,
+                            draggable:false,
+                            modal:true,
+                            layout:{
+                                type:'vbox',
+                                align:'stretch'
+                            },
+                            items:[form]
+                        });
+
+                        saveWin.show();
                     }
                 }
             ]
         });
 
-        var itemsTree = Ext.create('Ext.grid.Panel', {
+        var itemsList = Ext.create('Ext.grid.Panel', {
             store:itemConfigStore,
             header:false,
             split:true,
@@ -83,12 +207,12 @@ Ext.define('openHAB.config.itemList', {
                     renderer:function (v) {
                         var icon = "";
                         var ref = itemConfigStore.findExact("name", v);
-                        if(ref != -1) {
-                            if(itemConfigStore.getAt(ref).get('icon') != "")
-                                icon = '<img src="../images/'+itemConfigStore.getAt(ref).get('icon')+'.png" align="left" height="16">';
+                        if (ref != -1) {
+                            if (itemConfigStore.getAt(ref).get('icon') != "")
+                                icon = '<img src="../images/' + itemConfigStore.getAt(ref).get('icon') + '.png" align="left" height="16">';
                         }
 
-                        return '<div>' + icon + '</div><div style="margin-left:20px">' + v +'</div>';
+                        return '<div>' + icon + '</div><div style="margin-left:20px">' + v + '</div>';
                     }
                 },
                 {
@@ -104,7 +228,7 @@ Ext.define('openHAB.config.itemList', {
                         var img = 'node.png';
                         if (record.get("type") != null)
                             img = getItemTypeIcon(record.get("type"));
-                        return '<img src="' + img +'" align="left" height="16">&nbsp;&nbsp;' + value;
+                        return '<img src="' + img + '" align="left" height="16">&nbsp;&nbsp;' + value;
                     }
                 },
                 {
@@ -124,15 +248,64 @@ Ext.define('openHAB.config.itemList', {
                     newProperties = Ext.create('openHAB.config.itemProperties');
                     newProperties.setItem(record.get('name'));
 
-                    if(newProperties != null)
+                    if (newProperties != null)
                         Ext.getCmp('configPropertyContainer').setNewProperty(newProperties);
+
+                    // Update the toolbar
+                    toolbar.getComponent('delete').enable();
                 }
             }
         });
 
-        this.items = itemsTree;
+        this.items = itemsList;
 
         this.callParent();
+
+        function deleteItem(button, text, options) {
+            if (button !== 'yes')
+                return;
+
+            // Tell OH to Remove the item
+            Ext.Ajax.request({
+                url:"/rest/config/items/" + options.config.name,
+                headers:{'Accept':'application/json'},
+                method:'DELETE',
+                success:function (response, opts) {
+                    Ext.MessageBox.show({
+                        msg:'Item deleted',
+                        width:200,
+                        draggable:false,
+                        icon:'icon-ok',
+                        closable:false
+                    });
+                    setTimeout(function () {
+                        Ext.MessageBox.hide();
+                    }, 2500);
+                },
+                failure:function (result, request) {
+                    Ext.MessageBox.show({
+                        msg:'Error deleting item',
+                        width:200,
+                        draggable:false,
+                        icon:'icon-error',
+                        closable:false
+                    });
+                    setTimeout(function () {
+                        Ext.MessageBox.hide();
+                    }, 2500);
+                },
+                callback:function (options, success, response) {
+                    // Reload the store
+                    itemConfigStore.reload();
+
+                    // Disable delete
+                    toolbar.getComponent('delete').disable();
+
+                    // Clear the item properties
+                    Ext.getCmp('configPropertyContainer').removeProperty();
+                }
+        });
+        }
     }
 })
 ;

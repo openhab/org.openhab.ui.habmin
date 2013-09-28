@@ -70,7 +70,6 @@ Ext.define('openHAB.config.sitemapList', {
                             fn:deleteSitemap,
                             icon:Ext.MessageBox.QUESTION
                         });
-
                     }
                 },
                 {
@@ -163,15 +162,6 @@ Ext.define('openHAB.config.sitemapList', {
                     setTimeout(function () {
                         Ext.MessageBox.hide();
                     }, 2500);
-
-                    // Reload the store
-                    sitemapStore.reload();
-
-                    // Clear the sitemap properties
-                    Ext.getCmp('configPropertyContainer').removeProperty();
-
-                    // Disable delete
-                    toolbar.getComponent('delete').disable();
                 },
                 failure:function (result, request) {
                     Ext.MessageBox.show({
@@ -184,6 +174,16 @@ Ext.define('openHAB.config.sitemapList', {
                     setTimeout(function () {
                         Ext.MessageBox.hide();
                     }, 2500);
+                },
+                callback:function (options, success, response) {
+                    // Reload the store
+                    sitemapStore.reload();
+
+                    // Clear the sitemap properties
+                    Ext.getCmp('configPropertyContainer').removeProperty();
+
+                    // Disable delete
+                    toolbar.getComponent('delete').disable();
                 }
             });
         }
@@ -223,7 +223,6 @@ Ext.define('openHAB.config.sitemapList', {
                 url:"/rest/config/sitemap/" + newName,
                 headers:{'Accept':'application/json'},
                 method:'POST',
-//                jsonData:parms,
                 params:parms,
                 success:function (response, opts) {
                     Ext.MessageBox.show({
@@ -236,16 +235,6 @@ Ext.define('openHAB.config.sitemapList', {
                     setTimeout(function () {
                         Ext.MessageBox.hide();
                     }, 2500);
-
-                    // Reload the store
-                    sitemapStore.reload();
-
-                    // Clear the sitemap properties
-                    Ext.getCmp('configPropertyContainer').removeProperty();
-
-                    // Disable delete and copy
-                    toolbar.getComponent('delete').disable();
-                    toolbar.getComponent('copy').disable();
                 },
                 failure:function (result, request) {
                     Ext.MessageBox.show({
@@ -258,9 +247,17 @@ Ext.define('openHAB.config.sitemapList', {
                     setTimeout(function () {
                         Ext.MessageBox.hide();
                     }, 2500);
-
+                },
+                callback:function (options, success, response) {
                     // Reload the store
                     sitemapStore.reload();
+
+                    // Clear the sitemap properties
+                    Ext.getCmp('configPropertyContainer').removeProperty();
+
+                    // Disable delete and copy
+                    toolbar.getComponent('delete').disable();
+                    toolbar.getComponent('copy').disable();
                 }
             });
         }
