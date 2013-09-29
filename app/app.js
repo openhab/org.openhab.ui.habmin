@@ -127,10 +127,10 @@ var widgetTypeArray = [
 ];
 
 var formatLookupArray = [
+    {format:'%d', label:'Integer'},
     {format:'%.1f', label:'Float (1 decimal place)'},
     {format:'%.2f', label:'Float (2 decimal place)'},
     {format:'%.3f', label:'Float (3 decimal place)'},
-    {format:'%d', label:'Integer'},
     {format:'%b', label:'Boolean (lower case)'},
     {format:'%B', label:'Boolean (upper case)'},
     {format:'%s', label:'String (lower case)'},

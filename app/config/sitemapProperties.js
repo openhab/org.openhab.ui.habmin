@@ -44,7 +44,7 @@ Ext.define('openHAB.config.sitemapProperties', {
         // Note that "itemicon" is used for the model to avoid upsetting the icon in the treeview
         // ExtJS uses the keyword "icon" to allow the user to set the icon in the tree!
         var widgetConfig = {
-            Sitemap:["label"],
+            Sitemap:["label", "itemicon"],
             Chart:["item", "label", "format", "units", "itemicon", "service", "period", "refresh"],
             Colorpicker:["item", "label", "format", "units", "itemicon", "sendFrequency"],
             Frame:["item", "label", "format", "units", "itemicon"],
@@ -170,7 +170,7 @@ Ext.define('openHAB.config.sitemapProperties', {
             itemicon:{
                 displayName:"Icon",
                 renderer:function (v) {
-                    if (v == "")
+                    if (v == "" || v == null)
                         return "";
                     var icon = "";
                     var label = "";
@@ -194,13 +194,12 @@ Ext.define('openHAB.config.sitemapProperties', {
                 editor:Ext.create('Ext.form.ComboBox', {
                     store:itemIconStore,
                     queryMode:'local',
-                    typeAhead:false,
-                    editable:false,
+                    typeAhead:true,
+                    editable:true,
                     displayField:'label',
                     valueField:'name',
                     forceSelection:true,
-                    editable:false,
-                    allowBlank:false,
+                    allowBlank:true,
                     listConfig:{
                         getInnerTpl:function () {
                             var tpl = '<div>' +
@@ -208,6 +207,13 @@ Ext.define('openHAB.config.sitemapProperties', {
                                 '{label}</div>';
                             return tpl;
                         }
+                    },
+                    listeners:{
+                        change: function(field, newValue, oldValue, eOpts){
+                        if (newValue === null) {
+                            this.reset();
+                        }
+                    }
                     }
                 })
             },
@@ -441,7 +447,29 @@ Ext.define('openHAB.config.sitemapProperties', {
 
                         jsonArray.name = sitemapName;
                         // Iterate through the store to generate the sitemap
+                        var errors = [];
                         jsonArray.widget = iterateStore(root, 0);
+
+                        // Check if errors were detected in the sitemap definition
+                        // If so, notify and wait for them to be fixed!
+                        if(errors.length != 0) {
+                            var message = 'Errors exist in the sitemap definition -:';
+                            for(var cnt = 0; cnt < errors.length; cnt++)
+                                message += "<br>" + errors[cnt];
+
+                            Ext.MessageBox.show({
+                                msg:message,
+                                width:350,
+                                draggable:false,
+                                icon:'icon-error',
+                                closable:false
+                            });
+                            setTimeout(function () {
+                                Ext.MessageBox.hide();
+                            }, 2500);
+
+                            return;
+                        }
 
                         // Send the sitemap to openHAB
                         Ext.Ajax.request({
@@ -506,7 +534,19 @@ Ext.define('openHAB.config.sitemapProperties', {
                                     newNode.widget.push(iterateStore(child, iterateCnt));
                                 }
                             }
+                            else {
+                                if(newNode.type == "Frame") {
+                                    var label = "No Label";
+                                    if(newNode.label && newNode.label.length)
+                                        label = newNode.label;
+                                    addError("Frames must have children [" + label + "]");
+                                }
+                            }
                             return newNode;
+                        }
+
+                        function addError(error) {
+                            errors.push(error);
                         }
                     }
                 }
@@ -524,9 +564,6 @@ Ext.define('openHAB.config.sitemapProperties', {
                 },
                 listeners:{
                     beforedrop:function (node, data, overModel, dropPosition, dropFunction, eOpts) {
-//                        var dropOn = dropRec ? ' ' + dropPosition + ' ' + dropRec.get('name') : ' on empty view';
-//                        Ext.example.msg('Drag from right to left', 'Dropped ' + data.records[0].get('name') + dropOn);
-//                        return 0;
                     },
                     drop:function (node, data, dropRec, dropPosition) {
                         // Set default data

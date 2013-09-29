@@ -231,12 +231,6 @@
             <description></description>
         </icon>
         <icon>
-            <menuicon>lock.png</menuicon>
-            <name>lock</name>
-            <label>Lock</label>
-            <description></description>
-        </icon>
-        <icon>
             <menuicon>socket.png</menuicon>
             <name>socket</name>
             <label>Socket</label>
