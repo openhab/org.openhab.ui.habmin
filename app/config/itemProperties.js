@@ -179,7 +179,7 @@ Ext.define('openHAB.config.itemProperties', {
                     allowBlank:true
                 })
             },
-            TranslateService:{
+            TranslateRule:{
                 displayName:"Translation Rule"
             },
             Persistence:{
