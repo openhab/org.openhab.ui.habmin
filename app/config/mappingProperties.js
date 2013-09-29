@@ -40,7 +40,7 @@ var lookupStore;
 Ext.define('openHAB.config.mappingProperties', {
     extend:'Ext.panel.Panel',
     layout:'fit',
-    tabTip:'Mapping configuration',
+    tabTip:'Translation rule configuration',
     header:false,
 
     initComponent:function () {

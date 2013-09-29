@@ -99,6 +99,7 @@ var sitemapStore;
 var bindingStore;
 var itemConfigStore;
 var itemFormatStore;
+var translationServiceStore;
 
 var itemTypeArray = [
     {name:"GroupItem", icon: "images/category-group.png"},
@@ -143,6 +144,15 @@ var formatLookupArray = [
     {format:'%td %tb %tY', label:'Date (dd MMM YYYY)'},
     {format:'%td %tb %tY %tT', label:'Date/Time (dd MMM YYYY HH:MM:SS)'},
     {format:'%tT %td %tb %tY', label:'Date/Time (HH:MM:SS dd MMM YYYY)'}
+];
+
+var translationServiceArray = [
+    {name:"MAP", label:"Map File"},
+    {name:"REGEX", label:"Regular Expression"},
+    {name:"JAVASCRIPT", label:"JavaScript"},
+    {name:"EXEC", label:"Exec"},
+    {name:"XSLT", label:"XML Style Sheet"},
+    {name:"XPATH", label:"XPath"}
 ];
 
 var initState = 0;
@@ -390,6 +400,22 @@ function makeItemGroupTree(parent, group) {
 
 function createUI() {
     delete Ext.tip.Tip.prototype.minWidth;
+
+    //======= Translation Services Store
+    Ext.define('TranslationServiceModel', {
+        extend:'Ext.data.Model',
+        fields:[
+            {name:'name'},
+            {name:'label'}
+        ]
+    });
+
+    // Create the Item data store
+    translationServiceStore = Ext.create('Ext.data.ArrayStore', {
+        model:'TranslationServiceModel'
+    });
+    translationServiceStore.loadData(translationServiceArray);
+
 
     //======= Item Type Store
     Ext.define('ItemTypeModel', {

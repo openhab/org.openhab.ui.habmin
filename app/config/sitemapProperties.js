@@ -47,15 +47,15 @@ Ext.define('openHAB.config.sitemapProperties', {
             Sitemap:["label", "itemicon"],
             Chart:["item", "label", "format", "units", "itemicon", "service", "period", "refresh"],
             Colorpicker:["item", "label", "format", "units", "itemicon", "sendFrequency"],
-            Frame:["item", "label", "format", "units", "itemicon"],
-            Group:["item", "label", "format", "units", "itemicon"],
+            Frame:["item", "label", "format", "units", "translateService", "translateRule", "itemicon"],
+            Group:["item", "label", "format", "units", "translateService", "translateRule", "itemicon"],
             Image:["label", "itemicon", "format", "units", "url", "refresh"],
-            List:["item", "label", "format", "units", "itemicon", "separator"],
-            Switch:["item", "label", "format", "units", "itemicon", "command", "mappings"],
-            Selection:["item", "label", "format", "units", "itemicon", "mappings"],
-            Setpoint:["item", "label", "format", "units", "itemicon", "minValue", "maxValue", "step"],
-            Slider:["item", "label", "format", "units", "itemicon", "sendFrequency", "switchSupport"],
-            Text:["item", "label", "format", "units", "itemicon"],
+            List:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "separator"],
+            Switch:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "command", "mappings"],
+            Selection:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "mappings"],
+            Setpoint:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "minValue", "maxValue", "step"],
+            Slider:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "sendFrequency", "switchSupport"],
+            Text:["item", "label", "format", "units", "translateService", "translateRule", "itemicon"],
             Video:["label", "format", "units", "url", "itemicon"],
             Webview:["label", "format", "units", "url", "height", "itemicon"]
         };
@@ -85,7 +85,9 @@ Ext.define('openHAB.config.sitemapProperties', {
             label:"Override the item label. Leave blank to use the default for this item",
             format:"Overrides the item formatting. Must be used with label.",
             units:"Overrides the item formatting. Must be used with label.",
-            mappings:"Override the default map data. Leave blank to use the default for this item",
+            translateService:"Overrides the translate service",
+            translateRule:"Overrides the translate rule",
+            mappings:"mappings for switch (???)",
             maxValue:"Set the maximum allowable value",
             minValue:"Set the minimum allowable value",
             period:"?",
@@ -246,7 +248,26 @@ Ext.define('openHAB.config.sitemapProperties', {
             },
             units:{displayName:"Units"},
             label:{displayName:"Label"},
-            mapping:{displayName:"Mapping"},
+            translateService:{
+                displayName:"Translation Service",
+                renderer:function (v) {
+                    var ref = translationServiceStore.findExact("name", v);
+                    if (ref == -1)
+                        return "";
+                    return translationServiceStore.getAt(ref).get("label");
+                },
+                editor:Ext.create('Ext.form.ComboBox', {
+                    store:translationServiceStore,
+                    queryMode:'local',
+                    displayField:'label',
+                    valueField:'name',
+                    typeAhead:false,
+                    editable:false,
+                    forceSelection:true,
+                    allowBlank:true
+                })
+            },
+            translateRule:{displayName:"Translation Rule"},
             maxValue:{displayName:"Maximum"},
             minValue:{displayName:"Minimum"},
             service:{displayName:"Service"},
@@ -270,7 +291,8 @@ Ext.define('openHAB.config.sitemapProperties', {
                 {name:'label'},
                 {name:'format'},
                 {name:'units'},
-                {name:'map'},
+                {name:'translateService'},
+                {name:'translateRule'},
                 {name:'type'},
                 {name:'itemicon'},
                 {name:'maxValue'},
@@ -770,7 +792,10 @@ Ext.define('openHAB.config.sitemapProperties', {
 
             // Create the properties grid
             for (var cnt = 0; cnt < properties.length; cnt++) {
-                source[properties[cnt]] = widget.get(properties[cnt]);
+                if(widget.get(properties[cnt]))
+                    source[properties[cnt]] = widget.get(properties[cnt]);
+                else
+                    source[properties[cnt]] = "";
             }
 
             propertySheet.setSource(source, sourceConfig);

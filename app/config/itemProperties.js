@@ -48,7 +48,8 @@ Ext.define('openHAB.config.itemProperties', {
             Label:"Specify the default label used in the UI.",
             Units:"Specify the unit for this item. This is printed after the value.",
             Format:"Specify the default format that is used for printing values.",
-            Map:"Define the mapping list applicable for the item.",
+            TranslateService:"Define the translation service applicable for the item.",
+            TranslateRule:"Define the translation rule applicable for the item.",
             Icon:"Define the default icon for the item. This is used for the UI.",
             Groups:"List groups that this item is entered. Groups must be changed in the 'Groups' tab.",
             Persistence:"Lists persistence services configured for this item."
@@ -134,7 +135,7 @@ Ext.define('openHAB.config.itemProperties', {
                 renderer:function (v) {
                     var ref = itemTypeStore.findExact("name", v);
                     if (ref == -1)
-                        return;
+                        return "";
                     var icon = itemTypeStore.getAt(ref).get("icon");
                     return '<div>' +
                         '<img src="' + icon + '" align="left" height="16" width:"46">&nbsp;&nbsp;' +
@@ -148,7 +149,6 @@ Ext.define('openHAB.config.itemProperties', {
                     displayField:'name',
                     valueField:'name',
                     forceSelection:true,
-                    editable:false,
                     allowBlank:false,
                     listConfig:{
                         getInnerTpl:function () {
@@ -160,16 +160,27 @@ Ext.define('openHAB.config.itemProperties', {
                     }
                 })
             },
-            Map:{
-                displayName:"Translation Map",
-
+            TranslateService:{
+                displayName:"Translation Service",
+                renderer:function (v) {
+                    var ref = translationServiceStore.findExact("name", v);
+                    if (ref == -1)
+                        return "";
+                    return translationServiceStore.getAt(ref).get("label");
+                },
                 editor:Ext.create('Ext.form.ComboBox', {
+                    store:translationServiceStore,
                     queryMode:'local',
+                    displayField:'label',
+                    valueField:'name',
                     typeAhead:false,
-                    editable:true,
-                    displayField:'name',
-                    valueField:'id'
+                    editable:false,
+                    forceSelection:true,
+                    allowBlank:true
                 })
+            },
+            TranslateService:{
+                displayName:"Translation Rule"
             },
             Persistence:{
                 displayName:"Persistence"
@@ -226,7 +237,8 @@ Ext.define('openHAB.config.itemProperties', {
                         itemData.label = prop.Label;
                         itemData.units = prop.Units;
                         itemData.format = prop.Format;
-                        itemData.map = prop.Map;
+                        itemData.translateService = prop.TranslateService;
+                        itemData.translateRule = prop.TranslateRule;
 
                         // Send the sitemap to openHAB
                         Ext.Ajax.request({
@@ -411,7 +423,8 @@ Ext.define('openHAB.config.itemProperties', {
             source.Label = setValue(json.label);
             source.Format = setValue(json.format);
             source.Units = setValue(json.units);
-            source.Map = setValue(json.map);
+            source.TranslateService = setValue(json.translateService);
+            source.TranslateRule = setValue(json.translateRule);
 
             // Ensure the persistence is an array!
             var persistenceOut = "";

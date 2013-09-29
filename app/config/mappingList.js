@@ -37,8 +37,8 @@
 Ext.define('openHAB.config.mappingList', {
     extend:'Ext.panel.Panel',
     layout:'fit',
-    tabTip:'Mapping list',
-    title:'Mapping',
+    tabTip:'Translation rule list',
+    title:'Translation Rules',
     icon:'images/tables-relation.png',
 
     initComponent:function () {
