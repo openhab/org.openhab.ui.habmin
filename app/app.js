@@ -544,8 +544,6 @@ function createUI() {
             {name:'label'},
             {name:'format'},
             {name:'units'},
-            {name:'map'},
-            {name:'binding'},
             {name:'groups'}
         ]
     });
