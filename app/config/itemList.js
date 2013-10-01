@@ -232,9 +232,9 @@ Ext.define('openHAB.config.itemList', {
                     }
                 },
                 {
-                    text:'Binding',
+                    text:'Model',
                     flex:2,
-                    dataIndex:'binding'
+                    dataIndex:'model'
                 }
             ],
             listeners:{

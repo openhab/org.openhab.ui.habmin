@@ -229,7 +229,6 @@ Ext.define('openHAB.config.itemProperties', {
 
                         itemData.groups = itemGroups.getSelected();
                         itemData.bindings = itemBindings.getBindings();
-                        itemData.binding = itemBindings.getBindingName();
 
                         itemData.type = prop.Type;
                         itemData.name = prop.ItemName;
@@ -474,7 +473,7 @@ Ext.define('openHAB.config.itemProperties', {
                 bindings = [].concat(json.bindings);
 
             // Set the binding strings
-            itemBindings.setBindings(json.binding, bindings);
+            itemBindings.setBindings(bindings);
 
             var cancel = toolbar.getComponent('cancel');
             if(cancel)

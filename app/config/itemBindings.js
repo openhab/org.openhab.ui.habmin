@@ -50,8 +50,8 @@ Ext.define('openHAB.config.itemBindings', {
         Ext.define('ItemBindingModel', {
             extend:'Ext.data.Model',
             fields:[
-                {name:'string'},
-                {name:'binding'}
+                {name:'binding'},
+                {name:'config'}
             ]
         });
 
@@ -115,9 +115,9 @@ Ext.define('openHAB.config.itemBindings', {
                     dataIndex:'binding'
                 },
                 {
-                    text:'String',
+                    text:'Config',
                     flex:4,
-                    dataIndex:'string',
+                    dataIndex:'config',
                     renderer: Ext.util.Format.htmlEncode
                 }
             ],
@@ -127,7 +127,7 @@ Ext.define('openHAB.config.itemBindings', {
                         return;
 
                     properties.setProperty("binding", record.get('binding'));
-                    properties.setProperty("string", record.get('string'));
+                    properties.setProperty("config", record.get('config'));
 
                     // Enable delete button
                     toolbar.getComponent('delete').enable();
@@ -146,13 +146,13 @@ Ext.define('openHAB.config.itemBindings', {
             split:true,
             source:{
                 binding:"",
-                string:""
+                config:""
             },
             sourceConfig:{
                 binding:{
                     displayName:"Binding Name"
                 },
-                string:{
+                config:{
                     displayName:"Binding String"
                 }
             },
@@ -171,7 +171,7 @@ Ext.define('openHAB.config.itemBindings', {
 
                         var prop = properties.getStore();
                         record.set("binding", getPropertyValue(prop, "binding"));
-                        record.set("string", getPropertyValue(prop, "string"));
+                        record.set("config", getPropertyValue(prop, "config"));
 
                         // Function to get a property value given the name
                         // Returns null if property not found
@@ -189,10 +189,6 @@ Ext.define('openHAB.config.itemBindings', {
                 propertychange:function (source, recordId, value, oldValue, eOpts) {
                 },
                 beforeedit : function(editor, e) {
-                    var rec = e.record;
-                    // Make the binding name read-only if there's more than 1 binding
-                    if(rec.get('name') == 'binding' && store.getCount() > 1)
-                        e.cancel=true;
                 }
             }
         });
@@ -200,19 +196,19 @@ Ext.define('openHAB.config.itemBindings', {
         this.items = [list, properties];
         this.callParent();
 
-
-        this.setBindings = function(name, bindings) {
+        this.setBindings = function(bindings) {
             var rec = [];
 
             for(var cnt = 0; cnt < bindings.length; cnt++) {
                 rec[cnt] = {};
                 rec[cnt].id  = cnt;
-                rec[cnt].binding = name;
-                rec[cnt].string = bindings[cnt];
+                rec[cnt].binding = bindings[cnt].binding;
+                rec[cnt].config = bindings[cnt].config;
             }
             store.loadData(rec);
         }
 
+        // Get the list of binding configs
         this.getBindings = function() {
             var rec = [];
 
@@ -221,7 +217,9 @@ Ext.define('openHAB.config.itemBindings', {
                 return rec;
 
             for(var cnt = 0; cnt < store.getCount(); cnt++) {
-                rec[cnt] = store.getAt(cnt).get("string");
+                rec[cnt] = {};
+                rec[cnt].binding = store.getAt(cnt).get("binding");
+                rec[cnt].config = store.getAt(cnt).get("config");
             }
 
             return rec;

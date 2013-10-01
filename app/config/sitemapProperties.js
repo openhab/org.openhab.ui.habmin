@@ -77,6 +77,9 @@ Ext.define('openHAB.config.sitemapProperties', {
             Webview:["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"]
         };
 
+        // Array of widget types that are allowed to have children
+        var linkableWidgets = ["Sitemap", "Group", "Text", "Image", "Frame"];
+
         var widgetHelp = {
             command:"?",
             height:"Set the height of the widget in the UI",
@@ -596,7 +599,7 @@ Ext.define('openHAB.config.sitemapProperties', {
                     nodedragover:function (targetNode, position, dragData, e, eOpts) {
                         // Make sure we can only append to groups and frames
                         if (position == "append") {
-                            if (targetNode.get('type') == 'Group' | targetNode.get('type') == 'Frame' | targetNode.get('type') == 'Sitemap')
+                            if (linkableWidgets.indexOf(targetNode.get('type')))
                                 return true;
                             return false
                         }
@@ -743,13 +746,8 @@ Ext.define('openHAB.config.sitemapProperties', {
                             if (widget != -1)
                                 newItem.iconCls = widgetStore.getAt(widget).get("iconCls");
 
-                            // Check if this is a group
-                            if (tree[iItem].type == "Group") {
-                                newItem.children = [];
-                                if (tree[iItem].widget != null)
-                                    iterateTree(newItem.children, tree[iItem].widget, iterationCnt);
-                            }
-                            if (tree[iItem].type == "Frame") {
+                            // Check if this has children
+                            if (linkableWidgets.indexOf(tree[iItem].type)) {
                                 newItem.children = [];
                                 if (tree[iItem].widget != null)
                                     iterateTree(newItem.children, tree[iItem].widget, iterationCnt);
@@ -802,10 +800,6 @@ Ext.define('openHAB.config.sitemapProperties', {
             propertySheet.getHeader().getTools()[0].disable();
 
             itemComboStore.filterBy(function myfilter(record) {
-                var t = widget.get("type");
-                var x = widgetItemTypes[widget.get("type")];
-                var a = record.get("type");
-
                 if (widgetItemTypes[widget.get("type")].indexOf(record.get("type")) == -1)
                     return false;
                 return true;
