@@ -60,6 +60,8 @@ Optionally, in order to get the graphing to work, you need to also install a new
 
 You will probably need to restart OpenHAB for the new REST interface to take affect.
 
+You can then start habmin at the address [http://localhost:8080/habmin/index.html](http://localhost:8080/habmin/index.html) (assuming openHAB is running on your local computer using the default port - if this is not the case, you will need to adjust the address accordingly).
+
 
 Contributing
 ------------
