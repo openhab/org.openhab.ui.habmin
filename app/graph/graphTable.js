@@ -42,7 +42,7 @@ Ext.define('openHAB.graph.graphTable', {
     title:'Table',
     icon:'images/table-export.png',
     lastUpdate:0,
-    deferredRender: true,
+    deferredRender:true,
 
     initComponent:function () {
         this.callParent();
@@ -50,6 +50,8 @@ Ext.define('openHAB.graph.graphTable', {
         this.updateData = function () {
             // Detect if the graph data has been updated
             // Don't update the table if it's old data!
+            if (Ext.getCmp("highchartsChart").lastUpdate == null)
+                return;
             if (Ext.getCmp("highchartsChart").lastUpdate() < this.lastUpdate)
                 return;
             this.lastUpdate = (new Date()).getTime();
