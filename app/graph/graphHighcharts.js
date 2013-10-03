@@ -49,6 +49,7 @@ Ext.define('openHAB.graph.graphHighcharts', {
         var chartObject = null;
         var chartMin = 0;
         var chartMax = 0;
+        var chartChannels = [];
         var chartOptions = {
             chart:{
                 renderTo:'chartIsHere',
@@ -161,7 +162,7 @@ Ext.define('openHAB.graph.graphHighcharts', {
                             for (var i = 0; i < json.datapoints; i++) {
                                 newSeries[i] = [];
                                 newSeries[i][0] = parseInt(json.data[i].time);
-                                newSeries[i][1] = parseFloat(json.data[i].value);
+                                newSeries[i][1] = parseFloat(json.data[i].state);
                             }
                             rawData[chan].data = newSeries;
                         }
@@ -175,7 +176,11 @@ Ext.define('openHAB.graph.graphHighcharts', {
                     return;
             }
 
-            // Add requests have completed! Process and display the data!
+            // All requests have completed! Process and display the data!
+            drawChart();
+        }
+
+        function drawChart() {
             timeStart = (new Date()).getTime();
 
 //                    graphInfoItems[0] = [];
@@ -222,9 +227,9 @@ Ext.define('openHAB.graph.graphHighcharts', {
 
                 options.series[series].data = rawData[chan].data;
 
-                var ref = persistenceStore.findExact("name", rawData[chan].item);
+                var ref = persistenceItemStore.findExact("name", rawData[chan].item);
                 if (ref != -1)
-                    options.series[series].name = persistenceStore.getAt(ref).get("label");
+                    options.series[series].name = persistenceItemStore.getAt(ref).get("label");
                 else
                     options.series[series].name = rawData[chan].item;
                 options.series[series].yAxis = rawData[chan].yAxis;
@@ -292,6 +297,7 @@ Ext.define('openHAB.graph.graphHighcharts', {
 
 
         function updateChart(channels, start, stop) {
+            // Keep track of the current channels
             chartChannels = channels;
 
             // TODO: Something needs to be done about the timers and graph information - do this at the same time as the success/fail calls
@@ -342,7 +348,7 @@ Ext.define('openHAB.graph.graphHighcharts', {
                 rawData[chan].yAxis = 0;
 
                 Ext.Ajax.request({
-                    url:'/rest/history/' + channels[chan].name,
+                    url:'/rest/persistence/' + persistenceService + '/' + channels[chan].name,
                     timeout:20000,
                     params:parms,
                     method:'GET',

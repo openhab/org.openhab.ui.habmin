@@ -91,7 +91,8 @@ var viewPort;
 var statusTooltip;
 
 // Global data stores from openHAB
-var persistenceStore;
+var persistenceItemStore;
+var persistenceServiceStore;
 var itemTypeStore;
 var itemIconStore;
 var widgetStore;
@@ -100,6 +101,8 @@ var bindingStore;
 var itemConfigStore;
 var itemFormatStore;
 var translationServiceStore;
+
+var persistenceService = "";
 
 var itemTypeArray = [
     {name:"GroupItem", icon: "images/category-group.png"},
@@ -434,29 +437,84 @@ function createUI() {
     itemTypeStore.loadData(itemTypeArray);
 
 
-    //======= Items Store
-    Ext.define('PersistenceModel', {
+    //======= Persistence Service Store
+    Ext.define('PersistenceServiceModel', {
+        extend:'Ext.data.Model',
+        fields:[
+            {name:'name'},
+            {name:'actions'}
+        ]
+    });
+
+    persistenceServiceStore = Ext.create('Ext.data.JsonStore', {
+        model:'PersistenceServiceModel',
+        proxy:{
+            type:'rest',
+            url:'/rest/persistence/services',
+            reader:{
+                type:'json',
+                root:'services'
+            },
+            headers:{'Accept':'application/json'},
+            pageParam:undefined,
+            startParam:undefined,
+            sortParam:undefined,
+            limitParam:undefined
+        },
+        autoLoad:true,
+        listeners: {
+            load: function(store,records,options) {
+                // Get the selection menu
+                var menu = Ext.getCmp("persistenceServiceMenu");
+
+                // Select the default service
+                for(var cnt = 0; cnt < store.getCount(); cnt++) {
+                    var actions = [].concat(store.getAt(cnt).get("actions"));
+                    // TODO: Better method to determine default needed!!!
+                    if(actions.indexOf("Read")) {
+                        persistenceService = store.getAt(cnt).get("name");
+                        var newItem = {};
+                        newItem.text = store.getAt(cnt).get("name");
+                        newItem.icon = "images/database-sql.png";
+                        newItem.disabled = false;
+                        menu.add(newItem);
+                    }
+                }
+
+                // Update the button for selecting the persistence service
+                var button = Ext.getCmp("persistenceServiceSelect");
+                if(button != null) {
+                    button.setText(persistenceService);
+                }
+            }
+        }
+    });
+
+
+    //======= Persistence Items Store
+    Ext.define('PersistenceItemModel', {
         extend:'Ext.data.Model',
         fields:[
             {name:'name'},
             {name:'label'},
+            {name:'unit'},
+            {name:'format'},
             {name:'state'},
             {name:'icon'},
             {name:'type'},
-            {name:'link'},
-            {name:'persistence'},
+            {name:'services'},
             {name:'groups'}
         ]
     });
 
-    persistenceStore = Ext.create('Ext.data.ArrayStore', {
-        model:'PersistenceModel',
+    persistenceItemStore = Ext.create('Ext.data.ArrayStore', {
+        model:'PersistenceItemModel',
         proxy:{
             type:'rest',
-            url:'/rest/history',
+            url:'/rest/persistence/items',
             reader:{
                 type:'json',
-                root:'item'
+                root:'items'
             },
             headers:{'Accept':'application/json'},
             pageParam:undefined,
@@ -638,16 +696,7 @@ function createUI() {
 
     Ext.define('StatusBar', {
         extend:'Ext.Component',
-        alias:'widget.statusbar',
-        html:'<div id="onlineStatus" style="position:absolute;right:5px;top:3px;"><span id="statustext" style="vertical-align: top;">openHAB Status </span><img style="margin-top:-1px;" id="statusicon" src="images/status-offline.png"></div>',
-        style:{
-            'width':250
-        }
-    });
-
-    Ext.define('StatusBar', {
-        extend:'Ext.Component',
-        alias:'widget.statusbar',
+        alias:'widget.onlinestatusbar',
         html:'<div id="onlineStatus" style="position:absolute;right:5px;top:3px;width:250px;text-align:right"><span id="statustext" style="vertical-align: top;">Online Status </span><img style="margin-top:-1px;" id="statusicon" src="images/status-offline.png"></div>'
     });
 
@@ -658,7 +707,7 @@ function createUI() {
             render:function () {
                 this.tabBar.add(
                     { xtype:'tbfill' },
-                    { xtype:'statusbar' }
+                    { xtype:'onlinestatusbar' }
                 );
             },
             tabchange:function (tabPanel, newCard, oldCard, eOpts) {

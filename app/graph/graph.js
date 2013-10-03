@@ -69,23 +69,63 @@ Ext.define('openHAB.graph.graph', {
         var chartGraph = Ext.create('openHAB.graph.graphHighcharts');
         var chartTable = Ext.create('openHAB.graph.graphTable');
 
+        Ext.define('PersistenceSelectBar', {
+            extend:'Ext.Component',
+            alias:'widget.persistencebar',
+            items:["Hello", "There"]
+        });
+
         // Create the tab bar to select between graph and table
         var tabPanel = Ext.create('Ext.tab.Panel', {
             plain:false,
             region:'center',
             layout:'fit',
-            tabPosition: 'bottom',
+            tabPosition:'bottom',
             items:[chartGraph, chartTable],
-			listeners: {
-				beforetabchange:function (tabPanel, newCard, oldCard, eOpts) {
-					// Detect if we've changed to the table view
-					if (newCard.itemId == 'graphTableData') {
-                        if(chartTable.isUpdateRequired())
+            listeners:{
+                render:function () {
+                    this.tabBar.add(
+                        { xtype:'tbfill' },
+                        {
+                            border:false,
+                            id:"persistenceServiceSelect",
+                            tabTip:'Select persistence service',
+                            closable:false,
+                            text:persistenceService,
+                            textAlign:'left',
+                            width:100,
+                            icon:'images/database-share.png',
+                            defaults:{
+                                xtype:'button',
+                                handler:function (tbtn) {
+                                }
+                            },
+                            menu:{
+                                width:100,
+                                id:"persistenceServiceMenu",
+                                xtype:'menu',
+                                listeners:{
+                                    click:function (menu, item, e, eOpts) {
+                                        persistenceService = item.text;
+                                        var button = Ext.getCmp("persistenceServiceSelect");
+                                        if (button != null) {
+                                            button.setText(persistenceService);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    );
+                },
+                beforetabchange:function (tabPanel, newCard, oldCard, eOpts) {
+                    // Detect if we've changed to the table view
+                    if (newCard.itemId == 'graphTableData') {
+                        if (chartTable.isUpdateRequired())
                             chartTable.updateData();
                     }
-				}
-			}
-			
+                }
+            }
+
         });
 
         this.items = [accordion, tabPanel];

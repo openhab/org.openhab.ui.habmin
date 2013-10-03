@@ -81,6 +81,7 @@ Ext.define('openHAB.graph.graphTable', {
             columns[0].dataIndex = 'time';
             columns[0].xtype = 'datecolumn';
             columns[0].format = 'H:i:s d M Y';
+            columns[0].width = 130;
 
             var fields = [];
             fields[0] = [];
@@ -89,11 +90,15 @@ Ext.define('openHAB.graph.graphTable', {
             fields[0].dateFormat = 'time';
 
             for (var c = 0; c < data.length; c++) {
+                // Add the field attributes for the data model
                 fields[c + 1] = [];
                 fields[c + 1].name = data[c].item;
+
+                // Add the column attributes for the grid
                 columns[c + 1] = [];
                 columns[c + 1].text = data[c].item;
                 columns[c + 1].dataIndex = data[c].item;
+                columns[c + 1].width = 150;
             }
 
             // Create a model
@@ -102,10 +107,79 @@ Ext.define('openHAB.graph.graphTable', {
                 fields:fields
             });
 
+            var editAction  = Ext.create('Ext.Action', {
+                icon: 'images/layer--pencil.png',
+                text: 'Edit Record',
+                disabled: false,
+                handler: function(widget, event) {
+                    var c = dataGrid.contextCellIndex;
+                    var x = dataGrid.contextRowIndex;
+                    var rec = dataGrid.getSelectionModel().getSelection()[0];
+                    if (rec) {
+                    }
+                }
+            });
+            var deleteAction = Ext.create('Ext.Action', {
+                icon: 'images/cross.png',
+                text: 'Delete Record',
+                disabled: false,
+                handler: function(widget, event) {
+                    var cell = dataGrid.contextCellIndex;
+                    var row = dataGrid.contextRowIndex;
+
+                    var store = dataGrid.getStore();
+                    if(store == null)
+                        return;
+
+                    var rec = store.getAt(row);
+                    if(rec == null)
+                        return;
+
+                    var time = rec.get("time");
+                    var state = rec.get(columns[cell].text);
+
+                    // Make sure we really want to do this!!!
+                    Ext.Msg.show({
+                        title:"Confirm Delete",
+                        msg:'Are you sure you want to delete the record ?<br>' + columns[cell] + ' ' + time + ':' + state,
+                        buttons:Ext.Msg.YESNO,
+                        config:{
+                            obj:this,
+                            item:columns[cell],
+                            time:time,
+                            state:state
+                        },
+                        fn:deleteRecord,
+                        icon:Ext.MessageBox.QUESTION
+                    });
+                }
+            });
+
+            var contextMenu = Ext.create('Ext.menu.Menu', {
+                items: [
+                    editAction,
+                    deleteAction
+                ]
+            });
+
             var dataGrid = Ext.create('Ext.grid.Panel', {
                 store:{model:'GraphTableModel', data:data[0].data},
                 multiSelect:false,
-                columns:columns
+                columns:columns,
+                viewConfig: {
+                    stripeRows: true,
+                    listeners: {
+                        cellcontextmenu: function( grid, td, cellIndex, record, tr, rowIndex, e, eOpts ) {
+                            e.stopEvent();
+                            if(cellIndex == 0)
+                                return false;
+                            dataGrid.contextCellIndex = cellIndex;
+                            dataGrid.contextRowIndex = rowIndex;
+                            contextMenu.showAt(e.getXY());
+                            return false;
+                        }
+                    }
+                }
             });
 
             this.add(dataGrid);
@@ -118,6 +192,52 @@ Ext.define('openHAB.graph.graphTable', {
             if (Ext.getCmp("highchartsChart").getLastUpdate() < this.lastUpdate)
                 return false;
             return true;
+        }
+
+        function deleteRecord(button, text, options) {
+            if (button !== 'yes')
+                return;
+
+            // Tell OH to Remove the record
+            Ext.Ajax.request({
+                url:"/rest/persistence/" + persistenceService + options.config.name,
+                headers:{'Accept':'application/json'},
+                method:'DELETE',
+                success:function (response, opts) {
+                    Ext.MessageBox.show({
+                        msg:'Record deleted',
+                        width:200,
+                        draggable:false,
+                        icon:'icon-ok',
+                        closable:false
+                    });
+                    setTimeout(function () {
+                        Ext.MessageBox.hide();
+                    }, 2500);
+                },
+                failure:function (result, request) {
+                    Ext.MessageBox.show({
+                        msg:'Error deleting record',
+                        width:200,
+                        draggable:false,
+                        icon:'icon-error',
+                        closable:false
+                    });
+                    setTimeout(function () {
+                        Ext.MessageBox.hide();
+                    }, 2500);
+                },
+                callback:function (options, success, response) {
+                    // Reload the store
+                    sitemapStore.reload();
+
+                    // Clear the sitemap properties
+                    Ext.getCmp('configPropertyContainer').removeProperty();
+
+                    // Disable delete
+                    toolbar.getComponent('delete').disable();
+                }
+            });
         }
     }
 })
