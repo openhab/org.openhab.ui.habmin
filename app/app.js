@@ -84,7 +84,8 @@ Ext.require([
     'openHAB.system.systemBundles',
     'openHAB.automation.automation',
     'openHAB.automation.notificationList',
-    'openHAB.automation.ruleList'
+    'openHAB.automation.ruleList',
+    'openHAB.automation.ruleProperties'
 ]);
 
 var viewPort;

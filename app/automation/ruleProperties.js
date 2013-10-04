@@ -35,15 +35,144 @@
  */
 
 
-Ext.define('openHAB.automation.ruleList', {
+Ext.define('openHAB.automation.ruleProperties', {
     extend:'Ext.panel.Panel',
     layout:'fit',
-    icon:'images/application-list.png',
-    title: 'Rules',
+    tabTip:'Rule Properties',
+    header:false,
 
     initComponent:function () {
 
+
+        var ruleForm = new Ext.form.Panel({
+            border:false,
+            bodyPadding:5,
+            fieldDefaults:{
+                labelWidth:100
+            },
+            defaultType:'textfield',
+            items:[
+                {
+                    fieldLabel:'Rule Name',
+                    name:'name',
+                    anchor:'100%'
+                },
+                {
+                    fieldLabel:'Description',
+                    name:'description',
+                    anchor:'100%'
+                }
+            ]
+        });
+
+        var ruleTrigger = Ext.create('Ext.panel.Panel', {
+            padding:5,
+            title:'Trigger',
+            collapsed:false,
+            collapsible:true,
+            layout:{
+                type:'vbox',
+                align:'stretch',
+                pack:'start'
+            },
+            minHeight:100
+        });
+
+        var ruleAction = Ext.create('Ext.panel.Panel', {
+            padding:5,
+            title:'Action',
+            collapsed:false,
+            collapsible:true,
+            layout:{
+                type:'vbox',
+                align:'stretch',
+                pack:'start'
+            },
+            minHeight:100
+        });
+
+        var ruleContainer = Ext.create('Ext.panel.Panel', {
+            layout:{
+                type:'vbox',
+                align:'stretch',
+                pack:'start'
+            },
+            items:[
+                ruleForm,
+                ruleTrigger,
+                ruleAction
+            ]
+        });
+
+        addTrigger();
+
+
+        this.items = [ruleContainer];
         this.callParent();
+
+        function addTrigger() {
+
+            var trigger = Ext.create('Ext.form.Panel', {
+                xtype:'form',
+                border:false,
+                fieldDefaults:{
+                    labelAlign:'top',
+                    msgTarget:'side'
+                },
+                defaults:{
+                    border:false,
+                    xtype:'panel',
+                    padding:5
+                },
+                layout: 'column',
+                items:[
+                    {
+                        xtype:'textfield',
+                        fieldLabel:'Trigger Type',
+                        name:'type',
+                        columnWidth: 0.4
+                    },
+                    {
+                        xtype:'textfield',
+                        fieldLabel:'Parameter',
+                        name:'Parameter',
+                        columnWidth: 0.6
+                    },
+                    {
+                        padding:10,
+                        width:100,
+                        items: [
+                            {
+                                xtype:'button',
+                                icon:'images/minus-button.png',
+                                text:'Delete',
+                                width:80,
+                                listeners:{
+                                    scope: this,
+                                    click:function (btn, e, eOpts) {
+                                        var x = btn.up("form");
+                                        ruleTrigger.remove(x);
+                                    }
+                                }
+                            },
+                            {
+                                xtype:'button',
+                                icon:'images/plus-button.png',
+                                text:'Add',
+                                width:80,
+                                listeners:{
+                                    scope: this,
+                                    click:function (btn, e, eOpts) {
+                                        addTrigger();
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            });
+            ruleTrigger.add(trigger);
+        }
     }
 })
 ;

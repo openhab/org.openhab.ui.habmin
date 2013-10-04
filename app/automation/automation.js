@@ -74,6 +74,10 @@ Ext.define('openHAB.automation.automation', {
             }
         });
 
+        var chartGraph = Ext.create('openHAB.automation.ruleProperties');
+
+        propertyContainer.add(chartGraph);
+
         this.items = [accordion, propertyContainer];
 
         this.callParent();
