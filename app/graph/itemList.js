@@ -67,6 +67,8 @@ Ext.define('openHAB.graph.itemList', {
                     disabled:true,
                     tooltip:'Save current chart configuration',
                     handler:function () {
+                        var saveGraph = Ext.create('openHAB.graph.saveGraph');
+                        saveGraph.setData(selectedChanList);
                     }
                 },
                 {

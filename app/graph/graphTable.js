@@ -107,11 +107,11 @@ Ext.define('openHAB.graph.graphTable', {
                 fields:fields
             });
 
-            var editAction  = Ext.create('Ext.Action', {
-                icon: 'images/layer--pencil.png',
-                text: 'Edit Record',
-                disabled: false,
-                handler: function(widget, event) {
+            var editAction = Ext.create('Ext.Action', {
+                icon:'images/layer--pencil.png',
+                text:'Edit Record',
+                disabled:false,
+                handler:function (widget, event) {
                     var c = dataGrid.contextCellIndex;
                     var x = dataGrid.contextRowIndex;
                     var rec = dataGrid.getSelectionModel().getSelection()[0];
@@ -120,19 +120,20 @@ Ext.define('openHAB.graph.graphTable', {
                 }
             });
             var deleteAction = Ext.create('Ext.Action', {
-                icon: 'images/cross.png',
-                text: 'Delete Record',
-                disabled: false,
-                handler: function(widget, event) {
+                icon:'images/cross.png',
+                text:'Delete Record',
+                disabled:false,
+                handler:function (widget, event) {
+                    // Delete the selected record!
                     var cell = dataGrid.contextCellIndex;
                     var row = dataGrid.contextRowIndex;
 
                     var store = dataGrid.getStore();
-                    if(store == null)
+                    if (store == null)
                         return;
 
                     var rec = store.getAt(row);
-                    if(rec == null)
+                    if (rec == null)
                         return;
 
                     var time = rec.get("time");
@@ -141,11 +142,11 @@ Ext.define('openHAB.graph.graphTable', {
                     // Make sure we really want to do this!!!
                     Ext.Msg.show({
                         title:"Confirm Delete",
-                        msg:'Are you sure you want to delete the record ?<br>' + columns[cell] + ' ' + time + ':' + state,
+                        msg:'Are you sure you want to delete the selected record?<br>' + columns[cell].text + '<br>' + time + ':' + state,
                         buttons:Ext.Msg.YESNO,
                         config:{
                             obj:this,
-                            item:columns[cell],
+                            item:columns[cell].dataIndex,
                             time:time,
                             state:state
                         },
@@ -156,7 +157,7 @@ Ext.define('openHAB.graph.graphTable', {
             });
 
             var contextMenu = Ext.create('Ext.menu.Menu', {
-                items: [
+                items:[
                     editAction,
                     deleteAction
                 ]
@@ -166,13 +167,42 @@ Ext.define('openHAB.graph.graphTable', {
                 store:{model:'GraphTableModel', data:data[0].data},
                 multiSelect:false,
                 columns:columns,
-                viewConfig: {
-                    stripeRows: true,
-                    listeners: {
-                        cellcontextmenu: function( grid, td, cellIndex, record, tr, rowIndex, e, eOpts ) {
+                selType:'cellmodel',
+                viewConfig:{
+                    stripeRows:true,
+                    listeners:{
+                        cellcontextmenu:function (grid, td, cellIndex, record, tr, rowIndex, e, eOpts) {
                             e.stopEvent();
-                            if(cellIndex == 0)
+                            if (cellIndex == 0)
                                 return false;
+
+                            // Make sure the selected persistence service is a full CRUD
+                            var id = persistenceServiceStore.findExact(persistenceService);
+                            if(id == -1)
+                                return false;
+
+                            // Set showMenu to true is one action is supported
+                            var showMenu = false;
+                            var svc = [].concat(persistenceItemStore.getAt(id).get("actions"));
+                            svc = ["Delete"];
+                            if(svc.indexOf("Delete") == -1)
+                                deleteAction.disable();
+                            else {
+                                deleteAction.enable();
+                                showMenu = true;
+                            }
+
+                            if(svc.indexOf("Update") == -1)
+                                editAction.disable();
+                            else {
+                                editAction.enable();
+                                showMenu = true;
+                            }
+
+                            // If no services, just return
+                            if(showMenu == false)
+                                return;
+
                             dataGrid.contextCellIndex = cellIndex;
                             dataGrid.contextRowIndex = rowIndex;
                             contextMenu.showAt(e.getXY());
@@ -198,10 +228,15 @@ Ext.define('openHAB.graph.graphTable', {
             if (button !== 'yes')
                 return;
 
+            // Specify the delete parameters
+            var parms = {};
+            parms.time = options.config.time;
+
             // Tell OH to Remove the record
             Ext.Ajax.request({
-                url:"/rest/persistence/" + persistenceService + options.config.name,
+                url:"/rest/persistence/" + persistenceService + '/' + options.config.item,
                 headers:{'Accept':'application/json'},
+                params:parms,
                 method:'DELETE',
                 success:function (response, opts) {
                     Ext.MessageBox.show({

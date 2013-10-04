@@ -52,25 +52,14 @@ Ext.define('openHAB.graph.saveGraph', {
             ]
         });
 
-        var chanData = [];
-        for (var chCnt = 0; chCnt < channels.length; chCnt++) {
-            var dev = getDMDevice(channels[chCnt].value);
-            if (dev != null) {
-                chanData[chCnt] = {};
-                chanData[chCnt].id = channels[chCnt].value;
-                chanData[chCnt].name = dev.Name;
-                chanData[chCnt].axis = channels[chCnt].axis;
-            }
-        }
-
         var saveGraphStore = Ext.create('Ext.data.Store', {
             storeId:'saveGraphStore',
             fields:[
                 {type:'number', name:'id'},
                 {type:'string', name:'name'},
+                {type:'string', name:'label'},
                 {type:'number', name:'axis'}
-            ],
-            data:chanData
+            ]
         });
         var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
             clicksToEdit:1
@@ -86,16 +75,51 @@ Ext.define('openHAB.graph.saveGraph', {
 //        stateId:'stateGrid',
             columns:[
                 {
-                    text:'Id',
-                    hidden:true,
-                    dataIndex:'id'
-                },
-                {
-                    text:'Name',
+                    text:'Item',
                     hideable:false,
-                    flex:8,
+                    flex:6,
                     sortable:true,
                     dataIndex:'name'
+                },
+                {
+                    text:'Label',
+                    hideable:false,
+                    flex:6,
+                    sortable:true,
+                    dataIndex:'label',
+                    editor:{
+                        allowBlank:true
+                    }
+                },
+                {
+                    text:'Line',
+                    hideable:false,
+                    flex:2,
+                    sortable:true,
+                    dataIndex:'line'
+                },
+                {
+                    text:'Color',
+                    hideable:false,
+                    flex:2,
+                    sortable:true,
+                    dataIndex:'color'
+                },
+                {
+                    text:'Chart',
+                    hideable:false,
+                    flex:2,
+                    sortable:true,
+                    dataIndex:'chart'
+
+                },
+                {
+                    xtype:'checkcolumn',
+                    text:'Markers',
+                    hideable:false,
+                    dataIndex:'marker',
+                    flex:2,
+                    stopSelection:false
                 },
                 {
                     text:'Axis',
@@ -149,7 +173,6 @@ Ext.define('openHAB.graph.saveGraph', {
                     allowBlank:false,
                     maxLength:50,
                     enforceMaxLength:true,
-                    afterLabelTextTpl:'<span style="color:red;font-weight:bold" data-qtip="Required.">*</span>',
 //                    vtype:'name',
                     allowBlank:false
                 },
@@ -157,17 +180,7 @@ Ext.define('openHAB.graph.saveGraph', {
                     border:false,
                     layout:'column',
                     items:[
-                        {
-                            columnWidth:0.5,
-                            margin:'0 10 0 0',
-                            xtype:'textfield',
-                            itemId:'graphRef',
-                            fieldLabel:'Quickview reference',
-                            maxLength:15,
-                            enforceMaxLength:true,
-                            afterLabelTextTpl:'<span data-qtip="Used to reference the graph directly through /dm/graph.html?ref=<i>reference</i>."><img src="images/question.png"></span>',
-                            allowBlank:true
-                        },
+
                         {
                             columnWidth:0.5,
                             margin:'0 0 0 10',
@@ -193,7 +206,7 @@ Ext.define('openHAB.graph.saveGraph', {
                             fieldLabel:'Icon',
                             itemId:'graphIcon',
                             name:'graphIcon',
-                            store:{model:'Icons', data:dataTypeArray},
+//                            store:{model:'Icons', data:dataTypeArray},
                             allowBlank:false,
                             value:0,
                             valueField:'id',
@@ -246,12 +259,12 @@ Ext.define('openHAB.graph.saveGraph', {
                         }
 
                         Ext.Ajax.request({
-                            url:veraServer + '/data_request',
+                            url:'/rest/habmin/graph/',
                             params:parms,
-                            method:'GET',
+                            method:'PUT',
                             success:function (response, opts) {
-                                configGraph = Ext.decode(response.responseText);
-                                graphStore.loadData(configGraph);
+                                var configGraph = Ext.decode(response.responseText);
+//                                graphStore.loadData(configGraph);
                             }
                         });
 
@@ -264,7 +277,7 @@ Ext.define('openHAB.graph.saveGraph', {
         saveWin = Ext.widget('window', {
             title:'Save Graph',
             closeAction:'destroy',
-            width:475,
+            width:750,
             height:430,
             layout:'fit',
             resizable:false,
@@ -279,23 +292,26 @@ Ext.define('openHAB.graph.saveGraph', {
 
         saveWin.show();
 
-        if (options != null) {
-            if (options.Name != null)
-                Ext.getCmp('graphName').setValue(options.Name);
-
-            if (options.Icon != null)
-                Ext.getCmp('graphIcon').setValue(options.Icon);
-
-            if (options.Period != null)
-                Ext.getCmp('graphDuration').setValue(options.Period / 86400000);
-
-            if (options.Reference != null)
-                Ext.getCmp('graphRef').setValue(options.Reference);
-        }
-
-//        this.items = itemsTree;
-
         this.callParent();
+
+
+        this.setData = function (channels) {
+            var chanData = [];
+            for (var chCnt = 0; chCnt < channels.length; chCnt++) {
+                chanData[chCnt] = {};
+                chanData[chCnt].name = channels[chCnt].name;
+                chanData[chCnt].axis = 1;
+
+                var id = persistenceItemStore.findExact("name", channels[chCnt].name);
+                if (id != -1) {
+                    var rec = persistenceItemStore.getAt(id);
+                    chanData[chCnt].label = rec.get("label");
+                }
+            }
+
+            saveGraphStore.loadData(chanData);
+        }
     }
 })
 ;
+
