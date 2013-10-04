@@ -105,29 +105,29 @@ var translationServiceStore;
 var persistenceService = "";
 
 var itemTypeArray = [
-    {name:"GroupItem", icon: "images/category-group.png"},
-    {name:"SwitchItem", icon: "images/switch.png"},
-    {name:"NumberItem", icon: "images/counter.png"},
-    {name:"ColorItem", icon: "images/color.png"},
+    {name:"GroupItem", icon:"images/category-group.png"},
+    {name:"SwitchItem", icon:"images/switch.png"},
+    {name:"NumberItem", icon:"images/counter.png"},
+    {name:"ColorItem", icon:"images/color.png"},
     {name:"ContactItem", icon:"images/door-open.png"},
     {name:"DateTimeItem", icon:"images/clock.png"},
-    {name:"DimmerItem",icon:"images/ui-slider.png"},
+    {name:"DimmerItem", icon:"images/ui-slider.png"},
     {name:"RollerShutterItem", icon:"images/curtain.png"},
-    {name:"StringItem",icon:"images/edit.png"}
+    {name:"StringItem", icon:"images/edit.png"}
 ];
 
 var widgetTypeArray = [
-    {type:"Group", icon: "images/ui-scroll-pane.png", iconCls:"widget-group"},
-    {type:"Frame", icon: "images/ui-group-box.png", iconCls:"widget-frame"},
-    {type:"Image", icon: "images/picture.png", iconCls:"widget-image"},
-    {type:"Selection", icon: "images/ui-combo-box-blue.png", iconCls:"widget-selection"},
-    {type:"Slider", icon: "images/ui-slider.png", iconCls:"widget-slider"},
-    {type:"Video", icon: "images/film.png", iconCls:"widget-video"},
-    {type:"Webview", icon: "images/globe.png", iconCls:"widget-webview"},
-    {type:"Setpoint", icon: "images/ui-scroll-bar.png", iconCls:"widget-setpoint"},
-    {type:"Switch", icon: "images/switch.png", iconCls:"widget-switch"},
-    {type:"Colorpicker", icon: "images/color.png", iconCls:"widget-colorpicker"},
-    {type:"Text",icon:"images/edit.png", iconCls:"widget-text"}
+    {type:"Group", icon:"images/ui-scroll-pane.png", iconCls:"widget-group"},
+    {type:"Frame", icon:"images/ui-group-box.png", iconCls:"widget-frame"},
+    {type:"Image", icon:"images/picture.png", iconCls:"widget-image"},
+    {type:"Selection", icon:"images/ui-combo-box-blue.png", iconCls:"widget-selection"},
+    {type:"Slider", icon:"images/ui-slider.png", iconCls:"widget-slider"},
+    {type:"Video", icon:"images/film.png", iconCls:"widget-video"},
+    {type:"Webview", icon:"images/globe.png", iconCls:"widget-webview"},
+    {type:"Setpoint", icon:"images/ui-scroll-bar.png", iconCls:"widget-setpoint"},
+    {type:"Switch", icon:"images/switch.png", iconCls:"widget-switch"},
+    {type:"Colorpicker", icon:"images/color.png", iconCls:"widget-colorpicker"},
+    {type:"Text", icon:"images/edit.png", iconCls:"widget-text"}
 ];
 
 var formatLookupArray = [
@@ -354,7 +354,7 @@ function loadSitemapList() {
 // Return an icon based on the ItemType
 function getItemTypeIcon(type) {
     var ref = itemTypeStore.findExact("name", type);
-    if(ref == -1)
+    if (ref == -1)
         return "";
     else
         return itemTypeStore.getAt(ref).get('icon');
@@ -447,51 +447,54 @@ function createUI() {
     });
 
     persistenceServiceStore = Ext.create('Ext.data.JsonStore', {
-        model:'PersistenceServiceModel',
-        proxy:{
-            type:'rest',
-            url:'/rest/persistence/services',
-            reader:{
-                type:'json',
-                root:'services'
+            model:'PersistenceServiceModel',
+            proxy:{
+                type:'rest',
+                url:'/rest/persistence/services',
+                reader:{
+                    type:'json',
+                    root:'services'
+                },
+                headers:{'Accept':'application/json'},
+                pageParam:undefined,
+                startParam:undefined,
+                sortParam:undefined,
+                limitParam:undefined
             },
-            headers:{'Accept':'application/json'},
-            pageParam:undefined,
-            startParam:undefined,
-            sortParam:undefined,
-            limitParam:undefined
-        },
-        autoLoad:true,
-        listeners: {
-            load: function(store,records,options) {
-                // Get the selection menu
-                var menu = Ext.getCmp("persistenceServiceMenu");
+            autoLoad:true,
+            listeners:{
+                load:function (store, records, options) {
+                    // Get the selection menu
+                    var menu = Ext.getCmp("persistenceServiceMenu");
 
-                // Select the default service
-                for(var cnt = 0; cnt < store.getCount(); cnt++) {
-                    var actions = [].concat(store.getAt(cnt).get("actions"));
-                    // TODO: Better method to determine default needed!!!
-                    if(actions.indexOf("Read")) {
-                        persistenceService = store.getAt(cnt).get("name");
-                        var newItem = {};
-                        newItem.text = store.getAt(cnt).get("name");
-                        newItem.icon = "images/database-sql.png";
-                        newItem.disabled = false;
-                        menu.add(newItem);
+                    // Select the default service
+                    for (var cnt = 0; cnt < store.getCount(); cnt++) {
+                        var actions = [].concat(store.getAt(cnt).get("actions"));
+                        // TODO: Better method to determine default needed!!!
+                        if (actions.indexOf("Read")) {
+                            persistenceService = store.getAt(cnt).get("name");
+                            var newItem = {};
+                            newItem.text = store.getAt(cnt).get("name");
+                            newItem.icon = "images/database-sql.png";
+                            newItem.disabled = false;
+                            menu.add(newItem);
+                        }
                     }
-                }
 
-                // Update the button for selecting the persistence service
-                var button = Ext.getCmp("persistenceServiceSelect");
-                if(button != null) {
-                    button.setText(persistenceService);
+                    // Update the button for selecting the persistence service
+                    var button = Ext.getCmp("persistenceServiceSelect");
+                    if (button != null) {
+                        button.setText(persistenceService);
+                        persistenceItemStore.filterItems(persistenceService);
+                    }
                 }
             }
         }
-    });
+    )
+    ;
 
 
-    //======= Persistence Items Store
+//======= Persistence Items Store
     Ext.define('PersistenceItemModel', {
         extend:'Ext.data.Model',
         fields:[
@@ -522,11 +525,20 @@ function createUI() {
             sortParam:undefined,
             limitParam:undefined
         },
-        autoLoad:true
+        autoLoad:true,
+        filterItems:function (service) {
+            persistenceItemStore.filterBy(function (rec, id) {
+                var serviceList = [].concat(rec.get('services'));
+                if (serviceList.indexOf(service) != -1)
+                    return true;
+                else
+                    return false;
+            });
+        }
     });
 
 
-    //======= Item Icon Store
+//======= Item Icon Store
     Ext.define('ItemIconModel', {
         extend:'Ext.data.Model',
         fields:[
@@ -557,7 +569,7 @@ function createUI() {
         autoLoad:true
     });
 
-    //======= Widgets Store
+//======= Widgets Store
     Ext.define('WidgetsModel', {
         extend:'Ext.data.Model',
         fields:[
@@ -567,14 +579,14 @@ function createUI() {
         ]
     });
 
-    // Create the Widgets data store
+// Create the Widgets data store
     widgetStore = Ext.create('Ext.data.ArrayStore', {
         model:'WidgetsModel'
     });
     widgetStore.loadData(widgetTypeArray);
 
 
-    //======= Item Format Store
+//======= Item Format Store
     Ext.define('FormatModel', {
         extend:'Ext.data.Model',
         fields:[
@@ -583,14 +595,14 @@ function createUI() {
         ]
     });
 
-    // Create the Widgets data store
+// Create the Widgets data store
     itemFormatStore = Ext.create('Ext.data.ArrayStore', {
         model:'FormatModel'
     });
     itemFormatStore.loadData(formatLookupArray);
 
 
-    //======= Item Config Store
+//======= Item Config Store
     Ext.define('ItemConfigModel', {
         extend:'Ext.data.Model',
         fields:[
@@ -625,7 +637,7 @@ function createUI() {
     });
 
 
-    //======= Sitemap Store
+//======= Sitemap Store
     Ext.define('SitemapsModel', {
         extend:'Ext.data.Model',
         fields:[
@@ -654,7 +666,7 @@ function createUI() {
     });
 
 
-    //======= Bindings Store
+//======= Bindings Store
     Ext.define('BindingsModel', {
         extend:'Ext.data.Model',
         fields:[
@@ -670,7 +682,7 @@ function createUI() {
         ]
     });
 
-    // Create the Bindings data store
+// Create the Bindings data store
     bindingStore = Ext.create('Ext.data.ArrayStore', {
         model:'BindingsModel',
         proxy:{

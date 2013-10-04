@@ -110,6 +110,7 @@ Ext.define('openHAB.graph.graph', {
                                         var button = Ext.getCmp("persistenceServiceSelect");
                                         if (button != null) {
                                             button.setText(persistenceService);
+                                            persistenceItemStore.filterItems(persistenceService);
                                         }
                                     }
                                 }
