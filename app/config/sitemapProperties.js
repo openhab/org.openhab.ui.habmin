@@ -133,7 +133,7 @@ Ext.define('openHAB.config.sitemapProperties', {
             item:{
                 displayName:"Item",
                 renderer:function (v) {
-                    if(v == null)
+                    if (v == null)
                         return;
                     var icon = "";
                     var id = itemComboStore.findExact("name", v);
@@ -214,11 +214,11 @@ Ext.define('openHAB.config.sitemapProperties', {
                         }
                     },
                     listeners:{
-                        change: function(field, newValue, oldValue, eOpts){
-                        if (newValue === null) {
-                            this.reset();
+                        change:function (field, newValue, oldValue, eOpts) {
+                            if (newValue === null) {
+                                this.reset();
+                            }
                         }
-                    }
                     }
                 })
             },
@@ -345,7 +345,7 @@ Ext.define('openHAB.config.sitemapProperties', {
                         if (properties != null) {
                             for (var pcnt = 0; pcnt < properties.length; pcnt++) {
                                 var val = getPropertyValue(prop, properties[pcnt]);
-                                if(val == null)
+                                if (val == null)
                                     val = "";
                                 node.set(properties[pcnt], val);
                             }
@@ -460,6 +460,13 @@ Ext.define('openHAB.config.sitemapProperties', {
             lines:true,
             tools:[
                 {
+                    type:'expand',
+                    tooltip:'Expand sitemap',
+                    handler:function (event, toolEl, panel) {
+                        sitemapTree.expandAll();
+                    }
+                },
+                {
                     type:'disk',
                     tooltip:'Save sitemap',
                     handler:function (event, toolEl, panel) {
@@ -477,9 +484,9 @@ Ext.define('openHAB.config.sitemapProperties', {
 
                         // Check if errors were detected in the sitemap definition
                         // If so, notify and wait for them to be fixed!
-                        if(errors.length != 0) {
+                        if (errors.length != 0) {
                             var message = 'Errors exist in the sitemap definition -:';
-                            for(var cnt = 0; cnt < errors.length; cnt++)
+                            for (var cnt = 0; cnt < errors.length; cnt++)
                                 message += "<br>" + errors[cnt];
 
                             Ext.MessageBox.show({
@@ -560,9 +567,9 @@ Ext.define('openHAB.config.sitemapProperties', {
                                 }
                             }
                             else {
-                                if(newNode.type == "Frame") {
+                                if (newNode.type == "Frame") {
                                     var label = "No Label";
-                                    if(newNode.label && newNode.label.length)
+                                    if (newNode.label && newNode.label.length)
                                         label = newNode.label;
                                     addError("Frames must have children [" + label + "]");
                                 }
@@ -704,13 +711,15 @@ Ext.define('openHAB.config.sitemapProperties', {
                     sitemapRoot.label = json.label;
                     sitemapRoot.iconCls = "sitemap-sitemap";
                     sitemapRoot.type = "Sitemap";
+                    sitemapRoot.leaf = false;
+                    sitemapRoot.expanded = true;
                     sitemapRoot.children = [];
 
                     iterateTree(sitemapRoot.children, json.widget, 0);
 
-                    // Load the tree and expand all nodes
+                    // Load the tree and expand all parent node
                     sitemapItemStore.setRootNode(sitemapRoot);
-                    sitemapTree.expandAll();
+//                    sitemapTree.expandNode(sitemapRoot);
 
                     function iterateTree(parent, tree, iterationCnt) {
                         if (tree == null)
@@ -790,7 +799,7 @@ Ext.define('openHAB.config.sitemapProperties', {
 
             // Create the properties grid
             for (var cnt = 0; cnt < properties.length; cnt++) {
-                if(widget.get(properties[cnt]))
+                if (widget.get(properties[cnt]))
                     source[properties[cnt]] = widget.get(properties[cnt]);
                 else
                     source[properties[cnt]] = "";

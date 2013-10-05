@@ -104,6 +104,9 @@
 .x-tool-disk {
     background-image: url(../images/disk.png) !important;
 }
+.x-tool-expand {
+    background-image: url(../images/ui-accordion.png) !important;
+}
 
 
 .x-message-box .icon-download {
@@ -125,8 +128,6 @@
     background: url("../images/tick-24.png") no-repeat scroll 6px 0px transparent;
     height: 24px!important;
 }
-
-
 
 
 
