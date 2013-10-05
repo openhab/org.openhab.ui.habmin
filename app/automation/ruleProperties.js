@@ -42,7 +42,61 @@ Ext.define('openHAB.automation.ruleProperties', {
     header:false,
 
     initComponent:function () {
+        var ruleTriggerTypeArray = [
+            {id: 0, label: 'Item command was received ...'},
+            {id: 1, label: 'Item state was updated ...'},
+            {id: 1, label: 'Item state changed from ...'},
+            {id: 2, label: 'The openHAB system has ...'},
+            {id: 3, label: 'The time is ...'},
+            {id: 4, label: 'A periodic timer running ...'}
+        ];
 
+        var ruleTriggerParameterArray = [
+            {type: 0, label: ''},
+            {type: 1, label: ''},
+            {type: 2, label: 'Started', value: 'started'},
+            {type: 2, label: 'Shutdown', value: 'shutdown'},
+            {type: 3, label: 'Midnight', value: 'midnight'},
+            {type: 3, label: 'Midday', value: 'noon'},
+            {type: 4, label: 'every day at midnight', value: 'cron ""'},
+            {type: 4, label: 'every 5 seconds', value: 'cron "*/5 * * * * ?"'},
+            {type: 4, label: 'every 10 seconds', value: 'cron "*/10 * * * * ?"'},
+            {type: 4, label: 'every 15 seconds', value: 'cron "*/15 * * * * ?"'},
+            {type: 4, label: 'every 20 seconds', value: 'cron "*/20 * * * * ?"'},
+            {type: 4, label: 'every 30 seconds', value: 'cron "*/30 * * * * ?"'},
+            {type: 4, label: 'every 1 minute', value: 'cron "0 * * * * ?"'},
+            {type: 4, label: 'every 2 minutes', value: 'cron "0 */2 * * * ?"'},
+            {type: 4, label: 'every 3 minutes', value: 'cron "0 */3 * * * ?"'},
+            {type: 4, label: 'every 5 minutes', value: 'cron "0 */5 * * * ?"'},
+            {type: 4, label: 'every 10 minutes', value: 'cron "0 */10 * * * ?"'},
+            {type: 4, label: 'every 15 minutes', value: 'cron "0 */15 * * * ?"'},
+            {type: 4, label: 'every 20 minutes', value: 'cron "0 */20 * * * ?"'},
+            {type: 4, label: 'every 30 minutes', value: 'cron "0 */30 * * * ?"'},
+            {type: 4, label: 'every 1 hour', value: 'cron "0 0 * * * ?"'},
+            {type: 4, label: 'every 2 hours', value: 'cron "0 0 */2 * * ?"'},
+            {type: 4, label: 'every 3 hours', value: 'cron "0 0 */3 * * ?"'},
+            {type: 4, label: 'every 4 hours', value: 'cron "0 0 */4 * * ?"'},
+            {type: 4, label: 'every 6 hours', value: 'cron "0 0 */6 * * ?"'},
+            {type: 4, label: 'every 8 hours', value: 'cron "0 0 */8 * * ?"'},
+            {type: 4, label: 'every 12 hours', value: 'cron "0 0 */12 * * ?"'},
+            {type: 4, label: 'every day', value: 'cron "0 0 0 * * ?"'},
+            {type: 4, label: 'every 2 days', value: 'cron "0 0 0 */2 * ?"'},
+            {type: 4, label: 'every 3 days', value: 'cron "0 0 0 */3 * ?"'},
+            {type: 4, label: 'every 4 days', value: 'cron "0 0 0 */4 * ?"'},
+            {type: 4, label: 'every 5 days', value: 'cron "0 0 0 */5 * ?"'},
+            {type: 4, label: 'every 7 days', value: 'cron "0 0 0 */7 * ?"'},
+            {type: 4, label: 'every 10 days', value: 'cron "0 0 0 */10 * ?"'},
+            {type: 4, label: 'every 1 month', value: 'cron "0 0 0 0 * ?"'}
+        ];
+
+        var ruleTriggerTypeStore = Ext.create('Ext.data.Store', {
+            storeId:'ruleTriggerType',
+            fields:[
+                {type:'number', name:'id'},
+                {type:'text', name:'label'}
+            ]
+        });
+        ruleTriggerTypeStore.loadData(ruleTriggerTypeArray);
 
         var ruleForm = new Ext.form.Panel({
             border:false,
@@ -66,7 +120,7 @@ Ext.define('openHAB.automation.ruleProperties', {
         });
 
         var ruleTrigger = Ext.create('Ext.panel.Panel', {
-            padding:5,
+            padding:'0 5 5 5',
             title:'Trigger',
             collapsed:false,
             collapsible:true,
@@ -79,7 +133,7 @@ Ext.define('openHAB.automation.ruleProperties', {
         });
 
         var ruleAction = Ext.create('Ext.panel.Panel', {
-            padding:5,
+            padding:'0 5 5 5',
             title:'Action',
             collapsed:false,
             collapsible:true,
@@ -122,13 +176,17 @@ Ext.define('openHAB.automation.ruleProperties', {
                 defaults:{
                     border:false,
                     xtype:'panel',
-                    padding:5
+                    padding:10
                 },
                 layout: 'column',
                 items:[
                     {
-                        xtype:'textfield',
+                        xtype:'combobox',
                         fieldLabel:'Trigger Type',
+                        store:ruleTriggerTypeStore,
+                        valueField: 'id',
+                        displayField: 'label',
+                        queryMode: 'local',
                         name:'type',
                         columnWidth: 0.4
                     },
@@ -139,7 +197,6 @@ Ext.define('openHAB.automation.ruleProperties', {
                         columnWidth: 0.6
                     },
                     {
-                        padding:10,
                         width:100,
                         items: [
                             {
