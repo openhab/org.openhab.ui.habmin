@@ -520,6 +520,7 @@ Ext.define('openHAB.config.sitemapProperties', {
                                 setTimeout(function () {
                                     Ext.MessageBox.hide();
                                 }, 2500);
+                                sitemapItemStore.sync();
                             },
                             failure:function (result, request) {
                                 Ext.MessageBox.show({
@@ -719,7 +720,6 @@ Ext.define('openHAB.config.sitemapProperties', {
 
                     // Load the tree and expand all parent node
                     sitemapItemStore.setRootNode(sitemapRoot);
-//                    sitemapTree.expandNode(sitemapRoot);
 
                     function iterateTree(parent, tree, iterationCnt) {
                         if (tree == null)
