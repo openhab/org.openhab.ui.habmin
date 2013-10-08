@@ -52,10 +52,21 @@ Ext.define('openHAB.config.itemRules', {
                 {
                     icon:'images/plus-button.png',
                     itemId:'add',
-                    text:'Add derived item',
+                    text:'Add Rule',
                     cls:'x-btn-icon',
                     disabled:true,
                     tooltip:'Add the rule to this item',
+                    handler:function () {
+//                        createRule();
+                    }
+                },
+                {
+                    icon:'images/minus-button.png',
+                    itemId:'delete',
+                    text:'Delete Rule',
+                    cls:'x-btn-icon',
+                    disabled:true,
+                    tooltip:'Remove the rule from this item',
                     handler:function () {
 //                        createRule();
                     }
@@ -63,13 +74,13 @@ Ext.define('openHAB.config.itemRules', {
             ]
         });
 
-        var listInstalled = Ext.create('Ext.grid.Panel', {
-//            store:ruleTemplateStore,
+        var listRules = Ext.create('Ext.grid.Panel', {
+            store:ruleTemplateStore,
             region:"center",
             flex:1,
             header:false,
             split:true,
-//            tbar:toolbar,
+            tbar:toolbar,
             collapsible:false,
             multiSelect:false,
             columns:[
@@ -91,39 +102,7 @@ Ext.define('openHAB.config.itemRules', {
             ]
         });
 
-        var listAvailable = Ext.create('Ext.grid.Panel', {
-            store:ruleTemplateStore,
-            region:"south",
-            flex:1,
-            header:false,
-            split:true,
-            tbar:toolbar,
-            collapsible:false,
-            multiSelect:false,
-            columns:[
-                {
-                    text:'Name',
-                    flex:1,
-                    dataIndex:'name'
-                },
-                {
-                    text:'Description',
-                    flex:2,
-                    dataIndex:'description'
-                }
-            ],
-            listeners:{
-                select:function (grid, record, index, eOpts) {
-                    if (record == null)
-                        return;
-
-                    // Enable delete button
-                    toolbar.getComponent('add').enable();
-                }
-            }
-        });
-
-        this.items = [listInstalled, listAvailable];
+        this.items = [listRules];
 
         this.callParent();
 
