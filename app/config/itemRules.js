@@ -99,7 +99,23 @@ Ext.define('openHAB.config.itemRules', {
                     flex:4,
                     dataIndex:'description'
                 }
-            ]
+            ],
+            listeners:{
+                select:function (grid, record, index, eOpts) {
+                    if (record == null)
+                        return;
+
+                    // Enable buttons
+                    if(record.get("item") == "") {
+                        toolbar.getComponent('add').enable();
+                        toolbar.getComponent('delete').disable();
+                    }
+                    else {
+                        toolbar.getComponent('add').disable();
+                        toolbar.getComponent('delete').enable();
+                    }
+                }
+            }
         });
 
         this.items = [listRules];

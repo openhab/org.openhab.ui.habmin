@@ -588,7 +588,7 @@ function createUI() {
     });
 
     ruleTemplateStore = Ext.create('Ext.data.JsonStore', {
-        model:'ItemIconModel',
+        model:'RuleTemplateModel',
         proxy:{
             type:'rest',
             url:'/rest/config/rules/templates/list',
