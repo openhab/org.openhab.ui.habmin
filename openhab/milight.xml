@@ -24,7 +24,7 @@
             <label>IP Address</label>
             <description>Set the IP address of the interface.</description>
             <optional>false</optional>
-            <default></default>
+            <defaultvalue></defaultvalue>
             <minimum></minimum>
             <maximum></maximum>
             <values></values>
@@ -34,7 +34,7 @@
             <label>IP Port</label>
             <description>Set the IP Port number of the interface.</description>
             <optional>true</optional>
-            <default>50000</default>
+            <defaultvalue>50000</defaultvalue>
             <minimum>1</minimum>
             <maximum>65535</maximum>
             <values></values>

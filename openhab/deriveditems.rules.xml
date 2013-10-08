@@ -1,0 +1,124 @@
+<rules>
+    <rule>
+        <name>Maximum item value since midnight</name>
+        <itemtype>NumberItem</itemtype>
+        <type>DerivedItem</type>
+        <extension>_MaxToday</extension>
+        <description></description>
+        <trigger>Item %%ItemName%% changed or</trigger>
+        <trigger>Time cron "0 0 0 * * ?" or</trigger>
+        <trigger>System started</trigger>
+        <action>postUpdate(%%DerivedName%%, %%ItemName%%.maximumSince(now.toDateMidnight).state)</action>
+    </rule>
+    <rule>
+        <name>Minimum item value since midnight</name>
+        <type>DerivedItem</type>
+        <itemtype>NumberItem</itemtype>
+        <extension>_MinToday</extension>
+        <description></description>
+        <trigger>Item %%ItemName%% changed or</trigger>
+        <trigger>Time cron "0 0 0 * * ?" or</trigger>
+        <trigger>System started</trigger>
+        <action>postUpdate(%%DerivedName%%, %%ItemName%%.minimumSince(now.toDateMidnight).state)</action>
+    </rule>
+    <rule>
+        <name>Delta item value since midnight</name>
+        <type>DerivedItem</type>
+        <itemtype>NumberItem</itemtype>
+        <extension>_DeltaToday</extension>
+        <description></description>
+        <trigger>Item %%ItemName%% changed or</trigger>
+        <trigger>Time cron "0 * * * * ?" or</trigger>
+        <trigger>System started</trigger>
+        <action>var Number valNow = %%ItemName%%.state</action>
+        <action>var Number valThen = %%ItemName%%.minimumSince(now.toDateMidnight(24)).state</action>
+        <action>var Number valDif = valNow - valThen</action>
+        <action>postUpdate(%%DerivedName%%, valDif)</action>
+    </rule>
+    <rule>
+        <name>Delta item value in past 1 hour</name>
+        <type>DerivedItem</type>
+        <itemtype>NumberItem</itemtype>
+        <description></description>
+        <extension>_DeltaLastHour</extension>
+        <trigger>Item %%ItemName%% changed or</trigger>
+        <trigger>Time cron "0 * * * * ?" or</trigger>
+        <trigger>System started</trigger>
+        <action>var Number valNow = %%ItemName%%.state</action>
+        <action>var Number valThen = %%ItemName%%.minimumSince(now.minusHours(6)).state</action>
+        <action>var Number valDif = valNow - valThen</action>
+        <action>postUpdate(%%DerivedName%%, valDif)</action>
+    </rule>
+    <rule>
+        <name>Delta item value in past 6 hours</name>
+        <type>DerivedItem</type>
+        <itemtype>NumberItem</itemtype>
+        <description></description>
+        <extension>_DeltaLast6Hours</extension>
+        <trigger>Item %%ItemName%% changed or</trigger>
+        <trigger>Time cron "0 * * * * ?" or</trigger>
+        <trigger>System started</trigger>
+        <action>var Number valNow = %%ItemName%%.state</action>
+        <action>var Number valThen = %%ItemName%%.minimumSince(now.minusHours(6)).state</action>
+        <action>var Number valDif = valNow - valThen</action>
+        <action>postUpdate(%%DerivedName%%, valDif)</action>
+    </rule>
+    <rule>
+        <name>Delta item value in past 24 hours</name>
+        <type>DerivedItem</type>
+        <itemtype>NumberItem</itemtype>
+        <description></description>
+        <extension>_DeltaLast24Hours</extension>
+        <trigger>Item %%ItemName%% changed or</trigger>
+        <trigger>Time cron "0 * * * * ?" or</trigger>
+        <trigger>System started</trigger>
+        <action>var Number valNow = %%ItemName%%.state</action>
+        <action>var Number valThen = %%ItemName%%.minimumSince(now.minusHours(24)).state</action>
+        <action>var Number valDif = valNow - valThen</action>
+        <action>postUpdate(%%DerivedName%%, valDif)</action>
+    </rule>
+
+    <rule>
+        <name>Maximum item value - updated every 1 hour</name>
+        <type>DerivedItem</type>
+        <itemtype>NumberItem</itemtype>
+        <description></description>
+        <extension>_MaxHour</extension>
+        <trigger>Item %%ItemName%% changed or</trigger>
+        <trigger>Time cron "0 0 * * * ?" or</trigger>
+        <trigger>System started</trigger>
+        <action>postUpdate(%%DerivedName%%, %%ItemName%%.maximumSince(now.minusHours(1)).state)</action>
+    </rule>
+    <rule>
+        <name>Minimum item value - updated every 1 hour</name>
+        <type>DerivedItem</type>
+        <itemtype>NumberItem</itemtype>
+        <description></description>
+        <extension>_MinHour</extension>
+        <trigger>Item %%ItemName%% changed or</trigger>
+        <trigger>Time cron "0 0 * * * ?" or</trigger>
+        <trigger>System started</trigger>
+        <action>postUpdate(%%DerivedName%%, %%ItemName%%.minimumSince(now.minusHours(1)).state)</action>
+    </rule>
+
+
+    <rule>
+        <name>Calculate current power consumption</name>
+        <type>DerivedItem</type>
+        <itemtype>SwitchItem</itemtype>
+        <itemtype>DimmerItem</itemtype>
+        <description>Calculates the power consumed by the item given a user specified maximum power</description>
+        <extension>_Watts</extension>
+        <trigger>Item %%ItemName%% changed</trigger>
+        <action>var Number valState = %%ItemName%%.state</action>
+        <action>var Number valWatts = valState * %%UserWatts%%</action>
+        <action>postUpdate(postUpdate(%%DerivedName%%, valWatts)</action>
+        <variable>
+            <name>UserWatts</name>
+            <description>Maximum power the item consumes when ON</description>
+            <scope>Item</scope>
+        </variable>
+    </rule>
+
+</rules>
+

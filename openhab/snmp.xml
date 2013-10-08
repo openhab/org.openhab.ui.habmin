@@ -20,7 +20,7 @@
             <label>IP Port</label>
             <description>Sets the IP port number on which the binding will listen.</description>
             <optional>true</optional>
-            <default>162</default>
+            <defaultvalue>162</defaultvalue>
             <minimum>1</minimum>
             <maximum>65535</maximum>
             <values></values>
@@ -30,7 +30,7 @@
             <label>SNMP Community</label>
             <description>Sets the SNMP community to listen to for TRAPs.</description>
             <optional>true</optional>
-            <default>public</default>
+            <defaultvalue>public</defaultvalue>
             <minimum></minimum>
             <maximum></maximum>
             <values></values>
@@ -42,7 +42,7 @@
                 sending a retry (if retries are enabled).
             </description>
             <optional>true</optional>
-            <default>1500</default>
+            <defaultvalue>1500</defaultvalue>
             <minimum>100</minimum>
             <maximum>5000</maximum>
             <values></values>
@@ -54,7 +54,7 @@
                 to disable retries.
             </description>
             <optional>true</optional>
-            <default>0</default>
+            <defaultvalue>0</defaultvalue>
             <minimum>0</minimum>
             <maximum>5</maximum>
             <values></values>
@@ -72,7 +72,7 @@
                     <label>IP Address</label>
                     <description>Sets the IP address of the SNMP device.</description>
                     <optional>false</optional>
-                    <default></default>
+                    <defaultvalue></defaultvalue>
                     <minimum></minimum>
                     <maximum></maximum>
                     <values></values>
@@ -82,7 +82,7 @@
                     <label>SNMP Community</label>
                     <description>Sets the SNMP community for the GET request.</description>
                     <optional>false</optional>
-                    <default></default>
+                    <defaultvalue></defaultvalue>
                     <minimum></minimum>
                     <maximum></maximum>
                     <values></values>
@@ -92,7 +92,7 @@
                     <label>Object ID</label>
                     <description>Sets the Object ID for the SNMP GET.</description>
                     <optional>false</optional>
-                    <default></default>
+                    <defaultvalue></defaultvalue>
                     <minimum></minimum>
                     <maximum></maximum>
                     <values></values>
@@ -102,7 +102,7 @@
                     <label>Polling period</label>
                     <description>Sets polling period (in milliseconds between each request.</description>
                     <optional>false</optional>
-                    <default>5000</default>
+                    <defaultvalue>5000</defaultvalue>
                     <minimum></minimum>
                     <maximum></maximum>
                     <values></values>
@@ -118,7 +118,7 @@
                     <label>IP Address</label>
                     <description>Sets the IP address of the SNMP device.</description>
                     <optional>false</optional>
-                    <default></default>
+                    <defaultvalue></defaultvalue>
                     <minimum></minimum>
                     <maximum></maximum>
                     <values></values>
@@ -128,7 +128,7 @@
                     <label>SNMP Community</label>
                     <description>Sets the SNMP community for the GET request.</description>
                     <optional>false</optional>
-                    <default></default>
+                    <defaultvalue></defaultvalue>
                     <minimum></minimum>
                     <maximum></maximum>
                     <values></values>
@@ -138,7 +138,7 @@
                     <label>Object ID</label>
                     <description>Sets the Object ID for the SNMP GET.</description>
                     <optional>false</optional>
-                    <default></default>
+                    <defaultvalue></defaultvalue>
                     <minimum></minimum>
                     <maximum></maximum>
                     <values></values>
@@ -154,7 +154,7 @@
                     <label>Command String</label>
                     <description>Sets the command string that will appear in the openHAB GUI.</description>
                     <optional>false</optional>
-                    <default></default>
+                    <defaultvalue></defaultvalue>
                     <minimum></minimum>
                     <maximum></maximum>
                     <values></values>
@@ -164,7 +164,7 @@
                     <label>IP Address</label>
                     <description>Sets the IP address of the SNMP device.</description>
                     <optional>false</optional>
-                    <default></default>
+                    <defaultvalue></defaultvalue>
                     <minimum></minimum>
                     <maximum></maximum>
                     <values></values>
@@ -174,7 +174,7 @@
                     <label>SNMP Community</label>
                     <description>Sets the SNMP community for the SET request.</description>
                     <optional>false</optional>
-                    <default></default>
+                    <defaultvalue></defaultvalue>
                     <minimum></minimum>
                     <maximum></maximum>
                     <values></values>
@@ -184,7 +184,7 @@
                     <label>Object ID</label>
                     <description>Sets the Object ID for the SNMP SET.</description>
                     <optional>false</optional>
-                    <default></default>
+                    <defaultvalue></defaultvalue>
                     <minimum></minimum>
                     <maximum></maximum>
                     <values></values>
@@ -194,7 +194,7 @@
                     <label>Value</label>
                     <description>Sets the command value for the SNMP SET.</description>
                     <optional>false</optional>
-                    <default></default>
+                    <defaultvalue></defaultvalue>
                     <minimum></minimum>
                     <maximum></maximum>
                     <values></values>

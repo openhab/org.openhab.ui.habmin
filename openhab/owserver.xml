@@ -20,7 +20,7 @@
             <label>Cache Timeout</label>
             <description>Sets the cache timeout in milliseconds.</description>
             <optional>true</optional>
-            <default>5000</default>
+            <defaultvalue>5000</defaultvalue>
             <minimum>250</minimum>
             <maximum>20000</maximum>
             <values></values>
@@ -30,7 +30,7 @@
             <label>Request Timeout</label>
             <description>Sets the number of milliseconds that the binding will wait for a response.</description>
             <optional>true</optional>
-            <default>5000</default>
+            <defaultvalue>5000</defaultvalue>
             <minimum>500</minimum>
             <maximum>10000</maximum>
             <values></values>
@@ -40,7 +40,7 @@
             <label>Granularity</label>
             <description>Set the time between each of the OWServer item update checks (in milliseconds).</description>
             <optional>true</optional>
-            <default>1000</default>
+            <defaultvalue>1000</defaultvalue>
             <minimum>100</minimum>
             <maximum>10000</maximum>
             <values></values>
@@ -54,7 +54,7 @@
             <label>IP Address</label>
             <description>Set the IP address of the OW Server.</description>
             <optional>false</optional>
-            <default></default>
+            <defaultvalue></defaultvalue>
             <minimum></minimum>
             <maximum></maximum>
             <values></values>
@@ -64,7 +64,7 @@
             <label>IP Port</label>
             <description>Set the IP Port number of the OW Server.</description>
             <optional>true</optional>
-            <default>80</default>
+            <defaultvalue>80</defaultvalue>
             <minimum>1</minimum>
             <maximum>65535</maximum>
             <values></values>
@@ -82,7 +82,7 @@
                     <label>Communications Interface</label>
                     <description>Set the symbolic name of the communication interface.</description>
                     <optional>false</optional>
-                    <default></default>
+                    <defaultvalue></defaultvalue>
                     <minimum></minimum>
                     <maximum></maximum>
                     <values></values>
@@ -92,7 +92,7 @@
                     <label>ROM ID</label>
                     <description>Set the ROM ID of the One Wire device.</description>
                     <optional>false</optional>
-                    <default></default>
+                    <defaultvalue></defaultvalue>
                     <minimum></minimum>
                     <maximum></maximum>
                     <values></values>
@@ -102,7 +102,7 @@
                     <label>Parameter Name</label>
                     <description>Sets the Parameter Name from the One Wire device.</description>
                     <optional>false</optional>
-                    <default></default>
+                    <defaultvalue></defaultvalue>
                     <minimum></minimum>
                     <maximum></maximum>
                     <values></values>
@@ -111,7 +111,7 @@
                     <name>Polling period</name>
                     <description>Sets polling period (in milliseconds between each request.</description>
                     <optional>false</optional>
-                    <default>5000</default>
+                    <defaultvalue>5000</defaultvalue>
                     <minimum></minimum>
                     <maximum></maximum>
                     <values></values>

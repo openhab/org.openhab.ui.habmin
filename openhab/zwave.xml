@@ -20,7 +20,7 @@
             <label>Port</label>
             <description>The location of the Z-Wave interface stick.</description>
             <optional>false</optional>
-            <default></default>
+            <defaultvalue></defaultvalue>
             <minimum></minimum>
             <maximum></maximum>
             <values></values>
@@ -30,7 +30,7 @@
             <label>Refresh Interval</label>
             <description>Interval to poll items (in milliseconds)</description>
             <optional>true</optional>
-            <default>10000</default>
+            <defaultvalue>10000</defaultvalue>
             <minimum>1000</minimum>
             <maximum>120000</maximum>
             <values></values>
@@ -40,7 +40,7 @@
             <label>Refresh Threshold</label>
             <description>Specifies the interval threshold in number of refreshes that have to occur before the node values are polled</description>
             <optional>true</optional>
-            <default>6</default>
+            <defaultvalue>6</defaultvalue>
             <minimum></minimum>
             <maximum></maximum>
             <values></values>

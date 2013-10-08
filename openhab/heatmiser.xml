@@ -20,7 +20,7 @@
             <label>Refresh Time</label>
             <description>Set the refresh time in milliseconds.</description>
             <optional>true</optional>
-            <default>5000</default>
+            <defaultvalue>5000</defaultvalue>
             <minimum>250</minimum>
             <maximum>20000</maximum>
             <values></values>
@@ -34,7 +34,7 @@
             <label>IP Address</label>
             <description>Set the IP address of the interface.</description>
             <optional>false</optional>
-            <default></default>
+            <defaultvalue></defaultvalue>
             <minimum></minimum>
             <maximum></maximum>
             <values></values>
@@ -44,7 +44,7 @@
             <label>IP Port</label>
             <description>Set the IP Port number of the interface.</description>
             <optional>true</optional>
-            <default>1024</default>
+            <defaultvalue>1024</defaultvalue>
             <minimum>1</minimum>
             <maximum>65535</maximum>
             <values></values>
@@ -62,7 +62,7 @@
                     <label>Communications Interface</label>
                     <description>Set the symbolic name of the communication interface.</description>
                     <optional>false</optional>
-                    <default></default>
+                    <defaultvalue></defaultvalue>
                     <minimum></minimum>
                     <maximum></maximum>
                     <values></values>

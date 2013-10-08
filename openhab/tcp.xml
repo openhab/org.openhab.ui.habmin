@@ -20,7 +20,7 @@
             <label>Buffer Size</label>
             <description>Max size of buffer for incoming data (default 1024).</description>
             <optional>true</optional>
-            <default>1024</default>
+            <defaultvalue>1024</defaultvalue>
             <minimum>100</minimum>
             <maximum>4096</maximum>
             <values></values>
@@ -30,7 +30,7 @@
             <label>Retry Interval</label>
             <description>Interval between connection attemps if problem with a connection, in seconds (default 5).</description>
             <optional>true</optional>
-            <default>5</default>
+            <defaultvalue>5</defaultvalue>
             <minimum>1</minimum>
             <maximum>6000</maximum>
             <values></values>
@@ -40,7 +40,7 @@
             <label>Listener Port</label>
             <description>Port number to listen for incoming connections</description>
             <optional>true</optional>
-            <default>25001</default>
+            <defaultvalue>25001</defaultvalue>
             <minimum>1024</minimum>
             <maximum>65535</maximum>
             <values></values>
@@ -50,7 +50,7 @@
             <label>Timeout</label>
             <description>Time to wait for a response when doing a blocking write /read operation with a remote device, in milliseconds</description>
             <optional>true</optional>
-            <default>3000</default>
+            <defaultvalue>3000</defaultvalue>
             <minimum>0</minimum>
             <maximum>5000</maximum>
             <values></values>
@@ -60,7 +60,7 @@
             <label>Blocking Calls</label>
             <description>Time to wait for a response when doing a blocking write /read operation with a remote device, in milliseconds</description>
             <optional>true</optional>
-            <default>true</default>
+            <defaultvalue>true</defaultvalue>
             <minimum></minimum>
             <maximum></maximum>
             <values></values>
@@ -70,7 +70,7 @@
             <label>Share connections</label>
             <description>Share connections between directions</description>
             <optional>true</optional>
-            <default>false</default>
+            <defaultvalue>false</defaultvalue>
             <minimum></minimum>
             <maximum></maximum>
             <values></values>
