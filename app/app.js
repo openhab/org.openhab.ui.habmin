@@ -73,6 +73,7 @@ Ext.require([
     'openHAB.config.itemBindings',
     'openHAB.config.itemList',
     'openHAB.config.itemProperties',
+    'openHAB.config.itemRules',
     'openHAB.config.mappingList',
     'openHAB.config.mappingProperties',
     'openHAB.config.sitemapList',
@@ -102,6 +103,7 @@ var bindingStore;
 var itemConfigStore;
 var itemFormatStore;
 var translationServiceStore;
+var ruleTemplateStore;
 
 var persistenceService = "";
 
@@ -443,7 +445,8 @@ function createUI() {
         extend:'Ext.data.Model',
         fields:[
             {name:'name'},
-            {name:'actions'}
+            {name:'actions'},
+            {name:'strategies'}
         ]
     });
 
@@ -451,7 +454,7 @@ function createUI() {
             model:'PersistenceServiceModel',
             proxy:{
                 type:'rest',
-                url:'/rest/persistence/services',
+                url:'/rest/config/persistence/services',
                 reader:{
                     type:'json',
                     root:'services'
@@ -570,6 +573,38 @@ function createUI() {
         autoLoad:true
     });
 
+//======= Rule Template Store
+    Ext.define('RuleTemplateModel', {
+        extend:'Ext.data.Model',
+        fields:[
+            {name:'name'},
+            {name:'type'},
+            {name:'item'},
+            {name:'description'},
+            {name:'extension'},
+            {name:'trigger'},
+            {name:'action'}
+        ]
+    });
+
+    ruleTemplateStore = Ext.create('Ext.data.JsonStore', {
+        model:'ItemIconModel',
+        proxy:{
+            type:'rest',
+            url:'/rest/config/rules/templates/list',
+            reader:{
+                type:'json',
+                root:'rule'
+            },
+            headers:{'Accept':'application/json'},
+            pageParam:undefined,
+            startParam:undefined,
+            sortParam:undefined,
+            limitParam:undefined
+        },
+        autoLoad:true
+    });
+
 //======= Widgets Store
     Ext.define('WidgetsModel', {
         extend:'Ext.data.Model',
@@ -615,7 +650,8 @@ function createUI() {
             {name:'label'},
             {name:'format'},
             {name:'units'},
-            {name:'groups'}
+            {name:'groups'},
+            {name:'persistence'}
         ]
     });
 

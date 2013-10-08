@@ -69,7 +69,8 @@ Ext.define('openHAB.config.itemList', {
                             },
                             fn:deleteItem,
                             icon:Ext.MessageBox.QUESTION
-                        });                    }
+                        });
+                    }
                 },
                 {
                     icon:'images/plus-button.png',
@@ -90,16 +91,16 @@ Ext.define('openHAB.config.itemList', {
 
                         var models = [];
                         var ocnt = 0;
-                        for(var cnt = 0; cnt < itemConfigStore.getTotalCount(); cnt++ ){
+                        for (var cnt = 0; cnt < itemConfigStore.getTotalCount(); cnt++) {
                             var found = false;
                             var name = itemConfigStore.getAt(cnt).get("model");
-                            for(var mcnt = 0; mcnt < models.length; mcnt++) {
-                                if(models[mcnt].name == name) {
+                            for (var mcnt = 0; mcnt < models.length; mcnt++) {
+                                if (models[mcnt].name == name) {
                                     found = true;
                                     break;
                                 }
                             }
-                            if(found == false) {
+                            if (found == false) {
                                 models[ocnt] = {};
                                 models[ocnt].name = name;
                                 ocnt++;
@@ -204,30 +205,41 @@ Ext.define('openHAB.config.itemList', {
                     text:'Item',
                     flex:3,
                     dataIndex:'name',
-                    renderer:function (v) {
+                    renderer:function (value, metadata, record) {
                         var icon = "";
-                        var ref = itemConfigStore.findExact("name", v);
+                        var ref = itemConfigStore.findExact("name", value);
                         if (ref != -1) {
                             if (itemConfigStore.getAt(ref).get('icon') != "")
                                 icon = '<img src="../images/' + itemConfigStore.getAt(ref).get('icon') + '.png" align="left" height="16">';
                         }
 
-                        return '<div>' + icon + '</div><div style="margin-left:20px">' + v + '</div>';
+                        return '<div>' + icon + '</div><div style="margin-left:20px">' + value + '</div>';
                     }
                 },
                 {
                     text:'Label',
                     flex:4,
-                    dataIndex:'label'
+                    dataIndex:'label',
+                    renderer:function (value, metadata, record, row, col, store, gridView) {
+                        var img = '';
+                        if (record.get("persistence") != null) {
+                            var services = record.get("persistence");
+                            if(services != "")
+                                img = '<img src="images/database-small.png">';
+                        }
+
+                        return '<span>'+value+'</span><span style="float:right">' + img + '</span>';
+                    }
                 },
                 {
                     text:'Type',
                     flex:2,
                     dataIndex:'type',
-                    renderer:function (value, metaData, record, row, col, store, gridView) {
+                    renderer:function (value, metadata, record, row, col, store, gridView) {
                         var img = 'node.png';
                         if (record.get("type") != null)
                             img = getItemTypeIcon(record.get("type"));
+
                         return '<img src="' + img + '" align="left" height="16">&nbsp;&nbsp;' + value;
                     }
                 },
@@ -304,7 +316,7 @@ Ext.define('openHAB.config.itemList', {
                     // Clear the item properties
                     Ext.getCmp('configPropertyContainer').removeProperty();
                 }
-        });
+            });
         }
     }
 })

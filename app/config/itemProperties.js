@@ -55,6 +55,35 @@ Ext.define('openHAB.config.itemProperties', {
             Persistence:"Lists persistence services configured for this item."
         };
 
+        Ext.define('PersistenceStrategyModel', {
+            extend:'Ext.data.Model',
+            fields:[
+                {name:'service'},
+                {name:'strategy'},
+                {name:'display'}
+            ]
+        });
+
+        // Create the data store
+        var persistenceStrategyStore = Ext.create('Ext.data.ArrayStore', {
+            model:'PersistenceStrategyModel'
+        });
+
+        // Create the persistence service strategies list
+        var strategies = [];
+        var outCnt = 0;
+        for (var cnt = 0; cnt < persistenceServiceStore.getCount(); cnt++) {
+            var list = [].concat(persistenceServiceStore.getAt(cnt).get("strategies"));
+            for (var scnt = 0; scnt < list.length; scnt++) {
+                strategies[outCnt] = {};
+                strategies[outCnt].name = persistenceServiceStore.getAt(cnt).get("name");
+                strategies[outCnt].strategy = list[scnt].name;
+                strategies[outCnt].display = strategies[outCnt].name + ":" + strategies[outCnt].strategy;
+                outCnt++;
+            }
+        }
+        persistenceStrategyStore.loadData(strategies);
+
         var sourceConfig = {
             ItemName:{
                 displayName:"Item Name"
@@ -183,7 +212,20 @@ Ext.define('openHAB.config.itemProperties', {
                 displayName:"Translation Rule"
             },
             Persistence:{
-                displayName:"Persistence"
+                displayName:"Persistence",
+                editor:Ext.create('Ext.form.ComboBox', {
+                    multiSelect:true,
+                    displayField:'display',
+                    valueField:'display',
+                    store:persistenceStrategyStore,
+                    queryMode:'local',
+                    listeners: {
+                        afterrender:function (cb, eOpts) {
+//                            var prop = itemOptions.getSource();
+//                            this.setValue(2);//prop.Persistence);
+                        }
+                    }
+                })
             },
             Groups:{
                 displayName:"Groups"
@@ -325,8 +367,8 @@ Ext.define('openHAB.config.itemProperties', {
                     // Make some properties read-only
                     if (rec.get('name') == 'Groups')
                         e.cancel = true;
-                    if (rec.get('name') == 'Persistence')
-                        e.cancel = true;
+//                    if (rec.get('name') == 'Persistence')
+                    //                       e.cancel = true;
                 },
                 itemmouseenter:function (grid, record, item, index, e, eOpts) {
                     var name = record.get("name");
@@ -339,15 +381,15 @@ Ext.define('openHAB.config.itemProperties', {
         });
 
         var itemGroups = Ext.create('openHAB.config.groupTree');
-
+        var itemRules = Ext.create('openHAB.config.itemRules');
         var itemBindings = Ext.create('openHAB.config.itemBindings');
 
-        // Create the tab container for the item configuration
+// Create the tab container for the item configuration
         var tabs = Ext.create('Ext.tab.Panel', {
             layout:'fit',
             bbar:statusBar,
             border:false,
-            items:[itemOptions, itemGroups, itemBindings],
+            items:[itemOptions, itemGroups, itemRules, itemBindings],
             listeners:{
                 beforetabchange:function (tabPanel, newCard, oldCard, eOpts) {
                     // Detect if we've changed view so we can collate the data from the sub-tabs
@@ -360,7 +402,7 @@ Ext.define('openHAB.config.itemProperties', {
                             newGroups = [].concat(newGroups);
                             for (var cnt = 0; cnt < newGroups.length; cnt++) {
                                 itemGroups.setGroup(newGroups[cnt]);
-                                if(groupsOut.length != 0)
+                                if (groupsOut.length != 0)
                                     groupsOut += ", ";
                                 groupsOut += newGroups[cnt];
                             }
@@ -369,7 +411,7 @@ Ext.define('openHAB.config.itemProperties', {
                         }
 
                         // Just detect if the bindings have changed
-                        if(itemBindings.isDirty()) {
+                        if (itemBindings.isDirty()) {
                             toolbar.getComponent('cancel').enable();
                             toolbar.getComponent('save').enable();
                         }
@@ -382,7 +424,7 @@ Ext.define('openHAB.config.itemProperties', {
 
         this.callParent();
 
-        // Class members.
+// Class members.
         this.setItem = function (itemName) {
             Ext.Ajax.request({
                 url:'/rest/config/items/' + itemName,
@@ -400,7 +442,7 @@ Ext.define('openHAB.config.itemProperties', {
             });
         }
 
-        // Create a new item
+// Create a new item
         this.newItem = function (modelName) {
             var json = {};
             json.model = modelName;
@@ -409,7 +451,7 @@ Ext.define('openHAB.config.itemProperties', {
             updateItem(json);
         }
 
-        // Update the item properties
+// Update the item properties
         function updateItem(json) {
             itemData = json;
             statusBar.setText("Item: " + json.name);
@@ -431,18 +473,47 @@ Ext.define('openHAB.config.itemProperties', {
                 var persistenceIn = [].concat(json.persistence);
 
                 for (var cnt = 0; cnt < persistenceIn.length; cnt++) {
-                    persistenceOut += persistenceIn[cnt].service;
-                    if (persistenceIn[cnt].strategies != null)
-                        persistenceOut += "[" + persistenceIn[cnt].strategies + "] ";
-                    else
-                        persistenceOut += "[default] ";
+                    var itemStrategies = [].concat(persistenceIn[cnt].itemstrategies);
+                    var groupStrategies = [].concat(persistenceIn[cnt].groupstrategies);
+                    var totalStrategies = "";
+                    for (var icnt = 0; icnt < itemStrategies.length; icnt++) {
+                        if (itemStrategies[icnt] == null)
+                            continue;
+                        if (totalStrategies.length != 0)
+                            totalStrategies += ",";
+
+                        var display = persistenceIn[cnt].service + ":" + itemStrategies[icnt];
+                        var id = persistenceStrategyStore.findExact("display", display);
+                        if(id != -1) {
+
+                        }
+                        totalStrategies += display;
+                    }
+
+                    // Have we got any specific strategies for this item?
+                    if (totalStrategies == "") {
+                        // No - show the group strategies
+                        totalStrategies = "group(";
+                        for (var gcnt = 0; gcnt < groupStrategies.length; gcnt++) {
+                            if (groupStrategies[gcnt] == null)
+                                continue;
+                            if (itemStrategies.indexOf(groupStrategies) == -1) {
+                                if (totalStrategies.length != 0)
+                                    totalStrategies += ",";
+                                totalStrategies += persistenceIn[cnt].service + ":" + groupStrategies[gcnt];
+                            }
+                        }
+                        totalStrategies = ")";
+                    }
+
+                    persistenceOut += totalStrategies;
                 }
             }
             source.Persistence = persistenceOut;
 
             // Ensure the groups is an array!
             var groups = [];
-            if(json.groups)
+            if (json.groups)
                 var groups = [].concat(json.groups);
 
             // Set the groups
@@ -450,7 +521,7 @@ Ext.define('openHAB.config.itemProperties', {
             itemGroups.resetGroups();
             for (var cnt = 0; cnt < groups.length; cnt++) {
                 itemGroups.setGroup(groups[cnt]);
-                if(groupsOut.length != 0)
+                if (groupsOut.length != 0)
                     groupsOut += ", ";
                 groupsOut += groups[cnt];
             }
@@ -458,7 +529,7 @@ Ext.define('openHAB.config.itemProperties', {
             source.Groups = setValue(groupsOut);
 
             // If this is a group, remove all non applicable properties
-            if(json.type == "GroupItem") {
+            if (json.type == "GroupItem") {
                 // Block the "Bindings" tab
                 tabs.remove(itemBindings, true);
                 // TODO: Maybe nothing? Needs to account for active groups!
@@ -469,17 +540,17 @@ Ext.define('openHAB.config.itemProperties', {
 
             // Ensure the bindings is an array!
             var bindings = [];
-            if(json.bindings)
+            if (json.bindings)
                 bindings = [].concat(json.bindings);
 
             // Set the binding strings
             itemBindings.setBindings(bindings);
 
             var cancel = toolbar.getComponent('cancel');
-            if(cancel)
+            if (cancel)
                 cancel.disable();
             var save = toolbar.getComponent('save');
-            if(save)
+            if (save)
                 save.disable();
 
             // Helper function to make above code more readable

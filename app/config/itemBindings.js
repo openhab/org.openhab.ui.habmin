@@ -55,7 +55,7 @@ Ext.define('openHAB.config.itemBindings', {
             ]
         });
 
-        // Create the Widgets data store
+        // Create the data store
         var store = Ext.create('Ext.data.ArrayStore', {
             model:'ItemBindingModel'
         });
