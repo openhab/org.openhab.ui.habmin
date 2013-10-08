@@ -493,7 +493,6 @@ Ext.define('openHAB.config.itemProperties', {
                     // Have we got any specific strategies for this item?
                     if (totalStrategies == "") {
                         // No - show the group strategies
-                        totalStrategies = "group(";
                         for (var gcnt = 0; gcnt < groupStrategies.length; gcnt++) {
                             if (groupStrategies[gcnt] == null)
                                 continue;
@@ -503,7 +502,8 @@ Ext.define('openHAB.config.itemProperties', {
                                 totalStrategies += persistenceIn[cnt].service + ":" + groupStrategies[gcnt];
                             }
                         }
-                        totalStrategies = ")";
+                        if(totalStrategies != "")
+                            totalStrategies = "group(" + totalStrategies + ")";
                     }
 
                     persistenceOut += totalStrategies;
