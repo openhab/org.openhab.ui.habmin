@@ -95,6 +95,17 @@ Ext.define('openHAB.config.sitemapList', {
                         // Pop up a dialogue box asking for the sitemap name
                         Ext.MessageBox.prompt('Sitemap Name', 'Please enter the new sitemap name:', copySitemap);
                     }
+                },
+                { xtype:'tbfill' },
+                {
+                    icon:'images/arrow-circle-315.png',
+                    itemId:'refresh',
+                    cls:'x-btn-icon',
+                    disabled:false,
+                    tooltip:'Refresh the sitemap list',
+                    handler:function () {
+                        sitemapStore.load();
+                    }
                 }
             ]
         });

@@ -189,6 +189,17 @@ Ext.define('openHAB.config.itemList', {
 
                         saveWin.show();
                     }
+                },
+                { xtype:'tbfill' },
+                {
+                    icon:'images/arrow-circle-315.png',
+                    itemId:'refresh',
+                    cls:'x-btn-icon',
+                    disabled:false,
+                    tooltip:'Refresh the items list',
+                    handler:function () {
+                        itemConfigStore.load();
+                    }
                 }
             ]
         });
@@ -224,11 +235,11 @@ Ext.define('openHAB.config.itemList', {
                         var img = '';
                         if (record.get("persistence") != null) {
                             var services = record.get("persistence");
-                            if(services != "")
+                            if (services != "")
                                 img = '<img src="images/database-small.png">';
                         }
 
-                        return '<span>'+value+'</span><span style="float:right">' + img + '</span>';
+                        return '<span>' + value + '</span><span style="float:right">' + img + '</span>';
                     }
                 },
                 {
