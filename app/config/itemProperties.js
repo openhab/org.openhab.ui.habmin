@@ -553,6 +553,9 @@ Ext.define('openHAB.config.itemProperties', {
             if (save)
                 save.disable();
 
+            // Set the item in the rules tab
+            itemRules.setItem(json.name);
+
             // Helper function to make above code more readable
             function setValue(val) {
                 if (val == null)

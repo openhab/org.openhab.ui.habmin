@@ -46,7 +46,7 @@ Ext.define('openHAB.config.itemRules', {
     title:'Rules',
 
     initComponent:function () {
-
+        var itemName = "";
         var toolbar = Ext.create('Ext.toolbar.Toolbar', {
             items:[
                 {
@@ -57,7 +57,11 @@ Ext.define('openHAB.config.itemRules', {
                     disabled:true,
                     tooltip:'Add the rule to this item',
                     handler:function () {
-//                        createRule();
+                        var record = listRules.getSelectionModel().getSelection()[0];
+                        if (record == null)
+                            return;
+
+                        createRule(record);
                     }
                 },
                 {
@@ -87,7 +91,7 @@ Ext.define('openHAB.config.itemRules', {
                 {
                     text:'Name',
                     flex:2,
-                    dataIndex:'name'
+                    dataIndex:'label'
                 },
                 {
                     text:'Item',
@@ -106,7 +110,7 @@ Ext.define('openHAB.config.itemRules', {
                         return;
 
                     // Enable buttons
-                    if(record.get("item") == "") {
+                    if (record.get("linkeditem") == "") {
                         toolbar.getComponent('add').enable();
                         toolbar.getComponent('delete').disable();
                     }
@@ -124,87 +128,54 @@ Ext.define('openHAB.config.itemRules', {
 
 
         // Save a rule - ask for the variables etc
-        function createRule() {
+        function createRule(rule) {
+            var ruleFields = [];
 
+            var variables = [].concat(rule.get("variable"));
+
+            for (var cnt = 0; cnt < variables.length; cnt++) {
+                ruleFields[cnt] = {};
+                ruleFields[cnt].xtype = 'textfield';
+                ruleFields[cnt].allowBlank = false;
+                ruleFields[cnt].maxLength = 75;
+                ruleFields[cnt].enforceMaxLength = true;
+                ruleFields[cnt].fieldLabel = variables[cnt].label;
+                ruleFields[cnt].value = transposeVariables(variables[cnt].defaultvalue);
+                ruleFields[cnt].name = variables[cnt].name;
+            }
 
             var formPanel = new Ext.form.Panel({
                 frame:false,
-                width:340,
+                width:450,
                 bodyPadding:5,
                 fieldDefaults:{
                     labelAlign:'right',
-                    labelWidth:85,
+                    labelWidth:120,
                     msgTarget:'side'
                 },
                 defaults:{
-                    width:280
+                    anchor: '100%'
                 },
-                items:[
-                    {
-                        fieldLabel:'First Name',
-                        emptyText:'First Name',
-                        name:'first'
-                    },
-                    {
-                        fieldLabel:'Last Name',
-                        emptyText:'Last Name',
-                        name:'last'
-                    },
-                    {
-                        fieldLabel:'Company',
-                        name:'company'
-                    },
-                    {
-                        fieldLabel:'Email',
-                        name:'email',
-                        vtype:'email'
-                    },
-                    {
-                        xtype:'combobox',
-                        fieldLabel:'State',
-                        name:'state',
-                        valueField:'abbr',
-                        displayField:'state',
-                        typeAhead:true,
-                        queryMode:'local',
-                        emptyText:'Select a state...'
-                    },
-                    {
-                        xtype:'datefield',
-                        fieldLabel:'Date of Birth',
-                        name:'dob',
-                        allowBlank:false,
-                        maxValue:new Date()
-                    }
-                ],
-
+                items:ruleFields,
                 buttons:[
                     {
-                        text:'Load',
+                        text:'Cancel',
                         handler:function () {
-                            formPanel.getForm().load({
-                                url:'xml-form-data.xml',
-                                waitMsg:'Loading...'
-                            });
+                            saveWin.destroy();
                         }
                     },
                     {
-                        text:'Submit',
-                        disabled:true,
-                        formBind:true,
+                        text:'Save',
                         handler:function () {
-                            this.up('form').getForm().submit({
-                                url:'xml-form-errors.xml',
-                                submitEmptyText:false,
-                                waitMsg:'Saving Data...'
-                            });
+                            // Save stuff here
+                            saveWin.destroy();
                         }
                     }
                 ]
             });
 
             var saveWin = Ext.widget('window', {
-                title:'Save Graph',
+                title:'Add Rule',
                 closeAction:'destroy',
                 layout:'fit',
                 resizable:false,
@@ -217,10 +188,20 @@ Ext.define('openHAB.config.itemRules', {
                 items:[formPanel]
             });
             saveWin.show();
-
         }
 
+        // Transpose variables
+        function transposeVariables(string) {
+            var result = "";
+            result = string.replace("%%" + "ItemName" + "%%", itemName);
 
+            return result;
+        }
+
+        // Set the item
+        this.setItem = function(item) {
+            itemName = item;
+        }
     }
 })
 ;

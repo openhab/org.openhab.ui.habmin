@@ -42,16 +42,6 @@ Ext.define('openHAB.graph.saveGraph', {
 
         var saveWin;
 
-
-        Ext.define('Icons', {
-            extend:'Ext.data.Model',
-            fields:[
-                {type:'number', name:'id'},
-                {type:'string', name:'icon'},
-                {type:'string', name:'name'}
-            ]
-        });
-
         var saveGraphStore = Ext.create('Ext.data.Store', {
             storeId:'saveGraphStore',
             fields:[
@@ -278,7 +268,7 @@ Ext.define('openHAB.graph.saveGraph', {
             title:'Save Graph',
             closeAction:'destroy',
             width:750,
-            height:430,
+//            height:430,
             layout:'fit',
             resizable:false,
             draggable:false,

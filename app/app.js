@@ -578,12 +578,15 @@ function createUI() {
         extend:'Ext.data.Model',
         fields:[
             {name:'name'},
+            {name:'label'},
             {name:'type'},
-            {name:'item'},
+            {name:'itemtype'},
             {name:'description'},
             {name:'extension'},
             {name:'trigger'},
-            {name:'action'}
+            {name:'action'},
+            {name:'variable'},
+            {name:'linkeditem'}
         ]
     });
 
