@@ -4,31 +4,42 @@
         <label>Maximum item value since midnight</label>
         <itemtype>NumberItem</itemtype>
         <type>DerivedItem</type>
-        <extension>_MaxToday</extension>
         <description></description>
         <trigger>Item %%ItemName%% changed or</trigger>
         <trigger>Time cron "0 0 0 * * ?" or</trigger>
         <trigger>System started</trigger>
         <action>postUpdate(%%DerivedName%%, %%ItemName%%.maximumSince(now.toDateMidnight).state)</action>
+        <variable>
+            <name>DerivedName</name>
+            <label>New Item Name</label>
+            <defaultvalue>%%ItemName%%_MaxToday</defaultvalue>
+            <description>The name of the new item.</description>
+            <scope>Setup</scope>
+        </variable>
     </rule>
     <rule>
         <name>MinimumToday</name>
         <label>Minimum item value since midnight</label>
         <type>DerivedItem</type>
         <itemtype>NumberItem</itemtype>
-        <extension>_MinToday</extension>
         <description></description>
         <trigger>Item %%Itemlabel%% changed or</trigger>
         <trigger>Time cron "0 0 0 * * ?" or</trigger>
         <trigger>System started</trigger>
         <action>postUpdate(%%DerivedName%%, %%ItemName%%.minimumSince(now.toDateMidnight).state)</action>
+        <variable>
+            <name>DerivedName</name>
+            <label>New Item Name</label>
+            <defaultvalue>%%ItemName%%_MinToday</defaultvalue>
+            <description>The name of the new item.</description>
+            <scope>Setup</scope>
+        </variable>
     </rule>
     <rule>
         <name>ChangeToday</name>
         <label>Change since midnight</label>
         <type>DerivedItem</type>
         <itemtype>NumberItem</itemtype>
-        <extension>_ChangeToday</extension>
         <description></description>
         <trigger>Item %%ItemName%% changed or</trigger>
         <trigger>Time cron "0 * * * * ?" or</trigger>
@@ -37,6 +48,13 @@
         <action>var Number valThen = %%ItemName%%.minimumSince(now.toDateMidnight(24)).state</action>
         <action>var Number valDif = valNow - valThen</action>
         <action>postUpdate(%%DerivedName%%, valDif)</action>
+        <variable>
+            <name>DerivedName</name>
+            <label>New Item Name</label>
+            <defaultvalue>%%ItemName%%_ChangeToday</defaultvalue>
+            <description>The name of the new item.</description>
+            <scope>Setup</scope>
+        </variable>
     </rule>
     <rule>
         <name>Change1Hour</name>
@@ -44,7 +62,6 @@
         <type>DerivedItem</type>
         <itemtype>NumberItem</itemtype>
         <description></description>
-        <extension>_ChangeLastHour</extension>
         <trigger>Item %%ItemName%% changed or</trigger>
         <trigger>Time cron "0 * * * * ?" or</trigger>
         <trigger>System started</trigger>
@@ -52,6 +69,13 @@
         <action>var Number valThen = %%ItemName%%.minimumSince(now.minusHours(6)).state</action>
         <action>var Number valDif = valNow - valThen</action>
         <action>postUpdate(%%DerivedName%%, valDif)</action>
+        <variable>
+            <name>DerivedName</name>
+            <label>New Item Name</label>
+            <defaultvalue>%%ItemName%%_Change1Hour</defaultvalue>
+            <description>The name of the new item.</description>
+            <scope>Setup</scope>
+        </variable>
     </rule>
     <rule>
         <name>Change6Hour</name>
@@ -59,7 +83,6 @@
         <type>DerivedItem</type>
         <itemtype>NumberItem</itemtype>
         <description></description>
-        <extension>_ChangeLast6Hours</extension>
         <trigger>Item %%ItemName%% changed or</trigger>
         <trigger>Time cron "0 * * * * ?" or</trigger>
         <trigger>System started</trigger>
@@ -67,6 +90,13 @@
         <action>var Number valThen = %%ItemName%%.minimumSince(now.minusHours(6)).state</action>
         <action>var Number valDif = valNow - valThen</action>
         <action>postUpdate(%%DerivedName%%, valDif)</action>
+        <variable>
+            <name>DerivedName</name>
+            <label>New Item Name</label>
+            <defaultvalue>%%ItemName%%_Change6Hour</defaultvalue>
+            <description>The name of the new item.</description>
+            <scope>Setup</scope>
+        </variable>
     </rule>
     <rule>
         <name>Change24Hour</name>
@@ -74,7 +104,6 @@
         <type>DerivedItem</type>
         <itemtype>NumberItem</itemtype>
         <description></description>
-        <extension>_ChangeLast24Hours</extension>
         <trigger>Item %%ItemName%% changed or</trigger>
         <trigger>Time cron "0 * * * * ?" or</trigger>
         <trigger>System started</trigger>
@@ -82,31 +111,46 @@
         <action>var Number valThen = %%ItemName%%.minimumSince(now.minusHours(24)).state</action>
         <action>var Number valDif = valNow - valThen</action>
         <action>postUpdate(%%DerivedName%%, valDif)</action>
+        <variable>
+            <name>DerivedName</name>
+            <label>New Item Name</label>
+            <defaultvalue>%%ItemName%%_Change24Hour</defaultvalue>
+            <description>The name of the new item.</description>
+            <scope>Setup</scope>
+        </variable>
     </rule>
 
     <rule>
-        <name>Maximum1Hour</name>
+        <name>HistoryMax1Hour</name>
         <label>Maximum item value - updated every 1 hour</label>
         <type>DerivedItem</type>
         <itemtype>NumberItem</itemtype>
-        <description></description>
-        <extension>_MaxHour</extension>
-        <trigger>Item %%ItemName%% changed or</trigger>
-        <trigger>Time cron "0 0 * * * ?" or</trigger>
-        <trigger>System started</trigger>
+        <description>Maximum in 1 hour period - used for historic logging</description>
+        <trigger>Time cron "0 0 * * * ?"</trigger>
         <action>postUpdate(%%DerivedName%%, %%ItemName%%.maximumSince(now.minusHours(1)).state)</action>
+        <variable>
+            <name>DerivedName</name>
+            <label>New Item Name</label>
+            <defaultvalue>%%ItemName%%_HistoryMax1Hour</defaultvalue>
+            <description>The name of the new item.</description>
+            <scope>Setup</scope>
+        </variable>
     </rule>
     <rule>
-        <name>Minimum1Hour</name>
+        <name>HistoryMin1Hour</name>
         <label>Minimum item value - updated every 1 hour</label>
         <type>DerivedItem</type>
         <itemtype>NumberItem</itemtype>
-        <description></description>
-        <extension>_MinHour</extension>
-        <trigger>Item %%ItemName%% changed or</trigger>
-        <trigger>Time cron "0 0 * * * ?" or</trigger>
-        <trigger>System started</trigger>
+        <description>Minimum in 1 hour period - used for historic logging</description>
+        <trigger>Time cron "0 0 * * * ?"</trigger>
         <action>postUpdate(%%DerivedName%%, %%ItemName%%.minimumSince(now.minusHours(1)).state)</action>
+        <variable>
+            <name>DerivedName</name>
+            <label>New Item Name</label>
+            <defaultvalue>%%ItemName%%_HistoryMin1Hour</defaultvalue>
+            <description>The name of the new item.</description>
+            <scope>Setup</scope>
+        </variable>
     </rule>
 
     <rule>
@@ -116,14 +160,21 @@
         <itemtype>SwitchItem</itemtype>
         <itemtype>DimmerItem</itemtype>
         <description>Calculates the power consumed by the item given a user specified maximum power</description>
-        <extension>_Watts</extension>
         <trigger>Item %%ItemName%% changed</trigger>
         <action>var Number valState = %%ItemName%%.state</action>
         <action>var Number valWatts = valState * %%UserWatts%%</action>
         <action>postUpdate(postUpdate(%%DerivedName%%, valWatts)</action>
         <variable>
+            <name>DerivedName</name>
+            <label>New Item Name</label>
+            <defaultvalue>%%ItemName%%_Watts</defaultvalue>
+            <description>The name of the new item.</description>
+            <scope>Setup</scope>
+        </variable>
+        <variable>
             <name>UserWatts</name>
             <label>User defined Watts</label>
+            <defaultvalue>0</defaultvalue>
             <description>Maximum power the item consumes when ON</description>
             <scope>Item</scope>
         </variable>
