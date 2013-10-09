@@ -68,7 +68,7 @@ Ext.define('openHAB.config.itemRules', {
                     disabled:true,
                     tooltip:'Remove the rule from this item',
                     handler:function () {
-//                        createRule();
+//                        removeRule();
                     }
                 }
             ]
