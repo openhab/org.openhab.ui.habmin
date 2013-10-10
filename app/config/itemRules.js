@@ -168,6 +168,40 @@ Ext.define('openHAB.config.itemRules', {
                         text:'Save',
                         handler:function () {
                             // Save stuff here
+                            var form = this.up('form').getForm();
+                            var formData = Ext.encode(form.getValues());
+
+                            Ext.Ajax.request({
+                                url: '/rest/config/rules/templates/item/' + itemName,
+                                method:'PUT',
+                                jsonData: formData,
+                                success: function() {
+                                    Ext.MessageBox.show({
+                                        msg:'Item rules saved',
+                                        width:200,
+                                        draggable:false,
+                                        icon:'icon-ok',
+                                        closable:false
+                                    });
+                                    setTimeout(function () {
+                                        Ext.MessageBox.hide();
+                                    }, 2500);
+                                    itemConfigStore.load();
+                                },
+                                failure: function() {
+                                    Ext.MessageBox.show({
+                                        msg:'Error saving rule',
+                                        width:200,
+                                        draggable:false,
+                                        icon:'icon-error',
+                                        closable:false
+                                    });
+                                    setTimeout(function () {
+                                        Ext.MessageBox.hide();
+                                    }, 2500);
+                                }
+                            });
+
                             saveWin.destroy();
                         }
                     }
