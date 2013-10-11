@@ -103,7 +103,6 @@ var bindingStore;
 var itemConfigStore;
 var itemFormatStore;
 var translationServiceStore;
-var ruleTemplateStore;
 
 var persistenceService = "";
 
@@ -588,24 +587,6 @@ function createUI() {
             {name:'variable'},
             {name:'linkeditem'}
         ]
-    });
-
-    ruleTemplateStore = Ext.create('Ext.data.JsonStore', {
-        model:'RuleTemplateModel',
-        proxy:{
-            type:'rest',
-            url:'/rest/config/rules/templates/list',
-            reader:{
-                type:'json',
-                root:'rule'
-            },
-            headers:{'Accept':'application/json'},
-            pageParam:undefined,
-            startParam:undefined,
-            sortParam:undefined,
-            limitParam:undefined
-        },
-        autoLoad:true
     });
 
 //======= Widgets Store

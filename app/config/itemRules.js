@@ -47,6 +47,28 @@ Ext.define('openHAB.config.itemRules', {
 
     initComponent:function () {
         var itemName = "";
+        var ruleRecord;
+
+        // Load the rules for this item
+        var ruleTemplateStore = Ext.create('Ext.data.JsonStore', {
+            model:'RuleTemplateModel',
+            proxy:{
+                type:'rest',
+                url:'/rest/config/rules/item/',
+                reader:{
+                    type:'json',
+                    root:'rule'
+                },
+                headers:{'Accept':'application/json'},
+                pageParam:undefined,
+                startParam:undefined,
+                sortParam:undefined,
+                limitParam:undefined
+            },
+            autoLoad:false
+        });
+
+
         var toolbar = Ext.create('Ext.toolbar.Toolbar', {
             items:[
                 {
@@ -96,7 +118,7 @@ Ext.define('openHAB.config.itemRules', {
                 {
                     text:'Item',
                     flex:2,
-                    dataIndex:'item'
+                    dataIndex:'linkeditem'
                 },
                 {
                     text:'Description',
@@ -129,19 +151,20 @@ Ext.define('openHAB.config.itemRules', {
 
         // Save a rule - ask for the variables etc
         function createRule(rule) {
+            // Remember the rule we're editing so we've got the information when it comes time to save to openhab
+            ruleRecord = rule;
+
+            var ruleVariables = [].concat(rule.get("variable"));
             var ruleFields = [];
-
-            var variables = [].concat(rule.get("variable"));
-
-            for (var cnt = 0; cnt < variables.length; cnt++) {
+            for (var cnt = 0; cnt < ruleVariables.length; cnt++) {
                 ruleFields[cnt] = {};
                 ruleFields[cnt].xtype = 'textfield';
                 ruleFields[cnt].allowBlank = false;
                 ruleFields[cnt].maxLength = 75;
                 ruleFields[cnt].enforceMaxLength = true;
-                ruleFields[cnt].fieldLabel = variables[cnt].label;
-                ruleFields[cnt].value = transposeVariables(variables[cnt].defaultvalue);
-                ruleFields[cnt].name = variables[cnt].name;
+                ruleFields[cnt].fieldLabel = ruleVariables[cnt].label;
+                ruleFields[cnt].value = transposeVariables(ruleVariables[cnt].value);
+                ruleFields[cnt].name = ruleVariables[cnt].name;
             }
 
             var formPanel = new Ext.form.Panel({
@@ -154,7 +177,7 @@ Ext.define('openHAB.config.itemRules', {
                     msgTarget:'side'
                 },
                 defaults:{
-                    anchor: '100%'
+                    anchor:'100%'
                 },
                 items:ruleFields,
                 buttons:[
@@ -169,15 +192,29 @@ Ext.define('openHAB.config.itemRules', {
                         handler:function () {
                             // Save stuff here
                             var form = this.up('form').getForm();
-                            var formData = Ext.encode(form.getValues());
+                            var formData = form.getValues();
+
+                            // Data needs to be translated into a format compatible with
+                            // the respective openHAB beans
+                            var data = {};
+                            data.name = ruleRecord.get("name");
+                            data.variable = [];
+
+                            var ruleVariables = [].concat(ruleRecord.get("variable"));
+                            for (var cnt = 0; cnt < ruleVariables.length; cnt++) {
+                                data.variable[cnt] = {};
+                                data.variable[cnt].name = ruleVariables[cnt].name;
+                                data.variable[cnt].scope = ruleVariables[cnt].scope;
+                                data.variable[cnt].value = formData[ruleVariables[cnt].name];
+                            }
 
                             Ext.Ajax.request({
-                                url: '/rest/config/rules/templates/item/' + itemName,
+                                url:'/rest/config/rules/item/' + itemName + '/' + data.name,
                                 method:'PUT',
-                                jsonData: formData,
-                                success: function() {
+                                jsonData:data,
+                                success:function () {
                                     Ext.MessageBox.show({
-                                        msg:'Item rules saved',
+                                        msg:'Item rule saved',
                                         width:200,
                                         draggable:false,
                                         icon:'icon-ok',
@@ -188,7 +225,7 @@ Ext.define('openHAB.config.itemRules', {
                                     }, 2500);
                                     itemConfigStore.load();
                                 },
-                                failure: function() {
+                                failure:function () {
                                     Ext.MessageBox.show({
                                         msg:'Error saving rule',
                                         width:200,
@@ -233,8 +270,10 @@ Ext.define('openHAB.config.itemRules', {
         }
 
         // Set the item
-        this.setItem = function(item) {
+        this.setItem = function (item) {
             itemName = item;
+            ruleTemplateStore.proxy.url = '/rest/config/rules/item/' + itemName;
+            ruleTemplateStore.load();
         }
     }
 })
