@@ -4,38 +4,38 @@
         <label>Maximum item value since midnight</label>
         <itemtype>NumberItem</itemtype>
         <type>DerivedItem</type>
-        <description></description>
+        <description>Keep track of maximum item value since midnight</description>
         <import>org.openhab.core.library.types.*</import>
         <import>org.openhab.core.persistence.*</import>
         <import>org.openhab.model.script.actions.*</import>
         <trigger>Item %%ItemName%% changed or</trigger>
         <trigger>Time cron "0 0 0 * * ?" or</trigger>
         <trigger>System started</trigger>
-        <action>postUpdate(%%DerivedName%%, %%ItemName%%.maximumSince(now.toDateMidnight).state)</action>
+        <action>postUpdate(%%DerivedItem%%, %%ItemName%%.maximumSince(now.toDateMidnight).state)</action>
         <variable>
-            <name>DerivedName</name>
+            <name>DerivedItem</name>
             <label>New Item Name</label>
             <value>%%ItemName%%_MaxToday</value>
             <description>The name of the new item.</description>
             <scope>Setup</scope>
         </variable>
     </rule>
-    
+
     <rule>
         <name>MinimumToday</name>
         <label>Minimum item value since midnight</label>
         <type>DerivedItem</type>
         <itemtype>NumberItem</itemtype>
-        <description></description>
+        <description>Keep track of minimum item value since midnight</description>
         <import>org.openhab.core.library.types.*</import>
         <import>org.openhab.core.persistence.*</import>
         <import>org.openhab.model.script.actions.*</import>
-        <trigger>Item %%Itemlabel%% changed or</trigger>
+        <trigger>Item %%ItemName%% changed or</trigger>
         <trigger>Time cron "0 0 0 * * ?" or</trigger>
         <trigger>System started</trigger>
-        <action>postUpdate(%%DerivedName%%, %%ItemName%%.minimumSince(now.toDateMidnight).state)</action>
+        <action>postUpdate(%%DerivedItem%%, %%ItemName%%.minimumSince(now.toDateMidnight).state)</action>
         <variable>
-            <name>DerivedName</name>
+            <name>DerivedItem</name>
             <label>New Item Name</label>
             <value>%%ItemName%%_MinToday</value>
             <description>The name of the new item.</description>
@@ -58,9 +58,9 @@
         <action>var Number valNow = %%ItemName%%.state</action>
         <action>var Number valThen = %%ItemName%%.minimumSince(now.toDateMidnight(24)).state</action>
         <action>var Number valDif = valNow - valThen</action>
-        <action>postUpdate(%%DerivedName%%, valDif)</action>
+        <action>postUpdate(%%DerivedItem%%, valDif)</action>
         <variable>
-            <name>DerivedName</name>
+            <name>DerivedItem</name>
             <label>New Item Name</label>
             <value>%%ItemName%%_ChangeToday</value>
             <description>The name of the new item.</description>
@@ -83,9 +83,9 @@
         <action>var Number valNow = %%ItemName%%.state</action>
         <action>var Number valThen = %%ItemName%%.minimumSince(now.minusHours(6)).state</action>
         <action>var Number valDif = valNow - valThen</action>
-        <action>postUpdate(%%DerivedName%%, valDif)</action>
+        <action>postUpdate(%%DerivedItem%%, valDif)</action>
         <variable>
-            <name>DerivedName</name>
+            <name>DerivedItem</name>
             <label>New Item Name</label>
             <value>%%ItemName%%_Change1Hour</value>
             <description>The name of the new item.</description>
@@ -108,9 +108,9 @@
         <action>var Number valNow = %%ItemName%%.state</action>
         <action>var Number valThen = %%ItemName%%.minimumSince(now.minusHours(6)).state</action>
         <action>var Number valDif = valNow - valThen</action>
-        <action>postUpdate(%%DerivedName%%, valDif)</action>
+        <action>postUpdate(%%DerivedItem%%, valDif)</action>
         <variable>
-            <name>DerivedName</name>
+            <name>DerivedItem</name>
             <label>New Item Name</label>
             <value>%%ItemName%%_Change6Hour</value>
             <description>The name of the new item.</description>
@@ -133,9 +133,9 @@
         <action>var Number valNow = %%ItemName%%.state</action>
         <action>var Number valThen = %%ItemName%%.minimumSince(now.minusHours(24)).state</action>
         <action>var Number valDif = valNow - valThen</action>
-        <action>postUpdate(%%DerivedName%%, valDif)</action>
+        <action>postUpdate(%%DerivedItem%%, valDif)</action>
         <variable>
-            <name>DerivedName</name>
+            <name>DerivedItem</name>
             <label>New Item Name</label>
             <value>%%ItemName%%_Change24Hour</value>
             <description>The name of the new item.</description>
@@ -153,9 +153,9 @@
         <import>org.openhab.core.persistence.*</import>
         <import>org.openhab.model.script.actions.*</import>
         <trigger>Time cron "0 0 * * * ?"</trigger>
-        <action>postUpdate(%%DerivedName%%, %%ItemName%%.maximumSince(now.minusHours(1)).state)</action>
+        <action>postUpdate(%%DerivedItem%%, %%ItemName%%.maximumSince(now.minusHours(1)).state)</action>
         <variable>
-            <name>DerivedName</name>
+            <name>DerivedItem</name>
             <label>New Item Name</label>
             <value>%%ItemName%%_HistoryMax1Hour</value>
             <description>The name of the new item.</description>
@@ -173,9 +173,9 @@
         <import>org.openhab.core.persistence.*</import>
         <import>org.openhab.model.script.actions.*</import>
         <trigger>Time cron "0 0 * * * ?"</trigger>
-        <action>postUpdate(%%DerivedName%%, %%ItemName%%.minimumSince(now.minusHours(1)).state)</action>
+        <action>postUpdate(%%DerivedItem%%, %%ItemName%%.minimumSince(now.minusHours(1)).state)</action>
         <variable>
-            <name>DerivedName</name>
+            <name>DerivedItem</name>
             <label>New Item Name</label>
             <value>%%ItemName%%_HistoryMin1Hour</value>
             <description>The name of the new item.</description>
@@ -195,9 +195,9 @@
         <trigger>Item %%ItemName%% changed</trigger>
         <action>var Number valState = %%ItemName%%.state</action>
         <action>var Number valWatts = valState * %%UserWatts%%</action>
-        <action>postUpdate(postUpdate(%%DerivedName%%, valWatts)</action>
+        <action>postUpdate(postUpdate(%%DerivedItem%%, valWatts)</action>
         <variable>
-            <name>DerivedName</name>
+            <name>DerivedItem</name>
             <label>New Item Name</label>
             <value>%%ItemName%%_Watts</value>
             <description>The name of the new item.</description>
