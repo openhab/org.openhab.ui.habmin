@@ -37,6 +37,7 @@ The project is just getting started. Currently implemented are the following -:
 * Sitemap editor
 * General binding configuration (ie binding configuration in the openhab.cfg file)
 * OSGI bundle status viewer
+* Item rule library (initial test phase)
 
 Additionally, lot of the initial user interface has been boilerplated and some work has started on the REST interface for configuring bindings.
 
