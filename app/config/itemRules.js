@@ -94,8 +94,24 @@ Ext.define('openHAB.config.itemRules', {
                     disabled:true,
                     tooltip:'Remove the rule from this item',
                     handler:function () {
-//                        removeRule();
-                    }
+                        // Get the item name to delete
+                        var record = listRules.getSelectionModel().getSelection()[0];
+                        if (record == null)
+                            return;
+
+                        // Make sure we really want to do this!!!
+                        var ruleName = record.get('name');
+                        Ext.Msg.show({
+                            title:"Confirm Delete",
+                            msg:'Are you sure you want to delete the rule "' + ruleName + '"?',
+                            buttons:Ext.Msg.YESNO,
+                            config:{
+                                obj:this,
+                                name:ruleName
+                            },
+                            fn:deleteRule,
+                            icon:Ext.MessageBox.QUESTION
+                        });                    }
                 }
             ]
         });
@@ -149,7 +165,51 @@ Ext.define('openHAB.config.itemRules', {
         this.callParent();
 
 
-        // Save a rule - ask for the variables etc
+        function deleteRule(button, text, options) {
+            if (button !== 'yes')
+                return;
+
+            // Tell OH to Remove the rule
+            Ext.Ajax.request({
+                url:'/rest/config/rules/item/' + itemName + '/' + options.config.name,
+                headers:{'Accept':'application/json'},
+                method:'DELETE',
+                success:function (response, opts) {
+                    Ext.MessageBox.show({
+                        msg:'Rule deleted',
+                        width:200,
+                        draggable:false,
+                        icon:'icon-ok',
+                        closable:false
+                    });
+                    setTimeout(function () {
+                        Ext.MessageBox.hide();
+                    }, 2500);
+
+                    // Update the list of rules
+                    var json = Ext.decode(response.responseText);
+                    ruleTemplateStore.loadData(json.rule);
+
+                    // Update the toolbar
+                    toolbar.getComponent('add').disable();
+                    toolbar.getComponent('delete').disable();
+                },
+                failure:function (result, request) {
+                    Ext.MessageBox.show({
+                        msg:'Error deleting rule',
+                        width:200,
+                        draggable:false,
+                        icon:'icon-error',
+                        closable:false
+                    });
+                    setTimeout(function () {
+                        Ext.MessageBox.hide();
+                    }, 2500);
+                }
+            });
+        }
+
+            // Save a rule - ask for the variables etc
         function createRule(rule) {
             // Remember the rule we're editing so we've got the information when it comes time to save to openhab
             ruleRecord = rule;
@@ -212,7 +272,8 @@ Ext.define('openHAB.config.itemRules', {
                                 url:'/rest/config/rules/item/' + itemName + '/' + data.name,
                                 method:'PUT',
                                 jsonData:data,
-                                success:function () {
+                                headers:{'Accept':'application/json'},
+                                success:function (response, opts) {
                                     Ext.MessageBox.show({
                                         msg:'Item rule saved',
                                         width:200,
@@ -223,7 +284,18 @@ Ext.define('openHAB.config.itemRules', {
                                     setTimeout(function () {
                                         Ext.MessageBox.hide();
                                     }, 2500);
+
+                                    // Reload the item store to account for any new items
+                                    // that may have been created
                                     itemConfigStore.load();
+
+                                    // Update the list of rules
+                                    var json = Ext.decode(response.responseText);
+                                    ruleTemplateStore.loadData(json.rule);
+
+                                    // Update the toolbar
+                                    toolbar.getComponent('add').disable();
+                                    toolbar.getComponent('delete').disable();
                                 },
                                 failure:function () {
                                     Ext.MessageBox.show({
