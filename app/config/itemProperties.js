@@ -166,9 +166,7 @@ Ext.define('openHAB.config.itemProperties', {
                     if (ref == -1)
                         return "";
                     var icon = itemTypeStore.getAt(ref).get("icon");
-                    return '<div>' +
-                        '<img src="' + icon + '" align="left" height="16" width:"46">&nbsp;&nbsp;' +
-                        v + '</div>';
+                    return '<img src="' + icon + '" align="left" height="16">&nbsp;&nbsp;' + v;
                 },
                 editor:Ext.create('Ext.form.ComboBox', {
                     store:itemTypeStore,
@@ -219,7 +217,7 @@ Ext.define('openHAB.config.itemProperties', {
                     valueField:'display',
                     store:persistenceStrategyStore,
                     queryMode:'local',
-                    listeners: {
+                    listeners:{
                         afterrender:function (cb, eOpts) {
 //                            var prop = itemOptions.getSource();
 //                            this.setValue(2);//prop.Persistence);
@@ -342,18 +340,13 @@ Ext.define('openHAB.config.itemProperties', {
 
         graphTypeStore.loadData(graphTypes);
 
-        var helpStatusText = Ext.create('Ext.toolbar.TextItem', {text:''});
-        var statusBar = Ext.create('Ext.ux.StatusBar', {text:'-', items:[helpStatusText]});
-
         var itemOptions = Ext.create('Ext.grid.property.Grid', {
-            title:'Properties',
-            icon:'images/gear.png',
             itemId:'itemProperties',
-            tbar:toolbar,
             hideHeaders:true,
             sortableColumns:false,
             nameColumnWidth:300,
             split:true,
+            border:false,
             viewConfig:{
                 markDirty:true
             },
@@ -380,16 +373,60 @@ Ext.define('openHAB.config.itemProperties', {
             }
         });
 
+        var itemExtendedOptions = Ext.create('Ext.grid.property.Grid', {
+            itemId:'itemExtendedProperties',
+            hideHeaders:true,
+            sortableColumns:false,
+            nameColumnWidth:300,
+            split:true,
+            border:false,
+            viewConfig:{
+                markDirty:true
+            },
+            listeners:{
+                propertychange:function (source, recordId, value, oldValue, eOpts) {
+                    toolbar.getComponent('cancel').enable();
+                    toolbar.getComponent('save').enable();
+                },
+                beforeedit:function (editor, e) {
+                    var rec = e.record;
+                    // Make some properties read-only
+                    if (rec.get('name') == 'Groups')
+                        e.cancel = true;
+//                    if (rec.get('name') == 'Persistence')
+                    //                       e.cancel = true;
+                },
+                itemmouseenter:function (grid, record, item, index, e, eOpts) {
+                    var name = record.get("name");
+                    helpStatusText.setText(itemHelp[name]);
+                },
+                itemmouseleave:function (grid, record, item, index, e, eOpts) {
+                    helpStatusText.setText("");
+                }
+            }
+        });
+
+        var itemProperties = Ext.create('Ext.panel.Panel', {
+            title:'Properties',
+            icon:'images/gear.png',
+            tbar:toolbar,
+            border:false,
+            items:[itemOptions, itemExtendedOptions]
+        });
+
+        var helpStatusText = Ext.create('Ext.toolbar.TextItem', {text:''});
+        var statusBar = Ext.create('Ext.ux.StatusBar', {text:'-', items:[helpStatusText]});
+
         var itemGroups = Ext.create('openHAB.config.groupTree');
         var itemRules = Ext.create('openHAB.config.itemRules');
         var itemBindings = Ext.create('openHAB.config.itemBindings');
 
-// Create the tab container for the item configuration
+        // Create the tab container for the item configuration
         var tabs = Ext.create('Ext.tab.Panel', {
             layout:'fit',
             bbar:statusBar,
             border:false,
-            items:[itemOptions, itemGroups, itemRules, itemBindings],
+            items:[itemProperties, itemGroups, itemRules, itemBindings],
             listeners:{
                 beforetabchange:function (tabPanel, newCard, oldCard, eOpts) {
                     // Detect if we've changed view so we can collate the data from the sub-tabs
@@ -424,8 +461,15 @@ Ext.define('openHAB.config.itemProperties', {
 
         this.callParent();
 
-// Class members.
+        // Class members.
         this.setItem = function (itemName) {
+            // Load the rules for this item
+            ruleTemplateStore.proxy.url = '/rest/config/rules/item/' + itemName;
+            ruleTemplateStore.on('load', function (store, records, successful, eOpts) {
+                updateExtendedData();
+            });
+            ruleTemplateStore.load();
+
             Ext.Ajax.request({
                 url:'/rest/config/items/' + itemName,
                 timeout:5000,
@@ -442,7 +486,7 @@ Ext.define('openHAB.config.itemProperties', {
             });
         }
 
-// Create a new item
+        // Create a new item
         this.newItem = function (modelName) {
             var json = {};
             json.model = modelName;
@@ -451,7 +495,7 @@ Ext.define('openHAB.config.itemProperties', {
             updateItem(json);
         }
 
-// Update the item properties
+        // Update the item properties
         function updateItem(json) {
             itemData = json;
             statusBar.setText("Item: " + json.name);
@@ -484,7 +528,7 @@ Ext.define('openHAB.config.itemProperties', {
 
                         var display = persistenceIn[cnt].service + ":" + itemStrategies[icnt];
                         var id = persistenceStrategyStore.findExact("display", display);
-                        if(id != -1) {
+                        if (id != -1) {
 
                         }
                         totalStrategies += display;
@@ -502,7 +546,7 @@ Ext.define('openHAB.config.itemProperties', {
                                 totalStrategies += persistenceIn[cnt].service + ":" + groupStrategies[gcnt];
                             }
                         }
-                        if(totalStrategies != "")
+                        if (totalStrategies != "")
                             totalStrategies = "group(" + totalStrategies + ")";
                     }
 
@@ -562,6 +606,30 @@ Ext.define('openHAB.config.itemProperties', {
                     return "";
                 return val;
             }
+        }
+
+        // Add the extended items from rules...
+        function updateExtendedData() {
+            var extendedSource = {};
+            var extendedConfig = {};
+            for (var cnt = 0; cnt < ruleTemplateStore.getCount(); cnt++) {
+                var rec = ruleTemplateStore.getAt(cnt);
+                if (rec == null)
+                    continue;
+
+                if (rec.get("linkeditem") != "") {
+                    var variables = [].concat(rec.get("variable"));
+                    var name = rec.get("name");
+                    for (var vcnt = 0; vcnt < variables.length; vcnt++) {
+                        if(variables[vcnt].scope == "Setup")
+                            continue;
+                        extendedSource[name] = variables[vcnt].value;
+                        extendedConfig[name] = {};
+                        extendedConfig[name].displayName = variables[vcnt].label;
+                    }
+                }
+            }
+            itemExtendedOptions.setSource(extendedSource, extendedConfig);
         }
     }
 })

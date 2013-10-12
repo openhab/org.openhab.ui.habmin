@@ -193,9 +193,9 @@
         <import>org.openhab.core.library.types.*</import>
         <import>org.openhab.model.script.actions.*</import>
         <trigger>Item %%ItemName%% changed</trigger>
-        <action>var Number valState = %%ItemName%%.state</action>
-        <action>var Number valWatts = valState * %%UserWatts%%</action>
-        <action>postUpdate(postUpdate(%%DerivedItem%%, valWatts)</action>
+        <action>var Number valState = %%ItemName%%.state as DecimalType</action>
+        <action>var Number valWatts = valState * %%UserWatts%% / 100</action>
+        <action>postUpdate(%%DerivedItem%%, valWatts)</action>
         <variable>
             <name>DerivedItem</name>
             <label>New Item Name</label>
