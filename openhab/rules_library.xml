@@ -14,6 +14,7 @@
         <action>postUpdate(%%DerivedItem%%, %%ItemName%%.maximumSince(now.toDateMidnight).state)</action>
         <variable>
             <name>DerivedItem</name>
+            <type>Number</type>
             <label>New Item Name</label>
             <value>%%ItemName%%_MaxToday</value>
             <description>The name of the new item.</description>
@@ -36,7 +37,9 @@
         <action>postUpdate(%%DerivedItem%%, %%ItemName%%.minimumSince(now.toDateMidnight).state)</action>
         <variable>
             <name>DerivedItem</name>
+            <type>Number</type>
             <label>New Item Name</label>
+            <Type>Number</Type>
             <value>%%ItemName%%_MinToday</value>
             <description>The name of the new item.</description>
             <scope>Setup</scope>
@@ -55,12 +58,13 @@
         <trigger>Item %%ItemName%% changed or</trigger>
         <trigger>Time cron "0 * * * * ?" or</trigger>
         <trigger>System started</trigger>
-        <action>var Number valNow = %%ItemName%%.state</action>
-        <action>var Number valThen = %%ItemName%%.minimumSince(now.toDateMidnight(24)).state</action>
+        <action>var Number valNow = %%ItemName%%.state as DecimalType</action>
+        <action>var Number valThen = %%ItemName%%.minimumSince(now.toDateMidnight(24)).state as DecimalType</action>
         <action>var Number valDif = valNow - valThen</action>
         <action>postUpdate(%%DerivedItem%%, valDif)</action>
         <variable>
             <name>DerivedItem</name>
+            <type>Number</type>
             <label>New Item Name</label>
             <value>%%ItemName%%_ChangeToday</value>
             <description>The name of the new item.</description>
@@ -80,12 +84,13 @@
         <trigger>Item %%ItemName%% changed or</trigger>
         <trigger>Time cron "0 * * * * ?" or</trigger>
         <trigger>System started</trigger>
-        <action>var Number valNow = %%ItemName%%.state</action>
-        <action>var Number valThen = %%ItemName%%.minimumSince(now.minusHours(6)).state</action>
+        <action>var Number valNow = %%ItemName%%.state as DecimalType</action>
+        <action>var Number valThen = %%ItemName%%.minimumSince(now.minusHours(1)).state as DecimalType</action>
         <action>var Number valDif = valNow - valThen</action>
         <action>postUpdate(%%DerivedItem%%, valDif)</action>
         <variable>
             <name>DerivedItem</name>
+            <type>Number</type>
             <label>New Item Name</label>
             <value>%%ItemName%%_Change1Hour</value>
             <description>The name of the new item.</description>
@@ -105,12 +110,13 @@
         <trigger>Item %%ItemName%% changed or</trigger>
         <trigger>Time cron "0 * * * * ?" or</trigger>
         <trigger>System started</trigger>
-        <action>var Number valNow = %%ItemName%%.state</action>
-        <action>var Number valThen = %%ItemName%%.minimumSince(now.minusHours(6)).state</action>
+        <action>var Number valNow = %%ItemName%%.state as DecimalType</action>
+        <action>var Number valThen = %%ItemName%%.minimumSince(now.minusHours(6)).state as DecimalType</action>
         <action>var Number valDif = valNow - valThen</action>
         <action>postUpdate(%%DerivedItem%%, valDif)</action>
         <variable>
             <name>DerivedItem</name>
+            <type>Number</type>
             <label>New Item Name</label>
             <value>%%ItemName%%_Change6Hour</value>
             <description>The name of the new item.</description>
@@ -130,12 +136,13 @@
         <trigger>Item %%ItemName%% changed or</trigger>
         <trigger>Time cron "0 * * * * ?" or</trigger>
         <trigger>System started</trigger>
-        <action>var Number valNow = %%ItemName%%.state</action>
-        <action>var Number valThen = %%ItemName%%.minimumSince(now.minusHours(24)).state</action>
+        <action>var Number valNow = %%ItemName%%.state as DecimalType</action>
+        <action>var Number valThen = %%ItemName%%.minimumSince(now.minusHours(24)).state as DecimalType</action>
         <action>var Number valDif = valNow - valThen</action>
         <action>postUpdate(%%DerivedItem%%, valDif)</action>
         <variable>
             <name>DerivedItem</name>
+            <type>Number</type>
             <label>New Item Name</label>
             <value>%%ItemName%%_Change24Hour</value>
             <description>The name of the new item.</description>
@@ -156,6 +163,7 @@
         <action>postUpdate(%%DerivedItem%%, %%ItemName%%.maximumSince(now.minusHours(1)).state)</action>
         <variable>
             <name>DerivedItem</name>
+            <type>Number</type>
             <label>New Item Name</label>
             <value>%%ItemName%%_HistoryMax1Hour</value>
             <description>The name of the new item.</description>
@@ -176,6 +184,7 @@
         <action>postUpdate(%%DerivedItem%%, %%ItemName%%.minimumSince(now.minusHours(1)).state)</action>
         <variable>
             <name>DerivedItem</name>
+            <type>Number</type>
             <label>New Item Name</label>
             <value>%%ItemName%%_HistoryMin1Hour</value>
             <description>The name of the new item.</description>
@@ -199,12 +208,14 @@
         <variable>
             <name>DerivedItem</name>
             <label>New Item Name</label>
+            <type>Number</type>
             <value>%%ItemName%%_Watts</value>
             <description>The name of the new item.</description>
             <scope>Setup</scope>
         </variable>
         <variable>
             <name>UserWatts</name>
+            <type>Number</type>
             <label>User defined Watts</label>
             <value>0</value>
             <description>Maximum power the item consumes when ON</description>

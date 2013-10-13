@@ -252,7 +252,7 @@ Ext.define('openHAB.config.itemProperties', {
                     tooltip:'Cancel changes made to the item configuration',
                     handler:function () {
                         // Reset to the current data
-                        updateItem(itemData);
+                        updatePrimaryItemProperties(itemData);
                     }
                 },
                 {
@@ -263,65 +263,16 @@ Ext.define('openHAB.config.itemProperties', {
                     disabled:true,
                     tooltip:'Save changes to the item configuration',
                     handler:function () {
-                        var prop = itemOptions.getSource();
-                        if (prop == null)
-                            return;
+                        // Reset the status flags so we can correlate the different requests
+                        saveOutstanding = 0;
+                        saveError = false;
 
-                        itemData.groups = itemGroups.getSelected();
-                        itemData.bindings = itemBindings.getBindings();
+                        if (savePrimaryData() == true)
+                            saveOutstanding++;
+                        if (saveExtendedData() == true)
+                            saveOutstanding++;
 
-                        itemData.type = prop.Type;
-                        itemData.name = prop.ItemName;
-                        itemData.icon = prop.Icon;
-                        itemData.label = prop.Label;
-                        itemData.units = prop.Units;
-                        itemData.format = prop.Format;
-                        itemData.translateService = prop.TranslateService;
-                        itemData.translateRule = prop.TranslateRule;
-
-                        // Send the sitemap to openHAB
-                        Ext.Ajax.request({
-                            url:"/rest/config/items/" + itemData.name,
-                            headers:{'Accept':'application/json'},
-                            method:'PUT',
-                            jsonData:itemData,
-                            success:function (response, opts) {
-                                Ext.MessageBox.show({
-                                    msg:'Item configuration saved',
-                                    width:200,
-                                    draggable:false,
-                                    icon:'icon-ok',
-                                    closable:false
-                                });
-                                setTimeout(function () {
-                                    Ext.MessageBox.hide();
-                                }, 2500);
-
-                                var json = Ext.decode(response.responseText);
-                                // If there's no config for this binding, records will be null
-                                if (json == null)
-                                    return;
-
-                                updateItem(json);
-                            },
-                            failure:function (result, request) {
-                                Ext.MessageBox.show({
-                                    msg:'Error saving item',
-                                    width:200,
-                                    draggable:false,
-                                    icon:'icon-error',
-                                    closable:false
-                                });
-                                setTimeout(function () {
-                                    Ext.MessageBox.hide();
-                                }, 2500);
-                            },
-                            callback:function (options, success, response) {
-                                // Reload the store
-                                itemConfigStore.reload();
-                            }
-                        });
-
+                        // Disable the toolbar
                         toolbar.getComponent('cancel').disable();
                         toolbar.getComponent('save').disable();
                     }
@@ -481,7 +432,7 @@ Ext.define('openHAB.config.itemProperties', {
                     if (json == null)
                         return;
 
-                    updateItem(json);
+                    updatePrimaryItemProperties(json);
                 }
             });
         }
@@ -492,11 +443,11 @@ Ext.define('openHAB.config.itemProperties', {
             json.model = modelName;
             json.groups = "";
 
-            updateItem(json);
+            updatePrimaryItemProperties(json);
         }
 
         // Update the item properties
-        function updateItem(json) {
+        function updatePrimaryItemProperties(json) {
             itemData = json;
             statusBar.setText("Item: " + json.name);
 
@@ -619,10 +570,13 @@ Ext.define('openHAB.config.itemProperties', {
 
                 if (rec.get("linkeditem") != "") {
                     var variables = [].concat(rec.get("variable"));
-                    var name = rec.get("name");
+
                     for (var vcnt = 0; vcnt < variables.length; vcnt++) {
-                        if(variables[vcnt].scope == "Setup")
+                        if (variables[vcnt].scope == "Setup")
                             continue;
+
+                        var name = rec.get("name") + "." + variables[vcnt].name;
+
                         extendedSource[name] = variables[vcnt].value;
                         extendedConfig[name] = {};
                         extendedConfig[name].displayName = variables[vcnt].label;
@@ -630,6 +584,165 @@ Ext.define('openHAB.config.itemProperties', {
                 }
             }
             itemExtendedOptions.setSource(extendedSource, extendedConfig);
+        }
+
+        var saveOutstanding = 0;
+        var saveError = false;
+
+        function saveResponse(saveState) {
+            // Keep track of any errors
+            if (saveState == false)
+                saveError = true;
+
+            // See if all requests are complete?
+            saveOutstanding--;
+            if (saveOutstanding > 0)
+                return;
+
+            // All requests complete - display success (or otherwise!)
+            if (saveError == false) {
+                Ext.MessageBox.show({
+                    msg:'Item configuration saved',
+                    width:200,
+                    draggable:false,
+                    icon:'icon-ok',
+                    closable:false
+                });
+                setTimeout(function () {
+                    Ext.MessageBox.hide();
+                }, 2500);
+            }
+            else {
+                Ext.MessageBox.show({
+                    msg:'Error saving item',
+                    width:200,
+                    draggable:false,
+                    icon:'icon-error',
+                    closable:false
+                });
+                setTimeout(function () {
+                    Ext.MessageBox.hide();
+                }, 2500);
+            }
+
+            // Reload the item store
+            itemConfigStore.reload();
+        }
+
+        // Save the openHAB item model data
+        function savePrimaryData() {
+            var prop = itemOptions.getSource();
+            if (prop == null)
+                return false;
+
+            itemData.groups = itemGroups.getSelected();
+            itemData.bindings = itemBindings.getBindings();
+
+            itemData.type = prop.Type;
+            itemData.name = prop.ItemName;
+            itemData.icon = prop.Icon;
+            itemData.label = prop.Label;
+            itemData.units = prop.Units;
+            itemData.format = prop.Format;
+            itemData.translateService = prop.TranslateService;
+            itemData.translateRule = prop.TranslateRule;
+
+            // Send the item configuration to openHAB
+            Ext.Ajax.request({
+                url:"/rest/config/items/" + itemData.name,
+                headers:{'Accept':'application/json'},
+                method:'PUT',
+                jsonData:itemData,
+                success:function (response, opts) {
+                    saveResponse(true);
+
+                    var json = Ext.decode(response.responseText);
+                    // If there's no config returned for this item, records will be null
+                    if (json != null)
+                        updatePrimaryItemProperties(json);
+                },
+                failure:function (result, request) {
+                    saveResponse(false);
+                }
+            });
+
+            return true;
+        }
+
+        // Save HABmin extended data (eg rule configuration
+        function saveExtendedData() {
+            // Get the data from the main properties so we can find the itemName
+            var prop = itemOptions.getSource();
+            if (prop == null)
+                return false;
+            var itemName = prop.ItemName;
+
+            // Get the data from the extended property sheet
+            var prop = itemExtendedOptions.getSource();
+            if (prop == null)
+                return false;
+
+            // Data needs to be translated into a format compatible with
+            // the respective openHAB beans
+            var data = {};
+            data.rule = [];
+            var rulecnt = 0;
+
+            // Loop through the store and extract all the variables that were in the property sheet
+            for (var cnt = 0; cnt < ruleTemplateStore.getCount(); cnt++) {
+                var rec = ruleTemplateStore.getAt(cnt);
+                if (rec == null)
+                    continue;
+
+                if (rec.get("linkeditem") != "") {
+                    var rule = null;
+                    var varcnt = 0;
+                    var variables = [].concat(rec.get("variable"));
+                    for (var vcnt = 0; vcnt < variables.length; vcnt++) {
+                        // Don't save variables that are only allowed during rule setup
+                        if (variables[vcnt].scope == "Setup")
+                            continue;
+
+                        var name = rec.get("name") + "." + variables[vcnt].name;
+
+                        if (rule == null) {
+                            rule = {};
+                            rule.name = rec.get("name");
+                            rule.variable = [];
+                        }
+                        rule.variable[varcnt] = {};
+                        rule.variable[varcnt].name = variables[vcnt].name;
+                        rule.variable[varcnt].value = prop[name];
+                        varcnt++;
+                    }
+
+                    if (rule != null) {
+                        data.rule[rulecnt] = rule;
+                        rulecnt++;
+                    }
+                }
+
+                if (rulecnt != 0) {
+                    Ext.Ajax.request({
+                        url:'/rest/config/rules/item/' + itemName,
+                        method:'PUT',
+                        jsonData:data,
+                        headers:{'Accept':'application/json'},
+                        success:function (response, opts) {
+                            saveResponse(true);
+
+                            // Update the list of rules
+                            var json = Ext.decode(response.responseText);
+                            ruleTemplateStore.loadData(json.rule);
+                        },
+                        failure:function () {
+                            saveResponse(false);
+                        }
+                    });
+                }
+            }
+
+            return true;
         }
     }
 })

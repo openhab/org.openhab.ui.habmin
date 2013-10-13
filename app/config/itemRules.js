@@ -250,7 +250,7 @@ Ext.define('openHAB.config.itemRules', {
 
                             Ext.Ajax.request({
                                 url:'/rest/config/rules/item/' + itemName + '/' + data.name,
-                                method:'PUT',
+                                method:'POST',
                                 jsonData:data,
                                 headers:{'Accept':'application/json'},
                                 success:function (response, opts) {
