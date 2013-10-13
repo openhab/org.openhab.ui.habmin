@@ -51,8 +51,8 @@ Ext.define('openHAB.config.sitemapProperties', {
             Group:["item", "label", "format", "units", "translateService", "translateRule", "itemicon"],
             Image:["label", "itemicon", "format", "units", "url", "refresh"],
             List:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "separator"],
-            Switch:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "command", "mappings"],
-            Selection:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "mappings"],
+            Switch:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "command", "mapping"],
+            Selection:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "mapping"],
             Setpoint:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "minValue", "maxValue", "step"],
             Slider:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "sendFrequency", "switchSupport"],
             Text:["item", "label", "format", "units", "translateService", "translateRule", "itemicon"],
@@ -90,7 +90,7 @@ Ext.define('openHAB.config.sitemapProperties', {
             units:"Overrides the item formatting. Must be used with label.",
             translateService:"Overrides the translate service",
             translateRule:"Overrides the translate rule",
-            mappings:"mappings for switch (???)",
+            mapping:"Mapping values for switch.",
             maxValue:"Set the maximum allowable value",
             minValue:"Set the minimum allowable value",
             period:"?",
@@ -270,13 +270,25 @@ Ext.define('openHAB.config.sitemapProperties', {
                     allowBlank:true
                 })
             },
+            mapping:{
+                displayName:"Mapping"/*,
+                renderer:function (v) {
+                    var mapArray = [].concat[v];
+                    var mapString = "";
+
+                    for (var cnt = 0; cnt < mapArray.length; cnt++) {
+                        mapString += mapArray.command + "=" + mapArray.label + " ";
+                    }
+
+                    return mapString;
+                }*/
+            },
             translateRule:{displayName:"Translation Rule"},
             maxValue:{displayName:"Maximum"},
             minValue:{displayName:"Minimum"},
             service:{displayName:"Service"},
             step:{displayName:"Step"},
             command:{displayName:"Command"},
-            mappings:{displayName:"Mappings"},
             sendFrequency:{displayName:"Send Frequency"},
             switchSupport:{displayName:"Switch Support"},
             url:{displayName:"URL"},
@@ -301,7 +313,7 @@ Ext.define('openHAB.config.sitemapProperties', {
                 {name:'maxValue'},
                 {name:'minValue'},
                 {name:'step'},
-                {name:'mappings'},
+                {name:'mapping'},
                 {name:'leaf'},
                 {name:'sendFrequency'},
                 {name:'switchSupport'},
@@ -347,6 +359,25 @@ Ext.define('openHAB.config.sitemapProperties', {
                                 var val = getPropertyValue(prop, properties[pcnt]);
                                 if (val == null)
                                     val = "";
+                                else if(properties[pcnt] == 'mapping') {
+                                    // Special attention for 'mapping'
+                                    var map = val.split(",");
+                                    var ocnt = 0;
+
+                                    val = [];
+                                    if(map != null) {
+                                        for(var mcnt=0; mcnt < map.length; mcnt++) {
+                                            var segment = map[mcnt].split("=");
+                                            if(segment == null)
+                                                continue;
+                                            val[ocnt] = {};
+                                            val[ocnt].command = segment[0].trim();
+                                            val[ocnt].label = segment[1].trim();
+                                            ocnt ++;
+                                        }
+                                    }
+                                }
+
                                 node.set(properties[pcnt], val);
                             }
                         }
@@ -790,6 +821,7 @@ Ext.define('openHAB.config.sitemapProperties', {
             propertySheet.getHeader().getTools()[1].disable();
         }
 
+        // Show the selected widgets properties in the property grid
         function showWidgetProperties(widget) {
             var source = [];
             var properties = widgetConfig[widget.get("type")];
@@ -799,8 +831,24 @@ Ext.define('openHAB.config.sitemapProperties', {
 
             // Create the properties grid
             for (var cnt = 0; cnt < properties.length; cnt++) {
-                if (widget.get(properties[cnt]))
-                    source[properties[cnt]] = widget.get(properties[cnt]);
+                if (widget.get(properties[cnt])) {
+                    // Special attention for 'mapping'
+                    if(properties[cnt] == 'mapping') {
+                        var mapArray = widget.get(properties[cnt]);
+                        var mapString = "";
+
+                        var first = true;
+                        for (var mcnt = 0; mcnt < mapArray.length; mcnt++) {
+                            if(first == false)
+                                mapString += ", ";
+                            mapString += mapArray[mcnt].command + "=" + mapArray[mcnt].label;
+                            first = false;
+                        }
+                        source[properties[cnt]] = mapString;
+                    }
+                    else
+                        source[properties[cnt]] = widget.get(properties[cnt]);
+                }
                 else
                     source[properties[cnt]] = "";
             }
