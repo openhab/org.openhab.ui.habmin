@@ -147,11 +147,12 @@ var formatLookupArray = [
     {format:'%x', label:'Hexadecimal (lower case)'},
     {format:'%X', label:'Hexadecimal (upper case)'},
     {format:'%o', label:'Octal'},
-    {format:'%tR', label:'Time (HH:MM)'},
-    {format:'%tT', label:'Time (HH:MM:SS)'},
-    {format:'%td %tb %tY', label:'Date (dd MMM YYYY)'},
-    {format:'%td %tb %tY %tT', label:'Date/Time (dd MMM YYYY HH:MM:SS)'},
-    {format:'%tT %td %tb %tY', label:'Date/Time (HH:MM:SS dd MMM YYYY)'}
+    {format:'%1$tR', label:'Time (HH:MM)'},
+    {format:'%1$tT', label:'Time (HH:MM:SS)'},
+    {format:'%1$td %1$tb %1$tY', label:'Date (dd MMM YYYY)'},
+    {format:'%1$ta %1$tT', label:'Date/Time (DDD HH:MM:SS)'},
+    {format:'%1$td %1$tb %1$tY %1$tT', label:'Date/Time (dd MMM YYYY HH:MM:SS)'},
+    {format:'%1$tT %1$td %1$tb %1$tY', label:'Date/Time (HH:MM:SS dd MMM YYYY)'}
 ];
 
 var translationServiceArray = [
