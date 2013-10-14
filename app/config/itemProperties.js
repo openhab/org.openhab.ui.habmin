@@ -42,6 +42,11 @@ Ext.define('openHAB.config.itemProperties', {
     header:false,
 
     initComponent:function () {
+        var itemData;
+        var itemExtendedData;
+        var itemPrimaryOptionsUpdated = false;
+        var itemExtendedOptionsUpdated = false;
+
         var itemHelp = {
             ItemName:"Set the item name.",
             Type:"Set the item type.",
@@ -230,8 +235,6 @@ Ext.define('openHAB.config.itemProperties', {
             }
         };
 
-        var itemData;
-
         Ext.define('ItemIcons', {
             extend:'Ext.data.Model',
             fields:[
@@ -292,7 +295,6 @@ Ext.define('openHAB.config.itemProperties', {
         graphTypeStore.loadData(graphTypes);
 
         var itemOptions = Ext.create('Ext.grid.property.Grid', {
-            itemId:'itemProperties',
             hideHeaders:true,
             sortableColumns:false,
             nameColumnWidth:300,
@@ -305,6 +307,7 @@ Ext.define('openHAB.config.itemProperties', {
                 propertychange:function (source, recordId, value, oldValue, eOpts) {
                     toolbar.getComponent('cancel').enable();
                     toolbar.getComponent('save').enable();
+                    itemPrimaryOptionsUpdated = true;
                 },
                 beforeedit:function (editor, e) {
                     var rec = e.record;
@@ -325,7 +328,6 @@ Ext.define('openHAB.config.itemProperties', {
         });
 
         var itemExtendedOptions = Ext.create('Ext.grid.property.Grid', {
-            itemId:'itemExtendedProperties',
             hideHeaders:true,
             sortableColumns:false,
             nameColumnWidth:300,
@@ -338,6 +340,7 @@ Ext.define('openHAB.config.itemProperties', {
                 propertychange:function (source, recordId, value, oldValue, eOpts) {
                     toolbar.getComponent('cancel').enable();
                     toolbar.getComponent('save').enable();
+                    itemExtendedOptionsUpdated = true;
                 },
                 beforeedit:function (editor, e) {
                     var rec = e.record;
@@ -359,6 +362,7 @@ Ext.define('openHAB.config.itemProperties', {
 
         var itemProperties = Ext.create('Ext.panel.Panel', {
             title:'Properties',
+            itemId:'itemProperties',
             icon:'images/gear.png',
             tbar:toolbar,
             border:false,
@@ -375,6 +379,7 @@ Ext.define('openHAB.config.itemProperties', {
         // Create the tab container for the item configuration
         var tabs = Ext.create('Ext.tab.Panel', {
             layout:'fit',
+            itemId:'itemProperties',
             bbar:statusBar,
             border:false,
             items:[itemProperties, itemGroups, itemRules, itemBindings],
@@ -402,6 +407,7 @@ Ext.define('openHAB.config.itemProperties', {
                         if (itemBindings.isDirty()) {
                             toolbar.getComponent('cancel').enable();
                             toolbar.getComponent('save').enable();
+                            itemPrimaryOptionsUpdated = true;
                         }
                     }
                 }
@@ -414,13 +420,7 @@ Ext.define('openHAB.config.itemProperties', {
 
         // Class members.
         this.setItem = function (itemName) {
-            // Load the rules for this item
-            ruleTemplateStore.proxy.url = '/rest/config/rules/item/' + itemName;
-            ruleTemplateStore.on('load', function (store, records, successful, eOpts) {
-                updateExtendedData();
-            });
-            ruleTemplateStore.load();
-
+            // Load the item data
             Ext.Ajax.request({
                 url:'/rest/config/items/' + itemName,
                 timeout:5000,
@@ -433,6 +433,22 @@ Ext.define('openHAB.config.itemProperties', {
                         return;
 
                     updatePrimaryItemProperties(json);
+                }
+            });
+
+            // Load the rules for this item
+            Ext.Ajax.request({
+                url:'/rest/config/rules/item/' + itemName,
+                timeout:5000,
+                method:'GET',
+                headers:{'Accept':'application/json'},
+                success:function (response, opts) {
+                    var json = Ext.decode(response.responseText);
+                    // If there's no config for this binding, records will be null
+                    if (json == null)
+                        return;
+
+                    updateExtendedItemProperties(json);
                 }
             });
         }
@@ -448,7 +464,9 @@ Ext.define('openHAB.config.itemProperties', {
 
         // Update the item properties
         function updatePrimaryItemProperties(json) {
+            // Save the response so we can reset later if needed
             itemData = json;
+
             statusBar.setText("Item: " + json.name);
 
             // Set the main item properties
@@ -559,23 +577,32 @@ Ext.define('openHAB.config.itemProperties', {
             }
         }
 
-        // Add the extended items from rules...
-        function updateExtendedData() {
+        // Add the extended item properties from rules...
+        function updateExtendedItemProperties(json) {
+            // Save the response so we can reset later if needed
+            itemExtendedData = json;
+
+            // Sanity check the response
+            if(json == null)
+                return;
+            if(json.rule == null)
+                return;
+
             var extendedSource = {};
             var extendedConfig = {};
-            for (var cnt = 0; cnt < ruleTemplateStore.getCount(); cnt++) {
-                var rec = ruleTemplateStore.getAt(cnt);
+            for (var cnt = 0; cnt < json.rule.length; cnt++) {
+                var rec = json.rule[cnt];
                 if (rec == null)
                     continue;
 
-                if (rec.get("linkeditem") != "") {
-                    var variables = [].concat(rec.get("variable"));
+                if (rec.linkeditem != null && rec.linkeditem != "") {
+                    var variables = [].concat(rec.variable);
 
                     for (var vcnt = 0; vcnt < variables.length; vcnt++) {
                         if (variables[vcnt].scope == "Setup")
                             continue;
 
-                        var name = rec.get("name") + "." + variables[vcnt].name;
+                        var name = rec.name + "." + variables[vcnt].name;
 
                         extendedSource[name] = variables[vcnt].value;
                         extendedConfig[name] = {};
@@ -589,6 +616,8 @@ Ext.define('openHAB.config.itemProperties', {
         var saveOutstanding = 0;
         var saveError = false;
 
+        // Handles the responses from the different Ajax calls
+        // Only when all outstanding calls are finished do we post success/fail
         function saveResponse(saveState) {
             // Keep track of any errors
             if (saveState == false)
@@ -631,6 +660,10 @@ Ext.define('openHAB.config.itemProperties', {
 
         // Save the openHAB item model data
         function savePrimaryData() {
+            // Firstly, check if this data has changed
+            if(itemPrimaryOptionsUpdated == false)
+                return false;
+
             var prop = itemOptions.getSource();
             if (prop == null)
                 return false;
@@ -671,6 +704,10 @@ Ext.define('openHAB.config.itemProperties', {
 
         // Save HABmin extended data (eg rule configuration
         function saveExtendedData() {
+            // Firstly, check if this data has changed
+            if(itemExtendedOptionsUpdated == false)
+                return false;
+
             // Get the data from the main properties so we can find the itemName
             var prop = itemOptions.getSource();
             if (prop == null)
@@ -689,8 +726,8 @@ Ext.define('openHAB.config.itemProperties', {
             var rulecnt = 0;
 
             // Loop through the store and extract all the variables that were in the property sheet
-            for (var cnt = 0; cnt < ruleTemplateStore.getCount(); cnt++) {
-                var rec = ruleTemplateStore.getAt(cnt);
+            for (var cnt = 0; cnt < ruleLibraryStore.getCount(); cnt++) {
+                var rec = ruleLibraryStore.getAt(cnt);
                 if (rec == null)
                     continue;
 
@@ -731,9 +768,10 @@ Ext.define('openHAB.config.itemProperties', {
                         success:function (response, opts) {
                             saveResponse(true);
 
-                            // Update the list of rules
                             var json = Ext.decode(response.responseText);
-                            ruleTemplateStore.loadData(json.rule);
+                            // If there's no config returned for this item, records will be null
+                            if (json != null)
+                                updateExtendedItemProperties()
                         },
                         failure:function () {
                             saveResponse(false);

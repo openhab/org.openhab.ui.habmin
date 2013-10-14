@@ -96,8 +96,26 @@ Ext.define('openHAB.config.itemRules', {
             ]
         });
 
+        // Load the rules for this item
+        var itemRuleStore = Ext.create('Ext.data.JsonStore', {
+            model:'RuleTemplateModel',
+            proxy:{
+                type:'rest',
+                reader:{
+                    type:'json',
+                    root:'rule'
+                },
+                headers:{'Accept':'application/json'},
+                pageParam:undefined,
+                startParam:undefined,
+                sortParam:undefined,
+                limitParam:undefined
+            },
+            autoLoad:false
+        });
+
         var listRules = Ext.create('Ext.grid.Panel', {
-            store:ruleTemplateStore,
+            store:itemRuleStore,
             region:"center",
             flex:1,
             header:false,
@@ -168,7 +186,7 @@ Ext.define('openHAB.config.itemRules', {
 
                     // Update the list of rules
                     var json = Ext.decode(response.responseText);
-                    ruleTemplateStore.loadData(json.rule);
+                    ruleLibraryStore.loadData(json.rule);
 
                     // Update the toolbar
                     toolbar.getComponent('add').disable();
@@ -271,7 +289,7 @@ Ext.define('openHAB.config.itemRules', {
 
                                     // Update the list of rules
                                     var json = Ext.decode(response.responseText);
-                                    ruleTemplateStore.loadData(json.rule);
+                                    itemRuleStore.loadData(json.rule);
 
                                     // Update the toolbar
                                     toolbar.getComponent('add').disable();
@@ -324,6 +342,10 @@ Ext.define('openHAB.config.itemRules', {
         // Set the item
         this.setItem = function (item) {
             itemName = item;
+
+            // Load the store
+            itemRuleStore.proxy.url ='/rest/config/rules/item/' + itemName;
+            itemRuleStore.load();
         }
     }
 })

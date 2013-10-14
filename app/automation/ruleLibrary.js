@@ -34,52 +34,47 @@
  * @author Chris Jackson
  */
 
-Ext.define('openHAB.automation.automation', {
+
+Ext.define('openHAB.automation.ruleLibrary', {
     extend:'Ext.panel.Panel',
-    layout:'border',
-    icon:'images/compass.png',
-    id:'maintabAutomation',
-    tabTip:'Automation information',
-    title:'Automation',
-    cls:'empty',
+    layout:'fit',
+    icon:'images/drawer.png',
+    title: 'Rule Library',
 
     initComponent:function () {
 
-        var ruleList = Ext.create('openHAB.automation.ruleList');
-        var ruleLibrary = Ext.create('openHAB.automation.ruleLibrary');
-        var notificationList = Ext.create('openHAB.automation.notificationList');
-
-        var accordion = Ext.create('Ext.Panel', {
-            split:true,
-            border:false,
-            region:'west',
-            width:600,
-            layout:{
-                type:'accordion',
-                hideCollapseTool:true
-            },
-            items:[ruleList, ruleLibrary, notificationList]
-        });
-
-        var propertyContainer = Ext.create('Ext.panel.Panel', {
-            region:'center',
+        var ruleList = Ext.create('Ext.grid.Panel', {
+            store:ruleLibraryStore,
             header:false,
-            border:false,
-            layout:'fit',
-            setNewProperty:function(newProperties) {
-                // Remove the current editor
-                this.removeAll(true);
+            split:true,
+//            tbar:toolbar,
+            collapsible:false,
+            multiSelect:false,
+            columns:[
+                {
+                    text:'Rule',
+                    flex:4,
+                    dataIndex:'label'
+                    /*,
+                    renderer:function (value, metadata, record, row, col, store, gridView) {
+                        var img = '';
+                        if (record.get("persistence") != null) {
+                            var services = record.get("persistence");
+                            if (services != "")
+                                img = '<img src="images/database-small.png">';
+                        }
 
-                // Display the property sheet
-                this.add(newProperties);
+                        return '<span>' + value + '</span><span style="float:right">' + img + '</span>';
+                    }*/
+                }
+            ],
+            listeners:{
+                select:function (grid, record, index, eOpts) {
+                }
             }
         });
 
-        var chartGraph = Ext.create('openHAB.automation.ruleProperties');
-
-        propertyContainer.add(chartGraph);
-
-        this.items = [accordion, propertyContainer];
+        this.items = ruleList;
 
         this.callParent();
     }

@@ -86,6 +86,7 @@ Ext.require([
     'openHAB.automation.automation',
     'openHAB.automation.notificationList',
     'openHAB.automation.ruleList',
+    'openHAB.automation.ruleLibrary',
     'openHAB.automation.ruleProperties'
 ]);
 
@@ -103,7 +104,8 @@ var bindingStore;
 var itemConfigStore;
 var itemFormatStore;
 var translationServiceStore;
-var ruleTemplateStore;
+var ruleLibraryStore;
+var ruleStore;
 
 var persistenceService = "";
 
@@ -591,11 +593,11 @@ function createUI() {
     });
 
     // Load the rules for this item
-    ruleTemplateStore = Ext.create('Ext.data.JsonStore', {
+    ruleLibraryStore = Ext.create('Ext.data.JsonStore', {
         model:'RuleTemplateModel',
         proxy:{
             type:'rest',
-            url:'/rest/config/rules/item/',
+            url:'/rest/config/rules/library/list',
             reader:{
                 type:'json',
                 root:'rule'
@@ -606,7 +608,7 @@ function createUI() {
             sortParam:undefined,
             limitParam:undefined
         },
-        autoLoad:false
+        autoLoad:true
     });
 
 //======= Widgets Store
@@ -640,6 +642,36 @@ function createUI() {
         model:'FormatModel'
     });
     itemFormatStore.loadData(formatLookupArray);
+
+
+//======= Rule Store
+    Ext.define('RuleModel', {
+        extend:'Ext.data.Model',
+        fields:[
+            {name:'item'},
+            {name:'name'},
+            {name:'label'},
+            {name:'description'}
+        ]
+    });
+
+    ruleStore = Ext.create('Ext.data.ArrayStore', {
+        model:'RuleModel',
+        proxy:{
+            type:'rest',
+            url:'/rest/config/rules/list',
+            reader:{
+                type:'json',
+                root:'rule'
+            },
+            headers:{'Accept':'application/json'},
+            pageParam:undefined,
+            startParam:undefined,
+            sortParam:undefined,
+            limitParam:undefined
+        },
+        autoLoad:true
+    });
 
 
 //======= Item Config Store

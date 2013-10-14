@@ -43,6 +43,55 @@ Ext.define('openHAB.automation.ruleList', {
 
     initComponent:function () {
 
+        var ruleList = Ext.create('Ext.grid.Panel', {
+            store:ruleStore,
+            header:false,
+            split:true,
+//            tbar:toolbar,
+            collapsible:false,
+            multiSelect:false,
+            columns:[
+                {
+                    text:'Item',
+                    flex:3,
+                    dataIndex:'item'
+                    /*,
+                    renderer:function (value, metadata, record) {
+                        var icon = "";
+                        var ref = itemConfigStore.findExact("name", value);
+                        if (ref != -1) {
+                            if (itemConfigStore.getAt(ref).get('icon') != "")
+                                icon = '<img src="../images/' + itemConfigStore.getAt(ref).get('icon') + '.png" align="left" height="16">';
+                        }
+
+                        return '<div>' + icon + '</div><div style="margin-left:20px">' + value + '</div>';
+                    }*/
+                },
+                {
+                    text:'Rule',
+                    flex:4,
+                    dataIndex:'label'
+                    /*,
+                    renderer:function (value, metadata, record, row, col, store, gridView) {
+                        var img = '';
+                        if (record.get("persistence") != null) {
+                            var services = record.get("persistence");
+                            if (services != "")
+                                img = '<img src="images/database-small.png">';
+                        }
+
+                        return '<span>' + value + '</span><span style="float:right">' + img + '</span>';
+                    }*/
+                }
+            ],
+            listeners:{
+                select:function (grid, record, index, eOpts) {
+                }
+            }
+        });
+
+        this.items = ruleList;
+
         this.callParent();
     }
 })
