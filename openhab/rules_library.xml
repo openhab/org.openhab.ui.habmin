@@ -39,7 +39,6 @@
             <name>DerivedItem</name>
             <type>Number</type>
             <label>New Item Name</label>
-            <Type>Number</Type>
             <value>%%ItemName%%_MinToday</value>
             <description>The name of the new item.</description>
             <scope>Setup</scope>
@@ -187,6 +186,46 @@
             <type>Number</type>
             <label>New Item Name</label>
             <value>%%ItemName%%_HistoryMin1Hour</value>
+            <description>The name of the new item.</description>
+            <scope>Setup</scope>
+        </variable>
+    </rule>
+
+    <rule>
+        <name>LastUpdated</name>
+        <label>Records last update time</label>
+        <type>DerivedItem</type>
+        <description>Creates an item that stores the last update time of this item</description>
+        <import>org.openhab.core.library.types.*</import>
+        <import>org.openhab.core.persistence.*</import>
+        <import>org.openhab.model.script.actions.*</import>
+        <trigger>Item %%ItemName%% received update</trigger>
+        <action>postUpdate(%%DerivedItem%%, new DateTimeType())</action>
+        <variable>
+            <name>DerivedItem</name>
+            <type>DateTimeItem</type>
+            <label>New Item Name</label>
+            <value>%%ItemName%%_LastUpdate</value>
+            <description>The name of the new item.</description>
+            <scope>Setup</scope>
+        </variable>
+    </rule>
+
+    <rule>
+        <name>LastChanged</name>
+        <label>Records last change time</label>
+        <type>DerivedItem</type>
+        <description>Creates an item that stores the last change time of this item</description>
+        <import>org.openhab.core.library.types.*</import>
+        <import>org.openhab.core.persistence.*</import>
+        <import>org.openhab.model.script.actions.*</import>
+        <trigger>Item %%ItemName%% changed</trigger>
+        <action>postUpdate(%%DerivedItem%%, new DateTimeType())</action>
+        <variable>
+            <name>DerivedItem</name>
+            <type>DateTimeItem</type>
+            <label>New Item Name</label>
+            <value>%%ItemName%%_LastChange</value>
             <description>The name of the new item.</description>
             <scope>Setup</scope>
         </variable>
