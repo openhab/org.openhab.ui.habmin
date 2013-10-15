@@ -42,10 +42,13 @@ Ext.define('openHAB.config.itemProperties', {
     header:false,
 
     initComponent:function () {
+        var newItem;
         var itemData;
         var itemExtendedData;
+        var itemPersistenceData;
         var itemPrimaryOptionsUpdated = false;
         var itemExtendedOptionsUpdated = false;
+        var itemPersistenceOptionsUpdated = false;
 
         var itemHelp = {
             ItemName:"Set the item name.",
@@ -214,18 +217,27 @@ Ext.define('openHAB.config.itemProperties', {
             TranslateRule:{
                 displayName:"Translation Rule"
             },
-            Persistence:{
+            Persistence:
+            {
                 displayName:"Persistence",
                 editor:Ext.create('Ext.form.ComboBox', {
                     multiSelect:true,
+                    typeAhead:false,
+                    editable:false,
                     displayField:'display',
                     valueField:'display',
                     store:persistenceStrategyStore,
                     queryMode:'local',
-                    listeners:{
-                        afterrender:function (cb, eOpts) {
-//                            var prop = itemOptions.getSource();
-//                            this.setValue(2);//prop.Persistence);
+                    listeners: {
+                        expand:function (cb, eOpts) {
+                            // The combo doesn't get set correctly within the property grid
+                            // We need to split the selection and reset it!
+                            var val = cb.getValue();
+
+                            if(val.length != 1)
+                                return;
+
+                            cb.setValue(val[0].split(","));
                         }
                     }
                 })
@@ -272,6 +284,8 @@ Ext.define('openHAB.config.itemProperties', {
 
                         if (savePrimaryData() == true)
                             saveOutstanding++;
+                        if (savePersistenceData() == true)
+                            saveOutstanding++;
                         if (saveExtendedData() == true)
                             saveOutstanding++;
 
@@ -302,8 +316,9 @@ Ext.define('openHAB.config.itemProperties', {
             border:false,
             viewConfig:{
                 markDirty:true
-            },
-            listeners:{
+
+        },
+                    listeners:{
                 propertychange:function (source, recordId, value, oldValue, eOpts) {
                     toolbar.getComponent('cancel').enable();
                     toolbar.getComponent('save').enable();
@@ -312,6 +327,8 @@ Ext.define('openHAB.config.itemProperties', {
                 beforeedit:function (editor, e) {
                     var rec = e.record;
                     // Make some properties read-only
+                    if (newItem == false && rec.get('name') == 'ItemName')
+                        e.cancel = true;
                     if (rec.get('name') == 'Groups')
                         e.cancel = true;
 //                    if (rec.get('name') == 'Persistence')
@@ -342,13 +359,30 @@ Ext.define('openHAB.config.itemProperties', {
                     toolbar.getComponent('save').enable();
                     itemExtendedOptionsUpdated = true;
                 },
-                beforeedit:function (editor, e) {
-                    var rec = e.record;
-                    // Make some properties read-only
-                    if (rec.get('name') == 'Groups')
-                        e.cancel = true;
-//                    if (rec.get('name') == 'Persistence')
-                    //                       e.cancel = true;
+                itemmouseenter:function (grid, record, item, index, e, eOpts) {
+                    var name = record.get("name");
+                    helpStatusText.setText(itemHelp[name]);
+                },
+                itemmouseleave:function (grid, record, item, index, e, eOpts) {
+                    helpStatusText.setText("");
+                }
+            }
+        });
+
+        var itemPersistenceOptions = Ext.create('Ext.grid.property.Grid', {
+            hideHeaders:true,
+            sortableColumns:false,
+            nameColumnWidth:300,
+            split:true,
+            border:false,
+            viewConfig:{
+                markDirty:true
+            },
+            listeners:{
+                propertychange:function (source, recordId, value, oldValue, eOpts) {
+                    toolbar.getComponent('cancel').enable();
+                    toolbar.getComponent('save').enable();
+                    itemPersistenceOptionsUpdated = true;
                 },
                 itemmouseenter:function (grid, record, item, index, e, eOpts) {
                     var name = record.get("name");
@@ -366,7 +400,7 @@ Ext.define('openHAB.config.itemProperties', {
             icon:'images/gear.png',
             tbar:toolbar,
             border:false,
-            items:[itemOptions, itemExtendedOptions]
+            items:[itemOptions, itemPersistenceOptions, itemExtendedOptions]
         });
 
         var helpStatusText = Ext.create('Ext.toolbar.TextItem', {text:''});
@@ -418,7 +452,10 @@ Ext.define('openHAB.config.itemProperties', {
 
         this.callParent();
 
+        // --------------
         // Class members.
+
+        // Set the name of the item and load all the settings.
         this.setItem = function (itemName) {
             // Load the item data
             Ext.Ajax.request({
@@ -438,6 +475,22 @@ Ext.define('openHAB.config.itemProperties', {
 
             // Load the rules for this item
             Ext.Ajax.request({
+                url:'/rest/config/persistence/item/' + itemName,
+                timeout:5000,
+                method:'GET',
+                headers:{'Accept':'application/json'},
+                success:function (response, opts) {
+                    var json = Ext.decode(response.responseText);
+                    // If there's no config for this binding, records will be null
+                    if (json == null)
+                        return;
+
+                    updatePersistenceItemProperties(json);
+                }
+            });
+
+            // Load the rules for this item
+            Ext.Ajax.request({
                 url:'/rest/config/rules/item/' + itemName,
                 timeout:5000,
                 method:'GET',
@@ -451,13 +504,19 @@ Ext.define('openHAB.config.itemProperties', {
                     updateExtendedItemProperties(json);
                 }
             });
+
+            // This is an existing item, so we don't allow the item name to be edited.
+            newItem = false;
         }
 
         // Create a new item
-        this.newItem = function (modelName) {
+        this.createItem = function (modelName) {
             var json = {};
             json.model = modelName;
             json.groups = "";
+
+            // This is a new item, so we allow the item name to be edited.
+            newItem = true;
 
             updatePrimaryItemProperties(json);
         }
@@ -466,6 +525,8 @@ Ext.define('openHAB.config.itemProperties', {
         function updatePrimaryItemProperties(json) {
             // Save the response so we can reset later if needed
             itemData = json;
+
+            var itemPrimaryOptionsUpdated = false;
 
             statusBar.setText("Item: " + json.name);
 
@@ -480,11 +541,110 @@ Ext.define('openHAB.config.itemProperties', {
             source.TranslateService = setValue(json.translateService);
             source.TranslateRule = setValue(json.translateRule);
 
+            // Ensure the groups is an array!
+            var groups = [];
+            if (json.groups)
+                var groups = [].concat(json.groups);
+
+            // Set the groups
+            var groupsOut = "";
+            itemGroups.resetGroups();
+            for (var cnt = 0; cnt < groups.length; cnt++) {
+                itemGroups.setGroup(groups[cnt]);
+                if (groupsOut.length != 0)
+                    groupsOut += ", ";
+                groupsOut += groups[cnt];
+            }
+
+            source.Groups = setValue(groupsOut);
+
+            // If this is a group, remove all non applicable properties
+            if (json.type == "GroupItem") {
+                // Block the "Bindings" tab
+                tabs.remove(itemBindings, true);
+                // TODO: Maybe nothing? Needs to account for active groups!
+            }
+            // Update the property grid
+            itemOptions.setSource(source, sourceConfig);
+
+            // Ensure the bindings is an array!
+            var bindings = [];
+            if (json.bindings)
+                bindings = [].concat(json.bindings);
+
+            // Set the binding strings
+            itemBindings.setBindings(bindings);
+
+            var cancel = toolbar.getComponent('cancel');
+            if (cancel)
+                cancel.disable();
+            var save = toolbar.getComponent('save');
+            if (save)
+                save.disable();
+
+            // Set the item name in the rules tab
+            itemRules.setItem(json.name);
+
+            // Helper function to make above code more readable
+            function setValue(val) {
+                if (val == null)
+                    return "";
+                return val;
+            }
+        }
+
+        // Add the extended item properties from rules...
+        function updateExtendedItemProperties(json) {
+            // Save the response so we can reset later if needed
+            itemExtendedData = json;
+
+            var itemExtendedOptionsUpdated = false;
+
+            // Sanity check the response
+            if (json == null)
+                return;
+            if (json.rule == null)
+                return;
+
+            var extendedSource = {};
+            var extendedConfig = {};
+            for (var cnt = 0; cnt < json.rule.length; cnt++) {
+                var rec = json.rule[cnt];
+                if (rec == null)
+                    continue;
+
+                if (rec.linkeditem != null && rec.linkeditem != "") {
+                    var variables = [].concat(rec.variable);
+
+                    for (var vcnt = 0; vcnt < variables.length; vcnt++) {
+                        if (variables[vcnt].scope == "Setup")
+                            continue;
+
+                        var name = rec.name + "." + variables[vcnt].name;
+
+                        extendedSource[name] = variables[vcnt].value;
+                        extendedConfig[name] = {};
+                        extendedConfig[name].displayName = variables[vcnt].label;
+                    }
+                }
+            }
+            itemExtendedOptions.setSource(extendedSource, extendedConfig);
+        }
+
+        // Add the extended item properties from rules...
+        function updatePersistenceItemProperties(json) {
+            // Save the response so we can reset later if needed
+            itemPersistenceData = json;
+
+            var itemPersistenceOptionsUpdated = false;
+
+            var source = {};
             // Ensure the persistence is an array!
             var persistenceOut = "";
             if (json.persistence != null) {
                 var persistenceIn = [].concat(json.persistence);
 
+                // Flatten the structure so it works with a combobox
                 for (var cnt = 0; cnt < persistenceIn.length; cnt++) {
                     var itemStrategies = [].concat(persistenceIn[cnt].itemstrategies);
                     var groupStrategies = [].concat(persistenceIn[cnt].groupstrategies);
@@ -524,93 +684,8 @@ Ext.define('openHAB.config.itemProperties', {
             }
             source.Persistence = persistenceOut;
 
-            // Ensure the groups is an array!
-            var groups = [];
-            if (json.groups)
-                var groups = [].concat(json.groups);
-
-            // Set the groups
-            var groupsOut = "";
-            itemGroups.resetGroups();
-            for (var cnt = 0; cnt < groups.length; cnt++) {
-                itemGroups.setGroup(groups[cnt]);
-                if (groupsOut.length != 0)
-                    groupsOut += ", ";
-                groupsOut += groups[cnt];
-            }
-
-            source.Groups = setValue(groupsOut);
-
-            // If this is a group, remove all non applicable properties
-            if (json.type == "GroupItem") {
-                // Block the "Bindings" tab
-                tabs.remove(itemBindings, true);
-                // TODO: Maybe nothing? Needs to account for active groups!
-            }
-
             // Update the property grid
-            itemOptions.setSource(source, sourceConfig);
-
-            // Ensure the bindings is an array!
-            var bindings = [];
-            if (json.bindings)
-                bindings = [].concat(json.bindings);
-
-            // Set the binding strings
-            itemBindings.setBindings(bindings);
-
-            var cancel = toolbar.getComponent('cancel');
-            if (cancel)
-                cancel.disable();
-            var save = toolbar.getComponent('save');
-            if (save)
-                save.disable();
-
-            // Set the item in the rules tab
-            itemRules.setItem(json.name);
-
-            // Helper function to make above code more readable
-            function setValue(val) {
-                if (val == null)
-                    return "";
-                return val;
-            }
-        }
-
-        // Add the extended item properties from rules...
-        function updateExtendedItemProperties(json) {
-            // Save the response so we can reset later if needed
-            itemExtendedData = json;
-
-            // Sanity check the response
-            if(json == null)
-                return;
-            if(json.rule == null)
-                return;
-
-            var extendedSource = {};
-            var extendedConfig = {};
-            for (var cnt = 0; cnt < json.rule.length; cnt++) {
-                var rec = json.rule[cnt];
-                if (rec == null)
-                    continue;
-
-                if (rec.linkeditem != null && rec.linkeditem != "") {
-                    var variables = [].concat(rec.variable);
-
-                    for (var vcnt = 0; vcnt < variables.length; vcnt++) {
-                        if (variables[vcnt].scope == "Setup")
-                            continue;
-
-                        var name = rec.name + "." + variables[vcnt].name;
-
-                        extendedSource[name] = variables[vcnt].value;
-                        extendedConfig[name] = {};
-                        extendedConfig[name].displayName = variables[vcnt].label;
-                    }
-                }
-            }
-            itemExtendedOptions.setSource(extendedSource, extendedConfig);
+            itemPersistenceOptions.setSource(source, sourceConfig);
         }
 
         var saveOutstanding = 0;
@@ -661,7 +736,7 @@ Ext.define('openHAB.config.itemProperties', {
         // Save the openHAB item model data
         function savePrimaryData() {
             // Firstly, check if this data has changed
-            if(itemPrimaryOptionsUpdated == false)
+            if (itemPrimaryOptionsUpdated == false)
                 return false;
 
             var prop = itemOptions.getSource();
@@ -702,10 +777,10 @@ Ext.define('openHAB.config.itemProperties', {
             return true;
         }
 
-        // Save HABmin extended data (eg rule configuration
+        // Save HABmin extended data (eg rule configurations)
         function saveExtendedData() {
             // Firstly, check if this data has changed
-            if(itemExtendedOptionsUpdated == false)
+            if (itemExtendedOptionsUpdated == false)
                 return false;
 
             // Get the data from the main properties so we can find the itemName
@@ -723,62 +798,139 @@ Ext.define('openHAB.config.itemProperties', {
             // the respective openHAB beans
             var data = {};
             data.rule = [];
-            var rulecnt = 0;
+            var ruleCnt = 0;
 
             // Loop through the store and extract all the variables that were in the property sheet
-            for (var cnt = 0; cnt < ruleLibraryStore.getCount(); cnt++) {
-                var rec = ruleLibraryStore.getAt(cnt);
+            for (var cnt = 0; cnt < itemExtendedData.rule.length; cnt++) {
+                var rec = itemExtendedData.rule[cnt];
                 if (rec == null)
                     continue;
 
-                if (rec.get("linkeditem") != "") {
+                if (rec.linkeditem != null && rec.linkeditem != "") {
+                    var variables = [].concat(rec.variable);
+
+                    var varCnt = 0;
                     var rule = null;
-                    var varcnt = 0;
-                    var variables = [].concat(rec.get("variable"));
                     for (var vcnt = 0; vcnt < variables.length; vcnt++) {
-                        // Don't save variables that are only allowed during rule setup
                         if (variables[vcnt].scope == "Setup")
                             continue;
 
-                        var name = rec.get("name") + "." + variables[vcnt].name;
+                        var name = rec.name + "." + variables[vcnt].name;
 
                         if (rule == null) {
                             rule = {};
-                            rule.name = rec.get("name");
+                            rule.name = rec.name;
                             rule.variable = [];
                         }
-                        rule.variable[varcnt] = {};
-                        rule.variable[varcnt].name = variables[vcnt].name;
-                        rule.variable[varcnt].value = prop[name];
-                        varcnt++;
+                        rule.variable[varCnt] = {};
+                        rule.variable[varCnt].name = variables[vcnt].name;
+                        rule.variable[varCnt].value = prop[name];
+                        varCnt++;
                     }
 
                     if (rule != null) {
-                        data.rule[rulecnt] = rule;
-                        rulecnt++;
+                        data.rule[ruleCnt] = rule;
+                        ruleCnt++;
                     }
                 }
+            }
 
-                if (rulecnt != 0) {
-                    Ext.Ajax.request({
-                        url:'/rest/config/rules/item/' + itemName,
-                        method:'PUT',
-                        jsonData:data,
-                        headers:{'Accept':'application/json'},
-                        success:function (response, opts) {
-                            saveResponse(true);
+            if (ruleCnt != 0) {
+                Ext.Ajax.request({
+                    url:'/rest/config/rules/item/' + itemName,
+                    method:'PUT',
+                    jsonData:data,
+                    headers:{'Accept':'application/json'},
+                    success:function (response, opts) {
+                        saveResponse(true);
 
-                            var json = Ext.decode(response.responseText);
-                            // If there's no config returned for this item, records will be null
-                            if (json != null)
-                                updateExtendedItemProperties()
-                        },
-                        failure:function () {
-                            saveResponse(false);
-                        }
-                    });
+                        var json = Ext.decode(response.responseText);
+                        // If there's no config returned for this item, records will be null
+                        if (json != null)
+                            updateExtendedItemProperties(json);
+                    },
+                    failure:function () {
+                        saveResponse(false);
+                    }
+                });
+            }
+
+            return true;
+        }
+
+        // Save persistence data
+        function savePersistenceData() {
+            // Firstly, check if this data has changed
+            if (itemPersistenceOptionsUpdated == false)
+                return false;
+
+            var itemName = itemPersistenceData.item;
+
+            var prop = itemPersistenceOptions.getSource();
+            if (prop == null)
+                return false;
+
+            // Sanity check!
+            if(prop.Persistence == null)
+                return;
+
+            // Create the bean to send to openHAB
+            var data = {};
+            data.item = itemName;
+            data.persistence = [];
+
+            // Copy all the services from the original definition into the response
+            // Otherwise we'd not be able to disable persistence if there were no
+            // strategies selected.
+            if(itemPersistenceData.persistence == null || itemPersistenceData.persistence.length == 0)
+                itemPersistenceData.persistence = [];
+            var persistenceIn = [].concat(itemPersistenceData.persistence);
+            for (var cnt = 0; cnt < persistenceIn.length; cnt++) {
+                data.persistence[cnt] = {};
+                data.persistence[cnt].service = persistenceIn[cnt].service;
+                data.persistence[cnt].itemstrategies = [];
+            }
+
+            // Split the services and strategies
+            for(var cnt = 0; cnt < prop.Persistence.length; cnt++) {
+                var s = prop.Persistence[cnt].split(":");
+
+                // Loop through all the existing services to find the applicable service
+                var found = false;
+                for(var scnt = 0; scnt < data.persistence.length; scnt++) {
+                    if(data.persistence[scnt].service == s[0]) {
+                        data.persistence[scnt].itemstrategies.push(s[1]);
+                        found = true;
+                    }
+                }
+                if(found == false) {
+                    // The service wasn't found - push a new item to the array
+                    var svc = {};
+                    svc.service = s[0];
+                    svc.itemstrategies = [];
+                    svc.itemstrategies.push(s[1]);
+                    data.persistence.push(svc);
                 }
             }
+
+            // Send the dat ato openHAB
+            Ext.Ajax.request({
+                url:'/rest/config/persistence/item/' + itemName,
+                method:'PUT',
+                jsonData:data,
+                headers:{'Accept':'application/json'},
+                success:function (response, opts) {
+                    saveResponse(true);
+
+                    var json = Ext.decode(response.responseText);
+                    // If there's no config returned for this request, records will be null
+                    if (json != null)
+                        updatePersistenceItemProperties(json);
+                },
+                failure:function () {
+                    saveResponse(false);
+                }
+            });
 
             return true;
         }

@@ -687,8 +687,7 @@ function createUI() {
             {name:'label'},
             {name:'format'},
             {name:'units'},
-            {name:'groups'},
-            {name:'persistence'}
+            {name:'groups'}
         ]
     });
 

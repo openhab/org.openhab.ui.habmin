@@ -89,6 +89,8 @@ Ext.define('openHAB.config.itemList', {
                             ]
                         });
 
+                        // Generate a list of all existing models
+                        // User can type their own, but this gives them options.
                         var models = [];
                         var ocnt = 0;
                         for (var cnt = 0; cnt < itemConfigStore.getTotalCount(); cnt++) {
@@ -159,7 +161,7 @@ Ext.define('openHAB.config.itemList', {
 
                                             // Create a new itemProperties
                                             newProperties = Ext.create('openHAB.config.itemProperties');
-                                            newProperties.newItem(model);
+                                            newProperties.createItem(model);
 
                                             if (newProperties != null)
                                                 Ext.getCmp('configPropertyContainer').setNewProperty(newProperties);
@@ -233,10 +235,9 @@ Ext.define('openHAB.config.itemList', {
                     dataIndex:'label',
                     renderer:function (value, metadata, record, row, col, store, gridView) {
                         var img = '';
-                        if (record.get("persistence") != null) {
-                            var services = record.get("persistence");
-                            if (services != "")
-                                img = '<img src="images/database-small.png">';
+                        var id = persistenceItemStore.findExact("name", record.get("name"));
+                        if(id != -1) {
+                            img = '<img src="images/database-small.png">';
                         }
 
                         return '<span>' + value + '</span><span style="float:right">' + img + '</span>';
