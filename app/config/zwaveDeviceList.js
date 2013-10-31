@@ -37,14 +37,122 @@
 
 Ext.define('openHAB.config.zwaveDeviceList', {
     extend:'Ext.panel.Panel',
-    layout:'fit',
     icon:'images/application-list.png',
     title: 'ZWave Devices',
+    defaults:{
+        split:true
+    },
+    border:false,
+    layout:'border',
 
     initComponent:function () {
 
-//        this.items = itemsTree;
+        var list = Ext.create('Ext.grid.Panel', {
+            store:store,
+            region:"center",
+            flex:1,
+            header:false,
+            split:true,
+            tbar:toolbar,
+            collapsible:false,
+            multiSelect:false,
+            columns:[
+                {
+                    text:'Node',
+                    flex:1,
+                    dataIndex:'node'
+                }
+            ],
+            listeners:{
+                select:function (grid, record, index, eOpts) {
+                    if (record == null)
+                        return;
 
+                    // Get the node ID
+                    var nodeName;
+
+
+                    // Request the node information
+                    // Load the item data
+                    Ext.Ajax.request({
+                        url:'/rest/binding/items/' + nodeName,
+                        timeout:5000,
+                        method:'GET',
+                        headers:{'Accept':'application/json'},
+                        success:function (response, opts) {
+                            var json = Ext.decode(response.responseText);
+                            // If there's no config for this binding, records will be null
+                            if (json == null)
+                                return;
+
+                            var source = [];
+                            var sourceConfig = [];
+
+                            for(var cnt = 0; cnt < json.length; cnt++) {
+                                var name = json[cnt].name;
+                                source[name] = json[cnt].value;
+
+                                sourceConfig[name] = {};
+                                sourceConfig[name].displayName = json[cnt].label;
+
+                                // Process the type
+                                if(json[cnt].type == "LIST") {
+                                }
+                            }
+
+                            properties.setSource(source, sourceConfig);
+                        }
+                    });
+                }
+            }
+        });
+
+        var properties = Ext.create('Ext.grid.property.Grid', {
+            title:'Properties',
+            region:"south",
+            flex:1,
+            icon:'images/gear.png',
+            hideHeaders:true,
+            sortableColumns:false,
+            nameColumnWidth:300,
+            split:true,
+            viewConfig:{
+                markDirty:true
+            },
+            tools:[
+                {
+                    type:'tick',
+                    tooltip:'Update data',
+                    handler:function (event, toolEl, panel) {
+                        // Save button pressed - update the sitemap tree with the updated properties
+                        var record = list.getSelectionModel().getSelection()[0];
+                        if (record == null)
+                            return;
+
+                        // Create the bean to return to openHAB
+
+                        // Send the data
+                        Ext.Ajax.request({
+                            url:'/rest/binding/items/' + nodeName,
+                            timeout:5000,
+                            method:'PUT',
+                            headers:{'Accept':'application/json'},
+                            success:function (response, opts) {
+                            }
+                        });
+
+                    }
+                }
+            ],
+            listeners:{
+                propertychange:function (source, recordId, value, oldValue, eOpts) {
+                },
+                beforeedit : function(editor, e) {
+                }
+            }
+        });
+
+        this.items = [list, properties];
         this.callParent();
     }
 })
