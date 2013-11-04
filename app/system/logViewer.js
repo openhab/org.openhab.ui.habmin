@@ -39,13 +39,67 @@ Ext.define('openHAB.system.logViewer', {
     extend:'Ext.panel.Panel',
     layout:'fit',
     icon:'images/application-list.png',
-    title: 'Log Viewer',
+    title:'Log Viewer',
 
     initComponent:function () {
+        Ext.define('LoggingEventModel', {
+            extend:'Ext.data.Model',
+            fields:[
+                {name:'time'},
+                {name:'message'},
+                {name:'level', type:Ext.data.Types.INT}
+            ]
+        });
 
-//        this.items = itemsTree;
+        // Create the Bundles data store
+        var logStore = Ext.create('Ext.data.ArrayStore', {
+            model:'LoggingEventModel'
+        });
+
+        var logEntries = Ext.create('Ext.grid.Panel', {
+            store:logStore,
+            header:false,
+            disableSelection:true,
+            columns:[
+                {
+                    text:'Time',
+                    hideable:false,
+                    flex:1,
+                    width:75,
+                    sortable:true,
+                    dataIndex:'id'
+                },
+                {
+                    text:'Level',
+                    hideable:false,
+                    flex:3,
+                    width:75,
+                    sortable:true,
+                    dataIndex:'name'
+                },
+                {
+                    text:'Message',
+                    hideable:false,
+                    flex:3,
+                    width:75,
+                    sortable:true,
+                    dataIndex:'name'
+                }
+            ],
+            layout:'fit',
+            viewConfig:{
+                stripeRows:false,
+                enableTextSelection:false,
+                markDirty:false
+            }
+        });
+
+        this.items = logEntries;
+
 
         this.callParent();
+
+
     }
 })
 ;

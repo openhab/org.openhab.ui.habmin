@@ -75,7 +75,7 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                     // Request the node information
                     // Load the item data
                     Ext.Ajax.request({
-                        url:'/rest/binding/items/' + nodeName,
+                        url:HABminBaseURL + '/binding/items/' + nodeName,
                         timeout:5000,
                         method:'GET',
                         headers:{'Accept':'application/json'},
@@ -133,7 +133,7 @@ Ext.define('openHAB.config.zwaveDeviceList', {
 
                         // Send the data
                         Ext.Ajax.request({
-                            url:'/rest/binding/items/' + nodeName,
+                            url:HABminBaseURL + '/binding/items/' + nodeName,
                             timeout:5000,
                             method:'PUT',
                             headers:{'Accept':'application/json'},

@@ -249,7 +249,7 @@ Ext.define('openHAB.graph.saveGraph', {
                         }
 
                         Ext.Ajax.request({
-                            url:'/rest/habmin/graph/',
+                            url:HABminBaseURL + '/habmin/graph/',
                             params:parms,
                             method:'PUT',
                             success:function (response, opts) {

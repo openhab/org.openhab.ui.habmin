@@ -243,7 +243,7 @@ Ext.define('openHAB.config.bindingProperties', {
 
             bindingName = name;
             Ext.Ajax.request({
-                url:'/rest/config/bindings/' + bindingName,
+                url:HABminBaseURL + '/config/bindings/' + bindingName,
                 timeout:5000,
                 method:'GET',
                 headers:{'Accept':'application/json'},
@@ -282,7 +282,7 @@ Ext.define('openHAB.config.bindingProperties', {
 
             // Send the request to openHAB
             Ext.Ajax.request({
-                url:'/rest/config/bindings/' + bindingName,
+                url:HABminBaseURL + '/config/bindings/' + bindingName,
                 headers:{'Accept':'application/json'},
                 method:'PUT',
                 jsonData:jsonArray,

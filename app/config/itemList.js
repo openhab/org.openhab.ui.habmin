@@ -291,7 +291,7 @@ Ext.define('openHAB.config.itemList', {
 
             // Tell OH to Remove the item
             Ext.Ajax.request({
-                url:"/rest/config/items/" + options.config.name,
+                url:HABminBaseURL + "/config/items/" + options.config.name,
                 headers:{'Accept':'application/json'},
                 method:'DELETE',
                 success:function (response, opts) {

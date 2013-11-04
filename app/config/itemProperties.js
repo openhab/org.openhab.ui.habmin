@@ -459,7 +459,7 @@ Ext.define('openHAB.config.itemProperties', {
         this.setItem = function (itemName) {
             // Load the item data
             Ext.Ajax.request({
-                url:'/rest/config/items/' + itemName,
+                url:HABminBaseURL + '/config/items/' + itemName,
                 timeout:5000,
                 method:'GET',
                 headers:{'Accept':'application/json'},
@@ -475,7 +475,7 @@ Ext.define('openHAB.config.itemProperties', {
 
             // Load the rules for this item
             Ext.Ajax.request({
-                url:'/rest/config/persistence/item/' + itemName,
+                url:HABminBaseURL + '/config/persistence/item/' + itemName,
                 timeout:5000,
                 method:'GET',
                 headers:{'Accept':'application/json'},
@@ -491,7 +491,7 @@ Ext.define('openHAB.config.itemProperties', {
 
             // Load the rules for this item
             Ext.Ajax.request({
-                url:'/rest/config/rules/item/' + itemName,
+                url:HABminBaseURL + '/config/rules/item/' + itemName,
                 timeout:5000,
                 method:'GET',
                 headers:{'Accept':'application/json'},
@@ -757,7 +757,7 @@ Ext.define('openHAB.config.itemProperties', {
 
             // Send the item configuration to openHAB
             Ext.Ajax.request({
-                url:"/rest/config/items/" + itemData.name,
+                url:HABminBaseURL + "/config/items/" + itemData.name,
                 headers:{'Accept':'application/json'},
                 method:'PUT',
                 jsonData:itemData,
@@ -837,7 +837,7 @@ Ext.define('openHAB.config.itemProperties', {
 
             if (ruleCnt != 0) {
                 Ext.Ajax.request({
-                    url:'/rest/config/rules/item/' + itemName,
+                    url:HABminBaseURL + '/config/rules/item/' + itemName,
                     method:'PUT',
                     jsonData:data,
                     headers:{'Accept':'application/json'},
@@ -915,7 +915,7 @@ Ext.define('openHAB.config.itemProperties', {
 
             // Send the dat ato openHAB
             Ext.Ajax.request({
-                url:'/rest/config/persistence/item/' + itemName,
+                url:HABminBaseURL + '/config/persistence/item/' + itemName,
                 method:'PUT',
                 jsonData:data,
                 headers:{'Accept':'application/json'},

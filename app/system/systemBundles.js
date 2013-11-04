@@ -60,7 +60,7 @@ Ext.define('openHAB.system.systemBundles', {
             model:'BundlesModel',
             proxy:{
                 type:'rest',
-                url:'/rest/bundle',
+                url:HABminBaseURL + '/bundle',
                 reader:{
                     type:'json',
                     root:'bundle'

@@ -234,7 +234,7 @@ Ext.define('openHAB.graph.graphTable', {
 
             // Tell OH to Remove the record
             Ext.Ajax.request({
-                url:"/rest/persistence/" + persistenceService + '/' + options.config.item,
+                url:HABminBaseURL + "/persistence/" + persistenceService + '/' + options.config.item,
                 headers:{'Accept':'application/json'},
                 params:parms,
                 method:'DELETE',

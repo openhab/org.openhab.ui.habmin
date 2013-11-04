@@ -348,7 +348,7 @@ Ext.define('openHAB.graph.graphHighcharts', {
                 rawData[chan].yAxis = 0;
 
                 Ext.Ajax.request({
-                    url:'/rest/persistence/' + persistenceService + '/' + channels[chan].name,
+                    url:HABminBaseURL + '/persistence/' + persistenceService + '/' + channels[chan].name,
                     timeout:20000,
                     params:parms,
                     method:'GET',

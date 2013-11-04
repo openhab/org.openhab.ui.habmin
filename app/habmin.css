@@ -140,3 +140,12 @@
 .sitemap-label-set {
     margin-left:20px;
 }
+
+
+
+.openhab_pictogram {
+    -webkit-mask-position:center;
+    -webkit-mask-repeat:no-repeat;
+    -webkit-mask-size:contain;
+@include background-gradient($active-color, 'recessed');
+}

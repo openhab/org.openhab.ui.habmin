@@ -116,12 +116,30 @@ Ext.define('openHAB.config.sitemapList', {
             tbar:toolbar,
             columns:[
                 {
-                    text:'Sitemap Name',
+                    text:'',
+                    hideable:false,
+                    width:24,
+                    sortable:true,
+                    dataIndex:'icon',
+                    renderer:function (v) {
+                        if (v == null || v == "")
+                            return;
+                        return '<img src="../images/' + v + '.png"  height="16">';
+                    }
+                },
+                {
+                    text:'Name',
                     hideable:false,
                     flex:1,
-                    width:75,
                     sortable:true,
                     dataIndex:'name'
+                },
+                {
+                    text:'Label',
+                    hideable:false,
+                    flex:2,
+                    sortable:true,
+                    dataIndex:'label'
                 }
             ],
             layout:'fit',
@@ -159,7 +177,7 @@ Ext.define('openHAB.config.sitemapList', {
 
             // Tell OH to Remove the sitemap
             Ext.Ajax.request({
-                url:"/rest/config/sitemap/" + options.config.name,
+                url:HABminBaseURL + "/config/sitemap/" + options.config.name,
                 headers:{'Accept':'application/json'},
                 method:'DELETE',
                 success:function (response, opts) {
@@ -231,7 +249,7 @@ Ext.define('openHAB.config.sitemapList', {
 
             // Tell OH to add the new sitemap
             Ext.Ajax.request({
-                url:"/rest/config/sitemap/" + newName,
+                url:HABminBaseURL + "/config/sitemap/" + newName,
                 headers:{'Accept':'application/json'},
                 method:'POST',
                 params:parms,

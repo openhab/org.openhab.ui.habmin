@@ -169,7 +169,7 @@ Ext.define('openHAB.config.itemRules', {
 
             // Tell OH to Remove the rule
             Ext.Ajax.request({
-                url:'/rest/config/rules/item/' + itemName + '/' + options.config.name,
+                url:HABminBaseURL + '/config/rules/item/' + itemName + '/' + options.config.name,
                 headers:{'Accept':'application/json'},
                 method:'DELETE',
                 success:function (response, opts) {
@@ -267,7 +267,7 @@ Ext.define('openHAB.config.itemRules', {
                             }
 
                             Ext.Ajax.request({
-                                url:'/rest/config/rules/item/' + itemName + '/' + data.name,
+                                url:HABminBaseURL + '/config/rules/item/' + itemName + '/' + data.name,
                                 method:'POST',
                                 jsonData:data,
                                 headers:{'Accept':'application/json'},
@@ -344,7 +344,7 @@ Ext.define('openHAB.config.itemRules', {
             itemName = item;
 
             // Load the store
-            itemRuleStore.proxy.url ='/rest/config/rules/item/' + itemName;
+            itemRuleStore.proxy.url =HABminBaseURL + '/config/rules/item/' + itemName;
             itemRuleStore.load();
         }
     }

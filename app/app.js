@@ -77,6 +77,7 @@ Ext.require([
     'openHAB.config.mappingList',
     'openHAB.config.mappingProperties',
     'openHAB.config.sitemapList',
+    'openHAB.config.sitemapTheme',
     'openHAB.config.zwaveDeviceList',
     'openHAB.config.zwaveNetwork',
     'openHAB.config.sitemapProperties',
@@ -107,7 +108,9 @@ var translationServiceStore;
 var ruleLibraryStore;
 var ruleStore;
 
+// Global variables
 var persistenceService = "";
+var HABminBaseURL = "/services/habmin";
 
 var itemTypeArray = [
     {name:"GroupItem", icon:"images/category-group.png"},
@@ -150,7 +153,8 @@ var formatLookupArray = [
     {format:'%1$tR', label:'Time (HH:MM)'},
     {format:'%1$tT', label:'Time (HH:MM:SS)'},
     {format:'%1$td %1$tb %1$tY', label:'Date (dd MMM YYYY)'},
-    {format:'%1$ta %1$tT', label:'Date/Time (DDD HH:MM:SS)'},
+    {format:'%1$ta %1$tR', label:'Day/Time (DDD HH:MM)'},
+    {format:'%1$ta %1$tT', label:'Day/Time (DDD HH:MM:SS)'},
     {format:'%1$td %1$tb %1$tY %1$tT', label:'Date/Time (dd MMM YYYY HH:MM:SS)'},
     {format:'%1$tT %1$td %1$tb %1$tY', label:'Date/Time (HH:MM:SS dd MMM YYYY)'}
 ];
@@ -297,66 +301,6 @@ function unsubscribe() {
     socket.unsubscribe();
 }
 
-function loadUIData(sitemap_name) {
-    Ext.Ajax.request({
-        url:'/rest/sitemaps/' + sitemap_name,
-        headers:{
-            'Accept':'application/json'
-        }, success:function (result_obj) {
-            try {
-                result = Ext.JSON.decode(result_obj.responseText);
-            } catch (error) {
-                loadUIData(sitemap_name);
-                return;
-            }
-            //try {
-            buildUIArray(result.homepage, UInavPanel);
-            clearEmptyFrames();
-
-            Ext.getCmp('content').unmask();
-            broadCrumb[0] = new Array(result.homepage.id, result.homepage.title);
-            Ext.getCmp('title').setHtml(result.homepage.title);
-            //console.log(UInavPanel);
-
-            goToPage(result.homepage.id);
-
-
-            if (Ext.getCmp('leftPanel')) {
-                leftPanelstore.setRoot(UInavPanel);
-                setCurrentLeftNavPage(result.homepage.id);
-            }
-
-
-            //} catch (error) {
-            Ext.getCmp('content').unmask();
-            // alert(OpenHAB.i18n_strings[ui_language].error_build_interface + "\r\n(" + error + ")");
-            //}
-
-        }, failure:function () {
-            alert("OpenHAB.i18n_strings[ui_language].error_server_connection");
-        }
-    });
-}
-
-function loadSitemapList() {
-    Ext.Ajax.request({
-        url:'/rest/sitemaps/',
-        headers:{
-            'Accept':'application/json'
-        }, success:function (result_obj) {
-            var result = Ext.JSON.decode(result_obj.responseText);
-
-            if (result == null)
-                return;
-
-            openHABSitemaps = result.sitemap;
-            sitemapStore.loadData(openHABSitemaps);
-        }, failure:function () {
-            Ext.MessageBox.alert('Error', 'Error downloading sitemap data.');
-        }
-    });
-}
-
 // Return an icon based on the ItemType
 function getItemTypeIcon(type) {
     var ref = itemTypeStore.findExact("name", type);
@@ -457,7 +401,7 @@ function createUI() {
             model:'PersistenceServiceModel',
             proxy:{
                 type:'rest',
-                url:'/rest/config/persistence/services',
+                url:HABminBaseURL + '/config/persistence/services',
                 reader:{
                     type:'json',
                     root:'services'
@@ -521,7 +465,7 @@ function createUI() {
         model:'PersistenceItemModel',
         proxy:{
             type:'rest',
-            url:'/rest/persistence/items',
+            url:HABminBaseURL + '/persistence/items',
             reader:{
                 type:'json',
                 root:'items'
@@ -562,7 +506,7 @@ function createUI() {
         model:'ItemIconModel',
         proxy:{
             type:'rest',
-            url:'/rest/config/icons',
+            url:HABminBaseURL + '/config/icons',
             reader:{
                 type:'json',
                 root:'icon'
@@ -598,7 +542,7 @@ function createUI() {
         model:'RuleTemplateModel',
         proxy:{
             type:'rest',
-            url:'/rest/config/rules/library/list',
+            url:HABminBaseURL + '/config/rules/library/list',
             reader:{
                 type:'json',
                 root:'rule'
@@ -660,7 +604,7 @@ function createUI() {
         model:'RuleModel',
         proxy:{
             type:'rest',
-            url:'/rest/config/rules/list',
+            url:HABminBaseURL + '/config/rules/list',
             reader:{
                 type:'json',
                 root:'rule'
@@ -695,7 +639,7 @@ function createUI() {
         model:'ItemConfigModel',
         proxy:{
             type:'rest',
-            url:'/rest/config/items',
+            url:HABminBaseURL + '/config/items',
             reader:{
                 type:'json',
                 root:'item'
@@ -714,9 +658,9 @@ function createUI() {
     Ext.define('SitemapsModel', {
         extend:'Ext.data.Model',
         fields:[
+            {name:'icon'},
             {name:'name'},
-            {name:'leaf'},
-            {name:'link'}
+            {name:'label'}
         ]
     });
 
@@ -724,7 +668,7 @@ function createUI() {
         model:'SitemapsModel',
         proxy:{
             type:'rest',
-            url:'/rest/sitemaps',
+            url:HABminBaseURL + '/config/sitemap',
             reader:{
                 type:'json',
                 root:'sitemap'
@@ -760,7 +704,7 @@ function createUI() {
         model:'BindingsModel',
         proxy:{
             type:'rest',
-            url:'/rest/config/bindings',
+            url:HABminBaseURL + '/config/bindings',
             reader:{
                 type:'json',
                 root:'binding'
@@ -825,7 +769,4 @@ function createUI() {
     Ext.get('HABmin').show(true);
 
     statusTooltip = Ext.create('Ext.tip.ToolTip', {target:'onlineStatus', html:'Offline'});
-
-//    subscribe("/rest/items");
-
 }

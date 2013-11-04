@@ -45,19 +45,19 @@ Ext.define('openHAB.config.sitemapProperties', {
         // ExtJS uses the keyword "icon" to allow the user to set the icon in the tree!
         var widgetConfig = {
             Sitemap:["label", "itemicon"],
-            Chart:["item", "label", "format", "units", "itemicon", "service", "period", "refresh"],
-            Colorpicker:["item", "label", "format", "units", "itemicon", "sendFrequency"],
-            Frame:["item", "label", "format", "units", "translateService", "translateRule", "itemicon"],
-            Group:["item", "label", "format", "units", "translateService", "translateRule", "itemicon"],
-            Image:["label", "itemicon", "format", "units", "url", "refresh"],
-            List:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "separator"],
-            Switch:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "command", "mapping"],
-            Selection:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "mapping"],
-            Setpoint:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "minValue", "maxValue", "step"],
-            Slider:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "sendFrequency", "switchSupport"],
-            Text:["item", "label", "format", "units", "translateService", "translateRule", "itemicon"],
-            Video:["label", "format", "units", "url", "itemicon"],
-            Webview:["label", "format", "units", "url", "height", "itemicon"]
+            Chart:["item", "label", "format", "units", "itemicon", "service", "period", "refresh", "iconcolor", "labelcolor", "valuecolor", "visibility"],
+            Colorpicker:["item", "label", "format", "units", "itemicon", "sendFrequency", "iconcolor", "labelcolor", "valuecolor", "visibility"],
+            Frame:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "iconcolor", "labelcolor", "valuecolor", "visibility"],
+            Group:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "iconcolor", "labelcolor", "valuecolor", "visibility"],
+            Image:["label", "itemicon", "format", "units", "url", "refresh", "iconcolor", "labelcolor", "valuecolor", "visibility"],
+            List:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "separator", "iconcolor", "labelcolor", "valuecolor", "visibility"],
+            Switch:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "command", "mapping", "iconcolor", , "labelcolor", "valuecolor", "visibility"],
+            Selection:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "mapping", "iconcolor", "labelcolor", "valuecolor", "visibility"],
+            Setpoint:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "minValue", "maxValue", "step", "iconcolor", "labelcolor", "valuecolor", "visibility"],
+            Slider:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "sendFrequency", "switchSupport", "iconcolor", "labelcolor", "valuecolor", "visibility"],
+            Text:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "iconcolor", "labelcolor", "valuecolor", "visibility"],
+            Video:["label", "format", "units", "url", "itemicon", "iconcolor", "labelcolor", "valuecolor", "visibility"],
+            Webview:["label", "format", "units", "url", "height", "itemicon", "iconcolor", "labelcolor", "valuecolor", "visibility"]
         };
 
         var widgetItemTypes = {
@@ -100,7 +100,11 @@ Ext.define('openHAB.config.sitemapProperties', {
             service:"?",
             step:"Set the step value",
             switchSupport:"?",
-            url:"Set the URL attached to this widget"
+            url:"Set the URL attached to this widget",
+            visibility:"Visibility",
+            iconcolor: "Icon Color",
+            labelcolor: "Label Color",
+            valuecolor: "Value Color"
         };
 
         var configTranslate = {
@@ -114,7 +118,7 @@ Ext.define('openHAB.config.sitemapProperties', {
             model:'ItemConfigModel',
             proxy:{
                 type:'rest',
-                url:'/rest/config/items',
+                url:HABminBaseURL + '/config/items',
                 reader:{
                     type:'json',
                     root:'item'
@@ -272,16 +276,16 @@ Ext.define('openHAB.config.sitemapProperties', {
             },
             mapping:{
                 displayName:"Mapping"/*,
-                renderer:function (v) {
-                    var mapArray = [].concat[v];
-                    var mapString = "";
+                 renderer:function (v) {
+                 var mapArray = [].concat[v];
+                 var mapString = "";
 
-                    for (var cnt = 0; cnt < mapArray.length; cnt++) {
-                        mapString += mapArray.command + "=" + mapArray.label + " ";
-                    }
+                 for (var cnt = 0; cnt < mapArray.length; cnt++) {
+                 mapString += mapArray.command + "=" + mapArray.label + " ";
+                 }
 
-                    return mapString;
-                }*/
+                 return mapString;
+                 }*/
             },
             translateRule:{displayName:"Translation Rule"},
             maxValue:{displayName:"Maximum"},
@@ -321,7 +325,13 @@ Ext.define('openHAB.config.sitemapProperties', {
                 {name:'refresh'},
                 {name:'service'},
                 {name:'period'},
-                {name:'command'}
+                {name:'url'},
+                {name:'urlarray'},
+                {name:'iconcolor'},
+                {name:'labelcolor'},
+                {name:'valuecolor'},
+                {name:'command'},
+                {name:'visibility'}
             ]
         });
 
@@ -359,21 +369,21 @@ Ext.define('openHAB.config.sitemapProperties', {
                                 var val = getPropertyValue(prop, properties[pcnt]);
                                 if (val == null)
                                     val = "";
-                                else if(properties[pcnt] == 'mapping') {
+                                else if (properties[pcnt] == 'mapping') {
                                     // Special attention for 'mapping'
                                     var map = val.split(",");
                                     var ocnt = 0;
 
                                     val = [];
-                                    if(map != null) {
-                                        for(var mcnt=0; mcnt < map.length; mcnt++) {
+                                    if (map != null) {
+                                        for (var mcnt = 0; mcnt < map.length; mcnt++) {
                                             var segment = map[mcnt].split("=");
-                                            if(segment == null)
+                                            if (segment == null)
                                                 continue;
                                             val[ocnt] = {};
                                             val[ocnt].command = segment[0].trim();
                                             val[ocnt].label = segment[1].trim();
-                                            ocnt ++;
+                                            ocnt++;
                                         }
                                     }
                                 }
@@ -536,7 +546,7 @@ Ext.define('openHAB.config.sitemapProperties', {
 
                         // Send the sitemap to openHAB
                         Ext.Ajax.request({
-                            url:"/rest/config/sitemap/" + sitemapName,
+                            url:HABminBaseURL + "/config/sitemap/" + sitemapName,
                             headers:{'Accept':'application/json'},
                             method:'PUT',
                             jsonData:jsonArray,
@@ -651,7 +661,16 @@ Ext.define('openHAB.config.sitemapProperties', {
                     xtype:'treecolumn',
                     text:'Widget',
                     flex:2,
-                    dataIndex:'type'
+                    dataIndex:'type',
+                    renderer:function (value, meta, record) {
+                        // We want to add an indicator if this is has conditional visibility
+                        var img = '';
+                        if (record.get("visibility") != "") {
+                            img = '<img src="images/control-power-small.png">';
+                        }
+
+                        return '<span>' + value + '</span><span style="float:right">' + img + '</span>';
+                    }
                 },
                 {
                     text:'Item',
@@ -704,7 +723,6 @@ Ext.define('openHAB.config.sitemapProperties', {
         var sitemapDesign = Ext.create('Ext.panel.Panel', {
             itemId:'sitemapPanel',
             title:'Properties',
-            bbar:statusBar,
             icon:'images/maps-stack.png',
             defaults:{
                 split:true
@@ -714,10 +732,13 @@ Ext.define('openHAB.config.sitemapProperties', {
             items:[widgetsGrid, sitemapTree, propertySheet]
         });
 
+        var sitemapThemes = Ext.create('openHAB.config.sitemapTheme');
+
         var tabs = Ext.create('Ext.tab.Panel', {
             layout:'fit',
             border:false,
-            items:[sitemapDesign]
+            bbar:statusBar,
+            items:[sitemapDesign, sitemapThemes]
         });
 
         this.items = tabs;
@@ -726,7 +747,7 @@ Ext.define('openHAB.config.sitemapProperties', {
 
         this.setItem = function (newSitemap) {
             Ext.Ajax.request({
-                url:"/rest/config/sitemap/" + newSitemap,
+                url:HABminBaseURL + "/config/sitemap/" + newSitemap,
                 headers:{'Accept':'application/json'},
                 method:'GET',
                 success:function (response, opts) {
@@ -833,13 +854,13 @@ Ext.define('openHAB.config.sitemapProperties', {
             for (var cnt = 0; cnt < properties.length; cnt++) {
                 if (widget.get(properties[cnt])) {
                     // Special attention for 'mapping'
-                    if(properties[cnt] == 'mapping') {
+                    if (properties[cnt] == 'mapping') {
                         var mapArray = widget.get(properties[cnt]);
                         var mapString = "";
 
                         var first = true;
                         for (var mcnt = 0; mcnt < mapArray.length; mcnt++) {
-                            if(first == false)
+                            if (first == false)
                                 mapString += ", ";
                             mapString += mapArray[mcnt].command + "=" + mapArray[mcnt].label;
                             first = false;
