@@ -131,7 +131,18 @@
 
 
 
-
+.x-config-icon-domain {
+    background-image: url('../images/node.png');
+}
+.x-grid-tree-node-expanded .x-config-icon-domain {
+    background-image: url('../images/node-select-child.png');
+}
+.x-config-icon-readonly {
+    background-image: url('../images/tag.png');
+}
+.x-config-icon-editable {
+    background-image: url('../images/pencil-small.png');
+}
 
 .sitemap-label-default {
     margin-left:20px;
