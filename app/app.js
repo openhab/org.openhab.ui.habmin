@@ -182,6 +182,11 @@ Ext.application({
     }
 });
 
+Ext.Ajax.defaultHeaders = {
+    'Accept' : 'application/json,application/xml',
+    'Content-Type' : 'application/json'
+};
+
 function loadNextConfig() {
     Ext.Ajax.request({
         url:initList[initState].url,
