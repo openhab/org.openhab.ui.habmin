@@ -53,8 +53,6 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                     disabled:true,
                     tooltip:'Cancel changes made to the configuration',
                     handler:function () {
-                        // TODO: Currently there's a bug in Extjs 4.2.1
-                        // Records will be duplicated if reload is called!
                         var store = list.getStore();
                         if (store == null)
                             return;
@@ -114,11 +112,13 @@ Ext.define('openHAB.config.zwaveDeviceList', {
             store:{
                 extend:'Ext.data.TreeStore',
                 model:'ZWaveConfigModel',
+                clearOnLoad: true,
+                clearRemovedOnLoad: true,
                 proxy:{
-                    type:'ajax',
+                    type:'rest',
                     url:HABminBaseURL + '/zwave',
                     reader:{
-                        type:'json',
+//                        type:'rest',
                         root:'records'
                     },
                     headers:{'Accept':'application/json'},
@@ -130,15 +130,17 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                 nodeParam:"domain",
                 root:{
                     text:'nodes',
-                    id:'nodes',
+                    id:'nodes/',
                     expanded:true
                 },
                 listeners:{
                     load:function (tree, node, records) {
                         node.eachChild(function (childNode) {
+                            var domain = childNode.get('domain');
+                            childNode.set('id', domain);
+
                             // Set the icons and leaf attributes for the tree
-                            childNode.set('id', childNode.get('domain'));
-                            if (childNode.get('domain') == "") {
+                            if (domain.indexOf('/', domain.length - 1) == -1) {
                                 childNode.set('leaf', true);
 
                                 if (childNode.get('readonly') == true)
@@ -172,8 +174,25 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                                 return false;
                         },
                         edit:function (editor, e) {
-                            // Data has changed
+                            // Detect if data has actually changed
+                            if(e.originalValue == e.value) {
+                                // No change!
+                                return;
+                            }
 
+                            var domain = e.record.get('domain');
+
+                            // Data has changed
+                            Ext.Ajax.request({
+                                url:HABminBaseURL + '/zwave/set/' + domain,
+                                method:'PUT',
+                                jsonData:e.value,
+                                headers:{'Accept':'application/json'},
+                                success:function (response, opts) {
+                                },
+                                failure:function () {
+                                }
+                            });
 
                             // Enable the toolbar
                             toolbar.getComponent('save').enable();
@@ -284,12 +303,11 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                             handler:function () {
                                 var data = {};
                                 data.action = actions[0].key;
-                                data.domain = domain;
-                                data.name = name;
+//                                data.name = name;
                                 Ext.Ajax.request({
-                                    url:HABminBaseURL + '/zwave/action',
-                                    method:'GET',
-                                    params:data,
+                                    url:HABminBaseURL + '/zwave/action/' + domain,
+                                    method:'PUT',
+                                    jsonData:actions[0].key,
                                     headers:{'Accept':'application/json'},
                                     success:function (response, opts) {
                                     },
@@ -304,6 +322,9 @@ Ext.define('openHAB.config.zwaveDeviceList', {
 
                     // Get the node ID
                     var nodeName;
+                },
+                afteritemcollapse: function( node, index, item, eOpts ) {
+//                    node.removeAll();
                 }
             }
         });
