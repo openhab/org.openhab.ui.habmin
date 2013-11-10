@@ -225,11 +225,11 @@ Ext.define('openHAB.config.bindingProperties', {
             resetBindingProperties();
 
             // Handle special bindings
-            if (this.binding == 'zwave') {
+            if (bindingName == 'zwave') {
                 var zwaveDevices = Ext.create('openHAB.config.zwaveDeviceList');
-                var zwaveNetwork = Ext.create('openHAB.config.zwaveNetwork');
+//                var zwaveNetwork = Ext.create('openHAB.config.zwaveNetwork');
 
-                tabs.add([zwaveDevices, zwaveNetwork]);
+                tabs.add([zwaveDevices]);
             }
         }
 

@@ -65,16 +65,9 @@ Ext.define('openHAB.config.bindingList', {
                 {
                     text:'Version',
                     hideable:false,
-                    flex:1,
+                    flex:3,
                     sortable:true,
                     dataIndex:'osgiVersion'
-                },
-                {
-                    text:'Author',
-                    hideable:false,
-                    flex:1,
-                    sortable:true,
-                    dataIndex:'author'
                 }
             ],
             layout:'fit',
