@@ -46,12 +46,12 @@ Ext.define('openHAB.config.zwaveDeviceList', {
         var toolbar = Ext.create('Ext.toolbar.Toolbar', {
             items:[
                 {
-                    icon:'images/cross.png',
-                    itemId:'cancel',
-                    text:'Cancel',
+                    icon:'images/arrow-circle-315.png',
+                    itemId:'reload',
+                    text:'Reload Properties',
                     cls:'x-btn-icon',
                     disabled:true,
-                    tooltip:'Cancel changes made to the configuration',
+                    tooltip:'Reload the configuration',
                     handler:function () {
                         var store = list.getStore();
                         if (store == null)
@@ -59,30 +59,6 @@ Ext.define('openHAB.config.zwaveDeviceList', {
 
                         // Reload the store
                         store.reload();
-
-                        // Reset the toolbar state
-                        toolbar.getComponent('save').disable();
-                        toolbar.getComponent('cancel').disable();
-                    }
-                },
-                {
-                    icon:'images/disk.png',
-                    itemId:'save',
-                    text:'Save',
-                    cls:'x-btn-icon',
-                    disabled:true,
-                    tooltip:'Save changes to the configuration',
-                    handler:function () {
-                        // Save all records that have changed
-                        var store = list.getStore();
-                        if (store == null)
-                            return;
-
-                        // Get the list of updated records
-                        var cnt = store.getUpdatedRecords().length;
-                        var records = store.getUpdatedRecords();
-                        if (records == null)
-                            return;
 
                         // Reset the toolbar state
                         toolbar.getComponent('save').disable();
@@ -275,7 +251,7 @@ Ext.define('openHAB.config.zwaveDeviceList', {
             listeners:{
                 select:function (grid, record, index, eOpts) {
                     // Remove all current action buttons
-                    for (var cnt = 2; cnt < toolbar.items.length; cnt++) {
+                    for (var cnt = 1; cnt < toolbar.items.length; cnt++) {
                         toolbar.remove(toolbar.items.get(cnt), true);
                     }
 
