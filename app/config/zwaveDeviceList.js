@@ -79,6 +79,7 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                 {name:'readonly', type:'boolean'},
                 {name:'type', type:'string'},
                 {name:'value', type:'string'},
+                {name:'description', type:'string'},
                 {name:'valuelist'},
                 {name:'actionlist'}
             ]
@@ -182,7 +183,16 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                     text:'Node',
                     xtype:'treecolumn',
                     flex:1,
-                    dataIndex:'label'
+                    dataIndex:'label',
+                    renderer: function (value, meta, record) {
+                        // If a description is provided, then display this as a tooltip
+                        var description = record.get("description");
+                        if(description != "") {
+                            description = Ext.String.htmlEncode(description);
+                            meta.tdAttr = 'data-qtip="' + description + '"';
+                        }
+                        return value;
+                    }
                 },
                 {
                     text:'Value',

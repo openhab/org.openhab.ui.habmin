@@ -203,7 +203,7 @@
         <action>postUpdate(%%DerivedItem%%, new DateTimeType())</action>
         <variable>
             <name>DerivedItem</name>
-            <type>DateTimeItem</type>
+            <type>DateTime</type>
             <label>New Item Name</label>
             <value>%%ItemName%%_LastUpdate</value>
             <description>The name of the new item.</description>
@@ -223,7 +223,7 @@
         <action>postUpdate(%%DerivedItem%%, new DateTimeType())</action>
         <variable>
             <name>DerivedItem</name>
-            <type>DateTimeItem</type>
+            <type>DateTime</type>
             <label>New Item Name</label>
             <value>%%ItemName%%_LastChange</value>
             <description>The name of the new item.</description>

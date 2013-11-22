@@ -153,8 +153,10 @@ var formatLookupArray = [
     {format:'%1$tR', label:'Time (HH:MM)'},
     {format:'%1$tT', label:'Time (HH:MM:SS)'},
     {format:'%1$td %1$tb %1$tY', label:'Date (dd MMM YYYY)'},
+    {format:'%1$ta %1$td %1$tb %1$tY', label:'Date (DDD dd MMM YYYY)'},
     {format:'%1$ta %1$tR', label:'Day/Time (DDD HH:MM)'},
     {format:'%1$ta %1$tT', label:'Day/Time (DDD HH:MM:SS)'},
+    {format:'%1$td %1$tb %1$tY %1$tR', label:'Date/Time (dd MMM YYYY HH:MM)'},
     {format:'%1$td %1$tb %1$tY %1$tT', label:'Date/Time (dd MMM YYYY HH:MM:SS)'},
     {format:'%1$tT %1$td %1$tb %1$tY', label:'Date/Time (HH:MM:SS dd MMM YYYY)'}
 ];
