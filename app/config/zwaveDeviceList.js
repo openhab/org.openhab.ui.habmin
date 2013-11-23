@@ -50,7 +50,7 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                     itemId:'reload',
                     text:'Reload Properties',
                     cls:'x-btn-icon',
-                    disabled:true,
+                    disabled:false,
                     tooltip:'Reload the configuration',
                     handler:function () {
                         var store = list.getStore();
@@ -59,10 +59,6 @@ Ext.define('openHAB.config.zwaveDeviceList', {
 
                         // Reload the store
                         store.reload();
-
-                        // Reset the toolbar state
-                        toolbar.getComponent('save').disable();
-                        toolbar.getComponent('cancel').disable();
                     }
                 }
             ]
@@ -170,10 +166,6 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                                 failure:function () {
                                 }
                             });
-
-                            // Enable the toolbar
-                            toolbar.getComponent('save').enable();
-                            toolbar.getComponent('cancel').enable();
                         }
                     }
                 })
