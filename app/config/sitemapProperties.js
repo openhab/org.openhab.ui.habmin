@@ -45,19 +45,19 @@ Ext.define('openHAB.config.sitemapProperties', {
         // ExtJS uses the keyword "icon" to allow the user to set the icon in the tree!
         var widgetConfig = {
             Sitemap:["label", "itemicon"],
-            Chart:["item", "label", "format", "units", "itemicon", "service", "period", "refresh", "iconcolor", "labelcolor", "valuecolor", "visibility"],
-            Colorpicker:["item", "label", "format", "units", "itemicon", "sendFrequency", "iconcolor", "labelcolor", "valuecolor", "visibility"],
-            Frame:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "iconcolor", "labelcolor", "valuecolor", "visibility"],
-            Group:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "iconcolor", "labelcolor", "valuecolor", "visibility"],
-            Image:["label", "itemicon", "format", "units", "url", "refresh", "iconcolor", "labelcolor", "valuecolor", "visibility"],
-            List:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "separator", "iconcolor", "labelcolor", "valuecolor", "visibility"],
-            Switch:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "command", "mapping", "iconcolor", , "labelcolor", "valuecolor", "visibility"],
-            Selection:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "mapping", "iconcolor", "labelcolor", "valuecolor", "visibility"],
-            Setpoint:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "minValue", "maxValue", "step", "iconcolor", "labelcolor", "valuecolor", "visibility"],
-            Slider:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "sendFrequency", "switchSupport", "iconcolor", "labelcolor", "valuecolor", "visibility"],
-            Text:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "iconcolor", "labelcolor", "valuecolor", "visibility"],
-            Video:["label", "format", "units", "url", "itemicon", "iconcolor", "labelcolor", "valuecolor", "visibility"],
-            Webview:["label", "format", "units", "url", "height", "itemicon", "iconcolor", "labelcolor", "valuecolor", "visibility"]
+            Chart:["item", "label", "format", "units", "itemicon", "service", "period", "refresh", "labelcolor", "valuecolor", "visibility"],
+            Colorpicker:["item", "label", "format", "units", "itemicon", "sendFrequency", "labelcolor", "valuecolor", "visibility"],
+            Frame:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "labelcolor", "valuecolor", "visibility"],
+            Group:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "labelcolor", "valuecolor", "visibility"],
+            Image:["label", "itemicon", "format", "units", "url", "refresh", "labelcolor", "valuecolor", "visibility"],
+            List:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "separator", "labelcolor", "valuecolor", "visibility"],
+            Switch:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "command", "mapping", "labelcolor", "valuecolor", "visibility"],
+            Selection:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "mapping", "labelcolor", "valuecolor", "visibility"],
+            Setpoint:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "minValue", "maxValue", "step", "labelcolor", "valuecolor", "visibility"],
+            Slider:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "sendFrequency", "switchSupport", "labelcolor", "valuecolor", "visibility"],
+            Text:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "labelcolor", "valuecolor", "visibility"],
+            Video:["label", "format", "units", "url", "itemicon", "labelcolor", "valuecolor", "visibility"],
+            Webview:["label", "format", "units", "url", "height", "itemicon", "labelcolor", "valuecolor", "visibility"]
         };
 
         var widgetItemTypes = {
@@ -102,7 +102,6 @@ Ext.define('openHAB.config.sitemapProperties', {
             switchSupport:"?",
             url:"Set the URL attached to this widget",
             visibility:"Visibility",
-            iconcolor: "Icon Color",
             labelcolor: "Label Color",
             valuecolor: "Value Color"
         };
@@ -326,8 +325,6 @@ Ext.define('openHAB.config.sitemapProperties', {
                 {name:'service'},
                 {name:'period'},
                 {name:'url'},
-                {name:'urlarray'},
-                {name:'iconcolor'},
                 {name:'labelcolor'},
                 {name:'valuecolor'},
                 {name:'command'},
