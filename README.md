@@ -25,7 +25,7 @@ In addition to the REST interface, it is imperative to define files that describ
 
 ![Graph Screen](https://raw.github.com/wiki/cdjackson/HABmin/habmin_graph.png)
 
-While HABmin is a supporting project to OpenHAB,  providing access to OpenHAB's features, since the existing REST interface does not support most of the functionality required by _HABmin_, _HABmin_ may drive this part of openHAB to some extent. It is also expected that as functionality is added to OpenHAB, _HABmin_ will need to have its backend modified to reflect the final interfaces implemented in OpenHAB.
+While _HABmin_ is a supporting project to OpenHAB,  providing access to OpenHAB's features, since the existing REST interface does not support most of the functionality required by _HABmin_, _HABmin_ may drive this part of openHAB to some extent. It is also expected that as functionality is added to OpenHAB, _HABmin_ will need to have its backend modified to reflect the final interfaces implemented in OpenHAB.
 
 ![Binding Config Screen](https://raw.github.com/wiki/cdjackson/HABmin/habmin_bindingconfig.png)
 
@@ -54,8 +54,6 @@ Installation
 * Download the project zip file from GitHub and unzip files in the directory webapps/habmin (you will need to create this directory).
 * Place the org.openhab.io.habmin*.jar file into the addons directory (this is stored in the addons directory in the repository).
 * Place the org.openhab.binding.zwave*.jar into the addons directory (this is stored in the addons directory in the repository). Note that this bundle is currently needed, but if you don't have zwave then it won't actually run if it's not configured.
-
-Optionally, in order to get the graphing to work, you need to also install a new core.persistence JAR. This includes a method to return data from a persistence query. This should work with any queryable persistence service, although I've only tried it with mySQL.
 
 You will probably need to restart OpenHAB for the new REST interface to take affect.
 
