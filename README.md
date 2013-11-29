@@ -1,6 +1,6 @@
 Overview
 --------
-HABmin is a web administration console for openHAB. It aims to provide a complete interface to administer openHAB, including the following features -:
+_HABmin_ is a web administration console for openHAB. It aims to provide a complete interface to administer openHAB, including the following features -:
 * General configuration (openHAB.cfg)
 * Configure bindings
 * Configure items
@@ -16,16 +16,16 @@ The interface is a modern browser based system providing point and click, and dr
 
 ![Item Config Screen](https://raw.github.com/wiki/cdjackson/HABmin/habmin_itemconfig.png)
 
-HABmin interfaces to OpenHAB through the REST interface.  In its current state, the openHAB REST interfaces do not support configuration and as such work with HABmin is inevitably closely linked to the definition of these interfaces within the openHAB project.
+_HABmin_ interfaces to OpenHAB through the REST interface.  In its current state, the openHAB REST interfaces do not support configuration and as such work with _HABmin_ is inevitably closely linked to the definition of these interfaces within the openHAB project.
 
 ![Sitemap Config Screen](https://raw.github.com/wiki/cdjackson/HABmin/habmin_sitemap.png)
 
-In addition to the REST interface, it is imperative to define files that describe the configurable features of OpenHAB. These files describe the configuration required for a binding or an item and are used within openHAB and exposed through the REST interface. The files are defined in XML format and are not directly accessed by HABmin.
+In addition to the REST interface, it is imperative to define files that describe the configurable features of OpenHAB. These files describe the configuration required for a binding or an item and are used within openHAB and exposed through the REST interface. The files are defined in XML format and are not directly accessed by _HABmin_.
 
 
 ![Graph Screen](https://raw.github.com/wiki/cdjackson/HABmin/habmin_graph.png)
 
-While HABmin is a supporting project to OpenHAB,  providing access to OpenHAB's features, since the existing REST interface does not support most of the functionality required by HABmin, HABmin may drive this part of openHAB to some extent. It is also expected that as functionality is added to OpenHAB,  HABmin will need to have its backend modified to reflect the final interfaces implemented in OpenHAB. 
+While HABmin is a supporting project to OpenHAB,  providing access to OpenHAB's features, since the existing REST interface does not support most of the functionality required by _HABmin_, _HABmin_ may drive this part of openHAB to some extent. It is also expected that as functionality is added to OpenHAB, _HABmin_ will need to have its backend modified to reflect the final interfaces implemented in OpenHAB.
 
 ![Binding Config Screen](https://raw.github.com/wiki/cdjackson/HABmin/habmin_bindingconfig.png)
 
@@ -43,7 +43,7 @@ Additionally, lot of the initial user interface has been boilerplated and some w
 
 Technology
 ----------
-HABmin is an open source project. It makes use of a number of libraries under GPL license. The following major libraries are used -:
+_HABmin_ is an open source project. It makes use of a number of libraries under GPL license. The following major libraries are used -:
 * ExtJS from Sencha
 * Highcharts from Highsoft
 
@@ -52,16 +52,14 @@ HABmin is an open source project. It makes use of a number of libraries under GP
 Installation
 ------------
 * Download the project zip file from GitHub and unzip files in the directory webapps/habmin (you will need to create this directory).
-* Place the org.openhab.io.rest.*.jar file into the addons directory (this is stored in the addons directory in the repository).
-* Remove the existing jar file starting with org.openhab.io.rest from the system/plugins directory.
+* Place the org.openhab.io.habmin*.jar file into the addons directory (this is stored in the addons directory in the repository).
+* Place the org.openhab.binding.zwave*.jar into the addons directory (this is stored in the addons directory in the repository). Note that this bundle is currently needed, but if you don't have zwave then it won't actually run if it's not configured.
 
 Optionally, in order to get the graphing to work, you need to also install a new core.persistence JAR. This includes a method to return data from a persistence query. This should work with any queryable persistence service, although I've only tried it with mySQL.
-* Place the org.openhab.core.persistence.*.jar file into the addons directory (this is stored in the addons directory in the repository).
-* Remove the existing jar file starting with org.openhab.core.persistence from the system/plugins directory.
 
 You will probably need to restart OpenHAB for the new REST interface to take affect.
 
-You can then start habmin at the address [http://localhost:8080/habmin/index.html](http://localhost:8080/habmin/index.html) (assuming openHAB is running on your local computer using the default port - if this is not the case, you will need to adjust the address accordingly).
+You can then start _HABmin_ at the address [http://localhost:8080/habmin/index.html](http://localhost:8080/habmin/index.html) (assuming openHAB is running on your local computer using the default port - if this is not the case, you will need to adjust the address accordingly).
 
 
 Contributing
