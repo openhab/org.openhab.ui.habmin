@@ -16,16 +16,16 @@ The interface is a modern browser based system providing point and click, and dr
 
 ![Item Config Screen](https://raw.github.com/wiki/cdjackson/HABmin/habmin_itemconfig.png)
 
-_HABmin_ interfaces to OpenHAB through the REST interface.  In its current state, the openHAB REST interfaces do not support configuration and as such work with _HABmin_ is inevitably closely linked to the definition of these interfaces within the openHAB project.
+_HABmin_ interfaces to OpenHAB through a RESTful style interface - this is implemented as a separate bundle to the openHAB REST interfaces that support the standard user interface.
 
 ![Sitemap Config Screen](https://raw.github.com/wiki/cdjackson/HABmin/habmin_sitemap.png)
 
-In addition to the REST interface, it is imperative to define files that describe the configurable features of OpenHAB. These files describe the configuration required for a binding or an item and are used within openHAB and exposed through the REST interface. The files are defined in XML format and are not directly accessed by _HABmin_.
+In addition to the REST interface, it is possible to define files that describe the configurable features of OpenHAB. These files describe the configuration required for a binding or an item and are used within openHAB and exposed through the _HABmin_ REST interface. The files are defined in XML format and are not directly accessed by _HABmin_.
 
 
 ![Graph Screen](https://raw.github.com/wiki/cdjackson/HABmin/habmin_graph.png)
 
-While _HABmin_ is a supporting project to OpenHAB,  providing access to OpenHAB's features, since the existing REST interface does not support most of the functionality required by _HABmin_, _HABmin_ may drive this part of openHAB to some extent. It is also expected that as functionality is added to OpenHAB, _HABmin_ will need to have its backend modified to reflect the final interfaces implemented in OpenHAB.
+While _HABmin_ is a supporting project to OpenHAB,  providing access to openHAB's features, since the existing REST interface does not support most of the functionality required by _HABmin_, _HABmin_ may drive this part of openHAB to some extent. It is also expected that as functionality is added to openHAB, _HABmin_ will need to have its backend modified to reflect the final interfaces implemented in openHAB.
 
 ![Binding Config Screen](https://raw.github.com/wiki/cdjackson/HABmin/habmin_bindingconfig.png)
 
@@ -38,6 +38,7 @@ The project is just getting started. Currently implemented are the following -:
 * General binding configuration (ie binding configuration in the openhab.cfg file)
 * OSGI bundle status viewer
 * Item rule library (initial test phase)
+* ZWave configuration interface (note: work in progress still)
 
 Additionally, lot of the initial user interface has been boilerplated and some work has started on the REST interface for configuring bindings.
 
@@ -53,9 +54,9 @@ Installation
 ------------
 * Download the project zip file from GitHub and unzip files in the directory webapps/habmin (you will need to create this directory).
 * Place the org.openhab.io.habmin*.jar file into the addons directory (this is stored in the addons directory in the repository).
-* Place the org.openhab.binding.zwave*.jar into the addons directory (this is stored in the addons directory in the repository). Note that this bundle is currently needed, but if you don't have zwave then it won't actually run if it's not configured.
+* Place the org.openhab.binding.zwave*.jar into the addons directory (this is stored in the addons directory in the repository). Note that this bundle is currently required for _HABmin_ to start, but if you don't have zwave then it won't actually run if it's not configured. In the longer term this dependency will be removed.
 
-You will probably need to restart OpenHAB for the new REST interface to take affect.
+You will probably need to restart openHAB for the new interfaces to take affect.
 
 You can then start _HABmin_ at the address [http://localhost:8080/habmin/index.html](http://localhost:8080/habmin/index.html) (assuming openHAB is running on your local computer using the default port - if this is not the case, you will need to adjust the address accordingly).
 
