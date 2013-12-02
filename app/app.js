@@ -39,12 +39,12 @@ var force_transport = 'auto';
 Ext.Container.prototype.bufferResize = false;
 
 Ext.Loader.setConfig({
-    enabled:true,
-    disableCaching:false, // For debug only
-    'paths':{
-        'Ext.ux':'js/extux',
-        'Ext.ux.grid.property':'js/extux/propertygrid',
-        'openHAB':'app'
+    enabled: true,
+    disableCaching: false, // For debug only
+    'paths': {
+        'Ext.ux': 'js/extux',
+        'Ext.ux.grid.property': 'js/extux/propertygrid',
+        'openHAB': 'app'
     }
 });
 
@@ -92,7 +92,11 @@ Ext.require([
 ]);
 
 var viewPort;
+
 var statusTooltip;
+var STATUS_ONLINE = 1
+var STATUS_BUSY = 2
+var STATUS_OFFLINE = 3
 
 // Global data stores from openHAB
 var persistenceItemStore;
@@ -113,88 +117,88 @@ var persistenceService = "";
 var HABminBaseURL = "/services/habmin";
 
 var itemTypeArray = [
-    {name:"GroupItem", icon:"images/category-group.png"},
-    {name:"SwitchItem", icon:"images/switch.png"},
-    {name:"NumberItem", icon:"images/counter.png"},
-    {name:"ColorItem", icon:"images/color.png"},
-    {name:"ContactItem", icon:"images/door-open.png"},
-    {name:"DateTimeItem", icon:"images/clock.png"},
-    {name:"DimmerItem", icon:"images/ui-slider.png"},
-    {name:"RollerShutterItem", icon:"images/curtain.png"},
-    {name:"StringItem", icon:"images/edit.png"}
+    {name: "GroupItem", icon: "images/category-group.png"},
+    {name: "SwitchItem", icon: "images/switch.png"},
+    {name: "NumberItem", icon: "images/counter.png"},
+    {name: "ColorItem", icon: "images/color.png"},
+    {name: "ContactItem", icon: "images/door-open.png"},
+    {name: "DateTimeItem", icon: "images/clock.png"},
+    {name: "DimmerItem", icon: "images/ui-slider.png"},
+    {name: "RollerShutterItem", icon: "images/curtain.png"},
+    {name: "StringItem", icon: "images/edit.png"}
 ];
 
 var widgetTypeArray = [
-    {type:"Group", icon:"images/ui-scroll-pane.png", iconCls:"widget-group"},
-    {type:"Frame", icon:"images/ui-group-box.png", iconCls:"widget-frame"},
-    {type:"Image", icon:"images/picture.png", iconCls:"widget-image"},
-    {type:"Selection", icon:"images/ui-combo-box-blue.png", iconCls:"widget-selection"},
-    {type:"Slider", icon:"images/ui-slider.png", iconCls:"widget-slider"},
-    {type:"Video", icon:"images/film.png", iconCls:"widget-video"},
-    {type:"Webview", icon:"images/globe.png", iconCls:"widget-webview"},
-    {type:"Setpoint", icon:"images/ui-scroll-bar.png", iconCls:"widget-setpoint"},
-    {type:"Switch", icon:"images/switch.png", iconCls:"widget-switch"},
-    {type:"Colorpicker", icon:"images/color.png", iconCls:"widget-colorpicker"},
-    {type:"Text", icon:"images/edit.png", iconCls:"widget-text"}
+    {type: "Group", icon: "images/ui-scroll-pane.png", iconCls: "widget-group"},
+    {type: "Frame", icon: "images/ui-group-box.png", iconCls: "widget-frame"},
+    {type: "Image", icon: "images/picture.png", iconCls: "widget-image"},
+    {type: "Selection", icon: "images/ui-combo-box-blue.png", iconCls: "widget-selection"},
+    {type: "Slider", icon: "images/ui-slider.png", iconCls: "widget-slider"},
+    {type: "Video", icon: "images/film.png", iconCls: "widget-video"},
+    {type: "Webview", icon: "images/globe.png", iconCls: "widget-webview"},
+    {type: "Setpoint", icon: "images/ui-scroll-bar.png", iconCls: "widget-setpoint"},
+    {type: "Switch", icon: "images/switch.png", iconCls: "widget-switch"},
+    {type: "Colorpicker", icon: "images/color.png", iconCls: "widget-colorpicker"},
+    {type: "Text", icon: "images/edit.png", iconCls: "widget-text"}
 ];
 
 var formatLookupArray = [
-    {format:'%d', label:'Integer'},
-    {format:'%.1f', label:'Float (1 decimal place)'},
-    {format:'%.2f', label:'Float (2 decimal place)'},
-    {format:'%.3f', label:'Float (3 decimal place)'},
-    {format:'%b', label:'Boolean (lower case)'},
-    {format:'%B', label:'Boolean (upper case)'},
-    {format:'%s', label:'String (lower case)'},
-    {format:'%S', label:'String (upper case)'},
-    {format:'%x', label:'Hexadecimal (lower case)'},
-    {format:'%X', label:'Hexadecimal (upper case)'},
-    {format:'%o', label:'Octal'},
-    {format:'%1$tR', label:'Time (HH:MM)'},
-    {format:'%1$tT', label:'Time (HH:MM:SS)'},
-    {format:'%1$td %1$tb %1$tY', label:'Date (dd MMM YYYY)'},
-    {format:'%1$ta %1$td %1$tb %1$tY', label:'Date (DDD dd MMM YYYY)'},
-    {format:'%1$ta %1$tR', label:'Day/Time (DDD HH:MM)'},
-    {format:'%1$ta %1$tT', label:'Day/Time (DDD HH:MM:SS)'},
-    {format:'%1$td %1$tb %1$tY %1$tR', label:'Date/Time (dd MMM YYYY HH:MM)'},
-    {format:'%1$td %1$tb %1$tY %1$tT', label:'Date/Time (dd MMM YYYY HH:MM:SS)'},
-    {format:'%1$tT %1$td %1$tb %1$tY', label:'Date/Time (HH:MM:SS dd MMM YYYY)'}
+    {format: '%d', label: 'Integer'},
+    {format: '%.1f', label: 'Float (1 decimal place)'},
+    {format: '%.2f', label: 'Float (2 decimal place)'},
+    {format: '%.3f', label: 'Float (3 decimal place)'},
+    {format: '%b', label: 'Boolean (lower case)'},
+    {format: '%B', label: 'Boolean (upper case)'},
+    {format: '%s', label: 'String (lower case)'},
+    {format: '%S', label: 'String (upper case)'},
+    {format: '%x', label: 'Hexadecimal (lower case)'},
+    {format: '%X', label: 'Hexadecimal (upper case)'},
+    {format: '%o', label: 'Octal'},
+    {format: '%1$tR', label: 'Time (HH:MM)'},
+    {format: '%1$tT', label: 'Time (HH:MM:SS)'},
+    {format: '%1$td %1$tb %1$tY', label: 'Date (dd MMM YYYY)'},
+    {format: '%1$ta %1$td %1$tb %1$tY', label: 'Date (DDD dd MMM YYYY)'},
+    {format: '%1$ta %1$tR', label: 'Day/Time (DDD HH:MM)'},
+    {format: '%1$ta %1$tT', label: 'Day/Time (DDD HH:MM:SS)'},
+    {format: '%1$td %1$tb %1$tY %1$tR', label: 'Date/Time (dd MMM YYYY HH:MM)'},
+    {format: '%1$td %1$tb %1$tY %1$tT', label: 'Date/Time (dd MMM YYYY HH:MM:SS)'},
+    {format: '%1$tT %1$td %1$tb %1$tY', label: 'Date/Time (HH:MM:SS dd MMM YYYY)'}
 ];
 
 var translationServiceArray = [
-    {name:"MAP", label:"Map File"},
-    {name:"REGEX", label:"Regular Expression"},
-    {name:"JAVASCRIPT", label:"JavaScript"},
-    {name:"EXEC", label:"Exec"},
-    {name:"XSLT", label:"XML Style Sheet"},
-    {name:"XPATH", label:"XPath"}
+    {name: "MAP", label: "Map File"},
+    {name: "REGEX", label: "Regular Expression"},
+    {name: "JAVASCRIPT", label: "JavaScript"},
+    {name: "EXEC", label: "Exec"},
+    {name: "XSLT", label: "XML Style Sheet"},
+    {name: "XPATH", label: "XPath"}
 ];
 
 var initState = 0;
 var initList = [
-    {type:0, name:"openHAB Version", variable:"openHABVersion", url:"/static/version", fatal:true, notify:"Unable to get openHAB version"}//,
+    {type: 0, name: "openHAB Version", variable: "openHABVersion", url: "/static/version", fatal: true, notify: "Unable to get openHAB version"}//,
 ];
 
 
 Ext.application({
-    name:'HABmin',
-    launch:function () {
+    name: 'HABmin',
+    launch: function () {
         initState = 0;
         loadNextConfig();
     }
 });
 
 Ext.Ajax.defaultHeaders = {
-    'Accept' : 'application/json,application/xml',
-    'Content-Type' : 'application/json'
+    'Accept': 'application/json,application/xml',
+    'Content-Type': 'application/json'
 };
 
 function loadNextConfig() {
     Ext.Ajax.request({
-        url:initList[initState].url,
-        headers:{'Accept':'application/json'},
+        url: initList[initState].url,
+        headers: {'Accept': 'application/json'},
 
-        success:function (response, opts) {
+        success: function (response, opts) {
             if (response.responseText == "No handler") {
                 loadError(initList[initState].notify);
                 return;
@@ -219,7 +223,7 @@ function loadNextConfig() {
             // All configs loaded
             createUI();
         },
-        failure:function (response, opts) {
+        failure: function (response, opts) {
             if (initList[initState].fatal == true) {
                 loadError(initList[initState].notify);
                 return;
@@ -243,70 +247,47 @@ function loadError(errorText) {
 }
 
 function handleOnlineStatus(newStatus) {
-    if (newStatus == 0) {
+    if (newStatus == STATUS_ONLINE) {
         Ext.get('statusicon').dom.src = 'images/status.png';
         statusTooltip.update("openHAB is online")
     }
-    else if (newStatus == 1) {
+    else if (newStatus == STATUS_BUSY) {
         Ext.get('statusicon').dom.src = 'images/status-busy.png';
         statusTooltip.update("openHAB is busy")
     }
-    else if (newStatus == 2) {
+    else if (newStatus == STATUS_OFFLINE) {
         Ext.get('statusicon').dom.src = 'images/status-offline.png';
         statusTooltip.update("openHAB is offline")
     }
 }
 
-
-var detectedTransport = null;
-var socket = $.atmosphere;
-var fallbackProtocol = null;
-
-function subscribe(location) {
-    var request = { url:location,
-        maxRequest:256,
-        timeout:59000,
-        attachHeadersAsQueryString:true,
-        executeCallbackBeforeReconnect:false,
-        //transport: 'long-polling',
-        transport:force_transport,
-        fallbackTransport:fallbackProtocol,
-        headers:{'Accept':'application/json'}};
-
-    request.onError = function (response) {
-        console.log('------ ERROR -------');
-        handleOnlineStatus(2);
-        console.log(response);
-    }
-    request.onOpen = function (response) {
-        console.log('-------- OPEN --------');
-        console.log(response);
-        handleOnlineStatus(1);
-        detectedTransport = response.transport;
-    }
-
-    request.onMessage = function (response) {
-
-        if (response.status == 200) {
-            handleOnlineStatus(0);
-            var data = response.responseBody;
-            if (data.length > 0) {
-                try {
-                    console.log('-------- INPUT --------');
-                    console.log(response);
-                    //            updateWidgets(Ext.JSON.decode(data));
-                } catch (e) {
+function doStatus() {
+    // Periodically retrieve the dataMine status updates
+    var updateStatus = {
+        run: function () {
+            Ext.Ajax.request({
+                type:'rest',
+                url:HABminBaseURL + '/status',
+                method: 'GET',
+                success: function (response, opts) {
+                    var res = Ext.decode(response.responseText);
+                    if(res == null) {
+                        handleOnlineStatus(STATUS_OFFLINE);
+                    }
+                    else {
+                        handleOnlineStatus(STATUS_ONLINE);
+                    }
+                },
+                failure: function (response, opts) {
+                    handleOnlineStatus(STATUS_OFFLINE);
                 }
-            }
-        }
-    };
-
-    socket.subscribe(request);
+            });
+        },
+        interval: 5000
+    }
+    Ext.TaskManager.start(updateStatus);
 }
 
-function unsubscribe() {
-    socket.unsubscribe();
-}
 
 // Return an icon based on the ItemType
 function getItemTypeIcon(type) {
@@ -363,65 +344,65 @@ function createUI() {
 
     //======= Translation Services Store
     Ext.define('TranslationServiceModel', {
-        extend:'Ext.data.Model',
-        fields:[
-            {name:'name'},
-            {name:'label'}
+        extend: 'Ext.data.Model',
+        fields: [
+            {name: 'name'},
+            {name: 'label'}
         ]
     });
 
     // Create the Item data store
     translationServiceStore = Ext.create('Ext.data.ArrayStore', {
-        model:'TranslationServiceModel'
+        model: 'TranslationServiceModel'
     });
     translationServiceStore.loadData(translationServiceArray);
 
 
     //======= Item Type Store
     Ext.define('ItemTypeModel', {
-        extend:'Ext.data.Model',
-        fields:[
-            {name:'name'},
-            {name:'label'},
-            {name:'icon'}
+        extend: 'Ext.data.Model',
+        fields: [
+            {name: 'name'},
+            {name: 'label'},
+            {name: 'icon'}
         ]
     });
 
     // Create the Item data store
     itemTypeStore = Ext.create('Ext.data.ArrayStore', {
-        model:'ItemTypeModel'
+        model: 'ItemTypeModel'
     });
     itemTypeStore.loadData(itemTypeArray);
 
 
     //======= Persistence Service Store
     Ext.define('PersistenceServiceModel', {
-        extend:'Ext.data.Model',
-        fields:[
-            {name:'name'},
-            {name:'actions'},
-            {name:'strategies'}
+        extend: 'Ext.data.Model',
+        fields: [
+            {name: 'name'},
+            {name: 'actions'},
+            {name: 'strategies'}
         ]
     });
 
     persistenceServiceStore = Ext.create('Ext.data.JsonStore', {
-            model:'PersistenceServiceModel',
-            proxy:{
-                type:'rest',
-                url:HABminBaseURL + '/config/persistence/services',
-                reader:{
-                    type:'json',
-                    root:'services'
+            model: 'PersistenceServiceModel',
+            proxy: {
+                type: 'rest',
+                url: HABminBaseURL + '/config/persistence/services',
+                reader: {
+                    type: 'json',
+                    root: 'services'
                 },
-                headers:{'Accept':'application/json'},
-                pageParam:undefined,
-                startParam:undefined,
-                sortParam:undefined,
-                limitParam:undefined
+                headers: {'Accept': 'application/json'},
+                pageParam: undefined,
+                startParam: undefined,
+                sortParam: undefined,
+                limitParam: undefined
             },
-            autoLoad:true,
-            listeners:{
-                load:function (store, records, options) {
+            autoLoad: true,
+            listeners: {
+                load: function (store, records, options) {
                     // Get the selection menu
                     var menu = Ext.getCmp("persistenceServiceMenu");
 
@@ -454,37 +435,37 @@ function createUI() {
 
 //======= Persistence Items Store
     Ext.define('PersistenceItemModel', {
-        extend:'Ext.data.Model',
-        fields:[
-            {name:'name'},
-            {name:'label'},
-            {name:'unit'},
-            {name:'format'},
-            {name:'state'},
-            {name:'icon'},
-            {name:'type'},
-            {name:'services'},
-            {name:'groups'}
+        extend: 'Ext.data.Model',
+        fields: [
+            {name: 'name'},
+            {name: 'label'},
+            {name: 'unit'},
+            {name: 'format'},
+            {name: 'state'},
+            {name: 'icon'},
+            {name: 'type'},
+            {name: 'services'},
+            {name: 'groups'}
         ]
     });
 
     persistenceItemStore = Ext.create('Ext.data.ArrayStore', {
-        model:'PersistenceItemModel',
-        proxy:{
-            type:'rest',
-            url:HABminBaseURL + '/persistence/items',
-            reader:{
-                type:'json',
-                root:'items'
+        model: 'PersistenceItemModel',
+        proxy: {
+            type: 'rest',
+            url: HABminBaseURL + '/persistence/items',
+            reader: {
+                type: 'json',
+                root: 'items'
             },
-            headers:{'Accept':'application/json'},
-            pageParam:undefined,
-            startParam:undefined,
-            sortParam:undefined,
-            limitParam:undefined
+            headers: {'Accept': 'application/json'},
+            pageParam: undefined,
+            startParam: undefined,
+            sortParam: undefined,
+            limitParam: undefined
         },
-        autoLoad:true,
-        filterItems:function (service) {
+        autoLoad: true,
+        filterItems: function (service) {
             persistenceItemStore.filterBy(function (rec, id) {
                 var serviceList = [].concat(rec.get('services'));
                 if (serviceList.indexOf(service) != -1)
@@ -498,231 +479,231 @@ function createUI() {
 
 //======= Item Icon Store
     Ext.define('ItemIconModel', {
-        extend:'Ext.data.Model',
-        fields:[
-            {name:'name'},
-            {name:'menuicon'},
-            {name:'label'},
-            {name:'description'},
-            {name:'height'},
-            {name:'width'}
+        extend: 'Ext.data.Model',
+        fields: [
+            {name: 'name'},
+            {name: 'menuicon'},
+            {name: 'label'},
+            {name: 'description'},
+            {name: 'height'},
+            {name: 'width'}
         ]
     });
 
     itemIconStore = Ext.create('Ext.data.ArrayStore', {
-        model:'ItemIconModel',
-        proxy:{
-            type:'rest',
-            url:HABminBaseURL + '/config/icons',
-            reader:{
-                type:'json',
-                root:'icon'
+        model: 'ItemIconModel',
+        proxy: {
+            type: 'rest',
+            url: HABminBaseURL + '/config/icons',
+            reader: {
+                type: 'json',
+                root: 'icon'
             },
-            headers:{'Accept':'application/json'},
-            pageParam:undefined,
-            startParam:undefined,
-            sortParam:undefined,
-            limitParam:undefined
+            headers: {'Accept': 'application/json'},
+            pageParam: undefined,
+            startParam: undefined,
+            sortParam: undefined,
+            limitParam: undefined
         },
-        autoLoad:true
+        autoLoad: true
     });
 
 //======= Rule Template Store
     Ext.define('RuleTemplateModel', {
-        extend:'Ext.data.Model',
-        fields:[
-            {name:'name'},
-            {name:'label'},
-            {name:'type'},
-            {name:'itemtype'},
-            {name:'description'},
-            {name:'extension'},
-            {name:'trigger'},
-            {name:'action'},
-            {name:'variable'},
-            {name:'linkeditem'}
+        extend: 'Ext.data.Model',
+        fields: [
+            {name: 'name'},
+            {name: 'label'},
+            {name: 'type'},
+            {name: 'itemtype'},
+            {name: 'description'},
+            {name: 'extension'},
+            {name: 'trigger'},
+            {name: 'action'},
+            {name: 'variable'},
+            {name: 'linkeditem'}
         ]
     });
 
     // Load the rules for this item
     ruleLibraryStore = Ext.create('Ext.data.JsonStore', {
-        model:'RuleTemplateModel',
-        proxy:{
-            type:'rest',
-            url:HABminBaseURL + '/config/rules/library/list',
-            reader:{
-                type:'json',
-                root:'rule'
+        model: 'RuleTemplateModel',
+        proxy: {
+            type: 'rest',
+            url: HABminBaseURL + '/config/rules/library/list',
+            reader: {
+                type: 'json',
+                root: 'rule'
             },
-            headers:{'Accept':'application/json'},
-            pageParam:undefined,
-            startParam:undefined,
-            sortParam:undefined,
-            limitParam:undefined
+            headers: {'Accept': 'application/json'},
+            pageParam: undefined,
+            startParam: undefined,
+            sortParam: undefined,
+            limitParam: undefined
         },
-        autoLoad:true
+        autoLoad: true
     });
 
 //======= Widgets Store
     Ext.define('WidgetsModel', {
-        extend:'Ext.data.Model',
-        fields:[
-            {name:'type'},
-            {name:'icon'},
-            {name:'iconCls'}
+        extend: 'Ext.data.Model',
+        fields: [
+            {name: 'type'},
+            {name: 'icon'},
+            {name: 'iconCls'}
         ]
     });
 
 // Create the Widgets data store
     widgetStore = Ext.create('Ext.data.ArrayStore', {
-        model:'WidgetsModel'
+        model: 'WidgetsModel'
     });
     widgetStore.loadData(widgetTypeArray);
 
 
 //======= Item Format Store
     Ext.define('FormatModel', {
-        extend:'Ext.data.Model',
-        fields:[
-            {name:'format'},
-            {name:'label'}
+        extend: 'Ext.data.Model',
+        fields: [
+            {name: 'format'},
+            {name: 'label'}
         ]
     });
 
 // Create the Widgets data store
     itemFormatStore = Ext.create('Ext.data.ArrayStore', {
-        model:'FormatModel'
+        model: 'FormatModel'
     });
     itemFormatStore.loadData(formatLookupArray);
 
 
 //======= Rule Store
     Ext.define('RuleModel', {
-        extend:'Ext.data.Model',
-        fields:[
-            {name:'item'},
-            {name:'name'},
-            {name:'label'},
-            {name:'description'}
+        extend: 'Ext.data.Model',
+        fields: [
+            {name: 'item'},
+            {name: 'name'},
+            {name: 'label'},
+            {name: 'description'}
         ]
     });
 
     ruleStore = Ext.create('Ext.data.ArrayStore', {
-        model:'RuleModel',
-        proxy:{
-            type:'rest',
-            url:HABminBaseURL + '/config/rules/list',
-            reader:{
-                type:'json',
-                root:'rule'
+        model: 'RuleModel',
+        proxy: {
+            type: 'rest',
+            url: HABminBaseURL + '/config/rules/list',
+            reader: {
+                type: 'json',
+                root: 'rule'
             },
-            headers:{'Accept':'application/json'},
-            pageParam:undefined,
-            startParam:undefined,
-            sortParam:undefined,
-            limitParam:undefined
+            headers: {'Accept': 'application/json'},
+            pageParam: undefined,
+            startParam: undefined,
+            sortParam: undefined,
+            limitParam: undefined
         },
-        autoLoad:true
+        autoLoad: true
     });
 
 
 //======= Item Config Store
     Ext.define('ItemConfigModel', {
-        extend:'Ext.data.Model',
-        fields:[
-            {name:'model'},
-            {name:'name'},
-            {name:'type'},
-            {name:'icon'},
-            {name:'type'},
-            {name:'label'},
-            {name:'format'},
-            {name:'units'},
-            {name:'groups'}
+        extend: 'Ext.data.Model',
+        fields: [
+            {name: 'model'},
+            {name: 'name'},
+            {name: 'type'},
+            {name: 'icon'},
+            {name: 'type'},
+            {name: 'label'},
+            {name: 'format'},
+            {name: 'units'},
+            {name: 'groups'}
         ]
     });
 
     itemConfigStore = Ext.create('Ext.data.ArrayStore', {
-        model:'ItemConfigModel',
-        proxy:{
-            type:'rest',
-            url:HABminBaseURL + '/config/items',
-            reader:{
-                type:'json',
-                root:'item'
+        model: 'ItemConfigModel',
+        proxy: {
+            type: 'rest',
+            url: HABminBaseURL + '/config/items',
+            reader: {
+                type: 'json',
+                root: 'item'
             },
-            headers:{'Accept':'application/json'},
-            pageParam:undefined,
-            startParam:undefined,
-            sortParam:undefined,
-            limitParam:undefined
+            headers: {'Accept': 'application/json'},
+            pageParam: undefined,
+            startParam: undefined,
+            sortParam: undefined,
+            limitParam: undefined
         },
-        autoLoad:true
+        autoLoad: true
     });
 
 
 //======= Sitemap Store
     Ext.define('SitemapsModel', {
-        extend:'Ext.data.Model',
-        fields:[
-            {name:'icon'},
-            {name:'name'},
-            {name:'label'}
+        extend: 'Ext.data.Model',
+        fields: [
+            {name: 'icon'},
+            {name: 'name'},
+            {name: 'label'}
         ]
     });
 
     sitemapStore = Ext.create('Ext.data.ArrayStore', {
-        model:'SitemapsModel',
-        proxy:{
-            type:'rest',
-            url:HABminBaseURL + '/config/sitemap',
-            reader:{
-                type:'json',
-                root:'sitemap'
+        model: 'SitemapsModel',
+        proxy: {
+            type: 'rest',
+            url: HABminBaseURL + '/config/sitemap',
+            reader: {
+                type: 'json',
+                root: 'sitemap'
             },
-            headers:{'Accept':'application/json'},
-            pageParam:undefined,
-            startParam:undefined,
-            sortParam:undefined,
-            limitParam:undefined
+            headers: {'Accept': 'application/json'},
+            pageParam: undefined,
+            startParam: undefined,
+            sortParam: undefined,
+            limitParam: undefined
         },
-        autoLoad:true
+        autoLoad: true
     });
 
 
 //======= Bindings Store
     Ext.define('BindingsModel', {
-        extend:'Ext.data.Model',
-        fields:[
-            {name:'bundle'},
-            {name:'name'},
-            {name:'pid'},
-            {name:'type'},
-            {name:'author'},
-            {name:'version'},
-            {name:'ohversion'},
-            {name:'link'},
-            {name:'osgiVersion'}
+        extend: 'Ext.data.Model',
+        fields: [
+            {name: 'bundle'},
+            {name: 'name'},
+            {name: 'pid'},
+            {name: 'type'},
+            {name: 'author'},
+            {name: 'version'},
+            {name: 'ohversion'},
+            {name: 'link'},
+            {name: 'osgiVersion'}
         ]
     });
 
 // Create the Bindings data store
     bindingStore = Ext.create('Ext.data.ArrayStore', {
-        model:'BindingsModel',
-        proxy:{
-            type:'rest',
-            url:HABminBaseURL + '/config/bindings',
-            reader:{
-                type:'json',
-                root:'binding'
+        model: 'BindingsModel',
+        proxy: {
+            type: 'rest',
+            url: HABminBaseURL + '/config/bindings',
+            reader: {
+                type: 'json',
+                root: 'binding'
             },
-            headers:{'Accept':'application/json'},
-            pageParam:undefined,
-            startParam:undefined,
-            sortParam:undefined,
-            limitParam:undefined
+            headers: {'Accept': 'application/json'},
+            pageParam: undefined,
+            startParam: undefined,
+            sortParam: undefined,
+            limitParam: undefined
         },
-        autoLoad:true
+        autoLoad: true
     });
 
     var configTab = Ext.create('openHAB.config.config');
@@ -731,22 +712,22 @@ function createUI() {
     var systemTab = Ext.create('openHAB.system.system');
 
     Ext.define('StatusBar', {
-        extend:'Ext.Component',
-        alias:'widget.onlinestatusbar',
-        html:'<div id="onlineStatus" style="position:absolute;right:5px;top:3px;width:250px;text-align:right"><span id="statustext" style="vertical-align: top;">Online Status </span><img style="margin-top:-1px;" id="statusicon" src="images/status-offline.png"></div>'
+        extend: 'Ext.Component',
+        alias: 'widget.onlinestatusbar',
+        html: '<div id="onlineStatus" style="position:absolute;right:5px;top:3px;width:250px;text-align:right"><span id="statustext" style="vertical-align: top;">Online Status </span><img style="margin-top:-1px;" id="statusicon" src="images/status-offline.png"></div>'
     });
 
     var tabMain = Ext.create('Ext.tab.Panel', {
-        layout:'fit',
-        items:[chartTab, configTab, automationTab, systemTab],
-        listeners:{
-            render:function () {
+        layout: 'fit',
+        items: [chartTab, configTab, automationTab, systemTab],
+        listeners: {
+            render: function () {
                 this.tabBar.add(
-                    { xtype:'tbfill' },
-                    { xtype:'onlinestatusbar' }
+                    { xtype: 'tbfill' },
+                    { xtype: 'onlinestatusbar' }
                 );
             },
-            tabchange:function (tabPanel, newCard, oldCard, eOpts) {
+            tabchange: function (tabPanel, newCard, oldCard, eOpts) {
                 if (newCard.id == 'maintabGraph') {
                 }
                 else if (newCard.id == 'maintabSystem') {
@@ -759,21 +740,22 @@ function createUI() {
     });
 
     viewPort = Ext.create('Ext.container.Viewport', {
-        el:'openHAB',
-        layout:'fit',
-        renderTo:'HABmin',
-        hidden:true,
-        items:[tabMain]
+        el: 'openHAB',
+        layout: 'fit',
+        renderTo: 'HABmin',
+        hidden: true,
+        items: [tabMain]
     });
 
     viewPort.show(true);
 
     Ext.get('splashscreen').fadeOut({
-        duration:500,
-        remove:true
+        duration: 500,
+        remove: true
     });
 
     Ext.get('HABmin').show(true);
 
-    statusTooltip = Ext.create('Ext.tip.ToolTip', {target:'onlineStatus', html:'Offline'});
+    statusTooltip = Ext.create('Ext.tip.ToolTip', {target: 'onlineStatus', html: 'Offline'});
+    doStatus();
 }
