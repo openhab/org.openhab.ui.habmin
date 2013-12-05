@@ -282,16 +282,7 @@ Ext.define('openHAB.graph.graphHighcharts', {
 
             toolbarEnable();
             if (errors != "") {
-                Ext.MessageBox.show({
-                    msg:'Warning: ' + error,
-                    width:200,
-                    draggable:false,
-                    icon:'icon-warning',
-                    closable:false
-                });
-                setTimeout(function () {
-                    Ext.MessageBox.hide();
-                }, 2500);
+                handleStatusNotification(NOTIFICATION_WARNING,'Warning: ' + error);
             }
         }
 

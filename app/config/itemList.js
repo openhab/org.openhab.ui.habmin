@@ -295,28 +295,10 @@ Ext.define('openHAB.config.itemList', {
                 headers:{'Accept':'application/json'},
                 method:'DELETE',
                 success:function (response, opts) {
-                    Ext.MessageBox.show({
-                        msg:'Item deleted',
-                        width:200,
-                        draggable:false,
-                        icon:'icon-ok',
-                        closable:false
-                    });
-                    setTimeout(function () {
-                        Ext.MessageBox.hide();
-                    }, 2500);
+                    handleStatusNotification(NOTIFICATION_OK,'Item deleted');
                 },
                 failure:function (result, request) {
-                    Ext.MessageBox.show({
-                        msg:'Error deleting item',
-                        width:200,
-                        draggable:false,
-                        icon:'icon-error',
-                        closable:false
-                    });
-                    setTimeout(function () {
-                        Ext.MessageBox.hide();
-                    }, 2500);
+                    handleStatusNotification(NOTIFICATION_ERROR,'Error deleting item');
                 },
                 callback:function (options, success, response) {
                     // Reload the store

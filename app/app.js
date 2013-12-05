@@ -94,9 +94,13 @@ Ext.require([
 var viewPort;
 
 var statusTooltip;
-var STATUS_ONLINE = 1
-var STATUS_BUSY = 2
-var STATUS_OFFLINE = 3
+var STATUS_ONLINE = 1;
+var STATUS_BUSY = 2;
+var STATUS_OFFLINE = 3;
+
+var NOTIFICATION_ERROR = 1;
+var NOTIFICATION_OK = 2;
+var NOTIFICATION_WARNING = 3;
 
 // Global data stores from openHAB
 var persistenceItemStore;
@@ -115,6 +119,9 @@ var ruleStore;
 // Global variables
 var persistenceService = "";
 var HABminBaseURL = "/services/habmin";
+
+// User preferences
+var userPrefs = {};
 
 var itemTypeArray = [
     {name: "GroupItem", icon: "images/category-group.png"},
@@ -244,6 +251,76 @@ function loadNextConfig() {
 }
 
 function loadError(errorText) {
+}
+
+// Handle user preferences
+// This ensures that all required preferences are set, and are valid
+function checkUserPrefs() {
+    if(userPrefs == null)
+        userPrefs = {};
+
+    // Time to show error message
+    if(userPrefs.messageTimeError == null)
+        userPrefs.messageTimeError = 2500;
+    if(userPrefs.messageTimeError > 10000)
+        userPrefs.messageTimeError = 2500;
+    if(userPrefs.messageTimeError < 0)
+        userPrefs.messageTimeError = 2500;
+
+    // Time to show warning message
+    if(userPrefs.messageTimeWarning == null)
+        userPrefs.messageTimeWarning = 2500;
+    if(userPrefs.messageTimeWarning > 10000)
+        userPrefs.messageTimeWarning = 2500;
+    if(userPrefs.messageTimeWarning < 0)
+        userPrefs.messageTimeWarning = 2500;
+
+    // Time to show ok message
+    if(userPrefs.messageTimeSuccess == null)
+        userPrefs.messageTimeSuccess = 1500;
+    if(userPrefs.messageTimeSuccess > 10000)
+        userPrefs.messageTimeSuccess = 1500;
+    if(userPrefs.messageTimeSuccess < 0)
+        userPrefs.messageTimeSuccess = 1500;
+}
+
+function handleStatusNotification(type, message) {
+    if(type == NOTIFICATION_ERROR) {
+        Ext.MessageBox.show({
+            msg:message,
+            width:200,
+            draggable:false,
+            icon:'icon-error',
+            closable:false
+        });
+        setTimeout(function () {
+            Ext.MessageBox.hide();
+        }, userPrefs.messageTimeError);
+    }
+    else if(type == NOTIFICATIN_WARNING) {
+        Ext.MessageBox.show({
+            msg: message,
+            width:200,
+            draggable:false,
+            icon:'icon-ok',
+            closable:false
+        });
+        setTimeout(function () {
+            Ext.MessageBox.hide();
+        }, userPrefs.messageTimeSuccess);
+    }
+    else {
+        Ext.MessageBox.show({
+            msg: message,
+            width:200,
+            draggable:false,
+            icon:'icon-warning',
+            closable:false
+        });
+        setTimeout(function () {
+            Ext.MessageBox.hide();
+        }, userPrefs.messageTimeWarning);
+    }
 }
 
 function handleOnlineStatus(newStatus) {
@@ -756,6 +833,7 @@ function createUI() {
 
     Ext.get('HABmin').show(true);
 
+    // Create the status toolbar and start the status update thread
     statusTooltip = Ext.create('Ext.tip.ToolTip', {target: 'onlineStatus', html: 'Offline'});
     doStatus();
 }

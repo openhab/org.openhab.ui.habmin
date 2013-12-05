@@ -173,16 +173,7 @@ Ext.define('openHAB.config.itemRules', {
                 headers:{'Accept':'application/json'},
                 method:'DELETE',
                 success:function (response, opts) {
-                    Ext.MessageBox.show({
-                        msg:'Rule deleted',
-                        width:200,
-                        draggable:false,
-                        icon:'icon-ok',
-                        closable:false
-                    });
-                    setTimeout(function () {
-                        Ext.MessageBox.hide();
-                    }, 2500);
+                    handleStatusNotification(NOTIFICATION_OK,'Rule deleted');
 
                     // Update the list of rules
                     var json = Ext.decode(response.responseText);
@@ -193,16 +184,7 @@ Ext.define('openHAB.config.itemRules', {
                     toolbar.getComponent('delete').disable();
                 },
                 failure:function (result, request) {
-                    Ext.MessageBox.show({
-                        msg:'Error deleting rule',
-                        width:200,
-                        draggable:false,
-                        icon:'icon-error',
-                        closable:false
-                    });
-                    setTimeout(function () {
-                        Ext.MessageBox.hide();
-                    }, 2500);
+                    handleStatusNotification(NOTIFICATION_ERROR,'Error deleting rule');
                 }
             });
         }
@@ -272,16 +254,7 @@ Ext.define('openHAB.config.itemRules', {
                                 jsonData:data,
                                 headers:{'Accept':'application/json'},
                                 success:function (response, opts) {
-                                    Ext.MessageBox.show({
-                                        msg:'Item rule saved',
-                                        width:200,
-                                        draggable:false,
-                                        icon:'icon-ok',
-                                        closable:false
-                                    });
-                                    setTimeout(function () {
-                                        Ext.MessageBox.hide();
-                                    }, 2500);
+                                    handleStatusNotification(NOTIFICATION_OK,'Item rule saved');
 
                                     // Reload the item store to account for any new items
                                     // that may have been created
@@ -296,16 +269,7 @@ Ext.define('openHAB.config.itemRules', {
                                     toolbar.getComponent('delete').disable();
                                 },
                                 failure:function () {
-                                    Ext.MessageBox.show({
-                                        msg:'Error saving rule',
-                                        width:200,
-                                        draggable:false,
-                                        icon:'icon-error',
-                                        closable:false
-                                    });
-                                    setTimeout(function () {
-                                        Ext.MessageBox.hide();
-                                    }, 2500);
+                                    handleStatusNotification(NOTIFICATION_ERROR,'Error saving rule');
                                 }
                             });
 

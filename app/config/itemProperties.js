@@ -705,28 +705,10 @@ Ext.define('openHAB.config.itemProperties', {
 
             // All requests complete - display success (or otherwise!)
             if (saveError == false) {
-                Ext.MessageBox.show({
-                    msg:'Item configuration saved',
-                    width:200,
-                    draggable:false,
-                    icon:'icon-ok',
-                    closable:false
-                });
-                setTimeout(function () {
-                    Ext.MessageBox.hide();
-                }, 2500);
+                handleStatusNotification(NOTIFICATION_OK,'Item configuration saved');
             }
             else {
-                Ext.MessageBox.show({
-                    msg:'Error saving item',
-                    width:200,
-                    draggable:false,
-                    icon:'icon-error',
-                    closable:false
-                });
-                setTimeout(function () {
-                    Ext.MessageBox.hide();
-                }, 2500);
+                handleStatusNotification(NOTIFICATION_ERROR,'Error saving item');
             }
 
             // Reload the item store

@@ -181,28 +181,10 @@ Ext.define('openHAB.config.sitemapList', {
                 headers:{'Accept':'application/json'},
                 method:'DELETE',
                 success:function (response, opts) {
-                    Ext.MessageBox.show({
-                        msg:'Sitemap deleted',
-                        width:200,
-                        draggable:false,
-                        icon:'icon-ok',
-                        closable:false
-                    });
-                    setTimeout(function () {
-                        Ext.MessageBox.hide();
-                    }, 2500);
+                    handleStatusNotification(NOTIFICATION_OK,'Sitemap deleted');
                 },
                 failure:function (result, request) {
-                    Ext.MessageBox.show({
-                        msg:'Error deleting sitemap',
-                        width:200,
-                        draggable:false,
-                        icon:'icon-error',
-                        closable:false
-                    });
-                    setTimeout(function () {
-                        Ext.MessageBox.hide();
-                    }, 2500);
+                    handleStatusNotification(NOTIFICATION_ERROR,'Error deleting sitemap');
                 },
                 callback:function (options, success, response) {
                     // Reload the store
@@ -254,28 +236,10 @@ Ext.define('openHAB.config.sitemapList', {
                 method:'POST',
                 params:parms,
                 success:function (response, opts) {
-                    Ext.MessageBox.show({
-                        msg:'Sitemap created',
-                        width:200,
-                        draggable:false,
-                        icon:'icon-ok',
-                        closable:false
-                    });
-                    setTimeout(function () {
-                        Ext.MessageBox.hide();
-                    }, 2500);
+                    handleStatusNotification(NOTIFICATION_OK,'Sitemap created');
                 },
                 failure:function (result, request) {
-                    Ext.MessageBox.show({
-                        msg:'Error creating new sitemap',
-                        width:200,
-                        draggable:false,
-                        icon:'icon-error',
-                        closable:false
-                    });
-                    setTimeout(function () {
-                        Ext.MessageBox.hide();
-                    }, 2500);
+                    handleStatusNotification(NOTIFICATION_ERROR,'Error creating new sitemap');
                 },
                 callback:function (options, success, response) {
                     // Reload the store

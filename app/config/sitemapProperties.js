@@ -527,16 +527,7 @@ Ext.define('openHAB.config.sitemapProperties', {
                             for (var cnt = 0; cnt < errors.length; cnt++)
                                 message += "<br>" + errors[cnt];
 
-                            Ext.MessageBox.show({
-                                msg:message,
-                                width:350,
-                                draggable:false,
-                                icon:'icon-error',
-                                closable:false
-                            });
-                            setTimeout(function () {
-                                Ext.MessageBox.hide();
-                            }, 2500);
+                            handleStatusNotification(NOTIFICATION_ERROR,message);
 
                             return;
                         }
@@ -548,29 +539,11 @@ Ext.define('openHAB.config.sitemapProperties', {
                             method:'PUT',
                             jsonData:jsonArray,
                             success:function (response, opts) {
-                                Ext.MessageBox.show({
-                                    msg:'Sitemap configuration saved',
-                                    width:200,
-                                    draggable:false,
-                                    icon:'icon-ok',
-                                    closable:false
-                                });
-                                setTimeout(function () {
-                                    Ext.MessageBox.hide();
-                                }, 2500);
+                                handleStatusNotification(NOTIFICATION_OK,'Sitemap configuration saved');
                                 sitemapItemStore.sync();
                             },
                             failure:function (result, request) {
-                                Ext.MessageBox.show({
-                                    msg:'Error saving sitemap',
-                                    width:200,
-                                    draggable:false,
-                                    icon:'icon-error',
-                                    closable:false
-                                });
-                                setTimeout(function () {
-                                    Ext.MessageBox.hide();
-                                }, 2500);
+                                handleStatusNotification(NOTIFICATION_ERROR,'Error saving sitemap');
                             }
                         });
 

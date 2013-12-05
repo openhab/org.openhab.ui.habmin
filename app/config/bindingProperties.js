@@ -287,16 +287,7 @@ Ext.define('openHAB.config.bindingProperties', {
                 method:'PUT',
                 jsonData:jsonArray,
                 success:function (response, opts) {
-                    Ext.MessageBox.show({
-                        msg:'Binding configuration saved',
-                        width:200,
-                        draggable:false,
-                        icon:'icon-ok',
-                        closable:false
-                    });
-                    setTimeout(function () {
-                        Ext.MessageBox.hide();
-                    }, 2500);
+                    handleStatusNotification(NOTIFICATION_OK,'Binding configuration saved');
 
                     var json = Ext.decode(response.responseText);
                     // If there's no config for this binding, records will be null
@@ -305,16 +296,7 @@ Ext.define('openHAB.config.bindingProperties', {
                     updateBinding(json);
                 },
                 failure:function (result, request) {
-                    Ext.MessageBox.show({
-                        msg:'Error saving binding configuration',
-                        width:200,
-                        draggable:false,
-                        icon:'icon-error',
-                        closable:false
-                    });
-                    setTimeout(function () {
-                        Ext.MessageBox.hide();
-                    }, 2500);
+                    handleStatusNotification(NOTIFICATION_ERROR,'Error saving binding configuration');
                 }
             });
         }
