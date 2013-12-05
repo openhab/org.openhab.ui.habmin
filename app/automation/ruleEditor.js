@@ -34,6 +34,7 @@
  * @author Chris Jackson
  */
 
+var ruleSource = 'import org.openhab.core.library.types.*';
 
 Ext.define('openHAB.automation.ruleEditor', {
     extend: 'Ext.panel.Panel',
@@ -43,27 +44,13 @@ Ext.define('openHAB.automation.ruleEditor', {
 
     initComponent: function () {
 
-        var form = Ext.create('Ext.form.Panel', {
-            bodyPadding: 2,
-            items: [
-                {
-                    xtype: 'codemirror',
-//                    pathModes: '../CodeMirror-2.24/mode',
-//                    pathExtensions: '../CodeMirror-2.24/lib/util',
-                    showModes: false,
-                    showLineNumbers: false,
-                    showAutoIndent: false,
-                    anchor: '100% 0',
-                    hideLabel: true,
-                    labelAlign: 'top',
-                    mode: 'clike',
-                    enableGutter: true,
-                    enableLineNumbers: true,
-                    enableFixedGutter: true,
-                    enableLineWrapping: true
-                }
-            ]
-        });
+        var form = Ext.create('Ext.ux.aceeditor.Panel', {
+            theme: 'eclipse',
+            parser: 'java',
+            layout: 'fit',
+            sourceCode: ruleSource,
+            printMargin: true,
+            fontSize: '12px'});
 
         this.items = [form];
 
