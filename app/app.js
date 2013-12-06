@@ -43,6 +43,7 @@ Ext.Loader.setConfig({
     disableCaching: false, // For debug only
     'paths': {
         'Ext.ux': 'js/extux',
+        'Ext.ux.window': 'js/extux/notification',
         'Ext.ux.grid.property': 'js/extux/propertygrid',
         'openHAB': 'app'
     }
@@ -60,6 +61,7 @@ Ext.require([
     'Ext.layout.container.Border',
     'Ext.layout.container.Accordion',
     'Ext.ux.statusbar.StatusBar',
+    'Ext.ux.window.Notification',
     'openHAB.graph.graph',
     'openHAB.graph.saveGraph',
     'openHAB.graph.itemList',
@@ -286,7 +288,21 @@ function checkUserPrefs() {
 
 function handleStatusNotification(type, message) {
     if(type == NOTIFICATION_ERROR) {
-        Ext.MessageBox.show({
+        Ext.create('widget.uxNotification', {
+            position: 'tr',
+            useXAxis: false,
+            cls: 'ux-notification-light',
+            iconCls: 'ux-notification-icon-error',
+            closable: true,
+            title: 'Error',
+            html: message,
+            slideInDuration: 800,
+            slideBackDuration: 1500,
+            autoCloseDelay: 20000,
+            slideInAnimation: 'bounceOut',
+            slideBackAnimation: 'easeIn'
+        }).show();
+/*        Ext.MessageBox.show({
             msg:message,
             width:200,
             draggable:false,
@@ -295,10 +311,24 @@ function handleStatusNotification(type, message) {
         });
         setTimeout(function () {
             Ext.MessageBox.hide();
-        }, userPrefs.messageTimeError);
+        }, userPrefs.messageTimeError);*/
     }
-    else if(type == NOTIFICATIN_WARNING) {
-        Ext.MessageBox.show({
+    else if(type == NOTIFICATION_WARNING) {
+        Ext.create('widget.uxNotification', {
+            position: 'tr',
+            useXAxis: false,
+            cls: 'ux-notification-light',
+            iconCls: 'ux-notification-icon-warning',
+            closable: false,
+            title: 'Warning',
+            html: message,
+            slideInDuration: 800,
+            slideBackDuration: 1500,
+            autoCloseDelay: 3000,
+            slideInAnimation: 'bounceOut',
+            slideBackAnimation: 'easeIn'
+        }).show();
+/*        Ext.MessageBox.show({
             msg: message,
             width:200,
             draggable:false,
@@ -307,10 +337,27 @@ function handleStatusNotification(type, message) {
         });
         setTimeout(function () {
             Ext.MessageBox.hide();
-        }, userPrefs.messageTimeSuccess);
+        }, userPrefs.messageTimeSuccess);*/
     }
     else {
-        Ext.MessageBox.show({
+        Ext.create('widget.uxNotification', {
+            position: 'tr',
+            useXAxis: false,
+            cls: 'ux-notification-light',
+            iconCls: 'ux-notification-icon-success',
+            closable: false,
+            title: 'Success',
+            html: message,
+            slideInDuration: 800,
+            slideBackDuration: 1500,
+            autoCloseDelay: 3000,
+            width: 250,
+            height: 75,
+            slideInAnimation: 'bounceOut',
+            slideBackAnimation: 'easeIn'
+        }).show();
+
+        /*Ext.MessageBox.show({
             msg: message,
             width:200,
             draggable:false,
@@ -319,7 +366,7 @@ function handleStatusNotification(type, message) {
         });
         setTimeout(function () {
             Ext.MessageBox.hide();
-        }, userPrefs.messageTimeWarning);
+        }, userPrefs.messageTimeWarning);*/
     }
 }
 

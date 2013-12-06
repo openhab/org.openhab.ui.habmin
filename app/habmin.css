@@ -162,18 +162,17 @@
 }
 
 
-.ux-notification-window .x-window-body {
-    text-align: center;
-    padding: 15px 5px 15px 5px;
-    width: 200px;
+
+.ux-notification-icon-success {
+    background-image: url('../images/tick.png');
 }
 
-.ux-notification-icon-information {
-    background-image: url('images/icon16_info.png');
+.ux-notification-icon-warning {
+    background-image: url('../images/exclamation.png');
 }
 
 .ux-notification-icon-error {
-    background-image: url('images/icon16_error.png');
+    background-image: url('../images/cross.png');
 }
 
 .ux-notification-light .x-window-header {
@@ -181,13 +180,13 @@
 }
 
 body .ux-notification-light {
-    background-image: url('images/fader.png');
+    background-image: url('../images/fader.png');
 }
 
 .ux-notification-light .x-window-body {
     text-align: center;
     padding: 15px 5px 18px 5px;
-    width: 200px;
     background-color: transparent;
     border: 0px solid white;
 }
+
