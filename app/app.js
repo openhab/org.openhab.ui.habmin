@@ -302,16 +302,6 @@ function handleStatusNotification(type, message) {
             slideInAnimation: 'bounceOut',
             slideBackAnimation: 'easeIn'
         }).show();
-/*        Ext.MessageBox.show({
-            msg:message,
-            width:200,
-            draggable:false,
-            icon:'icon-error',
-            closable:false
-        });
-        setTimeout(function () {
-            Ext.MessageBox.hide();
-        }, userPrefs.messageTimeError);*/
     }
     else if(type == NOTIFICATION_WARNING) {
         Ext.create('widget.uxNotification', {
@@ -328,16 +318,6 @@ function handleStatusNotification(type, message) {
             slideInAnimation: 'bounceOut',
             slideBackAnimation: 'easeIn'
         }).show();
-/*        Ext.MessageBox.show({
-            msg: message,
-            width:200,
-            draggable:false,
-            icon:'icon-ok',
-            closable:false
-        });
-        setTimeout(function () {
-            Ext.MessageBox.hide();
-        }, userPrefs.messageTimeSuccess);*/
     }
     else {
         Ext.create('widget.uxNotification', {
@@ -356,17 +336,6 @@ function handleStatusNotification(type, message) {
             slideInAnimation: 'bounceOut',
             slideBackAnimation: 'easeIn'
         }).show();
-
-        /*Ext.MessageBox.show({
-            msg: message,
-            width:200,
-            draggable:false,
-            icon:'icon-warning',
-            closable:false
-        });
-        setTimeout(function () {
-            Ext.MessageBox.hide();
-        }, userPrefs.messageTimeWarning);*/
     }
 }
 
