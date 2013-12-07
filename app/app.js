@@ -99,6 +99,7 @@ var statusTooltip;
 var STATUS_ONLINE = 1;
 var STATUS_BUSY = 2;
 var STATUS_OFFLINE = 3;
+var onlineStatus = STATUS_OFFLINE;
 
 var NOTIFICATION_ERROR = 1;
 var NOTIFICATION_OK = 2;
@@ -340,22 +341,30 @@ function handleStatusNotification(type, message) {
 }
 
 function handleOnlineStatus(newStatus) {
+    // Don't do anything if the status hasn't changed
+    if(onlineStatus == newStatus)
+        return;
+    onlineStatus = newStatus;
+
     if (newStatus == STATUS_ONLINE) {
         Ext.get('statusicon').dom.src = 'images/status.png';
-        statusTooltip.update("openHAB is online")
+        statusTooltip.update("openHAB is online");
+        handleStatusNotification(NOTIFICATION_OK, "openHAB is online");
     }
     else if (newStatus == STATUS_BUSY) {
         Ext.get('statusicon').dom.src = 'images/status-busy.png';
-        statusTooltip.update("openHAB is busy")
+        statusTooltip.update("openHAB is busy");
+        handleStatusNotification(NOTIFICATION_WARNING, "openHAB is busy");
     }
     else if (newStatus == STATUS_OFFLINE) {
         Ext.get('statusicon').dom.src = 'images/status-offline.png';
-        statusTooltip.update("openHAB is offline")
+        statusTooltip.update("openHAB is offline");
+        handleStatusNotification(NOTIFICATION_ERROR, "openHAB is offline");
     }
 }
 
 function doStatus() {
-    // Periodically retrieve the dataMine status updates
+    // Periodically retrieve the openHAB server status updates
     var updateStatus = {
         run: function () {
             Ext.Ajax.request({
