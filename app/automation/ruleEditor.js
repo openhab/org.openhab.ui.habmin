@@ -46,7 +46,7 @@ Ext.define('openHAB.automation.ruleEditor', {
 
         var form = Ext.create('Ext.ux.aceeditor.Panel', {
             theme: 'eclipse',
-            parser: 'java',
+            parser: 'javascript',
             layout: 'fit',
             sourceCode: ruleSource,
             printMargin: true,
