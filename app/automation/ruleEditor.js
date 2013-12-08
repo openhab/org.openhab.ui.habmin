@@ -34,23 +34,64 @@
  * @author Chris Jackson
  */
 
-var ruleSource = 'import org.openhab.core.library.types.*';
+//var ruleSource = 'import org.openhab.core.library.types.*';
 
 Ext.define('openHAB.automation.ruleEditor', {
     extend: 'Ext.panel.Panel',
     layout: 'fit',
-    icon: 'images/application-list.png',
-    title: 'Rules Editor',
+//    icon: 'images/application-list.png',
+//    title: 'Rules Editor',
 
     initComponent: function () {
+        // Load the model file and add it to the editor
+        Ext.Ajax.request({
+            url: HABminBaseURL + "/config/rules/model/" + modelName,
+            headers: {'Accept': 'application/json'},
+            method: 'GET',
+            success: function (response, opts) {
+                editor.setSource(response);
+            },
+            failure: function (result, request) {
+                handleStatusNotification(NOTIFICATION_ERROR, 'Error loading rule model "' + modelName + '"');
+            }
+        });
 
-        var form = Ext.create('Ext.ux.aceeditor.Panel', {
+        var toolbar = Ext.create('Ext.toolbar.Toolbar', {
+            items: [
+                {
+                    icon: 'images/cross.png',
+                    itemId: 'cancel',
+                    text: 'Cancel',
+                    cls: 'x-btn-icon',
+                    disabled: true,
+                    tooltip: 'Cancel changes made to the rule file',
+                    handler: function () {
+                        toolbar.getComponent('save').disable();
+                        toolbar.getComponent('cancel').disable();
+                    }
+                },
+                {
+                    icon: 'images/disk.png',
+                    itemId: 'save',
+                    text: 'Save',
+                    cls: 'x-btn-icon',
+                    disabled: true,
+                    tooltip: 'Save changes to the rule file',
+                    handler: function () {
+                    }
+                }
+            ]
+        });
+
+        var editor = Ext.create('Ext.ux.aceeditor.Panel', {
+            tbar: toolbar,
             theme: 'eclipse',
             parser: 'openhabrules',
             layout: 'fit',
-            sourceCode: ruleSource,
+//            sourceCode: ruleSource,
             printMargin: true,
-            fontSize: '12px'});
+            fontSize: '12px'
+        });
 
         this.items = [form];
 
