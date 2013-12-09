@@ -110,7 +110,7 @@ Ext.define('Ext.ux.aceeditor.Editor', {
     
     setValue: function(value)
     {
-        this.editor.getSession().setValue(value);
+        this.editor.getSession().setValue(value, -1);
     },
     
     setFontSize: function(value)
