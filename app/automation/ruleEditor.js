@@ -42,6 +42,11 @@ Ext.define('openHAB.automation.ruleEditor', {
 
     initComponent: function () {
         var fontSize = 11;
+        var modelName;
+        var ruleName;
+
+        modelName = this.modelName;
+        ruleName = this.ruleName;
 
         var toolbar = Ext.create('Ext.toolbar.Toolbar', {
             items: [
@@ -53,7 +58,7 @@ Ext.define('openHAB.automation.ruleEditor', {
                     disabled: true,
                     tooltip: 'Cancel changes made to the rule file',
                     handler: function () {
-                        loadModel();
+                        loadModel(modelName, ruleName);
                     }
                 },
                 {
@@ -66,20 +71,25 @@ Ext.define('openHAB.automation.ruleEditor', {
                     handler: function () {
                         // Create the RuleModelBean
                         var bean = {};
-                        bean.model = this.modelName;
+                        bean.model = modelName;
                         bean.source = editor.getValue();
 
                         Ext.Ajax.request({
                             url: HABminBaseURL + "/config/rules/model/source/" + this.modelName,
                             headers: {'Accept': 'application/json'},
                             method: 'PUT',
-                            jsonData:bean,
+                            jsonData: bean,
                             success: function (response, opts) {
                                 var json = Ext.decode(response.responseText);
                                 if (json == null) {
                                     handleStatusNotification(NOTIFICATION_ERROR, 'Error saving rule model "' + modelName + '"');
                                     return;
                                 }
+
+                                // Update the toolbar
+                                toolbar.getComponent('save').disable();
+                                toolbar.getComponent('cancel').disable();
+
                                 handleStatusNotification(NOTIFICATION_OK, 'Rule model "' + modelName + '" saved successfully.');
                             },
                             failure: function (result, request) {
@@ -92,7 +102,7 @@ Ext.define('openHAB.automation.ruleEditor', {
                     icon: 'images/arrow-circle-225-left.png',
                     itemId: 'undo',
                     cls: 'x-btn-icon',
-                    disabled: false,
+                    disabled: true,
                     tooltip: 'Undo changes',
                     handler: function () {
                         editor.undo();
@@ -102,7 +112,7 @@ Ext.define('openHAB.automation.ruleEditor', {
                     icon: 'images/arrow-circle-315.png',
                     itemId: 'redo',
                     cls: 'x-btn-icon',
-                    disabled: false,
+                    disabled: true,
                     tooltip: 'Redo changes',
                     handler: function () {
                         editor.redo();
@@ -115,7 +125,7 @@ Ext.define('openHAB.automation.ruleEditor', {
                     disabled: false,
                     tooltip: 'Increase font size',
                     handler: function () {
-                        fontSize = fontSize++;
+                        fontSize = fontSize + 1;
                         editor.setFontSize(fontSize);
                     }
                 },
@@ -126,7 +136,7 @@ Ext.define('openHAB.automation.ruleEditor', {
                     disabled: false,
                     tooltip: 'Decrease font size',
                     handler: function () {
-                        fontSize = fontSize--;
+                        fontSize = fontSize - 1;
                         editor.setFontSize(fontSize);
                     }
                 }
@@ -139,26 +149,34 @@ Ext.define('openHAB.automation.ruleEditor', {
             parser: 'openhabrules',
             layout: 'fit',
             printMargin: true,
-            fontSize: fontSize+'px'
+            fontSize: fontSize + 'px',
 
-            //TODO: Add listeners so that undo etc toolbar buttons can be set in context
+            // Add listeners so that undo etc toolbar buttons can be set in context
+            listeners: {
+                change: function (editor) {
+                    toolbar.getComponent('save').enable();
+                    toolbar.getComponent('cancel').enable();
+                    toolbar.getComponent('undo').enable();
+                    toolbar.getComponent('redo').enable();
+                }
+            }
         });
 
         this.items = [editor];
 
         this.callParent();
 
-        loadModel();
+        loadModel(this.modelName, this.ruleName);
 
         // Load the model from openHAB
-        function loadModel() {
+        function loadModel(modelName, ruleName) {
             // Check if modelName is defined
-            if (this.modelName == null) {
+            if (modelName == null) {
                 handleStatusNotification(NOTIFICATION_ERROR, 'Error loading rule model - no model defined');
             }
             else {
                 Ext.Ajax.request({
-                    url: HABminBaseURL + "/config/rules/model/source/" + this.modelName,
+                    url: HABminBaseURL + "/config/rules/model/source/" + modelName,
                     headers: {'Accept': 'application/json'},
                     method: 'GET',
                     success: function (response, opts) {
@@ -168,12 +186,14 @@ Ext.define('openHAB.automation.ruleEditor', {
                             return;
                         }
 
+                        // Set the editor text
+                        editor.setValue(json.source);
+
                         // Disable the toolbar
                         toolbar.getComponent('save').disable();
                         toolbar.getComponent('cancel').disable();
-
-                        // Set the editor text
-                        editor.setValue(json.source);
+                        toolbar.getComponent('undo').disable();
+                        toolbar.getComponent('redo').disable();
 
                         // TODO: Find the named rule - if set
 
