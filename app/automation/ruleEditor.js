@@ -43,18 +43,30 @@ Ext.define('openHAB.automation.ruleEditor', {
 //    title: 'Rules Editor',
 
     initComponent: function () {
-        // Load the model file and add it to the editor
-        Ext.Ajax.request({
-            url: HABminBaseURL + "/config/rules/model/" + modelName,
-            headers: {'Accept': 'application/json'},
-            method: 'GET',
-            success: function (response, opts) {
-                editor.setSource(response);
-            },
-            failure: function (result, request) {
-                handleStatusNotification(NOTIFICATION_ERROR, 'Error loading rule model "' + modelName + '"');
-            }
-        });
+        // Check if modelName is defined
+        if (this.modelName == null) {
+            handleStatusNotification(NOTIFICATION_ERROR, 'Error loading rule model - no model defined');
+        }
+        else {
+            Ext.Ajax.request({
+                url: HABminBaseURL + "/config/rules/model/source/" + this.modelName,
+                headers: {'Accept': 'application/json'},
+                method: 'GET',
+                success: function (response, opts) {
+                    var json = Ext.decode(response.responseText);
+                    // If there's no config for this sitemap, records will be null
+                    if (json == null) {
+                        handleStatusNotification(NOTIFICATION_ERROR, 'Error loading rule model "' + modelName + '"');
+                        return;
+                    }
+
+                    editor.setValue(json.source);
+                },
+                failure: function (result, request) {
+                    handleStatusNotification(NOTIFICATION_ERROR, 'Error loading rule model "' + modelName + '"');
+                }
+            });
+        }
 
         var toolbar = Ext.create('Ext.toolbar.Toolbar', {
             items: [
@@ -79,6 +91,24 @@ Ext.define('openHAB.automation.ruleEditor', {
                     tooltip: 'Save changes to the rule file',
                     handler: function () {
                     }
+                },
+                {
+                    icon: 'images/edit-size-up.png',
+                    itemId: 'font-large',
+                    cls: 'x-btn-icon',
+                    disabled: true,
+                    tooltip: 'Increase font size',
+                    handler: function () {
+                    }
+                },
+                {
+                    icon: 'images/edit-size-down.png',
+                    itemId: 'font-small',
+                    cls: 'x-btn-icon',
+                    disabled: true,
+                    tooltip: 'Decrease font size',
+                    handler: function () {
+                    }
                 }
             ]
         });
@@ -93,9 +123,10 @@ Ext.define('openHAB.automation.ruleEditor', {
             fontSize: '12px'
         });
 
-        this.items = [form];
+        this.items = [editor];
 
         this.callParent();
     }
+
 })
 ;

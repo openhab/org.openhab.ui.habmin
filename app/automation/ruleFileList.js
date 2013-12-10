@@ -117,8 +117,9 @@ Ext.define('openHAB.automation.ruleFileList', {
                         return;
 
                     // Create a new ruleEditor
-                    var newProperties = Ext.create('openHAB.automation.ruleEditor');
-//                            newProperties.setItem(record.get('name'));
+                    var newProperties = Ext.create('openHAB.automation.ruleEditor', {
+                        modelName: record.get('model')
+                    });
 
                     if (newProperties != null)
                         Ext.getCmp('automationPropertyContainer').setNewProperty(newProperties);
