@@ -63,6 +63,7 @@ Ext.define('openHAB.automation.automation', {
 
         var propertyContainer = Ext.create('Ext.panel.Panel', {
             region:'center',
+            id:'automationPropertyContainer',
             header:false,
             border:false,
             layout:'fit',
@@ -72,6 +73,10 @@ Ext.define('openHAB.automation.automation', {
 
                 // Display the property sheet
                 this.add(newProperties);
+            },
+            removeProperty:function() {
+                // Remove the current editor
+                this.removeAll(true);
             }
         });
 

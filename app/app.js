@@ -45,6 +45,7 @@ Ext.Loader.setConfig({
         'Ext.ux': 'js/extux',
         'Ext.ux.window': 'js/extux/notification',
         'Ext.ux.grid.property': 'js/extux/propertygrid',
+        'Ext.ux.aceeditor': 'js/extux/aceeditor',
         'openHAB': 'app'
     }
 });
@@ -61,6 +62,7 @@ Ext.require([
     'Ext.layout.container.Border',
     'Ext.layout.container.Accordion',
     'Ext.ux.statusbar.StatusBar',
+    'Ext.ux.aceeditor.Panel',
     'Ext.ux.window.Notification',
     'openHAB.graph.graph',
     'openHAB.graph.saveGraph',
