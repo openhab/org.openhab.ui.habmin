@@ -43,7 +43,7 @@ Ext.define('openHAB.automation.ruleFileList', {
 
     initComponent: function () {
 
-        //======= Rule Template Store
+        // Define the Rule Template Store
         Ext.define('RuleModelModel', {
             extend: 'Ext.data.Model',
             fields: [
@@ -52,10 +52,11 @@ Ext.define('openHAB.automation.ruleFileList', {
             ]
         });
 
-        ruleModelStore = Ext.create('Ext.data.ArrayStore', {
+        var ruleModelStore = Ext.create('Ext.data.ArrayStore', {
             model: 'RuleModelModel'
         });
 
+        // Load the rule list from openHAB
         Ext.Ajax.request({
             url: HABminBaseURL + "/config/rules/model/list",
             headers: {'Accept': 'application/json'},
@@ -79,7 +80,6 @@ Ext.define('openHAB.automation.ruleFileList', {
                 }
             }
         });
-
 
         var ruleList = Ext.create('Ext.grid.Panel', {
             store: ruleModelStore,
@@ -118,7 +118,8 @@ Ext.define('openHAB.automation.ruleFileList', {
 
                     // Create a new ruleEditor
                     var newProperties = Ext.create('openHAB.automation.ruleEditor', {
-                        modelName: record.get('model')
+                        modelName: record.get('model'),
+                        ruleName: record.get('rule')
                     });
 
                     if (newProperties != null)

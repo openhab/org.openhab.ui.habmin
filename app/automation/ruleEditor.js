@@ -34,8 +34,6 @@
  * @author Chris Jackson
  */
 
-//var ruleSource = 'import org.openhab.core.library.types.*';
-
 Ext.define('openHAB.automation.ruleEditor', {
     extend: 'Ext.panel.Panel',
     layout: 'fit',
@@ -43,30 +41,7 @@ Ext.define('openHAB.automation.ruleEditor', {
 //    title: 'Rules Editor',
 
     initComponent: function () {
-        // Check if modelName is defined
-        if (this.modelName == null) {
-            handleStatusNotification(NOTIFICATION_ERROR, 'Error loading rule model - no model defined');
-        }
-        else {
-            Ext.Ajax.request({
-                url: HABminBaseURL + "/config/rules/model/source/" + this.modelName,
-                headers: {'Accept': 'application/json'},
-                method: 'GET',
-                success: function (response, opts) {
-                    var json = Ext.decode(response.responseText);
-                    // If there's no config for this sitemap, records will be null
-                    if (json == null) {
-                        handleStatusNotification(NOTIFICATION_ERROR, 'Error loading rule model "' + modelName + '"');
-                        return;
-                    }
-
-                    editor.setValue(json.source);
-                },
-                failure: function (result, request) {
-                    handleStatusNotification(NOTIFICATION_ERROR, 'Error loading rule model "' + modelName + '"');
-                }
-            });
-        }
+        var fontSize = 11;
 
         var toolbar = Ext.create('Ext.toolbar.Toolbar', {
             items: [
@@ -78,8 +53,7 @@ Ext.define('openHAB.automation.ruleEditor', {
                     disabled: true,
                     tooltip: 'Cancel changes made to the rule file',
                     handler: function () {
-                        toolbar.getComponent('save').disable();
-                        toolbar.getComponent('cancel').disable();
+                        loadModel();
                     }
                 },
                 {
@@ -90,24 +64,70 @@ Ext.define('openHAB.automation.ruleEditor', {
                     disabled: true,
                     tooltip: 'Save changes to the rule file',
                     handler: function () {
+                        // Create the RuleModelBean
+                        var bean = {};
+                        bean.model = this.modelName;
+                        bean.source = editor.getValue();
+
+                        Ext.Ajax.request({
+                            url: HABminBaseURL + "/config/rules/model/source/" + this.modelName,
+                            headers: {'Accept': 'application/json'},
+                            method: 'PUT',
+                            jsonData:bean,
+                            success: function (response, opts) {
+                                var json = Ext.decode(response.responseText);
+                                if (json == null) {
+                                    handleStatusNotification(NOTIFICATION_ERROR, 'Error saving rule model "' + modelName + '"');
+                                    return;
+                                }
+                                handleStatusNotification(NOTIFICATION_OK, 'Rule model "' + modelName + '" saved successfully.');
+                            },
+                            failure: function (result, request) {
+                                handleStatusNotification(NOTIFICATION_ERROR, 'Error saving rule model "' + modelName + '"');
+                            }
+                        });
+                    }
+                },
+                {
+                    icon: 'images/arrow-circle-225-left.png',
+                    itemId: 'undo',
+                    cls: 'x-btn-icon',
+                    disabled: false,
+                    tooltip: 'Undo changes',
+                    handler: function () {
+                        editor.undo();
+                    }
+                },
+                {
+                    icon: 'images/arrow-circle-315.png',
+                    itemId: 'redo',
+                    cls: 'x-btn-icon',
+                    disabled: false,
+                    tooltip: 'Redo changes',
+                    handler: function () {
+                        editor.redo();
                     }
                 },
                 {
                     icon: 'images/edit-size-up.png',
                     itemId: 'font-large',
                     cls: 'x-btn-icon',
-                    disabled: true,
+                    disabled: false,
                     tooltip: 'Increase font size',
                     handler: function () {
+                        fontSize = fontSize++;
+                        editor.setFontSize(fontSize);
                     }
                 },
                 {
                     icon: 'images/edit-size-down.png',
                     itemId: 'font-small',
                     cls: 'x-btn-icon',
-                    disabled: true,
+                    disabled: false,
                     tooltip: 'Decrease font size',
                     handler: function () {
+                        fontSize = fontSize--;
+                        editor.setFontSize(fontSize);
                     }
                 }
             ]
@@ -118,15 +138,54 @@ Ext.define('openHAB.automation.ruleEditor', {
             theme: 'eclipse',
             parser: 'openhabrules',
             layout: 'fit',
-//            sourceCode: ruleSource,
             printMargin: true,
-            fontSize: '12px'
+            fontSize: fontSize+'px'
+
+            //TODO: Add listeners so that undo etc toolbar buttons can be set in context
         });
 
         this.items = [editor];
 
         this.callParent();
-    }
 
+        loadModel();
+
+        // Load the model from openHAB
+        function loadModel() {
+            // Check if modelName is defined
+            if (this.modelName == null) {
+                handleStatusNotification(NOTIFICATION_ERROR, 'Error loading rule model - no model defined');
+            }
+            else {
+                Ext.Ajax.request({
+                    url: HABminBaseURL + "/config/rules/model/source/" + this.modelName,
+                    headers: {'Accept': 'application/json'},
+                    method: 'GET',
+                    success: function (response, opts) {
+                        var json = Ext.decode(response.responseText);
+                        if (json == null) {
+                            handleStatusNotification(NOTIFICATION_ERROR, 'Error loading rule model "' + modelName + '"');
+                            return;
+                        }
+
+                        // Disable the toolbar
+                        toolbar.getComponent('save').disable();
+                        toolbar.getComponent('cancel').disable();
+
+                        // Set the editor text
+                        editor.setValue(json.source);
+
+                        // TODO: Find the named rule - if set
+
+                        // Notify the user we're done
+                        handleStatusNotification(NOTIFICATION_OK, 'Rule model "' + modelName + '" loaded successfully.');
+                    },
+                    failure: function (result, request) {
+                        handleStatusNotification(NOTIFICATION_ERROR, 'Error loading rule model "' + modelName + '"');
+                    }
+                });
+            }
+        }
+    }
 })
 ;
