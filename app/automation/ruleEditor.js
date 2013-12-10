@@ -125,6 +125,8 @@ Ext.define('openHAB.automation.ruleEditor', {
                     disabled: false,
                     tooltip: 'Increase font size',
                     handler: function () {
+                        if(fontSize > 32)
+                            return;
                         fontSize = fontSize + 1;
                         editor.setFontSize(fontSize);
                     }
@@ -136,6 +138,8 @@ Ext.define('openHAB.automation.ruleEditor', {
                     disabled: false,
                     tooltip: 'Decrease font size',
                     handler: function () {
+                        if(fontSize < 6)
+                            return;
                         fontSize = fontSize - 1;
                         editor.setFontSize(fontSize);
                     }

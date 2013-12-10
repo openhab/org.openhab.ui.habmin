@@ -299,7 +299,7 @@ function handleStatusNotification(type, message) {
             Ext.MessageBox.hide();
         }, userPrefs.messageTimeError);
     }
-    else if(type == NOTIFICATIN_WARNING) {
+    else if(type == NOTIFICATION_WARNING) {
         Ext.MessageBox.show({
             msg: message,
             width:200,
