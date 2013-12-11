@@ -302,6 +302,8 @@ function handleStatusNotification(type, message) {
             slideInDuration: 800,
             slideBackDuration: 1500,
             autoCloseDelay: 20000,
+            width: 250,
+            height: 75,
             slideInAnimation: 'bounceOut',
             slideBackAnimation: 'easeIn'
         }).show();
@@ -318,6 +320,8 @@ function handleStatusNotification(type, message) {
             slideInDuration: 800,
             slideBackDuration: 1500,
             autoCloseDelay: 3000,
+            width: 250,
+            height: 75,
             slideInAnimation: 'bounceOut',
             slideBackAnimation: 'easeIn'
         }).show();
