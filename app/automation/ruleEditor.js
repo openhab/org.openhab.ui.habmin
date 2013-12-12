@@ -53,7 +53,6 @@ Ext.define('openHAB.automation.ruleEditor', {
                 {
                     icon: 'images/cross.png',
                     itemId: 'cancel',
-                    text: 'Cancel',
                     cls: 'x-btn-icon',
                     disabled: true,
                     tooltip: 'Cancel changes made to the rule file',
@@ -64,7 +63,6 @@ Ext.define('openHAB.automation.ruleEditor', {
                 {
                     icon: 'images/disk.png',
                     itemId: 'save',
-                    text: 'Save',
                     cls: 'x-btn-icon',
                     disabled: true,
                     tooltip: 'Save changes to the rule file',

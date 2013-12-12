@@ -1,7 +1,7 @@
 /**
  * @class Ext.ux.aceeditor.Editor
  * @extends Ext.AbstractComponent
- * 
+ *
  * @author Harald Hanek (c) 2011-2012
  * @license http://harrydeluxe.mit-license.org
  */
@@ -24,24 +24,22 @@ Ext.define('Ext.ux.aceeditor.Editor', {
     showInvisible: false,
     useWrapMode: false,
     codeFolding: true,
-    
-    constructor: function(owner, config)
-    {
+
+    constructor: function (owner, config) {
         var me = this;
-        me.owner = owner;      
-        
+        me.owner = owner;
+
         me.addEvents({
-            'editorcreated': true
-             },
-            'change');      
+                'editorcreated': true
+            },
+            'change');
 
         me.callParent();
     },
-    
-    initEditor: function()
-    {
-        var me = this;       
-        
+
+    initEditor: function () {
+        var me = this;
+
         me.editor = ace.edit(me.editorId);
         me.editor.ownerCt = me;
         me.setMode(me.parser);
@@ -60,76 +58,74 @@ Ext.define('Ext.ux.aceeditor.Editor', {
         me.getSession().setUseSoftTabs(me.useSoftTabs);
         me.setValue(me.sourceCode);
 
-        me.editor.getSession().on('change', function()
-        {
-            me.fireEvent('change', me);
-            
+        me.editor.getSession().on('change', function (e) {
+            // Using a setTimeout to leave some time for the undoManager to update
+            // its info (and have hasUndo() return something useful)
+            setTimeout(function () {
+                me.fireEvent('change', me, e);
+            }, 20);
         }, me);
-        
-        if(me.autofocus)
+
+        if (me.autofocus)
             me.editor.focus();
-        else
-        {
+        else {
             me.editor.renderer.hideCursor();
             me.editor.blur();
         }
-        
+
         me.editor.initialized = true;
         me.fireEvent('editorcreated', me);
     },
-    
-    getEditor: function()
-    {
+
+    getEditor: function () {
         return this.editor;
     },
-    
-    getSession: function()
-    {
+
+    getSession: function () {
         return this.editor.getSession();
     },
-    
-    getTheme: function()
-    {
+
+    getTheme: function () {
         return this.editor.getTheme();
     },
-    
-    setTheme: function(name)
-    {
+
+    setTheme: function (name) {
         this.editor.setTheme("ace/theme/" + name);
     },
-    
-    setMode: function(mode)
-    {
+
+    setMode: function (mode) {
         this.getSession().setMode("ace/mode/" + mode);
     },
-    
-    getValue: function()
-    {
+
+    getValue: function () {
         return this.editor.getSession().getValue();
     },
-    
-    setValue: function(value)
-    {
+
+    setValue: function (value) {
         this.editor.getSession().setValue(value, -1);
     },
-    
-    setFontSize: function(value)
-    {
+
+    setFontSize: function (value) {
         this.editor.setFontSize(value);
     },
-    
-    undo: function()
-    {
+
+    undo: function () {
         this.editor.undo();
     },
-    
-    redo: function()
-    {
+
+    redo: function () {
         this.editor.redo();
     },
 
-    setFocus: function()
-    {
+    setFocus: function () {
         this.editor.focus();
+    },
+
+    getReadOnly: function (value) {
+        return this.editor.getReadOnly();
+    },
+
+    setReadOnly: function (value) {
+        this.editor.setReadOnly(value);
     }
 });

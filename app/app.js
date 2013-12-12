@@ -294,8 +294,8 @@ function handleStatusNotification(type, message) {
         Ext.create('widget.uxNotification', {
             position: 'tr',
             useXAxis: false,
-            cls: 'ux-notification-light',
-            iconCls: 'ux-notification-icon-error',
+            cls: 'ux-notification-error',
+            iconCls: 'ux-notification-error-icon',
             closable: true,
             title: 'Error',
             html: message,
@@ -312,8 +312,8 @@ function handleStatusNotification(type, message) {
         Ext.create('widget.uxNotification', {
             position: 'tr',
             useXAxis: false,
-            cls: 'ux-notification-light',
-            iconCls: 'ux-notification-icon-warning',
+            cls: 'ux-notification-warning',
+            iconCls: 'ux-notification-warning-icon',
             closable: false,
             title: 'Warning',
             html: message,
@@ -330,8 +330,8 @@ function handleStatusNotification(type, message) {
         Ext.create('widget.uxNotification', {
             position: 'tr',
             useXAxis: false,
-            cls: 'ux-notification-light',
-            iconCls: 'ux-notification-icon-success',
+            cls: 'ux-notification-success',
+            iconCls: 'ux-notification-success-icon',
             closable: false,
             title: 'Success',
             html: message,
