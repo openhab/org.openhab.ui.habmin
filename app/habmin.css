@@ -161,32 +161,78 @@
 @include background-gradient($active-color, 'recessed');
 }
 
-
-
-.ux-notification-icon-success {
-    background-image: url('../images/tick.png');
+body .ux-notification-success {
+    background-image: url('../images/fader-success.png');
 }
 
-.ux-notification-icon-warning {
-    background-image: url('../images/exclamation.png');
-}
-
-.ux-notification-icon-error {
-    background-image: url('../images/cross.png');
-}
-
-.ux-notification-light .x-window-header {
-    background-color: transparent;
-}
-
-body .ux-notification-light {
-    background-image: url('../images/fader.png');
-}
-
-.ux-notification-light .x-window-body {
+.ux-notification-success .x-window-body {
     text-align: center;
     padding: 15px 5px 18px 5px;
     background-color: transparent;
     border: 0px solid white;
 }
 
+.ux-notification-success .x-window-header {
+    background-color: transparent;
+}
+
+.ux-notification-success-icon {
+    background-image: url('../images/tick.png');
+}
+
+body .ux-notification-warning {
+    background-image: url('../images/fader-warning.png');
+}
+
+.ux-notification-warning .x-window-body {
+    text-align: center;
+    padding: 15px 5px 18px 5px;
+    background-color: transparent;
+    border: 0px solid white;
+}
+
+.ux-notification-warning .x-window-header {
+    background-color: transparent;
+}
+
+.ux-notification-warning-icon {
+    background-image: url('../images/exclamation.png');
+}
+
+body .ux-notification-error {
+    background-image: url('../images/fader-error.png');
+}
+
+.ux-notification-error .x-window-body {
+    text-align: center;
+    padding: 15px 5px 18px 5px;
+    background-color: transparent;
+    border: 0px solid white;
+}
+
+.ux-notification-error .x-window-header {
+    background-color: transparent;
+}
+
+.ux-notification-error-icon {
+    background-image: url('../images/cross.png');
+}
+
+body .ux-notification-info {
+    background-image: url('../images/fader-info.png');
+}
+
+.ux-notification-info .x-window-body {
+    text-align: center;
+    padding: 15px 5px 18px 5px;
+    background-color: transparent;
+    border: 0px solid white;
+}
+
+.ux-notification-info .x-window-header {
+    background-color: transparent;
+}
+
+.ux-notification-info-icon {
+    background-image: url('../images/information-balloon.png');
+}
