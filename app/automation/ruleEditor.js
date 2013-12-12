@@ -41,7 +41,7 @@ Ext.define('openHAB.automation.ruleEditor', {
 //    title: 'Rules Editor',
 
     initComponent: function () {
-        var fontSize = 11;
+        var fontSize = 10;
         var modelName;
         var ruleName;
 
@@ -106,6 +106,7 @@ Ext.define('openHAB.automation.ruleEditor', {
                     tooltip: 'Undo changes',
                     handler: function () {
                         editor.undo();
+                        editor.setFocus();
                     }
                 },
                 {
@@ -116,6 +117,7 @@ Ext.define('openHAB.automation.ruleEditor', {
                     tooltip: 'Redo changes',
                     handler: function () {
                         editor.redo();
+                        editor.setFocus();
                     }
                 },
                 {
@@ -129,6 +131,7 @@ Ext.define('openHAB.automation.ruleEditor', {
                             return;
                         fontSize = fontSize + 1;
                         editor.setFontSize(fontSize);
+                        editor.setFocus();
                     }
                 },
                 {
@@ -142,6 +145,7 @@ Ext.define('openHAB.automation.ruleEditor', {
                             return;
                         fontSize = fontSize - 1;
                         editor.setFontSize(fontSize);
+                        editor.setFocus();
                     }
                 }
             ]
@@ -154,6 +158,7 @@ Ext.define('openHAB.automation.ruleEditor', {
             layout: 'fit',
             printMargin: true,
             fontSize: fontSize + 'px',
+            editorId: 'aceRuleEditor',
 
             // Add listeners so that undo etc toolbar buttons can be set in context
             listeners: {
@@ -192,6 +197,7 @@ Ext.define('openHAB.automation.ruleEditor', {
 
                         // Set the editor text
                         editor.setValue(json.source);
+                        editor.setFocus();
 
                         // Disable the toolbar
                         toolbar.getComponent('save').disable();

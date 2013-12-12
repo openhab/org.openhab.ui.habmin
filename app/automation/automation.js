@@ -47,6 +47,7 @@ Ext.define('openHAB.automation.automation', {
 
         var ruleList = Ext.create('openHAB.automation.ruleList');
         var ruleLibrary = Ext.create('openHAB.automation.ruleLibrary');
+        var ruleModelList = Ext.create('openHAB.automation.ruleFileList');
         var notificationList = Ext.create('openHAB.automation.notificationList');
 
         var accordion = Ext.create('Ext.Panel', {
@@ -58,7 +59,7 @@ Ext.define('openHAB.automation.automation', {
                 type:'accordion',
                 hideCollapseTool:true
             },
-            items:[ruleList, ruleLibrary, notificationList]
+            items:[ruleList, ruleLibrary, ruleModelList, notificationList]
         });
 
         var propertyContainer = Ext.create('Ext.panel.Panel', {

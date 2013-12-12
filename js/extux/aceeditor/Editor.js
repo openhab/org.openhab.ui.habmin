@@ -126,5 +126,10 @@ Ext.define('Ext.ux.aceeditor.Editor', {
     redo: function()
     {
         this.editor.redo();
+    },
+
+    setFocus: function()
+    {
+        this.editor.focus();
     }
 });
