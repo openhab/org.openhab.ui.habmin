@@ -69,6 +69,13 @@ Ext.define('openHAB.automation.ruleFileList', {
 
                 var models = [].concat(json.rule);
                 for (var cnt = 0; cnt < models.length; cnt++) {
+                    if(models[cnt].rules == null) {
+                        var element = {};
+                        element.model = models[cnt].model;
+
+                        ruleModelStore.add(element);
+                        continue;
+                    }
                     var rules = [].concat(models[cnt].rules);
                     for (var elcnt = 0; elcnt < rules.length; elcnt++) {
                         var element = {};
