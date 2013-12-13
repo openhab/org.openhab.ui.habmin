@@ -69,7 +69,7 @@ Ext.define('openHAB.automation.ruleFileList', {
 
                 var models = [].concat(json.rule);
                 for (var cnt = 0; cnt < models.length; cnt++) {
-                    var rules = models[cnt].rules;
+                    var rules = [].concat(models[cnt].rules);
                     for (var elcnt = 0; elcnt < rules.length; elcnt++) {
                         var element = {};
                         element.model = models[cnt].model;
@@ -81,11 +81,145 @@ Ext.define('openHAB.automation.ruleFileList', {
             }
         });
 
+        var toolbar = Ext.create('Ext.toolbar.Toolbar', {
+            items:[
+                {
+                    icon:'images/plus-button.png',
+                    itemId:'add',
+                    text:'Add New Model',
+                    cls:'x-btn-icon',
+                    disabled:false,
+                    tooltip:'Add a new rule model to openHAB',
+                    handler:function () {
+                        Ext.define('RuleModelsModel', {
+                            extend:'Ext.data.Model',
+                            fields:[
+                                {name:'name'},
+                                {name:'icon'},
+                                {name:'iconCls'}
+                            ]
+                        });
+
+                        // Generate a list of all existing models
+                        // User can type their own, but this gives them options.
+                        var models = [];
+                        var ocnt = 0;
+                        for (var cnt = 0; cnt < ruleModelStore.getTotalCount(); cnt++) {
+                            var found = false;
+                            var name = ruleModelStore.getAt(cnt).get("model");
+                            for (var mcnt = 0; mcnt < models.length; mcnt++) {
+                                if (models[mcnt].name == name) {
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            if (found == false) {
+                                models[ocnt] = {};
+                                models[ocnt].name = name;
+                                ocnt++;
+                            }
+                        }
+
+                        var form = Ext.widget('form', {
+                            layout:{
+                                type:'vbox',
+                                align:'stretch'
+                            },
+                            border:false,
+                            bodyPadding:10,
+                            fieldDefaults:{
+                                labelAlign:'top',
+                                labelWidth:100,
+                                labelStyle:'font-weight:bold'
+                            },
+                            defaults:{
+                                margins:'0 0 10 0'
+                            },
+                            items:[
+                                {
+                                    margin:'0 0 0 0',
+                                    xtype:'combobox',
+                                    fieldLabel:'Model name:',
+                                    itemId:'model',
+                                    name:'model',
+                                    store:{model:'RuleModelsModel', data:models},
+                                    allowBlank:false,
+                                    valueField:'name',
+                                    displayField:'name',
+                                    queryMode:'local',
+                                    forceSelection:false,
+                                    editable:true,
+                                    typeAhead:true
+                                }
+                            ],
+                            buttons:[
+                                {
+                                    text:'Cancel',
+                                    handler:function () {
+                                        this.up('window').destroy();
+                                    }
+                                },
+                                {
+                                    text:'Create Model',
+                                    handler:function () {
+                                        if (this.up('form').getForm().isValid()) {
+                                            // Read the model name
+                                            var model = form.getForm().findField('model').getSubmitValue();
+
+                                            var newProperties = null;
+
+                                            // Create a new ruleEditor
+                                            var newProperties = Ext.create('openHAB.automation.ruleEditor', {
+                                                modelName: model
+                                            });
+
+                                            if (newProperties != null)
+                                                Ext.getCmp('automationPropertyContainer').setNewProperty(newProperties);
+
+                                            this.up('window').destroy();
+                                        }
+                                    }
+                                }
+                            ]
+                        });
+
+                        var saveWin = Ext.widget('window', {
+                            title:'Specify Model Name',
+                            closeAction:'destroy',
+                            width:225,
+                            height:135,
+                            resizable:false,
+                            draggable:false,
+                            modal:true,
+                            layout:{
+                                type:'vbox',
+                                align:'stretch'
+                            },
+                            items:[form]
+                        });
+
+                        saveWin.show();
+                    }
+                },
+                { xtype:'tbfill' },
+                {
+                    icon:'images/arrow-circle-315.png',
+                    itemId:'refresh',
+                    cls:'x-btn-icon',
+                    disabled:false,
+                    tooltip:'Refresh the rule model list',
+                    handler:function () {
+//                        itemConfigStore.load();
+                    }
+                }
+            ]
+        });
+
         var ruleList = Ext.create('Ext.grid.Panel', {
             store: ruleModelStore,
             header: false,
             split: true,
-//            tbar:toolbar,
+            tbar:toolbar,
             collapsible: false,
             multiSelect: false,
             columns: [

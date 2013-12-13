@@ -73,7 +73,7 @@ Ext.define('openHAB.automation.ruleEditor', {
                         bean.source = editor.getValue();
 
                         Ext.Ajax.request({
-                            url: HABminBaseURL + "/config/rules/model/source/" + this.modelName,
+                            url: HABminBaseURL + "/config/rules/model/source/" + modelName,
                             headers: {'Accept': 'application/json'},
                             method: 'PUT',
                             jsonData: bean,
@@ -94,6 +94,8 @@ Ext.define('openHAB.automation.ruleEditor', {
                                 handleStatusNotification(NOTIFICATION_ERROR, 'Error saving rule model "' + modelName + '"');
                             }
                         });
+
+                        editor.setFocus();
                     }
                 },
                 {
@@ -180,39 +182,42 @@ Ext.define('openHAB.automation.ruleEditor', {
             // Check if modelName is defined
             if (modelName == null) {
                 handleStatusNotification(NOTIFICATION_ERROR, 'Error loading rule model - no model defined');
+                return;
             }
-            else {
-                Ext.Ajax.request({
-                    url: HABminBaseURL + "/config/rules/model/source/" + modelName,
-                    headers: {'Accept': 'application/json'},
-                    method: 'GET',
-                    success: function (response, opts) {
-                        var json = Ext.decode(response.responseText);
-                        if (json == null) {
-                            handleStatusNotification(NOTIFICATION_ERROR, 'Error loading rule model "' + modelName + '"');
-                            return;
-                        }
 
-                        // Set the editor text
-                        editor.setValue(json.source);
-                        editor.setFocus();
-
-                        // Disable the toolbar
-                        toolbar.getComponent('save').disable();
-                        toolbar.getComponent('cancel').disable();
-                        toolbar.getComponent('undo').disable();
-                        toolbar.getComponent('redo').disable();
-
-                        // TODO: Find the named rule - if set
-
-                        // Notify the user we're done
-                        handleStatusNotification(NOTIFICATION_OK, 'Rule model "' + modelName + '" loaded successfully.');
-                    },
-                    failure: function (result, request) {
+            Ext.Ajax.request({
+                url: HABminBaseURL + "/config/rules/model/source/" + modelName,
+                headers: {'Accept': 'application/json'},
+                method: 'GET',
+                success: function (response, opts) {
+                    var json = Ext.decode(response.responseText);
+                    if (json == null) {
                         handleStatusNotification(NOTIFICATION_ERROR, 'Error loading rule model "' + modelName + '"');
+                        return;
                     }
-                });
-            }
+
+                    // Set the editor text
+                    editor.setValue(json.source);
+                    editor.setFocus();
+
+                    // Disable the toolbar
+                    toolbar.getComponent('save').disable();
+                    toolbar.getComponent('cancel').disable();
+                    toolbar.getComponent('undo').disable();
+                    toolbar.getComponent('redo').disable();
+
+                    // TODO: Find the named rule - if set
+
+                    // Notify the user we're done
+                    if(json.source == null || json.source.length == 0)
+                        handleStatusNotification(NOTIFICATION_OK, 'Rule model "' + modelName + '" created successfully.');
+                    else
+                        handleStatusNotification(NOTIFICATION_OK, 'Rule model "' + modelName + '" loaded successfully.');
+                },
+                failure: function (result, request) {
+                    handleStatusNotification(NOTIFICATION_ERROR, 'Error loading rule model "' + modelName + '"');
+                }
+            });
         }
     }
 })
