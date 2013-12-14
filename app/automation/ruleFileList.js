@@ -38,7 +38,7 @@
 Ext.define('openHAB.automation.ruleFileList', {
     extend: 'Ext.panel.Panel',
     layout: 'fit',
-    icon: 'images/application-list.png',
+    icon: 'images/document-copy.png',
     title: 'Rule Models',
 
     initComponent: function () {
