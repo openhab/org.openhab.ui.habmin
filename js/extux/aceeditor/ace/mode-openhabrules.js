@@ -140,14 +140,13 @@ var openHABRulesHighlightRules = function() {
             "break|case|catch|continue|default|delete|do|else|finally|for|function|" +
             "if|in|instanceof|new|return|switch|throw|try|typeof|let|var|while|with|debugger|" +
             "__parent__|__count__|escape|unescape|with|__proto__|" +
-            "class|enum|extends|super|export|implements|private|public|interface|package|protected|static|" +
-            "rule|when|then|end",
+            "class|enum|extends|super|export|implements|private|public|interface|package|protected|static",
         "storage.type":
             "const|let|var|function",
         "constant.language":
             "null|Infinity|NaN|undefined",
         "support.function":
-            "alert",
+            "rule|when|then|end",//            "alert",
         "constant.language.boolean": "true|false"
     }, "identifier");
     var kwBeforeRe = "case|do|else|finally|in|instanceof|return|throw|try|typeof|yield|void";
