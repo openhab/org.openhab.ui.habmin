@@ -83,6 +83,7 @@ Ext.require([
     'openHAB.config.sitemapList',
     'openHAB.config.sitemapTheme',
     'openHAB.config.zwaveDeviceList',
+    'openHAB.config.zwaveProductList',
     'openHAB.config.zwaveNetwork',
     'openHAB.config.sitemapProperties',
     'openHAB.system.system',
