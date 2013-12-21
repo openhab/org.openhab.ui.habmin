@@ -56,38 +56,6 @@ Ext.define('openHAB.automation.ruleFileList', {
             model: 'RuleModelModel'
         });
 
-        // Load the rule list from openHAB
-        Ext.Ajax.request({
-            url: HABminBaseURL + "/config/rules/model/list",
-            headers: {'Accept': 'application/json'},
-            method: 'GET',
-            success: function (response, opts) {
-                var json = Ext.decode(response.responseText);
-                // If there's no config for this sitemap, records will be null
-                if (json == null)
-                    return;
-
-                var models = [].concat(json.rule);
-                for (var cnt = 0; cnt < models.length; cnt++) {
-                    if(models[cnt].rules == null) {
-                        var element = {};
-                        element.model = models[cnt].model;
-
-                        ruleModelStore.add(element);
-                        continue;
-                    }
-                    var rules = [].concat(models[cnt].rules);
-                    for (var elcnt = 0; elcnt < rules.length; elcnt++) {
-                        var element = {};
-                        element.model = models[cnt].model;
-                        element.rule = rules[elcnt].name;
-
-                        ruleModelStore.add(element);
-                    }
-                }
-            }
-        });
-
         var toolbar = Ext.create('Ext.toolbar.Toolbar', {
             items:[
                 {
@@ -208,7 +176,9 @@ Ext.define('openHAB.automation.ruleFileList', {
                         saveWin.show();
                     }
                 },
-                { xtype:'tbfill' },
+                {
+                    xtype:'tbfill'
+                },
                 {
                     icon:'images/arrow-circle-315.png',
                     itemId:'refresh',
@@ -216,7 +186,7 @@ Ext.define('openHAB.automation.ruleFileList', {
                     disabled:false,
                     tooltip:'Refresh the rule model list',
                     handler:function () {
-//                        itemConfigStore.load();
+                        loadModelList();
                     }
                 }
             ]
@@ -275,6 +245,45 @@ Ext.define('openHAB.automation.ruleFileList', {
         this.items = ruleList;
 
         this.callParent();
+
+        loadModelList();
+
+        function loadModelList() {
+            // Clear the existing data
+            ruleModelStore.loadData([], false);
+
+            // Load the rule list from openHAB
+            Ext.Ajax.request({
+                url: HABminBaseURL + "/config/rules/model/list",
+                headers: {'Accept': 'application/json'},
+                method: 'GET',
+                success: function (response, opts) {
+                    var json = Ext.decode(response.responseText);
+                    // If there's no config for this sitemap, records will be null
+                    if (json == null)
+                        return;
+
+                    var models = [].concat(json.rule);
+                    for (var cnt = 0; cnt < models.length; cnt++) {
+                        if(models[cnt].rules == null) {
+                            var element = {};
+                            element.model = models[cnt].model;
+
+                            ruleModelStore.add(element);
+                            continue;
+                        }
+                        var rules = [].concat(models[cnt].rules);
+                        for (var elcnt = 0; elcnt < rules.length; elcnt++) {
+                            var element = {};
+                            element.model = models[cnt].model;
+                            element.rule = rules[elcnt].name;
+
+                            ruleModelStore.add(element);
+                        }
+                    }
+                }
+            });
+        }
     }
 })
 ;
