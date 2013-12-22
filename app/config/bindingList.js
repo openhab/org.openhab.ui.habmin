@@ -29,7 +29,8 @@
  * to convey the resulting work.
  */
 
-/** OpenHAB Admin Console HABmin
+/**
+ * OpenHAB Admin Console HABmin
  *
  * @author Chris Jackson
  */
@@ -77,7 +78,7 @@ Ext.define('openHAB.config.bindingList', {
                 markDirty:false
             },
             listeners:{
-                select:function (grid, record, index, eOpts) {
+                itemclick:function (grid, record) {
                     // Remove the current editor
                     Ext.getCmp('configPropertyContainer').removeProperty();
 

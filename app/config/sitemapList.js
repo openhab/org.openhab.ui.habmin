@@ -29,7 +29,8 @@
  * to convey the resulting work.
  */
 
-/** OpenHAB Admin Console HABmin
+/**
+ * OpenHAB Admin Console HABmin
  *
  * @author Chris Jackson
  */
@@ -149,7 +150,7 @@ Ext.define('openHAB.config.sitemapList', {
                 markDirty:false
             },
             listeners:{
-                select:function (grid, record, index, eOpts) {
+                itemclick:function (grid, record) {
                     if (record == null)
                         return;
 
