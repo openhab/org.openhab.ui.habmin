@@ -62,7 +62,8 @@ color: rgb(88, 72, 246);\
 color: rgb(6, 150, 14);\
 }\
 .ace-eclipse .ace_function {\
-color: rgb(60, 76, 114);\
+color: rgb(127, 0, 85);\
+font-weight:bold;\
 }\
 .ace-eclipse .ace_string {\
 color: rgb(42, 0, 255);\
