@@ -127,5 +127,9 @@ Ext.define('Ext.ux.aceeditor.Editor', {
 
     setReadOnly: function (value) {
         this.editor.setReadOnly(value);
+    },
+
+    insertText: function (text) {
+        this.editor.insert(text);
     }
 });

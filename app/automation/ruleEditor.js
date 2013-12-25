@@ -29,7 +29,8 @@
  * to convey the resulting work.
  */
 
-/** OpenHAB Admin Console HABmin
+/**
+ * OpenHAB Admin Console HABmin
  *
  * @author Chris Jackson
  */
@@ -145,6 +146,17 @@ Ext.define('openHAB.automation.ruleEditor', {
                             return;
                         fontSize = fontSize - 1;
                         editor.setFontSize(fontSize);
+                        editor.setFocus();
+                    }
+                },
+                {
+                    icon: 'images/edit-code.png',
+                    itemId: 'insert',
+                    cls: 'x-btn-icon',
+                    disabled: false,
+                    tooltip: 'Add openHAB rule template',
+                    handler: function () {
+                        editor.insertText('rule "<name here>"\nwhen\n\nthen\n\nend\n');
                         editor.setFocus();
                     }
                 }
