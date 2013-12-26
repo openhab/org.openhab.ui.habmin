@@ -29,7 +29,8 @@
  * to convey the resulting work.
  */
 
-/** OpenHAB Admin Console HABmin
+/**
+ * OpenHAB Admin Console HABmin
  *
  * @author Chris Jackson
  */
@@ -80,11 +81,11 @@ Ext.define('openHAB.config.groupTree', {
 
         // Create the root item
         var groupRoot = [];
-        groupRoot.label = "All";
+        groupRoot.label = "Root";
         groupRoot.children = [];
 
         // Create the tree
-        iterateTree(groupRoot.children, "All", 0);
+        iterateTree(groupRoot.children, "", 0);
 
         // Load the tree and expand all nodes
         var sitemapRootNode = groupTreeStore.setRootNode(groupRoot);

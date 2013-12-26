@@ -176,7 +176,6 @@ Ext.define('openHAB.config.itemList', {
                             title:'Select Item Model',
                             closeAction:'destroy',
                             width:225,
-                            height:135,
                             resizable:false,
                             draggable:false,
                             modal:true,

@@ -29,7 +29,8 @@
  * to convey the resulting work.
  */
 
-/** OpenHAB Admin Console HABmin
+/**
+ * OpenHAB Admin Console HABmin
  *
  * @author Chris Jackson
  */
@@ -164,8 +165,6 @@ Ext.define('openHAB.config.itemProperties', {
                     editable:true,
                     allowBlank:true
                 })
-            },
-            Groups:{
             },
             Type:{
                 displayName:"Item Type",
