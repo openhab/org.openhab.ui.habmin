@@ -154,9 +154,88 @@ Ext.define('openHAB.automation.ruleEditor', {
                     itemId: 'insert',
                     cls: 'x-btn-icon',
                     disabled: false,
-                    tooltip: 'Add openHAB rule template',
+                    tooltip: 'Add openHAB rule template at cursor location',
                     handler: function () {
                         editor.insertText('rule "<name here>"\nwhen\n\nthen\n\nend\n');
+                        editor.setFocus();
+                    }
+                },
+                {
+                    icon: 'images/document-node.png',
+                    itemId: 'itemlist',
+                    cls: 'x-btn-icon',
+                    disabled: false,
+                    tooltip: 'Add openHAB item name at cursor location',
+                    handler: function () {
+                        var form = Ext.widget('form', {
+                            layout:{
+                                type:'vbox',
+                                align:'stretch'
+                            },
+                            border:false,
+                            bodyPadding:10,
+                            fieldDefaults:{
+                                labelAlign:'top',
+                                labelWidth:100,
+                                labelStyle:'font-weight:bold'
+                            },
+                            defaults:{
+                                margins:'0 0 10 0'
+                            },
+                            items:[
+                                {
+                                    margin:'0 0 0 0',
+                                    xtype:'combobox',
+                                    fieldLabel:'Item name:',
+                                    itemId:'name',
+                                    name:'name',
+                                    store:itemConfigStore,
+                                    allowBlank:false,
+                                    valueField:'name',
+                                    displayField:'name',
+                                    queryMode:'local',
+                                    forceSelection:false,
+                                    editable:true,
+                                    typeAhead:true
+                                }
+                            ],
+                            buttons:[
+                                {
+                                    text:'Cancel',
+                                    handler:function () {
+                                        this.up('window').destroy();
+                                    }
+                                },
+                                {
+                                    text:'Insert Item',
+                                    handler:function () {
+                                        if (this.up('form').getForm().isValid()) {
+                                            // Read the item name
+                                            editor.insertText(form.getForm().findField('name').getSubmitValue());
+                                            editor.setFocus();
+
+                                            this.up('window').destroy();
+                                        }
+                                    }
+                                }
+                            ]
+                        });
+
+                        var saveWin = Ext.widget('window', {
+                            title:'Select Item Name',
+                            closeAction:'destroy',
+                            width:325,
+                            resizable:false,
+                            draggable:false,
+                            modal:true,
+                            layout:{
+                                type:'vbox',
+                                align:'stretch'
+                            },
+                            items:[form]
+                        });
+
+                        saveWin.show();
                         editor.setFocus();
                     }
                 }

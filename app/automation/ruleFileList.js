@@ -163,7 +163,6 @@ Ext.define('openHAB.automation.ruleFileList', {
                             title:'Specify Model Name',
                             closeAction:'destroy',
                             width:225,
-                            height:135,
                             resizable:false,
                             draggable:false,
                             modal:true,
