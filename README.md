@@ -37,6 +37,7 @@ The project is just getting started. Currently implemented are the following -:
 * Sitemap editor
 * General binding configuration (ie binding configuration in the openhab.cfg file)
 * OSGI bundle status viewer
+* Rule editor with syntax highlighting
 * Item rule library (initial test phase)
 * ZWave configuration interface (note: work in progress still)
 
