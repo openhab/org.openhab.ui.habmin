@@ -29,7 +29,8 @@
  * to convey the resulting work.
  */
 
-/** OpenHAB Admin Console HABmin
+/**
+ * OpenHAB Admin Console HABmin
  *
  * @author Chris Jackson
  */
@@ -75,6 +76,7 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                 {name:'readonly', type:'boolean'},
                 {name:'type', type:'string'},
                 {name:'value', type:'string'},
+                {name:'state', type:'string'},
                 {name:'description', type:'string'},
                 {name:'valuelist'},
                 {name:'actionlist'}
@@ -183,7 +185,24 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                             description = Ext.String.htmlEncode(description);
                             meta.tdAttr = 'data-qtip="' + description + '"';
                         }
-                        return value;
+
+                        var img = "";
+                        switch(record.get('state')) {
+                            case 'OK':
+                                img = '<img height="12" src="images/status.png">';
+                                break;
+                            case 'WARNING':
+                                img = '<img height="12" src="images/status-away.png">';
+                                break;
+                            case 'ERROR':
+                                img = '<img height="12" src="images/status-busy.png">';
+                                break;
+                            case 'INITIALIZING':
+                                img = '<img height="12" src="images/status-offline.png">';
+                                break;
+                        }
+
+                        return '<span>' + value + '</span><span style="float:right">' + img + '</span>';
                     }
                 },
                 {
