@@ -128,7 +128,7 @@ Ext.define('openHAB.automation.ruleEditor', {
                     disabled: false,
                     tooltip: 'Increase font size',
                     handler: function () {
-                        if(fontSize > 32)
+                        if (fontSize > 32)
                             return;
                         fontSize = fontSize + 1;
                         editor.setFontSize(fontSize);
@@ -142,7 +142,7 @@ Ext.define('openHAB.automation.ruleEditor', {
                     disabled: false,
                     tooltip: 'Decrease font size',
                     handler: function () {
-                        if(fontSize < 6)
+                        if (fontSize < 6)
                             return;
                         fontSize = fontSize - 1;
                         editor.setFontSize(fontSize);
@@ -168,47 +168,47 @@ Ext.define('openHAB.automation.ruleEditor', {
                     tooltip: 'Add openHAB item name at cursor location',
                     handler: function () {
                         var form = Ext.widget('form', {
-                            layout:{
-                                type:'vbox',
-                                align:'stretch'
+                            layout: {
+                                type: 'vbox',
+                                align: 'stretch'
                             },
-                            border:false,
-                            bodyPadding:10,
-                            fieldDefaults:{
-                                labelAlign:'top',
-                                labelWidth:100,
-                                labelStyle:'font-weight:bold'
+                            border: false,
+                            bodyPadding: 10,
+                            fieldDefaults: {
+                                labelAlign: 'top',
+                                labelWidth: 100,
+                                labelStyle: 'font-weight:bold'
                             },
-                            defaults:{
-                                margins:'0 0 10 0'
+                            defaults: {
+                                margins: '0 0 10 0'
                             },
-                            items:[
+                            items: [
                                 {
-                                    margin:'0 0 0 0',
-                                    xtype:'combobox',
-                                    fieldLabel:'Item name:',
-                                    itemId:'name',
-                                    name:'name',
-                                    store:itemConfigStore,
-                                    allowBlank:false,
-                                    valueField:'name',
-                                    displayField:'name',
-                                    queryMode:'local',
-                                    forceSelection:false,
-                                    editable:true,
-                                    typeAhead:true
+                                    margin: '0 0 0 0',
+                                    xtype: 'combobox',
+                                    fieldLabel: 'Item name:',
+                                    itemId: 'name',
+                                    name: 'name',
+                                    store: itemConfigStore,
+                                    allowBlank: false,
+                                    valueField: 'name',
+                                    displayField: 'name',
+                                    queryMode: 'local',
+                                    forceSelection: false,
+                                    editable: true,
+                                    typeAhead: true
                                 }
                             ],
-                            buttons:[
+                            buttons: [
                                 {
-                                    text:'Cancel',
-                                    handler:function () {
+                                    text: 'Cancel',
+                                    handler: function () {
                                         this.up('window').destroy();
                                     }
                                 },
                                 {
-                                    text:'Insert Item',
-                                    handler:function () {
+                                    text: 'Insert Item',
+                                    handler: function () {
                                         if (this.up('form').getForm().isValid()) {
                                             // Read the item name
                                             editor.insertText(form.getForm().findField('name').getSubmitValue());
@@ -221,22 +221,99 @@ Ext.define('openHAB.automation.ruleEditor', {
                             ]
                         });
 
-                        var saveWin = Ext.widget('window', {
-                            title:'Select Item Name',
-                            closeAction:'destroy',
-                            width:325,
-                            resizable:false,
-                            draggable:false,
-                            modal:true,
-                            layout:{
-                                type:'vbox',
-                                align:'stretch'
+                        var itemWin = Ext.widget('window', {
+                            title: 'Select Item Name',
+                            closeAction: 'destroy',
+                            width: 325,
+                            resizable: false,
+                            draggable: false,
+                            modal: true,
+                            layout: {
+                                type: 'vbox',
+                                align: 'stretch'
                             },
-                            items:[form]
+                            items: [form]
                         });
 
-                        saveWin.show();
-                        editor.setFocus();
+                        itemWin.show();
+                    }
+                },
+                {
+                    icon: 'images/clock.png',
+                    itemId: 'cronlist',
+                    cls: 'x-btn-icon',
+                    disabled: false,
+                    tooltip: 'Add timer definition at cursor location',
+                    handler: function () {
+                        var form = Ext.widget('form', {
+                            layout: {
+                                type: 'vbox',
+                                align: 'stretch'
+                            },
+                            border: false,
+                            bodyPadding: 10,
+                            fieldDefaults: {
+                                labelAlign: 'top',
+                                labelWidth: 100,
+                                labelStyle: 'font-weight:bold'
+                            },
+                            defaults: {
+                                margins: '0 0 10 0'
+                            },
+                            items: [
+                                {
+                                    margin: '0 0 0 0',
+                                    xtype: 'combobox',
+                                    fieldLabel: 'Time Rule:',
+                                    itemId: 'rule',
+                                    name: 'rule',
+                                    store: cronRuleStore,
+                                    allowBlank: false,
+                                    valueField: 'rule',
+                                    displayField: 'label',
+                                    queryMode: 'local',
+                                    forceSelection: true,
+                                    editable: true,
+                                    typeAhead: true
+                                }
+                            ],
+                            buttons: [
+                                {
+                                    text: 'Cancel',
+                                    handler: function () {
+                                        this.up('window').destroy();
+                                    }
+                                },
+                                {
+                                    text: 'Insert Timer ',
+                                    handler: function () {
+                                        if (this.up('form').getForm().isValid()) {
+                                            // Read the item name
+                                            editor.insertText('"' + form.getForm().findField('rule').getSubmitValue() + '"');
+                                            editor.setFocus();
+
+                                            this.up('window').destroy();
+                                        }
+                                    }
+                                }
+                            ]
+                        });
+
+                        var cronWin = Ext.widget('window', {
+                            title: 'Select Timer',
+                            closeAction: 'destroy',
+                            width: 375,
+                            resizable: false,
+                            draggable: false,
+                            modal: true,
+                            layout: {
+                                type: 'vbox',
+                                align: 'stretch'
+                            },
+                            items: [form]
+                        });
+
+                        cronWin.show();
                     }
                 }
             ]
@@ -300,7 +377,7 @@ Ext.define('openHAB.automation.ruleEditor', {
                     // TODO: Find the named rule - if set
 
                     // Notify the user we're done
-                    if(json.source == null || json.source.length == 0)
+                    if (json.source == null || json.source.length == 0)
                         handleStatusNotification(NOTIFICATION_OK, 'Rule model "' + modelName + '" created successfully.');
                     else
                         handleStatusNotification(NOTIFICATION_OK, 'Rule model "' + modelName + '" loaded successfully.');

@@ -121,6 +121,7 @@ var itemFormatStore;
 var translationServiceStore;
 var ruleLibraryStore;
 var ruleStore;
+var cronRuleStore;
 
 // Global variables
 var persistenceService = "";
@@ -185,6 +186,19 @@ var translationServiceArray = [
     {name: "EXEC", label: "Exec"},
     {name: "XSLT", label: "XML Style Sheet"},
     {name: "XPATH", label: "XPath"}
+];
+
+var cronRuleArray = [
+    {label: "Every 15 seconds", rule: "0/15 * * * * ?"},
+    {label: "Every 30 seconds", rule: "0/30 * * * * ?"},
+    {label: "Every minute", rule: "0 * * * * ?"},
+    {label: "Every hour", rule: "0 0 * * * ?"},
+    {label: "Every 2 hours", rule: "0 0 0/2 * * ?"},
+    {label: "Every 3 hours", rule: "0 0 0/3 * * ?"},
+    {label: "Every 6 hours", rule: "0 0 0/6 * * ?"},
+    {label: "Every 12 hours (midday/midnight)", rule: "0 0 0/12 * * ?"},
+    {label: "Every day at midday", rule: "0 0 12 * * ?"},
+    {label: "Every day at midnight", rule: "0 0 0 * * ?"}
 ];
 
 var initState = 0;
@@ -451,6 +465,22 @@ function makeItemGroupTree(parent, group) {
 function createUI() {
     delete Ext.tip.Tip.prototype.minWidth;
 
+    //======= Quartz CRON Rule Store
+    Ext.define('CRONRuleModel', {
+        extend: 'Ext.data.Model',
+        fields: [
+            {name: 'rule'},
+            {name: 'label'}
+        ]
+    });
+
+    // Create the data store
+    cronRuleStore = Ext.create('Ext.data.ArrayStore', {
+        model: 'CRONRuleModel'
+    });
+    cronRuleStore.loadData(cronRuleArray);
+
+
     //======= Translation Services Store
     Ext.define('TranslationServiceModel', {
         extend: 'Ext.data.Model',
@@ -460,7 +490,7 @@ function createUI() {
         ]
     });
 
-    // Create the Item data store
+    // Create the data store
     translationServiceStore = Ext.create('Ext.data.ArrayStore', {
         model: 'TranslationServiceModel'
     });
