@@ -44,18 +44,21 @@ Ext.define('openHAB.config.zwaveProductList', {
 
     initComponent:function () {
         Ext.define('ZWaveConfigModel', {
-            extend:'Ext.data.Model',
-            fields:[
-                {name:'domain', type:'string'},
-                {name:'name', type:'string'},
-                {name:'label', type:'string'},
-                {name:'optional', type:'boolean'},
-                {name:'readonly', type:'boolean'},
-                {name:'type', type:'string'},
-                {name:'value', type:'string'},
-                {name:'description', type:'string'},
-                {name:'valuelist'},
-                {name:'actionlist'}
+            extend: 'Ext.data.Model',
+            fields: [
+                {name: 'domain', type: 'string'},
+                {name: 'name', type: 'string'},
+                {name: 'label', type: 'string'},
+                {name: 'optional', type: 'boolean'},
+                {name: 'readonly', type: 'boolean'},
+                {name: 'type', type: 'string'},
+                {name: 'value', type: 'string'},
+                {name: 'minimum', type: 'integer'},
+                {name: 'maximum', type: 'integer'},
+                {name: 'state', type: 'string'},
+                {name: 'description', type: 'string'},
+                {name: 'valuelist'},
+                {name: 'actionlist'}
             ]
         });
 
@@ -127,7 +130,25 @@ Ext.define('openHAB.config.zwaveProductList', {
                             description = Ext.String.htmlEncode(description);
                             meta.tdAttr = 'data-qtip="' + description + '"';
                         }
-                        return value;
+                        
+                        // Add a small status image to show the state of this record
+                        var img = "";
+                        switch (record.get('state')) {
+                            case 'OK':
+                                img = '<img height="12" src="images/status.png">';
+                                break;
+                            case 'WARNING':
+                                img = '<img height="12" src="images/status-away.png">';
+                                break;
+                            case 'ERROR':
+                                img = '<img height="12" src="images/status-busy.png">';
+                                break;
+                            case 'INITIALIZING':
+                                img = '<img height="12" src="images/status-offline.png">';
+                                break;
+                        }
+
+                        return '<span>' + value + '</span><span style="float:right">' + img + '</span>';
                     }
                 },
                 {
