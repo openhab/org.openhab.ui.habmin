@@ -130,7 +130,7 @@ Ext.define('openHAB.config.zwaveProductList', {
                             description = Ext.String.htmlEncode(description);
                             meta.tdAttr = 'data-qtip="' + description + '"';
                         }
-                        
+
                         // Add a small status image to show the state of this record
                         var img = "";
                         switch (record.get('state')) {

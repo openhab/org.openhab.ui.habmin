@@ -232,6 +232,8 @@ Ext.define('openHAB.config.bindingProperties', {
                 tabs.add([newPage]);
                 newPage = Ext.create('openHAB.config.zwaveProductList');
                 tabs.add([newPage]);
+                newPage = Ext.create('openHAB.config.zwaveNetwork');
+                tabs.add([newPage]);
             }
         }
 
