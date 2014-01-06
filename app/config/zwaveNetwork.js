@@ -48,7 +48,6 @@ Ext.define('openHAB.config.zwaveNetwork', {
     selectedNode: null,
     items: [
         {
-
             border: false,
             itemId: 'jitIsHere',
             id: 'jitIsHere',
@@ -60,234 +59,8 @@ Ext.define('openHAB.config.zwaveNetwork', {
 
                     self.networkDiagram.canvas.resize(width, height, true);
                 },
-
                 render: function () {
                     var self = this.up('#zwaveNetworkDiagramPanel');
-
-                    var json = [
-                        //"root" node is invisible
-                        {
-                            "id": "node0",
-                            "name": "",
-                            "data": {
-                                "$type": "none"
-                            },
-                            "adjacencies": [
-                                {
-                                    "nodeTo": "node1",
-                                    "data": {
-                                        '$type': 'none'
-                                    }
-                                },
-                                {
-                                    "nodeTo": "node2",
-                                    "data": {
-                                        '$type': 'none'
-                                    }
-                                },
-                                {
-                                    "nodeTo": "node3",
-                                    "data": {
-                                        '$type': 'none'
-                                    }
-                                },
-                                {
-                                    "nodeTo": "node4",
-                                    "data": {
-                                        "$type": "none"
-                                    }
-                                },
-                                {
-                                    "nodeTo": "node5",
-                                    "data": {
-                                        "$type": "none"
-                                    }
-                                },
-                                {
-                                    "nodeTo": "node6",
-                                    "data": {
-                                        "$type": "none"
-                                    }
-                                },
-                                {
-                                    "nodeTo": "node7",
-                                    "data": {
-                                        "$type": "none"
-                                    }
-                                },
-                                {
-                                    "nodeTo": "node8",
-                                    "data": {
-                                        "$type": "none"
-                                    }
-                                },
-                                {
-                                    "nodeTo": "node9",
-                                    "data": {
-                                        "$type": "none"
-                                    }
-                                },
-                                {
-                                    "nodeTo": "node10",
-                                    "data": {
-                                        "$type": "none"
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            "id": "node1",
-                            "name": "node 1",
-                            "data": {
-                                "$angularWidth": 13.00,
-                                "$color": "#33a",
-                                "$height": 70
-                            },
-                            "adjacencies": [
-                                {
-                                    "nodeTo": "node3",
-                                    "data": {
-                                        "$color": "#ddaacc",
-                                        "$lineWidth": 4
-                                    }
-                                },
-                                {
-                                    "nodeTo": "node5",
-                                    "data": {
-                                        "$color": "#ccffdd",
-                                        "$lineWidth": 4
-                                    }
-                                },
-                                {
-                                    "nodeTo": "node7",
-                                    "data": {
-                                        "$color": "#dd99dd",
-                                        "$lineWidth": 4
-                                    }
-                                },
-                                {
-                                    "nodeTo": "node8",
-                                    "data": {
-                                        "$color": "#dd99dd",
-                                        "$lineWidth": 4
-                                    }
-                                },
-                                {
-                                    "nodeTo": "node10",
-                                    "data": {
-                                        "$color": "#ddaacc",
-                                        "$lineWidth": 4
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            "id": "node2",
-                            "name": "node 2",
-                            "data": {
-                                "$angularWidth": 24.90,
-                                "$color": "#55b",
-                                "$height": 30
-                            },
-                            "adjacencies": [
-                                "node8", "node9", "node10"
-                            ]
-                        },
-                        {
-                            "id": "node3",
-                            "name": "node 3",
-                            "data": {
-                                "$angularWidth": 10.50,
-                                "$color": "#77c",
-                                "$height": 30
-                            },
-                            "adjacencies": [
-                                "node8", "node9", "node10"
-                            ]
-                        },
-                        {
-                            "id": "node4",
-                            "name": "node 4",
-                            "data": {
-                                "$angularWidth": 5.40,
-                                "$color": "#99d",
-                                "$height": 30
-                            },
-                            "adjacencies": [
-                                "node8", "node9", "node10"
-                            ]
-                        },
-                        {
-                            "id": "node5",
-                            "name": "node 5",
-                            "data": {
-                                "$angularWidth": 32.26,
-                                "$color": "#aae",
-                                "$height": 30
-                            },
-                            "adjacencies": [
-                                "node8", "node9", "node10"
-                            ]
-                        },
-                        {
-                            "id": "node6",
-                            "name": "node 6",
-                            "data": {
-                                "$angularWidth": 24.90,
-                                "$color": "#bf0",
-                                "$height": 30
-                            },
-                            "adjacencies": [
-                                "node8", "node9", "node10"
-                            ]
-                        },
-                        {
-                            "id": "node7",
-                            "name": "node 7",
-                            "data": {
-                                "$angularWidth": 14.90,
-                                "$color": "#cf5",
-                                "$height": 30
-                            },
-                            "adjacencies": [
-                                "node8", "node9", "node10"
-                            ]
-                        },
-                        {
-                            "id": "node8",
-                            "name": "node 8",
-                            "data": {
-                                "$angularWidth": 34.90,
-                                "$color": "#dfa",
-                                "$height": 30
-                            },
-                            "adjacencies": [
-                                "node9", "node10"
-                            ]
-                        },
-                        {
-                            "id": "node9",
-                            "name": "node 9",
-                            "data": {
-                                "$angularWidth": 42.90,
-                                "$color": "#CCC",
-                                "$height": 30
-                            },
-                            "adjacencies": [
-                                "node10"
-                            ]
-                        },
-                        {
-                            "id": "node10",
-                            "name": "node 10",
-                            "data": {
-                                "$angularWidth": 100.90,
-                                "$color": "#C37",
-                                "$height": 30
-                            },
-                            "adjacencies": []
-                        }
-                    ];
 
                     self.networkDiagram = new $jit.Sunburst({
                         //id container for the visualization
@@ -330,28 +103,21 @@ Ext.define('openHAB.config.zwaveNetwork', {
                                 if (!node)
                                     return;
 
+                                // Remember the selected node so we can highlight the routes
                                 self.selectedNode = node;
-                                eventInfo.getNode();
 
-                                var html = "<h4>" + node.name + " connections</h4><ul><li>", ans = [];
-                                node.eachAdjacency(function (adj) {
-                                    // if on the same level i.e siblings
-                                    if (adj.nodeTo._depth == node._depth) {
-                                        ans.push(adj.nodeTo.name);
-                                    }
-                                });
-
+                                // Rotate the diagram
                                 self.networkDiagram.rotate(node, 'animate', {
                                     duration: 1000,
                                     transition: $jit.Trans.Quart.easeInOut
                                 });
-//                                $jit.id('inner-details').innerHTML = html + ans.join("</li><li>") + "</li></ul>";
                             }
                         },
                         onBeforePlotLine: function (adj) {
                             if(self.selectedNode == null)
                                 return;
 
+                            // Navigate through the neighbors list to see if it's valid
                             var validRoute = false;
                             for(var i = 1; i < self.networkData.length; i++) {
                                 if(self.networkData[i].id == self.selectedNode.id) {
@@ -362,6 +128,8 @@ Ext.define('openHAB.config.zwaveNetwork', {
                                     }
                                 }
                             }
+
+                            // Override the line properties if this is a neighbor
                             if (validRoute == true) {
                                 // override the line properties
                                 adj.data.$color = '#0f0';
@@ -456,10 +224,9 @@ Ext.define('openHAB.config.zwaveNetwork', {
                 }
             },
             failure: function () {
-//                            handleStatusNotification(NOTIFICATION_ERROR, "Error sending updated value to the server!");
+//              handleStatusNotification(NOTIFICATION_ERROR, "Error sending updated value to the server!");
             }
         });
-
 
         this.callParent();
     }
