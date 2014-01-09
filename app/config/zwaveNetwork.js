@@ -57,7 +57,11 @@ Ext.define('openHAB.config.zwaveNetwork', {
                     if (self.networkDiagram == null)
                         return;
 
+                    self.networkDiagram.levelDistance = width / 2;
                     self.networkDiagram.canvas.resize(width, height, true);
+
+                    // Rotate the diagram
+//                    self.networkDiagram.rotate(self.selectedNode, 'replot');
                 },
                 render: function () {
                     var self = this.up('#zwaveNetworkDiagramPanel');
@@ -67,7 +71,7 @@ Ext.define('openHAB.config.zwaveNetwork', {
                         injectInto: 'jitIsHere-innerCt',
                         height: 400,
                         width: 400,
-                        levelDistance: 100,
+                        levelDistance: 160,
                         //Change node and edge styles such as
                         //color, width, lineWidth and edge types
                         Node: {
@@ -117,16 +121,10 @@ Ext.define('openHAB.config.zwaveNetwork', {
                             if(self.selectedNode == null)
                                 return;
 
-                            // Navigate through the neighbors list to see if it's valid
                             var validRoute = false;
-                            for(var i = 1; i < self.networkData.length; i++) {
-                                if(self.networkData[i].id == self.selectedNode.id) {
-                                    for(var r = 0; r < self.networkData[i].adjacencies.length; r++) {
-                                        if(self.networkData[i].adjacencies[r].nodeTo == adj.nodeFrom.id ||
-                                                self.networkData[i].adjacencies[r].nodeTo == adj.nodeTo.id)
-                                            validRoute = true;
-                                    }
-                                }
+                            if(self.selectedNode.id == adj.nodeFrom.id ||
+                                self.selectedNode.id == adj.nodeTo.id) {
+                                validRoute = true;
                             }
 
                             // Override the line properties if this is a neighbor
@@ -137,7 +135,7 @@ Ext.define('openHAB.config.zwaveNetwork', {
                             } else {
                                 // reset the line properties
                                 delete adj.data.$color;
-                                adj.data.$lineWidth = 2;
+                                adj.data.$lineWidth = 1;
                             }
                         },
                         onBeforePlotNode: function (node) {
@@ -212,8 +210,8 @@ Ext.define('openHAB.config.zwaveNetwork', {
                                     self.networkData[node].adjacencies[i] = {};
                                     self.networkData[node].adjacencies[i].nodeTo = "nodes/" + json.records[i].name + "/";
                                     self.networkData[node].adjacencies[i].data = {
-                                        "$color": "#ddaacc",
-                                        "$lineWidth": 4
+                                        "$lineWidth": 1,
+                                        source: self.networkData[i].id
                                     }
                                 }
                             }
