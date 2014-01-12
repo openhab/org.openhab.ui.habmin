@@ -81,8 +81,8 @@ Ext.define('openHAB.config.zwaveNetwork', {
                         Edge: {
                             overridable: true,
                             type: 'hyperline',
-                            lineWidth: 2,
-                            color: '#777'
+                            lineWidth: 1,
+                            color: '#ccc'
                         },
                         Label: {
                             type: 'Native'
@@ -98,6 +98,36 @@ Ext.define('openHAB.config.zwaveNetwork', {
                                 'color': '#dd3333'
                             },
                             duration: 700
+                        },
+                        Tips: {
+                            enable: true,
+                            onShow: function(tip, node) {
+                                var html = "<div class=\"tip-title\">" + node.name + "</div>";
+                                var data = node.data;
+                                html += "<b>Listening:</b> " + data.Listening;
+                                html += "<br/><b>Routing:</b> " + data.Routing;
+                                html += "<br/><b>Power:</b> " + data.Power;
+                                html += "<br/><br/><u>Neighbors</u>";
+
+                                // Find the node
+                                var n = 0;
+                                for (var i = 0; i < self.networkData.length; i++) {
+                                    if (node.id === self.networkData[i].id)
+                                        n = i;
+                                }
+
+                                // Build the neighbor list
+                                if(n == 0 || self.networkData[n].adjacencies.length == 0) {
+                                    html += "<br/>None";
+                                }
+                                else {
+                                    for (var i = 0; i < self.networkData[n].adjacencies.length; i++) {
+                                        html += "<br/>" + self.networkData[n].adjacencies[i].nodeName;
+                                    }
+                                }
+
+                                tip.innerHTML = html;
+                            }
                         },
                         Events: {
                             enable: true,
@@ -118,19 +148,36 @@ Ext.define('openHAB.config.zwaveNetwork', {
                             }
                         },
                         onBeforePlotLine: function (adj) {
-                            if(self.selectedNode == null)
+                            if (self.selectedNode == null)
                                 return;
 
+                            // The adjacencies provided by JIT are optimised to remove duplicates
+                            // so we need to use the networkData as reference.
                             var validRoute = false;
-                            if(self.selectedNode.id == adj.nodeFrom.id ||
-                                self.selectedNode.id == adj.nodeTo.id) {
-                                validRoute = true;
+
+                            // Find the node
+                            var node = 0;
+                            for (var i = 0; i < self.networkData.length; i++) {
+                                // Find the node in the network structure
+                                if (self.selectedNode.id === self.networkData[i].id) {
+                                    // Loop through all the routes
+                                    for (var r = 0; r < self.networkData[i].adjacencies.length; r++) {
+                                        if((self.selectedNode.id == adj.nodeFrom.id ||
+                                            self.selectedNode.id == adj.nodeTo.id) &&
+                                            (self.networkData[i].adjacencies[r].nodeTo == adj.nodeFrom.id ||
+                                                self.networkData[i].adjacencies[r].nodeTo == adj.nodeTo.id)) {
+                                            validRoute = true;
+                                            break;
+                                        }
+                                    }
+                                    break;
+                                }
                             }
 
                             // Override the line properties if this is a neighbor
                             if (validRoute == true) {
                                 // override the line properties
-                                adj.data.$color = '#0f0';
+                                adj.data.$color = '#5f5';
                                 adj.data.$lineWidth = 4;
                             } else {
                                 // reset the line properties
@@ -165,17 +212,21 @@ Ext.define('openHAB.config.zwaveNetwork', {
             success: function (response, opts) {
                 var json = Ext.decode(response.responseText);
 
+                // Add the root node
                 self.networkData = [];
                 self.networkData[0] = {};
                 self.networkData[0].id = "root";
                 self.networkData[0].adjacencies = [];
                 self.networkData[0].data = {'$type': 'none'};
+
+                // Add all nodes into the root adjacency list
                 for (var i = 0; i < json.records.length; i++) {
                     self.networkData[0].adjacencies[i] = {};
                     self.networkData[0].adjacencies[i].nodeTo = json.records[i].domain;
                     self.networkData[0].adjacencies[i].data = {'$type': 'none'};
                 }
 
+                // Add all the nodes
                 for (var i = 0; i < json.records.length; i++) {
                     self.networkData[i + 1] = {};
                     self.networkData[i + 1].id = json.records[i].domain;
@@ -183,9 +234,48 @@ Ext.define('openHAB.config.zwaveNetwork', {
                     self.networkData[i + 1].data = {
                         //   "$angularWidth": 45.00,
                         "$color": "#33a",
-                        "$height": 70};
+                        "$height": 70
+                    };
 
                     self.networkData[i + 1].adjacencies = [];
+
+                    // Request the status information for this node
+                    Ext.Ajax.request({
+                        url: HABminBaseURL + '/zwave/' + json.records[i].domain + "status/",
+                        method: 'GET',
+                        headers: {'Accept': 'application/json'},
+                        success: function (response, opts) {
+                            var json = Ext.decode(response.responseText);
+                            if (json == null)
+                                return;
+                            if (json.records == null)
+                                return;
+
+                            // Find the node
+                            var node = 0;
+                            for (var i = 0; i < self.networkData.length; i++) {
+                                if (response.request.options.url === HABminBaseURL + '/zwave/' + self.networkData[i].id + "status/")
+                                    node = i;
+                            }
+
+                            if (node != 0) {
+                                for (var i = 0; i < json.records.length; i++) {
+                                    if(json.records[i].name == "Power")
+                                        self.networkData[node].data.Power = json.records[i].value;
+                                    if(json.records[i].name == "Listening")
+                                        self.networkData[node].data.Listening = json.records[i].value;
+                                    if(json.records[i].name == "Routing")
+                                        self.networkData[node].data.Routing = json.records[i].value;
+
+                                    if (json.records[i].name == "Listening" && json.records[i].value == "false") {
+                                        self.networkData[node].data.$color = "#bbb";
+                                    }
+                                }
+                            }
+                        },
+                        failure: function () {
+                        }
+                    });
 
                     // Request the neighbors list for this node
                     Ext.Ajax.request({
@@ -199,15 +289,18 @@ Ext.define('openHAB.config.zwaveNetwork', {
                             if (json.records == null)
                                 return;
 
+                            // Find the node
                             var node = 0;
                             for (var i = 0; i < self.networkData.length; i++) {
                                 if (response.request.options.url === HABminBaseURL + '/zwave/' + self.networkData[i].id + "neighbors/")
                                     node = i;
                             }
 
-                            if (i != 0) {
+                            // Add the routes
+                            if (node != 0) {
                                 for (var i = 0; i < json.records.length; i++) {
                                     self.networkData[node].adjacencies[i] = {};
+                                    self.networkData[node].adjacencies[i].nodeName = json.records[i].label;
                                     self.networkData[node].adjacencies[i].nodeTo = "nodes/" + json.records[i].name + "/";
                                     self.networkData[node].adjacencies[i].data = {
                                         "$lineWidth": 1,
