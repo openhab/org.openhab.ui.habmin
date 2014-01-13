@@ -37,23 +37,23 @@
 
 
 Ext.define('openHAB.config.zwaveDeviceList', {
-    extend:'Ext.panel.Panel',
-    icon:'images/application-list.png',
-    title:'ZWave Devices',
-    border:false,
-    layout:'fit',
+    extend: 'Ext.panel.Panel',
+    icon: 'images/application-list.png',
+    title: 'Devices',
+    border: false,
+    layout: 'fit',
 
-    initComponent:function () {
+    initComponent: function () {
         var toolbar = Ext.create('Ext.toolbar.Toolbar', {
-            items:[
+            items: [
                 {
-                    icon:'images/arrow-circle-315.png',
-                    itemId:'reload',
-                    text:'Reload Properties',
-                    cls:'x-btn-icon',
-                    disabled:false,
-                    tooltip:'Reload the configuration',
-                    handler:function () {
+                    icon: 'images/arrow-circle-315.png',
+                    itemId: 'reload',
+                    text: 'Reload Properties',
+                    cls: 'x-btn-icon',
+                    disabled: false,
+                    tooltip: 'Reload the configuration',
+                    handler: function () {
                         var store = list.getStore();
                         if (store == null)
                             return;
@@ -67,52 +67,55 @@ Ext.define('openHAB.config.zwaveDeviceList', {
 
 
         Ext.define('ZWaveConfigModel', {
-            extend:'Ext.data.Model',
-            fields:[
-                {name:'domain', type:'string'},
-                {name:'name', type:'string'},
-                {name:'label', type:'string'},
-                {name:'optional', type:'boolean'},
-                {name:'readonly', type:'boolean'},
-                {name:'type', type:'string'},
-                {name:'value', type:'string'},
-                {name:'state', type:'string'},
-                {name:'description', type:'string'},
-                {name:'valuelist'},
-                {name:'actionlist'}
+            extend: 'Ext.data.Model',
+            idProperty: 'domain',
+            fields: [
+                {name: 'domain', type: 'string'},
+                {name: 'name', type: 'string'},
+                {name: 'label', type: 'string'},
+                {name: 'optional', type: 'boolean'},
+                {name: 'readonly', type: 'boolean'},
+                {name: 'type', type: 'string'},
+                {name: 'value', type: 'string'},
+                {name: 'minimum', type: 'integer'},
+                {name: 'maximum', type: 'integer'},
+                {name: 'state', type: 'string'},
+                {name: 'description', type: 'string'},
+                {name: 'valuelist'},
+                {name: 'actionlist'}
             ]
         });
 
         var list = Ext.create('Ext.tree.Panel', {
-            store:{
-                extend:'Ext.data.TreeStore',
-                model:'ZWaveConfigModel',
+            store: {
+                extend: 'Ext.data.TreeStore',
+                model: 'ZWaveConfigModel',
+                autoSync: false,
                 clearOnLoad: true,
                 clearRemovedOnLoad: true,
-                proxy:{
-                    type:'rest',
-                    url:HABminBaseURL + '/zwave',
-                    reader:{
+                proxy: {
+                    type: 'rest',
+                    url: HABminBaseURL + '/zwave',
+                    reader: {
 //                        type:'rest',
-                        root:'records'
+                        root: 'records'
                     },
-                    headers:{'Accept':'application/json'},
-                    pageParam:undefined,
-                    startParam:undefined,
-                    sortParam:undefined,
-                    limitParam:undefined
+                    headers: {'Accept': 'application/json'},
+                    pageParam: undefined,
+                    startParam: undefined,
+                    sortParam: undefined,
+                    limitParam: undefined
                 },
-                nodeParam:"domain",
-                root:{
-                    text:'nodes',
-                    id:'nodes/',
-                    expanded:true
+                nodeParam: "domain",
+                root: {
+                    text: 'nodes',
+                    domain: 'nodes/',
+                    expanded: true
                 },
-                listeners:{
-                    load:function (tree, node, records) {
+                listeners: {
+                    load: function (tree, node, records, success) {
                         node.eachChild(function (childNode) {
                             var domain = childNode.get('domain');
-                            childNode.set('id', domain);
 
                             // Set the icons and leaf attributes for the tree
                             if (domain.indexOf('/', domain.length - 1) == -1) {
@@ -131,63 +134,75 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                     }
                 }
             },
-            flex:1,
-            header:false,
-            split:true,
-            tbar:toolbar,
-            collapsible:false,
-            multiSelect:false,
-            singleExpand:true,
-            rootVisible:false,
-            plugins:[
+            flex: 1,
+            header: false,
+            split: true,
+            tbar: toolbar,
+            collapsible: false,
+            multiSelect: false,
+            singleExpand: true,
+            rootVisible: false,
+            viewConfig:{
+                stripeRows:true,
+                markDirty:false
+            },
+            plugins: [
                 Ext.create('Ext.grid.plugin.CellEditing', {
-                    clicksToEdit:2,
-                    listeners:{
-                        beforeedit:function (e, editor) {
+                    clicksToEdit: 2,
+                    listeners: {
+                        beforeedit: function (e, editor) {
                             // Only allow editing if this is not a read-only cell
                             if (editor.record.get('readonly') == true)
                                 return false;
                         },
-                        edit:function (editor, e) {
+                        edit: function (editor, e) {
                             // Detect if data has actually changed
-                            if(e.originalValue == e.value) {
+                            if (e.originalValue == e.value) {
                                 // No change!
                                 return;
                             }
 
-                            var domain = e.record.get('domain');
+                            // Check that the value is within limits
+                            var limitError = false;
+                            if (limitError == true) {
+                                handleStatusNotification(NOTIFICATION_WARNING, "Value is out of specified range. Please limit the value to between " + e.record.get('minimum') + " and " + e.record.get('minimum') + ".");
+                                return;
+                            }
 
-                            // Data has changed
+                            // All good - send it to the server
+                            var domain = e.record.get('domain');
                             Ext.Ajax.request({
-                                url:HABminBaseURL + '/zwave/set/' + domain,
-                                method:'PUT',
-                                jsonData:e.value,
-                                headers:{'Accept':'application/json'},
-                                success:function (response, opts) {
+                                url: HABminBaseURL + '/zwave/set/' + domain,
+                                method: 'PUT',
+                                jsonData: e.value,
+                                headers: {'Accept': 'application/json'},
+                                success: function (response, opts) {
                                 },
-                                failure:function () {
+                                failure: function () {
+                                    handleStatusNotification(NOTIFICATION_ERROR, "Error sending updated value to the server!");
                                 }
                             });
                         }
                     }
                 })
             ],
-            columns:[
+            columns: [
                 {
-                    text:'Node',
-                    xtype:'treecolumn',
-                    flex:1,
-                    dataIndex:'label',
+                    text: 'Node',
+                    xtype: 'treecolumn',
+                    flex: 1,
+                    dataIndex: 'label',
                     renderer: function (value, meta, record) {
                         // If a description is provided, then display this as a tooltip
                         var description = record.get("description");
-                        if(description != "") {
+                        if (description != "") {
                             description = Ext.String.htmlEncode(description);
                             meta.tdAttr = 'data-qtip="' + description + '"';
                         }
 
+                        // Add a small status image to show the state of this record
                         var img = "";
-                        switch(record.get('state')) {
+                        switch (record.get('state')) {
                             case 'OK':
                                 img = '<img height="12" src="images/status.png">';
                                 break;
@@ -206,10 +221,10 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                     }
                 },
                 {
-                    text:'Value',
-                    flex:1,
-                    dataIndex:'value',
-                    renderer:function (value, meta, record) {
+                    text: 'Value',
+                    flex: 1,
+                    dataIndex: 'value',
+                    renderer: function (value, meta, record) {
                         if (value == "")
                             return "";
 
@@ -226,35 +241,38 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                             if (value == list.entry[cnt].key)
                                 return list.entry[cnt].value;
                         }
+
+                        // If we didn't find an entry with this value, just show the value.
+                        return value;
                     },
-                    getEditor:function (record, defaultField) {
+                    getEditor: function (record, defaultField) {
                         var type = record.get('type');
 
                         if (type == "LIST") {
                             // This is a list, so we need to load the data into a store
                             // and create a combobox editor.
                             Ext.define('ListComboModel', {
-                                extend:'Ext.data.Model',
-                                fields:[
-                                    {name:'key'},
-                                    {name:'value'}
+                                extend: 'Ext.data.Model',
+                                fields: [
+                                    {name: 'key'},
+                                    {name: 'value'}
                                 ]
                             });
                             // Create the data store
                             var store = Ext.create('Ext.data.ArrayStore', {
-                                model:'ListComboModel'
+                                model: 'ListComboModel'
                             });
                             var list = record.get('valuelist')
                             if (list != null && list.entry != null)
                                 store.loadData(list.entry);
 
                             var editor = Ext.create('Ext.grid.CellEditor', {
-                                field:Ext.create('Ext.form.field.ComboBox', {
-                                    store:store,
-                                    editable:false,
-                                    displayField:'value',
-                                    valueField:'key',
-                                    queryMode:'local'
+                                field: Ext.create('Ext.form.field.ComboBox', {
+                                    store: store,
+                                    editable: false,
+                                    displayField: 'value',
+                                    valueField: 'key',
+                                    queryMode: 'local'
                                 })
                             });
 
@@ -263,14 +281,14 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                             return editor;
                         } else {
                             return Ext.create('Ext.grid.CellEditor', {
-                                field:Ext.create('Ext.form.field.Text')
+                                field: Ext.create('Ext.form.field.Text')
                             });
                         }
                     }
                 }
             ],
-            listeners:{
-                select:function (grid, record, index, eOpts) {
+            listeners: {
+                select: function (grid, record, index, eOpts) {
                     // Remove all current action buttons
                     for (var cnt = 1; cnt < toolbar.items.length; cnt++) {
                         toolbar.remove(toolbar.items.get(cnt), true);
@@ -292,35 +310,36 @@ Ext.define('openHAB.config.zwaveDeviceList', {
 
                     // Add any actions for the selected item
 //                    for (var cnt = 0; cnt < actions.length; cnt++) {
-                        var x =   {
+                    var x = {
 //                            itemId:"action" + 0,
-                            icon:'images/gear.png',
-                            cls:'x-btn-icon',
-                            text:actions[0].value,
-                            handler:function () {
-                                var data = {};
-                                data.action = actions[0].key;
+                        icon: 'images/gear.png',
+                        cls: 'x-btn-icon',
+                        text: actions[0].value,
+                        handler: function () {
+                            var data = {};
+                            data.action = actions[0].key;
 //                                data.name = name;
-                                Ext.Ajax.request({
-                                    url:HABminBaseURL + '/zwave/action/' + domain,
-                                    method:'PUT',
-                                    jsonData:actions[0].key,
-                                    headers:{'Accept':'application/json'},
-                                    success:function (response, opts) {
-                                    },
-                                    failure:function () {
-                                    }
-                                });
-                            }
-                        };
+                            Ext.Ajax.request({
+                                url: HABminBaseURL + '/zwave/action/' + domain,
+                                method: 'PUT',
+                                jsonData: actions[0].key,
+                                headers: {'Accept': 'application/json'},
+                                success: function (response, opts) {
+                                },
+                                failure: function () {
+                                    handleStatusNotification(NOTIFICATION_ERROR, "Error sending action to the server!");
+                                }
+                            });
+                        }
+                    };
 
-                        toolbar.add(x);
+                    toolbar.add(x);
 //                     }
 
                     // Get the node ID
                     var nodeName;
                 },
-                afteritemcollapse: function( node, index, item, eOpts ) {
+                afteritemcollapse: function (node, index, item, eOpts) {
 //                    node.removeAll();
                 }
             }
