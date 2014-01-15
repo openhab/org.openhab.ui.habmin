@@ -44,6 +44,31 @@ Ext.define('openHAB.config.zwaveDeviceList', {
     layout: 'fit',
 
     initComponent: function () {
+        function doStatus() {
+            // Periodically update the visible store items
+            var updateStore = {
+                run: function () {
+                    Ext.Ajax.request({
+                        type:'rest',
+                        url:HABminBaseURL + '/zwave',
+                        method: 'GET',
+                        success: function (response, opts) {
+                            var res = Ext.decode(response.responseText);
+                            if(res == null) {
+                            }
+                            else {
+                                handleOnlineStatus(STATUS_ONLINE);
+                            }
+                        },
+                        failure: function (response, opts) {
+                        }
+                    });
+                },
+                interval: 1000
+            }
+            Ext.TaskManager.start(updateStore);
+        }
+
         var toolbar = Ext.create('Ext.toolbar.Toolbar', {
             items: [
                 {
@@ -64,7 +89,6 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                 }
             ]
         });
-
 
         Ext.define('ZWaveConfigModel', {
             extend: 'Ext.data.Model',
