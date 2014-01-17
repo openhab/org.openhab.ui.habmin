@@ -29,7 +29,8 @@
  * to convey the resulting work.
  */
 
-/** OpenHAB Admin Console HABmin
+/**
+ * OpenHAB Admin Console HABmin
  *
  * @author Chris Jackson
  */
@@ -39,11 +40,12 @@ Ext.define('openHAB.system.system', {
     layout:'fit',
     icon:'images/block.png',
     id:'maintabSystem',
-    tabTip:'Display system information',
-    title:'System',
     cls:'empty',
 
     initComponent:function () {
+        this.title = language.mainTab_System;
+        this.tabTip = language.mainTab_SystemTip;
+
         var bindings  = Ext.create('openHAB.system.systemBundles');
         var logViewer  = Ext.create('openHAB.system.logViewer');
 

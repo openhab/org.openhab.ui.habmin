@@ -29,12 +29,22 @@
  * to convey the resulting work.
  */
 
-/** OpenHAB Admin Console HABmin
+/**
+ * OpenHAB Admin Console HABmin
  *
  * @author Chris Jackson
  */
 
-var force_transport = 'auto';
+document.ready=function() {
+    var lang = navigator.language;
+    if(lang.length == null)
+        return;
+    if(lang.length == 0)
+        return;
+
+    lang = lang.substr(0,2);
+    loadLanguage(lang);
+};
 
 Ext.Container.prototype.bufferResize = false;
 
@@ -94,7 +104,8 @@ Ext.require([
     'openHAB.automation.ruleList',
     'openHAB.automation.ruleLibrary',
     'openHAB.automation.ruleProperties'
-]);
+    ]
+);
 
 var viewPort;
 
@@ -207,80 +218,55 @@ var cronRuleArray = [
     {label: "Every day at midnight", rule: "0 0 0 * * ?"}
 ];
 
-var initState = 0;
-var initList = [
-    {type: 0, name: "openHAB Version", variable: "openHABVersion", url: "/static/version", fatal: true, notify: "Unable to get openHAB version"}//,
-];
-
-
+/**
+ * The main application. The launch method is called once the application files have all loaded.
+ */
 Ext.application({
     name: 'HABmin',
     launch: function () {
+
         initState = 0;
-        loadNextConfig();
+        createUI();
     }
 });
 
+/**
+ * Set default json headers
+ */
 Ext.Ajax.defaultHeaders = {
     'Accept': 'application/json,application/xml',
     'Content-Type': 'application/json'
 };
 
-function loadNextConfig() {
+function loadError(errorText) {
+}
+
+/**
+ * Load a country language file
+ * @param countryCode the two digit ISO country code
+ */
+function loadLanguage(countryCode) {
     Ext.Ajax.request({
-        url: initList[initState].url,
+        url: "./app/language/" + countryCode + ".json",
         headers: {'Accept': 'application/json'},
 
         success: function (response, opts) {
-            if (response.responseText == "No handler") {
-                loadError(initList[initState].notify);
-                return;
+            var json = Ext.decode(response.responseText);
+
+            languageOverride = json;
+            for (var attrname in json) {
+                language[attrname] = json[attrname];
             }
-
-            if (initList[initState].type == 0) {
-                openHABVersion = response.responseText;
-                Ext.fly('openHABVersion').update(openHABVersion, false);
-//              Ext.fly('guiVersion').update(guiVersion, false);
-            }
-            else
-                window[initList[initState].variable] = Ext.decode(response.responseText);
-
-
-            initState++;
-
-            if (initState < initList.length) {
-                loadNextConfig();
-                return;
-            }
-
-            // All configs loaded
-            createUI();
         },
-        failure: function (response, opts) {
-            if (initList[initState].fatal == true) {
-                loadError(initList[initState].notify);
-                return;
-            }
-
-            // Error was non-fatal. Ignore and continue
-            initState++;
-
-            if (initState < initList.length) {
-                loadNextConfig();
-                return;
-            }
-
-            // All configs loaded
-            createUI();
+        callback: function (response, opts) {
         }
     });
 }
 
-function loadError(errorText) {
-}
-
-// Handle user preferences
-// This ensures that all required preferences are set, and are valid
+/**
+ * Handle user preferences
+ * This ensures that all required preferences are set, and are valid
+ */
 function checkUserPrefs() {
     if(userPrefs == null)
         userPrefs = {};
@@ -310,6 +296,12 @@ function checkUserPrefs() {
         userPrefs.messageTimeSuccess = 1500;
 }
 
+/**
+ * Generate notifications. This method is used by all parts of the app that want to notify
+ * the user of something.
+ * @param type
+ * @param message
+ */
 function handleStatusNotification(type, message) {
     if(type == NOTIFICATION_ERROR) {
         Ext.create('widget.uxNotification', {
@@ -427,47 +419,9 @@ function getItemTypeIcon(type) {
         return itemTypeStore.getAt(ref).get('icon');
 }
 
-var iterationCnt = 0;
-
-function makeItemGroupTree(parent, group) {
-    return;
-    // Keep track of the number of iterations
-    iterationCnt++;
-    if (iterationCnt == 8)
-        return;
-
-    // Loop through the configuration
-    openHABItems = persistenceStore.getProxy().getReader().getResponseData();
-    var numItems = openHABItems.item.length;
-    for (var iItem = 0; iItem < numItems; ++iItem) {
-        var newItem = [];
-        var newItemPnt;
-
-        // Ensure the groups is an array!
-        var itemGroups = [].concat(openHABItems.item[iItem].groups);
-
-        // Check if the item is in the required group
-        if (itemGroups.indexOf(group) == -1) {
-            continue;
-        }
-
-        // Create the new item
-        newItem.Parent = openHABItems.item[iItem].name;
-        newItem.State = openHABItems.item[iItem].state;
-        newItem.Type = openHABItems.item[iItem].type;
-        newItem.iconCls = 'node-device';
-        newItem.children = [];
-
-        // Check if this is a group
-        if (openHABItems.item[iItem].type == "GroupItem") {
-            makeItemGroupTree(newItem.children, newItem.Parent)
-        }
-
-        parent.push(newItem);
-    }
-    iterationCnt--;
-}
-
+/**
+ * The main GUI creation method
+ */
 function createUI() {
     delete Ext.tip.Tip.prototype.minWidth;
 

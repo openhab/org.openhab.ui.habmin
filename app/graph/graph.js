@@ -29,37 +29,39 @@
  * to convey the resulting work.
  */
 
-/** OpenHAB Admin Console HABmin
+/**
+ * OpenHAB Admin Console HABmin
  *
  * @author Chris Jackson
  */
 
 Ext.define('openHAB.graph.graph', {
-    extend:'Ext.panel.Panel',
-    layout:'border',
-    icon:'images/database-sql.png',
-    id:'maintabGraph',
-    tabTip:'Display chart page',
-    title:'Persistence',
-    cls:'empty',
+    extend: 'Ext.panel.Panel',
+    layout: 'border',
+    icon: 'images/database-sql.png',
+    id: 'maintabGraph',
+    cls: 'empty',
 
-    initComponent:function () {
+    initComponent: function () {
+        this.title = language.mainTab_Persistence;
+        this.tabTip = language.mainTab_PersistenceTip;
+
         // Default to local time
-        Highcharts.setOptions({global:{useUTC:false}});
+        Highcharts.setOptions({global: {useUTC: false}});
 
         var itemList = Ext.create('openHAB.graph.itemList');
 
         var accordion = Ext.create('Ext.Panel', {
-            split:true,
-            border:true,
-            region:'west',
-            width:450,
-            preventHeader:true,
-            layout:{
-                type:'accordion',
-                hideCollapseTool:true
+            split: true,
+            border: true,
+            region: 'west',
+            width: 450,
+            preventHeader: true,
+            layout: {
+                type: 'accordion',
+                hideCollapseTool: true
             },
-            items:[itemList]
+            items: [itemList]
         });
 
         // If we're running on a mobile device, allow the lists to collapse
@@ -69,43 +71,37 @@ Ext.define('openHAB.graph.graph', {
         var chartGraph = Ext.create('openHAB.graph.graphHighcharts');
         var chartTable = Ext.create('openHAB.graph.graphTable');
 
-        Ext.define('PersistenceSelectBar', {
-            extend:'Ext.Component',
-            alias:'widget.persistencebar',
-            items:["Hello", "There"]
-        });
-
         // Create the tab bar to select between graph and table
         var tabPanel = Ext.create('Ext.tab.Panel', {
-            plain:false,
-            region:'center',
-            layout:'fit',
-            tabPosition:'bottom',
-            items:[chartGraph, chartTable],
-            listeners:{
-                render:function () {
+            plain: false,
+            region: 'center',
+            layout: 'fit',
+            tabPosition: 'bottom',
+            items: [chartGraph, chartTable],
+            listeners: {
+                render: function () {
                     this.tabBar.add(
-                        { xtype:'tbfill' },
+                        { xtype: 'tbfill' },
                         {
-                            border:false,
-                            id:"persistenceServiceSelect",
-                            tabTip:'Select persistence service',
-                            closable:false,
-                            text:persistenceService,
-                            textAlign:'left',
-                            width:100,
-                            icon:'images/database-share.png',
-                            defaults:{
-                                xtype:'button',
-                                handler:function (tbtn) {
+                            border: false,
+                            id: "persistenceServiceSelect",
+                            tabTip: 'Select persistence service',
+                            closable: false,
+                            text: persistenceService,
+                            textAlign: 'left',
+                            width: 100,
+                            icon: 'images/database-share.png',
+                            defaults: {
+                                xtype: 'button',
+                                handler: function (tbtn) {
                                 }
                             },
-                            menu:{
-                                width:100,
-                                id:"persistenceServiceMenu",
-                                xtype:'menu',
-                                listeners:{
-                                    click:function (menu, item, e, eOpts) {
+                            menu: {
+                                width: 100,
+                                id: "persistenceServiceMenu",
+                                xtype: 'menu',
+                                listeners: {
+                                    click: function (menu, item, e, eOpts) {
                                         persistenceService = item.text;
                                         var button = Ext.getCmp("persistenceServiceSelect");
                                         if (button != null) {
@@ -118,7 +114,7 @@ Ext.define('openHAB.graph.graph', {
                         }
                     );
                 },
-                beforetabchange:function (tabPanel, newCard, oldCard, eOpts) {
+                beforetabchange: function (tabPanel, newCard, oldCard, eOpts) {
                     // Detect if we've changed to the table view
                     if (newCard.itemId == 'graphTableData') {
                         if (chartTable.isUpdateRequired())

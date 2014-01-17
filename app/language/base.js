@@ -36,9 +36,13 @@
  */
 var language = {
     mainTab_Persistence: "Persistence",
+    mainTab_PersistenceTip: "Display chart page",
     mainTab_Configuration: "Configuration",
+    mainTab_ConfigurationTip: "Display <i>openHAB</i> configuration page",
     mainTab_Automation: "Automation",
+    mainTab_AutomationTip: "Automation information",
     mainTab_System: "System",
+    mainTab_SystemTip: "Display system information",
     mainTab_OnlineStatus: "Online Status",
 
     chartTab_Chart: "Chart",

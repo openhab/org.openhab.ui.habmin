@@ -29,7 +29,8 @@
  * to convey the resulting work.
  */
 
-/** OpenHAB Admin Console HABmin
+/**
+ * OpenHAB Admin Console HABmin
  *
  * @author Chris Jackson
  */
@@ -37,13 +38,14 @@
 Ext.define('openHAB.config.config', {
     extend:'Ext.panel.Panel',
     layout:'border',
-    title:'Configuration',
     id:'maintabConfig',
     icon:'images/gear.png',
-    tabTip:'Display <i>openHAB</i> configuration page',
     cls:'empty',
 
     initComponent:function () {
+        this.title = language.mainTab_Configuration;
+        this.tabTip = language.mainTab_ConfigurationTip;
+
         var mapList = Ext.create('openHAB.config.mappingList');
         var sitemapList = Ext.create('openHAB.config.sitemapList');
         var itemList = Ext.create('openHAB.config.itemList');
