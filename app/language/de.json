@@ -4,5 +4,9 @@
     "mainTab_Automation": "Automatisierung",
     "mainTab_System": "System",
 
-    "properties": "Eigenschaften"
+    "properties": "Eigenschaften",
+
+    "zwave_Network": "Netzwerk",
+    "zwave_ProductExplorer": "Produkt Explorer",
+    "zwave_Devices": "Geräte"
 }

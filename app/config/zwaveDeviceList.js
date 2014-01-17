@@ -39,7 +39,7 @@
 Ext.define('openHAB.config.zwaveDeviceList', {
     extend: 'Ext.panel.Panel',
     icon: 'images/application-list.png',
-    title: 'Devices',
+    title: language.zwave_Devices,
     border: false,
     layout: 'fit',
 

@@ -41,7 +41,7 @@ Ext.define('openHAB.config.zwaveNetwork', {
     extend: 'Ext.panel.Panel',
     layout: 'fit',
     icon: 'images/application-list.png',
-    title: 'Network',
+    title: language.zwave_Network,
     border: false,
     networkDiagram: null,
     networkData: null,
@@ -85,6 +85,7 @@ Ext.define('openHAB.config.zwaveNetwork', {
                             color: '#ccc'
                         },
                         Label: {
+                            overridable: true,
                             type: 'Native'
                         },
                         //Add animations when hovering and clicking nodes
@@ -236,6 +237,8 @@ Ext.define('openHAB.config.zwaveNetwork', {
                         "$color": "#33a",
                         "$height": 70
                     };
+                    self.networkData[i + 1].Label = {};
+                    self.networkData[i + 1].Label.color = "#0f0";
 
                     self.networkData[i + 1].adjacencies = [];
 

@@ -29,20 +29,21 @@
  * to convey the resulting work.
  */
 
-/** OpenHAB Admin Console HABmin
+/**
+ * OpenHAB Admin Console HABmin
  *
  * @author Chris Jackson
  */
 
 
 Ext.define('openHAB.config.zwaveProductList', {
-    extend:'Ext.panel.Panel',
-    icon:'images/application-list.png',
-    title:'Product Explorer',
-    border:false,
-    layout:'fit',
+    extend: 'Ext.panel.Panel',
+    icon: 'images/application-list.png',
+    title: language.zwave_ProductExplorer,
+    border: false,
+    layout: 'fit',
 
-    initComponent:function () {
+    initComponent: function () {
         Ext.define('ZWaveConfigModel', {
             extend: 'Ext.data.Model',
             fields: [
@@ -63,32 +64,32 @@ Ext.define('openHAB.config.zwaveProductList', {
         });
 
         var list = Ext.create('Ext.tree.Panel', {
-            store:{
-                extend:'Ext.data.TreeStore',
-                model:'ZWaveConfigModel',
+            store: {
+                extend: 'Ext.data.TreeStore',
+                model: 'ZWaveConfigModel',
                 clearOnLoad: true,
                 clearRemovedOnLoad: true,
-                proxy:{
-                    type:'rest',
-                    url:HABminBaseURL + '/zwave',
-                    reader:{
+                proxy: {
+                    type: 'rest',
+                    url: HABminBaseURL + '/zwave',
+                    reader: {
 //                        type:'rest',
-                        root:'records'
+                        root: 'records'
                     },
-                    headers:{'Accept':'application/json'},
-                    pageParam:undefined,
-                    startParam:undefined,
-                    sortParam:undefined,
-                    limitParam:undefined
+                    headers: {'Accept': 'application/json'},
+                    pageParam: undefined,
+                    startParam: undefined,
+                    sortParam: undefined,
+                    limitParam: undefined
                 },
-                nodeParam:"domain",
-                root:{
-                    text:'products',
-                    id:'products/',
-                    expanded:true
+                nodeParam: "domain",
+                root: {
+                    text: 'products',
+                    id: 'products/',
+                    expanded: true
                 },
-                listeners:{
-                    load:function (tree, node, records) {
+                listeners: {
+                    load: function (tree, node, records) {
                         node.eachChild(function (childNode) {
                             var domain = childNode.get('domain');
                             childNode.set('id', domain);
@@ -110,23 +111,23 @@ Ext.define('openHAB.config.zwaveProductList', {
                     }
                 }
             },
-            flex:1,
-            header:false,
-            split:true,
-            collapsible:false,
-            multiSelect:false,
-            singleExpand:true,
-            rootVisible:false,
-            columns:[
+            flex: 1,
+            header: false,
+            split: true,
+            collapsible: false,
+            multiSelect: false,
+            singleExpand: true,
+            rootVisible: false,
+            columns: [
                 {
-                    text:'Node',
-                    xtype:'treecolumn',
-                    flex:1,
-                    dataIndex:'label',
+                    text: 'Node',
+                    xtype: 'treecolumn',
+                    flex: 1,
+                    dataIndex: 'label',
                     renderer: function (value, meta, record) {
                         // If a description is provided, then display this as a tooltip
                         var description = record.get("description");
-                        if(description != "") {
+                        if (description != "") {
                             description = Ext.String.htmlEncode(description);
                             meta.tdAttr = 'data-qtip="' + description + '"';
                         }
@@ -152,10 +153,10 @@ Ext.define('openHAB.config.zwaveProductList', {
                     }
                 },
                 {
-                    text:'Value',
-                    flex:1,
-                    dataIndex:'value',
-                    renderer:function (value, meta, record) {
+                    text: 'Value',
+                    flex: 1,
+                    dataIndex: 'value',
+                    renderer: function (value, meta, record) {
                         if (value == "")
                             return "";
 

@@ -48,5 +48,10 @@ var language = {
     chartTab_Chart: "Chart",
     chartTab_Table: "Table",
 
-    properties: "Properties"
+    properties: "Properties",
+
+
+    zwave_Network: "Network",
+    zwave_ProductExplorer: "Product Explorer",
+    zwave_Devices: "Devices"
 };
