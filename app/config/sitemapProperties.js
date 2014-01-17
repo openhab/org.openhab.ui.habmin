@@ -29,7 +29,8 @@
  * to convey the resulting work.
  */
 
-/** OpenHAB Admin Console HABmin
+/**
+ * OpenHAB Admin Console HABmin
  *
  * @author Chris Jackson
  */
@@ -341,7 +342,7 @@ Ext.define('openHAB.config.sitemapProperties', {
         });
 
         var propertySheet = Ext.create('Ext.grid.property.Grid', {
-            title:'Properties',
+            title: language.properties,
             icon:'images/gear.png',
             region:'east',
             flex:1,

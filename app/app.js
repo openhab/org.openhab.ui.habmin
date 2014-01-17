@@ -35,6 +35,9 @@
  * @author Chris Jackson
  */
 
+/**
+ * Load the language file before the application starts
+ */
 document.ready=function() {
     var lang = navigator.language;
     if(lang.length == null)

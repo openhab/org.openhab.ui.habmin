@@ -394,7 +394,7 @@ Ext.define('openHAB.config.itemProperties', {
         });
 
         var itemProperties = Ext.create('Ext.panel.Panel', {
-            title:'Properties',
+            title: language.properties,
             itemId:'itemProperties',
             icon:'images/gear.png',
             tbar:toolbar,

@@ -46,5 +46,7 @@ var language = {
     mainTab_OnlineStatus: "Online Status",
 
     chartTab_Chart: "Chart",
-    chartTab_Table: "Table"
+    chartTab_Table: "Table",
+
+    properties: "Properties"
 };

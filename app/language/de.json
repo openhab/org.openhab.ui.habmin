@@ -2,5 +2,7 @@
     "mainTab_Persistence": "Beharrlichkeit",
     "mainTab_Configuration": "Konfiguration",
     "mainTab_Automation": "Automatisierung",
-    "mainTab_System": "System"
+    "mainTab_System": "System",
+
+    "properties": "Eigenschaften"
 }

@@ -37,12 +37,11 @@
 
 
 Ext.define('openHAB.config.bindingProperties', {
-    extend:'Ext.panel.Panel',
-    layout:'fit',
-    tabTip:'Binding Properties',
-    header:false,
+    extend: 'Ext.panel.Panel',
+    layout: 'fit',
+    header: false,
 
-    initComponent:function () {
+    initComponent: function () {
         var bindingName;
         var bindingConfig;
         var source;
@@ -88,39 +87,39 @@ Ext.define('openHAB.config.bindingProperties', {
         }
 
         var toolbar = Ext.create('Ext.toolbar.Toolbar', {
-            items:[
+            items: [
                 {
-                    icon:'images/cross.png',
-                    itemId:'cancel',
-                    text:'Cancel',
-                    cls:'x-btn-icon',
-                    disabled:true,
-                    tooltip:'Cancel changes made to the configuration',
-                    handler:function () {
+                    icon: 'images/cross.png',
+                    itemId: 'cancel',
+                    text: 'Cancel',
+                    cls: 'x-btn-icon',
+                    disabled: true,
+                    tooltip: 'Cancel changes made to the configuration',
+                    handler: function () {
                         resetBindingProperties();
                         toolbar.getComponent('save').disable();
                         toolbar.getComponent('cancel').disable();
                     }
                 },
                 {
-                    icon:'images/disk.png',
-                    itemId:'save',
-                    text:'Save',
-                    cls:'x-btn-icon',
-                    disabled:true,
-                    tooltip:'Save changes to the binding configuration',
-                    handler:function () {
+                    icon: 'images/disk.png',
+                    itemId: 'save',
+                    text: 'Save',
+                    cls: 'x-btn-icon',
+                    disabled: true,
+                    tooltip: 'Save changes to the binding configuration',
+                    handler: function () {
                         saveBinding();
                     }
                 },
                 {
-                    icon:'images/plus-button.png',
-                    itemId:'add',
-                    text:'Add Interface',
-                    cls:'x-btn-icon',
-                    disabled:true,
-                    tooltip:'Add an interface to the binding configuration',
-                    handler:function () {
+                    icon: 'images/plus-button.png',
+                    itemId: 'add',
+                    text: 'Add Interface',
+                    cls: 'x-btn-icon',
+                    disabled: true,
+                    tooltip: 'Add an interface to the binding configuration',
+                    handler: function () {
                         // Pop up a dialogue box asking for the interface name
                         Ext.MessageBox.prompt('Interface Name', 'Please enter the new interface name:', function (btn, text) {
                             if (btn == 'ok') {
@@ -142,48 +141,48 @@ Ext.define('openHAB.config.bindingProperties', {
             ]
         });
 
-        var bbDescription = Ext.create('Ext.toolbar.TextItem', {text:''});
+        var bbDescription = Ext.create('Ext.toolbar.TextItem', {text: ''});
         var bbProperties = Ext.create('Ext.ux.StatusBar', {
-            text:'-',
-            items:[bbDescription]
+            text: '-',
+            items: [bbDescription]
         });
 
         Ext.define('BindingConfigModel', {
-            extend:'Ext.data.Model',
-            fields:[
-                {name:'pid'},
-                {name:'name'},
-                {name:'label'},
-                {name:'value'},
-                {name:'description'},
-                {name:'optional'},
-                {name:'default'},
-                {name:'minimum'},
-                {name:'maximum'},
-                {name:'options'}
+            extend: 'Ext.data.Model',
+            fields: [
+                {name: 'pid'},
+                {name: 'name'},
+                {name: 'label'},
+                {name: 'value'},
+                {name: 'description'},
+                {name: 'optional'},
+                {name: 'default'},
+                {name: 'minimum'},
+                {name: 'maximum'},
+                {name: 'options'}
             ]
         });
 
         var bindingProperties = Ext.create('Ext.grid.property.Grid', {
-            title:'Properties',
-            icon:'images/gear.png',
-            tbar:toolbar,
-            bbar:bbProperties,
-            hideHeaders:true,
-            sortableColumns:false,
-            nameColumnWidth:300,
-            split:true,
-            source:source,
-            sourceConfig:sourceConfig,
-            viewConfig:{
-                markDirty:false
+            title: language.properties,
+            icon: 'images/gear.png',
+            tbar: toolbar,
+            bbar: bbProperties,
+            hideHeaders: true,
+            sortableColumns: false,
+            nameColumnWidth: 300,
+            split: true,
+            source: source,
+            sourceConfig: sourceConfig,
+            viewConfig: {
+                markDirty: false
             },
-            listeners:{
-                propertychange:function (source, recordId, value, oldValue, eOpts) {
+            listeners: {
+                propertychange: function (source, recordId, value, oldValue, eOpts) {
                     toolbar.getComponent('save').enable();
                     toolbar.getComponent('cancel').enable();
                 },
-                itemmouseenter:function (grid, record, item, index, e, eOpts) {
+                itemmouseenter: function (grid, record, item, index, e, eOpts) {
                     var name = record.get("name");
                     var parts = name.split(".");
                     var srec = getBindingProperty(parts[parts.length - 1]);
@@ -192,16 +191,16 @@ Ext.define('openHAB.config.bindingProperties', {
                         return;
                     bbDescription.setText(srec.description);
                 },
-                itemmouseleave:function (grid, record, item, index, e, eOpts) {
+                itemmouseleave: function (grid, record, item, index, e, eOpts) {
                     bbDescription.setText("");
                 }
             }
         });
 
         var tabs = Ext.create('Ext.tab.Panel', {
-            layout:'fit',
-            border:false,
-            items:bindingProperties
+            layout: 'fit',
+            border: false,
+            items: bindingProperties
         });
 
         this.items = tabs;
@@ -247,11 +246,11 @@ Ext.define('openHAB.config.bindingProperties', {
 
             bindingName = name;
             Ext.Ajax.request({
-                url:HABminBaseURL + '/config/bindings/' + bindingName,
-                timeout:5000,
-                method:'GET',
-                headers:{'Accept':'application/json'},
-                success:function (response, opts) {
+                url: HABminBaseURL + '/config/bindings/' + bindingName,
+                timeout: 5000,
+                method: 'GET',
+                headers: {'Accept': 'application/json'},
+                success: function (response, opts) {
                     var json = Ext.decode(response.responseText);
                     // If there's no config for this binding, records will be null
                     if (json == null)
@@ -286,12 +285,12 @@ Ext.define('openHAB.config.bindingProperties', {
 
             // Send the request to openHAB
             Ext.Ajax.request({
-                url:HABminBaseURL + '/config/bindings/' + bindingName,
-                headers:{'Accept':'application/json'},
-                method:'PUT',
-                jsonData:jsonArray,
-                success:function (response, opts) {
-                    handleStatusNotification(NOTIFICATION_OK,'Binding configuration saved');
+                url: HABminBaseURL + '/config/bindings/' + bindingName,
+                headers: {'Accept': 'application/json'},
+                method: 'PUT',
+                jsonData: jsonArray,
+                success: function (response, opts) {
+                    handleStatusNotification(NOTIFICATION_OK, 'Binding configuration saved');
 
                     var json = Ext.decode(response.responseText);
                     // If there's no config for this binding, records will be null
@@ -299,8 +298,8 @@ Ext.define('openHAB.config.bindingProperties', {
                         return;
                     updateBinding(json);
                 },
-                failure:function (result, request) {
-                    handleStatusNotification(NOTIFICATION_ERROR,'Error saving binding configuration');
+                failure: function (result, request) {
+                    handleStatusNotification(NOTIFICATION_ERROR, 'Error saving binding configuration');
                 }
             });
         }
