@@ -50,8 +50,23 @@ var language = {
 
     properties: "Properties",
 
+    error: "Error",
+    warning: "Warning",
+    success: "Success",
 
     zwave_Network: "Network",
     zwave_ProductExplorer: "Product Explorer",
-    zwave_Devices: "Devices"
+    zwave_Devices: "Devices",
+
+
+    onlineState_Online: "openHAB is online",
+    onlineState_Offline: "openHAB is offline",
+    onlineState_Busy: "openHAB is busy",
+
+    graph_Update: "Update",
+    graph_UpdateTip: "Retrieve the currently selected channels",
+    graph_Save: "Save Graph",
+    graph_SaveTip: "Save current chart configuration",
+    graph_Reset: "Reset Graph",
+    graph_ResetTip: "Clear Selected Channels and Reset Period"
 };

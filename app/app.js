@@ -313,7 +313,7 @@ function handleStatusNotification(type, message) {
             cls: 'ux-notification-error',
             iconCls: 'ux-notification-error-icon',
             closable: true,
-            title: 'Error',
+            title: language.error,
             html: message,
             slideInDuration: 800,
             slideBackDuration: 1500,
@@ -331,7 +331,7 @@ function handleStatusNotification(type, message) {
             cls: 'ux-notification-warning',
             iconCls: 'ux-notification-warning-icon',
             closable: false,
-            title: 'Warning',
+            title: language.warning,
             html: message,
             slideInDuration: 800,
             slideBackDuration: 1500,
@@ -349,7 +349,7 @@ function handleStatusNotification(type, message) {
             cls: 'ux-notification-success',
             iconCls: 'ux-notification-success-icon',
             closable: false,
-            title: 'Success',
+            title: language.success,
             html: message,
             slideInDuration: 800,
             slideBackDuration: 1500,
@@ -370,18 +370,18 @@ function handleOnlineStatus(newStatus) {
 
     if (newStatus == STATUS_ONLINE) {
         Ext.get('statusicon').dom.src = 'images/status.png';
-        statusTooltip.update("openHAB is online");
-        handleStatusNotification(NOTIFICATION_OK, "openHAB is online");
+        statusTooltip.update(language.onlineState_Online);
+        handleStatusNotification(NOTIFICATION_OK, language.onlineState_Online);
     }
     else if (newStatus == STATUS_BUSY) {
         Ext.get('statusicon').dom.src = 'images/status-busy.png';
-        statusTooltip.update("openHAB is busy");
-        handleStatusNotification(NOTIFICATION_WARNING, "openHAB is busy");
+        statusTooltip.update(language.onlineState_Busy);
+        handleStatusNotification(NOTIFICATION_WARNING, language.onlineState_Busy);
     }
     else if (newStatus == STATUS_OFFLINE) {
         Ext.get('statusicon').dom.src = 'images/status-offline.png';
-        statusTooltip.update("openHAB is offline");
-        handleStatusNotification(NOTIFICATION_ERROR, "openHAB is offline");
+        statusTooltip.update(language.onlineState_Offline);
+        handleStatusNotification(NOTIFICATION_ERROR, language.onlineState_Offline);
     }
 }
 

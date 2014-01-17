@@ -6,7 +6,15 @@
 
     "properties": "Eigenschaften",
 
+    "error": "Fehler",
+    "warning": "Warnung",
+    "success": "Erfolg",
+
     "zwave_Network": "Netzwerk",
     "zwave_ProductExplorer": "Produkt Explorer",
-    "zwave_Devices": "Geräte"
+    "zwave_Devices": "Geräte",
+
+    "onlineState_Online": "openHAB ist online",
+    "onlineState_Offline": "openHAB ist offline",
+    "onlineState_Busy": "openHAB ist besetzt"
 }

@@ -29,7 +29,8 @@
  * to convey the resulting work.
  */
 
-/** OpenHAB Admin Console HABmin
+/**
+ * OpenHAB Admin Console HABmin
  *
  * @author Chris Jackson
  */
@@ -48,10 +49,10 @@ Ext.define('openHAB.graph.itemList', {
                 {
                     icon:'images/cross.png',
                     itemId:'clear',
-                    text:'Reset Graph',
+                    text: language.graph_Reset,
                     cls:'x-btn-icon',
                     disabled:false,
-                    tooltip:'Clear Selected Channels and Reset Period',
+                    tooltip: language.graph_ResetTip,
                     handler:function () {
                         var selectedChanList = [];
                         itemToolbar.getComponent('update').disable();
@@ -62,10 +63,10 @@ Ext.define('openHAB.graph.itemList', {
                 {
                     icon:'images/disk.png',
                     itemId:'save',
-                    text:'Save Graph',
+                    text: language.graph_Save,
                     cls:'x-btn-icon',
                     disabled:true,
-                    tooltip:'Save current chart configuration',
+                    tooltip: language.graph_SaveTip,
                     handler:function () {
                         var saveGraph = Ext.create('openHAB.graph.saveGraph');
                         saveGraph.setData(selectedChanList);
@@ -74,10 +75,10 @@ Ext.define('openHAB.graph.itemList', {
                 {
                     icon:'images/external.png',
                     itemId:'update',
-                    text:'Update',
+                    text: language.graph_Update,
                     cls:'x-btn-icon',
                     disabled:true,
-                    tooltip:'Retrieve the currently selected channels.',
+                    tooltip: language.graph_UpdateTip,
                     handler:function () {
                         if(selectedChanList.length == 0)
                             return;

@@ -29,7 +29,8 @@
  * to convey the resulting work.
  */
 
-/** OpenHAB Admin Console HABmin
+/**
+ * OpenHAB Admin Console HABmin
  *
  * @author Chris Jackson
  */
@@ -117,7 +118,6 @@ Ext.define('openHAB.graph.graphHighcharts', {
         };
 
         function toolbarEnable() {
-            //TODO: Change to use toolbar.getComponent
             toolbar.getComponent('zoomIn').enable();
             toolbar.getComponent('zoomOut').enable();
             toolbar.getComponent('scrollLeft').enable();
@@ -548,7 +548,6 @@ Ext.define('openHAB.graph.graphHighcharts', {
             xtype:'panel',
             tbar:toolbar,
             flex:1,
-//            region:'center',
             maintainFlex:true,
             border:false,
             layout:'fit',
