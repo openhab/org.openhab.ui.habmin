@@ -44,6 +44,25 @@ Ext.define('openHAB.config.zwaveDeviceList', {
     layout: 'fit',
 
     initComponent: function () {
+        var self = this;
+
+        function getChildLeafNodes(node) {
+            var allNodes = new Array();
+            if (!Ext.value(node, false)) {
+                return [];
+            }
+
+            if (!node.hasChildNodes()) {
+                return [];
+            } else {
+                allNodes.push(node.get("domain"));
+                node.eachChild(function (Mynode) {
+                    allNodes = allNodes.concat(getChildLeafNodes(Mynode));
+                });
+            }
+            return allNodes;
+        }
+
         var toolbar = Ext.create('Ext.toolbar.Toolbar', {
             items: [
                 {
@@ -65,7 +84,7 @@ Ext.define('openHAB.config.zwaveDeviceList', {
             ]
         });
 
-
+        // Create the model for the store
         Ext.define('ZWaveConfigModel', {
             extend: 'Ext.data.Model',
             idProperty: 'domain',
@@ -86,6 +105,7 @@ Ext.define('openHAB.config.zwaveDeviceList', {
             ]
         });
 
+        // Create the tree view, and the associated store
         var list = Ext.create('Ext.tree.Panel', {
             store: {
                 extend: 'Ext.data.TreeStore',
@@ -97,7 +117,6 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                     type: 'rest',
                     url: HABminBaseURL + '/zwave',
                     reader: {
-//                        type:'rest',
                         root: 'records'
                     },
                     headers: {'Accept': 'application/json'},
@@ -142,9 +161,9 @@ Ext.define('openHAB.config.zwaveDeviceList', {
             multiSelect: false,
             singleExpand: true,
             rootVisible: false,
-            viewConfig:{
-                stripeRows:true,
-                markDirty:false
+            viewConfig: {
+                stripeRows: true,
+                markDirty: false
             },
             plugins: [
                 Ext.create('Ext.grid.plugin.CellEditing', {
@@ -341,12 +360,73 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                 },
                 afteritemcollapse: function (node, index, item, eOpts) {
 //                    node.removeAll();
+                },
+                afteritemexpand: function (node, index, item, eOpts) {
+                    // Get a list of all children nodes
+                    self.nodePollingTable = getChildLeafNodes(node);
+
+                    // And now add parents as well
+                    var parent = node.parentNode;
+                    while (parent != null) {
+                        self.nodePollingTable.push(parent.get("domain"));
+                        parent = parent.parentNode;
+                    }
                 }
             }
         });
 
+        this.store = list.getStore();
         this.items = [list];
         this.callParent();
+    },
+    store: null,
+    nodePollingTable: [],
+    updateView: {
+        run: function () {
+            // Periodically update the visible store items
+            if (this.nodePollingTable == null || this.nodePollingTable.length == 0)
+                return;
+
+            // Keep a local copy of 'this' so we have scope in the callback
+            var self = this;
+            // Loop through and request all visible nodes
+            for (var cnt = 0; cnt < this.nodePollingTable.length; cnt++) {
+                // Request an update of the node
+                Ext.Ajax.request({
+                    type: 'rest',
+                    url: HABminBaseURL + '/zwave/' + this.nodePollingTable[cnt],
+                    method: 'GET',
+                    success: function (response, opts) {
+                        var res = Ext.decode(response.responseText);
+                        if (res == null || res.records == null)
+                            return;
+
+                        for (var i = 0; i < res.records.length; i++) {
+                            var updatedNode = self.store.getNodeById(res.records[i].domain);
+                            if (updatedNode == null)
+                                continue;
+
+                            // Update the dynamic attributes
+                            updatedNode.set("value", res.records[i].value);
+                            updatedNode.set("state", res.records[i].state);
+                        }
+                    }
+                });
+            }
+        },
+        interval: 1500
+    },
+    listeners: {
+        beforeshow: function (grid, eOpts) {
+            this.updateView.scope = this;
+            Ext.TaskManager.start(this.updateView);
+        },
+        beforehide: function (grid, eOpts) {
+            Ext.TaskManager.stop(this.updateView);
+        },
+        beforedestroy: function (grid, eOpts) {
+            Ext.TaskManager.stop(this.updateView);
+        }
     }
 })
 ;
