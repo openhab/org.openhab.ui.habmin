@@ -44,6 +44,7 @@ Ext.define('openHAB.config.zwaveDeviceList', {
     layout: 'fit',
 
     initComponent: function () {
+        console.log(sprintf(language.zwave_DevicesValueUpdateRangeError, 100, 200));
         var self = this;
 
         function getChildLeafNodes(node) {
@@ -54,7 +55,7 @@ Ext.define('openHAB.config.zwaveDeviceList', {
 
             if (!node.hasChildNodes()) {
                 return [];
-            } else {
+            } else if(node.isVisible()) {
                 allNodes.push(node.get("domain"));
                 node.eachChild(function (Mynode) {
                     allNodes = allNodes.concat(getChildLeafNodes(Mynode));
@@ -68,10 +69,10 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                 {
                     icon: 'images/arrow-circle-315.png',
                     itemId: 'reload',
-                    text: 'Reload Properties',
+                    text: language.zwave_DevicesReloadButton,
                     cls: 'x-btn-icon',
                     disabled: false,
-                    tooltip: 'Reload the configuration',
+                    tooltip: language.zwave_DevicesReloadButtonTip,
                     handler: function () {
                         var store = list.getStore();
                         if (store == null)
@@ -184,7 +185,7 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                             // Check that the value is within limits
                             var limitError = false;
                             if (limitError == true) {
-                                handleStatusNotification(NOTIFICATION_WARNING, "Value is out of specified range. Please limit the value to between " + e.record.get('minimum') + " and " + e.record.get('minimum') + ".");
+                                handleStatusNotification(NOTIFICATION_WARNING, sprintf(language.zwave_DevicesValueUpdateRangeError, e.record.get('minimum'), e.record.get('maximum')));
                                 return;
                             }
 
@@ -198,7 +199,7 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                                 success: function (response, opts) {
                                 },
                                 failure: function () {
-                                    handleStatusNotification(NOTIFICATION_ERROR, "Error sending updated value to the server!");
+                                    handleStatusNotification(NOTIFICATION_ERROR, language.zwave_DevicesValueUpdateError);
                                 }
                             });
                         }
@@ -207,7 +208,7 @@ Ext.define('openHAB.config.zwaveDeviceList', {
             ],
             columns: [
                 {
-                    text: 'Node',
+                    text: language.zwave_DevicesTreeNode,
                     xtype: 'treecolumn',
                     flex: 1,
                     dataIndex: 'label',
@@ -240,7 +241,7 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                     }
                 },
                 {
-                    text: 'Value',
+                    text: language.zwave_DevicesTreeValue,
                     flex: 1,
                     dataIndex: 'value',
                     renderer: function (value, meta, record) {
@@ -346,7 +347,7 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                                 success: function (response, opts) {
                                 },
                                 failure: function () {
-                                    handleStatusNotification(NOTIFICATION_ERROR, "Error sending action to the server!");
+                                    handleStatusNotification(NOTIFICATION_ERROR, language.zwave_DevicesActionError);
                                 }
                             });
                         }
@@ -357,9 +358,6 @@ Ext.define('openHAB.config.zwaveDeviceList', {
 
                     // Get the node ID
                     var nodeName;
-                },
-                afteritemcollapse: function (node, index, item, eOpts) {
-//                    node.removeAll();
                 },
                 afteritemexpand: function (node, index, item, eOpts) {
                     // Get a list of all children nodes
@@ -401,10 +399,15 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                         if (res == null || res.records == null)
                             return;
 
+                        // Loop through all records
                         for (var i = 0; i < res.records.length; i++) {
                             var updatedNode = self.store.getNodeById(res.records[i].domain);
-                            if (updatedNode == null)
+                            if (updatedNode == null) {
+                                // TODO:If the node isn't found, then it's new - add it!
+//                                var rootNode = self.store.getRootNode();
+//                                rootNode.insertChild(4,res.records[i]);
                                 continue;
+                            }
 
                             // Update the dynamic attributes
                             updatedNode.set("value", res.records[i].value);

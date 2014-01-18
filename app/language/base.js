@@ -57,6 +57,13 @@ var language = {
     zwave_Network: "Network",
     zwave_ProductExplorer: "Product Explorer",
     zwave_Devices: "Devices",
+    zwave_DevicesReloadButton: "Reload Properties",
+    zwave_DevicesReloadButtonTip: "Reload the configuration",
+    zwave_DevicesValueUpdateError: "Error sending updated value to the server!",
+    zwave_DevicesValueUpdateRangeError: "Value is out of specified range. Please limit the value to between %s and %d.",
+    zwave_DevicesActionError: "Error sending action to the server!",
+    zwave_DevicesTreeNode: "Node",
+    zwave_DevicesTreeValue: "Value",
 
 
     onlineState_Online: "openHAB is online",
