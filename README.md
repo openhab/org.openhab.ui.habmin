@@ -6,12 +6,13 @@ _HABmin_ is a web administration console for openHAB. It aims to provide a compl
 * Configure items
 * Configure mapping
 * Configure sitemaps
+* Configure ZWave network
 * Configure rules and notifications
 * Query and graph data from persistence stores
 * View OSGi binding status
 * View log files
 
-The interface is a modern browser based system providing point and click, and drag and drop input. As features are added, the wiki is being updated - please take a look.
+The interface is a modern browser based system providing point and click, and drag and drop input. As features are added, the wiki is being updated - please take a look. The interface supports multiple languages - please help with translations.
 
 
 ![Item Config Screen](https://raw.github.com/wiki/cdjackson/HABmin/habmin_itemconfig.png)
