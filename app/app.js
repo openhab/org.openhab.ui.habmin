@@ -393,6 +393,7 @@ function handleOnlineStatus(newStatus) {
     }
 }
 
+var statusCount = 0;
 function doStatus() {
     // Periodically retrieve the openHAB server status updates
     var updateStatus = {
@@ -400,22 +401,27 @@ function doStatus() {
             Ext.Ajax.request({
                 type:'rest',
                 url:HABminBaseURL + '/status',
+                timeout: 2500,
                 method: 'GET',
                 success: function (response, opts) {
                     var res = Ext.decode(response.responseText);
-                    if(res == null) {
-                        handleOnlineStatus(STATUS_OFFLINE);
-                    }
-                    else {
-                        handleOnlineStatus(STATUS_ONLINE);
-                    }
+                    if(res == null)
+                        statusCount++;
+                    else
+                        statusCount = 0;
                 },
                 failure: function (response, opts) {
-                    handleOnlineStatus(STATUS_OFFLINE);
+                    statusCount++;
+                },
+                callback: function () {
+                    if(statusCount >= 2)
+                        handleOnlineStatus(STATUS_OFFLINE);
+                    else
+                        handleOnlineStatus(STATUS_ONLINE);
                 }
             });
         },
-        interval: 5000
+        interval: 2500
     }
     Ext.TaskManager.start(updateStatus);
 }
