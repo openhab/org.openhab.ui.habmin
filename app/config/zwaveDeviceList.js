@@ -44,7 +44,6 @@ Ext.define('openHAB.config.zwaveDeviceList', {
     layout: 'fit',
 
     initComponent: function () {
-        console.log(sprintf(language.zwave_DevicesValueUpdateRangeError, 100, 200));
         var self = this;
 
         function getChildLeafNodes(node) {

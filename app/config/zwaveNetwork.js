@@ -102,13 +102,13 @@ Ext.define('openHAB.config.zwaveNetwork', {
                         },
                         Tips: {
                             enable: true,
-                            onShow: function(tip, node) {
+                            onShow: function (tip, node) {
                                 var html = "<div class=\"tip-title\">" + node.name + "</div>";
                                 var data = node.data;
-                                html += "<b>Listening:</b> " + data.Listening;
-                                html += "<br/><b>Routing:</b> " + data.Routing;
-                                html += "<br/><b>Power:</b> " + data.Power;
-                                html += "<br/><br/><u>Neighbors</u>";
+                                html += "<b>" + language.zwave_NetworkListening + ":</b> " + data.Listening;
+                                html += "<br/><b>" + language.zwave_NetworkRouting + ":</b> " + data.Routing;
+                                html += "<br/><b>" + language.zwave_NetworkPower + ":</b> " + data.Power;
+                                html += "<br/><br/><u>" + language.zwave_NetworkNeighbors + "</u>";
 
                                 // Find the node
                                 var n = 0;
@@ -118,7 +118,7 @@ Ext.define('openHAB.config.zwaveNetwork', {
                                 }
 
                                 // Build the neighbor list
-                                if(n == 0 || self.networkData[n].adjacencies.length == 0) {
+                                if (n == 0 || self.networkData[n].adjacencies.length == 0) {
                                     html += "<br/>None";
                                 }
                                 else {
@@ -163,7 +163,7 @@ Ext.define('openHAB.config.zwaveNetwork', {
                                 if (self.selectedNode.id === self.networkData[i].id) {
                                     // Loop through all the routes
                                     for (var r = 0; r < self.networkData[i].adjacencies.length; r++) {
-                                        if((self.selectedNode.id == adj.nodeFrom.id ||
+                                        if ((self.selectedNode.id == adj.nodeFrom.id ||
                                             self.selectedNode.id == adj.nodeTo.id) &&
                                             (self.networkData[i].adjacencies[r].nodeTo == adj.nodeFrom.id ||
                                                 self.networkData[i].adjacencies[r].nodeTo == adj.nodeTo.id)) {
@@ -263,11 +263,11 @@ Ext.define('openHAB.config.zwaveNetwork', {
 
                             if (node != 0) {
                                 for (var i = 0; i < json.records.length; i++) {
-                                    if(json.records[i].name == "Power")
+                                    if (json.records[i].name == "Power")
                                         self.networkData[node].data.Power = json.records[i].value;
-                                    if(json.records[i].name == "Listening")
+                                    if (json.records[i].name == "Listening")
                                         self.networkData[node].data.Listening = json.records[i].value;
-                                    if(json.records[i].name == "Routing")
+                                    if (json.records[i].name == "Routing")
                                         self.networkData[node].data.Routing = json.records[i].value;
 
                                     if (json.records[i].name == "Listening" && json.records[i].value == "false") {

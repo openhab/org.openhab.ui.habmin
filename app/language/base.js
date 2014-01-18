@@ -35,6 +35,7 @@
  * @author Chris Jackson
  */
 var language = {
+    // app.js
     mainTab_Persistence: "Persistence",
     mainTab_PersistenceTip: "Display chart page",
     mainTab_Configuration: "Configuration",
@@ -44,18 +45,21 @@ var language = {
     mainTab_System: "System",
     mainTab_SystemTip: "Display system information",
     mainTab_OnlineStatus: "Online Status",
+    onlineState_Online: "openHAB is online",
+    onlineState_Offline: "openHAB is offline",
+    onlineState_Busy: "openHAB is busy",
 
-    chartTab_Chart: "Chart",
-    chartTab_Table: "Table",
-
+    // GENERAL
     properties: "Properties",
-
     error: "Error",
     warning: "Warning",
     success: "Success",
 
+    //
     zwave_Network: "Network",
     zwave_ProductExplorer: "Product Explorer",
+
+    // config/zwaveDeviceList.js
     zwave_Devices: "Devices",
     zwave_DevicesReloadButton: "Reload Properties",
     zwave_DevicesReloadButtonTip: "Reload the configuration",
@@ -65,11 +69,17 @@ var language = {
     zwave_DevicesTreeNode: "Node",
     zwave_DevicesTreeValue: "Value",
 
+    // config/zwaveNetwork.js
+    zwave_NetworkListening: "Listening",
+    zwave_NetworkRouting: "Routing",
+    zwave_NetworkPower: "Power",
+    zwave_NetworkNeighbors: "Neighbors",
 
-    onlineState_Online: "openHAB is online",
-    onlineState_Offline: "openHAB is offline",
-    onlineState_Busy: "openHAB is busy",
+    // graph/graph.js
+    chartTab_Chart: "Chart",
+    chartTab_Table: "Table",
 
+    // graph/itemList.js
     graph_Update: "Update",
     graph_UpdateTip: "Retrieve the currently selected channels",
     graph_Save: "Save Graph",
