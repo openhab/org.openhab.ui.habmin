@@ -62,6 +62,10 @@
     width:16px;
     background-image:url(../images/edit.png)
 }
+.x-tree-lines img.widget-chart {
+     width:16px;
+     background-image:url(../images/chart-up.png)
+ }
 .x-tree-lines img.widget-colorpicker {
     width:16px;
     background-image:url(../images/color.png)

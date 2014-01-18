@@ -169,6 +169,7 @@ var widgetTypeArray = [
     {type: "Image", icon: "images/picture.png", iconCls: "widget-image"},
     {type: "Selection", icon: "images/ui-combo-box-blue.png", iconCls: "widget-selection"},
     {type: "Slider", icon: "images/ui-slider.png", iconCls: "widget-slider"},
+    {type: "Chart", icon: "images/chart-up.png", iconCls: "widget-chart"},
     {type: "Video", icon: "images/film.png", iconCls: "widget-video"},
     {type: "Webview", icon: "images/globe.png", iconCls: "widget-webview"},
     {type: "Setpoint", icon: "images/ui-scroll-bar.png", iconCls: "widget-setpoint"},

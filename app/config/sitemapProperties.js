@@ -443,7 +443,7 @@ Ext.define('openHAB.config.sitemapProperties', {
         var widgetsGrid = Ext.create('Ext.grid.Panel', {
             // TODO: Does this need to be 'id'?
             id:'sitemapWidgetGrid',
-            store:widgetStore,
+            store: widgetStore,
             icon:'images/document-node.png',
             header:true,
             hideHeaders:true,

@@ -73,7 +73,7 @@ var isoLanguages = [
     {"code": "hr", "name": "Croatian", "nativeName": "hrvatski"},
     {"code": "cs", "name": "Czech", "nativeName": "česky, čeština"},
     {"code": "da", "name": "Danish", "nativeName": "dansk"},
-    {"code": "dv", "name": "Divehi; Dhivehi; Maldivian;", "nativeName":""},
+    {"code": "dv", "name": "Divehi; Dhivehi; Maldivian;", "nativeName": ""},
     {"code": "nl", "name": "Dutch", "nativeName": "Nederlands, Vlaams"},
     {"code": "en", "name": "English", "nativeName": "English"},
     {"code": "eo", "name": "Esperanto", "nativeName": "Esperanto"},
@@ -221,9 +221,9 @@ var isoLanguages = [
 ];
 
 function isoLanguageGetName(code) {
-    for(var cnt = 0; cnt < isoLanguages.length; cnt++) {
-        if(isoLanguages[cnt].code == code) {
-            if(isoLanguages[cnt].name != isoLanguages[cnt].nativeName)
+    for (var cnt = 0; cnt < isoLanguages.length; cnt++) {
+        if (isoLanguages[cnt].code == code) {
+            if (isoLanguages[cnt].name != isoLanguages[cnt].nativeName)
                 return isoLanguages[cnt].name + " (" + isoLanguages[cnt].nativeName + ")";
             else
                 return isoLanguages[cnt].name;
