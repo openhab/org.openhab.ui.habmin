@@ -219,3 +219,15 @@ var isoLanguages = [
     {"code": "yo", "name": "Yoruba", "nativeName": "Yorùbá"},
     {"code": "za", "name": "Zhuang, Chuang", "nativeName": "Saɯ cueŋƅ, Saw cuengh"}
 ];
+
+function isoLanguageGetName(code) {
+    for(var cnt = 0; cnt < isoLanguages.length; cnt++) {
+        if(isoLanguages[cnt].code == code) {
+            if(isoLanguages[cnt].name != isoLanguages[cnt].nativeName)
+                return isoLanguages[cnt].name + " (" + isoLanguages[cnt].nativeName + ")";
+            else
+                return isoLanguages[cnt].name;
+        }
+    }
+    return "UNKNOWN";
+}

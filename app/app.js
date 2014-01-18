@@ -39,14 +39,21 @@
  * Load the language file before the application starts
  */
 document.ready=function() {
+    // Detect the language and get the two character code
     var lang = navigator.language;
-    if(lang.length == null)
-        return;
-    if(lang.length == 0)
-        return;
+    if(lang.length == null || lang.length == 0) {
+        lang = "en";
+    }
+    else {
+        lang = lang.substr(0,2);
+    }
 
-    lang = lang.substr(0,2);
-    loadLanguage(lang);
+    // Write the language on the splash-screen
+    Ext.fly('HABminLanguage').update(isoLanguageGetName(lang), false);
+
+    // Only try and load languages that aren't English since this is the base
+    if(lang != "en")
+        loadLanguage(lang);
 };
 
 Ext.Container.prototype.bufferResize = false;
