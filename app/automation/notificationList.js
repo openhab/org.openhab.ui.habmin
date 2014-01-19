@@ -29,19 +29,20 @@
  * to convey the resulting work.
  */
 
-/** OpenHAB Admin Console HABmin
+/**
+ * OpenHAB Admin Console HABmin
  *
  * @author Chris Jackson
  */
 
 
 Ext.define('openHAB.automation.notificationList', {
-    extend:'Ext.panel.Panel',
-    layout:'fit',
-    icon:'images/bell.png',
-    title: 'Notifications',
+    extend: 'Ext.panel.Panel',
+    layout: 'fit',
+    icon: 'images/bell.png',
 
-    initComponent:function () {
+    initComponent: function () {
+        this.title = language.notification_ListTitle;
 
         this.callParent();
     }

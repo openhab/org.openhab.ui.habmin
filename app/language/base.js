@@ -120,6 +120,17 @@ var language = {
     rule_EditorErrorLoadingRule: "Error loading rule model '%s'",
     rule_EditorCreatedOk: "Rule model '%s' created successfully.",
     rule_EditorLoadedOk: "Rule model '%s' loaded successfully.",
-    rule_EditorErrorNoModel: "Error loading rule model - no model defined"
+    rule_EditorErrorNoModel: "Error loading rule model - no model defined",
 
+    // automation/ruleLibrary.js
+    rule_LibraryTitle: "Rule Library",
+    rule_LibraryRule: "Rule",
+
+    // automation/ruleList.js
+    rule_ListTitle: "Rules",
+    rule_ListItem: "Item",
+    rule_ListRule: "Rule",
+
+    // automation/notificationList.js
+    notification_ListTitle: "Notifications"
 };

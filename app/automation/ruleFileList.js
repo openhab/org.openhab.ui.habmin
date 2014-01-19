@@ -40,9 +40,9 @@ Ext.define('openHAB.automation.ruleFileList', {
     extend: 'Ext.panel.Panel',
     layout: 'fit',
     icon: 'images/document-copy.png',
-    title: 'Rule Models',
 
     initComponent: function () {
+        this.title = language.rule_FileListTitle;
 
         // Define the Rule Template Store
         Ext.define('RuleModelModel', {
@@ -58,21 +58,21 @@ Ext.define('openHAB.automation.ruleFileList', {
         });
 
         var toolbar = Ext.create('Ext.toolbar.Toolbar', {
-            items:[
+            items: [
                 {
-                    icon:'images/plus-button.png',
-                    itemId:'add',
-                    text:'Add New Model',
-                    cls:'x-btn-icon',
-                    disabled:false,
-                    tooltip:'Add a new rule model to openHAB',
-                    handler:function () {
+                    icon: 'images/plus-button.png',
+                    itemId: 'add',
+                    text: language.rule_FileListAdd,
+                    cls: 'x-btn-icon',
+                    disabled: false,
+                    tooltip: language.rule_FileListAddTip,
+                    handler: function () {
                         Ext.define('RuleModelsModel', {
-                            extend:'Ext.data.Model',
-                            fields:[
-                                {name:'name'},
-                                {name:'icon'},
-                                {name:'iconCls'}
+                            extend: 'Ext.data.Model',
+                            fields: [
+                                {name: 'name'},
+                                {name: 'icon'},
+                                {name: 'iconCls'}
                             ]
                         });
 
@@ -97,47 +97,47 @@ Ext.define('openHAB.automation.ruleFileList', {
                         }
 
                         var form = Ext.widget('form', {
-                            layout:{
-                                type:'vbox',
-                                align:'stretch'
+                            layout: {
+                                type: 'vbox',
+                                align: 'stretch'
                             },
-                            border:false,
-                            bodyPadding:10,
-                            fieldDefaults:{
-                                labelAlign:'top',
-                                labelWidth:100,
-                                labelStyle:'font-weight:bold'
+                            border: false,
+                            bodyPadding: 10,
+                            fieldDefaults: {
+                                labelAlign: 'top',
+                                labelWidth: 100,
+                                labelStyle: 'font-weight:bold'
                             },
-                            defaults:{
-                                margins:'0 0 10 0'
+                            defaults: {
+                                margins: '0 0 10 0'
                             },
-                            items:[
+                            items: [
                                 {
-                                    margin:'0 0 0 0',
-                                    xtype:'combobox',
-                                    fieldLabel:'Model name:',
-                                    itemId:'model',
-                                    name:'model',
-                                    store:{model:'RuleModelsModel', data:models},
-                                    allowBlank:false,
-                                    valueField:'name',
-                                    displayField:'name',
-                                    queryMode:'local',
-                                    forceSelection:false,
-                                    editable:true,
-                                    typeAhead:true
+                                    margin: '0 0 0 0',
+                                    xtype: 'combobox',
+                                    fieldLabel: 'Model name:',
+                                    itemId: 'model',
+                                    name: 'model',
+                                    store: {model: 'RuleModelsModel', data: models},
+                                    allowBlank: false,
+                                    valueField: 'name',
+                                    displayField: 'name',
+                                    queryMode: 'local',
+                                    forceSelection: false,
+                                    editable: true,
+                                    typeAhead: true
                                 }
                             ],
-                            buttons:[
+                            buttons: [
                                 {
-                                    text:'Cancel',
-                                    handler:function () {
+                                    text: language.cancel,
+                                    handler: function () {
                                         this.up('window').destroy();
                                     }
                                 },
                                 {
-                                    text:'Create Model',
-                                    handler:function () {
+                                    text: language.rule_FileListCreateButton,
+                                    handler: function () {
                                         if (this.up('form').getForm().isValid()) {
                                             // Read the model name
                                             var model = form.getForm().findField('model').getSubmitValue();
@@ -159,33 +159,33 @@ Ext.define('openHAB.automation.ruleFileList', {
                             ]
                         });
 
-                        var saveWin = Ext.widget('window', {
-                            title:'Specify Model Name',
-                            closeAction:'destroy',
-                            width:225,
-                            resizable:false,
-                            draggable:false,
-                            modal:true,
-                            layout:{
-                                type:'vbox',
-                                align:'stretch'
+                        var createWin = Ext.widget('window', {
+                            title: language.rule_FileListCreateButton,
+                            closeAction: 'destroy',
+                            width: 225,
+                            resizable: false,
+                            draggable: false,
+                            modal: true,
+                            layout: {
+                                type: 'vbox',
+                                align: 'stretch'
                             },
-                            items:[form]
+                            items: [form]
                         });
 
-                        saveWin.show();
+                        createWin.show();
                     }
                 },
                 {
-                    xtype:'tbfill'
+                    xtype: 'tbfill'
                 },
                 {
-                    icon:'images/arrow-circle-315.png',
-                    itemId:'refresh',
-                    cls:'x-btn-icon',
-                    disabled:false,
-                    tooltip:'Refresh the rule model list',
-                    handler:function () {
+                    icon: 'images/arrow-circle-315.png',
+                    itemId: 'refresh',
+                    cls: 'x-btn-icon',
+                    disabled: false,
+                    tooltip: language.rule_FileListRefresh,
+                    handler: function () {
                         loadModelList();
                     }
                 }
@@ -196,12 +196,12 @@ Ext.define('openHAB.automation.ruleFileList', {
             store: ruleModelStore,
             header: false,
             split: true,
-            tbar:toolbar,
+            tbar: toolbar,
             collapsible: false,
             multiSelect: false,
             columns: [
                 {
-                    text: 'Model',
+                    text: language.rule_FileListModel,
                     flex: 1,
                     dataIndex: 'model'
                     /*,
@@ -217,13 +217,13 @@ Ext.define('openHAB.automation.ruleFileList', {
                      }*/
                 },
                 {
-                    text: 'Rule',
+                    text: language.rule_FileListRule,
                     flex: 3,
                     dataIndex: 'rule'
                 }
             ],
             listeners: {
-                itemclick:function (grid, record) {
+                itemclick: function (grid, record) {
                     if (record == null)
                         return;
 
@@ -265,7 +265,7 @@ Ext.define('openHAB.automation.ruleFileList', {
 
                     var models = [].concat(json.rule);
                     for (var cnt = 0; cnt < models.length; cnt++) {
-                        if(models[cnt].rules == null) {
+                        if (models[cnt].rules == null) {
                             var element = {};
                             element.model = models[cnt].model;
 

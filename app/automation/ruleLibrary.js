@@ -29,47 +29,48 @@
  * to convey the resulting work.
  */
 
-/** OpenHAB Admin Console HABmin
+/**
+ * OpenHAB Admin Console HABmin
  *
  * @author Chris Jackson
  */
 
 
 Ext.define('openHAB.automation.ruleLibrary', {
-    extend:'Ext.panel.Panel',
-    layout:'fit',
-    icon:'images/drawer.png',
-    title: 'Rule Library',
+    extend: 'Ext.panel.Panel',
+    layout: 'fit',
+    icon: 'images/drawer.png',
 
-    initComponent:function () {
+    initComponent: function () {
+        this.title = language.rule_LibraryTitle;
 
         var ruleList = Ext.create('Ext.grid.Panel', {
-            store:ruleLibraryStore,
-            header:false,
-            split:true,
+            store: ruleLibraryStore,
+            header: false,
+            split: true,
 //            tbar:toolbar,
-            collapsible:false,
-            multiSelect:false,
-            columns:[
+            collapsible: false,
+            multiSelect: false,
+            columns: [
                 {
-                    text:'Rule',
-                    flex:4,
-                    dataIndex:'label'
+                    text: language.rule_LibraryRule,
+                    flex: 4,
+                    dataIndex: 'label'
                     /*,
-                    renderer:function (value, metadata, record, row, col, store, gridView) {
-                        var img = '';
-                        if (record.get("persistence") != null) {
-                            var services = record.get("persistence");
-                            if (services != "")
-                                img = '<img src="images/database-small.png">';
-                        }
+                     renderer:function (value, metadata, record, row, col, store, gridView) {
+                     var img = '';
+                     if (record.get("persistence") != null) {
+                     var services = record.get("persistence");
+                     if (services != "")
+                     img = '<img src="images/database-small.png">';
+                     }
 
-                        return '<span>' + value + '</span><span style="float:right">' + img + '</span>';
-                    }*/
+                     return '<span>' + value + '</span><span style="float:right">' + img + '</span>';
+                     }*/
                 }
             ],
-            listeners:{
-                select:function (grid, record, index, eOpts) {
+            listeners: {
+                select: function (grid, record, index, eOpts) {
                 }
             }
         });
