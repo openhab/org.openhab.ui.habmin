@@ -40,16 +40,19 @@
  */
 document.ready=function() {
     // Detect the language and get the two character code
-    var lang = navigator.language;
-    if(lang.length == null || lang.length == 0) {
-        lang = "en";
-    }
-    else {
+    var lang = "en";
+    var country = "en"
+    var navSetting = navigator.language;
+    if(navSetting != null && navSetting.length != 0) {
         lang = lang.substr(0,2);
+        country = lang.substr(2,4);
+
+        if(country == null || country.length == 0)
+            country = lang;
     }
 
     // Write the language on the splash-screen
-    Ext.fly('HABminLanguage').update(isoLanguageGetName(lang), false);
+    Ext.fly('HABminLanguage').update("<img src='images/flags/gb.png'> &nbsp" + isoLanguageGetName(lang), false);
 
     // Only try and load languages that aren't English since this is the base
     if(lang != "en")
@@ -866,7 +869,7 @@ function createUI() {
     viewPort.show(true);
 
     Ext.get('splashscreen').fadeOut({
-        duration: 500,
+        duration: 2000,
         remove: true
     });
 
