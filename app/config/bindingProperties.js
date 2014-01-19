@@ -91,10 +91,10 @@ Ext.define('openHAB.config.bindingProperties', {
                 {
                     icon: 'images/cross.png',
                     itemId: 'cancel',
-                    text: 'Cancel',
+                    text: language.cancel,
                     cls: 'x-btn-icon',
                     disabled: true,
-                    tooltip: 'Cancel changes made to the configuration',
+                    tooltip: language.config_BindingPropertiesCancelTip,
                     handler: function () {
                         resetBindingProperties();
                         toolbar.getComponent('save').disable();
@@ -104,10 +104,10 @@ Ext.define('openHAB.config.bindingProperties', {
                 {
                     icon: 'images/disk.png',
                     itemId: 'save',
-                    text: 'Save',
+                    text: language.save,
                     cls: 'x-btn-icon',
                     disabled: true,
-                    tooltip: 'Save changes to the binding configuration',
+                    tooltip: language.config_BindingPropertiesSaveTip,
                     handler: function () {
                         saveBinding();
                     }
@@ -118,14 +118,14 @@ Ext.define('openHAB.config.bindingProperties', {
                     text: 'Add Interface',
                     cls: 'x-btn-icon',
                     disabled: true,
-                    tooltip: 'Add an interface to the binding configuration',
+                    tooltip: language.config_BindingPropertiesAddTip,
                     handler: function () {
                         // Pop up a dialogue box asking for the interface name
-                        Ext.MessageBox.prompt('Interface Name', 'Please enter the new interface name:', function (btn, text) {
+                        Ext.MessageBox.prompt(language.config_BindingPropertiesInterfaceName, language.config_BindingPropertiesInterfaceNamePrompt, function (btn, text) {
                             if (btn == 'ok') {
                                 // Add a new property sheet to the panel
                                 if (text.indexOf('.') != -1) {
-                                    Ext.MessageBox("Error", "Interface name can only contain alphanumeric characters.");
+                                    Ext.MessageBox(language.error, language.config_BindingPropertiesInterfaceNameError);
                                 }
 
                                 // process text value and close...
@@ -211,7 +211,7 @@ Ext.define('openHAB.config.bindingProperties', {
             // Remember the configuration
             bindingConfig = json;
 
-            bbProperties.setText("Binding: " + bindingName);
+            bbProperties.setText(language.config_BindingPropertiesBinding + bindingName);
 
             // If there are interface configurations available, then enable the "add interface" button
             if (json.interfaceconfig != null)
@@ -290,7 +290,7 @@ Ext.define('openHAB.config.bindingProperties', {
                 method: 'PUT',
                 jsonData: jsonArray,
                 success: function (response, opts) {
-                    handleStatusNotification(NOTIFICATION_OK, 'Binding configuration saved');
+                    handleStatusNotification(NOTIFICATION_OK, language.config_BindingPropertiesSaved);
 
                     var json = Ext.decode(response.responseText);
                     // If there's no config for this binding, records will be null
@@ -299,7 +299,7 @@ Ext.define('openHAB.config.bindingProperties', {
                     updateBinding(json);
                 },
                 failure: function (result, request) {
-                    handleStatusNotification(NOTIFICATION_ERROR, 'Error saving binding configuration');
+                    handleStatusNotification(NOTIFICATION_ERROR, language.config_BindingPropertiesError);
                 }
             });
         }

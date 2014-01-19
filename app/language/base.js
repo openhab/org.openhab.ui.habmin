@@ -41,6 +41,7 @@ var language = {
     warning: "Warning",
     success: "Success",
     cancel: "Cancel",
+    save: "Save",
 
 
     // app.js
@@ -76,6 +77,24 @@ var language = {
     zwave_NetworkRouting: "Routing",
     zwave_NetworkPower: "Power",
     zwave_NetworkNeighbors: "Neighbors",
+
+    // config/bindingList.js
+    config_BindingListTitle: "Bindings",
+    config_BindingListTitleTip: "Binding list",
+    config_BindingListBundle: "Bundle",
+    config_BindingListName: "Name",
+    config_BindingListVersion: "Version",
+
+    // config/bindingProperties.js
+    config_BindingPropertiesBinding: "Binding: ",
+    config_BindingPropertiesInterfaceName: "Interface Name",
+    config_BindingPropertiesInterfaceNamePrompt: "Please enter the new interface name:",
+    config_BindingPropertiesInterfaceNameError: "Interface name can only contain alphanumeric characters.",
+    config_BindingPropertiesCancelTip: "Cancel changes made to the configuration",
+    config_BindingPropertiesSaveTip: "Save changes to the binding configuration",
+    config_BindingPropertiesAddTip: "Add an interface to the binding configuration",
+    config_BindingPropertiesSaved: "Binding configuration saved",
+    config_BindingPropertiesError: "Error saving binding configuration",
 
     // graph/graph.js
     chartTab_Chart: "Chart",

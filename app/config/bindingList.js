@@ -36,49 +36,48 @@
  */
 
 Ext.define('openHAB.config.bindingList', {
-    extend:'Ext.panel.Panel',
-    layout:'fit',
-    tabTip:'Binding list',
-    title:'Bindings',
-    icon:'images/chain.png',
+    extend: 'Ext.panel.Panel',
+    layout: 'fit',
+    icon: 'images/chain.png',
 
-
-    initComponent:function () {
+    initComponent: function () {
+        this.title = language.config_BindingListTitle;
+        this.tabTip = language.config_BindingListTitleTip;
 
         var bindingList = Ext.create('Ext.grid.Panel', {
-            store:bindingStore,
-            header:false,
-            columns:[
+            store: bindingStore,
+            header: false,
+            columns: [
                 {
-                    text:'Bundle',
-                    hideable:false,
-                    flex:3,
-                    sortable:true,
-                    dataIndex:'bundle'
+                    text: language.config_BindingListBundle,
+                    hideable: false,
+                    flex: 3,
+                    sortable: true,
+                    dataIndex: 'bundle'
                 },
                 {
-                    text:'Name',
-                    hideable:false,
-                    flex:4,
-                    sortable:true,
-                    dataIndex:'name'
+                    text: language.config_BindingListName,
+                    hideable: false,
+                    flex: 4,
+                    sortable: true,
+                    dataIndex: 'name'
                 },
                 {
-                    text:'Version',
-                    hideable:false,
-                    flex:3,
-                    sortable:true,
-                    dataIndex:'osgiVersion'
+                    text: language.config_BindingListVersion,
+                    hideable: false,
+                    flex: 3,
+                    sortable: true,
+                    dataIndex: 'osgiVersion'
                 }
             ],
-            layout:'fit',
-            viewConfig:{
-                stripeRows:false,
-                enableTextSelection:false,
-                markDirty:false
+            layout: 'fit',
+            viewConfig: {
+                stripeRows: false,
+                enableTextSelection: false,
+                markDirty: false
             },
-            listeners:{
-                itemclick:function (grid, record) {
+            listeners: {
+                itemclick: function (grid, record) {
                     // Remove the current editor
                     Ext.getCmp('configPropertyContainer').removeProperty();
 
@@ -86,13 +85,13 @@ Ext.define('openHAB.config.bindingList', {
                         return;
 
                     var pid = record.get('pid');
-                    if(pid == "")
+                    if (pid == "")
                         return;
 
                     // Create a new bindingProperties
                     var newProperties = Ext.create('openHAB.config.bindingProperties');
 
-                    if(newProperties != null) {
+                    if (newProperties != null) {
                         newProperties.setBinding(pid);
                         Ext.getCmp('configPropertyContainer').setNewProperty(newProperties);
                     }
