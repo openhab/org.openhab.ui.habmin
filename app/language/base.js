@@ -114,6 +114,43 @@ var language = {
     config_ItemListDeleted: "Item '%s' has been deleted.",
     config_ItemListDeleteError: "Error deleting item '%s'.",
 
+    // config/itemProperties.js
+    config_ItemPropertiesSetName: "Set the item name.",
+    config_ItemPropertiesSetType: "Set the item type.",
+    config_ItemPropertiesSetLabel: "Specify the default label used in the UI.",
+    config_ItemPropertiesSetUnits: "Specify the unit for this item. This is printed after the value.",
+    config_ItemPropertiesSetFormat: "Specify the default format that is used for printing values.",
+    config_ItemPropertiesSetTransService: "Define the translation service applicable for the item.",
+    config_ItemPropertiesSetTransRule: "Define the translation rule applicable for the item.",
+    config_ItemPropertiesSetIcon: "Define the default icon for the item. This is used for the UI.",
+    config_ItemPropertiesSetGroups: "List groups that this item is entered. Groups must be changed in the 'Groups' tab.",
+    config_ItemPropertiesSetPersistence: "Lists persistence services configured for this item.",
+    config_ItemPropertiesItemName: "Item Name",
+    config_ItemPropertiesItemType: "Item Type",
+    config_ItemPropertiesTranslationService: "Translation Service",
+    config_ItemPropertiesTranslationRule: "Translation Rule",
+    config_ItemPropertiesPersistence: "Persistence",
+    config_ItemPropertiesGroups: "Groups",
+    config_ItemPropertiesCancelChangeTip: "Cancel changes made to the item configuration",
+    config_ItemPropertiesSaveChangeTip: "Save changes to the item configuration",
+    config_ItemPropertiesSaveOk: "Item configuration saved successfully",
+    config_ItemPropertiesSaveError: "Error saving item configuration",
+
+    // config/itemRules.js
+    config_ItemRulesTitle: "Rules",
+    config_ItemRulesAdd: "Add Rule",
+    config_ItemRulesAddTip: "Add the rule to this item",
+    config_ItemRulesDelete: "Delete Rule",
+    config_ItemRulesDeleteTip: "Delete the rule from this item",
+    config_ItemRulesConfirmDelete: "Confirm Delete",
+    config_ItemRulesConfirmDeleteMsg: "Are you sure you want to delete the rule '%s'?",
+    config_ItemRulesName: "Name",
+    config_ItemRulesItem: "Item",
+    config_ItemRulesDescription: "Description",
+    config_ItemRulesDeletedOk: "Rule '%s' successfully removed from item '%s'",
+    config_ItemRulesDeletedError: "Error deleting rule '%s' from item '%s'",
+
+
     // config/groupTree.js
     config_GroupsTitle: "Groups",
 

@@ -37,12 +37,12 @@
 
 
 Ext.define('openHAB.config.itemProperties', {
-    extend:'Ext.panel.Panel',
-    layout:'fit',
-    tabTip:'Item Properties',
-    header:false,
+    extend: 'Ext.panel.Panel',
+    layout: 'fit',
+    tabTip: 'Item Properties',
+    header: false,
 
-    initComponent:function () {
+    initComponent: function () {
         var newItem;
         var itemData;
         var itemExtendedData;
@@ -52,30 +52,30 @@ Ext.define('openHAB.config.itemProperties', {
         var itemPersistenceOptionsUpdated = false;
 
         var itemHelp = {
-            ItemName:"Set the item name.",
-            Type:"Set the item type.",
-            Label:"Specify the default label used in the UI.",
-            Units:"Specify the unit for this item. This is printed after the value.",
-            Format:"Specify the default format that is used for printing values.",
-            TranslateService:"Define the translation service applicable for the item.",
-            TranslateRule:"Define the translation rule applicable for the item.",
-            Icon:"Define the default icon for the item. This is used for the UI.",
-            Groups:"List groups that this item is entered. Groups must be changed in the 'Groups' tab.",
-            Persistence:"Lists persistence services configured for this item."
+            ItemName: language.config_ItemPropertiesSetName,
+            Type: language.config_ItemPropertiesSetType,
+            Label: language.config_ItemPropertiesSetLabel,
+            Units: language.config_ItemPropertiesSetUnits,
+            Format: language.config_ItemPropertiesSetFormat,
+            TranslateService: language.config_ItemPropertiesSetTransService,
+            TranslateRule: language.config_ItemPropertiesSetTransRule,
+            Icon: language.config_ItemPropertiesSetIcon,
+            Groups: language.config_ItemPropertiesSetGroups,
+            Persistence: language.config_ItemPropertiesSetPersistence
         };
 
         Ext.define('PersistenceStrategyModel', {
-            extend:'Ext.data.Model',
-            fields:[
-                {name:'service'},
-                {name:'strategy'},
-                {name:'display'}
+            extend: 'Ext.data.Model',
+            fields: [
+                {name: 'service'},
+                {name: 'strategy'},
+                {name: 'display'}
             ]
         });
 
         // Create the data store
         var persistenceStrategyStore = Ext.create('Ext.data.ArrayStore', {
-            model:'PersistenceStrategyModel'
+            model: 'PersistenceStrategyModel'
         });
 
         // Create the persistence service strategies list
@@ -94,11 +94,11 @@ Ext.define('openHAB.config.itemProperties', {
         persistenceStrategyStore.loadData(strategies);
 
         var sourceConfig = {
-            ItemName:{
-                displayName:"Item Name"
+            ItemName: {
+                displayName: language.config_ItemPropertiesItemName
             },
-            Icon:{
-                renderer:function (v) {
+            Icon: {
+                renderer: function (v) {
                     if (v == "")
                         return "";
                     var icon = "";
@@ -120,18 +120,18 @@ Ext.define('openHAB.config.itemProperties', {
                     resp += '</div>' + v;
                     return '<div>' + icon + '</div><div style="margin-left:20px">' + label + '</div>';
                 },
-                editor:Ext.create('Ext.form.ComboBox', {
-                    store:itemIconStore,
-                    queryMode:'local',
-                    typeAhead:false,
-                    editable:false,
-                    displayField:'label',
-                    valueField:'name',
-                    forceSelection:true,
-                    editable:false,
-                    allowBlank:false,
-                    listConfig:{
-                        getInnerTpl:function () {
+                editor: Ext.create('Ext.form.ComboBox', {
+                    store: itemIconStore,
+                    queryMode: 'local',
+                    typeAhead: false,
+                    editable: false,
+                    displayField: 'label',
+                    valueField: 'name',
+                    forceSelection: true,
+                    editable: false,
+                    allowBlank: false,
+                    listConfig: {
+                        getInnerTpl: function () {
                             var tpl = '<div>' +
                                 '<img src="../images/{menuicon}" align="left" height="16">&nbsp;&nbsp;' +
                                 '{label}</div>';
@@ -140,8 +140,8 @@ Ext.define('openHAB.config.itemProperties', {
                     }
                 })
             },
-            Format:{
-                renderer:function (v) {
+            Format: {
+                renderer: function (v) {
                     var label = "";
                     var ref = itemFormatStore.findExact("format", v);
                     if (ref != -1) {
@@ -155,37 +155,37 @@ Ext.define('openHAB.config.itemProperties', {
 
                     return label;
                 },
-                editor:Ext.create('Ext.form.ComboBox', {
-                    store:itemFormatStore,
-                    queryMode:'local',
-                    typeAhead:true,
-                    displayField:'label',
-                    valueField:'format',
-                    forceSelection:false,
-                    editable:true,
-                    allowBlank:true
+                editor: Ext.create('Ext.form.ComboBox', {
+                    store: itemFormatStore,
+                    queryMode: 'local',
+                    typeAhead: true,
+                    displayField: 'label',
+                    valueField: 'format',
+                    forceSelection: false,
+                    editable: true,
+                    allowBlank: true
                 })
             },
-            Type:{
-                displayName:"Item Type",
-                renderer:function (v) {
+            Type: {
+                displayName: language.config_ItemPropertiesItemType,
+                renderer: function (v) {
                     var ref = itemTypeStore.findExact("name", v);
                     if (ref == -1)
                         return "";
                     var icon = itemTypeStore.getAt(ref).get("icon");
                     return '<img src="' + icon + '" align="left" height="16">&nbsp;&nbsp;' + v;
                 },
-                editor:Ext.create('Ext.form.ComboBox', {
-                    store:itemTypeStore,
-                    queryMode:'local',
-                    typeAhead:false,
-                    editable:false,
-                    displayField:'name',
-                    valueField:'name',
-                    forceSelection:true,
-                    allowBlank:false,
-                    listConfig:{
-                        getInnerTpl:function () {
+                editor: Ext.create('Ext.form.ComboBox', {
+                    store: itemTypeStore,
+                    queryMode: 'local',
+                    typeAhead: false,
+                    editable: false,
+                    displayField: 'name',
+                    valueField: 'name',
+                    forceSelection: true,
+                    allowBlank: false,
+                    listConfig: {
+                        getInnerTpl: function () {
                             var tpl = '<div>' +
                                 '<img src="{icon}" align="left" height="16" width:"16";>&nbsp;&nbsp;' +
                                 '{name}</div>';
@@ -194,46 +194,45 @@ Ext.define('openHAB.config.itemProperties', {
                     }
                 })
             },
-            TranslateService:{
-                displayName:"Translation Service",
-                renderer:function (v) {
+            TranslateService: {
+                displayName: language.config_ItemPropertiesTranslationService,
+                renderer: function (v) {
                     var ref = translationServiceStore.findExact("name", v);
                     if (ref == -1)
                         return "";
                     return translationServiceStore.getAt(ref).get("label");
                 },
-                editor:Ext.create('Ext.form.ComboBox', {
-                    store:translationServiceStore,
-                    queryMode:'local',
-                    displayField:'label',
-                    valueField:'name',
-                    typeAhead:false,
-                    editable:false,
-                    forceSelection:true,
-                    allowBlank:true
+                editor: Ext.create('Ext.form.ComboBox', {
+                    store: translationServiceStore,
+                    queryMode: 'local',
+                    displayField: 'label',
+                    valueField: 'name',
+                    typeAhead: false,
+                    editable: false,
+                    forceSelection: true,
+                    allowBlank: true
                 })
             },
-            TranslateRule:{
-                displayName:"Translation Rule"
+            TranslateRule: {
+                displayName: language.config_ItemPropertiesTranslationRule
             },
-            Persistence:
-            {
-                displayName:"Persistence",
-                editor:Ext.create('Ext.form.ComboBox', {
-                    multiSelect:true,
-                    typeAhead:false,
-                    editable:false,
-                    displayField:'display',
-                    valueField:'display',
-                    store:persistenceStrategyStore,
-                    queryMode:'local',
+            Persistence: {
+                displayName: language.config_ItemPropertiesPersistence,
+                editor: Ext.create('Ext.form.ComboBox', {
+                    multiSelect: true,
+                    typeAhead: false,
+                    editable: false,
+                    displayField: 'display',
+                    valueField: 'display',
+                    store: persistenceStrategyStore,
+                    queryMode: 'local',
                     listeners: {
-                        expand:function (cb, eOpts) {
+                        expand: function (cb, eOpts) {
                             // The combo doesn't get set correctly within the property grid
                             // We need to split the selection and reset it!
                             var val = cb.getValue();
 
-                            if(val.length != 1)
+                            if (val.length != 1)
                                 return;
 
                             cb.setValue(val[0].split(","));
@@ -241,42 +240,42 @@ Ext.define('openHAB.config.itemProperties', {
                     }
                 })
             },
-            Groups:{
-                displayName:"Groups"
+            Groups: {
+                displayName: language.config_ItemPropertiesGroups
             }
         };
 
         Ext.define('ItemIcons', {
-            extend:'Ext.data.Model',
-            fields:[
-                {type:'number', name:'id'},
-                {type:'string', name:'icon'},
-                {type:'string', name:'name'}
+            extend: 'Ext.data.Model',
+            fields: [
+                {type: 'number', name: 'id'},
+                {type: 'string', name: 'icon'},
+                {type: 'string', name: 'name'}
             ]
         });
 
         var toolbar = Ext.create('Ext.toolbar.Toolbar', {
-            items:[
+            items: [
                 {
-                    icon:'images/cross.png',
-                    itemId:'cancel',
-                    text:'Cancel',
-                    cls:'x-btn-icon',
-                    disabled:true,
-                    tooltip:'Cancel changes made to the item configuration',
-                    handler:function () {
+                    icon: 'images/cross.png',
+                    itemId: 'cancel',
+                    text: language.cancel,
+                    cls: 'x-btn-icon',
+                    disabled: true,
+                    tooltip: language.config_ItemPropertiesCancelChangeTip,
+                    handler: function () {
                         // Reset to the current data
                         updatePrimaryItemProperties(itemData);
                     }
                 },
                 {
-                    icon:'images/disk.png',
-                    itemId:'save',
-                    text:'Save',
-                    cls:'x-btn-icon',
-                    disabled:true,
-                    tooltip:'Save changes to the item configuration',
-                    handler:function () {
+                    icon: 'images/disk.png',
+                    itemId: 'save',
+                    text: language.save,
+                    cls: 'x-btn-icon',
+                    disabled: true,
+                    tooltip: language.config_ItemPropertiesSaveChangeTip,
+                    handler: function () {
                         // Reset the status flags so we can correlate the different requests
                         saveOutstanding = 0;
                         saveError = false;
@@ -297,33 +296,33 @@ Ext.define('openHAB.config.itemProperties', {
         });
 
         var graphTypeStore = Ext.create('Ext.data.Store', {
-            fields:['id', 'name']
+            fields: ['id', 'name']
         });
         var graphTypes = [
-            {id:0, name:'Spline'},
-            {id:1, name:'Line'},
-            {id:2, name:'Bar'}
+            {id: 0, name: 'Spline'},
+            {id: 1, name: 'Line'},
+            {id: 2, name: 'Bar'}
         ];
 
         graphTypeStore.loadData(graphTypes);
 
         var itemOptions = Ext.create('Ext.grid.property.Grid', {
-            hideHeaders:true,
-            sortableColumns:false,
-            nameColumnWidth:300,
-            split:true,
-            border:false,
-            viewConfig:{
-                markDirty:true
+            hideHeaders: true,
+            sortableColumns: false,
+            nameColumnWidth: 300,
+            split: true,
+            border: false,
+            viewConfig: {
+                markDirty: true
 
-        },
-                    listeners:{
-                propertychange:function (source, recordId, value, oldValue, eOpts) {
+            },
+            listeners: {
+                propertychange: function (source, recordId, value, oldValue, eOpts) {
                     toolbar.getComponent('cancel').enable();
                     toolbar.getComponent('save').enable();
                     itemPrimaryOptionsUpdated = true;
                 },
-                beforeedit:function (editor, e) {
+                beforeedit: function (editor, e) {
                     var rec = e.record;
                     // Make some properties read-only
                     if (newItem == false && rec.get('name') == 'ItemName')
@@ -333,61 +332,61 @@ Ext.define('openHAB.config.itemProperties', {
 //                    if (rec.get('name') == 'Persistence')
                     //                       e.cancel = true;
                 },
-                itemmouseenter:function (grid, record, item, index, e, eOpts) {
+                itemmouseenter: function (grid, record, item, index, e, eOpts) {
                     var name = record.get("name");
                     helpStatusText.setText(itemHelp[name]);
                 },
-                itemmouseleave:function (grid, record, item, index, e, eOpts) {
+                itemmouseleave: function (grid, record, item, index, e, eOpts) {
                     helpStatusText.setText("");
                 }
             }
         });
 
         var itemExtendedOptions = Ext.create('Ext.grid.property.Grid', {
-            hideHeaders:true,
-            sortableColumns:false,
-            nameColumnWidth:300,
-            split:true,
-            border:false,
-            viewConfig:{
-                markDirty:true
+            hideHeaders: true,
+            sortableColumns: false,
+            nameColumnWidth: 300,
+            split: true,
+            border: false,
+            viewConfig: {
+                markDirty: true
             },
-            listeners:{
-                propertychange:function (source, recordId, value, oldValue, eOpts) {
+            listeners: {
+                propertychange: function (source, recordId, value, oldValue, eOpts) {
                     toolbar.getComponent('cancel').enable();
                     toolbar.getComponent('save').enable();
                     itemExtendedOptionsUpdated = true;
                 },
-                itemmouseenter:function (grid, record, item, index, e, eOpts) {
+                itemmouseenter: function (grid, record, item, index, e, eOpts) {
                     var name = record.get("name");
                     helpStatusText.setText(itemHelp[name]);
                 },
-                itemmouseleave:function (grid, record, item, index, e, eOpts) {
+                itemmouseleave: function (grid, record, item, index, e, eOpts) {
                     helpStatusText.setText("");
                 }
             }
         });
 
         var itemPersistenceOptions = Ext.create('Ext.grid.property.Grid', {
-            hideHeaders:true,
-            sortableColumns:false,
-            nameColumnWidth:300,
-            split:true,
-            border:false,
-            viewConfig:{
-                markDirty:true
+            hideHeaders: true,
+            sortableColumns: false,
+            nameColumnWidth: 300,
+            split: true,
+            border: false,
+            viewConfig: {
+                markDirty: true
             },
-            listeners:{
-                propertychange:function (source, recordId, value, oldValue, eOpts) {
+            listeners: {
+                propertychange: function (source, recordId, value, oldValue, eOpts) {
                     toolbar.getComponent('cancel').enable();
                     toolbar.getComponent('save').enable();
                     itemPersistenceOptionsUpdated = true;
                 },
-                itemmouseenter:function (grid, record, item, index, e, eOpts) {
+                itemmouseenter: function (grid, record, item, index, e, eOpts) {
                     var name = record.get("name");
                     helpStatusText.setText(itemHelp[name]);
                 },
-                itemmouseleave:function (grid, record, item, index, e, eOpts) {
+                itemmouseleave: function (grid, record, item, index, e, eOpts) {
                     helpStatusText.setText("");
                 }
             }
@@ -395,15 +394,15 @@ Ext.define('openHAB.config.itemProperties', {
 
         var itemProperties = Ext.create('Ext.panel.Panel', {
             title: language.properties,
-            itemId:'itemProperties',
-            icon:'images/gear.png',
-            tbar:toolbar,
-            border:false,
-            items:[itemOptions, itemPersistenceOptions, itemExtendedOptions]
+            itemId: 'itemProperties',
+            icon: 'images/gear.png',
+            tbar: toolbar,
+            border: false,
+            items: [itemOptions, itemPersistenceOptions, itemExtendedOptions]
         });
 
-        var helpStatusText = Ext.create('Ext.toolbar.TextItem', {text:''});
-        var statusBar = Ext.create('Ext.ux.StatusBar', {text:'-', items:[helpStatusText]});
+        var helpStatusText = Ext.create('Ext.toolbar.TextItem', {text: ''});
+        var statusBar = Ext.create('Ext.ux.StatusBar', {text: '-', items: [helpStatusText]});
 
         var itemGroups = Ext.create('openHAB.config.groupTree');
         var itemRules = Ext.create('openHAB.config.itemRules');
@@ -411,13 +410,13 @@ Ext.define('openHAB.config.itemProperties', {
 
         // Create the tab container for the item configuration
         var tabs = Ext.create('Ext.tab.Panel', {
-            layout:'fit',
-            itemId:'itemProperties',
-            bbar:statusBar,
-            border:false,
-            items:[itemProperties, itemGroups, itemRules, itemBindings],
-            listeners:{
-                beforetabchange:function (tabPanel, newCard, oldCard, eOpts) {
+            layout: 'fit',
+            itemId: 'itemProperties',
+            bbar: statusBar,
+            border: false,
+            items: [itemProperties, itemGroups, itemRules, itemBindings],
+            listeners: {
+                beforetabchange: function (tabPanel, newCard, oldCard, eOpts) {
                     // Detect if we've changed view so we can collate the data from the sub-tabs
                     if (newCard.itemId == 'itemProperties') {
                         // Only update the property grid if it's changed.
@@ -458,11 +457,11 @@ Ext.define('openHAB.config.itemProperties', {
         this.setItem = function (itemName) {
             // Load the item data
             Ext.Ajax.request({
-                url:HABminBaseURL + '/config/items/' + itemName,
-                timeout:5000,
-                method:'GET',
-                headers:{'Accept':'application/json'},
-                success:function (response, opts) {
+                url: HABminBaseURL + '/config/items/' + itemName,
+                timeout: 5000,
+                method: 'GET',
+                headers: {'Accept': 'application/json'},
+                success: function (response, opts) {
                     var json = Ext.decode(response.responseText);
                     // If there's no config for this binding, records will be null
                     if (json == null)
@@ -474,11 +473,11 @@ Ext.define('openHAB.config.itemProperties', {
 
             // Load the rules for this item
             Ext.Ajax.request({
-                url:HABminBaseURL + '/config/persistence/item/' + itemName,
-                timeout:5000,
-                method:'GET',
-                headers:{'Accept':'application/json'},
-                success:function (response, opts) {
+                url: HABminBaseURL + '/config/persistence/item/' + itemName,
+                timeout: 5000,
+                method: 'GET',
+                headers: {'Accept': 'application/json'},
+                success: function (response, opts) {
                     var json = Ext.decode(response.responseText);
                     // If there's no config for this binding, records will be null
                     if (json == null)
@@ -490,11 +489,11 @@ Ext.define('openHAB.config.itemProperties', {
 
             // Load the rules for this item
             Ext.Ajax.request({
-                url:HABminBaseURL + '/config/rules/item/' + itemName,
-                timeout:5000,
-                method:'GET',
-                headers:{'Accept':'application/json'},
-                success:function (response, opts) {
+                url: HABminBaseURL + '/config/rules/item/' + itemName,
+                timeout: 5000,
+                method: 'GET',
+                headers: {'Accept': 'application/json'},
+                success: function (response, opts) {
                     var json = Ext.decode(response.responseText);
                     // If there's no config for this binding, records will be null
                     if (json == null)
@@ -704,10 +703,10 @@ Ext.define('openHAB.config.itemProperties', {
 
             // All requests complete - display success (or otherwise!)
             if (saveError == false) {
-                handleStatusNotification(NOTIFICATION_OK,'Item configuration saved');
+                handleStatusNotification(NOTIFICATION_OK, language.config_ItemPropertiesSaveOk);
             }
             else {
-                handleStatusNotification(NOTIFICATION_ERROR,'Error saving item');
+                handleStatusNotification(NOTIFICATION_ERROR, language.config_ItemPropertiesSaveError);
             }
 
             // Reload the item store
@@ -738,11 +737,11 @@ Ext.define('openHAB.config.itemProperties', {
 
             // Send the item configuration to openHAB
             Ext.Ajax.request({
-                url:HABminBaseURL + "/config/items/" + itemData.name,
-                headers:{'Accept':'application/json'},
-                method:'PUT',
-                jsonData:itemData,
-                success:function (response, opts) {
+                url: HABminBaseURL + "/config/items/" + itemData.name,
+                headers: {'Accept': 'application/json'},
+                method: 'PUT',
+                jsonData: itemData,
+                success: function (response, opts) {
                     saveResponse(true);
 
                     var json = Ext.decode(response.responseText);
@@ -750,7 +749,7 @@ Ext.define('openHAB.config.itemProperties', {
                     if (json != null)
                         updatePrimaryItemProperties(json);
                 },
-                failure:function (result, request) {
+                failure: function (result, request) {
                     saveResponse(false);
                 }
             });
@@ -818,11 +817,11 @@ Ext.define('openHAB.config.itemProperties', {
 
             if (ruleCnt != 0) {
                 Ext.Ajax.request({
-                    url:HABminBaseURL + '/config/rules/item/' + itemName,
-                    method:'PUT',
-                    jsonData:data,
-                    headers:{'Accept':'application/json'},
-                    success:function (response, opts) {
+                    url: HABminBaseURL + '/config/rules/item/' + itemName,
+                    method: 'PUT',
+                    jsonData: data,
+                    headers: {'Accept': 'application/json'},
+                    success: function (response, opts) {
                         saveResponse(true);
 
                         var json = Ext.decode(response.responseText);
@@ -830,7 +829,7 @@ Ext.define('openHAB.config.itemProperties', {
                         if (json != null)
                             updateExtendedItemProperties(json);
                     },
-                    failure:function () {
+                    failure: function () {
                         saveResponse(false);
                     }
                 });
@@ -852,7 +851,7 @@ Ext.define('openHAB.config.itemProperties', {
                 return false;
 
             // Sanity check!
-            if(prop.Persistence == null)
+            if (prop.Persistence == null)
                 return;
 
             // Create the bean to send to openHAB
@@ -863,7 +862,7 @@ Ext.define('openHAB.config.itemProperties', {
             // Copy all the services from the original definition into the response
             // Otherwise we'd not be able to disable persistence if there were no
             // strategies selected.
-            if(itemPersistenceData.persistence == null || itemPersistenceData.persistence.length == 0)
+            if (itemPersistenceData.persistence == null || itemPersistenceData.persistence.length == 0)
                 itemPersistenceData.persistence = [];
             var persistenceIn = [].concat(itemPersistenceData.persistence);
             for (var cnt = 0; cnt < persistenceIn.length; cnt++) {
@@ -873,18 +872,18 @@ Ext.define('openHAB.config.itemProperties', {
             }
 
             // Split the services and strategies
-            for(var cnt = 0; cnt < prop.Persistence.length; cnt++) {
+            for (var cnt = 0; cnt < prop.Persistence.length; cnt++) {
                 var s = prop.Persistence[cnt].split(":");
 
                 // Loop through all the existing services to find the applicable service
                 var found = false;
-                for(var scnt = 0; scnt < data.persistence.length; scnt++) {
-                    if(data.persistence[scnt].service == s[0]) {
+                for (var scnt = 0; scnt < data.persistence.length; scnt++) {
+                    if (data.persistence[scnt].service == s[0]) {
                         data.persistence[scnt].itemstrategies.push(s[1]);
                         found = true;
                     }
                 }
-                if(found == false) {
+                if (found == false) {
                     // The service wasn't found - push a new item to the array
                     var svc = {};
                     svc.service = s[0];
@@ -896,11 +895,11 @@ Ext.define('openHAB.config.itemProperties', {
 
             // Send the dat ato openHAB
             Ext.Ajax.request({
-                url:HABminBaseURL + '/config/persistence/item/' + itemName,
-                method:'PUT',
-                jsonData:data,
-                headers:{'Accept':'application/json'},
-                success:function (response, opts) {
+                url: HABminBaseURL + '/config/persistence/item/' + itemName,
+                method: 'PUT',
+                jsonData: data,
+                headers: {'Accept': 'application/json'},
+                success: function (response, opts) {
                     saveResponse(true);
 
                     var json = Ext.decode(response.responseText);
@@ -908,7 +907,7 @@ Ext.define('openHAB.config.itemProperties', {
                     if (json != null)
                         updatePersistenceItemProperties(json);
                 },
-                failure:function () {
+                failure: function () {
                     saveResponse(false);
                 }
             });

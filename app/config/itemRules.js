@@ -29,36 +29,37 @@
  * to convey the resulting work.
  */
 
-/** OpenHAB Admin Console HABmin
+/**
+ * OpenHAB Admin Console HABmin
  *
  * @author Chris Jackson
  */
 
 
 Ext.define('openHAB.config.itemRules', {
-    extend:'Ext.panel.Panel',
-    defaults:{
-        split:true
+    extend: 'Ext.panel.Panel',
+    defaults: {
+        split: true
     },
-    border:false,
-    layout:'border',
-    icon:'images/node-design.png',
-    title:'Rules',
+    border: false,
+    layout: 'border',
+    icon: 'images/node-design.png',
 
-    initComponent:function () {
+    initComponent: function () {
+        this.title = language.config_ItemRulesTitle;
         var itemName = "";
         var ruleRecord;
 
         var toolbar = Ext.create('Ext.toolbar.Toolbar', {
-            items:[
+            items: [
                 {
-                    icon:'images/plus-button.png',
-                    itemId:'add',
-                    text:'Add Rule',
-                    cls:'x-btn-icon',
-                    disabled:true,
-                    tooltip:'Add the rule to this item',
-                    handler:function () {
+                    icon: 'images/plus-button.png',
+                    itemId: 'add',
+                    text: language.config_ItemRulesAdd,
+                    cls: 'x-btn-icon',
+                    disabled: true,
+                    tooltip: language.config_ItemRulesAddTip,
+                    handler: function () {
                         var record = listRules.getSelectionModel().getSelection()[0];
                         if (record == null)
                             return;
@@ -67,13 +68,13 @@ Ext.define('openHAB.config.itemRules', {
                     }
                 },
                 {
-                    icon:'images/minus-button.png',
-                    itemId:'delete',
-                    text:'Delete Rule',
-                    cls:'x-btn-icon',
-                    disabled:true,
-                    tooltip:'Remove the rule from this item',
-                    handler:function () {
+                    icon: 'images/minus-button.png',
+                    itemId: 'delete',
+                    text: language.config_ItemRulesDelete,
+                    cls: 'x-btn-icon',
+                    disabled: true,
+                    tooltip: language.config_ItemRulesDeleteTip,
+                    handler: function () {
                         // Get the item name to delete
                         var record = listRules.getSelectionModel().getSelection()[0];
                         if (record == null)
@@ -82,66 +83,67 @@ Ext.define('openHAB.config.itemRules', {
                         // Make sure we really want to do this!!!
                         var ruleName = record.get('name');
                         Ext.Msg.show({
-                            title:"Confirm Delete",
-                            msg:'Are you sure you want to delete the rule "' + ruleName + '"?',
-                            buttons:Ext.Msg.YESNO,
-                            config:{
-                                obj:this,
-                                name:ruleName
+                            title: language.config_ItemRulesConfirmDelete,
+                            msg: sprintf(language.config_ItemRulesConfirmDeleteMsg, ruleName),
+                            buttons: Ext.Msg.YESNO,
+                            config: {
+                                obj: this,
+                                name: ruleName
                             },
-                            fn:deleteRule,
-                            icon:Ext.MessageBox.QUESTION
-                        });                    }
+                            fn: deleteRule,
+                            icon: Ext.MessageBox.QUESTION
+                        });
+                    }
                 }
             ]
         });
 
         // Load the rules for this item
         var itemRuleStore = Ext.create('Ext.data.JsonStore', {
-            model:'RuleTemplateModel',
-            proxy:{
-                type:'rest',
-                reader:{
-                    type:'json',
-                    root:'rule'
+            model: 'RuleTemplateModel',
+            proxy: {
+                type: 'rest',
+                reader: {
+                    type: 'json',
+                    root: 'rule'
                 },
-                headers:{'Accept':'application/json'},
-                pageParam:undefined,
-                startParam:undefined,
-                sortParam:undefined,
-                limitParam:undefined
+                headers: {'Accept': 'application/json'},
+                pageParam: undefined,
+                startParam: undefined,
+                sortParam: undefined,
+                limitParam: undefined
             },
-            autoLoad:false
+            autoLoad: false
         });
 
         var listRules = Ext.create('Ext.grid.Panel', {
-            store:itemRuleStore,
-            region:"center",
-            flex:1,
-            header:false,
-            split:true,
-            tbar:toolbar,
-            collapsible:false,
-            multiSelect:false,
-            columns:[
+            store: itemRuleStore,
+            region: "center",
+            flex: 1,
+            header: false,
+            split: true,
+            tbar: toolbar,
+            collapsible: false,
+            multiSelect: false,
+            columns: [
                 {
-                    text:'Name',
-                    flex:2,
-                    dataIndex:'label'
+                    text: language.config_ItemRulesName,
+                    flex: 2,
+                    dataIndex: 'label'
                 },
                 {
-                    text:'Item',
-                    flex:2,
-                    dataIndex:'linkeditem'
+                    text: language.config_ItemRulesItem,
+                    flex: 2,
+                    dataIndex: 'linkeditem'
                 },
                 {
-                    text:'Description',
-                    flex:4,
-                    dataIndex:'description'
+                    text: language.config_ItemRulesDescription,
+                    flex: 4,
+                    dataIndex: 'description'
                 }
             ],
-            listeners:{
-                select:function (grid, record, index, eOpts) {
+            listeners: {
+                select: function (grid, record, index, eOpts) {
                     if (record == null)
                         return;
 
@@ -169,11 +171,11 @@ Ext.define('openHAB.config.itemRules', {
 
             // Tell OH to Remove the rule
             Ext.Ajax.request({
-                url:HABminBaseURL + '/config/rules/item/' + itemName + '/' + options.config.name,
-                headers:{'Accept':'application/json'},
-                method:'DELETE',
-                success:function (response, opts) {
-                    handleStatusNotification(NOTIFICATION_OK,'Rule deleted');
+                url: HABminBaseURL + '/config/rules/item/' + itemName + '/' + options.config.name,
+                headers: {'Accept': 'application/json'},
+                method: 'DELETE',
+                success: function (response, opts) {
+                    handleStatusNotification(NOTIFICATION_OK, sprintf(language.config_ItemRulesDeletedOk, options.config.name, itemName));
 
                     // Update the list of rules
                     var json = Ext.decode(response.responseText);
@@ -183,13 +185,13 @@ Ext.define('openHAB.config.itemRules', {
                     toolbar.getComponent('add').disable();
                     toolbar.getComponent('delete').disable();
                 },
-                failure:function (result, request) {
-                    handleStatusNotification(NOTIFICATION_ERROR,'Error deleting rule');
+                failure: function (result, request) {
+                    handleStatusNotification(NOTIFICATION_ERROR, rintf(language.config_ItemRulesDeletedError, options.config.name, itemName));
                 }
             });
         }
 
-            // Save a rule - ask for the variables etc
+        // Save a rule - ask for the variables etc
         function createRule(rule) {
             // Remember the rule we're editing so we've got the information when it comes time to save to openhab
             ruleRecord = rule;
@@ -208,28 +210,28 @@ Ext.define('openHAB.config.itemRules', {
             }
 
             var formPanel = new Ext.form.Panel({
-                frame:false,
-                width:450,
-                bodyPadding:5,
-                fieldDefaults:{
-                    labelAlign:'right',
-                    labelWidth:120,
-                    msgTarget:'side'
+                frame: false,
+                width: 450,
+                bodyPadding: 5,
+                fieldDefaults: {
+                    labelAlign: 'right',
+                    labelWidth: 120,
+                    msgTarget: 'side'
                 },
-                defaults:{
-                    anchor:'100%'
+                defaults: {
+                    anchor: '100%'
                 },
-                items:ruleFields,
-                buttons:[
+                items: ruleFields,
+                buttons: [
                     {
-                        text:'Cancel',
-                        handler:function () {
+                        text: language.cancel,
+                        handler: function () {
                             saveWin.destroy();
                         }
                     },
                     {
-                        text:'Save',
-                        handler:function () {
+                        text: language.save,
+                        handler: function () {
                             // Save stuff here
                             var form = this.up('form').getForm();
                             var formData = form.getValues();
@@ -249,12 +251,12 @@ Ext.define('openHAB.config.itemRules', {
                             }
 
                             Ext.Ajax.request({
-                                url:HABminBaseURL + '/config/rules/item/' + itemName + '/' + data.name,
-                                method:'POST',
-                                jsonData:data,
-                                headers:{'Accept':'application/json'},
-                                success:function (response, opts) {
-                                    handleStatusNotification(NOTIFICATION_OK,'Item rule saved');
+                                url: HABminBaseURL + '/config/rules/item/' + itemName + '/' + data.name,
+                                method: 'POST',
+                                jsonData: data,
+                                headers: {'Accept': 'application/json'},
+                                success: function (response, opts) {
+                                    handleStatusNotification(NOTIFICATION_OK, sprintf(language.config_ItemRulesDeletedOk, data.name, itemName));
 
                                     // Reload the item store to account for any new items
                                     // that may have been created
@@ -268,8 +270,9 @@ Ext.define('openHAB.config.itemRules', {
                                     toolbar.getComponent('add').disable();
                                     toolbar.getComponent('delete').disable();
                                 },
-                                failure:function () {
-                                    handleStatusNotification(NOTIFICATION_ERROR,'Error saving rule');
+                                failure: function () {
+                                    handleStatusNotification(NOTIFICATION_ERROR, sprintf(language.config_ItemRulesDeletedError, data.name, itemName));
+
                                 }
                             });
 
@@ -280,17 +283,17 @@ Ext.define('openHAB.config.itemRules', {
             });
 
             var saveWin = Ext.widget('window', {
-                title:'Add Rule',
-                closeAction:'destroy',
-                layout:'fit',
-                resizable:false,
-                draggable:false,
-                modal:true,
-                layout:{
-                    type:'vbox',
-                    align:'stretch'
+                title: language.config_ItemRulesAdd,
+                closeAction: 'destroy',
+                layout: 'fit',
+                resizable: false,
+                draggable: false,
+                modal: true,
+                layout: {
+                    type: 'vbox',
+                    align: 'stretch'
                 },
-                items:[formPanel]
+                items: [formPanel]
             });
             saveWin.show();
         }
@@ -308,7 +311,7 @@ Ext.define('openHAB.config.itemRules', {
             itemName = item;
 
             // Load the store
-            itemRuleStore.proxy.url =HABminBaseURL + '/config/rules/item/' + itemName;
+            itemRuleStore.proxy.url = HABminBaseURL + '/config/rules/item/' + itemName;
             itemRuleStore.load();
         }
     }

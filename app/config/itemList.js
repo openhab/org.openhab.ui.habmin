@@ -80,7 +80,7 @@ Ext.define('openHAB.config.itemList', {
                     text: language.config_ItemListAdd,
                     cls: 'x-btn-icon',
                     disabled: false,
-                    tooltip: language.config_ItemListAddTip'Add a new item to openHAB',
+                    tooltip: language.config_ItemListAddTip,
                     handler: function () {
                         Ext.define('ItemModelsModel', {
                             extend: 'Ext.data.Model',
