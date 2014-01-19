@@ -38,11 +38,11 @@
 Ext.define('openHAB.config.mappingList', {
     extend:'Ext.panel.Panel',
     layout:'fit',
-    tabTip:'Translation rule list',
-    title:'Translation Rules',
     icon:'images/tables-relation.png',
 
     initComponent:function () {
+        this.title = language.config_MappingListTitle;
+        this.tabTip = language.config_MappingListTitleTip;
 
         this.callParent();
     }

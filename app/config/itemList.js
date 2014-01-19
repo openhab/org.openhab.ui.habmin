@@ -49,7 +49,7 @@ Ext.define('openHAB.config.itemList', {
                 {
                     icon: 'images/minus-button.png',
                     itemId: 'delete',
-                    text: language.config_ItemListDelete,
+                    text: language.delete,
                     cls: 'x-btn-icon',
                     disabled: true,
                     tooltip: language.config_ItemListDeleteTip,
@@ -77,7 +77,7 @@ Ext.define('openHAB.config.itemList', {
                 {
                     icon: 'images/plus-button.png',
                     itemId: 'add',
-                    text: language.config_ItemListAdd,
+                    text: language.add,
                     cls: 'x-btn-icon',
                     disabled: false,
                     tooltip: language.config_ItemListAddTip,
@@ -196,7 +196,7 @@ Ext.define('openHAB.config.itemList', {
                     itemId: 'refresh',
                     cls: 'x-btn-icon',
                     disabled: false,
-                    tooltip: 'Refresh the items list',
+                    tooltip: language.config_ItemListRefreshTip,
                     handler: function () {
                         itemConfigStore.load();
                     }

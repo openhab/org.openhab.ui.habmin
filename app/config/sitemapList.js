@@ -36,23 +36,24 @@
  */
 
 Ext.define('openHAB.config.sitemapList', {
-    extend:'Ext.panel.Panel',
-    layout:'fit',
-    tabTip:'Sitemap list',
-    title:'Sitemaps',
-    icon:'images/maps-stack.png',
+    extend: 'Ext.panel.Panel',
+    layout: 'fit',
+    icon: 'images/maps-stack.png',
 
-    initComponent:function () {
+    initComponent: function () {
+        this.title = language.config_SitemapListTitle;
+        this.tabTip = language.config_SitemapListTitleTip;
+
         var toolbar = Ext.create('Ext.toolbar.Toolbar', {
-            items:[
+            items: [
                 {
-                    icon:'images/minus-button.png',
-                    itemId:'delete',
-                    text:'Delete Sitemap',
-                    cls:'x-btn-icon',
-                    disabled:true,
-                    tooltip:'Delete the sitemap from openHAB',
-                    handler:function () {
+                    icon: 'images/minus-button.png',
+                    itemId: 'delete',
+                    text: language.delete,
+                    cls: 'x-btn-icon',
+                    disabled: true,
+                    tooltip: language.config_SitemapListDeleteTip,
+                    handler: function () {
                         // Get the sitemap name to delete
                         var record = sitemapList.getSelectionModel().getSelection()[0];
                         if (record == null)
@@ -61,50 +62,50 @@ Ext.define('openHAB.config.sitemapList', {
                         // Make sure we really want to do this!!!
                         var sitemapName = record.get('name');
                         Ext.Msg.show({
-                            title:"Confirm Delete",
-                            msg:'Are you sure you want to delete the sitemap "' + sitemapName + '"?',
-                            buttons:Ext.Msg.YESNO,
-                            config:{
-                                obj:this,
-                                name:sitemapName
+                            title: language.delete,
+                            msg: sprintf(language.config_SitemapListDeleteMsg, sitemapName),
+                            buttons: Ext.Msg.YESNO,
+                            config: {
+                                obj: this,
+                                name: sitemapName
                             },
-                            fn:deleteSitemap,
-                            icon:Ext.MessageBox.QUESTION
+                            fn: deleteSitemap,
+                            icon: Ext.MessageBox.QUESTION
                         });
                     }
                 },
                 {
-                    icon:'images/plus-button.png',
-                    itemId:'add',
-                    text:'Add New Sitemap',
-                    cls:'x-btn-icon',
-                    disabled:false,
-                    tooltip:'Add a new sitemap to openHAB',
-                    handler:function () {
+                    icon: 'images/plus-button.png',
+                    itemId: 'add',
+                    text: language.add,
+                    cls: 'x-btn-icon',
+                    disabled: false,
+                    tooltip: language.config_SitemapListAddTip,
+                    handler: function () {
                         // Pop up a dialogue box asking for the sitemap name
-                        Ext.MessageBox.prompt('Sitemap Name', 'Please enter the new sitemap name:', newSitemap);
+                        Ext.MessageBox.prompt(language.config_SitemapListSitemapName, language.config_SitemapListNewSitemapMsg, newSitemap);
                     }
                 },
                 {
-                    icon:'images/document-copy.png',
-                    itemId:'copy',
-                    text:'Copy Sitemap',
-                    cls:'x-btn-icon',
-                    disabled:true,
-                    tooltip:'Copy the selected sitemap as a new sitemap',
-                    handler:function () {
+                    icon: 'images/document-copy.png',
+                    itemId: 'copy',
+                    text: language.copy,
+                    cls: 'x-btn-icon',
+                    disabled: true,
+                    tooltip: language.config_SitemapListCopyTip,
+                    handler: function () {
                         // Pop up a dialogue box asking for the sitemap name
-                        Ext.MessageBox.prompt('Sitemap Name', 'Please enter the new sitemap name:', copySitemap);
+                        Ext.MessageBox.prompt(language.config_SitemapListSitemapName, language.config_SitemapListCopySitemapMsg, copySitemap);
                     }
                 },
-                { xtype:'tbfill' },
+                { xtype: 'tbfill' },
                 {
-                    icon:'images/arrow-circle-315.png',
-                    itemId:'refresh',
-                    cls:'x-btn-icon',
-                    disabled:false,
-                    tooltip:'Refresh the sitemap list',
-                    handler:function () {
+                    icon: 'images/arrow-circle-315.png',
+                    itemId: 'refresh',
+                    cls: 'x-btn-icon',
+                    disabled: false,
+                    tooltip: language.config_SitemapListRefreshTip,
+                    handler: function () {
                         sitemapStore.load();
                     }
                 }
@@ -112,45 +113,45 @@ Ext.define('openHAB.config.sitemapList', {
         });
 
         var sitemapList = Ext.create('Ext.grid.Panel', {
-            store:sitemapStore,
-            header:false,
-            tbar:toolbar,
-            columns:[
+            store: sitemapStore,
+            header: false,
+            tbar: toolbar,
+            columns: [
                 {
-                    text:'',
-                    hideable:false,
-                    width:24,
-                    sortable:true,
-                    dataIndex:'icon',
-                    renderer:function (v) {
+                    text: '',
+                    hideable: false,
+                    width: 24,
+                    sortable: true,
+                    dataIndex: 'icon',
+                    renderer: function (v) {
                         if (v == null || v == "")
                             return;
                         return '<img src="../images/' + v + '.png"  height="16">';
                     }
                 },
                 {
-                    text:'Name',
-                    hideable:false,
-                    flex:1,
-                    sortable:true,
-                    dataIndex:'name'
+                    text: language.config_SitemapListName,
+                    hideable: false,
+                    flex: 1,
+                    sortable: true,
+                    dataIndex: 'name'
                 },
                 {
-                    text:'Label',
-                    hideable:false,
-                    flex:2,
-                    sortable:true,
-                    dataIndex:'label'
+                    text: language.config_SitemapListLabel,
+                    hideable: false,
+                    flex: 2,
+                    sortable: true,
+                    dataIndex: 'label'
                 }
             ],
-            layout:'fit',
-            viewConfig:{
-                stripeRows:false,
-                enableTextSelection:false,
-                markDirty:false
+            layout: 'fit',
+            viewConfig: {
+                stripeRows: false,
+                enableTextSelection: false,
+                markDirty: false
             },
-            listeners:{
-                itemclick:function (grid, record) {
+            listeners: {
+                itemclick: function (grid, record) {
                     if (record == null)
                         return;
 
@@ -178,16 +179,16 @@ Ext.define('openHAB.config.sitemapList', {
 
             // Tell OH to Remove the sitemap
             Ext.Ajax.request({
-                url:HABminBaseURL + "/config/sitemap/" + options.config.name,
-                headers:{'Accept':'application/json'},
-                method:'DELETE',
-                success:function (response, opts) {
-                    handleStatusNotification(NOTIFICATION_OK,'Sitemap deleted');
+                url: HABminBaseURL + "/config/sitemap/" + options.config.name,
+                headers: {'Accept': 'application/json'},
+                method: 'DELETE',
+                success: function (response, opts) {
+                    handleStatusNotification(NOTIFICATION_OK, sprintf(language.config_SitemapListSitemapDeleteOk, options.config.name));
                 },
-                failure:function (result, request) {
-                    handleStatusNotification(NOTIFICATION_ERROR,'Error deleting sitemap');
+                failure: function (result, request) {
+                    handleStatusNotification(NOTIFICATION_ERROR, sprintf(language.config_SitemapListSitemapDeleteErr, options.config.name));
                 },
-                callback:function (options, success, response) {
+                callback: function (options, success, response) {
                     // Reload the store
                     sitemapStore.reload();
 
@@ -222,7 +223,7 @@ Ext.define('openHAB.config.sitemapList', {
 
         function doNewSitemap(newName, copyName) {
             if (newName.indexOf('.') != -1) {
-                Ext.MessageBox("Error", "Sitemap name can only contain alphanumeric characters.");
+                Ext.MessageBox(language.error, config_SitemapListFormatError);
                 return;
             }
 
@@ -232,17 +233,17 @@ Ext.define('openHAB.config.sitemapList', {
 
             // Tell OH to add the new sitemap
             Ext.Ajax.request({
-                url:HABminBaseURL + "/config/sitemap/" + newName,
-                headers:{'Accept':'application/json'},
-                method:'POST',
-                params:parms,
-                success:function (response, opts) {
-                    handleStatusNotification(NOTIFICATION_OK,'Sitemap created');
+                url: HABminBaseURL + "/config/sitemap/" + newName,
+                headers: {'Accept': 'application/json'},
+                method: 'POST',
+                params: parms,
+                success: function (response, opts) {
+                    handleStatusNotification(NOTIFICATION_OK, sprintf(language.config_SitemapListSitemapCreateOk, newName));
                 },
-                failure:function (result, request) {
-                    handleStatusNotification(NOTIFICATION_ERROR,'Error creating new sitemap');
+                failure: function (result, request) {
+                    handleStatusNotification(NOTIFICATION_ERROR, sprintf(language.config_SitemapListSitemapCreateErr, newName));
                 },
-                callback:function (options, success, response) {
+                callback: function (options, success, response) {
                     // Reload the store
                     sitemapStore.reload();
 

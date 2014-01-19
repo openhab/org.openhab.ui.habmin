@@ -39,37 +39,38 @@
 var lookupStore;
 
 Ext.define('openHAB.config.mappingProperties', {
-    extend:'Ext.panel.Panel',
-    layout:'fit',
-    tabTip:'Translation rule configuration',
-    header:false,
+    extend: 'Ext.panel.Panel',
+    layout: 'fit',
+    header: false,
 
-    initComponent:function () {
+    initComponent: function () {
+        this.tabTip = language.config_MappingPropertiesTip;
+
         Ext.define('MapList', {
-            extend:'Ext.data.Model',
-            fields:[
-                {name:'minimum'},
-                {name:'maximum'},
-                {name:'label'},
-                {name:'colour'},
-                {name:'icon'}
+            extend: 'Ext.data.Model',
+            fields: [
+                {name: 'minimum'},
+                {name: 'maximum'},
+                {name: 'label'},
+                {name: 'colour'},
+                {name: 'icon'}
             ]
         });
         // create the data store
         lookupStore = Ext.create('Ext.data.ArrayStore', {
-            model:'MapList'
+            model: 'MapList'
         });
 
         var tbMapping = Ext.create('Ext.toolbar.Toolbar', {
-            items:[
+            items: [
                 {
-                    icon:'images/cross.png',
-                    itemId:'cancel',
-                    text:'Cancel',
-                    cls:'x-btn-icon',
-                    disabled:true,
-                    tooltip:'Cancel changes made to the lookup table',
-                    handler:function () {
+                    icon: 'images/cross.png',
+                    itemId: 'cancel',
+                    text: language.cancel,
+                    cls: 'x-btn-icon',
+                    disabled: true,
+                    tooltip: language.config_MappingPropertiesCancelTip,
+                    handler: function () {
                         //Ext.getCmp("configLookupTb-save").disable();
                         //Ext.getCmp("configLookupTb-cancel").disable();
                         //Ext.getCmp("configLookupTb-add").enable();
@@ -83,13 +84,13 @@ Ext.define('openHAB.config.mappingProperties', {
                     }
                 },
                 {
-                    icon:'images/disk.png',
-                    itemId:'save',
-                    text:'Save',
-                    cls:'x-btn-icon',
-                    disabled:true,
-                    tooltip:'Save changes to the lookup table',
-                    handler:function () {
+                    icon: 'images/disk.png',
+                    itemId: 'save',
+                    text: language.save,
+                    cls: 'x-btn-icon',
+                    disabled: true,
+                    tooltip: language.config_MappingPropertiesSaveTip,
+                    handler: function () {
                         //Ext.getCmp("configLookupTb-save").disable();
                         //Ext.getCmp("configLookupTb-cancel").disable();
                         //Ext.getCmp("configLookupTb-add").enable();
@@ -97,31 +98,31 @@ Ext.define('openHAB.config.mappingProperties', {
                     }
                 },
                 {
-                    icon:'images/plus-button.png',
-                    itemId:'add',
-                    text:'Add',
-                    cls:'x-btn-icon',
-                    disabled:true,
-                    tooltip:'Add a row to the lookup table',
-                    handler:function () {
+                    icon: 'images/plus-button.png',
+                    itemId: 'add',
+                    text: language.add,
+                    cls: 'x-btn-icon',
+                    disabled: true,
+                    tooltip: language.config_MappingPropertiesAddTip,
+                    handler: function () {
                         //Ext.getCmp("configLookupTb-save").enable();
                         //Ext.getCmp("configLookupTb-cancel").enable();
 
                         var newVar = {};
                         newVar.value = 0;
-                        newVar.label = "New Label";
+                        newVar.label = language.config_MappingPropertiesNewLabel;
 
                         lookupStore.add(newVar);
                     }
                 },
                 {
-                    icon:'images/minus-button.png',
-                    itemId:'delete',
-                    text:'Delete',
-                    cls:'x-btn-icon',
-                    disabled:true,
-                    tooltip:'Remove highlighted row from the lookup table',
-                    handler:function () {
+                    icon: 'images/minus-button.png',
+                    itemId: 'delete',
+                    text: language.delete,
+                    cls: 'x-btn-icon',
+                    disabled: true,
+                    tooltip: language.config_MappingPropertiesDeleteTip,
+                    handler: function () {
                         //Ext.getCmp("configLookupTb-save").enable();
                         //Ext.getCmp("configLookupTb-cancel").enable();
                         //Ext.getCmp("configLookupTb-add").enable();
@@ -137,74 +138,74 @@ Ext.define('openHAB.config.mappingProperties', {
         });
 
         this.cellEditing = new Ext.grid.plugin.CellEditing({
-            clicksToEdit:1
+            clicksToEdit: 1
         });
 
-        var itemMapping  = Ext.create('Ext.grid.Panel', {
-            xtype:'cell-editing',
-            title: 'Mapping Properties',
-            icon:'images/tables-relation.png',
-            header:false,
-            plugins:[this.cellEditing],
-            store:lookupStore,
-            columns:[
+        var itemMapping = Ext.create('Ext.grid.Panel', {
+            xtype: 'cell-editing',
+            title: language.config_MappingPropertiesGridTitle,
+            icon: 'images/tables-relation.png',
+            header: false,
+            plugins: [this.cellEditing],
+            store: lookupStore,
+            columns: [
                 {
-                    header:'Minimum',
-                    dataIndex:'minimum',
-                    width:75,
-                    editor:{
-                        allowBlank:false
+                    header: language.config_MappingPropertiesGridMinimum,
+                    dataIndex: 'minimum',
+                    width: 75,
+                    editor: {
+                        allowBlank: false
                     }
                 },
                 {
-                    header:'Maximum',
-                    dataIndex:'maximum',
-                    width:75,
-                    editor:{
-                        allowBlank:false
+                    header: language.config_MappingPropertiesGridMaximum,
+                    dataIndex: 'maximum',
+                    width: 75,
+                    editor: {
+                        allowBlank: false
                     }
                 },
                 {
-                    header:'Label',
-                    dataIndex:'label',
-                    width:300,
-                    editor:{
-                        allowBlank:false
+                    header: language.config_MappingPropertiesGridLabel,
+                    dataIndex: 'label',
+                    width: 300,
+                    editor: {
+                        allowBlank: false
                     }
                 },
                 {
-                    header:'Value',
-                    dataIndex:'value',
-                    editor:{
-                        allowBlank:false
+                    header: language.config_MappingPropertiesGridValue,
+                    dataIndex: 'value',
+                    editor: {
+                        allowBlank: false
                     }
                 },
                 {
-                    header:'Icon',
-                    dataIndex:'icon',
-                    editor:{
-                        allowBlank:false
+                    header: language.config_MappingPropertiesGridIcon,
+                    dataIndex: 'icon',
+                    editor: {
+                        allowBlank: false
                     }
                 }
             ],
-            selModel:{
-                selType:'cellmodel'
+            selModel: {
+                selType: 'cellmodel'
             },
-            tbar:tbMapping,
-            listeners:{
-                beforeedit:function (dv, record, item, index, e) {
+            tbar: tbMapping,
+            listeners: {
+                beforeedit: function (dv, record, item, index, e) {
                     Ext.getCmp("configLookupTb-delete").enable();
                 },
-                edit:function (dv, record, item, index, e) {
+                edit: function (dv, record, item, index, e) {
                     Ext.getCmp("configLookupTb-save").enable();
                 }
             }
         });
 
         var tabs = Ext.create('Ext.tab.Panel', {
-            layout:'fit',
-            border:false,
-            items:[itemMapping]
+            layout: 'fit',
+            border: false,
+            items: [itemMapping]
         });
 
         this.items = tabs;

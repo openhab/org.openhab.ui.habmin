@@ -36,107 +36,108 @@
  */
 
 Ext.define('openHAB.config.sitemapProperties', {
-    extend:'Ext.panel.Panel',
-    layout:'fit',
-    tabTip:'Sitemap Properties',
-    header:false,
+    extend: 'Ext.panel.Panel',
+    layout: 'fit',
+    header: false,
 
-    initComponent:function () {
+    initComponent: function () {
+        this.tabTip = language.config_SitemapPropertiesTip;
+
         // Note that "itemicon" is used for the model to avoid upsetting the icon in the treeview
         // ExtJS uses the keyword "icon" to allow the user to set the icon in the tree!
         var widgetConfig = {
-            Sitemap:["label", "itemicon"],
-            Chart:["item", "label", "format", "units", "itemicon", "service", "period", "refresh", "labelcolor", "valuecolor", "visibility"],
-            Colorpicker:["item", "label", "format", "units", "itemicon", "sendFrequency", "labelcolor", "valuecolor", "visibility"],
-            Frame:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "labelcolor", "valuecolor", "visibility"],
-            Group:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "labelcolor", "valuecolor", "visibility"],
-            Image:["label", "itemicon", "format", "units", "url", "refresh", "labelcolor", "valuecolor", "visibility"],
-            List:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "separator", "labelcolor", "valuecolor", "visibility"],
-            Switch:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "command", "mapping", "labelcolor", "valuecolor", "visibility"],
-            Selection:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "mapping", "labelcolor", "valuecolor", "visibility"],
-            Setpoint:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "minValue", "maxValue", "step", "labelcolor", "valuecolor", "visibility"],
-            Slider:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "sendFrequency", "switchSupport", "labelcolor", "valuecolor", "visibility"],
-            Text:["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "labelcolor", "valuecolor", "visibility"],
-            Video:["label", "format", "units", "url", "itemicon", "labelcolor", "valuecolor", "visibility"],
-            Webview:["label", "format", "units", "url", "height", "itemicon", "labelcolor", "valuecolor", "visibility"]
+            Sitemap: ["label", "itemicon"],
+            Chart: ["item", "label", "format", "units", "itemicon", "service", "period", "refresh", "labelcolor", "valuecolor", "visibility"],
+            Colorpicker: ["item", "label", "format", "units", "itemicon", "sendFrequency", "labelcolor", "valuecolor", "visibility"],
+            Frame: ["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "labelcolor", "valuecolor", "visibility"],
+            Group: ["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "labelcolor", "valuecolor", "visibility"],
+            Image: ["label", "itemicon", "format", "units", "url", "refresh", "labelcolor", "valuecolor", "visibility"],
+            List: ["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "separator", "labelcolor", "valuecolor", "visibility"],
+            Switch: ["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "command", "mapping", "labelcolor", "valuecolor", "visibility"],
+            Selection: ["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "mapping", "labelcolor", "valuecolor", "visibility"],
+            Setpoint: ["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "minValue", "maxValue", "step", "labelcolor", "valuecolor", "visibility"],
+            Slider: ["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "sendFrequency", "switchSupport", "labelcolor", "valuecolor", "visibility"],
+            Text: ["item", "label", "format", "units", "translateService", "translateRule", "itemicon", "labelcolor", "valuecolor", "visibility"],
+            Video: ["label", "format", "units", "url", "itemicon", "labelcolor", "valuecolor", "visibility"],
+            Webview: ["label", "format", "units", "url", "height", "itemicon", "labelcolor", "valuecolor", "visibility"]
         };
 
         var widgetItemTypes = {
-            Sitemap:["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
-            Chart:["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
-            Colorpicker:["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
-            Frame:["GroupItem", "StringItem"],
-            Group:["GroupItem", "StringItem"],
-            Image:["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
-            List:["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
-            Switch:["DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
-            Selection:["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
-            Setpoint:["NumberItem"],
-            Slider:["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
-            Text:["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
-            Video:["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
-            Webview:["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"]
+            Sitemap: ["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
+            Chart: ["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
+            Colorpicker: ["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
+            Frame: ["GroupItem", "StringItem"],
+            Group: ["GroupItem", "StringItem"],
+            Image: ["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
+            List: ["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
+            Switch: ["DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
+            Selection: ["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
+            Setpoint: ["NumberItem"],
+            Slider: ["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
+            Text: ["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
+            Video: ["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"],
+            Webview: ["ColorItem", "ContactItem", "DateTimeItem", "DimmerItem", "GroupItem", "NumberItem", "RollershutterItem", "StringItem", "SwitchItem"]
         };
 
         // Array of widget types that are allowed to have children
         var linkableWidgets = ["Sitemap", "Group", "Text", "Image", "Frame"];
 
         var widgetHelp = {
-            command:"?",
-            height:"Set the height of the widget in the UI",
-            item:"Select the item attached to this widget",
-            itemicon:"Override the item icon. Leave blank to use the default for this item",
-            label:"Override the item label. Leave blank to use the default for this item",
-            format:"Overrides the item formatting. Must be used with label.",
-            units:"Overrides the item formatting. Must be used with label.",
-            translateService:"Overrides the translate service",
-            translateRule:"Overrides the translate rule",
-            mapping:"Mapping values for switch.",
-            maxValue:"Set the maximum allowable value",
-            minValue:"Set the minimum allowable value",
-            period:"?",
-            refresh:"?",
-            sendFrequency:"?",
-            separator:"?",
-            service:"?",
-            step:"Set the step value",
-            switchSupport:"?",
-            url:"Set the URL attached to this widget",
-            visibility:"Visibility",
-            labelcolor: "Label Color",
-            valuecolor: "Value Color"
+            command: "?",
+            height: language.config_SitemapHelpHeight,
+            item: language.config_SitemapHelpItem,
+            itemicon: language.config_SitemapHelpIcon,
+            label: language.config_SitemapHelpLabel,
+            format: language.config_SitemapHelpFormat,
+            units: language.config_SitemapHelpUnits,
+            translateService: language.config_SitemapHelpTranslateSvc,
+            translateRule: language.config_SitemapHelpTranslateRule,
+            mapping: language.config_SitemapHelpMapping,
+            maxValue: language.config_SitemapHelpMax,
+            minValue: language.config_SitemapHelpMin,
+            period: language.config_SitemapHelpPeriod,
+            refresh: language.config_SitemapHelpRefresh,
+            sendFrequency: language.config_SitemapHelpFrequency,
+            separator: language.config_SitemapHelpSeparator,
+            service: language.config_SitemapHelpService,
+            step: language.config_SitemapHelpStep,
+            switchSupport: language.config_SitemapHelpSwitchSupport,
+            url: language.config_SitemapHelpURL,
+            visibility: language.config_SitemapHelpVisibility,
+            labelcolor: language.config_SitemapHelpLabelColor,
+            valuecolor: language.config_SitemapHelpValueColor
         };
 
         var configTranslate = {
-            itemicon:'icon',
-            icon:'iconitem'
+            itemicon: 'icon',
+            icon: 'iconitem'
         };
 
         var sitemapName;
 
         var itemComboStore = Ext.create('Ext.data.ArrayStore', {
-            model:'ItemConfigModel',
-            proxy:{
-                type:'rest',
-                url:HABminBaseURL + '/config/items',
-                reader:{
-                    type:'json',
-                    root:'item'
+            model: 'ItemConfigModel',
+            proxy: {
+                type: 'rest',
+                url: HABminBaseURL + '/config/items',
+                reader: {
+                    type: 'json',
+                    root: 'item'
                 },
-                headers:{'Accept':'application/json'},
-                pageParam:undefined,
-                startParam:undefined,
-                sortParam:undefined,
-                limitParam:undefined
+                headers: {'Accept': 'application/json'},
+                pageParam: undefined,
+                startParam: undefined,
+                sortParam: undefined,
+                limitParam: undefined
             },
-            autoLoad:true
+            autoLoad: true
         });
 
         var configTree = [];
         var sourceConfig = {
-            item:{
-                displayName:"Item",
-                renderer:function (v) {
+            item: {
+                displayName: language.config_SitemapPropertiesItem,
+                renderer: function (v) {
                     if (v == null)
                         return;
                     var icon = "";
@@ -152,33 +153,33 @@ Ext.define('openHAB.config.sitemapProperties', {
 
                     return '<div>' + icon + '</div><div style="margin-left:20px">' + v + '</div>';
                 },
-                editor:Ext.create('Ext.form.ComboBox', {
-                    store:itemComboStore,
-                    queryMode:'local',
-                    typeAhead:true,
-                    editable:true,
-                    displayField:'name',
-                    valueField:'name',
-                    emptyText:'',
-                    forceSelection:true,
-                    allowBlank:true,
-                    listConfig:{
-                        getInnerTpl:function () {
+                editor: Ext.create('Ext.form.ComboBox', {
+                    store: itemComboStore,
+                    queryMode: 'local',
+                    typeAhead: true,
+                    editable: true,
+                    displayField: 'name',
+                    valueField: 'name',
+                    emptyText: '',
+                    forceSelection: true,
+                    allowBlank: true,
+                    listConfig: {
+                        getInnerTpl: function () {
                             return '<div><tpl if="icon.length"><img height="16px" src="../images/{icon}.png"></tpl>' +
                                 '{name}</div>';
                         }
                     },
-                    listeners:{
-                        beforequery:function (record) {
+                    listeners: {
+                        beforequery: function (record) {
                             record.query = new RegExp(record.query, 'i');
                             record.forceAll = true;
                         }
                     }
                 })
             },
-            itemicon:{
-                displayName:"Icon",
-                renderer:function (v) {
+            itemicon: {
+                displayName: language.config_SitemapPropertiesIcon,
+                renderer: function (v) {
                     if (v == "" || v == null)
                         return "";
                     var icon = "";
@@ -200,25 +201,25 @@ Ext.define('openHAB.config.sitemapProperties', {
                     resp += '</div>' + v;
                     return '<div>' + icon + '</div><div style="margin-left:20px">' + label + '</div>';
                 },
-                editor:Ext.create('Ext.form.ComboBox', {
-                    store:itemIconStore,
-                    queryMode:'local',
-                    typeAhead:true,
-                    editable:true,
-                    displayField:'label',
-                    valueField:'name',
-                    forceSelection:true,
-                    allowBlank:true,
-                    listConfig:{
-                        getInnerTpl:function () {
+                editor: Ext.create('Ext.form.ComboBox', {
+                    store: itemIconStore,
+                    queryMode: 'local',
+                    typeAhead: true,
+                    editable: true,
+                    displayField: 'label',
+                    valueField: 'name',
+                    forceSelection: true,
+                    allowBlank: true,
+                    listConfig: {
+                        getInnerTpl: function () {
                             var tpl = '<div>' +
                                 '<img src="../images/{menuicon}" align="left" height="16">&nbsp;&nbsp;' +
                                 '{label}</div>';
                             return tpl;
                         }
                     },
-                    listeners:{
-                        change:function (field, newValue, oldValue, eOpts) {
+                    listeners: {
+                        change: function (field, newValue, oldValue, eOpts) {
                             if (newValue === null) {
                                 this.reset();
                             }
@@ -226,9 +227,9 @@ Ext.define('openHAB.config.sitemapProperties', {
                     }
                 })
             },
-            format:{
-                displayName:"Format",
-                renderer:function (v) {
+            format: {
+                displayName: language.config_SitemapPropertiesFormat,
+                renderer: function (v) {
                     var label = "";
                     var ref = itemFormatStore.findExact("format", v);
                     if (ref != -1) {
@@ -242,40 +243,41 @@ Ext.define('openHAB.config.sitemapProperties', {
 
                     return label;
                 },
-                editor:Ext.create('Ext.form.ComboBox', {
-                    store:itemFormatStore,
-                    queryMode:'local',
-                    typeAhead:true,
-                    displayField:'label',
-                    valueField:'format',
-                    forceSelection:false,
-                    editable:true,
-                    allowBlank:true
+                editor: Ext.create('Ext.form.ComboBox', {
+                    store: itemFormatStore,
+                    queryMode: 'local',
+                    typeAhead: true,
+                    displayField: 'label',
+                    valueField: 'format',
+                    forceSelection: false,
+                    editable: true,
+                    allowBlank: true
                 })
             },
-            units:{displayName:"Units"},
-            label:{displayName:"Label"},
-            translateService:{
-                displayName:"Translation Service",
-                renderer:function (v) {
+            units: {displayName: language.config_SitemapPropertiesUnits},
+            label: {displayName: language.config_SitemapPropertiesLabel},
+            translateService: {
+                displayName: language.config_SitemapPropertiesTranslationService,
+                renderer: function (v) {
                     var ref = translationServiceStore.findExact("name", v);
                     if (ref == -1)
                         return "";
                     return translationServiceStore.getAt(ref).get("label");
                 },
-                editor:Ext.create('Ext.form.ComboBox', {
-                    store:translationServiceStore,
-                    queryMode:'local',
-                    displayField:'label',
-                    valueField:'name',
-                    typeAhead:false,
-                    editable:false,
-                    forceSelection:true,
-                    allowBlank:true
+                editor: Ext.create('Ext.form.ComboBox', {
+                    store: translationServiceStore,
+                    queryMode: 'local',
+                    displayField: 'label',
+                    valueField: 'name',
+                    typeAhead: false,
+                    editable: false,
+                    forceSelection: true,
+                    allowBlank: true
                 })
             },
-            mapping:{
-                displayName:"Mapping"/*,
+            mapping: {
+                displayName: language.config_SitemapPropertiesMapping
+                /*,
                  renderer:function (v) {
                  var mapArray = [].concat[v];
                  var mapString = "";
@@ -287,74 +289,74 @@ Ext.define('openHAB.config.sitemapProperties', {
                  return mapString;
                  }*/
             },
-            translateRule:{displayName:"Translation Rule"},
-            maxValue:{displayName:"Maximum"},
-            minValue:{displayName:"Minimum"},
-            service:{displayName:"Service"},
-            step:{displayName:"Step"},
-            command:{displayName:"Command"},
-            sendFrequency:{displayName:"Send Frequency"},
-            switchSupport:{displayName:"Switch Support"},
-            url:{displayName:"URL"},
-            height:{displayName:"Height"},
-            refresh:{displayName:"Refresh Period"}
+            translateRule: {displayName: language.config_SitemapPropertiesTranslationRule},
+            maxValue: {displayName: language.config_SitemapPropertiesMaximum},
+            minValue: {displayName: language.config_SitemapPropertiesMinimum},
+            service: {displayName: language.config_SitemapPropertiesService},
+            step: {displayName: language.config_SitemapPropertiesStep},
+            command: {displayName: language.config_SitemapPropertiesCommand},
+            sendFrequency: {displayName: language.config_SitemapPropertiesSendFrequency},
+            switchSupport: {displayName: language.config_SitemapPropertiesSwitchSupport},
+            url: {displayName: language.config_SitemapPropertiesURL},
+            height: {displayName: language.config_SitemapPropertiesHeight},
+            refresh: {displayName: language.config_SitemapPropertiesRefreshPeriod}
         };
 
 
         // Sitemap model
         Ext.define('SitemapTree', {
-            extend:'Ext.data.Model',
-            fields:[
-                {name:'id'},
-                {name:'item'},
-                {name:'label'},
-                {name:'format'},
-                {name:'units'},
-                {name:'translateService'},
-                {name:'translateRule'},
-                {name:'type'},
-                {name:'itemicon'},
-                {name:'maxValue'},
-                {name:'minValue'},
-                {name:'step'},
-                {name:'mapping'},
-                {name:'leaf'},
-                {name:'sendFrequency'},
-                {name:'switchSupport'},
-                {name:'height'},
-                {name:'refresh'},
-                {name:'service'},
-                {name:'period'},
-                {name:'url'},
-                {name:'labelcolor'},
-                {name:'valuecolor'},
-                {name:'command'},
-                {name:'visibility'}
+            extend: 'Ext.data.Model',
+            fields: [
+                {name: 'id'},
+                {name: 'item'},
+                {name: 'label'},
+                {name: 'format'},
+                {name: 'units'},
+                {name: 'translateService'},
+                {name: 'translateRule'},
+                {name: 'type'},
+                {name: 'itemicon'},
+                {name: 'maxValue'},
+                {name: 'minValue'},
+                {name: 'step'},
+                {name: 'mapping'},
+                {name: 'leaf'},
+                {name: 'sendFrequency'},
+                {name: 'switchSupport'},
+                {name: 'height'},
+                {name: 'refresh'},
+                {name: 'service'},
+                {name: 'period'},
+                {name: 'url'},
+                {name: 'labelcolor'},
+                {name: 'valuecolor'},
+                {name: 'command'},
+                {name: 'visibility'}
             ]
         });
 
         var sitemapItemStore = Ext.create('Ext.data.TreeStore', {
-            model:'SitemapTree',
-            proxy:{
-                type:'memory'
+            model: 'SitemapTree',
+            proxy: {
+                type: 'memory'
             },
-            folderSort:true
+            folderSort: true
         });
 
         var propertySheet = Ext.create('Ext.grid.property.Grid', {
             title: language.properties,
-            icon:'images/gear.png',
-            region:'east',
-            flex:1,
-            hideHeaders:true,
-            sortableColumns:false,
-            split:true,
-            tools:[
+            icon: 'images/gear.png',
+            region: 'east',
+            flex: 1,
+            hideHeaders: true,
+            sortableColumns: false,
+            split: true,
+            tools: [
                 {
-                    type:'tick',
-                    disabled:true,
-                    tooltip:'Update data',
-                    handler:function (event, toolEl, panel) {
+                    type: 'tick',
+                    disabled: true,
+                    tooltip: language.config_SitemapPropertiesUpdate,
+                    handler: function (event, toolEl, panel) {
                         // Save button pressed - update the sitemap tree with the updated properties
                         var node = sitemapTree.getSelectionModel().getSelection()[0];
                         if (node == null)
@@ -405,29 +407,29 @@ Ext.define('openHAB.config.sitemapProperties', {
                     }
                 },
                 {
-                    type:'cross',
-                    disabled:true,
-                    tooltip:'Delete this widget and its children',
-                    handler:function (event, toolEl, panel) {
+                    type: 'cross',
+                    disabled: true,
+                    tooltip: language.config_SitemapPropertiesDeleteWidget,
+                    handler: function (event, toolEl, panel) {
                         Ext.Msg.show({
-                            title:"Confirm Delete",
-                            msg:'Are you sure you want to delete the selected widget and all its children?',
-                            buttons:Ext.Msg.YESNO,
-                            config:{
-                                obj:this,
-                                name:sitemapName
+                            title: language.config_SitemapPropertiesDeleteWidgetConfirm,
+                            msg: language.config_SitemapPropertiesDeleteWidgetMsg,
+                            buttons: Ext.Msg.YESNO,
+                            config: {
+                                obj: this,
+                                name: sitemapName
                             },
-                            fn:deleteWidget,
-                            icon:Ext.MessageBox.QUESTION
+                            fn: deleteWidget,
+                            icon: Ext.MessageBox.QUESTION
                         });
                     }
                 }
             ],
-            viewConfig:{
-                markDirty:true
+            viewConfig: {
+                markDirty: true
             },
-            listeners:{
-                propertychange:function (source, recordId, value, oldValue, eOpts) {
+            listeners: {
+                propertychange: function (source, recordId, value, oldValue, eOpts) {
                     propertySheet.getHeader().getTools()[0].enable();
                 }/*,
                  itemmouseenter:function (grid, record, item, index, e, eOpts) {
@@ -442,36 +444,34 @@ Ext.define('openHAB.config.sitemapProperties', {
 
         var widgetsGrid = Ext.create('Ext.grid.Panel', {
             // TODO: Does this need to be 'id'?
-            id:'sitemapWidgetGrid',
+            id: 'sitemapWidgetGrid',
             store: widgetStore,
-            icon:'images/document-node.png',
-            header:true,
-            hideHeaders:true,
-            title:"Widgets",
-            region:'center',
-            flex:1,
-            collapsible:false,
-            useArrows:false,
-            lines:true,
-            rootVisible:false,
-            multiSelect:false,
-            viewConfig:{
-                allowCopy:true,
-                copy:true,
-                plugins:{
-                    ptype:'gridviewdragdrop',
-                    dragGroup:'sitemapSitemapTree',
-                    dropGroup:'sitemapSitemapTree',
-                    enableDrag:true,
-                    enableDrop:false
+            icon: 'images/document-node.png',
+            header: true,
+            hideHeaders: true,
+            title: language.config_SitemapPropertiesWidgets,
+            region: 'center',
+            flex: 1,
+            collapsible: false,
+            useArrows: false,
+            lines: true,
+            rootVisible: false,
+            multiSelect: false,
+            viewConfig: {
+                allowCopy: true,
+                copy: true,
+                plugins: {
+                    ptype: 'gridviewdragdrop',
+                    dragGroup: 'sitemapSitemapTree',
+                    dropGroup: 'sitemapSitemapTree',
+                    enableDrag: true,
+                    enableDrop: false
                 }
             },
-            columns:[
+            columns: [
                 {
-                    text:'Widget',
-                    flex:5,
-                    dataIndex:'type',
-                    renderer:function (v) {
+                    dataIndex: 'type',
+                    renderer: function (v) {
                         var icon = "";
                         var ref = widgetStore.findExact("type", v);
                         if (ref != -1) {
@@ -487,28 +487,28 @@ Ext.define('openHAB.config.sitemapProperties', {
 
         var sitemapTree = Ext.create('Ext.tree.Panel', {
             // TODO: Does this need to be 'id'
-            id:'sitemapSitemapTree',
-            store:sitemapItemStore,
-            header:true,
-            title:"Sitemap Configuration",
-            region:'south',
-            icon:'images/maps-stack.png',
-            flex:2,
-            collapsible:false,
-            useArrows:false,
-            lines:true,
-            tools:[
+            id: 'sitemapSitemapTree',
+            store: sitemapItemStore,
+            header: true,
+            title: language.config_SitemapPropertiesConfiguration,
+            region: 'south',
+            icon: 'images/maps-stack.png',
+            flex: 2,
+            collapsible: false,
+            useArrows: false,
+            lines: true,
+            tools: [
                 {
-                    type:'expand',
-                    tooltip:'Expand sitemap',
-                    handler:function (event, toolEl, panel) {
+                    type: 'expand',
+                    tooltip: language.config_SitemapPropertiesExpand,
+                    handler: function (event, toolEl, panel) {
                         sitemapTree.expandAll();
                     }
                 },
                 {
-                    type:'disk',
-                    tooltip:'Save sitemap',
-                    handler:function (event, toolEl, panel) {
+                    type: 'disk',
+                    tooltip: language.config_SitemapPropertiesSave,
+                    handler: function (event, toolEl, panel) {
                         // Make sure we're loaded!
                         if (sitemapName == null)
                             return;
@@ -528,23 +528,23 @@ Ext.define('openHAB.config.sitemapProperties', {
                             for (var cnt = 0; cnt < errors.length; cnt++)
                                 message += "<br>" + errors[cnt];
 
-                            handleStatusNotification(NOTIFICATION_ERROR,message);
+                            handleStatusNotification(NOTIFICATION_ERROR, message);
 
                             return;
                         }
 
                         // Send the sitemap to openHAB
                         Ext.Ajax.request({
-                            url:HABminBaseURL + "/config/sitemap/" + sitemapName,
-                            headers:{'Accept':'application/json'},
-                            method:'PUT',
-                            jsonData:jsonArray,
-                            success:function (response, opts) {
-                                handleStatusNotification(NOTIFICATION_OK,'Sitemap configuration saved');
+                            url: HABminBaseURL + "/config/sitemap/" + sitemapName,
+                            headers: {'Accept': 'application/json'},
+                            method: 'PUT',
+                            jsonData: jsonArray,
+                            success: function (response, opts) {
+                                handleStatusNotification(NOTIFICATION_OK, language.config_SitemapPropertiesSaveOk);
                                 sitemapItemStore.sync();
                             },
-                            failure:function (result, request) {
-                                handleStatusNotification(NOTIFICATION_ERROR,'Error saving sitemap');
+                            failure: function (result, request) {
+                                handleStatusNotification(NOTIFICATION_ERROR, language.config_SitemapPropertiesSaveErr);
                             }
                         });
 
@@ -584,7 +584,7 @@ Ext.define('openHAB.config.sitemapProperties', {
                                     var label = "No Label";
                                     if (newNode.label && newNode.label.length)
                                         label = newNode.label;
-                                    addError("Frames must have children [" + label + "]");
+                                    addError(sprintf(language.config_SitemapPropertiesFrameErr, label));
                                 }
                             }
                             return newNode;
@@ -596,27 +596,27 @@ Ext.define('openHAB.config.sitemapProperties', {
                     }
                 }
             ],
-            rootVisible:true,
-            multiSelect:false,
-            viewConfig:{
-                stripeRows:true,
-                plugins:{
-                    ptype:'treeviewdragdrop',
-                    dropGroup:'sitemapSitemapTree',
-                    dragGroup:'sitemapSitemapTree',
-                    enableDrag:true,
-                    enableDrop:true
+            rootVisible: true,
+            multiSelect: false,
+            viewConfig: {
+                stripeRows: true,
+                plugins: {
+                    ptype: 'treeviewdragdrop',
+                    dropGroup: 'sitemapSitemapTree',
+                    dragGroup: 'sitemapSitemapTree',
+                    enableDrag: true,
+                    enableDrop: true
                 },
-                listeners:{
-                    beforedrop:function (node, data, overModel, dropPosition, dropFunction, eOpts) {
+                listeners: {
+                    beforedrop: function (node, data, overModel, dropPosition, dropFunction, eOpts) {
                     },
-                    drop:function (node, data, dropRec, dropPosition) {
+                    drop: function (node, data, dropRec, dropPosition) {
                         // Set default data
                         // Most of this is done automatically based on store names
                         var record = data.records[0];
                         record.set('icon', '');
                     },
-                    nodedragover:function (targetNode, position, dragData, e, eOpts) {
+                    nodedragover: function (targetNode, position, dragData, e, eOpts) {
                         // Make sure we can only append to groups and frames
                         if (position == "append") {
                             if (linkableWidgets.indexOf(targetNode.get('type')))
@@ -626,14 +626,14 @@ Ext.define('openHAB.config.sitemapProperties', {
                     }
                 }
             },
-            columns:[
+            columns: [
                 {
                     // The tree column
-                    xtype:'treecolumn',
-                    text:'Widget',
-                    flex:2,
-                    dataIndex:'type',
-                    renderer:function (value, meta, record) {
+                    xtype: 'treecolumn',
+                    text: language.config_SitemapPropertiesLabelWidget,
+                    flex: 2,
+                    dataIndex: 'type',
+                    renderer: function (value, meta, record) {
                         // We want to add an indicator if this is has conditional visibility
                         var img = '';
                         if (record.get("visibility") != "") {
@@ -644,15 +644,15 @@ Ext.define('openHAB.config.sitemapProperties', {
                     }
                 },
                 {
-                    text:'Item',
-                    flex:2,
-                    dataIndex:'item'
+                    text: language.config_SitemapPropertiesLabelItem,
+                    flex: 2,
+                    dataIndex: 'item'
                 },
                 {
-                    text:'Label',
-                    flex:3,
-                    dataIndex:'label',
-                    renderer:function (value, meta, record) {
+                    text: language.config_SitemapPropertiesLabelLabel,
+                    flex: 3,
+                    dataIndex: 'label',
+                    renderer: function (value, meta, record) {
                         // Rendering of the item
                         // This will use the values specified in the sitemap if set
                         // Otherwise it will default to showing the default item configuration
@@ -680,36 +680,36 @@ Ext.define('openHAB.config.sitemapProperties', {
                     }
                 }
             ],
-            listeners:{
-                itemclick:function (grid, record, item, index, element, eOpts) {
+            listeners: {
+                itemclick: function (grid, record, item, index, element, eOpts) {
                     // ToDo: We really should check if the properties are dirty and warn the user before setting the new values
                     showWidgetProperties(record);
                 }
             }
         });
 
-        var helpStatusText = Ext.create('Ext.toolbar.TextItem', {text:''});
-        var statusBar = Ext.create('Ext.ux.StatusBar', {text:'Sitemap:', items:[helpStatusText]});
+        var helpStatusText = Ext.create('Ext.toolbar.TextItem', {text: ''});
+        var statusBar = Ext.create('Ext.ux.StatusBar', {text: 'Sitemap:', items: [helpStatusText]});
 
         var sitemapDesign = Ext.create('Ext.panel.Panel', {
-            itemId:'sitemapPanel',
-            title:'Properties',
-            icon:'images/maps-stack.png',
-            defaults:{
-                split:true
+            itemId: 'sitemapPanel',
+            title: language.properties,
+            icon: 'images/maps-stack.png',
+            defaults: {
+                split: true
             },
-            border:false,
-            layout:'border',
-            items:[widgetsGrid, sitemapTree, propertySheet]
+            border: false,
+            layout: 'border',
+            items: [widgetsGrid, sitemapTree, propertySheet]
         });
 
         var sitemapThemes = Ext.create('openHAB.config.sitemapTheme');
 
         var tabs = Ext.create('Ext.tab.Panel', {
-            layout:'fit',
-            border:false,
-            bbar:statusBar,
-            items:[sitemapDesign, sitemapThemes]
+            layout: 'fit',
+            border: false,
+            bbar: statusBar,
+            items: [sitemapDesign, sitemapThemes]
         });
 
         this.items = tabs;
@@ -718,17 +718,17 @@ Ext.define('openHAB.config.sitemapProperties', {
 
         this.setItem = function (newSitemap) {
             Ext.Ajax.request({
-                url:HABminBaseURL + "/config/sitemap/" + newSitemap,
-                headers:{'Accept':'application/json'},
-                method:'GET',
-                success:function (response, opts) {
+                url: HABminBaseURL + "/config/sitemap/" + newSitemap,
+                headers: {'Accept': 'application/json'},
+                method: 'GET',
+                success: function (response, opts) {
                     var json = Ext.decode(response.responseText);
                     // If there's no config for this sitemap, records will be null
                     if (json == null)
                         return;
 
                     sitemapName = newSitemap;
-                    statusBar.setStatus({text:"Sitemap: " + newSitemap});
+                    statusBar.setStatus({text: "Sitemap: " + newSitemap});
 
                     // Create the root item
                     var sitemapRoot = [];

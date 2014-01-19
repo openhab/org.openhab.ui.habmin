@@ -55,7 +55,7 @@ Ext.define('openHAB.config.itemRules', {
                 {
                     icon: 'images/plus-button.png',
                     itemId: 'add',
-                    text: language.config_ItemRulesAdd,
+                    text: language.add,
                     cls: 'x-btn-icon',
                     disabled: true,
                     tooltip: language.config_ItemRulesAddTip,
@@ -70,7 +70,7 @@ Ext.define('openHAB.config.itemRules', {
                 {
                     icon: 'images/minus-button.png',
                     itemId: 'delete',
-                    text: language.config_ItemRulesDelete,
+                    text: language.delete,
                     cls: 'x-btn-icon',
                     disabled: true,
                     tooltip: language.config_ItemRulesDeleteTip,

@@ -62,7 +62,7 @@ Ext.define('openHAB.automation.ruleFileList', {
                 {
                     icon: 'images/plus-button.png',
                     itemId: 'add',
-                    text: language.rule_FileListAdd,
+                    text: language.add,
                     cls: 'x-btn-icon',
                     disabled: false,
                     tooltip: language.rule_FileListAddTip,
@@ -184,7 +184,7 @@ Ext.define('openHAB.automation.ruleFileList', {
                     itemId: 'refresh',
                     cls: 'x-btn-icon',
                     disabled: false,
-                    tooltip: language.rule_FileListRefresh,
+                    tooltip: language.refresh,
                     handler: function () {
                         loadModelList();
                     }
