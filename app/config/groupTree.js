@@ -37,44 +37,45 @@
 
 
 Ext.define('openHAB.config.groupTree', {
-    extend:'Ext.tree.Panel',
-    layout:'fit',
-    title:'Groups',
-    icon:'images/category-group.png',
-    header:false,
-    hideHeaders:true,
-    columns:[
+    extend: 'Ext.tree.Panel',
+    layout: 'fit',
+    icon: 'images/category-group.png',
+    header: false,
+    hideHeaders: true,
+    columns: [
         {
             // The tree column
-            xtype:'treecolumn',
-            text:'Group',
-            flex:2,
-            dataIndex:'group'
+            xtype: 'treecolumn',
+            text: 'Group',
+            flex: 2,
+            dataIndex: 'group'
         }
     ],
-    rootVisible:false,
-    multiSelect:true,
-    viewConfig:{
-        stripeRows:true
+    rootVisible: false,
+    multiSelect: true,
+    viewConfig: {
+        stripeRows: true
     },
 
-    initComponent:function () {
+    initComponent: function () {
+        this.title = language.config_GroupsTitle;
+
         // Add the model for the group tree
         Ext.define('GroupTree', {
-            extend:'Ext.data.Model',
-            fields:[
-                {name:'checked'},
-                {name:'group'},
-                {name:'icon'}
+            extend: 'Ext.data.Model',
+            fields: [
+                {name: 'checked'},
+                {name: 'group'},
+                {name: 'icon'}
             ]
         });
 
         var groupTreeStore = Ext.create('Ext.data.TreeStore', {
-            model:'GroupTree',
-            proxy:{
-                type:'memory'
+            model: 'GroupTree',
+            proxy: {
+                type: 'memory'
             },
-            folderSort:true
+            folderSort: true
         });
 
         this.store = groupTreeStore;
@@ -138,7 +139,7 @@ Ext.define('openHAB.config.groupTree', {
 
         this.resetGroups = function () {
             this.getRootNode().cascadeBy(function (node) {
-                if(node == null)
+                if (node == null)
                     return;
 
                 node.set('checked', false);
@@ -147,20 +148,20 @@ Ext.define('openHAB.config.groupTree', {
 
         this.setGroup = function (group) {
             var rec = groupTreeStore.getNodeById(group);
-            if(rec == null)
+            if (rec == null)
                 return;
 
             rec.set("checked", true);
         }
 
-        this.getSelected = function() {
+        this.getSelected = function () {
             var selList = [];
 
             this.getRootNode().cascadeBy(function (node) {
-                if(node == null)
+                if (node == null)
                     return;
 
-                if(node.get('checked') == true)
+                if (node.get('checked') == true)
                     selList.push(node.get('group'));
             });
 

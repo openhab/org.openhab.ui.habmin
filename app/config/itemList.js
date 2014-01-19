@@ -36,23 +36,24 @@
  */
 
 Ext.define('openHAB.config.itemList', {
-    extend:'Ext.panel.Panel',
-    layout:'fit',
-    icon:'images/document-node.png',
-    tabTip:'Configure items and groups',
-    title:'Items and Groups',
+    extend: 'Ext.panel.Panel',
+    layout: 'fit',
+    icon: 'images/document-node.png',
 
-    initComponent:function () {
+    initComponent: function () {
+        this.title = language.config_ItemListTitle;
+        this.tabTip = language.config_ItemListTitleTip;
+
         var toolbar = Ext.create('Ext.toolbar.Toolbar', {
-            items:[
+            items: [
                 {
-                    icon:'images/minus-button.png',
-                    itemId:'delete',
-                    text:'Delete Item',
-                    cls:'x-btn-icon',
-                    disabled:true,
-                    tooltip:'Delete the item from openHAB',
-                    handler:function () {
+                    icon: 'images/minus-button.png',
+                    itemId: 'delete',
+                    text: language.config_ItemListDelete,
+                    cls: 'x-btn-icon',
+                    disabled: true,
+                    tooltip: language.config_ItemListDeleteTip,
+                    handler: function () {
                         // Get the item name to delete
                         var record = itemsList.getSelectionModel().getSelection()[0];
                         if (record == null)
@@ -61,32 +62,32 @@ Ext.define('openHAB.config.itemList', {
                         // Make sure we really want to do this!!!
                         var itemName = record.get('name');
                         Ext.Msg.show({
-                            title:"Confirm Delete",
-                            msg:'Are you sure you want to delete the item "' + itemName + '"?',
-                            buttons:Ext.Msg.YESNO,
-                            config:{
-                                obj:this,
-                                name:itemName
+                            title: language.config_ItemListConfirmDeleteTitle,
+                            msg: sprintf(language.config_ItemListConfirmDeleteMsg, itemName),
+                            buttons: Ext.Msg.YESNO,
+                            config: {
+                                obj: this,
+                                name: itemName
                             },
-                            fn:deleteItem,
-                            icon:Ext.MessageBox.QUESTION
+                            fn: deleteItem,
+                            icon: Ext.MessageBox.QUESTION
                         });
                     }
                 },
                 {
-                    icon:'images/plus-button.png',
-                    itemId:'add',
-                    text:'Add New Item',
-                    cls:'x-btn-icon',
-                    disabled:false,
-                    tooltip:'Add a new item to openHAB',
-                    handler:function () {
+                    icon: 'images/plus-button.png',
+                    itemId: 'add',
+                    text: language.config_ItemListAdd,
+                    cls: 'x-btn-icon',
+                    disabled: false,
+                    tooltip: language.config_ItemListAddTip'Add a new item to openHAB',
+                    handler: function () {
                         Ext.define('ItemModelsModel', {
-                            extend:'Ext.data.Model',
-                            fields:[
-                                {name:'name'},
-                                {name:'icon'},
-                                {name:'iconCls'}
+                            extend: 'Ext.data.Model',
+                            fields: [
+                                {name: 'name'},
+                                {name: 'icon'},
+                                {name: 'iconCls'}
                             ]
                         });
 
@@ -111,47 +112,47 @@ Ext.define('openHAB.config.itemList', {
                         }
 
                         var form = Ext.widget('form', {
-                            layout:{
-                                type:'vbox',
-                                align:'stretch'
+                            layout: {
+                                type: 'vbox',
+                                align: 'stretch'
                             },
-                            border:false,
-                            bodyPadding:10,
-                            fieldDefaults:{
-                                labelAlign:'top',
-                                labelWidth:100,
-                                labelStyle:'font-weight:bold'
+                            border: false,
+                            bodyPadding: 10,
+                            fieldDefaults: {
+                                labelAlign: 'top',
+                                labelWidth: 100,
+                                labelStyle: 'font-weight:bold'
                             },
-                            defaults:{
-                                margins:'0 0 10 0'
+                            defaults: {
+                                margins: '0 0 10 0'
                             },
-                            items:[
+                            items: [
                                 {
-                                    margin:'0 0 0 0',
-                                    xtype:'combobox',
-                                    fieldLabel:'Select model:',
-                                    itemId:'model',
-                                    name:'model',
-                                    store:{model:'ItemModelsModel', data:models},
-                                    allowBlank:false,
-                                    valueField:'name',
-                                    displayField:'name',
-                                    forceSelection:false,
-                                    editable:true,
-                                    typeAhead:true,
-                                    queryMode:'local'
+                                    margin: '0 0 0 0',
+                                    xtype: 'combobox',
+                                    fieldLabel: 'Select model:',
+                                    itemId: 'model',
+                                    name: 'model',
+                                    store: {model: 'ItemModelsModel', data: models},
+                                    allowBlank: false,
+                                    valueField: 'name',
+                                    displayField: 'name',
+                                    forceSelection: false,
+                                    editable: true,
+                                    typeAhead: true,
+                                    queryMode: 'local'
                                 }
                             ],
-                            buttons:[
+                            buttons: [
                                 {
-                                    text:'Cancel',
-                                    handler:function () {
+                                    text: language.cancel,
+                                    handler: function () {
                                         this.up('window').destroy();
                                     }
                                 },
                                 {
-                                    text:'Create Item',
-                                    handler:function () {
+                                    text: language.config_ItemListCreateItem,
+                                    handler: function () {
                                         if (this.up('form').getForm().isValid()) {
                                             // Read the model name
                                             var model = form.getForm().findField('model').getSubmitValue();
@@ -173,30 +174,30 @@ Ext.define('openHAB.config.itemList', {
                         });
 
                         var saveWin = Ext.widget('window', {
-                            title:'Select Item Model',
-                            closeAction:'destroy',
-                            width:225,
-                            resizable:false,
-                            draggable:false,
-                            modal:true,
-                            layout:{
-                                type:'vbox',
-                                align:'stretch'
+                            title: language.config_ItemListSelectModel,
+                            closeAction: 'destroy',
+                            width: 225,
+                            resizable: false,
+                            draggable: false,
+                            modal: true,
+                            layout: {
+                                type: 'vbox',
+                                align: 'stretch'
                             },
-                            items:[form]
+                            items: [form]
                         });
 
                         saveWin.show();
                     }
                 },
-                { xtype:'tbfill' },
+                { xtype: 'tbfill' },
                 {
-                    icon:'images/arrow-circle-315.png',
-                    itemId:'refresh',
-                    cls:'x-btn-icon',
-                    disabled:false,
-                    tooltip:'Refresh the items list',
-                    handler:function () {
+                    icon: 'images/arrow-circle-315.png',
+                    itemId: 'refresh',
+                    cls: 'x-btn-icon',
+                    disabled: false,
+                    tooltip: 'Refresh the items list',
+                    handler: function () {
                         itemConfigStore.load();
                     }
                 }
@@ -204,18 +205,18 @@ Ext.define('openHAB.config.itemList', {
         });
 
         var itemsList = Ext.create('Ext.grid.Panel', {
-            store:itemConfigStore,
-            header:false,
-            split:true,
-            tbar:toolbar,
-            collapsible:false,
-            multiSelect:false,
-            columns:[
+            store: itemConfigStore,
+            header: false,
+            split: true,
+            tbar: toolbar,
+            collapsible: false,
+            multiSelect: false,
+            columns: [
                 {
-                    text:'Item',
-                    flex:3,
-                    dataIndex:'name',
-                    renderer:function (value, metadata, record) {
+                    text: language.config_ItemListItem,
+                    flex: 3,
+                    dataIndex: 'name',
+                    renderer: function (value, metadata, record) {
                         var icon = "";
                         var ref = itemConfigStore.findExact("name", value);
                         if (ref != -1) {
@@ -227,13 +228,13 @@ Ext.define('openHAB.config.itemList', {
                     }
                 },
                 {
-                    text:'Label',
-                    flex:4,
-                    dataIndex:'label',
-                    renderer:function (value, metadata, record, row, col, store, gridView) {
+                    text: language.config_ItemListLabel,
+                    flex: 4,
+                    dataIndex: 'label',
+                    renderer: function (value, metadata, record, row, col, store, gridView) {
                         var img = '';
                         var id = persistenceItemStore.findExact("name", record.get("name"));
-                        if(id != -1) {
+                        if (id != -1) {
                             img = '<img src="images/database-small.png">';
                         }
 
@@ -241,10 +242,10 @@ Ext.define('openHAB.config.itemList', {
                     }
                 },
                 {
-                    text:'Type',
-                    flex:2,
-                    dataIndex:'type',
-                    renderer:function (value, metadata, record, row, col, store, gridView) {
+                    text: language.config_ItemListType,
+                    flex: 2,
+                    dataIndex: 'type',
+                    renderer: function (value, metadata, record, row, col, store, gridView) {
                         var img = 'node.png';
                         if (record.get("type") != null)
                             img = getItemTypeIcon(record.get("type"));
@@ -253,13 +254,13 @@ Ext.define('openHAB.config.itemList', {
                     }
                 },
                 {
-                    text:'Model',
-                    flex:2,
-                    dataIndex:'model'
+                    text: language.config_ItemListModel,
+                    flex: 2,
+                    dataIndex: 'model'
                 }
             ],
-            listeners:{
-                itemclick:function (grid, record) {
+            listeners: {
+                itemclick: function (grid, record) {
                     if (record == null)
                         return;
 
@@ -288,16 +289,16 @@ Ext.define('openHAB.config.itemList', {
 
             // Tell OH to Remove the item
             Ext.Ajax.request({
-                url:HABminBaseURL + "/config/items/" + options.config.name,
-                headers:{'Accept':'application/json'},
-                method:'DELETE',
-                success:function (response, opts) {
-                    handleStatusNotification(NOTIFICATION_OK,'Item deleted');
+                url: HABminBaseURL + "/config/items/" + options.config.name,
+                headers: {'Accept': 'application/json'},
+                method: 'DELETE',
+                success: function (response, opts) {
+                    handleStatusNotification(NOTIFICATION_OK, sprintf(language.config_ItemListDeleted, options.config.name));
                 },
-                failure:function (result, request) {
-                    handleStatusNotification(NOTIFICATION_ERROR,'Error deleting item');
+                failure: function (result, request) {
+                    handleStatusNotification(NOTIFICATION_ERROR, sprintf(language.config_ItemListDeleteError, options.config.name));
                 },
-                callback:function (options, success, response) {
+                callback: function (options, success, response) {
                     // Reload the store
                     itemConfigStore.reload();
 

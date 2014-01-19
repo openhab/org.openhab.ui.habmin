@@ -96,6 +96,27 @@ var language = {
     config_BindingPropertiesSaved: "Binding configuration saved",
     config_BindingPropertiesError: "Error saving binding configuration",
 
+    // config/itemList.js
+    config_ItemListTitle: "Items and Groups",
+    config_ItemListTitleTip: "Configure items and groups",
+    config_ItemListDelete: "Delete Item",
+    config_ItemListDeleteTip: "Delete the item from openHAB",
+    config_ItemListConfirmDeleteTitle: "Confirm Delete",
+    config_ItemListConfirmDeleteMsg: "Are you sure you want to delete the item '%s'?",
+    config_ItemListAdd: "Add New Item",
+    config_ItemListAddTip: "Add a new item to openHAB",
+    config_ItemListCreateItem: "Create Item",
+    config_ItemListSelectModel: "Select Item Model",
+    config_ItemListItem: "Item",
+    config_ItemListLabel: "Label",
+    config_ItemListType: "Type",
+    config_ItemListModel: "Model",
+    config_ItemListDeleted: "Item '%s' has been deleted.",
+    config_ItemListDeleteError: "Error deleting item '%s'.",
+
+    // config/groupTree.js
+    config_GroupsTitle: "Groups",
+
     // graph/graph.js
     chartTab_Chart: "Chart",
     chartTab_Table: "Table",
