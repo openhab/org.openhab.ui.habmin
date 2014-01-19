@@ -56,7 +56,7 @@ Ext.define('openHAB.automation.ruleEditor', {
                     itemId: 'cancel',
                     cls: 'x-btn-icon',
                     disabled: true,
-                    tooltip: 'Cancel changes made to the rule file',
+                    tooltip: language.rule_EditorCancelTip,
                     handler: function () {
                         loadModel(modelName, ruleName);
                     }
@@ -66,7 +66,7 @@ Ext.define('openHAB.automation.ruleEditor', {
                     itemId: 'save',
                     cls: 'x-btn-icon',
                     disabled: true,
-                    tooltip: 'Save changes to the rule file',
+                    tooltip: language.rule_EditorSaveTip,
                     handler: function () {
                         // Create the RuleModelBean
                         var bean = {};
@@ -81,7 +81,7 @@ Ext.define('openHAB.automation.ruleEditor', {
                             success: function (response, opts) {
                                 var json = Ext.decode(response.responseText);
                                 if (json == null) {
-                                    handleStatusNotification(NOTIFICATION_ERROR, 'Error saving rule model "' + modelName + '"');
+                                    handleStatusNotification(NOTIFICATION_ERROR, sprintf(language.rule_EditorErrorSavingRule, modelName));
                                     return;
                                 }
 
@@ -89,10 +89,10 @@ Ext.define('openHAB.automation.ruleEditor', {
                                 toolbar.getComponent('save').disable();
                                 toolbar.getComponent('cancel').disable();
 
-                                handleStatusNotification(NOTIFICATION_OK, 'Rule model "' + modelName + '" saved successfully.');
+                                handleStatusNotification(NOTIFICATION_OK, sprintf(language.rule_EditorSaveOk, modelName));
                             },
                             failure: function (result, request) {
-                                handleStatusNotification(NOTIFICATION_ERROR, 'Error saving rule model "' + modelName + '"');
+                                handleStatusNotification(NOTIFICATION_ERROR, sprintf(language.rule_EditorErrorSavingRule, modelName));
                             }
                         });
 
@@ -104,7 +104,7 @@ Ext.define('openHAB.automation.ruleEditor', {
                     itemId: 'undo',
                     cls: 'x-btn-icon',
                     disabled: true,
-                    tooltip: 'Undo changes',
+                    tooltip: language.rule_EditorUndoTip,
                     handler: function () {
                         editor.undo();
                         editor.setFocus();
@@ -115,7 +115,7 @@ Ext.define('openHAB.automation.ruleEditor', {
                     itemId: 'redo',
                     cls: 'x-btn-icon',
                     disabled: true,
-                    tooltip: 'Redo changes',
+                    tooltip: language.rule_EditorRedoTip,
                     handler: function () {
                         editor.redo();
                         editor.setFocus();
@@ -126,7 +126,7 @@ Ext.define('openHAB.automation.ruleEditor', {
                     itemId: 'font-large',
                     cls: 'x-btn-icon',
                     disabled: false,
-                    tooltip: 'Increase font size',
+                    tooltip: language.rule_EditorIncreaseFontTip,
                     handler: function () {
                         if (fontSize > 32)
                             return;
@@ -140,7 +140,7 @@ Ext.define('openHAB.automation.ruleEditor', {
                     itemId: 'font-small',
                     cls: 'x-btn-icon',
                     disabled: false,
-                    tooltip: 'Decrease font size',
+                    tooltip: language.rule_EditorDecreaseFontTip,
                     handler: function () {
                         if (fontSize < 6)
                             return;
@@ -154,7 +154,7 @@ Ext.define('openHAB.automation.ruleEditor', {
                     itemId: 'insert',
                     cls: 'x-btn-icon',
                     disabled: false,
-                    tooltip: 'Add openHAB rule template at cursor location',
+                    tooltip: language.rule_EditorAddTemplateTip,
                     handler: function () {
                         editor.insertText('rule "<name here>"\nwhen\n\nthen\n\nend\n');
                         editor.setFocus();
@@ -165,7 +165,7 @@ Ext.define('openHAB.automation.ruleEditor', {
                     itemId: 'itemlist',
                     cls: 'x-btn-icon',
                     disabled: false,
-                    tooltip: 'Add openHAB item name at cursor location',
+                    tooltip: language.rule_EditorAddItemTip,
                     handler: function () {
                         var form = Ext.widget('form', {
                             layout: {
@@ -186,7 +186,7 @@ Ext.define('openHAB.automation.ruleEditor', {
                                 {
                                     margin: '0 0 0 0',
                                     xtype: 'combobox',
-                                    fieldLabel: 'Item name:',
+                                    fieldLabel: language.rule_EditorAddItemName,
                                     itemId: 'name',
                                     name: 'name',
                                     store: itemConfigStore,
@@ -201,13 +201,13 @@ Ext.define('openHAB.automation.ruleEditor', {
                             ],
                             buttons: [
                                 {
-                                    text: 'Cancel',
+                                    text: language.cancel,
                                     handler: function () {
                                         this.up('window').destroy();
                                     }
                                 },
                                 {
-                                    text: 'Insert Item',
+                                    text: language.rule_EditorInsertItem,
                                     handler: function () {
                                         if (this.up('form').getForm().isValid()) {
                                             // Read the item name
@@ -222,7 +222,7 @@ Ext.define('openHAB.automation.ruleEditor', {
                         });
 
                         var itemWin = Ext.widget('window', {
-                            title: 'Select Item Name',
+                            title: language.rule_EditorSelectItemName,
                             closeAction: 'destroy',
                             width: 325,
                             resizable: false,
@@ -243,7 +243,7 @@ Ext.define('openHAB.automation.ruleEditor', {
                     itemId: 'cronlist',
                     cls: 'x-btn-icon',
                     disabled: false,
-                    tooltip: 'Add timer definition at cursor location',
+                    tooltip: language.rule_EditorAddTimerTip,
                     handler: function () {
                         var form = Ext.widget('form', {
                             layout: {
@@ -264,7 +264,7 @@ Ext.define('openHAB.automation.ruleEditor', {
                                 {
                                     margin: '0 0 0 0',
                                     xtype: 'combobox',
-                                    fieldLabel: 'Time Rule:',
+                                    fieldLabel: language.rule_EditorTimeRule,
                                     itemId: 'rule',
                                     name: 'rule',
                                     store: cronRuleStore,
@@ -279,13 +279,13 @@ Ext.define('openHAB.automation.ruleEditor', {
                             ],
                             buttons: [
                                 {
-                                    text: 'Cancel',
+                                    text: language.cancel,
                                     handler: function () {
                                         this.up('window').destroy();
                                     }
                                 },
                                 {
-                                    text: 'Insert Timer ',
+                                    text: language.rule_EditorInsertTimer,
                                     handler: function () {
                                         if (this.up('form').getForm().isValid()) {
                                             // Read the item name
@@ -300,7 +300,7 @@ Ext.define('openHAB.automation.ruleEditor', {
                         });
 
                         var cronWin = Ext.widget('window', {
-                            title: 'Select Timer',
+                            title: language.rule_EditorSelectTimer,
                             closeAction: 'destroy',
                             width: 375,
                             resizable: false,
@@ -349,7 +349,7 @@ Ext.define('openHAB.automation.ruleEditor', {
         function loadModel(modelName, ruleName) {
             // Check if modelName is defined
             if (modelName == null) {
-                handleStatusNotification(NOTIFICATION_ERROR, 'Error loading rule model - no model defined');
+                handleStatusNotification(NOTIFICATION_ERROR, language.rule_EditorErrorNoModel);
                 return;
             }
 
@@ -360,7 +360,7 @@ Ext.define('openHAB.automation.ruleEditor', {
                 success: function (response, opts) {
                     var json = Ext.decode(response.responseText);
                     if (json == null) {
-                        handleStatusNotification(NOTIFICATION_ERROR, 'Error loading rule model "' + modelName + '"');
+                        handleStatusNotification(NOTIFICATION_ERROR, sprintf(language.rule_EditorErrorLoadingRule, modelName));
                         return;
                     }
 
@@ -378,12 +378,12 @@ Ext.define('openHAB.automation.ruleEditor', {
 
                     // Notify the user we're done
                     if (json.source == null || json.source.length == 0)
-                        handleStatusNotification(NOTIFICATION_OK, 'Rule model "' + modelName + '" created successfully.');
+                        handleStatusNotification(NOTIFICATION_OK, sprintf(language.rule_EditorCreatedOk, modelName));
                     else
-                        handleStatusNotification(NOTIFICATION_OK, 'Rule model "' + modelName + '" loaded successfully.');
+                        handleStatusNotification(NOTIFICATION_OK, sprintf(language.rule_EditorLoadedOk, modelName));
                 },
                 failure: function (result, request) {
-                    handleStatusNotification(NOTIFICATION_ERROR, 'Error loading rule model "' + modelName + '"');
+                    handleStatusNotification(NOTIFICATION_ERROR, sprintf(language.rule_EditorErrorLoadingRule, modelName));
                 }
             });
         }

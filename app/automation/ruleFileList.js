@@ -80,7 +80,7 @@ Ext.define('openHAB.automation.ruleFileList', {
                         // User can type their own, but this gives them options.
                         var models = [];
                         var ocnt = 0;
-                        for (var cnt = 0; cnt < ruleModelStore.getTotalCount(); cnt++) {
+                        for (var cnt = 0; cnt < ruleModelStore.getCount(); cnt++) {
                             var found = false;
                             var name = ruleModelStore.getAt(cnt).get("model");
                             for (var mcnt = 0; mcnt < models.length; mcnt++) {

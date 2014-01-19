@@ -35,6 +35,14 @@
  * @author Chris Jackson
  */
 var language = {
+    // GENERAL
+    properties: "Properties",
+    error: "Error",
+    warning: "Warning",
+    success: "Success",
+    cancel: "Cancel",
+
+
     // app.js
     mainTab_Persistence: "Persistence",
     mainTab_PersistenceTip: "Display chart page",
@@ -48,12 +56,6 @@ var language = {
     onlineState_Online: "openHAB is online",
     onlineState_Offline: "openHAB is offline",
     onlineState_Busy: "openHAB is busy",
-
-    // GENERAL
-    properties: "Properties",
-    error: "Error",
-    warning: "Warning",
-    success: "Success",
 
     //
     zwave_Network: "Network",
@@ -85,5 +87,39 @@ var language = {
     graph_Save: "Save Graph",
     graph_SaveTip: "Save current chart configuration",
     graph_Reset: "Reset Graph",
-    graph_ResetTip: "Clear Selected Channels and Reset Period"
+    graph_ResetTip: "Clear Selected Channels and Reset Period",
+
+    // automation/ruleFileList.js
+    rule_FileListTitle: "Rule Models",
+    rule_FileListAdd: "Add New Model",
+    rule_FileListAddTip: "Add a new rule model to openHAB",
+    rule_FileListCreateButton: "Create Model",
+    rule_FileListCreateWindow: "Specify Model Name",
+    rule_FileListRefresh: "Refresh the rule model list",
+    rule_FileListModel: "Model",
+    rule_FileListRule: "Rule",
+
+    // automation/ruleEditor.js
+    rule_EditorCancelTip: "Cancel changes made to the rule file",
+    rule_EditorSaveTip: "Save changes to the rule file",
+    rule_EditorUndoTip: "Undo changes",
+    rule_EditorRedoTip: "Redo changes",
+    rule_EditorIncreaseFontTip: "Increase font size",
+    rule_EditorDecreaseFontTip: "Decrease font size",
+    rule_EditorAddTemplateTip: "Add openHAB rule template at cursor location",
+    rule_EditorAddItemTip: "Add openHAB item name at cursor location",
+    rule_EditorAddItemName: "Item name:",
+    rule_EditorInsertItem: "Insert Item",
+    rule_EditorSelectItemName: "Select Item Name",
+    rule_EditorAddTimerTip: "Add timer definition at cursor location",
+    rule_EditorTimeRule: "Time Rule:",
+    rule_EditorInsertTimer: "Insert Timer",
+    rule_EditorSelectTimer: "Select Timer",
+    rule_EditorErrorSavingRule: "Error saving rule model '%s'",
+    rule_EditorSaveOk: "Rule model '%s' saved successfully.",
+    rule_EditorErrorLoadingRule: "Error loading rule model '%s'",
+    rule_EditorCreatedOk: "Rule model '%s' created successfully.",
+    rule_EditorLoadedOk: "Rule model '%s' loaded successfully.",
+    rule_EditorErrorNoModel: "Error loading rule model - no model defined"
+
 };
