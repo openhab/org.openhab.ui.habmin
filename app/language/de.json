@@ -16,5 +16,20 @@
 
     "onlineState_Online": "openHAB ist online",
     "onlineState_Offline": "openHAB ist offline",
-    "onlineState_Busy": "openHAB ist besetzt"
+    "onlineState_Busy": "openHAB ist besetzt",
+    
+    "add" : "Hinzufügen",
+    "delete": "Entfernen",
+    "copy": "Kopieren",
+    "refresh": "Aktualisieren",
+    "create": "Erstellen",
+    
+    "zwave_Devices": "Geräte",
+    "zwave_DevicesReloadButton": "Eigenschaften aktualisieren",
+    "zwave_DevicesReloadButtonTip": "Konfiguration aktualisieren",
+    "zwave_DevicesValueUpdateError": "Fehler beim Senden des aktualisieren Wertes zum Server!",
+    "zwave_DevicesValueUpdateRangeError": "Wert ist ausserhalb des spezifiziertem Bereich. Bitte Wert zwischen %s und %d angeben.",
+    "zwave_DevicesActionError": "Fehler beim Senden der Aktion zum Server!",
+    "zwave_DevicesTreeNode": "Node",
+    "zwave_DevicesTreeValue": "Wert",
 }
