@@ -44,7 +44,7 @@ Ext.define('openHAB.graph.graph', {
 
     initComponent: function () {
         this.title = language.mainTab_Persistence;
-        this.tabTip = language.mainTab_PersistenceTip;
+        this.tooltip = language.mainTab_PersistenceTip;
 
         // Default to local time
         Highcharts.setOptions({global: {useUTC: false}});

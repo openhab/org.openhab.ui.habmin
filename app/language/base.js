@@ -58,9 +58,12 @@ var language = {
     mainTab_System: "System",
     mainTab_SystemTip: "Display system information",
     mainTab_OnlineStatus: "Online Status",
+    mainTab_UserSettings: "Configure <i>HABmin</i> user settings",
     onlineState_Online: "openHAB is online",
     onlineState_Offline: "openHAB is offline",
     onlineState_Busy: "openHAB is busy",
+
+    personalisation_Language: "Language:",
 
     //
     zwave_Network: "Network",
@@ -109,6 +112,7 @@ var language = {
     config_ItemListAddTip: "Add a new item to openHAB",
     config_ItemListRefreshTip: "Refresh the items list",
     config_ItemListCreateItem: "Create Item",
+    config_ItemListModelName: "Model Name:",
     config_ItemListSelectModel: "Select Item Model",
     config_ItemListItem: "Item",
     config_ItemListLabel: "Label",
