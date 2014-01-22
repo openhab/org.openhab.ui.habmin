@@ -44,7 +44,7 @@ Ext.define('openHAB.config.config', {
 
     initComponent:function () {
         this.title = language.mainTab_Configuration;
-        this.tabTip = language.mainTab_ConfigurationTip;
+        this.tooltip = language.mainTab_ConfigurationTip;
 
         var mapList = Ext.create('openHAB.config.mappingList');
         var sitemapList = Ext.create('openHAB.config.sitemapList');

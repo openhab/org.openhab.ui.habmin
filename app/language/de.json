@@ -31,5 +31,5 @@
     "zwave_DevicesValueUpdateRangeError": "Wert ist ausserhalb des spezifiziertem Bereich. Bitte Wert zwischen %s und %d angeben.",
     "zwave_DevicesActionError": "Fehler beim Senden der Aktion zum Server!",
     "zwave_DevicesTreeNode": "Node",
-    "zwave_DevicesTreeValue": "Wert",
+    "zwave_DevicesTreeValue": "Wert"
 }

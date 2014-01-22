@@ -44,7 +44,7 @@ Ext.define('openHAB.automation.automation', {
 
     initComponent: function () {
         this.title = language.mainTab_Automation;
-        this.tabTip = language.mainTab_AutomationTip;
+        this.tooltip = language.mainTab_AutomationTip;
 
         var ruleList = Ext.create('openHAB.automation.ruleList');
         var ruleLibrary = Ext.create('openHAB.automation.ruleLibrary');

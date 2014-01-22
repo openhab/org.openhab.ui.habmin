@@ -130,7 +130,7 @@ Ext.define('openHAB.config.itemList', {
                                 {
                                     margin: '0 0 0 0',
                                     xtype: 'combobox',
-                                    fieldLabel: 'Select model:',
+                                    fieldLabel: language.config_ItemListModelName,
                                     itemId: 'model',
                                     name: 'model',
                                     store: {model: 'ItemModelsModel', data: models},

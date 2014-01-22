@@ -44,7 +44,7 @@ Ext.define('openHAB.system.system', {
 
     initComponent:function () {
         this.title = language.mainTab_System;
-        this.tabTip = language.mainTab_SystemTip;
+        this.tooltip = language.mainTab_SystemTip;
 
         var bindings  = Ext.create('openHAB.system.systemBundles');
         var logViewer  = Ext.create('openHAB.system.logViewer');

@@ -347,7 +347,7 @@ Ext.define('openHAB.config.sitemapProperties', {
             title: language.properties,
             icon: 'images/gear.png',
             region: 'east',
-            flex: 1,
+            flex: 3,
             hideHeaders: true,
             sortableColumns: false,
             split: true,
@@ -470,6 +470,7 @@ Ext.define('openHAB.config.sitemapProperties', {
             },
             columns: [
                 {
+                    flex: 1,
                     dataIndex: 'type',
                     renderer: function (v) {
                         var icon = "";

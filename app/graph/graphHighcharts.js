@@ -530,7 +530,6 @@ Ext.define('openHAB.graph.graphHighcharts', {
                             resizable:false,
                             draggable:false,
                             itemId:'chartInfo',
-                            id:'chartInfo',
                             items:[graphInfoGrid]
                         });
 

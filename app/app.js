@@ -38,25 +38,21 @@
 /**
  * Load the language file before the application starts
  */
+var languageCode;
 document.ready=function() {
     // Detect the language and get the two character code
-    var lang = "en";
-    var country = "en"
-    var navSetting = navigator.language;
-    if(navSetting != null && navSetting.length != 0) {
-        lang = lang.substr(0,2);
-        country = lang.substr(2,4);
-
-        if(country == null || country.length == 0)
-            country = lang;
-    }
+    languageCode = Ext.util.Cookies.get("language");
+    if(languageCode == null)
+        languageCode = "en";
+    else if(isoLanguageGetName(languageCode) == "UNKNOWN")
+        languageCode = "en";
 
     // Write the language on the splash-screen
-    Ext.fly('HABminLanguage').update("<img src='images/flags/gb.png'> &nbsp" + isoLanguageGetName(lang), false);
+    Ext.fly('HABminLanguage').update(isoLanguageGetName(languageCode), false);
 
     // Only try and load languages that aren't English since this is the base
-    if(lang != "en")
-        loadLanguage(lang);
+    if(languageCode != "en")
+        loadLanguage(languageCode);
 };
 
 Ext.Container.prototype.bufferResize = false;
@@ -443,6 +439,7 @@ function getItemTypeIcon(type) {
  * The main GUI creation method
  */
 function createUI() {
+    Ext.QuickTips.init();
     delete Ext.tip.Tip.prototype.minWidth;
 
     //======= Quartz CRON Rule Store
@@ -689,7 +686,7 @@ function createUI() {
         ]
     });
 
-// Create the Widgets data store
+// Create the item format store
     itemFormatStore = Ext.create('Ext.data.ArrayStore', {
         model: 'FormatModel'
     });
@@ -833,7 +830,7 @@ function createUI() {
     Ext.define('StatusBar', {
         extend: 'Ext.Component',
         alias: 'widget.onlinestatusbar',
-        html: '<div id="onlineStatus" style="position:absolute;right:5px;top:3px;width:250px;text-align:right"><span id="statustext" style="vertical-align: top;">Online Status </span><img style="margin-top:-1px;" id="statusicon" src="images/status-offline.png"></div>'
+        html: '<div id="onlineStatus" style="position:absolute;right:5px;top:3px;width:250px;text-align:right"><span id="statustext" style="vertical-align: top;">' + language.mainTab_OnlineStatus + '</span><img style="margin-top:-1px;" id="statusicon" src="images/status-offline.png"></div>'
     });
 
     var tabMain = Ext.create('Ext.tab.Panel', {
@@ -843,7 +840,97 @@ function createUI() {
             render: function () {
                 this.tabBar.add(
                     { xtype: 'tbfill' },
-                    { xtype: 'onlinestatusbar' }
+                    { xtype: 'onlinestatusbar' },
+                    {
+                        border: false,
+                        closable: false,
+                        tooltip: language.mainTab_UserSettings,
+                        icon: "images/user-green.png",
+                        handler:function () {
+                            var store = Ext.create('Ext.data.ArrayStore', {
+                                fields: [
+                                    {name: 'code'},
+                                    {name: 'name'},
+                                    {name: 'nativeName'}
+                                ]
+                            });
+                            store.loadData(isoLanguages);
+                            store.sort('nativeName');
+
+                            var form = Ext.widget('form', {
+                                layout: {
+                                    type: 'vbox',
+                                    align: 'stretch'
+                                },
+                                border: false,
+                                bodyPadding: 10,
+                                fieldDefaults: {
+                                    labelAlign: 'top',
+                                    labelWidth: 100,
+                                    labelStyle: 'font-weight:bold'
+                                },
+                                defaults: {
+                                    margins: '0 0 10 0'
+                                },
+                                items: [
+                                    {
+                                        margin: '0 0 0 0',
+                                        xtype: 'combobox',
+                                        fieldLabel: language.personalisation_Language,
+                                        itemId: 'language',
+                                        name: 'language',
+                                        store: store,
+                                        allowBlank: false,
+                                        valueField: 'code',
+                                        displayField: 'nativeName',
+                                        forceSelection: true,
+                                        editable: true,
+                                        typeAhead: true,
+                                        queryMode: 'local'
+                                    }
+                                ],
+                                buttons: [
+                                    {
+                                        text: language.cancel,
+                                        handler: function () {
+                                            this.up('window').destroy();
+                                        }
+                                    },
+                                    {
+                                        text: language.save,
+                                        handler: function () {
+                                            if (this.up('form').getForm().isValid()) {
+                                                // Read the model name
+                                                var languageCode = form.getForm().findField('language').getSubmitValue();
+                                                Ext.util.Cookies.set("language", languageCode);
+                                                loadLanguage(languageCode);
+
+                                                this.up('window').destroy();
+                                                window.location.reload();
+                                            }
+                                        }
+                                    }
+                                ]
+                            });
+
+                            var saveWin = Ext.widget('window', {
+                                header: false,//language.config_ItemListSelectModel,
+                                closeAction: 'destroy',
+                                width: 225,
+                                resizable: false,
+                                draggable: false,
+                                modal: true,
+                                layout: {
+                                    type: 'vbox',
+                                    align: 'stretch'
+                                },
+                                items: [form]
+                            });
+
+                            saveWin.show();
+                            saveWin.alignTo(tabMain.getActiveTab(), "tr-tr");
+                        }
+                    }
                 );
             },
             tabchange: function (tabPanel, newCard, oldCard, eOpts) {
