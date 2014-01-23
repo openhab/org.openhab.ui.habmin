@@ -42,7 +42,7 @@ var languageCode;
 document.ready=function() {
     // Detect the language and get the two character code
     languageCode = Ext.util.Cookies.get("language");
-    if(languageCode == null)
+    if(languageCode === null)
         languageCode = "en";
     else if(isoLanguageGetName(languageCode) == "UNKNOWN")
         languageCode = "en";
@@ -248,9 +248,6 @@ Ext.Ajax.defaultHeaders = {
     'Content-Type': 'application/json'
 };
 
-function loadError(errorText) {
-}
-
 /**
  * Load a country language file
  * @param countryCode the two digit ISO country code
@@ -263,7 +260,9 @@ function loadLanguage(countryCode) {
         success: function (response, opts) {
             var json = Ext.decode(response.responseText);
 
-            languageOverride = json;
+            if(json === null)
+                return;
+
             for (var attrname in json) {
                 language[attrname] = json[attrname];
             }
@@ -278,11 +277,11 @@ function loadLanguage(countryCode) {
  * This ensures that all required preferences are set, and are valid
  */
 function checkUserPrefs() {
-    if(userPrefs == null)
+    if(userPrefs === null)
         userPrefs = {};
 
     // Time to show error message
-    if(userPrefs.messageTimeError == null)
+    if(userPrefs.messageTimeError === null)
         userPrefs.messageTimeError = 2500;
     if(userPrefs.messageTimeError > 10000)
         userPrefs.messageTimeError = 2500;
@@ -290,7 +289,7 @@ function checkUserPrefs() {
         userPrefs.messageTimeError = 2500;
 
     // Time to show warning message
-    if(userPrefs.messageTimeWarning == null)
+    if(userPrefs.messageTimeWarning === null)
         userPrefs.messageTimeWarning = 2500;
     if(userPrefs.messageTimeWarning > 10000)
         userPrefs.messageTimeWarning = 2500;
@@ -298,7 +297,7 @@ function checkUserPrefs() {
         userPrefs.messageTimeWarning = 2500;
 
     // Time to show ok message
-    if(userPrefs.messageTimeSuccess == null)
+    if(userPrefs.messageTimeSuccess === null)
         userPrefs.messageTimeSuccess = 1500;
     if(userPrefs.messageTimeSuccess > 10000)
         userPrefs.messageTimeSuccess = 1500;
@@ -421,7 +420,7 @@ function doStatus() {
             });
         },
         interval: 2500
-    }
+    };
     Ext.TaskManager.start(updateStatus);
 }
 
@@ -914,7 +913,7 @@ function createUI() {
                             });
 
                             var saveWin = Ext.widget('window', {
-                                header: false,//language.config_ItemListSelectModel,
+                                header: false,
                                 closeAction: 'destroy',
                                 width: 225,
                                 resizable: false,
@@ -963,6 +962,6 @@ function createUI() {
     Ext.get('HABmin').show(true);
 
     // Create the status toolbar and start the status update thread
-    statusTooltip = Ext.create('Ext.tip.ToolTip', {target: 'onlineStatus', html: 'Offline'});
+    statusTooltip = Ext.create('Ext.tip.ToolTip', {target: 'onlineStatus', html: language.onlineState_Offline});
     doStatus();
 }
