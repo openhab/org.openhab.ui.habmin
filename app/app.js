@@ -380,12 +380,12 @@ function handleOnlineStatus(newStatus) {
         handleStatusNotification(NOTIFICATION_OK, language.onlineState_Online);
     }
     else if (newStatus == STATUS_BUSY) {
-        Ext.get('statusicon').dom.src = 'images/status-busy.png';
+        Ext.get('statusicon').dom.src = 'images/status-away.png';
         statusTooltip.update(language.onlineState_Busy);
         handleStatusNotification(NOTIFICATION_WARNING, language.onlineState_Busy);
     }
     else if (newStatus == STATUS_OFFLINE) {
-        Ext.get('statusicon').dom.src = 'images/status-offline.png';
+        Ext.get('statusicon').dom.src = 'images/status-busy.png';
         statusTooltip.update(language.onlineState_Offline);
         handleStatusNotification(NOTIFICATION_ERROR, language.onlineState_Offline);
     }
@@ -829,7 +829,7 @@ function createUI() {
     Ext.define('StatusBar', {
         extend: 'Ext.Component',
         alias: 'widget.onlinestatusbar',
-        html: '<div id="onlineStatus" style="position:absolute;right:5px;top:3px;width:250px;text-align:right"><span id="statustext" style="vertical-align: top;">' + language.mainTab_OnlineStatus + '</span><img style="margin-top:-1px;" id="statusicon" src="images/status-offline.png"></div>'
+        html: '<div id="onlineStatus" style="position:absolute;right:5px;top:3px;width:250px;text-align:right"><span id="statustext" style="vertical-align: top;">' + language.mainTab_OnlineStatus + '&nbsp</span><img style="margin-top:-1px;" id="statusicon" src="images/status-offline.png"></div>'
     });
 
     var tabMain = Ext.create('Ext.tab.Panel', {
