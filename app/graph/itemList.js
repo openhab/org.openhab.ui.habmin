@@ -39,9 +39,11 @@ Ext.define('openHAB.graph.itemList', {
     extend:'Ext.panel.Panel',
     layout:'fit',
     icon:'images/chart_curve_add.png',
-    tabTip:'Items List',
-    title:'Item List',
+
     initComponent:function () {
+        this.title = language.graph_ItemList;
+        this.tabTip = language.graph_ItemListTip;
+
         var selectedChanList = [];
 
         var itemToolbar = Ext.create('Ext.toolbar.Toolbar', {
@@ -70,6 +72,7 @@ Ext.define('openHAB.graph.itemList', {
                     handler:function () {
                         var saveGraph = Ext.create('openHAB.graph.saveGraph');
                         saveGraph.setData(selectedChanList);
+                        saveGraph.show();
                     }
                 },
                 {

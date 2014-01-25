@@ -7,11 +7,16 @@
 
     <link rel="stylesheet" type="text/css" href="resources/css/ext-all.css" />
     <link rel="stylesheet" type="text/css" href="./app/habmin.css" />
+    <script type="text/javascript" src="./app/language/language.js"></script>
+    <script type="text/javascript" src="./app/language/base.js"></script>
+    <script type="text/javascript" src="./js/jsprintf.js"></script>
     <script type="text/javascript" src="./js/ext-all-debug.js"></script>
     <script type="text/javascript" src="./js/jquery.min.js"></script>
     <script type="text/javascript" src="./js/highcharts.js"></script>
     <script type="text/javascript" src="./js/highcharts-more.js"></script>
     <script type="text/javascript" src="./js/jquery.atmosphere.js"></script>
+    <script type="text/javascript" src="./js/extux/aceeditor/ace/ace.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/jit.js"></script>
     <script type="text/javascript" src="./app/app.js"></script>
 </head>
 <body>
@@ -21,14 +26,15 @@
 <div id="splashscreen" class="splashscreen">
     <div style="display:block;position:absolute;width:99%;top:40%; text-align: center;">
         <div style="display:inline-block">
-        <img src="/images/app-icon.png">
+            <img src="/images/app-icon.png">
         </div>
         <div style="display:inline-block;vertical-align:top;margin-top: 20px;">
             <p id="loadingText" style="font-family:Verdana,Helvetica,sans-serif;font-size: 10px;">
-            Loading <b><i>HABmin</i></b> web administration console
-        </p>
-        <p style="font-family:Verdana,Helvetica,sans-serif;font-size: 10px;">openHAB Version: <span id="openHABVersion">---</span></p>
+                Loading <b><i>HABmin</i></b> web administration console
+            </p>
+            <p style="font-family:Verdana,Helvetica,sans-serif;font-size: 10px;">openHAB Version: <span id="openHABVersion">---</span></p>
             <p style="font-family:Verdana,Helvetica,sans-serif;font-size: 10px;">HABmin Version: <span id="HABminVersion">---</span></p>
+            <p style="font-family:Verdana,Helvetica,sans-serif;font-size: 10px;">Language: <span id="HABminLanguage">---</span></p>
         </div>
     </div>
     <div style="display:block;position:absolute;width:99%;top:45%; text-align: center;">

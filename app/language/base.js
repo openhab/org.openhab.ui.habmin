@@ -258,12 +258,17 @@ var language = {
     chartTab_Table: "Table",
 
     // graph/itemList.js
+    graph_ItemList: "Item List",
+    graph_ItemListTip: "Select items to be graphed",
     graph_Update: "Update",
     graph_UpdateTip: "Retrieve the currently selected channels",
     graph_Save: "Save Graph",
     graph_SaveTip: "Save current chart configuration",
     graph_Reset: "Reset Graph",
     graph_ResetTip: "Clear Selected Channels and Reset Period",
+
+    // graph/saveGraph.js
+    graph_SaveGraphTitle: "Save Graph",
 
     // automation/ruleFileList.js
     rule_FileListTitle: "Rule Models",
