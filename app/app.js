@@ -391,7 +391,6 @@ function handleOnlineStatus(newStatus) {
     }
 }
 
-var statusCount = 0;
 function doStatus() {
     // Periodically retrieve the openHAB server status updates
     var updateStatus = {
@@ -404,22 +403,35 @@ function doStatus() {
                 success: function (response, opts) {
                     var res = Ext.decode(response.responseText);
                     if(res == null)
-                        statusCount++;
+                        this.statusCount++;
                     else
-                        statusCount = 0;
+                        this.statusCount = 0;
                 },
                 failure: function (response, opts) {
-                    statusCount++;
+                    this.statusCount++;
                 },
                 callback: function () {
-                    if(statusCount >= 2)
+                    // Hold off any errors until after the startup time.
+                    // This is necessary for slower (embedded) machines
+                    if(this.startCnt > 0) {
+                        this.startCnt--;
+                    }
+                    else {
+                        this.interval = 2500;
+                        this.errorLimit = 2;
+                    }
+
+                    if(this.statusCount >= this.errorLimit)
                         handleOnlineStatus(STATUS_OFFLINE);
                     else
                         handleOnlineStatus(STATUS_ONLINE);
                 }
             });
         },
-        interval: 2500
+        interval: 5000,
+        startCnt: 3,
+        statusCount: 0,
+        errorLimit: 6
     };
     Ext.TaskManager.start(updateStatus);
 }
