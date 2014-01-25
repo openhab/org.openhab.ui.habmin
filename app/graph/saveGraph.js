@@ -44,44 +44,60 @@ Ext.define('openHAB.graph.saveGraph', {
     resizable: false,
     draggable: false,
     modal: true,
+    itemId: 'saveGraph',
 //    layout: 'border',
     layout: {
         type: 'vbox',
         align: 'stretch'
     },
-
     initComponent: function () {
-        var saveGraphAxisStore = Ext.create('Ext.data.Store', {
+        var me = this;
+
+        me.saveGraphAxisStore = Ext.create('Ext.data.Store', {
             fields: [
                 {type: 'number', name: 'axis'},
                 {type: 'string', name: 'label'},
-                {type: 'number', name: 'minimum'},
-                {type: 'number', name: 'maximum'},
-                {type: 'number', name: 'position'}
+                {type: 'string', name: 'format'},
+                {type: 'string', name: 'minimum'},
+                {type: 'string', name: 'maximum'},
+                {type: 'string', name: 'position'}
             ],
             data: [
-                {axis: 1},
-                {axis: 2},
-                {axis: 3},
-                {axis: 4}
+                {axis: 1, position: 'left'},
+                {axis: 2, position: 'left'},
+                {axis: 3, position: 'left'},
+                {axis: 4, position: 'left'}
             ]
         });
 
-        var saveGraphStore = Ext.create('Ext.data.Store', {
+        me.saveGraphStore = Ext.create('Ext.data.Store', {
             storeId: 'saveGraphStore',
             fields: [
-                {type: 'number', name: 'id'},
-                {type: 'string', name: 'name'},
+                {type: 'string', name: 'item'},
                 {type: 'string', name: 'label'},
+                {type: 'string', name: 'chart'},
+                {type: 'string', name: 'color'},
+                {type: 'string', name: 'line'},
+                {type: 'string', name: 'marker'},
                 {type: 'number', name: 'axis'}
             ]
         });
 
-        var yesnoStore = Ext.create('Ext.data.Store', {
+        var formatStore = Ext.create('Ext.data.Store', {
+            fields: ['format', 'label'],
+            data: [
+                {format: '%d', label: 'Integer'},
+                {format: '%.1f', label: 'Float (0.0)'},
+                {format: '%.2f', label: 'Float (0.00)'},
+                {format: '%.3f', label: 'Float (0.000)'}
+            ]
+        });
+
+        var positionStore = Ext.create('Ext.data.Store', {
             fields: ['id', 'name'],
             data: [
-                {id: 1, name: 'Yes'},
-                {id: 0, name: 'No'}
+                {id: 'left', name: 'Left'},
+                {id: 'right', name: 'Right'}
             ]
         });
 
@@ -130,7 +146,7 @@ Ext.define('openHAB.graph.saveGraph', {
             ]
         });
 
-            var axisStore = Ext.create('Ext.data.Store', {
+        var axisStore = Ext.create('Ext.data.Store', {
             fields: ['axis', 'icon'],
             data: [
                 {axis: 1, icon: 'images/notification-counter-01.png'},
@@ -140,13 +156,12 @@ Ext.define('openHAB.graph.saveGraph', {
             ]
         });
 
-        var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
+        var chanCellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
             clicksToEdit: 1
         });
 
         var chanList = Ext.create('Ext.grid.Panel', {
-            store: saveGraphStore,
-            region: 'north',
+            store: me.saveGraphStore,
             selType: 'cellmodel',
             border: true,
             hideHeaders: false,
@@ -178,7 +193,7 @@ Ext.define('openHAB.graph.saveGraph', {
                             return '';//'<div><img src="{icon}" height="16"></div>';
                         },
                         listConfig: {
-                            minWidth:24,
+                            minWidth: 24,
                             getInnerTpl: function () {
                                 return '<div><img src="{icon}" height="16"></div>';
                             }
@@ -197,13 +212,13 @@ Ext.define('openHAB.graph.saveGraph', {
                     hideable: false,
                     flex: 4,
                     sortable: true,
-                    dataIndex: 'name'
+                    dataIndex: 'item'
                 },
                 {
                     text: 'Label',
                     hideable: false,
                     flex: 4,
-                    sortable: true,
+                    sortable: false,
                     dataIndex: 'label',
                     editor: {
                         allowBlank: true
@@ -213,7 +228,7 @@ Ext.define('openHAB.graph.saveGraph', {
                     text: 'Chart',
                     hideable: false,
                     flex: 2,
-                    sortable: true,
+                    sortable: false,
                     dataIndex: 'chart',
                     editor: new Ext.form.field.ComboBox({
                         editable: false,
@@ -232,7 +247,7 @@ Ext.define('openHAB.graph.saveGraph', {
                     text: 'Color',
                     hideable: false,
                     flex: 2,
-                    sortable: true,
+                    sortable: false,
                     dataIndex: 'color',
                     editor: new Ext.form.field.ComboBox({
                         editable: false,
@@ -256,16 +271,15 @@ Ext.define('openHAB.graph.saveGraph', {
                     text: 'Line',
                     hideable: false,
                     flex: 2,
-                    sortable: true,
+                    sortable: false,
                     dataIndex: 'line'
                 },
                 {
-                    xtype: 'checkcolumn',
                     text: 'Markers',
                     hideable: false,
                     dataIndex: 'marker',
                     flex: 1,
-                    stopSelection: false
+                    sortable: false
                 }
             ],
             layout: 'fit',
@@ -274,15 +288,18 @@ Ext.define('openHAB.graph.saveGraph', {
                 enableTextSelection: false,
                 markDirty: false
             },
-            plugins: [cellEditing]
+            plugins: [chanCellEditing]
+        });
+
+        var axisCellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
+            clicksToEdit: 1
         });
 
         var axisList = Ext.create('Ext.grid.Panel', {
-            store: saveGraphAxisStore,
+            store: me.saveGraphAxisStore,
             title: "Axis Configuration",
             flex: 3,
             border: true,
-            region: 'east',
             selType: 'cellmodel',
             hideHeaders: false,
             //header: true,
@@ -301,10 +318,10 @@ Ext.define('openHAB.graph.saveGraph', {
                     text: "Axis",
                     hideable: false,
                     width: 32,
-                    sortable: true,
+                    sortable: false,
                     dataIndex: 'axis',
                     renderer: function (v) {
-                        var ref = axisStore.findExact("axis", v)
+                        var ref = axisStore.findExact("axis", v);
                         if (ref == -1)
                             return "";
                         var icon = axisStore.getAt(ref).get("icon");
@@ -315,7 +332,7 @@ Ext.define('openHAB.graph.saveGraph', {
                     text: 'Title',
                     hideable: false,
                     flex: 6,
-                    sortable: true,
+                    sortable: false,
                     dataIndex: 'label',
                     editor: {
                         allowBlank: true
@@ -325,40 +342,72 @@ Ext.define('openHAB.graph.saveGraph', {
                     text: 'Format',
                     hideable: false,
                     flex: 3,
-                    sortable: true,
-                    dataIndex: 'label',
-                    editor: {
-                        allowBlank: true
+                    sortable: false,
+                    dataIndex: 'format',
+                    editor: new Ext.form.field.ComboBox({
+                        editable: false,
+                        store: formatStore,
+                        displayField: 'label',
+                        valueField: 'format'
+                    }),
+                    renderer: function (v) {
+                        var ref = formatStore.findExact("format", v);
+                        if (ref == -1)
+                            return "";
+                        return formatStore.getAt(ref).get("label");
                     }
                 },
                 {
                     text: 'Minimum',
                     hideable: false,
                     flex: 2,
-                    sortable: true,
+                    sortable: false,
                     dataIndex: 'minimum',
                     editor: {
-                        allowBlank: true
+                        maskRe: /[0-9.-]/,
+                        allowBlank: true,
+                        validator: function (val) {
+                            if (isNaN(val)) {
+                                return "Value must be a number";
+                            }
+                            return true;
+                        }
                     }
                 },
                 {
                     text: 'Maximum',
                     hideable: false,
                     flex: 2,
-                    sortable: true,
+                    sortable: false,
                     dataIndex: 'maximum',
                     editor: {
-                        allowBlank: true
+                        maskRe: /[0-9.-]/,
+                        allowBlank: true,
+                        validator: function (val) {
+                            if (isNaN(val)) {
+                                return "Value must be a number";
+                            }
+                            return true;
+                        }
                     }
                 },
                 {
                     text: 'Position',
                     hideable: false,
                     flex: 2,
-                    sortable: true,
+                    sortable: false,
                     dataIndex: 'position',
-                    editor: {
-                        allowBlank: true
+                    editor: new Ext.form.field.ComboBox({
+                        editable: false,
+                        store: positionStore,
+                        displayField: 'name',
+                        valueField: 'id'
+                    }),
+                    renderer: function (v) {
+                        var ref = positionStore.findExact("id", v)
+                        if (ref == -1)
+                            return "";
+                        return positionStore.getAt(ref).get("name");
                     }
                 }
             ],
@@ -367,12 +416,14 @@ Ext.define('openHAB.graph.saveGraph', {
                 stripeRows: false,
                 enableTextSelection: false,
                 markDirty: false
-            }
+            },
+            plugins: [axisCellEditing]
         });
 
-        var form = Ext.create('Ext.panel.Panel', {
-            layout: 'form',
-            region: 'center',
+        me.chartForm = Ext.create('Ext.form.Panel', {
+            //id: 'chartForm',
+            xtype: 'form',
+            //layout: 'form',
             flex: 2,
             header: {
                 height: 18,
@@ -390,9 +441,9 @@ Ext.define('openHAB.graph.saveGraph', {
             },
             items: [
                 {
-                    labelWidth:40,
+                    labelWidth: 40,
                     xtype: 'textfield',
-                    id: 'graphName',
+                    name: 'name',
                     fieldLabel: 'Name',
                     maxLength: 50,
                     enforceMaxLength: true,
@@ -400,7 +451,7 @@ Ext.define('openHAB.graph.saveGraph', {
                 },
                 {
                     xtype: 'combobox',
-                    itemId: 'graphDuration',
+                    name: 'duration',
                     fieldLabel: 'Duration',
                     allowBlank: false,
                     valueField: 'duration',
@@ -412,8 +463,7 @@ Ext.define('openHAB.graph.saveGraph', {
                 {
                     xtype: 'combobox',
                     fieldLabel: 'Icon',
-                    itemId: 'graphIcon',
-                    name: 'graphIcon',
+                    name: 'icon',
                     store: iconStore,
                     allowBlank: false,
                     valueField: 'name',
@@ -437,15 +487,15 @@ Ext.define('openHAB.graph.saveGraph', {
         });
 
         var subPanel = Ext.create('Ext.panel.Panel', {
-//            layout: 'fit',
             layout: {
                 type: 'hbox',
                 align: 'stretch'
             },
             flex: 1,
             border: false,
-            items: [form, axisList]
+            items: [me.chartForm, axisList]
         });
+
 
         this.items = [subPanel, chanList];
         this.callParent();
@@ -454,7 +504,7 @@ Ext.define('openHAB.graph.saveGraph', {
             var chanData = [];
             for (var chCnt = 0; chCnt < channels.length; chCnt++) {
                 chanData[chCnt] = {};
-                chanData[chCnt].name = channels[chCnt].name;
+                chanData[chCnt].item = channels[chCnt].name;
                 chanData[chCnt].axis = 1;
 
                 var id = persistenceItemStore.findExact("name", channels[chCnt].name);
@@ -464,7 +514,7 @@ Ext.define('openHAB.graph.saveGraph', {
                 }
             }
 
-            saveGraphStore.loadData(chanData);
+            me.saveGraphStore.loadData(chanData);
         }
     },
     buttons: [
@@ -477,29 +527,60 @@ Ext.define('openHAB.graph.saveGraph', {
         {
             text: language.save,
             handler: function () {
-                if (this.up('form').getForm().isValid() == false) {
+                var me = this.up('#saveGraph');
+
+                if (me.chartForm.isValid() == false) {
                     return;
                 }
-                var parms = {};
-                parms.id = 'lr_dmCtrl';
-                parms.control = 'saveGraph';
-                parms.name = Ext.getCmp('graphName').getValue();
-                parms.icon = Ext.getCmp('graphIcon').getValue();
-                parms.ref = Ext.getCmp('graphRef').getValue();
-                parms.period = Ext.getCmp('graphDuration').getValue() * 86400000;
+                var chartCfg = {};
 
-                var data = saveGraphStore.getRange();
+                // Get the top level configuration
+                var formData = me.chartForm.getValues();
+                chartCfg.name = formData.name;
+                chartCfg.icon = formData.icon;
+                chartCfg.period = formData.duration;
+
+                // Get the item configuration
+                chartCfg.items = [];
+                var data = me.saveGraphStore.getRange();
                 for (var chCnt = 0; chCnt < data.length; chCnt++) {
-                    parms["channel" + chCnt] = data[chCnt].get('id');
-                    parms["axis" + chCnt] = data[chCnt].get('axis');
+                    var newItem = {};
 
-                    if (parms["axis" + chCnt] > 4 | parms["axis" + chCnt] < 1)
-                        parms["axis" + chCnt] = 1;
+                    newItem.item = data[chCnt].get('item');
+                    newItem.axis = data[chCnt].get('axis');
+                    newItem.label = data[chCnt].get('label');
+                    newItem.chart = data[chCnt].get('chart');
+                    newItem.line = data[chCnt].get('line');
+                    newItem.color = data[chCnt].get('color');
+                    newItem.marker = data[chCnt].get('marker');
+
+                    chartCfg.items.push(newItem);
                 }
 
+                // Get the axis configuration
+                chartCfg.axis = [];
+                var data = me.saveGraphAxisStore.getRange();
+                for (var chCnt = 0; chCnt < data.length; chCnt++) {
+                    var newAxis = {};
+
+                    newAxis.axis = data[chCnt].get('axis');
+                    newAxis.label = data[chCnt].get('label');
+                    newAxis.format = data[chCnt].get('format');
+                    newAxis.minimum = data[chCnt].get('minimum');
+                    newAxis.maximum = data[chCnt].get('maximum');
+                    newAxis.position = data[chCnt].get('position');
+
+                    // Don't send to the server if there's no data
+                    if(newAxis.label == "" && newAxis.format == "" && newAxis.minimum == "" && newAxis.maximum == "" && newAxis.position == "left")
+                        continue;
+
+                    chartCfg.axis.push(newAxis);
+                }
+
+                // Send to the server
                 Ext.Ajax.request({
-                    url: HABminBaseURL + '/habmin/graph/',
-                    params: parms,
+                    url: HABminBaseURL + '/persistence/charts/' + chartCfg.name,
+                    jsonData: chartCfg,
                     method: 'PUT',
                     success: function (response, opts) {
                         var configGraph = Ext.decode(response.responseText);
