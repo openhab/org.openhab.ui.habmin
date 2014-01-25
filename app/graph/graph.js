@@ -50,6 +50,7 @@ Ext.define('openHAB.graph.graph', {
         Highcharts.setOptions({global: {useUTC: false}});
 
         var itemList = Ext.create('openHAB.graph.itemList');
+        var graphList = Ext.create('openHAB.graph.graphList');
 
         var accordion = Ext.create('Ext.Panel', {
             split: true,
@@ -61,7 +62,7 @@ Ext.define('openHAB.graph.graph', {
                 type: 'accordion',
                 hideCollapseTool: true
             },
-            items: [itemList]
+            items: [itemList, graphList]
         });
 
         // If we're running on a mobile device, allow the lists to collapse

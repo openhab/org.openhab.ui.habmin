@@ -142,6 +142,7 @@ var translationServiceStore;
 var ruleLibraryStore;
 var ruleStore;
 var cronRuleStore;
+var chartStore;
 
 // Global variables
 var persistenceService = "";
@@ -558,6 +559,24 @@ function createUI() {
     )
     ;
 
+// ====== Charts Store
+    chartStore = Ext.create('Ext.data.Store', {
+        fields: ['id', 'name', 'icon'],
+        proxy: {
+            type: 'rest',
+            url: HABminBaseURL + '/persistence/charts',
+            reader: {
+                type: 'json',
+                root: 'chart'
+            },
+            headers: {'Accept': 'application/json'},
+            pageParam: undefined,
+            startParam: undefined,
+            sortParam: undefined,
+            limitParam: undefined
+        },
+        autoLoad: true
+    });
 
 //======= Persistence Items Store
     Ext.define('PersistenceItemModel', {

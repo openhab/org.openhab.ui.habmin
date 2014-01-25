@@ -39,23 +39,21 @@
 Ext.define('openHAB.graph.graphList', {
     extend:'Ext.panel.Panel',
     layout:'fit',
-    icon:'images/chart_curve_add.png',
+    icon:'images/system-monitor.png',
 
     initComponent:function () {
-        this.title = language.graph_ItemList;
-        this.tabTip = language.graph_ItemListTip;
-
-//        this.items = itemsTree;
+        this.title = language.graph_GraphList;
+        this.tabTip = language.graph_GraphListTip;
 
         var itemToolbar = Ext.create('Ext.toolbar.Toolbar', {
             items:[
                 {
                     icon:'images/cross.png',
                     itemId:'clear',
-                    text: language.graph_Reset,
+                    text: language.delete,
                     cls:'x-btn-icon',
                     disabled:false,
-                    tooltip: language.graph_ResetTip,
+                    tooltip: language.graph_GraphListDeleteTip,
                     handler:function () {
                         var selectedChanList = [];
                         itemToolbar.getComponent('update').disable();
@@ -63,12 +61,12 @@ Ext.define('openHAB.graph.graphList', {
                     }
                 },
                 {
-                    icon:'images/disk.png',
+                    icon:'images/pencil-small.png',
                     itemId:'save',
-                    text: language.graph_Save,
+                    text: language.edit,
                     cls:'x-btn-icon',
                     disabled:true,
-                    tooltip: language.graph_SaveTip,
+                    tooltip: language.graph_GraphListEditTip,
                     handler:function () {
                         var saveGraph = Ext.create('openHAB.graph.saveGraph');
                         saveGraph.setData(selectedChanList);
@@ -79,7 +77,7 @@ Ext.define('openHAB.graph.graphList', {
         });
 
         var itemList = Ext.create('Ext.grid.Panel', {
-            store:persistenceItemStore,
+            store: chartStore,
             tbar:itemToolbar,
             header:false,
             disableSelection:true,
@@ -103,7 +101,7 @@ Ext.define('openHAB.graph.graphList', {
                     flex:1,
                     width:75,
                     sortable:true,
-                    dataIndex:'label',
+                    dataIndex:'name',
                     renderer:function (value, metaData, record, row, col, store, gridView) {
                         if (value != "")
                             return value;

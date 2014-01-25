@@ -43,6 +43,7 @@ var language = {
     cancel: "Cancel",
     save: "Save",
     add: "Add",
+    edit: "Edit",
     delete: "Delete",
     copy: "Copy",
     refresh: "Refresh",
@@ -260,17 +261,21 @@ var language = {
     // graph/itemList.js
     graph_ItemList: "Item List",
     graph_ItemListTip: "Select items to be graphed",
-    graph_Update: "Update",
-    graph_UpdateTip: "Retrieve the currently selected channels",
-    graph_Save: "Save Graph",
-    graph_SaveTip: "Save current chart configuration",
-    graph_Reset: "Reset Graph",
-    graph_ResetTip: "Clear Selected Channels and Reset Period",
+    graph_ItemListUpdate: "Update",
+    graph_ItemListUpdateTip: "Retrieve the currently selected channels",
+    graph_ItemListSave: "Save Graph",
+    graph_ItemListSaveTip: "Save current chart configuration",
+    graph_ItemListReset: "Reset Graph",
+    graph_ItemListResetTip: "Clear Selected Channels and Reset Period",
     graph_ItemTitle: "Item",
     graph_LastValue: "Last Value",
     graph_ItemIcon: "Item Icon",
 
     // graph/graphList.js
+    graph_GraphList: "Graph List",
+    graph_GraphListTip: "Display predefined graphs",
+    graph_GraphListDeleteTip: "Delete the selected graph definition",
+    graph_GraphListEditTip: "Edit the selected graph definition",
 
     // graph/saveGraph.js
     graph_SaveGraphTitle: "Save Graph",

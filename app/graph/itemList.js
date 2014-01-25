@@ -51,10 +51,10 @@ Ext.define('openHAB.graph.itemList', {
                 {
                     icon:'images/cross.png',
                     itemId:'clear',
-                    text: language.graph_Reset,
+                    text: language.graph_ItemListReset,
                     cls:'x-btn-icon',
                     disabled:false,
-                    tooltip: language.graph_ResetTip,
+                    tooltip: language.graph_ItemListResetTip,
                     handler:function () {
                         var selectedChanList = [];
                         itemToolbar.getComponent('update').disable();
@@ -65,10 +65,10 @@ Ext.define('openHAB.graph.itemList', {
                 {
                     icon:'images/disk.png',
                     itemId:'save',
-                    text: language.graph_Save,
+                    text: language.graph_ItemListSave,
                     cls:'x-btn-icon',
                     disabled:true,
-                    tooltip: language.graph_SaveTip,
+                    tooltip: language.graph_ItemListSaveTip,
                     handler:function () {
                         var saveGraph = Ext.create('openHAB.graph.saveGraph');
                         saveGraph.setData(selectedChanList);
@@ -78,10 +78,10 @@ Ext.define('openHAB.graph.itemList', {
                 {
                     icon:'images/external.png',
                     itemId:'update',
-                    text: language.graph_Update,
+                    text: language.graph_ItemListUpdate,
                     cls:'x-btn-icon',
                     disabled:true,
-                    tooltip: language.graph_UpdateTip,
+                    tooltip: language.graph_ItemListUpdateTip,
                     handler:function () {
                         if(selectedChanList.length == 0)
                             return;

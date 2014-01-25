@@ -203,12 +203,12 @@
     "chartTab_Table": "Tabelle",
     
     // graph/itemList.js
-    "graph_Update": "Aktualisieren",
-    "graph_UpdateTip": "Empfange die derzeit ausgewählten Kanäle",
-    "graph_Save": "Speichere die grafische Darstellung",
-    "graph_SaveTip": "Speichere die Diagramm-Konfiguration",
-    "graph_Reset": "Zurücksetzen der grafischen Darstellungen",
-    "graph_ResetTip": "Leere ausgewählte Kanäle und setze den Zeitraum zurück",
+    "graph_ItemListUpdate": "Aktualisieren",
+    "graph_ItemListUpdateTip": "Empfange die derzeit ausgewählten Kanäle",
+    "graph_ItemListSave": "Speichere die grafische Darstellung",
+    "graph_ItemListSaveTip": "Speichere die Diagramm-Konfiguration",
+    "graph_ItemListReset": "Zurücksetzen der grafischen Darstellungen",
+    "graph_ItemListResetTip": "Leere ausgewählte Kanäle und setze den Zeitraum zurück",
     
     // automation/ruleFileList.js
     "rule_FileListTitle": "Regel-Modelle",

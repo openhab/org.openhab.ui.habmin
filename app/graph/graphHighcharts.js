@@ -36,80 +36,80 @@
  */
 
 Ext.define('openHAB.graph.graphHighcharts', {
-    extend:'Ext.panel.Panel',
-    title:'Chart',
-    icon:'images/chart-up.png',
-    layout:'fit',
-    header:false,
+    extend: 'Ext.panel.Panel',
+    title: 'Chart',
+    icon: 'images/chart-up.png',
+    layout: 'fit',
+    header: false,
     // TODO: does this need to be 'id'?
-    id:'highchartsChart',
+    id: 'highchartsChart',
+    chartObject: null,
 
-    initComponent:function () {
+    initComponent: function () {
         var lastUpdate = 0;
         var rawData = [];
-        var chartObject = null;
         var chartMin = 0;
         var chartMax = 0;
         var chartChannels = [];
         var chartOptions = {
-            chart:{
-                renderTo:'chartIsHere',
-                animation:false,
-                type:'spline',
-                zoomType:'x',
-                events:{
-                    selection:function (event) {
+            chart: {
+                renderTo: 'chartIsHere',
+                animation: false,
+                type: 'spline',
+                zoomType: 'x',
+                events: {
+                    selection: function (event) {
                         event.preventDefault();
                         updateChart(chartChannels, Math.floor(event.xAxis[0].min), Math.ceil(event.xAxis[0].max));
                     }
                 }
             },
-            credits:{
-                enabled:false
+            credits: {
+                enabled: false
             },
-            title:{
-                text:null
+            title: {
+                text: null
             },
-            xAxis:{
-                type:'datetime',
-                dateTimeLabelFormats:{ // don't display the dummy year
-                    month:'%e. %b',
-                    year:'%b'
+            xAxis: {
+                type: 'datetime',
+                dateTimeLabelFormats: { // don't display the dummy year
+                    month: '%e. %b',
+                    year: '%b'
                 }
             },
-            plotOptions:{
-                spline:{
-                    lineWidth:3,
-                    states:{
-                        hover:{
-                            lineWidth:5
+            plotOptions: {
+                spline: {
+                    lineWidth: 3,
+                    states: {
+                        hover: {
+                            lineWidth: 5
                         }
                     },
-                    marker:{
-                        states:{
-                            hover:{
-                                enabled:true,
-                                symbol:'circle',
-                                radius:5,
-                                lineWidth:1
+                    marker: {
+                        states: {
+                            hover: {
+                                enabled: true,
+                                symbol: 'circle',
+                                radius: 5,
+                                lineWidth: 1
                             }
                         }
                     }
                 },
-                series:{
-                    marker:{
-                        enabled:false
+                series: {
+                    marker: {
+                        enabled: false
                     }
                 }
             },
-            legend:{
-                enabled:true
+            legend: {
+                enabled: true
             },
-            tooltip:{
-                enabled:true,
-                crosshairs:true,
-                shared:false,
-                formatter:function () {
+            tooltip: {
+                enabled: true,
+                crosshairs: true,
+                shared: false,
+                formatter: function () {
                     return '<b>' + this.series.name + '</b><br/>' +
                         Highcharts.dateFormat('%H:%M:%S %a %d %b %Y', this.x) + ': ' +
                         Highcharts.numberFormat(this.y, 2);
@@ -282,7 +282,7 @@ Ext.define('openHAB.graph.graphHighcharts', {
 
             toolbarEnable();
             if (errors != "") {
-                handleStatusNotification(NOTIFICATION_WARNING,'Warning: ' + error);
+                handleStatusNotification(NOTIFICATION_WARNING, 'Warning: ' + error);
             }
         }
 
@@ -296,12 +296,12 @@ Ext.define('openHAB.graph.graphHighcharts', {
             var timeInit = timeStart;
 
             Ext.MessageBox.show({
-                msg:'Downloading graph data...',
-                width:100,
-                height:40,
-                icon:'icon-download',
-                draggable:false,
-                closable:false
+                msg: 'Downloading graph data...',
+                width: 100,
+                height: 40,
+                icon: 'icon-download',
+                draggable: false,
+                closable: false
             });
 
             if (isNaN(start))
@@ -339,26 +339,24 @@ Ext.define('openHAB.graph.graphHighcharts', {
                 rawData[chan].yAxis = 0;
 
                 Ext.Ajax.request({
-                    url:HABminBaseURL + '/persistence/' + persistenceService + '/' + channels[chan].name,
-                    timeout:20000,
-                    params:parms,
-                    method:'GET',
-                    headers:{'Accept':'application/json'},
-                    success:function (response, opts) {
+                    url: HABminBaseURL + '/persistence/' + persistenceService + '/' + channels[chan].name,
+                    timeout: 20000,
+                    params: parms,
+                    method: 'GET',
+                    headers: {'Accept': 'application/json'},
+                    success: function (response, opts) {
                         var item = opts.url.split('/');
                         var json = Ext.decode(response.responseText);
                         addGraphData(item[item.length - 1], json);
                     },
-                    failure:function (response, opts) {
+                    failure: function (response, opts) {
                         var item = opts.url.split('/');
                         // Calling addGraphData allows us to correlate all requests and display a consolidated status
                         addGraphData(item[item.length - 1], null);
                     }
                 });
             }
-        }
-
-        ;
+        };
 
         function redrawChart() {
             if (this.chartObject != null) {
@@ -386,14 +384,14 @@ Ext.define('openHAB.graph.graphHighcharts', {
         // Main initComponent code
 
         var toolbar = Ext.create('Ext.toolbar.Toolbar', {
-            items:[
+            items: [
                 {
-                    icon:'images/zoom_in.png',
-                    itemId:'zoomIn',
-                    disabled:true,
-                    cls:'x-btn-icon',
-                    tooltip:'Zoom In',
-                    handler:function () {
+                    icon: 'images/zoom_in.png',
+                    itemId: 'zoomIn',
+                    disabled: true,
+                    cls: 'x-btn-icon',
+                    tooltip: 'Zoom In',
+                    handler: function () {
                         var zoom;
                         var min;
                         var max;
@@ -405,12 +403,12 @@ Ext.define('openHAB.graph.graphHighcharts', {
                     }
                 },
                 {
-                    icon:'images/zoom_out.png',
-                    itemId:'zoomOut',
-                    disabled:true,
-                    cls:'x-btn-icon',
-                    tooltip:'Zoom Out',
-                    handler:function () {
+                    icon: 'images/zoom_out.png',
+                    itemId: 'zoomOut',
+                    disabled: true,
+                    cls: 'x-btn-icon',
+                    tooltip: 'Zoom Out',
+                    handler: function () {
                         var zoom;
 
                         zoom = (chartMax - chartMin) / 5;
@@ -419,53 +417,53 @@ Ext.define('openHAB.graph.graphHighcharts', {
                 },
                 '-',
                 {
-                    icon:'images/calendar-select.png',
-                    itemId:'viewDay',
-                    disabled:true,
-                    cls:'x-btn-icon',
-                    tooltip:'Display last day',
-                    handler:function () {
+                    icon: 'images/calendar-select.png',
+                    itemId: 'viewDay',
+                    disabled: true,
+                    cls: 'x-btn-icon',
+                    tooltip: 'Display last day',
+                    handler: function () {
                         doGraphTime(1);
                     }
                 },
                 {
-                    icon:'images/calendar-select-week.png',
-                    itemId:'viewWeek',
-                    disabled:true,
-                    cls:'x-btn-icon',
-                    tooltip:'Display last week',
-                    handler:function () {
+                    icon: 'images/calendar-select-week.png',
+                    itemId: 'viewWeek',
+                    disabled: true,
+                    cls: 'x-btn-icon',
+                    tooltip: 'Display last week',
+                    handler: function () {
                         doGraphTime(7);
                     }
                 },
                 {
-                    icon:'images/calendar-select-month.png',
-                    itemId:'viewMonth',
-                    disabled:true,
-                    cls:'x-btn-icon',
-                    tooltip:'Display last month',
-                    handler:function () {
+                    icon: 'images/calendar-select-month.png',
+                    itemId: 'viewMonth',
+                    disabled: true,
+                    cls: 'x-btn-icon',
+                    tooltip: 'Display last month',
+                    handler: function () {
                         doGraphTime(30);
                     }
                 },
                 {
-                    icon:'images/calendar.png',
-                    itemId:'viewYear',
-                    disabled:true,
-                    cls:'x-btn-icon',
-                    tooltip:'Display last year',
-                    handler:function () {
+                    icon: 'images/calendar.png',
+                    itemId: 'viewYear',
+                    disabled: true,
+                    cls: 'x-btn-icon',
+                    tooltip: 'Display last year',
+                    handler: function () {
                         doGraphTime(365);
                     }
                 },
                 '-',
                 {
-                    icon:'images/arrow_left.png',
-                    itemId:'scrollLeft',
-                    disabled:true,
-                    cls:'x-btn-icon',
-                    tooltip:'Scroll left',
-                    handler:function () {
+                    icon: 'images/arrow_left.png',
+                    itemId: 'scrollLeft',
+                    disabled: true,
+                    cls: 'x-btn-icon',
+                    tooltip: 'Scroll left',
+                    handler: function () {
                         var scroll;
 
                         scroll = (chartMax - chartMin) / 5;
@@ -473,12 +471,12 @@ Ext.define('openHAB.graph.graphHighcharts', {
                     }
                 },
                 {
-                    icon:'images/arrow_right.png',
-                    itemId:'scrollRight',
-                    disabled:true,
-                    cls:'x-btn-icon',
-                    tooltip:'Scroll right',
-                    handler:function () {
+                    icon: 'images/arrow_right.png',
+                    itemId: 'scrollRight',
+                    disabled: true,
+                    cls: 'x-btn-icon',
+                    tooltip: 'Scroll right',
+                    handler: function () {
                         var scroll;
 
                         scroll = (chartMax - chartMin) / 5;
@@ -487,50 +485,50 @@ Ext.define('openHAB.graph.graphHighcharts', {
                 },
                 '-',
                 {
-                    icon:'images/clock.png',
-                    itemId:'realtime',
-                    disabled:true,
-                    cls:'x-btn-icon',
-                    tooltip:'Display real-time graph',
-                    handler:function () {
+                    icon: 'images/clock.png',
+                    itemId: 'realtime',
+                    disabled: true,
+                    cls: 'x-btn-icon',
+                    tooltip: 'Display real-time graph',
+                    handler: function () {
                     }
                 },
-                { xtype:'tbfill' },
+                { xtype: 'tbfill' },
                 {
-                    icon:'images/information-balloon.png',
-                    itemId:'info',
-                    cls:'x-btn-icon',
-                    disabled:true,
-                    tooltip:'Display information on current graph',
-                    handler:function () {
+                    icon: 'images/information-balloon.png',
+                    itemId: 'info',
+                    cls: 'x-btn-icon',
+                    disabled: true,
+                    tooltip: 'Display information on current graph',
+                    handler: function () {
                         Ext.create('Ext.data.Store', {
-                            storeId:'graphInfoStore',
-                            fields:['name', 'value'],
-                            data:graphInfoItems
+                            storeId: 'graphInfoStore',
+                            fields: ['name', 'value'],
+                            data: graphInfoItems
                         });
 
                         var graphInfoGrid = Ext.create('Ext.grid.Panel', {
-                            hideHeaders:true,
-                            store:Ext.data.StoreManager.lookup('graphInfoStore'),
-                            columns:[
-                                { text:'Name', dataIndex:'name', width:250 },
-                                { text:'Value', dataIndex:'value', flex:1 }
+                            hideHeaders: true,
+                            store: Ext.data.StoreManager.lookup('graphInfoStore'),
+                            columns: [
+                                { text: 'Name', dataIndex: 'name', width: 250 },
+                                { text: 'Value', dataIndex: 'value', flex: 1 }
                             ],
-                            disableSelection:true,
-                            viewConfig:{
-                                trackOver:false
+                            disableSelection: true,
+                            viewConfig: {
+                                trackOver: false
                             }
                         });
 
                         var grWin = Ext.create('Ext.Window', {
-                            title:'Graph Information',
-                            width:350,
-                            height:300,
-                            modal:true,
-                            resizable:false,
-                            draggable:false,
-                            itemId:'chartInfo',
-                            items:[graphInfoGrid]
+                            title: 'Graph Information',
+                            width: 350,
+                            height: 300,
+                            modal: true,
+                            resizable: false,
+                            draggable: false,
+                            itemId: 'chartInfo',
+                            items: [graphInfoGrid]
                         });
 
                         grWin.show();
@@ -541,21 +539,21 @@ Ext.define('openHAB.graph.graphHighcharts', {
         });
 
         var highchartsPanel = Ext.create('Ext.panel.Panel', {
-            itemId:'chartPanel',
+            itemId: 'chartPanel',
             //TODO: Does this need to be 'id'?
-            id:'chartPanel',
-            xtype:'panel',
-            tbar:toolbar,
-            flex:1,
-            maintainFlex:true,
-            border:false,
-            layout:'fit',
-            items:[
+            id: 'chartPanel',
+            xtype: 'panel',
+            tbar: toolbar,
+            flex: 1,
+            maintainFlex: true,
+            border: false,
+            layout: 'fit',
+            items: [
                 {
-                    itemId:'chartIsHere',
-                    id:'chartIsHere',
-                    listeners:{
-                        resize:function (comp, width, height, oldWidth, oldHeight, eOpts) {
+                    itemId: 'chartIsHere',
+                    id: 'chartIsHere',
+                    listeners: {
+                        resize: function (comp, width, height, oldWidth, oldHeight, eOpts) {
                             if (this.chartObject != null) {
                                 this.chartObject.setSize(width, height);
                             }
