@@ -100,7 +100,7 @@ Ext.define('openHAB.graph.itemList', {
             columns:[
                 {
                     menuDisabled:true,
-                    menuText:"Data Type",
+                    menuText: language.graph_ItemIcon,
                     sortable:true,
                     width:24,
                     hidden:false,
@@ -112,7 +112,7 @@ Ext.define('openHAB.graph.itemList', {
                     }
                 },
                 {
-                    text:'Item',
+                    text: language.graph_ItemTitle,
                     hideable:false,
                     flex:1,
                     width:75,
@@ -127,7 +127,7 @@ Ext.define('openHAB.graph.itemList', {
                     }
                 },
                 {
-                    text:'Last Value',
+                    text:language.graph_LastValue,
                     width:75,
                     hidden:true,
                     sortable:true,
@@ -216,15 +216,6 @@ Ext.define('openHAB.graph.itemList', {
         this.items = itemList;
 
         this.callParent();
-    },
-    listeners:{
-        activate:function (grid, eOpts) {
-            itemConfigStore.filterBy(function myfilter(record) {
-                if(record.get("persistence") == "")
-                    return false;
-                return true;
-            });
-        }
     }
 })
 ;

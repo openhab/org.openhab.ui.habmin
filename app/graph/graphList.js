@@ -29,7 +29,8 @@
  * to convey the resulting work.
  */
 
-/** OpenHAB Admin Console HABmin
+/**
+ * OpenHAB Admin Console HABmin
  *
  * @author Chris Jackson
  */
@@ -38,11 +39,98 @@
 Ext.define('openHAB.graph.graphList', {
     extend:'Ext.panel.Panel',
     layout:'fit',
+    icon:'images/chart_curve_add.png',
+
     initComponent:function () {
+        this.title = language.graph_ItemList;
+        this.tabTip = language.graph_ItemListTip;
 
 //        this.items = itemsTree;
+
+        var itemToolbar = Ext.create('Ext.toolbar.Toolbar', {
+            items:[
+                {
+                    icon:'images/cross.png',
+                    itemId:'clear',
+                    text: language.graph_Reset,
+                    cls:'x-btn-icon',
+                    disabled:false,
+                    tooltip: language.graph_ResetTip,
+                    handler:function () {
+                        var selectedChanList = [];
+                        itemToolbar.getComponent('update').disable();
+                        itemToolbar.getComponent('save').disable();
+                    }
+                },
+                {
+                    icon:'images/disk.png',
+                    itemId:'save',
+                    text: language.graph_Save,
+                    cls:'x-btn-icon',
+                    disabled:true,
+                    tooltip: language.graph_SaveTip,
+                    handler:function () {
+                        var saveGraph = Ext.create('openHAB.graph.saveGraph');
+                        saveGraph.setData(selectedChanList);
+                        saveGraph.show();
+                    }
+                }
+            ]
+        });
+
+        var itemList = Ext.create('Ext.grid.Panel', {
+            store:persistenceItemStore,
+            tbar:itemToolbar,
+            header:false,
+            disableSelection:true,
+            columns:[
+                {
+                    menuDisabled:true,
+                    menuText:"Data Type",
+                    sortable:true,
+                    width:24,
+                    hidden:false,
+                    resizable:false,
+                    dataIndex:'icon',
+                    renderer:function (value, metaData, record, row, col, store, gridView) {
+                        if (value != "")
+                            return '<img src="../images/'+value+'.png" height="16">';
+                    }
+                },
+                {
+                    text:'Item',
+                    hideable:false,
+                    flex:1,
+                    width:75,
+                    sortable:true,
+                    dataIndex:'label',
+                    renderer:function (value, metaData, record, row, col, store, gridView) {
+                        if (value != "")
+                            return value;
+                        if(record == null)
+                            return "";
+                        return record.get('name');
+                    }
+                }
+            ],
+            layout:'fit',
+            viewConfig:{
+                stripeRows:false,
+                enableTextSelection:false,
+                markDirty:false
+            },
+            listeners:{
+                itemclick:function (grid, record, item, index, element, eOpts) {
+
+                }
+            }
+        });
+
+        this.items = itemList;
 
         this.callParent();
     }
 })
 ;
+
+

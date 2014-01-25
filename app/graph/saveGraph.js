@@ -577,11 +577,19 @@ Ext.define('openHAB.graph.saveGraph', {
                     chartCfg.axis.push(newAxis);
                 }
 
+                // If this is a new chart, use POST, otherwise PUT
+                var ajaxMethod = "POST";
+                var ajaxAddress = "";
+                if(chartCfg.id != null && chartCfg.id != 0) {
+                    ajaxMethod = "PUT";
+                    ajaxAddress = "/" + chartCfg.name;
+                }
+
                 // Send to the server
                 Ext.Ajax.request({
-                    url: HABminBaseURL + '/persistence/charts/' + chartCfg.name,
+                    url: HABminBaseURL + '/persistence/charts' + ajaxAddress,
                     jsonData: chartCfg,
-                    method: 'PUT',
+                    method: ajaxMethod,
                     success: function (response, opts) {
                         var configGraph = Ext.decode(response.responseText);
 //                                graphStore.loadData(configGraph);

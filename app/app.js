@@ -417,7 +417,6 @@ function doStatus() {
                         this.startCnt--;
                     }
                     else {
-                        this.interval = 2500;
                         this.errorLimit = 2;
                     }
 
@@ -428,8 +427,8 @@ function doStatus() {
                 }
             });
         },
-        interval: 5000,
-        startCnt: 3,
+        interval: 2500,
+        startCnt: 6,
         statusCount: 0,
         errorLimit: 6
     };

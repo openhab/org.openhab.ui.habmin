@@ -266,6 +266,11 @@ var language = {
     graph_SaveTip: "Save current chart configuration",
     graph_Reset: "Reset Graph",
     graph_ResetTip: "Clear Selected Channels and Reset Period",
+    graph_ItemTitle: "Item",
+    graph_LastValue: "Last Value",
+    graph_ItemIcon: "Item Icon",
+
+    // graph/graphList.js
 
     // graph/saveGraph.js
     graph_SaveGraphTitle: "Save Graph",
