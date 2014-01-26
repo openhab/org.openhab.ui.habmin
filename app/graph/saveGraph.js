@@ -608,7 +608,7 @@ Ext.define('openHAB.graph.saveGraph', {
                     xtype: 'combobox',
                     fieldLabel: 'Icon',
                     name: 'icon',
-                    store: iconStore,
+                    store: itemIconStore,
                     allowBlank: false,
                     valueField: 'name',
                     displayField: 'name',
@@ -618,14 +618,11 @@ Ext.define('openHAB.graph.saveGraph', {
                     listConfig: {
                         getInnerTpl: function () {
                             var tpl = '<div>' +
-                                '<img src="images/{icon}" align="left">&nbsp;&nbsp;' +
-                                '{name}</div>';
+                                '<img src="../images/{menuicon}" align="left" height="16">&nbsp;&nbsp;' +
+                                '{label}</div>';
                             return tpl;
                         }
                     }
-//                    ,displayTpl: function () {
-//                        return '<img src="{icon}" align="left" height="16">&nbsp{name}';
-//                    }
                 }
             ]
         });
@@ -649,18 +646,18 @@ Ext.define('openHAB.graph.saveGraph', {
          */
         this.setData = function (chartCfg) {
             // Sanity check
-            if(chartCfg == null || chartCfg.items == null || chartCfg.items.length == 0)
+            if (chartCfg == null || chartCfg.items == null || chartCfg.items.length == 0)
                 return;
 
             // Set defaults
-            for(var cnt = 0; cnt < chartCfg.items.length; cnt++) {
-                if(chartCfg.items[cnt].legend == null)
+            for (var cnt = 0; cnt < chartCfg.items.length; cnt++) {
+                if (chartCfg.items[cnt].legend == null)
                     chartCfg.items[cnt].legend = 'true';
             }
 
             // Load the form
             var form = me.chartForm.getForm();
-            if(form != null)
+            if (form != null)
                 form.setValues(chartCfg);
 
             this.chartId = chartCfg.id;
@@ -672,16 +669,15 @@ Ext.define('openHAB.graph.saveGraph', {
                 {axis: 4, position: 'left'}
             ];
 
-            if(chartCfg.axis != null) {
+            if (chartCfg.axis != null) {
                 chartCfg.axis = [].concat(chartCfg.axis);
-
-                    for(var i = 0; i < chartCfg.axis.length; i++) {
-                        axisData[chartCfg.axis[i].axis-1] = chartCfg.axis[i];
-                    }
+                for (var i = 0; i < chartCfg.axis.length; i++) {
+                    axisData[chartCfg.axis[i].axis - 1] = chartCfg.axis[i];
+                }
             }
             me.saveGraphAxisStore.loadData(axisData);
 
-            if(chartCfg.items != null) {
+            if (chartCfg.items != null) {
                 chartCfg.items = [].concat(chartCfg.items);
                 me.saveGraphStore.loadData(chartCfg.items);
             }
@@ -720,6 +716,7 @@ Ext.define('openHAB.graph.saveGraph', {
                     newItem.axis = data[chCnt].get('axis');
                     newItem.label = data[chCnt].get('label');
                     newItem.chart = data[chCnt].get('chart');
+                    newItem.legend = data[chCnt].get('legend');
                     newItem.lineWidth = data[chCnt].get('lineWidth');
                     newItem.lineStyle = data[chCnt].get('lineStyle');
                     newItem.lineColor = data[chCnt].get('lineColor');
@@ -771,7 +768,6 @@ Ext.define('openHAB.graph.saveGraph', {
                     },
                     failure: function (response, opts) {
                         handleStatusNotification(NOTIFICATION_ERROR, sprintf(language.graph_SaveGraphError, chartCfg.name));
-                        var configGraph = Ext.decode(response.responseText);
 //                                graphStore.loadData(configGraph);
                     }
                 });

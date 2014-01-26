@@ -261,8 +261,8 @@ Ext.define('openHAB.graph.graphHighcharts', {
                 if(parseInt(rawData[chan].lineWidth) != NaN)
                     options.series[series].lineWidth = rawData[chan].lineWidth;
 
-                if(parseInt(rawData[chan].legend) != NaN)
-                    options.series[series].showInLegend = rawData[chan].legend;
+                if(rawData[chan].legend != null)
+                    options.series[series].showInLegend = ("true" == rawData[chan].legend.toLowerCase()) ? true : false;
 
                 if (rawData[chan].lineStyle != null && rawData[chan].lineStyle.length != 0)
                     options.series[series].dashStyle = rawData[chan].lineStyle;
@@ -321,6 +321,12 @@ Ext.define('openHAB.graph.graphHighcharts', {
 
             // Keep track of the current configuration
             chartConfig = newConfig;
+
+            // Change to arrays
+            if(newConfig.axis != null)
+                newConfig.axis = [].concat(newConfig.axis);
+            if(newConfig.items != null)
+                newConfig.items = [].concat(newConfig.items);
 
             // TODO: Something needs to be done about the timers and graph information
             var timeStart = (new Date()).getTime();
@@ -396,6 +402,7 @@ Ext.define('openHAB.graph.graphHighcharts', {
                 rawData[chan].axis = chartConfig.items[chan].axis - 1;
                 rawData[chan].label = chartConfig.items[chan].label;
                 rawData[chan].chart = chartConfig.items[chan].chart;
+                rawData[chan].legend = chartConfig.items[chan].legend;
                 rawData[chan].lineWidth = chartConfig.items[chan].lineWidth;
                 rawData[chan].lineColor = chartConfig.items[chan].lineColor;
                 rawData[chan].lineStyle = chartConfig.items[chan].lineStyle;
