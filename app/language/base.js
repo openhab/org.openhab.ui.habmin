@@ -276,9 +276,24 @@ var language = {
     graph_GraphListTip: "Display predefined graphs",
     graph_GraphListDeleteTip: "Delete the selected graph definition",
     graph_GraphListEditTip: "Edit the selected graph definition",
+    graph_GraphListDownloadError: "Error downloading chart definition '%s'.",
 
     // graph/saveGraph.js
     graph_SaveGraphTitle: "Save Graph",
+    graph_SaveGraphError: "Error saving graph '%s'!",
+    graph_SaveGraphSuccess: "Graph '%s' saved successfully.",
+
+    // graph/graphHighcharts.js
+    graph_HighchartsTitle: "Chart",
+    graph_HighchartsLoading: "Downloading graph data...",
+    graph_HighchartsZoomIn: "Zoom In",
+    graph_HighchartsZoomOut: "Zoom Out",
+    graph_HighchartsDisplayDay: "Display last day",
+    graph_HighchartsDisplayWeek: "Display last week",
+    graph_HighchartsDisplayMonth: "Display last month",
+    graph_HighchartsDisplayYear: "Display last year",
+    graph_HighchartsScrollLeft: "Scroll left",
+    graph_HighchartsScrollRight: "Scroll right",
 
     // automation/ruleFileList.js
     rule_FileListTitle: "Rule Models",

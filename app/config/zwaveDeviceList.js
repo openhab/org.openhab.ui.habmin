@@ -44,7 +44,7 @@ Ext.define('openHAB.config.zwaveDeviceList', {
     layout: 'fit',
 
     initComponent: function () {
-        var self = this;
+        var me = this;
 
         function getChildLeafNodes(node) {
             var allNodes = new Array();
@@ -360,12 +360,12 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                 },
                 afteritemexpand: function (node, index, item, eOpts) {
                     // Get a list of all children nodes
-                    self.nodePollingTable = getChildLeafNodes(node);
+                    me.nodePollingTable = getChildLeafNodes(node);
 
                     // And now add parents as well
                     var parent = node.parentNode;
                     while (parent != null) {
-                        self.nodePollingTable.push(parent.get("domain"));
+                        me.nodePollingTable.push(parent.get("domain"));
                         parent = parent.parentNode;
                     }
                 }
@@ -385,7 +385,7 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                 return;
 
             // Keep a local copy of 'this' so we have scope in the callback
-            var self = this;
+            var me = this;
             // Loop through and request all visible nodes
             for (var cnt = 0; cnt < this.nodePollingTable.length; cnt++) {
                 // Request an update of the node
@@ -400,10 +400,10 @@ Ext.define('openHAB.config.zwaveDeviceList', {
 
                         // Loop through all records
                         for (var i = 0; i < res.records.length; i++) {
-                            var updatedNode = self.store.getNodeById(res.records[i].domain);
+                            var updatedNode = me.store.getNodeById(res.records[i].domain);
                             if (updatedNode == null) {
                                 // TODO:If the node isn't found, then it's new - add it!
-//                                var rootNode = self.store.getRootNode();
+//                                var rootNode = me.store.getRootNode();
 //                                rootNode.insertChild(4,res.records[i]);
                                 continue;
                             }

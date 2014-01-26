@@ -985,7 +985,7 @@ function createUI() {
     viewPort.show(true);
 
     Ext.get('splashscreen').fadeOut({
-        duration: 2000,
+        duration: 750,
         remove: true
     });
 

@@ -37,96 +37,140 @@
 
 
 Ext.define('openHAB.graph.graphList', {
-    extend:'Ext.panel.Panel',
-    layout:'fit',
-    icon:'images/system-monitor.png',
+    extend: 'Ext.panel.Panel',
+    layout: 'fit',
+    icon: 'images/system-monitor.png',
 
-    initComponent:function () {
+    initComponent: function () {
         this.title = language.graph_GraphList;
         this.tabTip = language.graph_GraphListTip;
 
-        var itemToolbar = Ext.create('Ext.toolbar.Toolbar', {
-            items:[
+        var selectedId = null;
+        var selectedName = null;
+
+        var chartToolbar = Ext.create('Ext.toolbar.Toolbar', {
+            items: [
                 {
-                    icon:'images/cross.png',
-                    itemId:'clear',
+                    icon: 'images/cross.png',
+                    itemId: 'delete',
                     text: language.delete,
-                    cls:'x-btn-icon',
-                    disabled:false,
+                    cls: 'x-btn-icon',
+                    disabled: true,
                     tooltip: language.graph_GraphListDeleteTip,
-                    handler:function () {
-                        var selectedChanList = [];
-                        itemToolbar.getComponent('update').disable();
-                        itemToolbar.getComponent('save').disable();
+                    handler: function () {
+                        chartToolbar.getComponent('delete').disable();
+                        chartToolbar.getComponent('edit').disable();
                     }
                 },
                 {
-                    icon:'images/pencil-small.png',
-                    itemId:'save',
+                    icon: 'images/pencil-small.png',
+                    itemId: 'edit',
                     text: language.edit,
-                    cls:'x-btn-icon',
-                    disabled:true,
+                    cls: 'x-btn-icon',
+                    disabled: true,
                     tooltip: language.graph_GraphListEditTip,
-                    handler:function () {
-                        var saveGraph = Ext.create('openHAB.graph.saveGraph');
-                        saveGraph.setData(selectedChanList);
-                        saveGraph.show();
+                    handler: function () {
+                        if(selectedId === null)
+                            return;
+                        loadChart(selectedId, selectedName, "EDIT");
                     }
                 }
             ]
         });
 
-        var itemList = Ext.create('Ext.grid.Panel', {
+        var chartList = Ext.create('Ext.grid.Panel', {
             store: chartStore,
-            tbar:itemToolbar,
-            header:false,
-            disableSelection:true,
-            columns:[
+            tbar: chartToolbar,
+            header: false,
+            columns: [
                 {
-                    menuDisabled:true,
-                    menuText:"Data Type",
-                    sortable:true,
-                    width:24,
-                    hidden:false,
-                    resizable:false,
-                    dataIndex:'icon',
-                    renderer:function (value, metaData, record, row, col, store, gridView) {
+                    menuDisabled: true,
+                    menuText: "Data Type",
+                    sortable: true,
+                    width: 24,
+                    hidden: false,
+                    resizable: false,
+                    dataIndex: 'icon',
+                    renderer: function (value, metaData, record, row, col, store, gridView) {
                         if (value != "")
-                            return '<img src="../images/'+value+'.png" height="16">';
+                            return '<img src="../images/' + value + '.png" height="16">';
                     }
                 },
                 {
-                    text:'Item',
-                    hideable:false,
-                    flex:1,
-                    width:75,
-                    sortable:true,
-                    dataIndex:'name',
-                    renderer:function (value, metaData, record, row, col, store, gridView) {
+                    text: 'Item',
+                    hideable: false,
+                    flex: 1,
+                    width: 75,
+                    sortable: true,
+                    dataIndex: 'name',
+                    renderer: function (value, metaData, record, row, col, store, gridView) {
                         if (value != "")
                             return value;
-                        if(record == null)
+                        if (record == null)
                             return "";
                         return record.get('name');
                     }
                 }
             ],
-            layout:'fit',
-            viewConfig:{
-                stripeRows:false,
-                enableTextSelection:false,
-                markDirty:false
+            layout: 'fit',
+            viewConfig: {
+                stripeRows: false,
+                enableTextSelection: false,
+                markDirty: false
             },
-            listeners:{
-                itemclick:function (grid, record, item, index, element, eOpts) {
+            listeners: {
+                itemclick: function (grid, record, item, index, element, eOpts) {
+                    // Retrieve the chart configuration and display it
+                    var el = Ext.get(item);
+                    selectedId = record.get('id');
+                    selectedName = record.get('name');
 
+                    if(selectedId == null)
+                        return;
+
+                    // Enable the toolbar
+                    chartToolbar.getComponent('delete').enable();
+                    chartToolbar.getComponent('edit').enable();
+
+                    loadChart(selectedId, selectedName, "VIEW");
                 }
             }
         });
 
-        this.items = itemList;
+        this.items = chartList;
 
         this.callParent();
+
+        function loadChart(id, name, action) {
+            Ext.Ajax.request({
+                url: HABminBaseURL + '/persistence/charts/' + id,
+                timeout: 10000,
+                method: 'GET',
+                headers: {'Accept': 'application/json'},
+                success: function (response, opts) {
+                    var json = Ext.decode(response.responseText);
+                    if(json == null || json.length == 0) {
+                        handleStatusNotification(NOTIFICATION_ERROR, sprintf(language.graph_GraphListDownloadError, name));
+
+                        return;
+                    }
+
+                    if(action == "EDIT") {
+                        var saveGraph = Ext.create('openHAB.graph.saveGraph');
+
+                        saveGraph.setData(json);
+                        saveGraph.show();
+                    }
+                    else {
+                        var now = (new Date()).getTime();
+                        Ext.getCmp('highchartsChart').chartUpdate(json, now - (json.period * 1000), now);
+                    }
+                },
+                failure: function (response, opts) {
+                    handleStatusNotification(NOTIFICATION_ERROR, sprintf(language.graph_GraphListDownloadError, name));
+                }
+            });
+        }
     }
 })
 ;
