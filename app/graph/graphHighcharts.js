@@ -286,7 +286,6 @@ Ext.define('openHAB.graph.graphHighcharts', {
             }
         }
 
-
         function updateChart(channels, start, stop) {
             // Keep track of the current channels
             chartChannels = channels;
@@ -344,15 +343,13 @@ Ext.define('openHAB.graph.graphHighcharts', {
                     params: parms,
                     method: 'GET',
                     headers: {'Accept': 'application/json'},
-                    success: function (response, opts) {
-                        var item = opts.url.split('/');
-                        var json = Ext.decode(response.responseText);
+                    callback: function(options, success, response) {
+                        var json = null;
+                        if(success) {
+                            json = Ext.decode(response.responseText);
+                        }
+                        var item = options.url.split('/');
                         addGraphData(item[item.length - 1], json);
-                    },
-                    failure: function (response, opts) {
-                        var item = opts.url.split('/');
-                        // Calling addGraphData allows us to correlate all requests and display a consolidated status
-                        addGraphData(item[item.length - 1], null);
                     }
                 });
             }
