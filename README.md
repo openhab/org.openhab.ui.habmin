@@ -1,3 +1,8 @@
+Updates
+-------
+* Added ability to save and restore charts. This allows considerable customisation of the graphs.
+
+
 Overview
 --------
 _HABmin_ is a web administration console for openHAB. It aims to provide a complete interface to administer openHAB, including the following features -:
