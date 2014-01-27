@@ -102,16 +102,8 @@ Ext.define('openHAB.graph.saveGraph', {
         var chartStore = Ext.create('Ext.data.Store', {
             fields: ['id', 'name'],
             data: [
-                {id: 'line', name: 'Line'},
-                {id: 'spline', name: 'Spline'}
-            ]
-        });
-
-        var iconStore = Ext.create('Ext.data.Store', {
-            fields: ['icon', 'name'],
-            data: [
-                {icon: 'thermometer.png', name: 'Temperature'},
-                {icon: 'water.png', name: 'Water'}
+                {id: 'line', name: language.graph_SaveGraphLine},
+                {id: 'spline', name: language.graph_SaveGraphSpline}
             ]
         });
 
@@ -169,7 +161,13 @@ Ext.define('openHAB.graph.saveGraph', {
                 {period: '14400', name: '4 Hours'},
                 {period: '21600', name: '6 Hours'},
                 {period: '43200', name: '12 Hours'},
-                {period: '86400', name: '1 Day'}
+                {period: '86400', name: '1 Day'},
+                {period: '172800', name: '2 Days'},
+                {period: '259200', name: '3 Days'},
+                {period: '345600', name: '4 Days'},
+                {period: '432000', name: '5 Days'},
+                {period: '604800', name: '1 Week'},
+                {period: '864000', name: '10 Days'}
             ]
         });
 
@@ -200,7 +198,7 @@ Ext.define('openHAB.graph.saveGraph', {
             selType: 'cellmodel',
             border: true,
             hideHeaders: false,
-            title: 'Item Configuration',
+            title: language.graph_SaveGraphItemConfig,
             header: {
                 height: 18,
                 padding: 1,
@@ -213,7 +211,7 @@ Ext.define('openHAB.graph.saveGraph', {
 //        stateId:'stateGrid',
             columns: [
                 {
-                    text: 'Axis',
+                    text: language.graph_SaveGraphItemAxis,
                     hideable: false,
                     width: 32,
                     sortable: false,
@@ -243,14 +241,14 @@ Ext.define('openHAB.graph.saveGraph', {
                     }
                 },
                 {
-                    text: 'Item',
+                    text: language.graph_SaveGraphItemItem,
                     hideable: false,
                     flex: 3,
                     sortable: false,
                     dataIndex: 'item'
                 },
                 {
-                    text: 'Label',
+                    text: language.graph_SaveGraphItemLabel,
                     hideable: false,
                     flex: 3,
                     sortable: false,
@@ -260,7 +258,7 @@ Ext.define('openHAB.graph.saveGraph', {
                     }
                 },
                 {
-                    text: 'Chart',
+                    text: language.graph_SaveGraphItemChart,
                     hideable: false,
                     flex: 2,
                     sortable: false,
@@ -279,7 +277,7 @@ Ext.define('openHAB.graph.saveGraph', {
                     }
                 },
                 {
-                    text: 'Legend',
+                    text: language.graph_SaveGraphItemLegend,
                     hideable: false,
                     flex: 1,
                     sortable: false,
@@ -308,14 +306,14 @@ Ext.define('openHAB.graph.saveGraph', {
                     }
                 },
                 {
-                    text: 'Line',
+                    text: language.graph_SaveGraphItemLine,
                     height: 40,
                     sortable: false,
                     flex: 4.5,
                     hideable: false,
                     columns: [
                         {
-                            text: 'Color',
+                            text: language.graph_SaveGraphItemLineColor,
                             hideable: false,
                             flex: 1,
                             sortable: false,
@@ -339,7 +337,7 @@ Ext.define('openHAB.graph.saveGraph', {
                             }
                         },
                         {
-                            text: 'Width',
+                            text: language.graph_SaveGraphItemLineWidth,
                             hideable: false,
                             flex: 1.5,
                             sortable: false,
@@ -354,7 +352,7 @@ Ext.define('openHAB.graph.saveGraph', {
                             }
                         },
                         {
-                            text: 'Style',
+                            text: language.graph_SaveGraphItemLineStyle,
                             hideable: false,
                             dataIndex: 'lineStyle',
                             flex: 1.5,
@@ -375,14 +373,14 @@ Ext.define('openHAB.graph.saveGraph', {
                     ]
                 },
                 {
-                    text: 'Marker',
+                    text: language.graph_SaveGraphItemMarker,
                     height: 40,
                     hideable: false,
                     flex: 3,
                     sortable: false,
                     columns: [
                         {
-                            text: 'Color',
+                            text: language.graph_SaveGraphItemMarkerColor,
                             hideable: false,
                             flex: 1.5,
                             sortable: false,
@@ -406,7 +404,7 @@ Ext.define('openHAB.graph.saveGraph', {
                             }
                         },
                         {
-                            text: 'Symbol',
+                            text: language.graph_SaveGraphItemMarkerSymbol,
                             hideable: false,
                             dataIndex: 'markerSymbol',
                             flex: 1.5,
@@ -442,7 +440,7 @@ Ext.define('openHAB.graph.saveGraph', {
 
         var axisList = Ext.create('Ext.grid.Panel', {
             store: me.saveGraphAxisStore,
-            title: "Axis Configuration",
+            title: language.graph_SaveGraphAxisConfig,
             flex: 3,
             border: true,
             selType: 'cellmodel',
@@ -459,9 +457,8 @@ Ext.define('openHAB.graph.saveGraph', {
 //        stateId:'stateGrid',
             columns: [
                 {
-                    text: "Axis",
+                    text: language.graph_SaveGraphAxisAxis,
                     hideable: false,
-//                    width: 32,
                     sortable: false,
                     dataIndex: 'axis',
                     renderer: function (v) {
@@ -473,7 +470,7 @@ Ext.define('openHAB.graph.saveGraph', {
                     }
                 },
                 {
-                    text: 'Title',
+                    text: language.graph_SaveGraphAxisTitle,
                     hideable: false,
                     flex: 6,
                     sortable: false,
@@ -483,7 +480,7 @@ Ext.define('openHAB.graph.saveGraph', {
                     }
                 },
                 {
-                    text: 'Format',
+                    text: language.graph_SaveGraphAxisFormat,
                     hideable: false,
                     flex: 3,
                     sortable: false,
@@ -502,7 +499,7 @@ Ext.define('openHAB.graph.saveGraph', {
                     }
                 },
                 {
-                    text: 'Minimum',
+                    text: language.graph_SaveGraphAxisMinimum,
                     hideable: false,
                     flex: 2,
                     sortable: false,
@@ -512,14 +509,14 @@ Ext.define('openHAB.graph.saveGraph', {
                         allowBlank: true,
                         validator: function (val) {
                             if (isNaN(val)) {
-                                return "Value must be a number";
+                                return language.graph_SaveGraphAxisNumberError;
                             }
                             return true;
                         }
                     }
                 },
                 {
-                    text: 'Maximum',
+                    text: language.graph_SaveGraphAxisMaximum,
                     hideable: false,
                     flex: 2,
                     sortable: false,
@@ -529,14 +526,14 @@ Ext.define('openHAB.graph.saveGraph', {
                         allowBlank: true,
                         validator: function (val) {
                             if (isNaN(val)) {
-                                return "Value must be a number";
+                                return language.graph_SaveGraphAxisNumberError;
                             }
                             return true;
                         }
                     }
                 },
                 {
-                    text: 'Position',
+                    text: language.graph_SaveGraphAxisPosition,
                     hideable: false,
                     flex: 2,
                     sortable: false,
@@ -565,9 +562,7 @@ Ext.define('openHAB.graph.saveGraph', {
         });
 
         me.chartForm = Ext.create('Ext.form.Panel', {
-            //id: 'chartForm',
             xtype: 'form',
-            //layout: 'form',
             flex: 2,
             header: {
                 height: 18,
@@ -575,7 +570,7 @@ Ext.define('openHAB.graph.saveGraph', {
                 titleAlign: "center"
             },
             cls: 'save-chart-form',
-            title: 'Chart Configuration',
+            title: language.graph_SaveGraphChartConfig,
             border: true,
             bodyPadding: 10,
             fieldDefaults: {
@@ -588,7 +583,7 @@ Ext.define('openHAB.graph.saveGraph', {
                 {
                     xtype: 'textfield',
                     name: 'name',
-                    fieldLabel: 'Name',
+                    fieldLabel: language.graph_SaveGraphName,
                     maxLength: 50,
                     enforceMaxLength: true,
                     allowBlank: false
@@ -596,7 +591,7 @@ Ext.define('openHAB.graph.saveGraph', {
                 {
                     xtype: 'combobox',
                     name: 'period',
-                    fieldLabel: 'Period',
+                    fieldLabel: language.graph_SaveGraphPeriod,
                     allowBlank: false,
                     valueField: 'period',
                     displayField: 'name',
@@ -606,7 +601,7 @@ Ext.define('openHAB.graph.saveGraph', {
                 },
                 {
                     xtype: 'combobox',
-                    fieldLabel: 'Icon',
+                    fieldLabel: language.graph_SaveGraphIcon,
                     name: 'icon',
                     store: itemIconStore,
                     allowBlank: false,
