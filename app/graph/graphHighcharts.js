@@ -180,10 +180,17 @@ Ext.define('openHAB.graph.graphHighcharts', {
                         else {
                             // Convert the format. Hopefully the openHAB json can be changed to make this unnecessary
                             var newSeries = [];
+                            var subPoints = parseInt(json.datapoints / 1000);
+                            var subCount = 0;
+                            var outCount = 0;
                             for (var i = 0; i < json.datapoints; i++) {
-                                newSeries[i] = [];
-                                newSeries[i][0] = parseInt(json.data[i].time);
-                                newSeries[i][1] = parseFloat(json.data[i].state);
+                                if(subCount++ < subPoints)
+                                    continue;
+                                subCount = 0;
+                                newSeries[outCount] = [];
+                                newSeries[outCount][0] = parseInt(json.data[i].time);
+                                newSeries[outCount][1] = parseFloat(json.data[i].state);
+                                outCount++;
                             }
                             rawData[chan].data = newSeries;
                         }
@@ -258,11 +265,11 @@ Ext.define('openHAB.graph.graphHighcharts', {
                 if (rawData[chan].lineColor != null && rawData[chan].lineColor.length != 0)
                     options.series[series].color = rawData[chan].lineColor;
 
-                if(parseInt(rawData[chan].lineWidth) != NaN)
+                if(rawData[chan].lineWidth != null && parseInt(rawData[chan].lineWidth) != NaN)
                     options.series[series].lineWidth = rawData[chan].lineWidth;
 
-                if(rawData[chan].legend != null)
-                    options.series[series].showInLegend = ("true" == rawData[chan].legend.toLowerCase()) ? true : false;
+                if(typeof rawData[chan].legend == 'string' || rawData[chan].legend instanceof String)
+                    options.series[series].showInLegend = (rawData[chan].legend.toLowerCase() == 'true') ? true : false;
 
                 if (rawData[chan].lineStyle != null && rawData[chan].lineStyle.length != 0)
                     options.series[series].dashStyle = rawData[chan].lineStyle;
