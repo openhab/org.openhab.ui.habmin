@@ -284,6 +284,10 @@ var language = {
     graph_SaveGraphSuccess: "Graph '%s' saved successfully.",
     graph_SaveGraphLine: "Line",
     graph_SaveGraphSpline: "Spline",
+    graph_SaveGraphBar: "Bar",
+    graph_SaveGraphArea: "Area",
+    graph_SaveGraphAreaSpline: "Area Spline",
+    graph_SaveGraphColumn: "Column",
     graph_SaveGraphItemConfig: "Item Configuration",
     graph_SaveGraphItemAxis: "Axis",
     graph_SaveGraphItemItem: "Item",
@@ -322,7 +326,7 @@ var language = {
     graph_SaveGraphPeriod5Days: "5 Days",
     graph_SaveGraphPeriod10Days: "10 Days",
     graph_SaveGraphPeriod1Week: "1 Week",
-    graph_SaveGraphPeriod1Week: "2 Weeks",
+    graph_SaveGraphPeriod2Weeks: "2 Weeks",
 
     // graph/graphHighcharts.js
     graph_HighchartsTitle: "Chart",

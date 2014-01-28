@@ -50,7 +50,10 @@ Ext.define('openHAB.graph.graphHighcharts', {
         var supportedCharts = [
             'spline',
             'line',
-            'area'
+            'area',
+            'areaspline',
+            'bar',
+            'column'
         ];
         var supportedMarkers = [
             'circle',

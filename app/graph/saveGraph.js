@@ -103,7 +103,11 @@ Ext.define('openHAB.graph.saveGraph', {
             fields: ['id', 'name'],
             data: [
                 {id: 'line', name: language.graph_SaveGraphLine},
-                {id: 'spline', name: language.graph_SaveGraphSpline}
+                {id: 'spline', name: language.graph_SaveGraphSpline},
+                {id: 'bar', name: language.graph_SaveGraphBar},
+                {id: 'area', name: language.graph_SaveGraphArea},
+                {id: 'areaspline', name: language.graph_SaveGraphAreaSpline},
+                {id: 'column', name: language.graph_SaveGraphColumn}
             ]
         });
 
@@ -169,7 +173,7 @@ Ext.define('openHAB.graph.saveGraph', {
                 {period: '432000', name: language.graph_SaveGraphPeriod5Days},
                 {period: '864000', name: language.graph_SaveGraphPeriod10Days},
                 {period: '604800', name: language.graph_SaveGraphPeriod1Week},
-                {period: '1209600', name: language.graph_SaveGraphPeriod2Weeks},
+                {period: '1209600', name: language.graph_SaveGraphPeriod2Weeks}
             ]
         });
 
@@ -608,7 +612,7 @@ Ext.define('openHAB.graph.saveGraph', {
                     store: itemIconStore,
                     allowBlank: false,
                     valueField: 'name',
-                    displayField: 'name',
+                    displayField: 'label',
                     forceSelection: true,
                     editable: false,
                     queryMode: 'local',
