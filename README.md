@@ -1,6 +1,6 @@
 Updates
 -------
-* Added ability to save and restore charts. This allows considerable customisation of the graphs.
+* 20-01-2014: Added ability to save and restore charts. This allows considerable customisation of the graphs.
 
 
 Overview
@@ -38,7 +38,7 @@ While _HABmin_ is a supporting project to OpenHAB,  providing access to openHAB'
 
 ###Status
 The project is just getting started. Currently implemented are the following -:
-* Graphing of data from the persistence store
+* Graphing of data from the persistence store including saving and restoring charts.
 * Item editor
 * Sitemap editor
 * General binding configuration (ie binding configuration in the openhab.cfg file)
