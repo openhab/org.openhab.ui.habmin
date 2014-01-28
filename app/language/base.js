@@ -277,6 +277,9 @@ var language = {
     graph_GraphListDeleteTip: "Delete the selected graph definition",
     graph_GraphListEditTip: "Edit the selected graph definition",
     graph_GraphListDownloadError: "Error downloading chart definition '%s'.",
+    graph_GraphListDeleteOk: "Graph definition '%s' successfully deleted.",
+    graph_GraphListDeleteError: "Error deleting graph definition '%s'.",
+    graph_GraphListConfirmDeleteMsg: "Are you sure you wish to delete the chart '%s'?",
 
     // graph/saveGraph.js
     graph_SaveGraphTitle: "Save Graph",

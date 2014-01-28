@@ -465,6 +465,7 @@ Ext.define('openHAB.graph.saveGraph', {
                 {
                     text: language.graph_SaveGraphAxisAxis,
                     hideable: false,
+                    width: 32,
                     sortable: false,
                     dataIndex: 'axis',
                     renderer: function (v) {
@@ -765,11 +766,13 @@ Ext.define('openHAB.graph.saveGraph', {
                     success: function (response, opts) {
                         handleStatusNotification(NOTIFICATION_OK, sprintf(language.graph_SaveGraphSuccess, chartCfg.name));
                         var configGraph = Ext.decode(response.responseText);
-//                                graphStore.loadData(configGraph);
                     },
                     failure: function (response, opts) {
                         handleStatusNotification(NOTIFICATION_ERROR, sprintf(language.graph_SaveGraphError, chartCfg.name));
-//                                graphStore.loadData(configGraph);
+                    },
+                    callback: function () {
+                        // Reload the store
+                        chartStore.reload();
                     }
                 });
 

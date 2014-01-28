@@ -58,8 +58,18 @@ Ext.define('openHAB.graph.graphList', {
                     disabled: true,
                     tooltip: language.graph_GraphListDeleteTip,
                     handler: function () {
-                        chartToolbar.getComponent('delete').disable();
-                        chartToolbar.getComponent('edit').disable();
+                        // Make sure we really want to do this!!!
+                        Ext.Msg.show({
+                            title: language.config_ItemListConfirmDeleteTitle,
+                            msg: sprintf(language.graph_GraphListConfirmDeleteMsg, selectedName),
+                            buttons: Ext.Msg.YESNO,
+                            config: {
+                                obj: this,
+                                name: itemName
+                            },
+                            fn: deleteChart,
+                            icon: Ext.MessageBox.QUESTION
+                        });
                     }
                 },
                 {
@@ -169,6 +179,32 @@ Ext.define('openHAB.graph.graphList', {
                 },
                 failure: function (response, opts) {
                     handleStatusNotification(NOTIFICATION_ERROR, sprintf(language.graph_GraphListDownloadError, name));
+                }
+            });
+        }
+
+        function deleteChart(button, text, options) {
+            if (button !== 'yes')
+                return;
+
+            // Tell OH to Remove the chart
+            Ext.Ajax.request({
+                url: HABminBaseURL + '/persistence/charts/' + selectedId,
+                headers: {'Accept': 'application/json'},
+                method: 'DELETE',
+                success: function (response, opts) {
+                    handleStatusNotification(NOTIFICATION_OK, sprintf(language.graph_GraphListDeleteOk, selectedName));
+                },
+                failure: function (result, request) {
+                    handleStatusNotification(NOTIFICATION_ERROR, sprintf(language.graph_GraphListDeleteError, selectedName));
+                },
+                callback: function (options, success, response) {
+                    // Reload the store
+                    chartStore.reload();
+
+                    // Disable toolbar
+                    chartToolbar.getComponent('delete').disable();
+                    chartToolbar.getComponent('edit').disable();
                 }
             });
         }
