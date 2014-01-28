@@ -156,18 +156,20 @@ Ext.define('openHAB.graph.saveGraph', {
             fields: ['period', 'name'],
             autoLoad: true,
             data: [
-                {period: '3600', name: '1 Hour'},
-                {period: '10800', name: '3 Hours'},
-                {period: '14400', name: '4 Hours'},
-                {period: '21600', name: '6 Hours'},
-                {period: '43200', name: '12 Hours'},
-                {period: '86400', name: '1 Day'},
-                {period: '172800', name: '2 Days'},
-                {period: '259200', name: '3 Days'},
-                {period: '345600', name: '4 Days'},
-                {period: '432000', name: '5 Days'},
-                {period: '604800', name: '1 Week'},
-                {period: '864000', name: '10 Days'}
+                {period: '3600', name: language.graph_SaveGraphPeriod1Hour},
+                {period: '7200', name: language.graph_SaveGraphPeriod2Hours},
+                {period: '10800', name: language.graph_SaveGraphPeriod3Hours},
+                {period: '14400', name: language.graph_SaveGraphPeriod4Hours},
+                {period: '21600', name: language.graph_SaveGraphPeriod6Hours},
+                {period: '43200', name: language.graph_SaveGraphPeriod12Hours},
+                {period: '86400', name: language.graph_SaveGraphPeriod1Day},
+                {period: '172800', name: language.graph_SaveGraphPeriod2Days},
+                {period: '259200', name: language.graph_SaveGraphPeriod3Days},
+                {period: '345600', name: language.graph_SaveGraphPeriod4Days},
+                {period: '432000', name: language.graph_SaveGraphPeriod5Days},
+                {period: '864000', name: language.graph_SaveGraphPeriod10Days},
+                {period: '604800', name: language.graph_SaveGraphPeriod1Week},
+                {period: '1209600', name: language.graph_SaveGraphPeriod2Weeks},
             ]
         });
 

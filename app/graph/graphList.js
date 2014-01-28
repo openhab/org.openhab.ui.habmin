@@ -82,6 +82,7 @@ Ext.define('openHAB.graph.graphList', {
             store: chartStore,
             tbar: chartToolbar,
             header: false,
+            hideHeaders: true,
             columns: [
                 {
                     menuDisabled: true,
