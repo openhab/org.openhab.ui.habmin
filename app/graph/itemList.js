@@ -38,7 +38,7 @@
 Ext.define('openHAB.graph.itemList', {
     extend: 'Ext.panel.Panel',
     layout: 'fit',
-    icon: 'images/chart_curve_add.png',
+    icon: 'images/document-node.png',
 
     initComponent: function () {
         this.title = language.graph_ItemList;

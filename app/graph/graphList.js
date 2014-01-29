@@ -65,7 +65,7 @@ Ext.define('openHAB.graph.graphList', {
                             buttons: Ext.Msg.YESNO,
                             config: {
                                 obj: this,
-                                name: itemName
+                                name: selectedName
                             },
                             fn: deleteChart,
                             icon: Ext.MessageBox.QUESTION
