@@ -57,6 +57,7 @@ Ext.define('openHAB.graph.itemList', {
                     tooltip: language.graph_ItemListResetTip,
                     handler: function () {
                         var selectedChanList = [];
+                        itemList.clearSelection();
                         itemToolbar.getComponent('update').disable();
                         itemToolbar.getComponent('save').disable();
 
