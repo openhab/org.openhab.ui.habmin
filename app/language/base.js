@@ -265,7 +265,7 @@ var language = {
     graph_ItemListUpdateTip: "Retrieve the currently selected channels",
     graph_ItemListSave: "Save Graph",
     graph_ItemListSaveTip: "Save current chart configuration",
-    graph_ItemListReset: "Reset Graph",
+    graph_ItemListReset: "Reset List",
     graph_ItemListResetTip: "Clear Selected Channels and Reset Period",
     graph_ItemTitle: "Item",
     graph_LastValue: "Last Value",
