@@ -133,7 +133,16 @@ Ext.define('openHAB.config.itemList', {
                                     fieldLabel: language.config_ItemListModelName,
                                     itemId: 'model',
                                     name: 'model',
-                                    store: {model: 'ItemModelsModel', data: models},
+                                    store: {
+                                        model: 'ItemModelsModel',
+                                        data: models,
+                                        sorters: [
+                                            {
+                                                property: 'name',
+                                                direction: 'ASC'
+                                            }
+                                        ]
+                                    },
                                     allowBlank: false,
                                     valueField: 'name',
                                     displayField: 'name',
