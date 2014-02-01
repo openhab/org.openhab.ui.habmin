@@ -156,6 +156,17 @@ var language = {
     config_ItemRulesDeletedOk: "Rule '%s' successfully removed from item '%s'",
     config_ItemRulesDeletedError: "Error deleting rule '%s' from item '%s'",
 
+    // config/itemBindings.js
+    config_ItemBindingsTitle: "Bindings",
+    config_ItemBindingsDeleteTip: "Delete the item binding",
+    config_ItemBindingsAddTip: "Add a new item binding",
+    config_ItemBindingsNewBinding: "New Binding",
+    config_ItemBindingsBinding: "Binding",
+    config_ItemBindingsBinding: "Config",
+    config_ItemBindingsDefaultName: "Binding Name",
+    config_ItemBindingsDefaultString: "Binding String",
+    config_ItemBindingsUpdate: "Update data",
+
     // config/groupTree.js
     config_GroupsTitle: "Groups",
 

@@ -29,7 +29,8 @@
  * to convey the resulting work.
  */
 
-/** OpenHAB Admin Console HABmin
+/**
+ * OpenHAB Admin Console HABmin
  *
  * @author Chris Jackson
  */
@@ -38,7 +39,6 @@
 Ext.define('openHAB.config.itemBindings', {
     extend:'Ext.panel.Panel',
     icon:'images/chain.png',
-    title: 'Bindings',
     defaults:{
         split:true
     },
@@ -46,6 +46,7 @@ Ext.define('openHAB.config.itemBindings', {
     layout:'border',
 
     initComponent:function () {
+        this.title = language.config_ItemBindingsTitle;
 
         Ext.define('ItemBindingModel', {
             extend:'Ext.data.Model',
@@ -65,10 +66,10 @@ Ext.define('openHAB.config.itemBindings', {
                 {
                     icon:'images/minus-button.png',
                     itemId:'delete',
-                    text:'Delete Binding',
+                    text: language.delete,
                     cls:'x-btn-icon',
                     disabled:true,
-                    tooltip:'Delete the item binding',
+                    tooltip: language.config_ItemBindingsDeleteTip,
                     handler:function () {
                         // Remove the record from the store
                         var record = list.getSelectionModel().getSelection()[0];
@@ -83,16 +84,16 @@ Ext.define('openHAB.config.itemBindings', {
                 {
                     icon:'images/plus-button.png',
                     itemId:'add',
-                    text:'Add New Binding',
+                    text: language.add,
                     cls:'x-btn-icon',
                     disabled:false,
-                    tooltip:'Add a new item binding',
+                    tooltip:language.config_ItemBindingsAddTip,
                     handler:function () {
                         var binding = "binding";
                         if(store.getCount() != 0)
                             binding = store.getAt(0).get("binding");
 
-                        store.add({binding: binding, string:"New Binding"});
+                        store.add({binding: binding, string:language.config_ItemBindingsNewBinding});
                         toolbar.getComponent('delete').enable();
                     }
                 }
@@ -110,12 +111,12 @@ Ext.define('openHAB.config.itemBindings', {
             multiSelect:false,
             columns:[
                 {
-                    text:'Binding',
+                    text:language.config_ItemBindingsBinding,
                     flex:1,
                     dataIndex:'binding'
                 },
                 {
-                    text:'Config',
+                    text:language.config_ItemBindingsBinding,
                     flex:4,
                     dataIndex:'config',
                     renderer: Ext.util.Format.htmlEncode
@@ -136,7 +137,7 @@ Ext.define('openHAB.config.itemBindings', {
         });
 
         var properties = Ext.create('Ext.grid.property.Grid', {
-            title:'Properties',
+            title:language.properties,
             region:"south",
             flex:1,
             icon:'images/gear.png',
@@ -150,10 +151,10 @@ Ext.define('openHAB.config.itemBindings', {
             },
             sourceConfig:{
                 binding:{
-                    displayName:"Binding Name"
+                    displayName:language.config_ItemBindingsDefaultName
                 },
                 config:{
-                    displayName:"Binding String"
+                    displayName:language.config_ItemBindingsDefaultString
                 }
             },
             viewConfig:{
@@ -162,7 +163,7 @@ Ext.define('openHAB.config.itemBindings', {
             tools:[
                 {
                     type:'tick',
-                    tooltip:'Update data',
+                    tooltip:language.config_ItemBindingsUpdate,
                     handler:function (event, toolEl, panel) {
                         // Save button pressed - update the sitemap tree with the updated properties
                         var record = list.getSelectionModel().getSelection()[0];
