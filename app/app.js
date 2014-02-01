@@ -119,10 +119,11 @@ Ext.require([
 var viewPort;
 
 var statusTooltip;
+var STATUS_UNKNOWN = 0;
 var STATUS_ONLINE = 1;
 var STATUS_BUSY = 2;
 var STATUS_OFFLINE = 3;
-var onlineStatus = STATUS_OFFLINE;
+var onlineStatus = STATUS_UNKNOWN;
 
 var NOTIFICATION_ERROR = 1;
 var NOTIFICATION_OK = 2;
@@ -404,26 +405,26 @@ function doStatus() {
                 success: function (response, opts) {
                     var res = Ext.decode(response.responseText);
                     if(res == null)
-                        this.statusCount++;
+                        updateStatus.statusCount++;
                     else
-                        this.statusCount = 0;
+                        updateStatus.statusCount = 0;
                 },
                 failure: function (response, opts) {
-                    this.statusCount++;
+                    updateStatus.statusCount++;
                 },
                 callback: function () {
                     // Hold off any errors until after the startup time.
                     // This is necessary for slower (embedded) machines
-                    if(this.startCnt > 0) {
-                        this.startCnt--;
+                    if(updateStatus.startCnt > 0) {
+                        updateStatus.startCnt--;
                     }
                     else {
-                        this.errorLimit = 2;
+                        updateStatus.errorLimit = 2;
                     }
 
-                    if(this.statusCount >= this.errorLimit)
+                    if(updateStatus.statusCount >= updateStatus.errorLimit)
                         handleOnlineStatus(STATUS_OFFLINE);
-                    else
+                    else if(updateStatus.statusCount == 0)
                         handleOnlineStatus(STATUS_ONLINE);
                 }
             });
