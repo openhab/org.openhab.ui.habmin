@@ -203,12 +203,13 @@ var formatLookupArray = [
 ];
 
 var translationServiceArray = [
-    {name: "MAP", label: "Map File"},
-    {name: "REGEX", label: "Regular Expression"},
-    {name: "JAVASCRIPT", label: "JavaScript"},
-    {name: "EXEC", label: "Exec"},
-    {name: "XSLT", label: "XML Style Sheet"},
-    {name: "XPATH", label: "XPath"}
+    {name: "", label: language.translation_None},
+    {name: "MAP", label: language.translation_MapFile},
+    {name: "REGEX", label: language.translation_Regex},
+    {name: "JAVASCRIPT", label:language.translation_Javascript},
+    {name: "EXEC", label: language.translation_Exec},
+    {name: "XSLT", label: language.translation_XLS},
+    {name: "XPATH", label: language.translation_XPath}
 ];
 
 var cronRuleArray = [

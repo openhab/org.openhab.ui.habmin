@@ -50,6 +50,13 @@ var language = {
     create: "Create",
 
     // app.js
+    translation_None: "None",
+    translation_MapFile: "Map File",
+    translation_Regex: "Regular Expression",
+    translation_Javascript: "JavaScript",
+    translation_Exec: "Exec",
+    translation_XLS: "XML Style Sheet",
+    translation_XPath: "XPath",
     mainTab_Persistence: "Persistence",
     mainTab_PersistenceTip: "Display chart page",
     mainTab_Configuration: "Configuration",
