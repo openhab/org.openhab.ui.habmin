@@ -56,6 +56,9 @@ Ext.define('openHAB.config.config', {
             border:false,
             region:'west',
             width:600,
+            stateEvents: ['resize'],
+            stateId: 'configWindowSizer',
+            stateful: true,
             layout:{
                 type:'accordion',
                 hideCollapseTool:true

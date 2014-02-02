@@ -453,8 +453,10 @@ function getItemTypeIcon(type) {
  * The main GUI creation method
  */
 function createUI() {
-    Ext.QuickTips.init();
     delete Ext.tip.Tip.prototype.minWidth;
+
+    Ext.QuickTips.init();
+    Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 
     //======= Quartz CRON Rule Store
     Ext.define('CRONRuleModel', {

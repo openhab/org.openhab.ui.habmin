@@ -135,7 +135,6 @@ Ext.define('openHAB.config.itemProperties', {
                     displayField: 'label',
                     valueField: 'name',
                     forceSelection: true,
-                    editable: false,
                     allowBlank: false,
                     listConfig: {
                         getInnerTpl: function () {
@@ -391,7 +390,6 @@ Ext.define('openHAB.config.itemProperties', {
                 type: 'vbox',
                 align: 'stretch'
             },
-//            layout: 'fit',
             tbar: toolbar,
             border: false,
             items: [itemOptions, itemPersistenceOptions, itemExtendedOptions]

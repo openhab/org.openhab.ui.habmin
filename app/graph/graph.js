@@ -56,8 +56,11 @@ Ext.define('openHAB.graph.graph', {
             split: true,
             border: true,
             region: 'west',
-            width: 450,
+            flex: 1,
             preventHeader: true,
+            stateEvents: ['resize'],
+            stateId: 'graphWindowSizer',
+            stateful: true,
             layout: {
                 type: 'accordion',
                 hideCollapseTool: true
@@ -77,6 +80,7 @@ Ext.define('openHAB.graph.graph', {
             plain: false,
             region: 'center',
             layout: 'fit',
+            flex: 3,
             tabPosition: 'bottom',
             items: [chartGraph, chartTable],
             listeners: {
