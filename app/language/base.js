@@ -128,6 +128,7 @@ var language = {
     config_ItemListModel: "Model",
     config_ItemListDeleted: "Item '%s' has been deleted.",
     config_ItemListDeleteError: "Error deleting item '%s'.",
+    config_ItemListFilterDefault: "filter...",
 
     // config/itemProperties.js
     config_ItemPropertiesTitleTip: "Item Properties",

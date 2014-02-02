@@ -220,10 +220,16 @@ Ext.define('openHAB.config.itemList', {
             tbar: toolbar,
             collapsible: false,
             multiSelect: false,
-            plugins: ['grid', {
-                ptype: 'cellediting',
-                clicksToEdit: 1
-            }],
+            plugins: [
+                {
+                    ptype: 'grid',
+                    emptyText: language.config_ItemListFilterDefault
+                },
+                {
+                    ptype: 'cellediting',
+                    clicksToEdit: 1
+                }
+            ],
             columns: [
                 {
                     text: language.config_ItemListItem,
