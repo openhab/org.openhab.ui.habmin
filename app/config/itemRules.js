@@ -51,22 +51,37 @@ Ext.define('openHAB.config.itemRules', {
         var ruleRecord;
 
         var toolbar = Ext.create('Ext.toolbar.Toolbar', {
+            itemId:'toolbar',
             items: [
                 {
-                    icon: 'images/plus-button.png',
-                    itemId: 'add',
-                    text: language.add,
+                    icon: 'images/cross.png',
+                    itemId: 'cancel',
+                    text: language.cancel,
                     cls: 'x-btn-icon',
                     disabled: true,
-                    tooltip: language.config_ItemRulesAddTip,
+                    tooltip: language.config_ItemPropertiesCancelChangeTip,
                     handler: function () {
-                        var record = listRules.getSelectionModel().getSelection()[0];
-                        if (record == null)
-                            return;
-
-                        createRule(record);
+                        this.up('#itemPropertiesMain').revertItem();
+                        toolbar.getComponent('cancel').disable();
+                        toolbar.getComponent('save').disable();
+                        toolbar.getComponent('delete').disable();
                     }
                 },
+                {
+                    icon:'images/disk.png',
+                    itemId:'save',
+                    text: language.save,
+                    cls:'x-btn-icon',
+                    disabled:false,
+                    tooltip:language.config_ItemPropertiesSaveChangeTip,
+                    handler:function () {
+                        this.up('#itemPropertiesMain').saveItem();
+                        toolbar.getComponent('cancel').disable();
+                        toolbar.getComponent('save').disable();
+                        toolbar.getComponent('delete').disable();
+                    }
+                },
+                '-',
                 {
                     icon: 'images/minus-button.png',
                     itemId: 'delete',
@@ -93,6 +108,21 @@ Ext.define('openHAB.config.itemRules', {
                             fn: deleteRule,
                             icon: Ext.MessageBox.QUESTION
                         });
+                    }
+                },
+                {
+                    icon: 'images/plus-button.png',
+                    itemId: 'add',
+                    text: language.add,
+                    cls: 'x-btn-icon',
+                    disabled: true,
+                    tooltip: language.config_ItemRulesAddTip,
+                    handler: function () {
+                        var record = listRules.getSelectionModel().getSelection()[0];
+                        if (record == null)
+                            return;
+
+                        createRule(record);
                     }
                 }
             ]
@@ -122,7 +152,6 @@ Ext.define('openHAB.config.itemRules', {
             flex: 1,
             header: false,
             split: true,
-            tbar: toolbar,
             collapsible: false,
             multiSelect: false,
             columns: [
@@ -160,6 +189,7 @@ Ext.define('openHAB.config.itemRules', {
             }
         });
 
+        this.tbar = toolbar;
         this.items = [listRules];
 
         this.callParent();

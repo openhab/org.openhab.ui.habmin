@@ -123,6 +123,7 @@ var language = {
     config_ItemListDeleteError: "Error deleting item '%s'.",
 
     // config/itemProperties.js
+    config_ItemPropertiesTitleTip: "Item Properties",
     config_ItemPropertiesSetName: "Set the item name.",
     config_ItemPropertiesSetType: "Set the item type.",
     config_ItemPropertiesSetLabel: "Specify the default label used in the UI.",
@@ -143,6 +144,7 @@ var language = {
     config_ItemPropertiesSaveChangeTip: "Save changes to the item configuration",
     config_ItemPropertiesSaveOk: "Item configuration saved successfully",
     config_ItemPropertiesSaveError: "Error saving item configuration",
+    config_ItemPropertiesNothingSaved: "No changes detected. No updates have been made to the server.",
 
     // config/itemRules.js
     config_ItemRulesTitle: "Rules",

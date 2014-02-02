@@ -39,10 +39,17 @@
 Ext.define('openHAB.config.itemProperties', {
     extend: 'Ext.panel.Panel',
     layout: 'fit',
-    tabTip: 'Item Properties',
     header: false,
+    itemId: 'itemPropertiesMain',
+    saveOutstanding: 0,
+    saveError: false,
 
     initComponent: function () {
+        this.title = language.properties;
+        this.tabTip = language.config_ItemPropertiesTitleTip;
+
+        var me = this;
+
         var newItem;
         var itemData;
         var itemExtendedData;
@@ -255,6 +262,7 @@ Ext.define('openHAB.config.itemProperties', {
         });
 
         var toolbar = Ext.create('Ext.toolbar.Toolbar', {
+            itemId: "toolbar",
             items: [
                 {
                     icon: 'images/cross.png',
@@ -265,7 +273,7 @@ Ext.define('openHAB.config.itemProperties', {
                     tooltip: language.config_ItemPropertiesCancelChangeTip,
                     handler: function () {
                         // Reset to the current data
-                        updatePrimaryItemProperties(itemData);
+                        me.revertItem();
                     }
                 },
                 {
@@ -276,20 +284,7 @@ Ext.define('openHAB.config.itemProperties', {
                     disabled: true,
                     tooltip: language.config_ItemPropertiesSaveChangeTip,
                     handler: function () {
-                        // Reset the status flags so we can correlate the different requests
-                        saveOutstanding = 0;
-                        saveError = false;
-
-                        if (savePrimaryData() == true)
-                            saveOutstanding++;
-                        if (savePersistenceData() == true)
-                            saveOutstanding++;
-                        if (saveExtendedData() == true)
-                            saveOutstanding++;
-
-                        // Disable the toolbar
-                        toolbar.getComponent('cancel').disable();
-                        toolbar.getComponent('save').disable();
+                        me.saveItem();
                     }
                 }
             ]
@@ -310,11 +305,9 @@ Ext.define('openHAB.config.itemProperties', {
             hideHeaders: true,
             sortableColumns: false,
             nameColumnWidth: 300,
-            split: true,
             border: false,
             viewConfig: {
                 markDirty: true
-
             },
             listeners: {
                 propertychange: function (source, recordId, value, oldValue, eOpts) {
@@ -334,10 +327,10 @@ Ext.define('openHAB.config.itemProperties', {
                 },
                 itemmouseenter: function (grid, record, item, index, e, eOpts) {
                     var name = record.get("name");
-                    helpStatusText.setText(itemHelp[name]);
+//                    helpStatusText.setText(itemHelp[name]);
                 },
                 itemmouseleave: function (grid, record, item, index, e, eOpts) {
-                    helpStatusText.setText("");
+//                    helpStatusText.setText("");
                 }
             }
         });
@@ -346,7 +339,6 @@ Ext.define('openHAB.config.itemProperties', {
             hideHeaders: true,
             sortableColumns: false,
             nameColumnWidth: 300,
-            split: true,
             border: false,
             viewConfig: {
                 markDirty: true
@@ -359,10 +351,10 @@ Ext.define('openHAB.config.itemProperties', {
                 },
                 itemmouseenter: function (grid, record, item, index, e, eOpts) {
                     var name = record.get("name");
-                    helpStatusText.setText(itemHelp[name]);
+//                    helpStatusText.setText(itemHelp[name]);
                 },
                 itemmouseleave: function (grid, record, item, index, e, eOpts) {
-                    helpStatusText.setText("");
+//                    helpStatusText.setText("");
                 }
             }
         });
@@ -371,7 +363,6 @@ Ext.define('openHAB.config.itemProperties', {
             hideHeaders: true,
             sortableColumns: false,
             nameColumnWidth: 300,
-            split: true,
             border: false,
             viewConfig: {
                 markDirty: true
@@ -384,10 +375,10 @@ Ext.define('openHAB.config.itemProperties', {
                 },
                 itemmouseenter: function (grid, record, item, index, e, eOpts) {
                     var name = record.get("name");
-                    helpStatusText.setText(itemHelp[name]);
+//                    helpStatusText.setText(itemHelp[name]);
                 },
                 itemmouseleave: function (grid, record, item, index, e, eOpts) {
-                    helpStatusText.setText("");
+//                    helpStatusText.setText("");
                 }
             }
         });
@@ -396,6 +387,11 @@ Ext.define('openHAB.config.itemProperties', {
             title: language.properties,
             itemId: 'itemProperties',
             icon: 'images/gear.png',
+            layout: {
+                type: 'vbox',
+                align: 'stretch'
+            },
+//            layout: 'fit',
             tbar: toolbar,
             border: false,
             items: [itemOptions, itemPersistenceOptions, itemExtendedOptions]
@@ -411,7 +407,7 @@ Ext.define('openHAB.config.itemProperties', {
         // Create the tab container for the item configuration
         var tabs = Ext.create('Ext.tab.Panel', {
             layout: 'fit',
-            itemId: 'itemProperties',
+//            itemId: 'itemProperties',
             bbar: statusBar,
             border: false,
             items: [itemProperties, itemGroups, itemRules, itemBindings],
@@ -422,7 +418,7 @@ Ext.define('openHAB.config.itemProperties', {
                         // Only update the property grid if it's changed.
                         // Otherwise the cell gets marked dirty when it's not!
                         var newGroups = itemGroups.getSelected();
-                        if (itemData.groups != newGroups) {
+                        if (compareGroups([].concat(itemData.groups), newGroups) == false) {
                             var groupsOut = "";
                             newGroups = [].concat(newGroups);
                             for (var cnt = 0; cnt < newGroups.length; cnt++) {
@@ -434,13 +430,44 @@ Ext.define('openHAB.config.itemProperties', {
 
                             itemOptions.setProperty("Groups", groupsOut);
                         }
+                    }
 
-                        // Just detect if the bindings have changed
-                        if (itemBindings.isDirty()) {
-                            toolbar.getComponent('cancel').enable();
-                            toolbar.getComponent('save').enable();
-                            itemPrimaryOptionsUpdated = true;
-                        }
+                    // Synchronise the states of the SAVE/CANCEL buttons across all tabs
+                    // This makes it look like a common toolbar.
+
+                    // First get the state of the buttons in the old window
+                    var tbOld = oldCard.getDockedComponent('toolbar');
+
+                    var stSave = tbOld.getComponent('save').isDisabled();
+                    var stCancel = tbOld.getComponent('cancel').isDisabled();
+
+                    var tbProperties = itemProperties.getDockedComponent('toolbar');
+                    var tbBinding = itemBindings.getDockedComponent('toolbar');
+                    var tbGroup = itemGroups.getDockedComponent('toolbar');
+                    var tbRules = itemRules.getDockedComponent('toolbar');
+                    if (stCancel == true) {
+                        tbProperties.getComponent('cancel').disable();
+                        tbBinding.getComponent('cancel').disable();
+                        tbGroup.getComponent('cancel').disable();
+                        tbRules.getComponent('cancel').disable();
+                    }
+                    else {
+                        tbProperties.getComponent('cancel').enable();
+                        tbBinding.getComponent('cancel').enable();
+                        tbGroup.getComponent('cancel').enable();
+                        tbRules.getComponent('cancel').enable();
+                    }
+                    if (stSave == true) {
+                        tbProperties.getComponent('save').disable();
+                        tbBinding.getComponent('save').disable();
+                        tbGroup.getComponent('save').disable();
+                        tbRules.getComponent('save').disable();
+                    }
+                    else {
+                        tbProperties.getComponent('save').enable();
+                        tbBinding.getComponent('save').enable();
+                        tbGroup.getComponent('save').enable();
+                        tbRules.getComponent('save').enable();
                     }
                 }
             }
@@ -453,8 +480,38 @@ Ext.define('openHAB.config.itemProperties', {
         // --------------
         // Class members.
 
+        function compareGroups(group1, group2) {
+            if (group1.length != group2.length)
+                return false;
+            for (var i = 0; i < group1.length; i++) {
+                if (group1.indexOf(group2[i]))
+                    return false;
+            }
+            return true;
+        }
+
+        function compareBindings(binding1, binding2) {
+            if (binding1.length != binding2.length)
+                return false;
+            for (var i = 0; i < binding1.length; i++) {
+                var found = false;
+                for (var c = 0; c < binding1.length; c++) {
+                    if(binding1[i].binding != binding2[c].binding)
+                        continue;
+                    if(binding1[i].config == binding2[i].config) {
+                        found = true;
+                        break;
+                    }
+                }
+                if(found == false)
+                    return false;
+            }
+            return true;
+        }
+
         // Set the name of the item and load all the settings.
         this.setItem = function (itemName) {
+            var me = this;
             // Load the item data
             Ext.Ajax.request({
                 url: HABminBaseURL + '/config/items/' + itemName,
@@ -463,11 +520,11 @@ Ext.define('openHAB.config.itemProperties', {
                 headers: {'Accept': 'application/json'},
                 success: function (response, opts) {
                     var json = Ext.decode(response.responseText);
-                    // If there's no config for this binding, records will be null
+                    // If there's no config for this item, records will be null
                     if (json == null)
                         return;
 
-                    updatePrimaryItemProperties(json);
+                    me.updatePrimaryItemProperties(json);
                 }
             });
 
@@ -479,11 +536,11 @@ Ext.define('openHAB.config.itemProperties', {
                 headers: {'Accept': 'application/json'},
                 success: function (response, opts) {
                     var json = Ext.decode(response.responseText);
-                    // If there's no config for this binding, records will be null
+                    // If there's no config for this item, records will be null
                     if (json == null)
                         return;
 
-                    updatePersistenceItemProperties(json);
+                    me.updatePersistenceItemProperties(json);
                 }
             });
 
@@ -495,36 +552,39 @@ Ext.define('openHAB.config.itemProperties', {
                 headers: {'Accept': 'application/json'},
                 success: function (response, opts) {
                     var json = Ext.decode(response.responseText);
-                    // If there's no config for this binding, records will be null
+                    // If there's no config for this item, records will be null
                     if (json == null)
                         return;
 
-                    updateExtendedItemProperties(json);
+                    me.updateExtendedItemProperties(json);
                 }
             });
 
             // This is an existing item, so we don't allow the item name to be edited.
             newItem = false;
-        }
+        };
 
         // Create a new item
         this.createItem = function (modelName) {
             var json = {};
             json.model = modelName;
             json.groups = "";
+            this.updatePrimaryItemProperties(json);
 
             // This is a new item, so we allow the item name to be edited.
             newItem = true;
 
-            updatePrimaryItemProperties(json);
-        }
+            json = {};
+            json.persistence = "";
+            this.updatePersistenceItemProperties(json);
+        };
 
         // Update the item properties
-        function updatePrimaryItemProperties(json) {
+        this.updatePrimaryItemProperties = function (json) {
             // Save the response so we can reset later if needed
             itemData = json;
 
-            var itemPrimaryOptionsUpdated = false;
+            itemPrimaryOptionsUpdated = false;
 
             statusBar.setText("Item: " + json.name);
 
@@ -589,10 +649,10 @@ Ext.define('openHAB.config.itemProperties', {
                     return "";
                 return val;
             }
-        }
+        };
 
         // Add the extended item properties from rules...
-        function updateExtendedItemProperties(json) {
+        this.updateExtendedItemProperties = function (json) {
             // Save the response so we can reset later if needed
             itemExtendedData = json;
 
@@ -627,10 +687,10 @@ Ext.define('openHAB.config.itemProperties', {
                 }
             }
             itemExtendedOptions.setSource(extendedSource, extendedConfig);
-        }
+        };
 
         // Add the extended item properties from rules...
-        function updatePersistenceItemProperties(json) {
+        this.updatePersistenceItemProperties = function (json) {
             // Save the response so we can reset later if needed
             itemPersistenceData = json;
 
@@ -684,25 +744,23 @@ Ext.define('openHAB.config.itemProperties', {
 
             // Update the property grid
             itemPersistenceOptions.setSource(source, sourceConfig);
-        }
+        };
 
-        var saveOutstanding = 0;
-        var saveError = false;
 
         // Handles the responses from the different Ajax calls
         // Only when all outstanding calls are finished do we post success/fail
-        function saveResponse(saveState) {
+        this.saveResponse = function (saveState) {
             // Keep track of any errors
             if (saveState == false)
-                saveError = true;
+                this.saveError = true;
 
             // See if all requests are complete?
-            saveOutstanding--;
-            if (saveOutstanding > 0)
+            this.saveOutstanding--;
+            if (this.saveOutstanding > 0)
                 return;
 
             // All requests complete - display success (or otherwise!)
-            if (saveError == false) {
+            if (this.saveError == false) {
                 handleStatusNotification(NOTIFICATION_OK, language.config_ItemPropertiesSaveOk);
             }
             else {
@@ -711,11 +769,21 @@ Ext.define('openHAB.config.itemProperties', {
 
             // Reload the item store
             itemConfigStore.reload();
-        }
+        };
 
         // Save the openHAB item model data
-        function savePrimaryData() {
-            // Firstly, check if this data has changed
+        this.savePrimaryData = function () {
+            var me = this;
+
+            var groups = itemGroups.getSelected();
+            if(compareGroups(groups, [].concat(itemData.groups)) == false)
+                itemPrimaryOptionsUpdated = true;
+
+            var bindings = itemBindings.getBindings();
+            if(compareBindings(bindings, [].concat(itemData.bindings)) == false)
+                itemPrimaryOptionsUpdated = true;
+
+            // Check if this data has changed
             if (itemPrimaryOptionsUpdated == false)
                 return false;
 
@@ -723,8 +791,8 @@ Ext.define('openHAB.config.itemProperties', {
             if (prop == null)
                 return false;
 
-            itemData.groups = itemGroups.getSelected();
-            itemData.bindings = itemBindings.getBindings();
+            itemData.groups = groups;
+            itemData.bindings = bindings;
 
             itemData.type = prop.Type;
             itemData.name = prop.ItemName;
@@ -742,23 +810,25 @@ Ext.define('openHAB.config.itemProperties', {
                 method: 'PUT',
                 jsonData: itemData,
                 success: function (response, opts) {
-                    saveResponse(true);
+                    me.saveResponse(true);
 
                     var json = Ext.decode(response.responseText);
                     // If there's no config returned for this item, records will be null
                     if (json != null)
-                        updatePrimaryItemProperties(json);
+                        me.updatePrimaryItemProperties(json);
                 },
                 failure: function (result, request) {
-                    saveResponse(false);
+                    me.saveResponse(false);
                 }
             });
 
             return true;
-        }
+        };
 
         // Save HABmin extended data (eg rule configurations)
-        function saveExtendedData() {
+        this.saveExtendedData = function () {
+            var me = this;
+
             // Firstly, check if this data has changed
             if (itemExtendedOptionsUpdated == false)
                 return false;
@@ -822,7 +892,7 @@ Ext.define('openHAB.config.itemProperties', {
                     jsonData: data,
                     headers: {'Accept': 'application/json'},
                     success: function (response, opts) {
-                        saveResponse(true);
+                        me.saveResponse(true);
 
                         var json = Ext.decode(response.responseText);
                         // If there's no config returned for this item, records will be null
@@ -830,16 +900,18 @@ Ext.define('openHAB.config.itemProperties', {
                             updateExtendedItemProperties(json);
                     },
                     failure: function () {
-                        saveResponse(false);
+                        me.saveResponse(false);
                     }
                 });
             }
 
             return true;
-        }
+        };
 
         // Save persistence data
-        function savePersistenceData() {
+        this.savePersistenceData = function () {
+            var me = this;
+
             // Firstly, check if this data has changed
             if (itemPersistenceOptionsUpdated == false)
                 return false;
@@ -893,27 +965,62 @@ Ext.define('openHAB.config.itemProperties', {
                 }
             }
 
-            // Send the dat ato openHAB
+            // Send the data to openHAB
             Ext.Ajax.request({
                 url: HABminBaseURL + '/config/persistence/item/' + itemName,
                 method: 'PUT',
                 jsonData: data,
                 headers: {'Accept': 'application/json'},
                 success: function (response, opts) {
-                    saveResponse(true);
+                    me.saveResponse(true);
 
                     var json = Ext.decode(response.responseText);
                     // If there's no config returned for this request, records will be null
                     if (json != null)
-                        updatePersistenceItemProperties(json);
+                        me.updatePersistenceItemProperties(json);
                 },
                 failure: function () {
-                    saveResponse(false);
+                    me.saveResponse(false);
                 }
             });
 
             return true;
-        }
+        };
+
+        this.saveItem = function () {
+            var me = this;
+
+            // Reset the status flags so we can correlate the different requests
+            me.saveOutstanding = 0;
+            me.saveError = false;
+
+            var totalRequests = 0;
+            if (me.savePrimaryData() == true) {
+                me.saveOutstanding++;
+                totalRequests++;
+            }
+            if (me.savePersistenceData() == true) {
+                me.saveOutstanding++;
+                totalRequests++;
+            }
+            if (me.saveExtendedData() == true) {
+                me.saveOutstanding++;
+                totalRequests++;
+            }
+
+            if (totalRequests == 0) {
+                handleStatusNotification(NOTIFICATION_WARNING, language.config_ItemPropertiesNothingSaved);
+            }
+
+            // Disable the toolbar
+            toolbar.getComponent('cancel').disable();
+            toolbar.getComponent('save').disable();
+        };
+
+        this.revertItem = function () {
+            var me = this;
+            me.updatePrimaryItemProperties(itemData);
+        };
     }
 })
 ;

@@ -62,7 +62,37 @@ Ext.define('openHAB.config.itemBindings', {
         });
 
         var toolbar = Ext.create('Ext.toolbar.Toolbar', {
+            itemId:'toolbar',
             items:[
+                {
+                    icon: 'images/cross.png',
+                    itemId: 'cancel',
+                    text: language.cancel,
+                    cls: 'x-btn-icon',
+                    disabled: true,
+                    tooltip: language.config_ItemPropertiesCancelChangeTip,
+                    handler: function () {
+                        this.up('#itemPropertiesMain').revertItem();
+                        toolbar.getComponent('cancel').disable();
+                        toolbar.getComponent('save').disable();
+                        toolbar.getComponent('delete').disable();
+                    }
+                },
+                {
+                    icon:'images/disk.png',
+                    itemId:'save',
+                    text: language.save,
+                    cls:'x-btn-icon',
+                    disabled:false,
+                    tooltip:language.config_ItemPropertiesSaveChangeTip,
+                    handler:function () {
+                        this.up('#itemPropertiesMain').saveItem();
+                        toolbar.getComponent('cancel').disable();
+                        toolbar.getComponent('save').disable();
+                        toolbar.getComponent('delete').disable();
+                    }
+                },
+                '-',
                 {
                     icon:'images/minus-button.png',
                     itemId:'delete',
@@ -77,6 +107,8 @@ Ext.define('openHAB.config.itemBindings', {
                             return;
                         store.remove(record);
 
+                        toolbar.getComponent('save').enable();
+                        toolbar.getComponent('cancel').enable();
                         toolbar.getComponent('delete').disable();
                         properties.setProperty("String", "");
                     }
@@ -95,6 +127,9 @@ Ext.define('openHAB.config.itemBindings', {
 
                         store.add({binding: binding, string:language.config_ItemBindingsNewBinding});
                         toolbar.getComponent('delete').enable();
+
+                        toolbar.getComponent('save').enable();
+                        toolbar.getComponent('cancel').enable();
                     }
                 }
             ]
@@ -106,7 +141,6 @@ Ext.define('openHAB.config.itemBindings', {
             flex:1,
             header:false,
             split:true,
-            tbar:toolbar,
             collapsible:false,
             multiSelect:false,
             columns:[
@@ -163,6 +197,7 @@ Ext.define('openHAB.config.itemBindings', {
             tools:[
                 {
                     type:'tick',
+                    disabled: true,
                     tooltip:language.config_ItemBindingsUpdate,
                     handler:function (event, toolEl, panel) {
                         // Save button pressed - update the sitemap tree with the updated properties
@@ -173,6 +208,10 @@ Ext.define('openHAB.config.itemBindings', {
                         var prop = properties.getStore();
                         record.set("binding", getPropertyValue(prop, "binding"));
                         record.set("config", getPropertyValue(prop, "config"));
+
+                        toolbar.getComponent('save').enable();
+                        toolbar.getComponent('cancel').enable();
+                        properties.getHeader().getTools()[0].disable();
 
                         // Function to get a property value given the name
                         // Returns null if property not found
@@ -188,6 +227,7 @@ Ext.define('openHAB.config.itemBindings', {
             ],
             listeners:{
                 propertychange:function (source, recordId, value, oldValue, eOpts) {
+                    properties.getHeader().getTools()[0].enable();
                 },
                 beforeedit : function(editor, e) {
                 }
@@ -195,6 +235,7 @@ Ext.define('openHAB.config.itemBindings', {
         });
 
         this.items = [list, properties];
+        this.tbar = toolbar;
         this.callParent();
 
         this.setBindings = function(bindings) {

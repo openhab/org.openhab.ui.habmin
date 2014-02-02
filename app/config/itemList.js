@@ -166,10 +166,8 @@ Ext.define('openHAB.config.itemList', {
                                             // Read the model name
                                             var model = form.getForm().findField('model').getSubmitValue();
 
-                                            var newProperties = null;
-
                                             // Create a new itemProperties
-                                            newProperties = Ext.create('openHAB.config.itemProperties');
+                                            var newProperties = Ext.create('openHAB.config.itemProperties');
                                             newProperties.createItem(model);
 
                                             if (newProperties != null)

@@ -41,6 +41,7 @@ Ext.define('openHAB.config.groupTree', {
     layout: 'fit',
     icon: 'images/category-group.png',
     header: false,
+    border: false,
     hideHeaders: true,
     columns: [
         {
@@ -59,6 +60,40 @@ Ext.define('openHAB.config.groupTree', {
 
     initComponent: function () {
         this.title = language.config_GroupsTitle;
+
+        this.tbar = Ext.create('Ext.toolbar.Toolbar', {
+            itemId:'toolbar',
+            items: [
+                {
+                    icon: 'images/cross.png',
+                    itemId: 'cancel',
+                    text: language.cancel,
+                    cls: 'x-btn-icon',
+                    disabled: true,
+                    tooltip: language.config_ItemPropertiesCancelChangeTip,
+                    handler: function () {
+                        this.up('#itemPropertiesMain').revertItem();
+                        toolbar.getComponent('cancel').disable();
+                        toolbar.getComponent('save').disable();
+                        toolbar.getComponent('delete').disable();
+                    }
+                },
+                {
+                    icon:'images/disk.png',
+                    itemId:'save',
+                    text: language.save,
+                    cls:'x-btn-icon',
+                    disabled:false,
+                    tooltip:language.config_ItemPropertiesSaveChangeTip,
+                    handler:function () {
+                        this.up('#itemPropertiesMain').saveItem();
+                        toolbar.getComponent('cancel').disable();
+                        toolbar.getComponent('save').disable();
+                        toolbar.getComponent('delete').disable();
+                    }
+                }
+                ]
+        });
 
         // Add the model for the group tree
         Ext.define('GroupTree', {
