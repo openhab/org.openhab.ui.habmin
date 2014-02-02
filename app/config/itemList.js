@@ -44,6 +44,8 @@ Ext.define('openHAB.config.itemList', {
         this.title = language.config_ItemListTitle;
         this.tabTip = language.config_ItemListTitleTip;
 
+        var me = this;
+
         var toolbar = Ext.create('Ext.toolbar.Toolbar', {
             items: [
                 {
@@ -218,6 +220,10 @@ Ext.define('openHAB.config.itemList', {
             tbar: toolbar,
             collapsible: false,
             multiSelect: false,
+            plugins: ['grid', {
+                ptype: 'cellediting',
+                clicksToEdit: 1
+            }],
             columns: [
                 {
                     text: language.config_ItemListItem,

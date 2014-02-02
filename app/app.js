@@ -63,8 +63,8 @@ Ext.Loader.setConfig({
     'paths': {
         'Ext.ux': 'js/extux',
         'Ext.ux.window': 'js/extux/notification',
-        'Ext.ux.grid.property': 'js/extux/propertygrid',
         'Ext.ux.aceeditor': 'js/extux/aceeditor',
+        'Ext.ux.grid': 'js/extux/grid',
         'openHAB': 'app'
     }
 });
@@ -80,6 +80,7 @@ Ext.require([
     'Ext.selection.CellModel',
     'Ext.layout.container.Border',
     'Ext.layout.container.Accordion',
+    'Ext.ux.grid.QuickFilter',
     'Ext.ux.statusbar.StatusBar',
     'Ext.ux.aceeditor.Panel',
     'Ext.ux.window.Notification',
