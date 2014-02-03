@@ -80,7 +80,7 @@ Ext.define('openHAB.config.sitemapProperties', {
         };
 
         // Array of widget types that are allowed to have children
-        var linkableWidgets = ["Sitemap", "Group", "Text", "Image", "Frame"];
+        var linkableWidgets = ["sitemap", "Group", "Text", "Image", "Frame"];
 
         var widgetHelp = {
             command: "?",
