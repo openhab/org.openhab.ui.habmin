@@ -444,28 +444,44 @@ Ext.define('openHAB.config.itemProperties', {
                     var tbGroup = itemGroups.getDockedComponent('toolbar');
                     var tbRules = itemRules.getDockedComponent('toolbar');
                     if (stCancel == true) {
-                        tbProperties.getComponent('cancel').disable();
-                        tbBinding.getComponent('cancel').disable();
-                        tbGroup.getComponent('cancel').disable();
-                        tbRules.getComponent('cancel').disable();
+                        if (tbProperties != null)
+                            tbProperties.getComponent('cancel').disable();
+                        if (tbBinding != null)
+                            tbBinding.getComponent('cancel').disable();
+                        if (tbGroup != null)
+                            tbGroup.getComponent('cancel').disable();
+                        if (tbRules != null)
+                            tbRules.getComponent('cancel').disable();
                     }
                     else {
-                        tbProperties.getComponent('cancel').enable();
-                        tbBinding.getComponent('cancel').enable();
-                        tbGroup.getComponent('cancel').enable();
-                        tbRules.getComponent('cancel').enable();
+                        if (tbProperties != null)
+                            tbProperties.getComponent('cancel').enable();
+                        if (tbBinding != null)
+                            tbBinding.getComponent('cancel').enable();
+                        if (tbGroup != null)
+                            tbGroup.getComponent('cancel').enable();
+                        if (tbRules != null)
+                            tbRules.getComponent('cancel').enable();
                     }
                     if (stSave == true) {
-                        tbProperties.getComponent('save').disable();
-                        tbBinding.getComponent('save').disable();
-                        tbGroup.getComponent('save').disable();
-                        tbRules.getComponent('save').disable();
+                        if (tbProperties != null)
+                            tbProperties.getComponent('save').disable();
+                        if (tbBinding != null)
+                            tbBinding.getComponent('save').disable();
+                        if (tbGroup != null)
+                            tbGroup.getComponent('save').disable();
+                        if (tbRules != null)
+                            tbRules.getComponent('save').disable();
                     }
                     else {
-                        tbProperties.getComponent('save').enable();
-                        tbBinding.getComponent('save').enable();
-                        tbGroup.getComponent('save').enable();
-                        tbRules.getComponent('save').enable();
+                        if (tbProperties != null)
+                            tbProperties.getComponent('save').enable();
+                        if (tbBinding != null)
+                            tbBinding.getComponent('save').enable();
+                        if (tbGroup != null)
+                            tbGroup.getComponent('save').enable();
+                        if (tbRules != null)
+                            tbRules.getComponent('save').enable();
                     }
                 }
             }
@@ -494,14 +510,14 @@ Ext.define('openHAB.config.itemProperties', {
             for (var i = 0; i < binding1.length; i++) {
                 var found = false;
                 for (var c = 0; c < binding1.length; c++) {
-                    if(binding1[i].binding != binding2[c].binding)
+                    if (binding1[i].binding != binding2[c].binding)
                         continue;
-                    if(binding1[i].config == binding2[i].config) {
+                    if (binding1[i].config == binding2[i].config) {
                         found = true;
                         break;
                     }
                 }
-                if(found == false)
+                if (found == false)
                     return false;
             }
             return true;
@@ -774,11 +790,11 @@ Ext.define('openHAB.config.itemProperties', {
             var me = this;
 
             var groups = itemGroups.getSelected();
-            if(compareGroups(groups, [].concat(itemData.groups)) == false)
+            if (compareGroups(groups, [].concat(itemData.groups)) == false)
                 itemPrimaryOptionsUpdated = true;
 
             var bindings = itemBindings.getBindings();
-            if(compareBindings(bindings, [].concat(itemData.bindings)) == false)
+            if (compareBindings(bindings, [].concat(itemData.bindings)) == false)
                 itemPrimaryOptionsUpdated = true;
 
             // Check if this data has changed
