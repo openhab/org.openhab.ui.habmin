@@ -402,7 +402,7 @@ function doStatus() {
             Ext.Ajax.request({
                 type:'rest',
                 url:HABminBaseURL + '/status',
-                timeout: 2500,
+                timeout: updateStatus.timeout,
                 method: 'GET',
                 success: function (response, opts) {
                     var res = Ext.decode(response.responseText);
@@ -424,13 +424,18 @@ function doStatus() {
                         updateStatus.errorLimit = 2;
                     }
 
-                    if(updateStatus.statusCount >= updateStatus.errorLimit)
+                    if(updateStatus.statusCount >= updateStatus.errorLimit) {
+                        updateStatus.timeout = 30000;
                         handleOnlineStatus(STATUS_OFFLINE);
-                    else if(updateStatus.statusCount == 0)
+                    }
+                    else if(updateStatus.statusCount == 0) {
+                        updateStatus.timeout = 2500;
                         handleOnlineStatus(STATUS_ONLINE);
+                    }
                 }
             });
         },
+        timeout: 30000,
         interval: 2500,
         startCnt: 6,
         statusCount: 0,
