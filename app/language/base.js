@@ -81,6 +81,8 @@ var language = {
     zwave_Devices: "Devices",
     zwave_DevicesReloadButton: "Reload Properties",
     zwave_DevicesReloadButtonTip: "Reload the configuration",
+    zwave_DevicesHealButton: "Heal",
+    zwave_DevicesHealButtonTip: "Start a network heal process",
     zwave_DevicesValueUpdateError: "Error sending updated value to the server!",
     zwave_DevicesValueUpdateRangeError: "Value is out of specified range. Please limit the value to between %s and %d.",
     zwave_DevicesActionError: "Error sending action to the server!",
