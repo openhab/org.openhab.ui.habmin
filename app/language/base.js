@@ -276,7 +276,6 @@ var language = {
     config_SitemapPropertiesLabelItem: "Item",
     config_SitemapPropertiesLabelLabel: "Label",
 
-
     // graph/graph.js
     chartTab_Chart: "Chart",
     chartTab_Table: "Table",
