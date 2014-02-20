@@ -60,6 +60,10 @@ _HABmin_ is an open source project. It makes use of a number of libraries under 
 
 Installation
 ------------
+Shorlty I will have a compiled version that can be simply unzipped from the openhab main directory.
+The release version is a compiled, minified version which increases the loading speed, and reduces the space used on the disk (useful if you're running on an embedded system like the Pi).
+To install, simply unzip from the openHAB main directory. This will put the _HABmin_ files in the webapps directory, and the plugins in the adons directory.
+
 * Download the project zip file from GitHub and unzip files in the directory webapps/habmin (you will need to create this directory).
 * Place the org.openhab.io.habmin*.jar file into the addons directory (this is stored in the addons directory in the repository).
 * Place the org.openhab.binding.zwave*.jar into the addons directory (this is stored in the addons directory in the repository). Note that this bundle is currently required for _HABmin_ to start, but if you don't have zwave then it won't actually run if it's not configured. In the longer term this dependency will be removed.
@@ -68,6 +72,7 @@ You will probably need to restart openHAB for the new interfaces to take affect.
 
 You can then start _HABmin_ at the address [http://localhost:8080/habmin/index.html](http://localhost:8080/habmin/index.html) (assuming openHAB is running on your local computer using the default port - if this is not the case, you will need to adjust the address accordingly).
 
+[![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
 
 Contributing
 ------------
