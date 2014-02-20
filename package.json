@@ -13,7 +13,8 @@
       "grunt-htmlhint":               "*",
       "grunt-xmlmin":                 "*",
       "grunt-json-minify":            "*",
-      "grunt-contrib-uglify":         "*"
+      "grunt-contrib-uglify":         "*",
+      "grunt-contrib-compress":       "*"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
