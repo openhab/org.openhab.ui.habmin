@@ -508,8 +508,12 @@ Ext.define('openHAB.config.itemProperties', {
             if (binding1.length != binding2.length)
                 return false;
             for (var i = 0; i < binding1.length; i++) {
+                if(binding1[i] == null)
+                    continue;
                 var found = false;
                 for (var c = 0; c < binding1.length; c++) {
+                    if(binding2[c] == null)
+                        continue;
                     if (binding1[i].binding != binding2[c].binding)
                         continue;
                     if (binding1[i].config == binding2[i].config) {
