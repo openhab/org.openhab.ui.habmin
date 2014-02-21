@@ -103,6 +103,16 @@ Ext.define('openHAB.graph.itemList', {
             tbar: itemToolbar,
             header: false,
             disableSelection: true,
+            plugins: [
+                {
+                    ptype: 'grid',
+                    emptyText: language.graph_ItemListFilterDefault
+                },
+                {
+                    ptype: 'cellediting',
+                    clicksToEdit: 1
+                }
+            ],
             columns: [
                 {
                     menuDisabled: true,

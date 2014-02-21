@@ -487,6 +487,7 @@ var language = {
     graph_ItemListSaveTip: "Save current chart configuration",
     graph_ItemListReset: "Reset List",
     graph_ItemListResetTip: "Clear Selected Channels and Reset Period",
+    graph_ItemListFilterDefault: "filter",
     graph_ItemTitle: "Item",
     graph_LastValue: "Last Value",
     graph_ItemIcon: "Item Icon",
