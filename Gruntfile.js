@@ -52,7 +52,7 @@ module.exports = function (grunt) {
             jsfiles: {
                 expand: true,
                 flatten: true,
-                src: ['js/jsprintf.js', 'js/highcharts.js', 'js/highcharts-more.js', 'js/jit.js', 'js/ext-all.js', 'js/jquery.min.js', 'js/jquery.atmosphere.js'],
+                src: ['js/jsprintf.js', 'js/moment.js', 'js/highcharts.js', 'js/highcharts-more.js', 'js/jit.js', 'js/ext-all.js', 'js/jquery.min.js', 'js/jquery.atmosphere.js'],
                 dest: 'build/webapps/habmin/js/'
             },
             extuxgrid: {

@@ -39,19 +39,19 @@
  * Load the language file before the application starts
  */
 var languageCode;
-document.ready=function() {
+document.ready = function () {
     // Detect the language and get the two character code
     languageCode = Ext.util.Cookies.get("language");
-    if(languageCode === null)
+    if (languageCode === null)
         languageCode = "en";
-    else if(isoLanguageGetName(languageCode) == "UNKNOWN")
+    else if (isoLanguageGetName(languageCode) == "UNKNOWN")
         languageCode = "en";
 
     // Write the language on the splash-screen
     Ext.fly('HABminLanguage').update(isoLanguageGetName(languageCode), false);
 
     // Only try and load languages that aren't English since this is the base
-    if(languageCode != "en")
+    if (languageCode != "en")
         loadLanguage(languageCode);
 };
 
@@ -88,8 +88,12 @@ Ext.require([
     'openHAB.config.*',
     'openHAB.system.*',
     'openHAB.automation.*'
-    ]
+]
 );
+
+var versionGUI = "0.1.0-alpha";
+var versionJAR;
+var gitRepoLink = "https://api.github.com/repos/cdjackson/HABmin/releases";
 
 var viewPort;
 
@@ -103,6 +107,7 @@ var onlineStatus = STATUS_UNKNOWN;
 var NOTIFICATION_ERROR = 1;
 var NOTIFICATION_OK = 2;
 var NOTIFICATION_WARNING = 3;
+var NOTIFICATION_INFO = 4;
 
 // Global data stores from openHAB
 var persistenceItemStore;
@@ -181,7 +186,7 @@ var translationServiceArray = [
     {name: "", label: language.translation_None},
     {name: "MAP", label: language.translation_MapFile},
     {name: "REGEX", label: language.translation_Regex},
-    {name: "JAVASCRIPT", label:language.translation_Javascript},
+    {name: "JAVASCRIPT", label: language.translation_Javascript},
     {name: "EXEC", label: language.translation_Exec},
     {name: "XSLT", label: language.translation_XLS},
     {name: "XPATH", label: language.translation_XPath}
@@ -231,6 +236,8 @@ Ext.Ajax.defaultHeaders = {
  * @param countryCode the two digit ISO country code
  */
 function loadLanguage(countryCode) {
+    moment.lang(countryCode);
+
     Ext.Ajax.request({
         url: "./app/language/" + countryCode + ".json",
         headers: {'Accept': 'application/json'},
@@ -238,7 +245,7 @@ function loadLanguage(countryCode) {
         success: function (response, opts) {
             var json = Ext.decode(response.responseText);
 
-            if(json === null)
+            if (json === null)
                 return;
 
             for (var attrname in json) {
@@ -250,36 +257,76 @@ function loadLanguage(countryCode) {
     });
 }
 
+function getReleaseVersion() {
+    Ext.data.JsonP.request({
+        url: 'https://api.github.com/repos/cdjackson/HABmin/releases',
+        callbackKey: 'callback',
+        success: function (result) {
+            if (result == null)
+                return;
+            if (result.data == null)
+                return;
+
+            // Find the latest version
+            var newestReleaseTime = "";
+            var newestReleaseVersion = "";
+            var newestPrereleaseTime = "";
+            var newestPrereleaseVersion = "";
+            for (var cnt = 0; cnt < result.data.length; cnt++) {
+                // Ignore drafts
+                if (result.data[cnt].draft == true)
+                    continue;
+
+                if (result.data[cnt].prerelease == false) {
+                    if (result.data[cnt].published_at > newestReleaseTime) {
+                        newestReleaseTime = result.data[cnt].published_at;
+                        newestReleaseVersion = result.data[cnt].tag_name;
+                    }
+                }
+                else {
+                    if (result.data[cnt].published_at > newestPrereleaseTime) {
+                        newestPrereleaseTime = result.data[cnt].published_at;
+                        newestPrereleaseVersion = result.data[cnt].tag_name;
+                    }
+                }
+            }
+            var updateDate = moment(Date.parse(newestPrereleaseTime));
+            var notification = "An updated version of HABmin (" + newestPrereleaseVersion + ") was released on " + updateDate.format("D MMM YYYY");
+            handleStatusNotification(NOTIFICATION_INFO, notification);
+        }
+    });
+}
+
 /**
  * Handle user preferences
  * This ensures that all required preferences are set, and are valid
  */
 function checkUserPrefs() {
-    if(userPrefs === null)
+    if (userPrefs === null)
         userPrefs = {};
 
     // Time to show error message
-    if(userPrefs.messageTimeError === null)
+    if (userPrefs.messageTimeError === null)
         userPrefs.messageTimeError = 2500;
-    if(userPrefs.messageTimeError > 10000)
+    if (userPrefs.messageTimeError > 10000)
         userPrefs.messageTimeError = 2500;
-    if(userPrefs.messageTimeError < 0)
+    if (userPrefs.messageTimeError < 0)
         userPrefs.messageTimeError = 2500;
 
     // Time to show warning message
-    if(userPrefs.messageTimeWarning === null)
+    if (userPrefs.messageTimeWarning === null)
         userPrefs.messageTimeWarning = 2500;
-    if(userPrefs.messageTimeWarning > 10000)
+    if (userPrefs.messageTimeWarning > 10000)
         userPrefs.messageTimeWarning = 2500;
-    if(userPrefs.messageTimeWarning < 0)
+    if (userPrefs.messageTimeWarning < 0)
         userPrefs.messageTimeWarning = 2500;
 
     // Time to show ok message
-    if(userPrefs.messageTimeSuccess === null)
+    if (userPrefs.messageTimeSuccess === null)
         userPrefs.messageTimeSuccess = 1500;
-    if(userPrefs.messageTimeSuccess > 10000)
+    if (userPrefs.messageTimeSuccess > 10000)
         userPrefs.messageTimeSuccess = 1500;
-    if(userPrefs.messageTimeSuccess < 0)
+    if (userPrefs.messageTimeSuccess < 0)
         userPrefs.messageTimeSuccess = 1500;
 }
 
@@ -290,7 +337,25 @@ function checkUserPrefs() {
  * @param message
  */
 function handleStatusNotification(type, message) {
-    if(type == NOTIFICATION_ERROR) {
+    if (type == NOTIFICATION_OK) {
+        Ext.create('widget.uxNotification', {
+            position: 'tr',
+            useXAxis: false,
+            cls: 'ux-notification-success',
+            iconCls: 'ux-notification-success-icon',
+            closable: false,
+            title: language.success,
+            html: message,
+            slideInDuration: 800,
+            slideBackDuration: 1500,
+            autoCloseDelay: 3000,
+            width: 250,
+            height: 75,
+            slideInAnimation: 'bounceOut',
+            slideBackAnimation: 'easeIn'
+        }).show();
+    }
+    else if (type == NOTIFICATION_ERROR) {
         Ext.create('widget.uxNotification', {
             position: 'tr',
             useXAxis: false,
@@ -308,7 +373,7 @@ function handleStatusNotification(type, message) {
             slideBackAnimation: 'easeIn'
         }).show();
     }
-    else if(type == NOTIFICATION_WARNING) {
+    else if (type == NOTIFICATION_WARNING) {
         Ext.create('widget.uxNotification', {
             position: 'tr',
             useXAxis: false,
@@ -330,14 +395,14 @@ function handleStatusNotification(type, message) {
         Ext.create('widget.uxNotification', {
             position: 'tr',
             useXAxis: false,
-            cls: 'ux-notification-success',
-            iconCls: 'ux-notification-success-icon',
+            cls: 'ux-notification-info',
+            iconCls: 'ux-notification-info-icon',
             closable: false,
-            title: language.success,
+            title: language.information,
             html: message,
             slideInDuration: 800,
             slideBackDuration: 1500,
-            autoCloseDelay: 3000,
+            autoCloseDelay: 6000,
             width: 250,
             height: 75,
             slideInAnimation: 'bounceOut',
@@ -348,7 +413,7 @@ function handleStatusNotification(type, message) {
 
 function handleOnlineStatus(newStatus) {
     // Don't do anything if the status hasn't changed
-    if(onlineStatus == newStatus)
+    if (onlineStatus == newStatus)
         return;
     onlineStatus = newStatus;
 
@@ -374,13 +439,13 @@ function doStatus() {
     var updateStatus = {
         run: function () {
             Ext.Ajax.request({
-                type:'rest',
-                url:HABminBaseURL + '/status',
+                type: 'rest',
+                url: HABminBaseURL + '/status',
                 timeout: updateStatus.timeout,
                 method: 'GET',
                 success: function (response, opts) {
                     var res = Ext.decode(response.responseText);
-                    if(res == null)
+                    if (res == null)
                         updateStatus.statusCount++;
                     else
                         updateStatus.statusCount = 0;
@@ -391,18 +456,18 @@ function doStatus() {
                 callback: function () {
                     // Hold off any errors until after the startup time.
                     // This is necessary for slower (embedded) machines
-                    if(updateStatus.startCnt > 0) {
+                    if (updateStatus.startCnt > 0) {
                         updateStatus.startCnt--;
                     }
                     else {
                         updateStatus.errorLimit = 2;
                     }
 
-                    if(updateStatus.statusCount >= updateStatus.errorLimit) {
+                    if (updateStatus.statusCount >= updateStatus.errorLimit) {
                         updateStatus.timeout = 30000;
                         handleOnlineStatus(STATUS_OFFLINE);
                     }
-                    else if(updateStatus.statusCount == 0) {
+                    else if (updateStatus.statusCount == 0) {
                         updateStatus.timeout = 2500;
                         handleOnlineStatus(STATUS_ONLINE);
                     }
@@ -859,7 +924,7 @@ function createUI() {
                         closable: false,
                         tooltip: language.mainTab_UserSettings,
                         icon: "images/user-green.png",
-                        handler:function () {
+                        handler: function () {
                             var store = Ext.create('Ext.data.ArrayStore', {
                                 fields: [
                                     {name: 'code'},
@@ -978,4 +1043,6 @@ function createUI() {
     // Create the status toolbar and start the status update thread
     statusTooltip = Ext.create('Ext.tip.ToolTip', {target: 'onlineStatus', html: language.onlineState_Offline});
     doStatus();
+
+    getReleaseVersion();
 }
