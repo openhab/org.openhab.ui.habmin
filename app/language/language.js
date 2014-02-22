@@ -239,6 +239,7 @@ var language = {
     warning: "Warning",
     success: "Success",
     cancel: "Cancel",
+    information: "Information",
     save: "Save",
     add: "Add",
     edit: "Edit",
