@@ -269,8 +269,11 @@ var language = {
     onlineState_Online: "openHAB is online",
     onlineState_Offline: "openHAB is offline",
     onlineState_Busy: "openHAB is busy",
+    newReleaseNotification: "An updated release of <i>HABmin</i> (%s) was made available on %s",
+    newPrereleaseNotification: "An new snapshot build of <i>HABmin</i> (%s) was made available on %s",
 
-    personalisation_Language: "Language:",
+
+personalisation_Language: "Language:",
 
     //
     zwave_Network: "Network",

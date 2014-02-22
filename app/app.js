@@ -40,6 +40,9 @@
  */
 var languageCode;
 document.ready = function () {
+    // Write the version to the splash-screen
+    Ext.fly('HABminVersion').update(versionGUI, false);
+
     // Detect the language and get the two character code
     languageCode = Ext.util.Cookies.get("language");
     if (languageCode === null)
@@ -259,7 +262,7 @@ function loadLanguage(countryCode) {
 
 function getReleaseVersion() {
     Ext.data.JsonP.request({
-        url: 'https://api.github.com/repos/cdjackson/HABmin/releases',
+        url: gitRepoLink,
         callbackKey: 'callback',
         success: function (result) {
             if (result == null)
@@ -267,32 +270,55 @@ function getReleaseVersion() {
             if (result.data == null)
                 return;
 
-            // Find the latest version
-            var newestReleaseTime = "";
+            // Find the latest version(s)
+            var currentReleaseTime = 0;
+            var newestReleaseTime = 0;
             var newestReleaseVersion = "";
-            var newestPrereleaseTime = "";
+            var newestPrereleaseTime = 0;
             var newestPrereleaseVersion = "";
             for (var cnt = 0; cnt < result.data.length; cnt++) {
                 // Ignore drafts
                 if (result.data[cnt].draft == true)
                     continue;
 
+                // Find the time on the current version
+                if(result.data[cnt].tag_name == versionGUI)
+                    currentReleaseTime = Date.parse(result.data[cnt].published_at);
+
+                // Find the latest prerelease and release versions
                 if (result.data[cnt].prerelease == false) {
-                    if (result.data[cnt].published_at > newestReleaseTime) {
+                    if (Date.parse(result.data[cnt].published_at) > newestReleaseTime) {
                         newestReleaseTime = result.data[cnt].published_at;
                         newestReleaseVersion = result.data[cnt].tag_name;
                     }
                 }
                 else {
-                    if (result.data[cnt].published_at > newestPrereleaseTime) {
-                        newestPrereleaseTime = result.data[cnt].published_at;
+                    if (Date.parse(result.data[cnt].published_at) > newestPrereleaseTime) {
+                        newestPrereleaseTime = Date.parse(result.data[cnt].published_at);
                         newestPrereleaseVersion = result.data[cnt].tag_name;
                     }
                 }
             }
-            var updateDate = moment(Date.parse(newestPrereleaseTime));
-            var notification = "An updated version of HABmin (" + newestPrereleaseVersion + ") was released on " + updateDate.format("D MMM YYYY");
-            handleStatusNotification(NOTIFICATION_INFO, notification);
+
+            // Get the time of the last pre-release notification
+            // We don't want to notify our users too often!
+            var lastPrereleaseCheck = Ext.util.Cookies.get("lastPrereleaseNotification");
+            if(lastPrereleaseCheck == null)
+                lastPrereleaseCheck = 0;
+
+            // Check if we have a new release
+            if(newestReleaseTime > currentReleaseTime) {
+                var notification = sprintf(language.newReleaseNotification, newestPrereleaseVersion, moment(newestPrereleaseTime).format("D MMM"));
+                handleStatusNotification(NOTIFICATION_INFO, notification);
+            }
+            else if(lastPrereleaseCheck < (new Date()).getTime() - (5 * 86400000)) {
+                if(newestPrereleaseTime > currentReleaseTime) {
+                    var notification = sprintf(language.newPrereleaseNotification, newestPrereleaseVersion, moment(newestPrereleaseTime).format("D MMM"));
+                    handleStatusNotification(NOTIFICATION_INFO, notification);
+
+                    var lastPrereleaseCheck = Ext.util.Cookies.set("lastPrereleaseNotification", (new Date()).getTime());
+                }
+            }
         }
     });
 }
@@ -964,7 +990,8 @@ function createUI() {
                                         forceSelection: true,
                                         editable: true,
                                         typeAhead: true,
-                                        queryMode: 'local'
+                                        queryMode: 'local',
+                                        value: languageCode
                                     }
                                 ],
                                 buttons: [
@@ -979,7 +1006,7 @@ function createUI() {
                                         handler: function () {
                                             if (this.up('form').getForm().isValid()) {
                                                 // Read the model name
-                                                var languageCode = form.getForm().findField('language').getSubmitValue();
+                                                languageCode = form.getForm().findField('language').getSubmitValue();
                                                 Ext.util.Cookies.set("language", languageCode);
                                                 loadLanguage(languageCode);
 
