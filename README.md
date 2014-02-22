@@ -60,6 +60,7 @@ _HABmin_ is an open source project. It makes use of a number of libraries under 
 
 Installation
 ------------
+Note that _HABmin_ requires version 1.4 or above of openHAB.
 You can either use the compiled release version, or the source version. It's also possible to use a combination of the two if you know what you're doing - be careful though since the compiled version does merge some files to speed things up.
 
 The release version is a compiled, minified version which increases the loading speed, and reduces the space used on the disk (useful if you're running on an embedded system like the Pi).
