@@ -66,7 +66,7 @@ The release version is a compiled, minified version which increases the loading 
 To install, simply unzip from the openHAB main directory. This will put the _HABmin_ files in the webapps directory, and the plugins in the adons directory.
 
 Alternatively, installing the source code version is done as follows -:
-* Download the project zip file from GitHub and unzip files in the directory webapps/habmin (you will need to create this directory).
+* Download the project zip file from GitHub and unzip files in the directory webapps/habmin (you will need to create this directory - note that the directory name must be **lower case**).
 * Place the org.openhab.io.habmin*.jar file into the addons directory (this is stored in the addons directory in the repository).
 * Place the org.openhab.binding.zwave*.jar into the addons directory (this is stored in the addons directory in the repository). Note that this bundle is currently required for _HABmin_ to start, but if you don't have zwave then it won't actually run if it's not configured. In the longer term this dependency will be removed.
 
