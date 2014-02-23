@@ -1,17 +1,17 @@
 <!-- Binding configuration for the Z-Wave binding in openHAB -->
 <binding>
-	<!-- Full name presented to the user -->
-	<name>ZWAVE - Z-Wave Binding</name>
-	<!-- PID name used within the OSGi layer -->
-	<pid>zwave</pid>
-	<!-- Binding type: protocol, ui -->
-	<type>protocol</type>
-	<!-- Author -->
-	<author>Jan-Willem Spuij</author>
-	<!-- Current version of the binding to which the file is applicable -->
-	<version>1.3.0</version>
-	<!-- Minimum version of openHAB required to run this binding -->
-	<oh_version>1.3.0</oh_version>
+    <!-- Full name presented to the user -->
+    <name>ZWAVE - Z-Wave Binding</name>
+    <!-- PID name used within the OSGi layer -->
+    <pid>zwave</pid>
+    <!-- Binding type: protocol, ui -->
+    <type>protocol</type>
+    <!-- Author -->
+    <author>Jan-Willem Spuij</author>
+    <!-- Current version of the binding to which the file is applicable -->
+    <version>1.3.0</version>
+    <!-- Minimum version of openHAB required to run this binding -->
+    <oh_version>1.3.0</oh_version>
 
     <!-- Binding configuration settings -->
     <binding.config>
@@ -26,23 +26,13 @@
             <values></values>
         </config.setting>
         <config.setting>
-            <name>refresh</name>
-            <label>Refresh Interval</label>
-            <description>Interval to poll items (in milliseconds)</description>
+            <name>healtime</name>
+            <label>Heal Time</label>
+            <description>The hour to perform the daily network heal.</description>
             <optional>true</optional>
-            <defaultvalue>10000</defaultvalue>
-            <minimum>1000</minimum>
-            <maximum>120000</maximum>
-            <values></values>
-        </config.setting>
-        <config.setting>
-            <name>refreshThreshold</name>
-            <label>Refresh Threshold</label>
-            <description>Specifies the interval threshold in number of refreshes that have to occur before the node values are polled</description>
-            <optional>true</optional>
-            <defaultvalue>6</defaultvalue>
-            <minimum></minimum>
-            <maximum></maximum>
+            <defaultvalue>-1</defaultvalue>
+            <minimum>0</minimum>
+            <maximum>23</maximum>
             <values></values>
         </config.setting>
     </binding.config>
