@@ -48,13 +48,15 @@ The project is just getting started. Currently implemented are the following -:
 * Item rule library (initial test phase)
 * ZWave configuration interface (note: work in progress still)
 
-Additionally, lot of the initial user interface has been boilerplated and some work has started on the REST interface for configuring bindings.
+Additionally, lot of the initial user interface has been boilerplated.
 
 Technology
 ----------
 _HABmin_ is an open source project. It makes use of a number of libraries under GPL license. The following major libraries are used -:
 * ExtJS from Sencha
 * Highcharts from Highsoft
+* moment.js for time management
+* JIT for some special charts
 
 ![Bundles Screen](https://raw.github.com/wiki/cdjackson/HABmin/habmin_systembundles.png)
 
