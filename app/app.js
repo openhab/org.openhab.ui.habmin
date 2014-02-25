@@ -313,7 +313,7 @@ function getReleaseVersion() {
             }
             else if(lastPrereleaseCheck < (new Date()).getTime() - (5 * 86400000)) {
                 if(newestPrereleaseTime > currentReleaseTime) {
-                    var notification = sprintf(language.newPrereleaseNotification, newestPrereleaseVersion, moment(newestPrereleaseTime).format("D MMM"));
+                    var notification = sprintf(language.newPrereleaseNotification, newestPrereleaseVersion, moment(newestPrereleaseTime).format("D MMM YYYY"));
                     handleStatusNotification(NOTIFICATION_INFO, notification);
 
                     var lastPrereleaseCheck = Ext.util.Cookies.set("lastPrereleaseNotification", (new Date()).getTime());

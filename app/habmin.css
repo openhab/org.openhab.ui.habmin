@@ -171,7 +171,7 @@ body .ux-notification-success {
 
 .ux-notification-success .x-window-body {
     text-align: center;
-    padding: 15px 5px 18px 5px;
+    padding: 0px 5px 5px 5px;
     background-color: transparent;
     border: 0px solid white;
 }
@@ -190,7 +190,7 @@ body .ux-notification-warning {
 
 .ux-notification-warning .x-window-body {
     text-align: center;
-    padding: 15px 5px 18px 5px;
+    padding: 0px 5px 5px 5px;
     background-color: transparent;
     border: 0px solid white;
 }
@@ -209,7 +209,7 @@ body .ux-notification-error {
 
 .ux-notification-error .x-window-body {
     text-align: center;
-    padding: 15px 5px 18px 5px;
+    padding: 0px 5px 5px 5px;
     background-color: transparent;
     border: 0px solid white;
 }
@@ -228,7 +228,7 @@ body .ux-notification-info {
 
 .ux-notification-info .x-window-body {
     text-align: center;
-    padding: 15px 5px 18px 5px;
+    padding: 0px 5px 5px 5px;
     background-color: transparent;
     border: 0px solid white;
 }
