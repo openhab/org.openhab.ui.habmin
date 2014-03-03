@@ -357,7 +357,7 @@ Ext.define('openHAB.config.sitemapProperties', {
                     tooltip: language.config_ItemPropertiesCancelChangeTip,
                     handler: function () {
                         // Reset to the current data
-//                        me.revertItem();
+                        me.revertSitemap();
                     }
                 },
                 {
@@ -410,7 +410,7 @@ Ext.define('openHAB.config.sitemapProperties', {
                                     if (map != null) {
                                         for (var mcnt = 0; mcnt < map.length; mcnt++) {
                                             var segment = map[mcnt].split("=");
-                                            if (segment == null)
+                                            if (segment == null || segment.length != 2)
                                                 continue;
                                             val[ocnt] = {};
                                             val[ocnt].command = segment[0].trim();
@@ -895,6 +895,10 @@ Ext.define('openHAB.config.sitemapProperties', {
             function addError(error) {
                 errors.push(error);
             }
+        }
+
+        this.revertSitemap = function () {
+
         }
     }
 })
