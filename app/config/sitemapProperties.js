@@ -561,6 +561,9 @@ Ext.define('openHAB.config.sitemapProperties', {
                         // Most of this is done automatically based on store names
                         var record = data.records[0];
                         record.set('icon', '');
+
+                        toolbar.getComponent('cancel').enable();
+                        toolbar.getComponent('save').enable();
                     },
                     nodedragover: function (targetNode, position, dragData, e, eOpts) {
                         // Make sure we can only append to groups and frames
