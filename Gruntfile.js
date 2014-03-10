@@ -160,7 +160,8 @@ module.exports = function (grunt) {
                     archive: 'release/habmin.zip'
                 },
                 expand: true,
-                src: ['build/**/*']
+                cwd: 'build/',
+                src: ['**/*']
             }
         }
     });
