@@ -564,6 +564,8 @@ Ext.define('openHAB.config.sitemapProperties', {
 
                         toolbar.getComponent('cancel').enable();
                         toolbar.getComponent('save').enable();
+
+                        showWidgetProperties(record);
                     },
                     nodedragover: function (targetNode, position, dragData, e, eOpts) {
                         // Make sure we can only append to groups and frames
@@ -572,6 +574,10 @@ Ext.define('openHAB.config.sitemapProperties', {
                                 return true;
                             return false
                         }
+                    },
+                    itemadd: function( records, index, node, eOpts ) {
+                        sitemapTree.getSelectionModel().deselectAll(true);
+                        sitemapTree.getSelectionModel().select(node, true);
                     }
                 }
             },
@@ -631,8 +637,10 @@ Ext.define('openHAB.config.sitemapProperties', {
             ],
             listeners: {
                 itemclick: function (grid, record, item, index, element, eOpts) {
-                    // ToDo: We really should check if the properties are dirty and warn the user before setting the new values
                     showWidgetProperties(record);
+                },
+                itemappend: function(panel, node, index, eOpts) {
+                    sitemapTree.getSelectionModel().select(node, true);
                 }
             }
         });
@@ -769,6 +777,8 @@ Ext.define('openHAB.config.sitemapProperties', {
 
         // Show the selected widgets properties in the property grid
         function showWidgetProperties(widget) {
+            // ToDo: We really should check if the properties are dirty and warn the user before setting the new values
+
             var source = [];
             var properties = widgetConfig[widget.get("type")];
             // Valid widget?
