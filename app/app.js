@@ -94,7 +94,7 @@ Ext.require([
 ]
 );
 
-var versionGUI = "0.1.0-alpha";
+var versionGUI = "0.1.1-snapshot";
 var versionJAR;
 var gitRepoLink = "https://api.github.com/repos/cdjackson/HABmin/releases";
 
