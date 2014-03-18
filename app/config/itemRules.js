@@ -158,7 +158,17 @@ Ext.define('openHAB.config.itemRules', {
                 {
                     text: language.config_ItemRulesName,
                     flex: 2,
-                    dataIndex: 'label'
+                    dataIndex: 'label',
+                    renderer: function (value, meta, record) {
+                        // If a description is provided, then display this as a tooltip
+                        var description = record.get("description");
+                        if (description != "") {
+                            description = Ext.String.htmlEncode(description);
+                            meta.tdAttr = 'data-qtip="' + description + '"';
+                        }
+
+                        return value;
+                    }
                 },
                 {
                     text: language.config_ItemRulesItem,
