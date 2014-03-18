@@ -153,20 +153,18 @@ Ext.define('openHAB.config.groupTree', {
                 return;
 
             // Loop through the items
-            var numItems = itemConfigStore.getCount();
-            for (var iItem = 0; iItem < numItems; ++iItem) {
+            var allRecords = itemConfigStore.queryBy(function(){return true;});
+            allRecords.each(function(item) {
                 // Is this a group
-                var item = itemConfigStore.getAt(iItem);
                 if (item.get('type') != 'GroupItem')
-                    continue;
+                    return;
 
                 // Ensure the groups is an array!
                 var groups = [].concat(item.get('groups'));
 
                 // Check if the item is in the required group
-                if (groups.indexOf(group) == -1) {
-                    continue;
-                }
+                if (groups.indexOf(group) == -1)
+                    return;
 
                 // Create the new group
                 var newGroup = [];
@@ -185,7 +183,7 @@ Ext.define('openHAB.config.groupTree', {
                 else
                     newGroup.leaf = false;
                 parent.push(newGroup);
-            }
+            });
         }
 
         this.resetGroups = function () {
