@@ -2,8 +2,9 @@
     <rule>
         <name>MaximumToday</name>
         <label>Maximum item value since midnight</label>
-        <itemtype>NumberItem</itemtype>
         <type>DerivedItem</type>
+        <singleton>1</singleton>
+        <applicabletype>DecimalType</applicabletype>
         <description>Keep track of maximum item value since midnight</description>
         <import>org.openhab.core.library.types.*</import>
         <import>org.openhab.core.persistence.*</import>
@@ -14,7 +15,8 @@
         <action>postUpdate(%%DerivedItem%%, %%ItemName%%.maximumSince(now.toDateMidnight).state)</action>
         <variable>
             <name>DerivedItem</name>
-            <type>Number</type>
+            <type>String</type>
+            <itemtype>NumberItem</itemtype>
             <label>New Item Name</label>
             <value>%%ItemName%%_MaxToday</value>
             <description>The name of the new item.</description>
@@ -26,7 +28,8 @@
         <name>MinimumToday</name>
         <label>Minimum item value since midnight</label>
         <type>DerivedItem</type>
-        <itemtype>NumberItem</itemtype>
+        <singleton>1</singleton>
+        <applicabletype>DecimalType</applicabletype>
         <description>Keep track of minimum item value since midnight</description>
         <import>org.openhab.core.library.types.*</import>
         <import>org.openhab.core.persistence.*</import>
@@ -37,7 +40,8 @@
         <action>postUpdate(%%DerivedItem%%, %%ItemName%%.minimumSince(now.toDateMidnight).state)</action>
         <variable>
             <name>DerivedItem</name>
-            <type>Number</type>
+            <type>String</type>
+            <itemtype>NumberItem</itemtype>
             <label>New Item Name</label>
             <value>%%ItemName%%_MinToday</value>
             <description>The name of the new item.</description>
@@ -49,7 +53,8 @@
         <name>ChangeToday</name>
         <label>Change since midnight</label>
         <type>DerivedItem</type>
-        <itemtype>NumberItem</itemtype>
+        <singleton>1</singleton>
+        <applicabletype>DecimalType</applicabletype>
         <description></description>
         <import>org.openhab.core.library.types.*</import>
         <import>org.openhab.core.persistence.*</import>
@@ -63,7 +68,8 @@
         <action>postUpdate(%%DerivedItem%%, valDif)</action>
         <variable>
             <name>DerivedItem</name>
-            <type>Number</type>
+            <type>String</type>
+            <itemtype>NumberItem</itemtype>
             <label>New Item Name</label>
             <value>%%ItemName%%_ChangeToday</value>
             <description>The name of the new item.</description>
@@ -75,8 +81,9 @@
         <name>Change1Hour</name>
         <label>Change in past 1 hour</label>
         <type>DerivedItem</type>
-        <itemtype>NumberItem</itemtype>
         <description></description>
+        <singleton>1</singleton>
+        <applicabletype>DecimalType</applicabletype>
         <import>org.openhab.core.library.types.*</import>
         <import>org.openhab.core.persistence.*</import>
         <import>org.openhab.model.script.actions.*</import>
@@ -89,7 +96,8 @@
         <action>postUpdate(%%DerivedItem%%, valDif)</action>
         <variable>
             <name>DerivedItem</name>
-            <type>Number</type>
+            <type>String</type>
+            <itemtype>NumberItem</itemtype>
             <label>New Item Name</label>
             <value>%%ItemName%%_Change1Hour</value>
             <description>The name of the new item.</description>
@@ -101,7 +109,8 @@
         <name>Change6Hour</name>
         <label>Change in past 6 hours</label>
         <type>DerivedItem</type>
-        <itemtype>NumberItem</itemtype>
+        <singleton>1</singleton>
+        <applicabletype>DecimalType</applicabletype>
         <description></description>
         <import>org.openhab.core.library.types.*</import>
         <import>org.openhab.core.persistence.*</import>
@@ -115,7 +124,8 @@
         <action>postUpdate(%%DerivedItem%%, valDif)</action>
         <variable>
             <name>DerivedItem</name>
-            <type>Number</type>
+            <type>String</type>
+            <itemtype>NumberItem</itemtype>
             <label>New Item Name</label>
             <value>%%ItemName%%_Change6Hour</value>
             <description>The name of the new item.</description>
@@ -127,7 +137,8 @@
         <name>Change24Hour</name>
         <label>Change in past 24 hours</label>
         <type>DerivedItem</type>
-        <itemtype>NumberItem</itemtype>
+        <singleton>1</singleton>
+        <applicabletype>DecimalType</applicabletype>
         <description></description>
         <import>org.openhab.core.library.types.*</import>
         <import>org.openhab.core.persistence.*</import>
@@ -141,7 +152,8 @@
         <action>postUpdate(%%DerivedItem%%, valDif)</action>
         <variable>
             <name>DerivedItem</name>
-            <type>Number</type>
+            <type>String</type>
+            <itemtype>NumberItem</itemtype>
             <label>New Item Name</label>
             <value>%%ItemName%%_Change24Hour</value>
             <description>The name of the new item.</description>
@@ -153,7 +165,8 @@
         <name>HistoryMax1Hour</name>
         <label>Maximum item value - updated every 1 hour</label>
         <type>DerivedItem</type>
-        <itemtype>NumberItem</itemtype>
+        <singleton>1</singleton>
+        <applicabletype>DecimalType</applicabletype>
         <description>Maximum in 1 hour period - used for historic logging</description>
         <import>org.openhab.core.library.types.*</import>
         <import>org.openhab.core.persistence.*</import>
@@ -162,7 +175,8 @@
         <action>postUpdate(%%DerivedItem%%, %%ItemName%%.maximumSince(now.minusHours(1)).state)</action>
         <variable>
             <name>DerivedItem</name>
-            <type>Number</type>
+            <type>String</type>
+            <itemtype>NumberItem</itemtype>
             <label>New Item Name</label>
             <value>%%ItemName%%_HistoryMax1Hour</value>
             <description>The name of the new item.</description>
@@ -174,7 +188,8 @@
         <name>HistoryMin1Hour</name>
         <label>Minimum item value - updated every 1 hour</label>
         <type>DerivedItem</type>
-        <itemtype>NumberItem</itemtype>
+        <singleton>1</singleton>
+        <applicabletype>DecimalType</applicabletype>
         <description>Minimum in 1 hour period - used for historic logging</description>
         <import>org.openhab.core.library.types.*</import>
         <import>org.openhab.core.persistence.*</import>
@@ -183,7 +198,8 @@
         <action>postUpdate(%%DerivedItem%%, %%ItemName%%.minimumSince(now.minusHours(1)).state)</action>
         <variable>
             <name>DerivedItem</name>
-            <type>Number</type>
+            <type>String</type>
+            <itemtype>NumberItem</itemtype>
             <label>New Item Name</label>
             <value>%%ItemName%%_HistoryMin1Hour</value>
             <description>The name of the new item.</description>
@@ -195,7 +211,8 @@
         <name>HistoryChange1Hour</name>
         <label>Item change value - updated every 1 hour</label>
         <type>DerivedItem</type>
-        <itemtype>NumberItem</itemtype>
+        <singleton>1</singleton>
+        <applicabletype>DecimalType</applicabletype>
         <description></description>
         <import>org.openhab.core.library.types.*</import>
         <import>org.openhab.core.persistence.*</import>
@@ -208,7 +225,8 @@
         <action>postUpdate(%%DerivedItem%%, valDif)</action>
         <variable>
             <name>DerivedItem</name>
-            <type>Number</type>
+            <type>String</type>
+            <itemtype>NumberItem</itemtype>
             <label>New Item Name</label>
             <value>%%ItemName%%_History1Hour</value>
             <description>The name of the new item.</description>
@@ -220,6 +238,8 @@
         <name>LastUpdated</name>
         <label>Records last update time</label>
         <type>DerivedItem</type>
+        <singleton>1</singleton>
+        <applicabletype>DecimalType</applicabletype>
         <description>Creates an item that stores the last update time of this item</description>
         <import>org.openhab.core.library.types.*</import>
         <import>org.openhab.core.persistence.*</import>
@@ -228,7 +248,8 @@
         <action>postUpdate(%%DerivedItem%%, new DateTimeType())</action>
         <variable>
             <name>DerivedItem</name>
-            <type>DateTime</type>
+            <type>String</type>
+            <itemtype>DateTimeItem</itemtype>
             <label>New Item Name</label>
             <value>%%ItemName%%_LastUpdate</value>
             <description>The name of the new item.</description>
@@ -240,6 +261,8 @@
         <name>LastChanged</name>
         <label>Records last change time</label>
         <type>DerivedItem</type>
+        <singleton>1</singleton>
+        <applicabletype>NumberItem</applicabletype>
         <description>Creates an item that stores the last change time of this item</description>
         <import>org.openhab.core.library.types.*</import>
         <import>org.openhab.core.persistence.*</import>
@@ -248,7 +271,8 @@
         <action>postUpdate(%%DerivedItem%%, new DateTimeType())</action>
         <variable>
             <name>DerivedItem</name>
-            <type>DateTime</type>
+            <type>String</type>
+            <itemtype>DateTimeItem</itemtype>
             <label>New Item Name</label>
             <value>%%ItemName%%_LastChange</value>
             <description>The name of the new item.</description>
@@ -260,19 +284,24 @@
         <name>PowerConsumptionNow</name>
         <label>Calculate current power consumption</label>
         <type>DerivedItem</type>
-        <itemtype>SwitchItem</itemtype>
-        <itemtype>DimmerItem</itemtype>
+        <singleton>1</singleton>
+        <applicabletype>SwitchItem</applicabletype>
+        <applicabletype>DimmerItem</applicabletype>
         <description>Calculates the power consumed by the item given a user specified maximum power</description>
         <import>org.openhab.core.library.types.*</import>
         <import>org.openhab.model.script.actions.*</import>
         <trigger>Item %%ItemName%% changed</trigger>
-        <action>var Number valState = %%ItemName%%.state as DecimalType</action>
-        <action>var Number valWatts = valState * %%UserWatts%% / 100</action>
-        <action>postUpdate(%%DerivedItem%%, valWatts)</action>
+        <action><![CDATA[
+            var Number valState = %%ItemName%%.state as DecimalType
+            var Number valWatts = valState * %%UserWatts%% / 100
+            postUpdate(%%DerivedItem%%, valWatts)
+        ]]>
+        </action>
         <variable>
             <name>DerivedItem</name>
             <label>New Item Name</label>
-            <type>Number</type>
+            <type>String</type>
+            <itemtype>DecimalType</itemtype>
             <value>%%ItemName%%_Watts</value>
             <description>The name of the new item.</description>
             <scope>Setup</scope>
@@ -284,6 +313,125 @@
             <value>0</value>
             <description>Maximum power the item consumes when ON</description>
             <scope>Item</scope>
+        </variable>
+    </rule>
+
+    <rule>
+        <name>LevelBasedCommand</name>
+        <label>Command an item dependant on an items value</label>
+        <description>Switches an item depending on an items value, and the time at the value</description>
+        <type>DerivedItem</type>
+        <singleton>false</singleton>
+        <applicabletype>DecimalType</applicabletype>
+        <import>org.openhab.core.library.types.*</import>
+        <import>org.openhab.model.script.actions.*</import>
+        <trigger>Item %%ItemName%% changed</trigger>
+        <action><![CDATA[
+            if(%%ItemName%%.state >= %%WindowLow%% && %%ItemName%%.state <= %%WindowHigh%%) {
+                if(%%TimerExit%% != null) {
+                    // Check if the exit timer is running
+                    // If it is then we ignore this (re)entry and cancel the exit timer
+                    %%TimerExit%%.cancel
+                    %%TimerExit%% = null
+                }
+                else if(%%TimerEntry%% == null && %%State%% != %%EntryCommand%%) {
+                    // Start the entry timer
+                    %%TimerEntry%% = createTimer(now.plusSeconds(%%EntryTime%%)) [|
+                        sendCommand(%%SwitchItem%%, %%EntryCommand%%)
+                        %%TimerEntry%% = null
+                        %%State%% = %%EntryCommand%%
+                    ]
+                }
+            }
+            else {
+                if(%%TimerEntry%% != null) {
+                    // Check if the entry timer is running
+                    // If it is then we ignore this exit and cancel the entry timer
+                    %%TimerEntry%%.cancel
+                    %%TimerEntry%% = null
+                }
+                else if(%%TimerExit%% == null && %%State%% != %%ExitCommand%%) {
+                    // Start the exit timer
+                    %%TimerExit%% = createTimer(now.plusSeconds(%%ExitTime%%)) [|
+                        sendCommand(%%SwitchItem%%, %%ExitCommand%%)
+                        %%TimerExit%% = null
+                        %%State%% = %%ExitCommand%%
+                    ]
+                }
+            }
+            ]]>
+        </action>
+        <variable>
+            <name>WindowLow</name>
+            <type>Number</type>
+            <label>Low switching value</label>
+            <value>0</value>
+            <description>Minimum value above which the ENTRY command will be sent</description>
+            <scope>Item</scope>
+        </variable>
+        <variable>
+            <name>WindowHigh</name>
+            <type>Number</type>
+            <label>High switching value</label>
+            <value>0</value>
+            <description>Maximum value below which the ENTRY command will be sent</description>
+            <scope>Item</scope>
+        </variable>
+        <variable>
+            <name>SwitchItem</name>
+            <type>Item</type>
+            <label>Item to command</label>
+            <value></value>
+            <description>Specify the item name to be commanded</description>
+            <scope>Item</scope>
+        </variable>
+        <variable>
+            <name>EntryCommand</name>
+            <type>String</type>
+            <label>Entry command</label>
+            <value></value>
+            <description>Command to be sent when ENTRY conditions met</description>
+            <scope>Item</scope>
+        </variable>
+        <variable>
+            <name>ExitCommand</name>
+            <type>String</type>
+            <label>Exit command</label>
+            <value></value>
+            <description>Command to be sent when EXIT conditions met</description>
+            <scope>Item</scope>
+        </variable>
+        <variable>
+            <name>EntryTime</name>
+            <type>Number</type>
+            <label>Entry time</label>
+            <value>0</value>
+            <description>Time to wait before sending ENTRY command</description>
+            <scope>Item</scope>
+        </variable>
+        <variable>
+            <name>ExitTime</name>
+            <type>Number</type>
+            <label>Exit time</label>
+            <value>0</value>
+            <description>Time to wait before sending EXIT command</description>
+            <scope>Item</scope>
+        </variable>
+        <variable>
+            <name>TimerEntry</name>
+            <type>Timer</type>
+            <label>Entry Timer</label>
+            <value>null</value>
+            <description>Entry Timer</description>
+            <scope>Local</scope>
+        </variable>
+        <variable>
+            <name>TimerExit</name>
+            <type>Timer</type>
+            <label>Exit Timer</label>
+            <value>null</value>
+            <description>Exit Timer</description>
+            <scope>Local</scope>
         </variable>
     </rule>
 
