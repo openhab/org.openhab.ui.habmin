@@ -268,6 +268,10 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                         if (value == "")
                             return "";
 
+                        // If the status is PENDING, then mark it so...
+                        if(record.get('state') == "PENDING")
+                            meta.style = 'background-color: #FDFD96';
+
                         // If this is a list, then we want to display the value, not the number!
                         var type = record.get('type');
                         if (type != "LIST")
