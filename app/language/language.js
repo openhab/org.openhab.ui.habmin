@@ -273,7 +273,7 @@ var language = {
     newPrereleaseNotification: "An new snapshot build of <i>HABmin</i> (%s) was made available on %s",
 
 
-personalisation_Language: "Language:",
+    personalisation_Language: "Language:",
 
     //
     zwave_Network: "Network",
@@ -285,6 +285,8 @@ personalisation_Language: "Language:",
     zwave_DevicesReloadButtonTip: "Reload the configuration",
     zwave_DevicesHealButton: "Heal",
     zwave_DevicesHealButtonTip: "Start a network heal process",
+    zwave_DevicesIncludeButton: "Include",
+    zwave_DevicesIncludeButtonTip: "Put the controller into network INCLUDE mode for 30 seconds",
     zwave_DevicesValueUpdateError: "Error sending updated value to the server!",
     zwave_DevicesValueUpdateRangeError: "Value is out of specified range. Please limit the value to between %s and %d.",
     zwave_DevicesActionError: "Error sending action to the server!",
@@ -369,6 +371,7 @@ personalisation_Language: "Language:",
     config_ItemRulesDescription: "Description",
     config_ItemRulesDeletedOk: "Rule '%s' successfully removed from item '%s'",
     config_ItemRulesDeletedError: "Error deleting rule '%s' from item '%s'",
+    config_ItemRulesAdd: "Specify Rule Parameters",
 
     // config/itemBindings.js
     config_ItemBindingsTitle: "Bindings",
