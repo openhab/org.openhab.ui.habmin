@@ -111,7 +111,6 @@ Ext.define('openHAB.config.zwaveProductList', {
                     }
                 }
             },
-            flex: 1,
             header: false,
             split: true,
             collapsible: false,
