@@ -101,6 +101,27 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                             }
                         });
                     }
+                },
+                {
+                    icon: 'images/wrench--plus.png',
+                    itemId: 'include',
+                    text: language.zwave_DevicesIncludeButton,
+                    cls: 'x-btn-icon',
+                    disabled: false,
+                    tooltip: language.zwave_DevicesIncludeButtonTip,
+                    handler: function () {
+                        Ext.Ajax.request({
+                            url: HABminBaseURL + '/zwave/action/binding/network/',
+                            method: 'PUT',
+                            jsonData: 'Include',
+                            headers: {'Accept': 'application/json'},
+                            success: function (response, opts) {
+                            },
+                            failure: function () {
+                                handleStatusNotification(NOTIFICATION_ERROR, language.zwave_DevicesActionError);
+                            }
+                        });
+                    }
                 }
             ]
         });
@@ -333,7 +354,7 @@ Ext.define('openHAB.config.zwaveDeviceList', {
             listeners: {
                 select: function (grid, record, index, eOpts) {
                     // Remove all current action buttons
-                    for (var cnt = 2; cnt < toolbar.items.length; cnt++) {
+                    for (var cnt = 3; cnt < toolbar.items.length; cnt++) {
                         toolbar.remove(toolbar.items.get(cnt), true);
                     }
 
