@@ -1,5 +1,6 @@
 Updates
 -------
+* 22-03-2014: Add a 'data pending' indicator in zwave to show when a configuration has not been confirmed.
 * 02-02-2014: Updated item editing to extend toolbar across all tabs. Added a filter option to filter listed items.
 * 20-01-2014: Added ability to save and restore charts. This allows considerable customisation of the graphs.
 
