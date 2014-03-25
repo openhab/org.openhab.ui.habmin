@@ -89,7 +89,7 @@ Ext.define('openHAB.automation.ruleFileList', {
                                     break;
                                 }
                             }
-                            if (found == false) {
+                            if (found === false) {
                                 models[ocnt] = {};
                                 models[ocnt].name = name;
                                 ocnt++;

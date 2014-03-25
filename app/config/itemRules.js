@@ -50,6 +50,25 @@ Ext.define('openHAB.config.itemRules', {
         var itemName = "";
         var ruleRecord;
 
+        // Load the rules for this item
+        var store = Ext.create('Ext.data.JsonStore', {
+            model: 'RuleTemplateModel',
+            proxy: {
+                type: 'rest',
+                url: HABminBaseURL + '/config/rules/library/list/', // + ,
+                reader: {
+                    type: 'json',
+                    root: 'rule'
+                },
+                headers: {'Accept': 'application/json'},
+                pageParam: undefined,
+                startParam: undefined,
+                sortParam: undefined,
+                limitParam: undefined
+            },
+            autoLoad: true
+        });
+
         var toolbar = Ext.create('Ext.toolbar.Toolbar', {
             itemId: 'toolbar',
             items: [

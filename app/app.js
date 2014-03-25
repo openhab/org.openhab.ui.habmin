@@ -94,7 +94,7 @@ Ext.require([
 ]
 );
 
-var versionGUI = "0.1.1-snapshot";
+var versionGUI = "0.1.2-snapshot";
 var versionJAR;
 var gitRepoLink = "https://api.github.com/repos/cdjackson/HABmin/releases";
 
@@ -278,7 +278,7 @@ function getReleaseVersion() {
             var newestPrereleaseVersion = "";
             for (var cnt = 0; cnt < result.data.length; cnt++) {
                 // Ignore drafts
-                if (result.data[cnt].draft == true)
+                if (result.data[cnt].draft === true)
                     continue;
 
                 // Find the time on the current version
@@ -286,7 +286,7 @@ function getReleaseVersion() {
                     currentReleaseTime = Date.parse(result.data[cnt].published_at);
 
                 // Find the latest prerelease and release versions
-                if (result.data[cnt].prerelease == false) {
+                if (result.data[cnt].prerelease === false) {
                     if (Date.parse(result.data[cnt].published_at) > newestReleaseTime) {
                         newestReleaseTime = result.data[cnt].published_at;
                         newestReleaseVersion = result.data[cnt].tag_name;
