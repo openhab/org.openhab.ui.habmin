@@ -327,3 +327,9 @@ body .ux-notification-info {
     background-position: right 5px top;
 }
 
+.grid-database .x-grid-cell-inner {
+    background-image: url('../images/database-small.png');
+    background-repeat: no-repeat;
+    background-position: right 5px top;
+}
+
