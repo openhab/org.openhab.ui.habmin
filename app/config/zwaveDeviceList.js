@@ -243,20 +243,20 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                         var img = "";
                         switch (record.get('state')) {
                             case 'OK':
-                                img = '<img height="12" src="images/status.png">';
+                                meta.tdCls = 'grid-ok';
                                 break;
                             case 'WARNING':
-                                img = '<img height="12" src="images/status-away.png">';
+                                meta.tdCls = 'grid-warning';
                                 break;
                             case 'ERROR':
-                                img = '<img height="12" src="images/status-busy.png">';
+                                meta.tdCls = 'grid-error';
                                 break;
                             case 'INITIALIZING':
-                                img = '<img height="12" src="images/status-offline.png">';
+                                meta.tdCls = 'grid-initializing';
                                 break;
                         }
 
-                        return '<span>' + value + '</span><span style="float:right">' + img + '</span>';
+                        return value;
                     }
                 },
                 {

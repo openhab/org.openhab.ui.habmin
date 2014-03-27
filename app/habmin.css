@@ -117,12 +117,6 @@
     background-image: url(../images/globe.png)
 }
 
-.x-tree-row-selected-override .x-grid-cell {
-    background-image: url(../images/tick-small.png);
-    background-repeat: no-repeat;
-    z-index: 999;
-}
-
 .x-tool-tick {
     background-image: url(../images/tick.png) !important;
 }
@@ -308,3 +302,28 @@ body .ux-notification-info {
     line-height: 15px;
     background-color: #e4f3ff;
 }
+
+.grid-ok .x-grid-cell-inner-treecolumn {
+    background-image: url('../images/status.png');
+    background-repeat: no-repeat;
+    background-position: right 5px top;
+}
+
+.grid-warning .x-grid-cell-inner-treecolumn {
+    background-image: url('../images/status-away.png');
+    background-repeat: no-repeat;
+    background-position: right 5px top;
+}
+
+.grid-error .x-grid-cell-inner-treecolumn {
+    background-image: url('../images/status-busy.png');
+    background-repeat: no-repeat;
+    background-position: right 5px top;
+}
+
+.grid-initializing .x-grid-cell-inner-treecolumn {
+    background-image: url('../images/status-offline.png');
+    background-repeat: no-repeat;
+    background-position: right 5px top;
+}
+
