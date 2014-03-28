@@ -289,9 +289,9 @@ Ext.define('openHAB.graph.graphHighcharts', {
                 }
 
                 // Keep track of the min/max times
-                if (chartMin < rawData[chan].timestart)
+                if (chartMin > rawData[chan].timestart)
                     chartMin = rawData[chan].timestart;
-                if (chartMax > rawData[chan].timeend)
+                if (chartMax < rawData[chan].timeend)
                     chartMax = rawData[chan].timeend;
             }
 
@@ -358,9 +358,13 @@ Ext.define('openHAB.graph.graphHighcharts', {
 
             if (start == 0 || stop == 0) {
                 var ts = Math.round((new Date()).getTime());
-                chartMin = ts - (2 * 86400000);
-                chartMax = ts;
+                start = ts - (2 * 86400000);
+                stop = ts;
             }
+
+            // Make sure we're not asking for data from the future!
+            if(stop > Math.round((new Date()).getTime()))
+                stop = Math.round((new Date()).getTime());
 
             var parms = {};
             parms.starttime = Math.floor(start);
