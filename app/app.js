@@ -227,12 +227,29 @@ Ext.application({
 });
 
 /**
- * Set default json headers
+ * Set default Ajax handlers
+ * Here we also want to keep a running count of outstanding request
+ * and the time since the last complete response so we can keep up
+ * with the server status
  */
 Ext.Ajax.defaultHeaders = {
     'Accept': 'application/json,application/xml',
     'Content-Type': 'application/json'
 };
+
+var ajaxOutstandingRequestCount = 0;
+var ajaxLastSuccess;
+Ext.Ajax.on('beforerequest', function (conn, options, eOpts) {
+    ajaxOutstandingRequestCount++;
+});
+Ext.Ajax.on('requestcomplete', function (conn, response, options, eOpts) {
+    ajaxOutstandingRequestCount--;
+    ajaxLastSuccess = (new Date()).getTime();
+
+});
+Ext.Ajax.on('requestexception', function (conn, response, options, eOpts) {
+    ajaxOutstandingRequestCount--;
+});
 
 /**
  * Load a country language file
@@ -464,44 +481,48 @@ function doStatus() {
     // Periodically retrieve the openHAB server status updates
     var updateStatus = {
         run: function () {
-            Ext.Ajax.request({
-                type: 'rest',
-                url: HABminBaseURL + '/status',
-                timeout: updateStatus.timeout,
-                method: 'GET',
-                success: function (response, opts) {
-                    var res = Ext.decode(response.responseText);
-                    if (res == null)
+            // Hold off on the status requests if we have requests outstanding.
+            if((ajaxLastSuccess < (new Date()).getTime() - 2500) && ajaxOutstandingRequestCount == 0) {
+                console.log("Request Status");
+                Ext.Ajax.request({
+                    type: 'rest',
+                    url: HABminBaseURL + '/status',
+                    timeout: updateStatus.timeout,
+                    method: 'GET',
+                    success: function (response, opts) {
+                        var res = Ext.decode(response.responseText);
+                        if (res == null)
+                            updateStatus.statusCount++;
+                        else
+                            updateStatus.statusCount = 0;
+                    },
+                    failure: function (response, opts) {
                         updateStatus.statusCount++;
-                    else
-                        updateStatus.statusCount = 0;
-                },
-                failure: function (response, opts) {
-                    updateStatus.statusCount++;
-                },
-                callback: function () {
-                    // Hold off any errors until after the startup time.
-                    // This is necessary for slower (embedded) machines
-                    if (updateStatus.startCnt > 0) {
-                        updateStatus.startCnt--;
-                    }
-                    else {
-                        updateStatus.errorLimit = 2;
-                    }
+                    },
+                    callback: function () {
+                        // Hold off any errors until after the startup time.
+                        // This is necessary for slower (embedded) machines
+                        if (updateStatus.startCnt > 0) {
+                            updateStatus.startCnt--;
+                        }
+                        else {
+                            updateStatus.errorLimit = 2;
+                        }
 
-                    if (updateStatus.statusCount >= updateStatus.errorLimit) {
-                        updateStatus.timeout = 30000;
-                        handleOnlineStatus(STATUS_OFFLINE);
+                        if (updateStatus.statusCount >= updateStatus.errorLimit) {
+                            updateStatus.timeout = 30000;
+                            handleOnlineStatus(STATUS_OFFLINE);
+                        }
+                        else if (updateStatus.statusCount == 0) {
+                            updateStatus.timeout = 2500;
+                            handleOnlineStatus(STATUS_ONLINE);
+                        }
                     }
-                    else if (updateStatus.statusCount == 0) {
-                        updateStatus.timeout = 2500;
-                        handleOnlineStatus(STATUS_ONLINE);
-                    }
-                }
-            });
+                });
+            }
         },
         timeout: 30000,
-        interval: 2500,
+        interval: 3000,
         startCnt: 6,
         statusCount: 0,
         errorLimit: 6
