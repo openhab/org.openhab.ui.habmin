@@ -56,6 +56,8 @@ Ext.define('openHAB.automation.automation', {
             border: false,
             region: 'west',
             width: 600,
+            stateId: 'automationWindowSizer',
+            stateful: true,
             layout: {
                 type: 'accordion',
                 hideCollapseTool: true
