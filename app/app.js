@@ -251,6 +251,8 @@ Ext.Ajax.on('requestexception', function (conn, response, options, eOpts) {
     ajaxOutstandingRequestCount--;
 });
 
+//Ext.getBody().on("contextmenu", Ext.emptyFn, null, {preventDefault: true});
+
 /**
  * Load a country language file
  * @param countryCode the two digit ISO country code
@@ -522,7 +524,7 @@ function doStatus() {
             }
         },
         timeout: 30000,
-        interval: 3000,
+        interval: 5000,
         startCnt: 6,
         statusCount: 0,
         errorLimit: 6
