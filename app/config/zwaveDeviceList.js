@@ -440,7 +440,7 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                 });
             }
         },
-        interval: 1500
+        interval: 5000
     },
     listeners: {
         beforeshow: function (grid, eOpts) {
