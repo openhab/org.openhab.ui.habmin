@@ -383,6 +383,7 @@ Ext.define('openHAB.graph.graphHighcharts', {
                     var axis = newConfig.axis[cnt].axis - 1;
 
                     chartOptions.yAxis[axis] = {};
+                    chartOptions.yAxis[cnt].title = "";
                     if(newConfig.axis[cnt].label != null && newConfig.axis[cnt].label.length != 0) {
                         chartOptions.yAxis[axis].title = {};
                         chartOptions.yAxis[axis].title.text = newConfig.axis[cnt].label;
