@@ -274,6 +274,7 @@ var language = {
 
 
     personalisation_Language: "Language:",
+    personalisation_PersistenceStore: "Default Store",
 
     //
     zwave_Network: "Network",

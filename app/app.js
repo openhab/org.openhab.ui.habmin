@@ -1015,6 +1015,22 @@ function createUI() {
                                         typeAhead: true,
                                         queryMode: 'local',
                                         value: languageCode
+                                    },
+                                    {
+                                        margin: '0 0 0 0',
+                                        xtype: 'combobox',
+                                        fieldLabel: language.personalisation_PersistenceStore,
+                                        itemId: 'language',
+                                        name: 'language',
+                                        store: persistenceItemStore,
+                                        allowBlank: false,
+                                        valueField: 'code',
+                                        displayField: 'nativeName',
+                                        forceSelection: true,
+                                        editable: true,
+                                        typeAhead: true,
+                                        queryMode: 'local',
+                                        value: persistenceService
                                     }
                                 ],
                                 buttons: [
