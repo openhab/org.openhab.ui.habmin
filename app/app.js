@@ -1005,7 +1005,6 @@ function createUI() {
                                 },
                                 items: [
                                     {
-//                                        margin: '0 0 0 0',
                                         xtype: 'combobox',
                                         fieldLabel: language.personalisation_Language,
                                         itemId: 'language',
@@ -1021,7 +1020,6 @@ function createUI() {
                                         value: languageCode
                                     },
                                     {
-                                    //    margin: '0 0 0 0',
                                         xtype: 'combobox',
                                         fieldLabel: language.personalisation_PersistenceStore,
                                         itemId: 'persistence',
