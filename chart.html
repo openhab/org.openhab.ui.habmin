@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>HABmin Charting</title>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/highcharts.min.js"></script>
+
+<script type="text/javascript">
+
+
+var chartConfig = [];
+var chartOptions = {
+    chart: {
+        renderTo: 'chartIsHere',
+        animation: false,
+        type: 'spline',
+        zoomType: 'x',
+        events: {
+            selection: function (event) {
+                event.preventDefault();
+                updateChart(chartConfig, Math.floor(event.xAxis[0].min), Math.ceil(event.xAxis[0].max));
+            }
+        }
+    },
+    credits: {
+        enabled: false
+    },
+    title: {
+        text: null
+    },
+    xAxis: {
+        type: 'datetime',
+        dateTimeLabelFormats: { // don't display the dummy year
+            month: '%e. %b',
+            year: '%b'
+        }
+    },
+    plotOptions: {
+        spline: {
+            lineWidth: 3,
+            states: {
+                hover: {
+                    lineWidth: 5
+                }
+            },
+            marker: {
+                states: {
+                    hover: {
+                        enabled: true,
+                        symbol: 'circle',
+                        radius: 5,
+                        lineWidth: 1
+                    }
+                }
+            }
+        },
+        series: {
+            marker: {
+                enabled: false
+            }
+        }
+    },
+    legend: {
+        enabled: true
+    },
+    tooltip: {
+        enabled: true,
+        crosshairs: true,
+        shared: false,
+        formatter: function () {
+            return '<b>' + this.series.name + '</b><br/>' +
+                    Highcharts.dateFormat('%H:%M:%S %a %d %b %Y', this.x) + ': ' +
+                    Highcharts.numberFormat(this.y, 2);
+        }
+    }
+};
+
+
+var graphName;
+var graphPeriod;
+var graphUpdate = 0;
+var configGraph;
+var configChan;
+var veraDayNight;
+var initState;
+var nightsDisplay;
+
+var initList = [
+    {variable:"configGraph", url:"/port_3480/data_request?id=lr_dmCtrl&control=listGraphs"},
+    {variable:"configChan", url:"/port_3480/data_request?id=lr_dmList"},
+    {variable:"veraDayNight", url:"/port_3480/data_request?id=lr_dmCtrl&control=sunrise"}
+];
+
+
+function getQueryString() {
+    // This function is anonymous, is executed immediately and
+    // the return value is assigned to QueryString!
+    var query_string = {};
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+    for (var i=0;i<vars.length;i++) {
+        var pair = vars[i].split("=");
+        // If first entry with this name
+        if (typeof query_string[pair[0]] === "undefined") {
+            query_string[pair[0]] = pair[1];
+            // If second entry with this name
+        } else if (typeof query_string[pair[0]] === "string") {
+            var arr = [ query_string[pair[0]], pair[1] ];
+            query_string[pair[0]] = arr;
+            // If third or later entry with this name
+        } else {
+            query_string[pair[0]].push(pair[1]);
+        }
+    }
+    return query_string;
+}
+
+window.onload = function () {
+    var params = getQueryString();
+    graphName = params['chart'];
+    if(params['period'] != undefined)
+        graphPeriod = parseFloat(params['period']);
+    if(graphPeriod == NaN)
+        graphPeriod = undefined;
+    if(params['update'] != undefined)
+        graphUpdate = parseFloat(params['update']);
+    if(graphUpdate == NaN)
+        graphPeriod = 0;
+    initState = 0;
+    loadNextConfig();
+
+
+    jQuery.getJSON(
+                    HABminBaseURL + '/persistence/charts/' + graphName,
+            "",
+
+            function (json, state, xhr) {
+                if (state == "success") {
+                    var now = (new Date()).getTime();
+                    updateChart(json, now - (graphPeriod * 1000), now);
+                }
+            });
+}
+
+function loadNextConfig() {
+    $.ajax({
+        url:initList[initState].url,
+        dataType:'json',
+        success:function (json, state, xhr) {
+            if (state == "success") {
+                window[initList[initState].variable] = json;
+                initState++;
+            }
+
+            if (initState < initList.length) {
+                loadNextConfig();
+                return;
+            }
+
+            // All configs loaded
+            if(graphUpdate == 0)
+                doGraph();
+            else
+                mainLoop();
+        },
+        error:function () {
+            loadError("Error communicating with Vera!");
+        }
+    });
+}
+
+function mainLoop()
+{
+    window.setTimeout(mainLoop, (graphUpdate * 60000))
+    doGraph();
+}
+
+/**
+ * Process incoming data responses.
+ * This is called when we receive a response to a graph data request.
+ * It correlates the data and waits until all requests are complete
+ * before drawing the graph
+ * @param item
+ * @param json
+ */
+function addGraphData(item, json) {
+    // Remember the time of the last data update
+    // This allows the table view to detect if data is dirty
+    lastUpdate = (new Date()).getTime();
+
+    // Reset the info store
+    graphInfoItems = [];
+
+    graphInfoItems[1] = [];
+    graphInfoItems[1].name = "Response Time";
+    graphInfoItems[1].value = "";//(new Date()).getTime() - timeStart + " ms";
+
+
+    // Find this item in rawData
+    for (var chan = 0; chan < rawData.length; chan++) {
+        if (rawData[chan].item == item) {
+            // Mark that we've received this item
+            rawData[chan].received = true;
+
+            // If we have data, process it into the right format for highcharts
+            // This will probably run in parallel with the next channel being received
+            if (json != null) {
+                if (json.datapoints < 2) {
+
+                }
+                else {
+                    // Convert the format. Hopefully the openHAB json can be changed to make this unnecessary
+                    var newSeries = [];
+                    var subPoints = parseInt(json.datapoints / 1000);
+                    var subCount = 0;
+                    var outCount = 0;
+                    for (var i = 0; i < json.datapoints; i++) {
+                        if(subCount++ < subPoints)
+                            continue;
+                        subCount = 0;
+                        newSeries[outCount] = [];
+                        newSeries[outCount][0] = parseInt(json.data[i].time);
+                        newSeries[outCount][1] = parseFloat(json.data[i].state);
+                        outCount++;
+                    }
+                    rawData[chan].data = newSeries;
+                }
+            }
+        }
+    }
+
+    // Check if all requests have completed
+    for (var chan = 0; chan < rawData.length; chan++) {
+        if (rawData[chan].received == false)
+            return;
+    }
+
+    // All requests have completed! Process and display the data!
+    drawChart();
+}
+
+/**
+ * Draws the chart. This is called after the data has been received.
+ */
+function drawChart() {
+    timeStart = (new Date()).getTime();
+
+//                    graphInfoItems[0] = [];
+//                    graphInfoItems[0].name = "openHAB Processing Time";
+//                    graphInfoItems[0].value = Math.floor(json.procTime * 1000) + " ms";
+
+    var options = chartOptions;
+
+    var errors = "";
+
+    options.series = [];
+
+    var cnt, tot;
+    cnt = 0;
+    tot = 0;
+
+    // Process all the data
+    var series = -1;
+    for (var chan = 0; chan < rawData.length; chan++) {
+        // Check if this channel has data
+        if (rawData[chan].data == null)
+            continue;
+
+        series++;
+        options.series[series] = {};
+
+//                    graphInfoItems[4 + s] = [];
+//                    graphInfoItems[4 + s].name = json.series[s].label + " points";
+//                    graphInfoItems[4 + s].value = json.series[s].pointsRet + " / " + json.series[s].pointsTot;
+
+        // If ticks are provided, add categories to the graph
+//                    if (rawData[chan].categories) {
+//                        if(rawData[chan].categories.length > 0) {
+//                            chartOptions.yAxis[yAxis].categories = new Array();
+//                            for (var t = 0; t < rawData[chan].categories.length; t++) {
+//                                chartOptions.yAxis[yAxis].categories[rawData[chan].categories[t][1]] = rawData[chan].categories[t][0];
+//                            }
+//                        }
+//                    }
+
+        // Configure the series styles...
+        options.series[series].data = rawData[chan].data;
+        options.series[series].name = rawData[chan].label;
+        options.series[series].yAxis = rawData[chan].axis;
+
+        if (supportedCharts.indexOf(rawData[chan].chart) > -1)
+            options.series[series].type = rawData[chan].chart;
+        else
+            options.series[series].type = "spline";
+
+        if (rawData[chan].lineColor != null && rawData[chan].lineColor.length != 0)
+            options.series[series].color = rawData[chan].lineColor;
+
+        if(rawData[chan].lineWidth != null && parseInt(rawData[chan].lineWidth) != NaN)
+            options.series[series].lineWidth = rawData[chan].lineWidth;
+
+        if(typeof rawData[chan].legend == 'string' || rawData[chan].legend instanceof String)
+            options.series[series].showInLegend = (rawData[chan].legend.toLowerCase() == 'true') ? true : false;
+
+        if (rawData[chan].lineStyle != null && rawData[chan].lineStyle.length != 0)
+            options.series[series].dashStyle = rawData[chan].lineStyle;
+
+        if (supportedMarkers.indexOf(rawData[chan].markerSymbol) > -1) {
+            options.series[series].marker = {};
+            options.series[series].marker.enabled = true;
+            options.series[series].marker.symbol = rawData[chan].markerSymbol;
+
+            if (rawData[chan].markerColor != null && rawData[chan].markerColor.length != 0) {
+                options.series[series].marker.fillColor = rawData[chan].markerColor;
+                options.series[series].marker.lineColor = rawData[chan].markerColor;
+            }
+        }
+
+        // Keep track of the min/max times
+        if (chartMin > rawData[chan].timestart)
+            chartMin = rawData[chan].timestart;
+        if (chartMax < rawData[chan].timeend)
+            chartMax = rawData[chan].timeend;
+    }
+
+    this.chartObject = new Highcharts.Chart(options);
+
+    if ((chartMax - chartMin) < 300)
+        toolbar.getComponent('zoomIn').disable();
+    else
+        toolbar.getComponent('zoomIn').enable();
+
+    graphInfoItems[2] = [];
+    graphInfoItems[2].name = "Render Time";
+    graphInfoItems[2].value = "";//(new Date()).getTime() - timeStart + " ms";
+    graphInfoItems[3] = [];
+    graphInfoItems[3].name = "Total Time";
+    graphInfoItems[3].value = "";//(new Date()).getTime() - timeInit + " ms";
+
+    Ext.MessageBox.hide();
+
+    toolbarEnable();
+    if (errors != "") {
+        handleStatusNotification(NOTIFICATION_WARNING, 'Warning: ' + error);
+    }
+}
+
+/**
+ * Update the graph.
+ * Requests data from the server and processes the responses.
+ * @param newConfig Config object for the chart
+ * @param start Start time
+ * @param stop Stop time
+ */
+function updateChart(newConfig, start, stop) {
+    // A bit of sanity checking before we start...
+    if (newConfig == null || newConfig.items == null || newConfig.items.length == 0)
+        return;
+
+    // Keep track of the current configuration
+    chartConfig = newConfig;
+
+    // Change to arrays
+    if(newConfig.axis != null)
+        newConfig.axis = [].concat(newConfig.axis);
+    if(newConfig.items != null)
+        newConfig.items = [].concat(newConfig.items);
+
+    // TODO: Something needs to be done about the timers and graph information
+    var timeStart = (new Date()).getTime();
+    var timeInit = timeStart;
+
+    Ext.MessageBox.show({
+        msg: language.graph_HighchartsLoading,
+        width: 100,
+        height: 40,
+        icon: 'icon-download',
+        draggable: false,
+        closable: false
+    });
+
+    if (isNaN(start))
+        start = 0;
+    if (isNaN(stop))
+        stop = 0;
+
+    if (start == 0 || stop == 0) {
+        var ts = Math.round((new Date()).getTime());
+        start = ts - (2 * 86400000);
+        stop = ts;
+    }
+
+    // Make sure we're not asking for data from the future!
+    if(stop > Math.round((new Date()).getTime()))
+        stop = Math.round((new Date()).getTime());
+
+    var parms = {};
+    parms.starttime = Math.floor(start);
+    parms.endtime = Math.ceil(stop);
+
+    // Remove the categories from the yAxis
+    chartOptions.yAxis = [];
+    for (var cnt = 0; cnt < 4; cnt++) {
+        chartOptions.yAxis[cnt] = {};
+        chartOptions.yAxis[cnt].title = "";
+    }
+
+    // Configure the axis
+    if (newConfig.axis != null) {
+        for (var cnt = 0; cnt < newConfig.axis.length; cnt++) {
+            var axis = newConfig.axis[cnt].axis - 1;
+
+            chartOptions.yAxis[axis] = {};
+            chartOptions.yAxis[cnt].title = "";
+            if(newConfig.axis[cnt].label != null && newConfig.axis[cnt].label.length != 0) {
+                chartOptions.yAxis[axis].title = {};
+                chartOptions.yAxis[axis].title.text = newConfig.axis[cnt].label;
+            }
+            if(newConfig.axis[cnt].minimum != null) {
+                chartOptions.yAxis[axis].min = newConfig.axis[cnt].minimum;
+                chartOptions.yAxis[axis].startOnTick = false;
+            }
+            if(newConfig.axis[cnt].maximum != null) {
+                chartOptions.yAxis[axis].max = newConfig.axis[cnt].maximum;
+                chartOptions.yAxis[axis].endOnTick = false;
+            }
+            if(newConfig.axis[cnt].position == 'right') {
+                chartOptions.yAxis[axis].opposite = true;
+            }
+            if(newConfig.axis[cnt].format != null && newConfig.axis[cnt].format.length != 0) {
+                chartOptions.yAxis[axis].labels = {};
+                chartOptions.yAxis[axis].labels.format = newConfig.axis[cnt].format;
+            }
+        }
+    }
+
+    // Clear the raw data
+    rawData = [];
+
+    // Loop through all items and request data via Ajax
+    for (var chan = 0; chan < chartConfig.items.length; chan++) {
+        rawData[chan] = {};
+        rawData[chan].received = false;
+        rawData[chan].item = chartConfig.items[chan].item;
+        rawData[chan].axis = chartConfig.items[chan].axis - 1;
+        rawData[chan].label = chartConfig.items[chan].label;
+        rawData[chan].chart = chartConfig.items[chan].chart;
+        rawData[chan].legend = chartConfig.items[chan].legend;
+        rawData[chan].lineWidth = chartConfig.items[chan].lineWidth;
+        rawData[chan].lineColor = chartConfig.items[chan].lineColor;
+        rawData[chan].lineStyle = chartConfig.items[chan].lineStyle;
+        rawData[chan].markerColor = chartConfig.items[chan].markerColor;
+        rawData[chan].markerSymbol = chartConfig.items[chan].markerSymbol;
+
+
+
+    //    headers: {'Accept': 'application/json'},
+        jQuery.getJSON(
+                HABminBaseURL + '/persistence/services/' + persistenceService + '/' + chartConfig.items[chan].item,
+                parms,
+
+        function (json, state, xhr) {
+            if (state == "success") {
+
+                var item = options.url.split('/');
+                addGraphData(item[item.length - 1], json);
+            }
+        });
+    }
+};
+
+
+
+
+</script>
+</head>
+<body>
+<div id="HABmin" style="width:100%;height:100%">
+</div>
+<div id="splashscreen" class="splashscreen">
+    <div style="display:block;position:absolute;width:99%;top:40%; text-align: center;">
+        <p id="loadingSpinner"><img src="images/loading.gif" alt="Loading..."/></p>
+    </div>
+    <div style="display:block;position:absolute;width:99%;top:45%; text-align: center;">
+        <p id="startWarning" style="display:none;font-family:Verdana,Helvetica,sans-serif;font-size: 10px;">
+            <span><img style="margin-top:-4px;" src="images/exclamation.png" alt="Error..."/></span><span
+                id="warningText" style="margin-left: 4px; vertical-align: top;"></span>
+        </p>
+    </div>
+</div>
+</body>
+</html>
