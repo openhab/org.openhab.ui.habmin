@@ -50,6 +50,10 @@ document.ready = function () {
     else if (isoLanguageGetName(languageCode) == "UNKNOWN")
         languageCode = "en";
 
+    persistenceService = Ext.util.Cookies.get("persistence");
+    if(persistenceService == null)
+        persistenceService = "";
+
     // Write the language on the splash-screen
     Ext.fly('HABminLanguage').update(isoLanguageGetName(languageCode), false);
 
@@ -634,9 +638,9 @@ function createUI() {
                     // Select the default service
                     for (var cnt = 0; cnt < store.getCount(); cnt++) {
                         var actions = [].concat(store.getAt(cnt).get("actions"));
-                        // TODO: Better method to determine default needed!!!
                         if (actions.indexOf("Read")) {
-                            persistenceService = store.getAt(cnt).get("name");
+                            if(persistenceService == "")
+                                persistenceService = store.getAt(cnt).get("name");
                             var newItem = {};
                             newItem.text = store.getAt(cnt).get("name");
                             newItem.icon = "images/database-sql.png";
@@ -992,7 +996,7 @@ function createUI() {
                                 border: false,
                                 bodyPadding: 10,
                                 fieldDefaults: {
-                                    labelAlign: 'top',
+                                    labelAlign: 'left',
                                     labelWidth: 100,
                                     labelStyle: 'font-weight:bold'
                                 },
@@ -1001,7 +1005,7 @@ function createUI() {
                                 },
                                 items: [
                                     {
-                                        margin: '0 0 0 0',
+//                                        margin: '0 0 0 0',
                                         xtype: 'combobox',
                                         fieldLabel: language.personalisation_Language,
                                         itemId: 'language',
@@ -1011,23 +1015,23 @@ function createUI() {
                                         valueField: 'code',
                                         displayField: 'nativeName',
                                         forceSelection: true,
-                                        editable: true,
+                                        editable: false,
                                         typeAhead: true,
                                         queryMode: 'local',
                                         value: languageCode
                                     },
                                     {
-                                        margin: '0 0 0 0',
+                                    //    margin: '0 0 0 0',
                                         xtype: 'combobox',
                                         fieldLabel: language.personalisation_PersistenceStore,
-                                        itemId: 'language',
-                                        name: 'language',
-                                        store: persistenceItemStore,
+                                        itemId: 'persistence',
+                                        name: 'persistence',
+                                        store: persistenceServiceStore,
                                         allowBlank: false,
-                                        valueField: 'code',
-                                        displayField: 'nativeName',
+                                        valueField: 'name',
+                                        displayField: 'name',
                                         forceSelection: true,
-                                        editable: true,
+                                        editable: false,
                                         typeAhead: true,
                                         queryMode: 'local',
                                         value: persistenceService
@@ -1045,12 +1049,18 @@ function createUI() {
                                         handler: function () {
                                             if (this.up('form').getForm().isValid()) {
                                                 // Read the model name
+                                                var lang = languageCode;
                                                 languageCode = form.getForm().findField('language').getSubmitValue();
                                                 Ext.util.Cookies.set("language", languageCode);
-                                                loadLanguage(languageCode);
+
+                                                persistenceService = form.getForm().findField('persistence').getSubmitValue();
+                                                Ext.util.Cookies.set("persistence", persistenceService);
 
                                                 this.up('window').destroy();
-                                                window.location.reload();
+                                                if(lang != languageCode) {
+                                                    loadLanguage(languageCode);
+                                                    window.location.reload();
+                                                }
                                             }
                                         }
                                     }
@@ -1060,7 +1070,7 @@ function createUI() {
                             var saveWin = Ext.widget('window', {
                                 header: false,
                                 closeAction: 'destroy',
-                                width: 225,
+                                width: 325,
                                 resizable: false,
                                 draggable: false,
                                 modal: true,
