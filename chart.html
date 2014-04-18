@@ -9,7 +9,7 @@
 <script type="text/javascript">
 
 var HABminBaseURL = "/services/habmin";
-var persistenceService = "db4o";
+var persistenceService = "";
 
 var supportedCharts = [
     'spline',
@@ -147,6 +147,7 @@ window.onload = function () {
 //    initState = 0;
 //    loadNextConfig();
 
+    persistenceService = params['service'];
 
     jQuery.getJSON(
                     HABminBaseURL + '/persistence/charts/' + graphName,
@@ -334,6 +335,9 @@ function drawChart() {
             }
         }
     }
+
+    $("#splashscreen").fadeOut(10);
+    $("#HABmin").fadeIn(10);
 
     this.chartObject = new Highcharts.Chart(options);
 }
