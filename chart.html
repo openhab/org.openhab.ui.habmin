@@ -100,9 +100,9 @@ var graphPeriod;
 var graphUpdate = 0;
 var configGraph;
 var configChan;
-var veraDayNight;
 var initState;
 var nightsDisplay;
+var rawData;
 
 var initList = [
     {variable: "configGraph", url: HABminBaseURL + "/persistence/charts"}
@@ -202,7 +202,7 @@ function loadNextConfig() {
                 mainLoop();
         },
         error: function () {
-            loadError("Error communicating with HABmin!");
+            displayError("Error communicating with HABmin!");
         }
     });
 }
@@ -222,6 +222,11 @@ function doGraph() {
     for(var c = 0; c < chartList.length; c++) {
         if(chartList[c].name.toLowerCase() == graphName)
             graphId = chartList[c].id;
+    }
+
+    if(graphId == null) {
+        displayError("Unable to find chart definition for \"" + graphName + "\"")
+        return;
     }
 
     jQuery.getJSON(
@@ -244,10 +249,6 @@ function doGraph() {
  * @param json
  */
 function addGraphData(item, json) {
-    // Remember the time of the last data update
-    // This allows the table view to detect if data is dirty
-    lastUpdate = (new Date()).getTime();
-
     // Find this item in rawData
     for (var chan = 0; chan < rawData.length; chan++) {
         if (rawData[chan].item == item) {
@@ -468,6 +469,11 @@ function updateChart(newConfig, start, stop) {
 }
 ;
 
+function displayError(error) {
+    $("#warningText").text(error);
+    $("#loadingSpinner").fadeOut(10);
+    $("#startWarning").fadeIn(10);
+}
 
 </script>
 </head>
