@@ -95,6 +95,7 @@ var chartOptions = {
 
 
 var graphName;
+var graphId;
 var graphPeriod;
 var graphUpdate = 0;
 var configGraph;
@@ -104,9 +105,7 @@ var initState;
 var nightsDisplay;
 
 var initList = [
-    {variable:"configGraph", url:"/port_3480/data_request?id=lr_dmCtrl&control=listGraphs"},
-    {variable:"configChan", url:"/port_3480/data_request?id=lr_dmList"},
-    {variable:"veraDayNight", url:"/port_3480/data_request?id=lr_dmCtrl&control=sunrise"}
+    {variable: "configGraph", url: HABminBaseURL + "/persistence/charts"}
 ];
 
 
@@ -116,7 +115,7 @@ function getQueryString() {
     var query_string = {};
     var query = window.location.search.substring(1);
     var vars = query.split("&");
-    for (var i=0;i<vars.length;i++) {
+    for (var i = 0; i < vars.length; i++) {
         var pair = vars[i].split("=");
         // If first entry with this name
         if (typeof query_string[pair[0]] === "undefined") {
@@ -136,36 +135,27 @@ function getQueryString() {
 window.onload = function () {
     var params = getQueryString();
     graphName = params['chart'];
-    if(params['period'] != undefined)
+    if (params['period'] != undefined)
         graphPeriod = parseFloat(params['period']);
-    if(graphPeriod == NaN)
+    if (graphPeriod == NaN)
         graphPeriod = undefined;
-    if(params['update'] != undefined)
+    if (params['update'] != undefined)
         graphUpdate = parseFloat(params['update']);
-    if(graphUpdate == NaN)
+    if (graphUpdate == NaN)
         graphPeriod = 0;
-//    initState = 0;
-//    loadNextConfig();
+
 
     persistenceService = params['service'];
 
-    jQuery.getJSON(
-                    HABminBaseURL + '/persistence/charts/' + graphName,
-            "",
-
-            function (json, state, xhr) {
-                if (state == "success") {
-                    var now = (new Date()).getTime();
-                    updateChart(json, now - (graphPeriod * 1000), now);
-                }
-            });
+    initState = 0;
+    loadNextConfig();
 }
 
 function loadNextConfig() {
     $.ajax({
-        url:initList[initState].url,
-        dataType:'json',
-        success:function (json, state, xhr) {
+        url: initList[initState].url,
+        dataType: 'json',
+        success: function (json, state, xhr) {
             if (state == "success") {
                 window[initList[initState].variable] = json;
                 initState++;
@@ -177,21 +167,43 @@ function loadNextConfig() {
             }
 
             // All configs loaded
-            if(graphUpdate == 0)
+            if (graphUpdate == 0)
                 doGraph();
             else
                 mainLoop();
         },
-        error:function () {
-            loadError("Error communicating with Vera!");
+        error: function () {
+            loadError("Error communicating with HABmin!");
         }
     });
 }
 
-function mainLoop()
-{
+function mainLoop() {
     window.setTimeout(mainLoop, (graphUpdate * 60000))
     doGraph();
+}
+
+function doGraph() {
+
+    if(configGraph == null || configGraph.chart == null) {
+        return;
+    }
+
+    graphName = decodeURI(graphName.toLowerCase());
+    for(var c = 0; c < configGraph.chart.length; c++) {
+        if(configGraph.chart[c].name.toLowerCase() == graphName)
+            graphId = configGraph.chart[c].id;
+    }
+
+    jQuery.getJSON(
+        HABminBaseURL + '/persistence/charts/' + graphId,
+        "",
+        function (json, state, xhr) {
+            if (state == "success") {
+                var now = (new Date()).getTime();
+                updateChart(json, now - (graphPeriod * 1000), now);
+            }
+        });
 }
 
 /**
@@ -234,7 +246,7 @@ function addGraphData(item, json) {
                     var subCount = 0;
                     var outCount = 0;
                     for (var i = 0; i < json.datapoints; i++) {
-                        if(subCount++ < subPoints)
+                        if (subCount++ < subPoints)
                             continue;
                         subCount = 0;
                         newSeries[outCount] = [];
@@ -315,10 +327,10 @@ function drawChart() {
         if (rawData[chan].lineColor != null && rawData[chan].lineColor.length != 0)
             options.series[series].color = rawData[chan].lineColor;
 
-        if(rawData[chan].lineWidth != null && parseInt(rawData[chan].lineWidth) != NaN)
+        if (rawData[chan].lineWidth != null && parseInt(rawData[chan].lineWidth) != NaN)
             options.series[series].lineWidth = rawData[chan].lineWidth;
 
-        if(typeof rawData[chan].legend == 'string' || rawData[chan].legend instanceof String)
+        if (typeof rawData[chan].legend == 'string' || rawData[chan].legend instanceof String)
             options.series[series].showInLegend = (rawData[chan].legend.toLowerCase() == 'true') ? true : false;
 
         if (rawData[chan].lineStyle != null && rawData[chan].lineStyle.length != 0)
@@ -338,7 +350,12 @@ function drawChart() {
 
     $("#splashscreen").fadeOut(10);
     $("#HABmin").fadeIn(10);
-
+    var h1 = $('#HABmin').innerHeight();
+    var h2 = $('#HABmin').outerHeight();
+    h1 = $(window).height() - 30;
+    var w1 = $(window).width() - 30;
+    options.chart.height = h1;
+    options.chart.width = w1;
     this.chartObject = new Highcharts.Chart(options);
 }
 
@@ -358,9 +375,9 @@ function updateChart(newConfig, start, stop) {
     chartConfig = newConfig;
 
     // Change to arrays
-    if(newConfig.axis != null)
+    if (newConfig.axis != null)
         newConfig.axis = [].concat(newConfig.axis);
-    if(newConfig.items != null)
+    if (newConfig.items != null)
         newConfig.items = [].concat(newConfig.items);
 
     // TODO: Something needs to be done about the timers and graph information
@@ -379,7 +396,7 @@ function updateChart(newConfig, start, stop) {
     }
 
     // Make sure we're not asking for data from the future!
-    if(stop > Math.round((new Date()).getTime()))
+    if (stop > Math.round((new Date()).getTime()))
         stop = Math.round((new Date()).getTime());
 
     var parms = {};
@@ -400,22 +417,22 @@ function updateChart(newConfig, start, stop) {
 
             chartOptions.yAxis[axis] = {};
             chartOptions.yAxis[cnt].title = "";
-            if(newConfig.axis[cnt].label != null && newConfig.axis[cnt].label.length != 0) {
+            if (newConfig.axis[cnt].label != null && newConfig.axis[cnt].label.length != 0) {
                 chartOptions.yAxis[axis].title = {};
                 chartOptions.yAxis[axis].title.text = newConfig.axis[cnt].label;
             }
-            if(newConfig.axis[cnt].minimum != null) {
+            if (newConfig.axis[cnt].minimum != null) {
                 chartOptions.yAxis[axis].min = newConfig.axis[cnt].minimum;
                 chartOptions.yAxis[axis].startOnTick = false;
             }
-            if(newConfig.axis[cnt].maximum != null) {
+            if (newConfig.axis[cnt].maximum != null) {
                 chartOptions.yAxis[axis].max = newConfig.axis[cnt].maximum;
                 chartOptions.yAxis[axis].endOnTick = false;
             }
-            if(newConfig.axis[cnt].position == 'right') {
+            if (newConfig.axis[cnt].position == 'right') {
                 chartOptions.yAxis[axis].opposite = true;
             }
-            if(newConfig.axis[cnt].format != null && newConfig.axis[cnt].format.length != 0) {
+            if (newConfig.axis[cnt].format != null && newConfig.axis[cnt].format.length != 0) {
                 chartOptions.yAxis[axis].labels = {};
                 chartOptions.yAxis[axis].labels.format = newConfig.axis[cnt].format;
             }
@@ -441,22 +458,21 @@ function updateChart(newConfig, start, stop) {
         rawData[chan].markerSymbol = chartConfig.items[chan].markerSymbol;
 
 
-
-    //    headers: {'Accept': 'application/json'},
+        //    headers: {'Accept': 'application/json'},
         jQuery.getJSON(
-                HABminBaseURL + '/persistence/services/' + persistenceService + '/' + chartConfig.items[chan].item,
+                        HABminBaseURL + '/persistence/services/' + persistenceService + '/' +
+                        chartConfig.items[chan].item,
                 parms,
 
-        function (json, state, xhr) {
-            if (state == "success") {
+                function (json, state, xhr) {
+                    if (state == "success") {
 
-                addGraphData(json.name, json);
-            }
-        });
+                        addGraphData(json.name, json);
+                    }
+                });
     }
-};
-
-
+}
+;
 
 
 </script>
