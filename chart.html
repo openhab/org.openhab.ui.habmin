@@ -4,15 +4,32 @@
 <title>HABmin Charting</title>
 
 <script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/highcharts.min.js"></script>
+<script type="text/javascript" src="js/highcharts.js"></script>
 
 <script type="text/javascript">
 
+var HABminBaseURL = "/services/habmin";
+var persistenceService = "db4o";
 
+var supportedCharts = [
+    'spline',
+    'line',
+    'area',
+    'areaspline',
+    'bar',
+    'column'
+];
+var supportedMarkers = [
+    'circle',
+    'square',
+    'diamond',
+    'triangle',
+    'triangle-down'
+];
 var chartConfig = [];
 var chartOptions = {
     chart: {
-        renderTo: 'chartIsHere',
+        renderTo: 'HABmin',
         animation: false,
         type: 'spline',
         zoomType: 'x',
@@ -127,8 +144,8 @@ window.onload = function () {
         graphUpdate = parseFloat(params['update']);
     if(graphUpdate == NaN)
         graphPeriod = 0;
-    initState = 0;
-    loadNextConfig();
+//    initState = 0;
+//    loadNextConfig();
 
 
     jQuery.getJSON(
@@ -316,34 +333,9 @@ function drawChart() {
                 options.series[series].marker.lineColor = rawData[chan].markerColor;
             }
         }
-
-        // Keep track of the min/max times
-        if (chartMin > rawData[chan].timestart)
-            chartMin = rawData[chan].timestart;
-        if (chartMax < rawData[chan].timeend)
-            chartMax = rawData[chan].timeend;
     }
 
     this.chartObject = new Highcharts.Chart(options);
-
-    if ((chartMax - chartMin) < 300)
-        toolbar.getComponent('zoomIn').disable();
-    else
-        toolbar.getComponent('zoomIn').enable();
-
-    graphInfoItems[2] = [];
-    graphInfoItems[2].name = "Render Time";
-    graphInfoItems[2].value = "";//(new Date()).getTime() - timeStart + " ms";
-    graphInfoItems[3] = [];
-    graphInfoItems[3].name = "Total Time";
-    graphInfoItems[3].value = "";//(new Date()).getTime() - timeInit + " ms";
-
-    Ext.MessageBox.hide();
-
-    toolbarEnable();
-    if (errors != "") {
-        handleStatusNotification(NOTIFICATION_WARNING, 'Warning: ' + error);
-    }
 }
 
 /**
@@ -370,15 +362,6 @@ function updateChart(newConfig, start, stop) {
     // TODO: Something needs to be done about the timers and graph information
     var timeStart = (new Date()).getTime();
     var timeInit = timeStart;
-
-    Ext.MessageBox.show({
-        msg: language.graph_HighchartsLoading,
-        width: 100,
-        height: 40,
-        icon: 'icon-download',
-        draggable: false,
-        closable: false
-    });
 
     if (isNaN(start))
         start = 0;
@@ -463,8 +446,7 @@ function updateChart(newConfig, start, stop) {
         function (json, state, xhr) {
             if (state == "success") {
 
-                var item = options.url.split('/');
-                addGraphData(item[item.length - 1], json);
+                addGraphData(json.name, json);
             }
         });
     }
