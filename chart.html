@@ -213,6 +213,9 @@ function mainLoop() {
 }
 
 function doGraph() {
+    // Default to local time
+    Highcharts.setOptions({global: {useUTC: false}});
+
     if(configGraph == null || configGraph.chart == null) {
         return;
     }
