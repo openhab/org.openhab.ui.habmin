@@ -144,7 +144,6 @@ window.onload = function () {
     if (graphUpdate == NaN)
         graphPeriod = 0;
 
-
     persistenceService = params['service'];
 
     initState = 0;
@@ -184,15 +183,15 @@ function mainLoop() {
 }
 
 function doGraph() {
-
     if(configGraph == null || configGraph.chart == null) {
         return;
     }
+    var chartList = [].concat(configGraph.chart);
 
     graphName = decodeURI(graphName.toLowerCase());
     for(var c = 0; c < configGraph.chart.length; c++) {
-        if(configGraph.chart[c].name.toLowerCase() == graphName)
-            graphId = configGraph.chart[c].id;
+        if(chartList[c].name.toLowerCase() == graphName)
+            graphId = chartList[c].id;
     }
 
     jQuery.getJSON(
