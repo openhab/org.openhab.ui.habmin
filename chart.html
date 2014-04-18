@@ -140,19 +140,33 @@ var periods = [
     {name: 'd', period: 86400},
     {name: '2d', period: 172800},
     {name: '3d', period: 259200},
+    {name: '4d', period: 345600},
     {name: 'w', period: 604800},
     {name: '2w', period: 1209600},
+    {name: '3w', period: 1814400},
     {name: 'm', period: 2592000},
     {name: '2m', period: 5184000},
+    {name: '3m', period: 7776000},
     {name: '4m', period: 10368000},
+    {name: '6m', period: 15552000},
     {name: 'y', period: 31536000}
 ];
 
 window.onload = function () {
     var params = getQueryString();
+    graphPeriod = undefined;
     graphName = params['chart'];
-    if (params['period'] != undefined)
-        graphPeriod = parseFloat(params['period']);
+    if (params['period'] != undefined) {
+        params['period'] = params['period'].toLowerCase();
+        for(var c = 0; c < periods.length; c++) {
+            if(periods[c].name == params['period']) {
+                graphPeriod = periods[c].period;
+                break;
+            }
+        }
+        if(graphPeriod == undefined)
+            graphPeriod = parseFloat(params['period']);
+    }
     if (graphPeriod == NaN)
         graphPeriod = undefined;
     if (params['refresh'] != undefined)
