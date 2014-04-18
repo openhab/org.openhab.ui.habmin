@@ -356,8 +356,8 @@ function drawChart() {
     var h2 = $('#HABmin').outerHeight();
     h1 = $(window).height();
     var w1 = $(window).width();
-    options.chart.height = h1;
-    options.chart.width = w1;
+    options.chart.height = h1-2;
+    options.chart.width = w1-2;
     this.chartObject = new Highcharts.Chart(options);
 }
 
