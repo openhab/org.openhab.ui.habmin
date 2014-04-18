@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html style="height:100%">
 <head>
 <title>HABmin Charting</title>
 
@@ -354,8 +354,8 @@ function drawChart() {
     $("#HABmin").fadeIn(10);
     var h1 = $('#HABmin').innerHeight();
     var h2 = $('#HABmin').outerHeight();
-    h1 = $(window).height() - 30;
-    var w1 = $(window).width() - 30;
+    h1 = $(window).height();
+    var w1 = $(window).width();
     options.chart.height = h1;
     options.chart.width = w1;
     this.chartObject = new Highcharts.Chart(options);
@@ -477,7 +477,7 @@ function displayError(error) {
 
 </script>
 </head>
-<body>
+<body style="margin:0px;">
 <div id="HABmin" style="width:100%;height:100%">
 </div>
 <div id="splashscreen" class="splashscreen">
