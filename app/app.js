@@ -1054,6 +1054,13 @@ function createUI() {
                                                 persistenceService = form.getForm().findField('persistence').getSubmitValue();
                                                 Ext.util.Cookies.set("persistence", persistenceService);
 
+                                                // Update the button for selecting the persistence service
+                                                var button = Ext.getCmp("persistenceServiceSelect");
+                                                if (button != null) {
+                                                    button.setText(persistenceService);
+                                                    persistenceItemStore.filterItems(persistenceService);
+                                                }
+
                                                 this.up('window').destroy();
                                                 if(lang != languageCode) {
                                                     loadLanguage(languageCode);
