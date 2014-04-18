@@ -132,6 +132,22 @@ function getQueryString() {
     return query_string;
 }
 
+var periods = [
+    {name: 'h', period: 3600},
+    {name: '4h', period: 14400},
+    {name: '8h', period: 28800},
+    {name: '12h', period: 43200},
+    {name: 'd', period: 86400},
+    {name: '2d', period: 172800},
+    {name: '3d', period: 259200},
+    {name: 'w', period: 604800},
+    {name: '2w', period: 1209600},
+    {name: 'm', period: 2592000},
+    {name: '2m', period: 5184000},
+    {name: '4m', period: 10368000},
+    {name: 'y', period: 31536000}
+];
+
 window.onload = function () {
     var params = getQueryString();
     graphName = params['chart'];
@@ -189,7 +205,7 @@ function doGraph() {
     var chartList = [].concat(configGraph.chart);
 
     graphName = decodeURI(graphName.toLowerCase());
-    for(var c = 0; c < configGraph.chart.length; c++) {
+    for(var c = 0; c < chartList.length; c++) {
         if(chartList[c].name.toLowerCase() == graphName)
             graphId = chartList[c].id;
     }
@@ -217,14 +233,6 @@ function addGraphData(item, json) {
     // Remember the time of the last data update
     // This allows the table view to detect if data is dirty
     lastUpdate = (new Date()).getTime();
-
-    // Reset the info store
-    graphInfoItems = [];
-
-    graphInfoItems[1] = [];
-    graphInfoItems[1].name = "Response Time";
-    graphInfoItems[1].value = "";//(new Date()).getTime() - timeStart + " ms";
-
 
     // Find this item in rawData
     for (var chan = 0; chan < rawData.length; chan++) {
@@ -273,12 +281,6 @@ function addGraphData(item, json) {
  * Draws the chart. This is called after the data has been received.
  */
 function drawChart() {
-    timeStart = (new Date()).getTime();
-
-//                    graphInfoItems[0] = [];
-//                    graphInfoItems[0].name = "openHAB Processing Time";
-//                    graphInfoItems[0].value = Math.floor(json.procTime * 1000) + " ms";
-
     var options = chartOptions;
 
     var errors = "";
@@ -298,20 +300,6 @@ function drawChart() {
 
         series++;
         options.series[series] = {};
-
-//                    graphInfoItems[4 + s] = [];
-//                    graphInfoItems[4 + s].name = json.series[s].label + " points";
-//                    graphInfoItems[4 + s].value = json.series[s].pointsRet + " / " + json.series[s].pointsTot;
-
-        // If ticks are provided, add categories to the graph
-//                    if (rawData[chan].categories) {
-//                        if(rawData[chan].categories.length > 0) {
-//                            chartOptions.yAxis[yAxis].categories = new Array();
-//                            for (var t = 0; t < rawData[chan].categories.length; t++) {
-//                                chartOptions.yAxis[yAxis].categories[rawData[chan].categories[t][1]] = rawData[chan].categories[t][0];
-//                            }
-//                        }
-//                    }
 
         // Configure the series styles...
         options.series[series].data = rawData[chan].data;
@@ -378,10 +366,6 @@ function updateChart(newConfig, start, stop) {
         newConfig.axis = [].concat(newConfig.axis);
     if (newConfig.items != null)
         newConfig.items = [].concat(newConfig.items);
-
-    // TODO: Something needs to be done about the timers and graph information
-    var timeStart = (new Date()).getTime();
-    var timeInit = timeStart;
 
     if (isNaN(start))
         start = 0;
@@ -456,13 +440,10 @@ function updateChart(newConfig, start, stop) {
         rawData[chan].markerColor = chartConfig.items[chan].markerColor;
         rawData[chan].markerSymbol = chartConfig.items[chan].markerSymbol;
 
-
-        //    headers: {'Accept': 'application/json'},
         jQuery.getJSON(
                         HABminBaseURL + '/persistence/services/' + persistenceService + '/' +
                         chartConfig.items[chan].item,
                 parms,
-
                 function (json, state, xhr) {
                     if (state == "success") {
 
