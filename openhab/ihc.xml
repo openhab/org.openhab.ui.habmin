@@ -1,0 +1,65 @@
+<!-- Binding configuration for the IHC / ELKO LS binding in openHAB -->
+<binding>
+	<!-- Full name presented to the user -->
+	<name>IHC / ELKO LS Binding</name>
+	<!-- PID name used within the OSGi layer -->
+	<pid>ihc</pid>
+	<!-- Binding type: protocol, ui -->
+	<type>wired</type>
+	<!-- Author -->
+	<author>Pauli Anttila</author>
+	<!-- Current version of the binding to which the file is applicable -->
+	<version>1.1.0</version>
+	<!-- Minimum version of openHAB required to run this binding -->
+	<oh_version>1.1.0</oh_version>
+
+    <!-- Binding configuration settings -->
+    <binding.config>
+        <config.setting>
+            <name>ip</name>
+            <label>IP address</label>
+            <description>Set the IP address of the controller.</description>
+            <optional>false</optional>
+            <defaultvalue></defaultvalue>
+            <minimum></minimum>
+            <maximum></maximum>
+            <values></values>
+        </config.setting>
+        <config.setting>
+            <name>username</name>
+            <label>Username</label>
+            <description>Set the valid username.</description>
+            <optional>false</optional>
+            <defaultvalue>admin</defaultvalue>
+            <minimum></minimum>
+            <maximum></maximum>
+            <values></values>
+        </config.setting>
+        <config.setting>
+            <name>password</name>
+            <label>Password</label>
+            <description>Set the valid password of the username.</description>
+            <optional>false</optional>
+            <defaultvalue></defaultvalue>
+            <minimum></minimum>
+            <maximum></maximum>
+            <values></values>
+        </config.setting>
+        <config.setting>
+            <name>timeout</name>
+            <label>Timeout</label>
+            <description>Timeout for controller communication.</description>
+            <optional>true</optional>
+            <defaultvalue>5000</defaultvalue>
+            <minimum>1000</minimum>
+            <maximum>60000</maximum>
+            <values></values>
+        </config.setting>
+    </binding.config>
+
+    <!-- Item binding configuration -->
+    <binding.items>
+        <binding.io>
+        </binding.io>
+    </binding.items>
+</binding>
