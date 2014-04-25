@@ -1,0 +1,49 @@
+<!-- Binding configuration for the Onkyo AV Receiver binding in openHAB -->
+<binding>
+	<!-- Full name presented to the user -->
+	<name>Onkyo AV Receiver Binding</name>
+	<!-- PID name used within the OSGi layer -->
+	<pid>onkyo</pid>
+	<!-- Binding type: protocol, ui -->
+	<type>device</type>
+	<!-- Author -->
+	<author>Pauli Anttila</author>
+	<!-- Current version of the binding to which the file is applicable -->
+	<version>1.3.0</version>
+	<!-- Minimum version of openHAB required to run this binding -->
+	<oh_version>1.3.0</oh_version>
+
+    <!-- Binding configuration settings -->
+    <binding.config>
+    </binding.config>
+
+	<!-- The following lines specify the communications interface settings. These may be repeated multiple times -->
+    <binding.interface>
+        <interface.setting>
+            <name>host</name>
+            <label>IP Address</label>
+            <description>Set the IP address of the Onkyo device.</description>
+            <optional>false</optional>
+            <defaultvalue></defaultvalue>
+            <minimum></minimum>
+            <maximum></maximum>
+            <values></values>
+        </interface.setting>
+        <interface.setting>
+            <name>port</name>
+            <label>IP Port</label>
+            <description>Set the TCP Port number of the Onkyo device.</description>
+            <optional>true</optional>
+            <defaultvalue>60128</defaultvalue>
+            <minimum>1</minimum>
+            <maximum>65535</maximum>
+            <values></values>
+        </interface.setting>
+    </binding.interface>
+    
+    <!-- Item binding configuration -->
+    <binding.items>
+        <binding.io>
+        </binding.io>
+    </binding.items>
+</binding>

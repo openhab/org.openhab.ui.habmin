@@ -1,11 +1,11 @@
-<!-- Binding configuration for the RFXCOM binding in openHAB -->
+<!-- Binding configuration for the Epson Projector binding in openHAB -->
 <binding>
 	<!-- Full name presented to the user -->
-	<name>RFXCOM Binding</name>
+	<name>Epson Projector Binding</name>
 	<!-- PID name used within the OSGi layer -->
-	<pid>rfxcom</pid>
+	<pid>epsonprojector</pid>
 	<!-- Binding type: protocol, ui -->
-	<type>protocol</type>
+	<type>device</type>
 	<!-- Author -->
 	<author>Pauli Anttila</author>
 	<!-- Current version of the binding to which the file is applicable -->
@@ -15,7 +15,11 @@
 
     <!-- Binding configuration settings -->
     <binding.config>
-        <config.setting>
+    </binding.config>
+
+	<!-- The following lines specify the communications interface settings. These may be repeated multiple times -->
+    <binding.interface>
+        <interface.setting>
             <name>serialPort</name>
             <label>Serial Port</label>
             <description>Set the Serial Port of the interface.</description>
@@ -24,19 +28,9 @@
             <minimum></minimum>
             <maximum></maximum>
             <values></values>
-        </config.setting>
-        <config.setting>
-            <name>setMode</name>
-            <label>Mode</label>
-            <description>Set the mode for the controller (optional).</description>
-            <optional>true</optional>
-            <defaultvalue></defaultvalue>
-            <minimum></minimum>
-            <maximum></maximum>
-            <values></values>
-        </config.setting>
-    </binding.config>
-
+        </interface.setting>
+    </binding.interface>
+    
     <!-- Item binding configuration -->
     <binding.items>
         <binding.io>

@@ -1,0 +1,35 @@
+<!-- Binding configuration for the Swegon Ventilation binding in openHAB -->
+<binding>
+	<!-- Full name presented to the user -->
+	<name>Swegon Ventilation Binding</name>
+	<!-- PID name used within the OSGi layer -->
+	<pid>swegonventilation</pid>
+	<!-- Binding type: protocol, ui -->
+	<type>device</type>
+	<!-- Author -->
+	<author>Pauli Anttila</author>
+	<!-- Current version of the binding to which the file is applicable -->
+	<version>1.4.0</version>
+	<!-- Minimum version of openHAB required to run this binding -->
+	<oh_version>1.4.0</oh_version>
+
+    <!-- Binding configuration settings -->
+    <binding.config>
+        <config.setting>
+            <name>udpPort</name>
+            <label>UDP Port</label>
+            <description>UDP port of the Swegon device.</description>
+            <optional>false</optional>
+            <defaultvalue>9998</defaultvalue>
+            <minimum>1</minimum>
+            <maximum>65535</maximum>
+            <values></values>
+        </config.setting>
+    </binding.config>
+
+    <!-- Item binding configuration -->
+    <binding.items>
+        <binding.io>
+        </binding.io>
+    </binding.items>
+</binding>

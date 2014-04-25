@@ -1,11 +1,11 @@
-<!-- Binding configuration for the RFXCOM binding in openHAB -->
+<!-- Binding configuration for the System info binding in openHAB -->
 <binding>
 	<!-- Full name presented to the user -->
-	<name>RFXCOM Binding</name>
+	<name>System Info Binding</name>
 	<!-- PID name used within the OSGi layer -->
-	<pid>rfxcom</pid>
+	<pid>systeminfo</pid>
 	<!-- Binding type: protocol, ui -->
-	<type>protocol</type>
+	<type>device</type>
 	<!-- Author -->
 	<author>Pauli Anttila</author>
 	<!-- Current version of the binding to which the file is applicable -->
@@ -16,21 +16,21 @@
     <!-- Binding configuration settings -->
     <binding.config>
         <config.setting>
-            <name>serialPort</name>
-            <label>Serial Port</label>
-            <description>Set the Serial Port of the interface.</description>
-            <optional>false</optional>
-            <defaultvalue></defaultvalue>
-            <minimum></minimum>
-            <maximum></maximum>
+            <name>granularity</name>
+            <label>Granularity</label>
+            <description>Interval in milliseconds when to find new refresh candidates.</description>
+            <optional>true</optional>
+            <defaultvalue>1000</defaultvalue>
+            <minimum>100</minimum>
+            <maximum>60000</maximum>
             <values></values>
         </config.setting>
         <config.setting>
-            <name>setMode</name>
-            <label>Mode</label>
-            <description>Set the mode for the controller (optional).</description>
+            <name>units</name>
+            <label>Units</label>
+            <description>Data Storage Unit, where B=Bytes, K=kB, M=MB, T=TB.</description>
             <optional>true</optional>
-            <defaultvalue></defaultvalue>
+            <defaultvalue>M</defaultvalue>
             <minimum></minimum>
             <maximum></maximum>
             <values></values>
