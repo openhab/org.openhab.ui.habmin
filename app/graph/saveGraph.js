@@ -252,7 +252,13 @@ Ext.define('openHAB.graph.saveGraph', {
                     hideable: false,
                     flex: 3,
                     sortable: false,
-                    dataIndex: 'item'
+                    dataIndex: 'item',
+                    editor: new Ext.form.field.ComboBox({
+                        editable: false,
+                        store: itemConfigStore,
+                        displayField: 'name',
+                        valueField: 'name'
+                    })
                 },
                 {
                     text: language.graph_SaveGraphItemLabel,
