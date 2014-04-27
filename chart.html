@@ -408,7 +408,8 @@ function updateChart(newConfig, start, stop) {
     chartOptions.yAxis = [];
     for (var cnt = 0; cnt < 4; cnt++) {
         chartOptions.yAxis[cnt] = {};
-        chartOptions.yAxis[cnt].title = "";
+        chartOptions.yAxis[cnt].title = {};
+        chartOptions.yAxis[cnt].title.text = "";
     }
 
     // Configure the axis
@@ -416,26 +417,25 @@ function updateChart(newConfig, start, stop) {
         for (var cnt = 0; cnt < newConfig.axis.length; cnt++) {
             var axis = newConfig.axis[cnt].axis - 1;
 
-            if (newConfig.axis[cnt].label != null && newConfig.axis[cnt].label.length != 0) {
-                chartOptions.yAxis[axis].title = {};
+            if(newConfig.axis[cnt].label != null && newConfig.axis[cnt].label.length != 0) {
                 chartOptions.yAxis[axis].title.text = newConfig.axis[cnt].label;
             }
-            if (newConfig.axis[cnt].minimum != null) {
+            if(newConfig.axis[cnt].minimum != null) {
                 chartOptions.yAxis[axis].min = newConfig.axis[cnt].minimum;
                 chartOptions.yAxis[axis].startOnTick = false;
             }
-            if (newConfig.axis[cnt].maximum != null) {
+            if(newConfig.axis[cnt].maximum != null) {
                 chartOptions.yAxis[axis].max = newConfig.axis[cnt].maximum;
                 chartOptions.yAxis[axis].endOnTick = false;
             }
-            if (newConfig.axis[cnt].position == 'right') {
+            if(newConfig.axis[cnt].position == 'right') {
                 chartOptions.yAxis[axis].opposite = true;
             }
-            if (newConfig.axis[cnt].format != null && newConfig.axis[cnt].format.length != 0) {
+            if(newConfig.axis[cnt].format != null && newConfig.axis[cnt].format.length != 0) {
                 chartOptions.yAxis[axis].labels = {};
                 chartOptions.yAxis[axis].labels.format = newConfig.axis[cnt].format;
             }
-            if(newConfig.axis[cnt].color != null) {
+            if(newConfig.axis[cnt].color != null && newConfig.axis[cnt].color.length != 0) {
                 if(chartOptions.yAxis[axis].labels == null)
                     chartOptions.yAxis[axis].labels = {};
                 chartOptions.yAxis[axis].labels.style = {};
