@@ -59,6 +59,7 @@ Ext.define('openHAB.graph.saveGraph', {
                 {type: 'number', name: 'axis'},
                 {type: 'string', name: 'label'},
                 {type: 'string', name: 'format'},
+                {type: 'string', name: 'color'},
                 {type: 'string', name: 'minimum'},
                 {type: 'string', name: 'maximum'},
                 {type: 'string', name: 'position'}
@@ -251,7 +252,13 @@ Ext.define('openHAB.graph.saveGraph', {
                     hideable: false,
                     flex: 3,
                     sortable: false,
-                    dataIndex: 'item'
+                    dataIndex: 'item',
+                    editor: new Ext.form.field.ComboBox({
+                        editable: false,
+                        store: itemConfigStore,
+                        displayField: 'name',
+                        valueField: 'name'
+                    })
                 },
                 {
                     text: language.graph_SaveGraphItemLabel,
@@ -506,6 +513,30 @@ Ext.define('openHAB.graph.saveGraph', {
                     }
                 },
                 {
+                    text: language.graph_SaveGraphAxisColor,
+                    hideable: false,
+                    flex: 1,
+                    sortable: false,
+                    dataIndex: 'color',
+                    editor: new Ext.form.field.ComboBox({
+                        editable: false,
+                        store: colorStore,
+                        displayField: 'color',
+                        valueField: 'color',
+                        displayTpl: function () {
+                            return'';//<div style="background-color:{color};text-align:center;">&nbsp</div>';
+                        },
+                        listConfig: {
+                            getInnerTpl: function () {
+                                return'<div style="background-color:{color};text-align:center;">&nbsp</div>';
+                            }
+                        }
+                    }),
+                    renderer: function (v) {
+                        return '<div style="background-color:' + v + ';text-align:center;">&nbsp</div>';
+                    }
+                },
+                {
                     text: language.graph_SaveGraphAxisMinimum,
                     hideable: false,
                     flex: 2,
@@ -736,6 +767,7 @@ Ext.define('openHAB.graph.saveGraph', {
 
                     newAxis.axis = data[chCnt].get('axis');
                     newAxis.label = data[chCnt].get('label');
+                    newAxis.color = data[chCnt].get('color');
                     newAxis.format = data[chCnt].get('format');
                     newAxis.minimum = data[chCnt].get('minimum');
                     newAxis.maximum = data[chCnt].get('maximum');

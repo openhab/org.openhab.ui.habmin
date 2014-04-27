@@ -1,0 +1,45 @@
+<!-- Binding configuration for the RFXCOM binding in openHAB -->
+<binding>
+	<!-- Full name presented to the user -->
+	<name>RFXCOM Binding</name>
+	<!-- PID name used within the OSGi layer -->
+	<pid>rfxcom</pid>
+	<!-- Binding type: protocol, ui -->
+	<type>protocol</type>
+	<!-- Author -->
+	<author>Pauli Anttila</author>
+	<!-- Current version of the binding to which the file is applicable -->
+	<version>1.3.0</version>
+	<!-- Minimum version of openHAB required to run this binding -->
+	<oh_version>1.3.0</oh_version>
+
+    <!-- Binding configuration settings -->
+    <binding.config>
+        <config.setting>
+            <name>serialPort</name>
+            <label>Serial Port</label>
+            <description>Set the Serial Port of the interface.</description>
+            <optional>false</optional>
+            <defaultvalue></defaultvalue>
+            <minimum></minimum>
+            <maximum></maximum>
+            <values></values>
+        </config.setting>
+        <config.setting>
+            <name>setMode</name>
+            <label>Mode</label>
+            <description>Set the mode for the controller (optional).</description>
+            <optional>true</optional>
+            <defaultvalue></defaultvalue>
+            <minimum></minimum>
+            <maximum></maximum>
+            <values></values>
+        </config.setting>
+    </binding.config>
+
+    <!-- Item binding configuration -->
+    <binding.items>
+        <binding.io>
+        </binding.io>
+    </binding.items>
+</binding>

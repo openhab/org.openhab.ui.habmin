@@ -274,6 +274,7 @@ var language = {
 
 
     personalisation_Language: "Language:",
+    personalisation_PersistenceStore: "Default Store",
 
     //
     zwave_Network: "Network",
@@ -536,6 +537,7 @@ var language = {
     graph_SaveGraphAxisAxis: "Axis",
     graph_SaveGraphAxisTitle: "Title",
     graph_SaveGraphAxisFormat: "Format",
+    graph_SaveGraphAxisColor: "Color",
     graph_SaveGraphAxisMinimum: "Minimum",
     graph_SaveGraphAxisMaximum: "Maximum",
     graph_SaveGraphAxisNumberError: "Value must be a number",

@@ -256,10 +256,10 @@ Ext.define('openHAB.config.itemList', {
                         var img = '';
                         var id = persistenceItemStore.findExact("name", record.get("name"));
                         if (id != -1) {
-                            img = '<img src="images/database-small.png">';
+                            metadata.tdCls = 'grid-database';
                         }
 
-                        return '<span>' + value + '</span><span style="float:right">' + img + '</span>';
+                        return value;
                     }
                 },
                 {

@@ -146,6 +146,11 @@ module.exports = function (grunt) {
                 expand: true,
                 src: ['index.html'],
                 dest: 'build/webapps/habmin/'
+            },
+            chart: {
+                expand: true,
+                src: ['chart.html'],
+                dest: 'build/webapps/habmin/'
             }
         },
         'json-minify': {

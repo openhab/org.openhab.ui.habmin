@@ -1,0 +1,45 @@
+<!-- Binding configuration for the System info binding in openHAB -->
+<binding>
+	<!-- Full name presented to the user -->
+	<name>System Info Binding</name>
+	<!-- PID name used within the OSGi layer -->
+	<pid>systeminfo</pid>
+	<!-- Binding type: protocol, ui -->
+	<type>device</type>
+	<!-- Author -->
+	<author>Pauli Anttila</author>
+	<!-- Current version of the binding to which the file is applicable -->
+	<version>1.3.0</version>
+	<!-- Minimum version of openHAB required to run this binding -->
+	<oh_version>1.3.0</oh_version>
+
+    <!-- Binding configuration settings -->
+    <binding.config>
+        <config.setting>
+            <name>granularity</name>
+            <label>Granularity</label>
+            <description>Interval in milliseconds when to find new refresh candidates.</description>
+            <optional>true</optional>
+            <defaultvalue>1000</defaultvalue>
+            <minimum>100</minimum>
+            <maximum>60000</maximum>
+            <values></values>
+        </config.setting>
+        <config.setting>
+            <name>units</name>
+            <label>Units</label>
+            <description>Data Storage Unit, where B=Bytes, K=kB, M=MB, T=TB.</description>
+            <optional>true</optional>
+            <defaultvalue>M</defaultvalue>
+            <minimum></minimum>
+            <maximum></maximum>
+            <values></values>
+        </config.setting>
+    </binding.config>
+
+    <!-- Item binding configuration -->
+    <binding.items>
+        <binding.io>
+        </binding.io>
+    </binding.items>
+</binding>

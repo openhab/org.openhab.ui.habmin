@@ -50,6 +50,10 @@ document.ready = function () {
     else if (isoLanguageGetName(languageCode) == "UNKNOWN")
         languageCode = "en";
 
+    persistenceService = Ext.util.Cookies.get("persistence");
+    if(persistenceService == null)
+        persistenceService = "";
+
     // Write the language on the splash-screen
     Ext.fly('HABminLanguage').update(isoLanguageGetName(languageCode), false);
 
@@ -94,7 +98,7 @@ Ext.require([
 ]
 );
 
-var versionGUI = "0.1.1-snapshot";
+var versionGUI = "0.1.2-snapshot";
 var versionJAR;
 var gitRepoLink = "https://api.github.com/repos/cdjackson/HABmin/releases";
 
@@ -227,12 +231,31 @@ Ext.application({
 });
 
 /**
- * Set default json headers
+ * Set default Ajax handlers
+ * Here we also want to keep a running count of outstanding request
+ * and the time since the last complete response so we can keep up
+ * with the server status
  */
 Ext.Ajax.defaultHeaders = {
     'Accept': 'application/json,application/xml',
     'Content-Type': 'application/json'
 };
+
+var ajaxOutstandingRequestCount = 0;
+var ajaxLastSuccess;
+Ext.Ajax.on('beforerequest', function (conn, options, eOpts) {
+    ajaxOutstandingRequestCount++;
+});
+Ext.Ajax.on('requestcomplete', function (conn, response, options, eOpts) {
+    ajaxOutstandingRequestCount--;
+    ajaxLastSuccess = (new Date()).getTime();
+
+});
+Ext.Ajax.on('requestexception', function (conn, response, options, eOpts) {
+    ajaxOutstandingRequestCount--;
+});
+
+//Ext.getBody().on("contextmenu", Ext.emptyFn, null, {preventDefault: true});
 
 /**
  * Load a country language file
@@ -278,7 +301,7 @@ function getReleaseVersion() {
             var newestPrereleaseVersion = "";
             for (var cnt = 0; cnt < result.data.length; cnt++) {
                 // Ignore drafts
-                if (result.data[cnt].draft == true)
+                if (result.data[cnt].draft === true)
                     continue;
 
                 // Find the time on the current version
@@ -286,7 +309,7 @@ function getReleaseVersion() {
                     currentReleaseTime = Date.parse(result.data[cnt].published_at);
 
                 // Find the latest prerelease and release versions
-                if (result.data[cnt].prerelease == false) {
+                if (result.data[cnt].prerelease === false) {
                     if (Date.parse(result.data[cnt].published_at) > newestReleaseTime) {
                         newestReleaseTime = result.data[cnt].published_at;
                         newestReleaseVersion = result.data[cnt].tag_name;
@@ -464,44 +487,48 @@ function doStatus() {
     // Periodically retrieve the openHAB server status updates
     var updateStatus = {
         run: function () {
-            Ext.Ajax.request({
-                type: 'rest',
-                url: HABminBaseURL + '/status',
-                timeout: updateStatus.timeout,
-                method: 'GET',
-                success: function (response, opts) {
-                    var res = Ext.decode(response.responseText);
-                    if (res == null)
+            // Hold off on the status requests if we have requests outstanding.
+            if((ajaxLastSuccess < (new Date()).getTime() - 2500) && ajaxOutstandingRequestCount == 0) {
+                console.log("Request Status");
+                Ext.Ajax.request({
+                    type: 'rest',
+                    url: HABminBaseURL + '/status',
+                    timeout: updateStatus.timeout,
+                    method: 'GET',
+                    success: function (response, opts) {
+                        var res = Ext.decode(response.responseText);
+                        if (res == null)
+                            updateStatus.statusCount++;
+                        else
+                            updateStatus.statusCount = 0;
+                    },
+                    failure: function (response, opts) {
                         updateStatus.statusCount++;
-                    else
-                        updateStatus.statusCount = 0;
-                },
-                failure: function (response, opts) {
-                    updateStatus.statusCount++;
-                },
-                callback: function () {
-                    // Hold off any errors until after the startup time.
-                    // This is necessary for slower (embedded) machines
-                    if (updateStatus.startCnt > 0) {
-                        updateStatus.startCnt--;
-                    }
-                    else {
-                        updateStatus.errorLimit = 2;
-                    }
+                    },
+                    callback: function () {
+                        // Hold off any errors until after the startup time.
+                        // This is necessary for slower (embedded) machines
+                        if (updateStatus.startCnt > 0) {
+                            updateStatus.startCnt--;
+                        }
+                        else {
+                            updateStatus.errorLimit = 2;
+                        }
 
-                    if (updateStatus.statusCount >= updateStatus.errorLimit) {
-                        updateStatus.timeout = 30000;
-                        handleOnlineStatus(STATUS_OFFLINE);
+                        if (updateStatus.statusCount >= updateStatus.errorLimit) {
+                            updateStatus.timeout = 30000;
+                            handleOnlineStatus(STATUS_OFFLINE);
+                        }
+                        else if (updateStatus.statusCount == 0) {
+                            updateStatus.timeout = 2500;
+                            handleOnlineStatus(STATUS_ONLINE);
+                        }
                     }
-                    else if (updateStatus.statusCount == 0) {
-                        updateStatus.timeout = 2500;
-                        handleOnlineStatus(STATUS_ONLINE);
-                    }
-                }
-            });
+                });
+            }
         },
         timeout: 30000,
-        interval: 2500,
+        interval: 5000,
         startCnt: 6,
         statusCount: 0,
         errorLimit: 6
@@ -611,9 +638,9 @@ function createUI() {
                     // Select the default service
                     for (var cnt = 0; cnt < store.getCount(); cnt++) {
                         var actions = [].concat(store.getAt(cnt).get("actions"));
-                        // TODO: Better method to determine default needed!!!
                         if (actions.indexOf("Read")) {
-                            persistenceService = store.getAt(cnt).get("name");
+                            if(persistenceService == "")
+                                persistenceService = store.getAt(cnt).get("name");
                             var newItem = {};
                             newItem.text = store.getAt(cnt).get("name");
                             newItem.icon = "images/database-sql.png";
@@ -969,7 +996,7 @@ function createUI() {
                                 border: false,
                                 bodyPadding: 10,
                                 fieldDefaults: {
-                                    labelAlign: 'top',
+                                    labelAlign: 'left',
                                     labelWidth: 100,
                                     labelStyle: 'font-weight:bold'
                                 },
@@ -978,7 +1005,6 @@ function createUI() {
                                 },
                                 items: [
                                     {
-                                        margin: '0 0 0 0',
                                         xtype: 'combobox',
                                         fieldLabel: language.personalisation_Language,
                                         itemId: 'language',
@@ -988,10 +1014,25 @@ function createUI() {
                                         valueField: 'code',
                                         displayField: 'nativeName',
                                         forceSelection: true,
-                                        editable: true,
+                                        editable: false,
                                         typeAhead: true,
                                         queryMode: 'local',
                                         value: languageCode
+                                    },
+                                    {
+                                        xtype: 'combobox',
+                                        fieldLabel: language.personalisation_PersistenceStore,
+                                        itemId: 'persistence',
+                                        name: 'persistence',
+                                        store: persistenceServiceStore,
+                                        allowBlank: false,
+                                        valueField: 'name',
+                                        displayField: 'name',
+                                        forceSelection: true,
+                                        editable: false,
+                                        typeAhead: true,
+                                        queryMode: 'local',
+                                        value: persistenceService
                                     }
                                 ],
                                 buttons: [
@@ -1006,12 +1047,25 @@ function createUI() {
                                         handler: function () {
                                             if (this.up('form').getForm().isValid()) {
                                                 // Read the model name
+                                                var lang = languageCode;
                                                 languageCode = form.getForm().findField('language').getSubmitValue();
                                                 Ext.util.Cookies.set("language", languageCode);
-                                                loadLanguage(languageCode);
+
+                                                persistenceService = form.getForm().findField('persistence').getSubmitValue();
+                                                Ext.util.Cookies.set("persistence", persistenceService);
+
+                                                // Update the button for selecting the persistence service
+                                                var button = Ext.getCmp("persistenceServiceSelect");
+                                                if (button != null) {
+                                                    button.setText(persistenceService);
+                                                    persistenceItemStore.filterItems(persistenceService);
+                                                }
 
                                                 this.up('window').destroy();
-                                                window.location.reload();
+                                                if(lang != languageCode) {
+                                                    loadLanguage(languageCode);
+                                                    window.location.reload();
+                                                }
                                             }
                                         }
                                     }
@@ -1021,7 +1075,7 @@ function createUI() {
                             var saveWin = Ext.widget('window', {
                                 header: false,
                                 closeAction: 'destroy',
-                                width: 225,
+                                width: 325,
                                 resizable: false,
                                 draggable: false,
                                 modal: true,

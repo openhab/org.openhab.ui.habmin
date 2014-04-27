@@ -289,9 +289,9 @@ Ext.define('openHAB.graph.graphHighcharts', {
                 }
 
                 // Keep track of the min/max times
-                if (chartMin < rawData[chan].timestart)
+                if (chartMin > rawData[chan].timestart)
                     chartMin = rawData[chan].timestart;
-                if (chartMax > rawData[chan].timeend)
+                if (chartMax < rawData[chan].timeend)
                     chartMax = rawData[chan].timeend;
             }
 
@@ -358,9 +358,13 @@ Ext.define('openHAB.graph.graphHighcharts', {
 
             if (start == 0 || stop == 0) {
                 var ts = Math.round((new Date()).getTime());
-                chartMin = ts - (2 * 86400000);
-                chartMax = ts;
+                start = ts - (2 * 86400000);
+                stop = ts;
             }
+
+            // Make sure we're not asking for data from the future!
+            if(stop > Math.round((new Date()).getTime()))
+                stop = Math.round((new Date()).getTime());
 
             var parms = {};
             parms.starttime = Math.floor(start);
@@ -370,7 +374,8 @@ Ext.define('openHAB.graph.graphHighcharts', {
             chartOptions.yAxis = [];
             for (var cnt = 0; cnt < 4; cnt++) {
                 chartOptions.yAxis[cnt] = {};
-                chartOptions.yAxis[cnt].title = "";
+                chartOptions.yAxis[cnt].title = {};
+                chartOptions.yAxis[cnt].title.text = "";
             }
 
             // Configure the axis
@@ -378,9 +383,7 @@ Ext.define('openHAB.graph.graphHighcharts', {
                 for (var cnt = 0; cnt < newConfig.axis.length; cnt++) {
                     var axis = newConfig.axis[cnt].axis - 1;
 
-                    chartOptions.yAxis[axis] = {};
                     if(newConfig.axis[cnt].label != null && newConfig.axis[cnt].label.length != 0) {
-                        chartOptions.yAxis[axis].title = {};
                         chartOptions.yAxis[axis].title.text = newConfig.axis[cnt].label;
                     }
                     if(newConfig.axis[cnt].minimum != null) {
@@ -397,6 +400,16 @@ Ext.define('openHAB.graph.graphHighcharts', {
                     if(newConfig.axis[cnt].format != null && newConfig.axis[cnt].format.length != 0) {
                         chartOptions.yAxis[axis].labels = {};
                         chartOptions.yAxis[axis].labels.format = newConfig.axis[cnt].format;
+                    }
+                    if(newConfig.axis[cnt].color != null && newConfig.axis[cnt].color.length != 0) {
+                        if(chartOptions.yAxis[axis].labels == null)
+                            chartOptions.yAxis[axis].labels = {};
+                        chartOptions.yAxis[axis].labels.style = {};
+                        chartOptions.yAxis[axis].labels.style.color = newConfig.axis[cnt].color;
+                        if(chartOptions.yAxis[axis].title != null) {
+                            chartOptions.yAxis[axis].title.style = {};
+                            chartOptions.yAxis[axis].title.style.color = newConfig.axis[cnt].color;
+                        }
                     }
                 }
             }
