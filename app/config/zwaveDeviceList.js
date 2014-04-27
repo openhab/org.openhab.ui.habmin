@@ -122,7 +122,8 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                             }
                         });
                     }
-                }
+                },
+                '|'
             ]
         });
 
