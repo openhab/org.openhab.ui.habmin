@@ -96,12 +96,7 @@ module.exports = function (grunt) {
             addons: {
                 expand: true,
                 src: ['addons/**'],
-                dest: 'build/addons/'
-            },
-            images: {
-                expand: true,
-                src: ['images/**'],
-                dest: 'build/webapps/habmin/'
+                dest: 'build/'
             },
             xml: {
                 expand: true,
