@@ -1,6 +1,6 @@
 Updates
 -------
-* 30-04-2014: Initial graphical rule designer ready for testing (see the [rules branch](https://github.com/cdjackson/HABmin/tree/rules) for code, or [the overview here]([https://github.com/cdjackson/HABmin/wiki/Rule-Designer:-Overview))
+* 30-04-2014: Initial graphical rule designer ready for testing (see the [rules branch](https://github.com/cdjackson/HABmin/tree/rules) for code, or [the overview here](https://github.com/cdjackson/HABmin/wiki/Rule-Designer:-Overview))
 * 18-04-2014: Add ability to view _HABmin_ charts wihin openHAB sitemap.
 * 22-03-2014: Add a 'data pending' indicator in zwave to show when a configuration has not been confirmed.
 * 02-02-2014: Updated item editing to extend toolbar across all tabs. Added a filter option to filter listed items.
