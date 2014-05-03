@@ -110,7 +110,18 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                     disabled: false,
                     tooltip: language.zwave_DevicesIncludeButtonTip,
                     handler: function () {
-                        Ext.create('openHAB.config.zwaveInclude').show();
+                        Ext.Ajax.request({
+                            url: HABminBaseURL + '/zwave/action/binding/network/',
+                            method: 'PUT',
+                            jsonData: 'Include',
+                            headers: {'Accept': 'application/json'},
+                            success: function (response, opts) {
+                            },
+                            failure: function () {
+                                handleStatusNotification(NOTIFICATION_ERROR, language.zwave_DevicesActionError);
+                            }
+                        });
+//                        Ext.create('openHAB.config.zwaveInclude').show();
                     }
                 },
                 '-'
