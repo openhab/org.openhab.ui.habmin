@@ -288,6 +288,8 @@ var language = {
     zwave_DevicesHealButtonTip: "Start a network heal process",
     zwave_DevicesIncludeButton: "Include",
     zwave_DevicesIncludeButtonTip: "Put the controller into network INCLUDE mode for 30 seconds",
+    zwave_DevicesExcludeButton: "Exclude",
+    zwave_DevicesExcludeButtonTip: "Put the controller into network EXCLUDE mode for 30 seconds",
     zwave_DevicesValueUpdateError: "Error sending updated value to the server!",
     zwave_DevicesValueUpdateRangeError: "Value is out of specified range. Please limit the value to between %s and %d.",
     zwave_DevicesActionError: "Error sending action to the server!",
@@ -299,6 +301,11 @@ var language = {
     zwave_NetworkRouting: "Routing",
     zwave_NetworkPower: "Power",
     zwave_NetworkNeighbors: "Neighbors",
+
+    // config/zwaveInclude.js
+    zwave_IncludeTitle: "ZWave Device Inclusion",
+    zwave_IncludeDeviceType: "Device Type",
+    zwave_IncludeHighPower: "User High Power",
 
     // config/bindingList.js
     config_BindingListTitle: "Bindings",
