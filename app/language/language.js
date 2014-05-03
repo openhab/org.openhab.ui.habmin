@@ -300,6 +300,11 @@ var language = {
     zwave_NetworkPower: "Power",
     zwave_NetworkNeighbors: "Neighbors",
 
+    // config/zwaveInclude.js
+    zwave_IncludeTitle: "ZWave Device Inclusion",
+    zwave_IncludeDeviceType: "Device Type",
+    zwave_IncludeHighPower: "User High Power",
+
     // config/bindingList.js
     config_BindingListTitle: "Bindings",
     config_BindingListTitleTip: "Binding list",
