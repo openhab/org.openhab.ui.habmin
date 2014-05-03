@@ -125,7 +125,7 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                 },
                 {
                     icon: 'images/wrench--minus.png',
-                    itemId: 'include',
+                    itemId: 'exclude',
                     text: language.zwave_DevicesExcludeButton,
                     cls: 'x-btn-icon',
                     disabled: false,
