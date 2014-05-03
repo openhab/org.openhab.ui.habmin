@@ -417,6 +417,7 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                     type: 'rest',
                     url: HABminBaseURL + '/zwave/' + this.nodePollingTable[cnt],
                     method: 'GET',
+                    timeout: 3500,
                     success: function (response, opts) {
                         var res = Ext.decode(response.responseText);
                         if (res == null || res.records == null)
