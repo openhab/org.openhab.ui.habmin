@@ -76,7 +76,7 @@ Ext.define('openHAB.graph.itemList', {
 
                         var saveGraph = Ext.create('openHAB.graph.saveGraph');
                         var config = createConfig();
-                        config.period = 86400;
+                        config.period = "86400";
                         saveGraph.setData(config);
                         saveGraph.show();
                     }
