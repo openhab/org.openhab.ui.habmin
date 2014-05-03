@@ -121,7 +121,27 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                                 handleStatusNotification(NOTIFICATION_ERROR, language.zwave_DevicesActionError);
                             }
                         });
-//                        Ext.create('openHAB.config.zwaveInclude').show();
+                    }
+                },
+                {
+                    icon: 'images/wrench--minus.png',
+                    itemId: 'include',
+                    text: language.zwave_DevicesExcludeButton,
+                    cls: 'x-btn-icon',
+                    disabled: false,
+                    tooltip: language.zwave_DevicesExcludeButtonTip,
+                    handler: function () {
+                        Ext.Ajax.request({
+                            url: HABminBaseURL + '/zwave/action/binding/network/',
+                            method: 'PUT',
+                            jsonData: 'Exclude',
+                            headers: {'Accept': 'application/json'},
+                            success: function (response, opts) {
+                            },
+                            failure: function () {
+                                handleStatusNotification(NOTIFICATION_ERROR, language.zwave_DevicesActionError);
+                            }
+                        });
                     }
                 },
                 '-'
@@ -359,7 +379,7 @@ Ext.define('openHAB.config.zwaveDeviceList', {
             listeners: {
                 select: function (grid, record, index, eOpts) {
                     // Remove all current action buttons
-                    for (var cnt = toolbar.items.length; cnt >= 4; cnt--) {
+                    for (var cnt = toolbar.items.length; cnt >= 5; cnt--) {
                         toolbar.remove(toolbar.items.get(cnt), true);
                     }
 
