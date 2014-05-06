@@ -1,0 +1,55 @@
+<!-- Binding configuration for the Heatmiser binding in openHAB -->
+<binding>
+    <!-- Full name presented to the user -->
+    <name>Media Player Daemon</name>
+    <!-- PID name used within the OSGi layer -->
+    <pid>mpd</pid>
+    <!-- Binding type: protocol, ui -->
+    <type>protocol</type>
+    <!-- Author of the definition -->
+    <author>Petr Klus</author>
+    <!-- Current version of the binding to which the file is applicable -->
+    <version>1.4.0</version>
+    <!-- Minimum version of openHAB required to run this binding -->
+    <oh_version>1.4.0</oh_version>
+
+
+    <!-- Binding configuration settings -->
+    <binding.config>
+    </binding.config>
+
+	<!-- The following lines specify the communications interface settings. These may be repeated multiple times -->
+    <binding.interface>
+        <interface.setting>
+            <name>host</name>
+            <label>IP Address</label>
+            <description>Set the IP address of the MPD server</description>
+            <optional>false</optional>
+            <defaultvalue>127.0.0.1</defaultvalue>
+            <minimum></minimum>
+            <maximum></maximum>
+            <values></values>
+        </interface.setting>
+        <interface.setting>
+            <name>port</name>
+            <label>IP Port</label>
+            <description>Port number of the MPD daemon</description>
+            <optional>false</optional>
+            <defaultvalue>6600</defaultvalue>
+            <minimum>1</minimum>
+            <maximum>65535</maximum>
+            <values></values>
+        </interface.setting>
+        <interface.setting>
+            <name>password</name>
+            <label>Password</label>
+            <description>MPD password (blank if not needed)</description>
+            <optional>true</optional>
+            <defaultvalue></defaultvalue>
+            <minimum></minimum>
+            <maximum></maximum>
+            <values></values>
+        </interface.setting>
+    </binding.interface>
+    
+</binding>
