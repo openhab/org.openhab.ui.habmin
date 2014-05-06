@@ -44,8 +44,8 @@ Ext.define('openHAB.config.bindingProperties', {
     initComponent: function () {
         var bindingName;
         var bindingConfig;
-        var source;
-        var sourceConfig;
+        var source = Array();
+        var sourceConfig = Array();
 
         // Add the records into the source/sourceConfig arrays
         function addBindingProperty(name, label, value) {
