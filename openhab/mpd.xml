@@ -33,7 +33,7 @@
         <interface.setting>
             <name>port</name>
             <label>IP Port</label>
-            <description>Port number of the </description>
+            <description>Port number of the MPD daemon</description>
             <optional>false</optional>
             <defaultvalue>6600</defaultvalue>
             <minimum>1</minimum>
@@ -45,9 +45,9 @@
             <label>Password</label>
             <description>MPD password (blank if not needed)</description>
             <optional>true</optional>
-            <defaultvalue>55000</defaultvalue>
-            <minimum>1</minimum>
-            <maximum>65535</maximum>
+            <defaultvalue></defaultvalue>
+            <minimum></minimum>
+            <maximum></maximum>
             <values></values>
         </interface.setting>
     </binding.interface>
