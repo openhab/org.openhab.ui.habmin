@@ -406,12 +406,13 @@ Ext.define('openHAB.config.zwaveDeviceList', {
                             text: actions[cnt].value,
                             handler: function () {
                                 var data = {};
-                                data.action = actions[cnt].key;
+                                var ref = this.itemId.substring(6);
+                                data.action = actions[ref].key;
                                 data.name = name;
                                 Ext.Ajax.request({
                                     url: HABminBaseURL + '/zwave/action/' + domain,
                                     method: 'PUT',
-                                    jsonData: actions[cnt].key,
+                                    jsonData: actions[ref].key,
                                     headers: {'Accept': 'application/json'},
                                     success: function (response, opts) {
                                     },
