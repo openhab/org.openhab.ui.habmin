@@ -35,6 +35,16 @@
             <maximum>23</maximum>
             <values></values>
         </config.setting>
+        <config.setting>
+            <name>setSUC</name>
+            <label>Enable SUC Mode</label>
+            <description>Set as true to enable Static Update Controller mode</description>
+            <optional>true</optional>
+            <defaultvalue>false</defaultvalue>
+            <minimum>0</minimum>
+            <maximum>1</maximum>
+            <values></values>
+        </config.setting>
     </binding.config>
 
     <!-- Item binding configuration -->
