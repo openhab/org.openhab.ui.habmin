@@ -242,6 +242,7 @@ Ext.define('openHAB.graph.itemList', {
                 newItem.item = selectedItemList[cnt].name;
                 newItem.axis = 1;
                 newItem.legend = true;
+                newItem.lineWidth = 1;
 
                 var ref = persistenceItemStore.findExact("name", selectedItemList[cnt].name);
                 if (ref != -1)
