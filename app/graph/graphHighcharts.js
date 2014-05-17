@@ -268,8 +268,14 @@ Ext.define('openHAB.graph.graphHighcharts', {
                 if (rawData[chan].lineColor != null && rawData[chan].lineColor.length != 0)
                     options.series[series].color = rawData[chan].lineColor;
 
-                if(rawData[chan].lineWidth != null && parseInt(rawData[chan].lineWidth) != NaN)
+                if(rawData[chan].lineWidth != null && parseInt(rawData[chan].lineWidth) != NaN) {
                     options.series[series].lineWidth = rawData[chan].lineWidth;
+                    if(rawData[chan].lineWidth != 0) {
+                        options.series[series].states = {};
+                        options.series[series].states.hover = {};
+                        options.series[series].states.hover.lineWidth = rawData[chan].lineWidth + 2;
+                    }
+                }
 
                 if(typeof rawData[chan].legend == 'string' || rawData[chan].legend instanceof String)
                     options.series[series].showInLegend = (rawData[chan].legend.toLowerCase() == 'true') ? true : false;
@@ -422,11 +428,11 @@ Ext.define('openHAB.graph.graphHighcharts', {
                 rawData[chan] = {};
                 rawData[chan].received = false;
                 rawData[chan].item = chartConfig.items[chan].item;
-                rawData[chan].axis = chartConfig.items[chan].axis - 1;
+                rawData[chan].axis = parseInt(chartConfig.items[chan].axis) - 1;
                 rawData[chan].label = chartConfig.items[chan].label;
                 rawData[chan].chart = chartConfig.items[chan].chart;
                 rawData[chan].legend = chartConfig.items[chan].legend;
-                rawData[chan].lineWidth = chartConfig.items[chan].lineWidth;
+                rawData[chan].lineWidth = parseInt(chartConfig.items[chan].lineWidth);
                 rawData[chan].lineColor = chartConfig.items[chan].lineColor;
                 rawData[chan].lineStyle = chartConfig.items[chan].lineStyle;
                 rawData[chan].markerColor = chartConfig.items[chan].markerColor;
