@@ -381,7 +381,10 @@ Ext.define('openHAB.graph.graphHighcharts', {
             for (var cnt = 0; cnt < 4; cnt++) {
                 chartOptions.yAxis[cnt] = {};
                 chartOptions.yAxis[cnt].title = {};
+                chartOptions.yAxis[cnt].title.style = {};
                 chartOptions.yAxis[cnt].title.text = "";
+                chartOptions.yAxis[cnt].labels = {};
+                chartOptions.yAxis[cnt].labels.style = {};
             }
 
             // Configure the axis
@@ -404,16 +407,14 @@ Ext.define('openHAB.graph.graphHighcharts', {
                         chartOptions.yAxis[axis].opposite = true;
                     }
                     if(newConfig.axis[cnt].format != null && newConfig.axis[cnt].format.length != 0) {
-                        chartOptions.yAxis[axis].labels = {};
-                        chartOptions.yAxis[axis].labels.format = newConfig.axis[cnt].format;
+//                        chartOptions.yAxis[axis].labels.formatter = function() {
+//                            numberFormat (Number number, [Number decimals], [String decimalPoint], [String thousandsSep])
+//                            return this.value;
+//                        }
                     }
                     if(newConfig.axis[cnt].color != null && newConfig.axis[cnt].color.length != 0) {
-                        if(chartOptions.yAxis[axis].labels == null)
-                            chartOptions.yAxis[axis].labels = {};
-                        chartOptions.yAxis[axis].labels.style = {};
                         chartOptions.yAxis[axis].labels.style.color = newConfig.axis[cnt].color;
                         if(chartOptions.yAxis[axis].title != null) {
-                            chartOptions.yAxis[axis].title.style = {};
                             chartOptions.yAxis[axis].title.style.color = newConfig.axis[cnt].color;
                         }
                     }
