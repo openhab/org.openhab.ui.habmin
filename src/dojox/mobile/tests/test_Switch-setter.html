@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<title>Switch setter/getter</title>
+
+<script type="text/javascript" src="../deviceTheme.js"></script>
+<script type="text/javascript" src="../../../dojo/dojo.js"	data-dojo-config="async: true, parseOnLoad: true"></script>
+
+<script type="text/javascript">
+	require([
+		"dojo/_base/connect",
+		"dojo/dom",
+		"dojo/ready",
+		"dijit/registry",
+		"dojox/mobile/parser",
+		"dojox/mobile",
+		"dojox/mobile/compat"
+	], function(connect, dom, ready, registry) {
+		swOn = function() {
+			var w = registry.byId("sw");
+			w.set("value", "on");
+		}
+		swOff = function() {
+			var w = registry.byId("sw");
+			w.set("value", "off");
+		}
+		swEnable = function() {
+			var w = registry.byId("sw2");
+			w.set("value", "on");
+		}
+		swDisable = function() {
+			var w = registry.byId("sw2");
+			w.set("value", "off");
+		}
+		setDisplay = function(id) {
+			var element = dom.byId(id);
+			var span = dom.byId("displayMsg");
+
+			var swId
+			// change state
+			swId = registry.byId(id + "1");
+			swId.set("value", (swId.get("value") == "on") ? "off" : "on");
+
+			// display
+			if (element) {
+				element.style.display = "inline";
+				span.innerHTML = "setting element " + id + " display = " + element.style.display;
+			} else {
+				span.innerHTML = "element " + id + " not found.";
+			}
+			setTimeout(function() {
+				span.innerHTML = "";
+			}, 1000);
+		}
+
+		function showMsg(spanId, msg){
+			var span = dom.byId(spanId);
+			span.innerHTML = msg;
+			setTimeout(function() {
+				span.innerHTML = "";
+			}, 2000);
+		}
+
+		ready(function() {
+			var w = registry.byId("sw");
+			w.on("stateChanged", function(value) {
+				showMsg("msgArea", "onStateChanged: " + value);
+			});
+			w.watch("value", function(name, oldV, newV){
+				showMsg("watchMsgArea", "watch : property " + name + " changed from " + oldV +" to " + newV);
+			});
+		});
+	});
+</script>
+</head>
+<body style="visibility: hidden;">
+	<div data-dojo-type="dojox.mobile.View" data-dojo-props='selected:true'>
+		<div data-dojo-type="dojox.mobile.RoundRect" data-dojo-props='shadow:true'>
+			<span class="bold">Switch</span><br />
+			<input type="checkbox" id="sw" name="swName" data-dojo-type="dojox.mobile.Switch" value="off"><br>
+			<input type="button" onclick="swOn()" value="on">
+			<input type="button" onclick="swOff()" value="off"><br />
+			<span  id="msgArea"></span></br>
+			<span  id="watchMsgArea"></span>
+		</div>
+		<div data-dojo-type="dojox.mobile.RoundRect" data-dojo-props='shadow:true'>
+			<span class="bold">Initial state = off</span><br />
+			<input type="button" onclick="setDisplay('swOff')" value="Set state=on and display"><br />
+			<div id="swOff" style="display: none">
+				<input type="checkbox" id="swOff1" name="swName" data-dojo-type="dojox.mobile.Switch" value="off"><br />
+			</div>
+		</div>
+		<div data-dojo-type="dojox.mobile.RoundRect" data-dojo-props='shadow:true'>
+			<span class="bold">Initial state = on</span><br />
+			<input type="button" onclick="setDisplay('swOn')" value="Set state=off and display"><br />
+			<div id="swOn" style="display: none">
+				<input type="checkbox" id="swOn1" name="swName" data-dojo-type="dojox.mobile.Switch" value="on"><br />
+			</div>
+		</div>
+		<span id="displayMsg"></span>
+	</div>
+</body>
+</html>
