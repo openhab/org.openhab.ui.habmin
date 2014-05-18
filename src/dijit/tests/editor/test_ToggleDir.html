@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Editor Test: ToggleDir Plugin</title>
+
+	<script type="text/javascript" src="../boilerplate.js"></script>
+
+	<script type="text/javascript">
+		require([
+			"dojo/parser",
+			"dijit/Editor",
+			"dijit/_editor/plugins/ToggleDir",
+			"dijit/_editor/plugins/TabIndent",
+			"dojo/domReady!"
+		], function(parser){
+			parser.parse();
+		});
+	</script>
+</head>
+<body class="claro" role="main">
+	<div style="border: 1px dotted black;">
+		<div id="ed0" data-dojo-type="dijit/Editor" data-dojo-props='"aria-label":"ed0",extraPlugins:["dijit/_editor/plugins/ToggleDir"]'>
+			<ol><li>the toggleDir plugin provides an extra button to switch text direction (BiDi). Useful when right-to-left 
+					languages are used with left-to-right languages.</li></ol>
+		</div>
+	</div>
+</body>
+</html>

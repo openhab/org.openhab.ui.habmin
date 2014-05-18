@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Fieldset Widget Automated (non-robot) Tests</title>
+
+	<script type="text/javascript" src="boilerplate.js"></script>
+
+	<script type="text/javascript">
+		require([
+			"doh/runner",
+			"dojo/dom", "dojo/on", "dojo/parser",
+			"dijit/Fieldset",
+			"dojo/domReady!"
+		], function(doh, dom, on, parser, Fieldset){
+
+			doh.register("declarative", function(){
+				var d = new doh.Deferred();
+
+				parser.parse();
+
+				doh.t(!!fs1, "widget created");
+				doh.t(fs1.open, "open");
+				doh.is("Declarative", fs1.titleNode.innerHTML);
+
+				on.emit(fs1.titleNode, "click", {bubbles: true});
+				setTimeout(d.getTestCallback(function(){
+					doh.f(fs1.open, "closed");
+					doh.is("none", fs1.hideNode.style.display, "hidden")
+				}), 500);
+
+				return d;
+			});
+
+			doh.register("programmatic", function(){
+				var fs2 = (new Fieldset({
+					id: 'fs2',
+					title: 'Programmatic',
+					content: '<p>I was created programmatically!</p>'
+				})).placeAt(document.body);
+				doh.t(!!fs2, "widget created");
+			});
+
+			doh.run();
+		});
+	</script>
+</head>
+<body class="claro">
+	<h1 class="testTitle">Fieldset Automated (non-robot) tests</h1>
+	<fieldset id="fs1" data-dojo-id="fs1" data-dojo-type="dijit/Fieldset">
+		<legend>Declarative</legend>
+		<p>Some content</p>
+	</fieldset>
+</body>
+</html>
+
+

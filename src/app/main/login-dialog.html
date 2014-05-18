@@ -1,0 +1,31 @@
+<div id="dialog-template">
+    <div style="width:320px;">
+        <div class="dijitDialogPaneContentArea">
+            <div data-dojo-attach-point="contentNode">
+                {form}
+            </div>
+        </div>
+
+        <div class="dijitDialogPaneActionBar">
+            <div
+                    class="loginMessage"
+                    data-dojo-attach-point="messageNode"
+                    ></div>
+            <button
+                    data-dojo-type="dijit.form.Button"
+                    data-dojo-attach-point="submitButton"
+                    data-dojo-props="iconClass:'dijitButtonIcon dijitIconSave'"
+                    >
+                OK
+            </button>
+
+            <button
+                    data-dojo-type="dijit.form.Button"
+                    data-dojo-attach-point="cancelButton"
+                    data-dojo-props="iconClass:'dijitButtonIcon dijitIconCancel'"
+                    >
+                Cancel
+            </button>
+        </div>
+    </div>
+</div>

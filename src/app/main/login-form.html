@@ -1,0 +1,47 @@
+<div id="login-form-template">
+    <form
+            data-dojo-type="dijit.form.Form"
+            data-dojo-attach-point="form"
+            >
+
+        <table class="form">
+            <tr>
+                <td>
+                    <table>
+                        <tr>
+                            <td>Username</td>
+                            <td>
+                                <input data-dojo-type="dijit.form.ValidationTextBox"
+                                       data-dojo-props='
+                            name: "username",
+                            required: true,
+                            maxLength: 64,
+                            trim: true,
+                            style: "width: 200px;"
+                            '
+                                        />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Password</td>
+                            <td>
+                                <input data-dojo-type="dijit.form.ValidationTextBox"
+                                       type="password"
+                                       data-dojo-props='
+                            name: "password",
+                            required: true,
+                            style: "width: 200px;"
+                            '
+                                        />
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <img height=50 src="app/images/keys.png">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>

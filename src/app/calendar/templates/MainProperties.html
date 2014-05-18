@@ -1,0 +1,46 @@
+<div>
+    <div data-dojo-attach-point="datePicker" data-dojo-type="demo.DatePicker" style="width:250px"></div>
+	<div data-dojo-type="dijit.TitlePane" data-dojo-props="title:'Calendars', style:'margin-top:10px;width:250px'" >
+		<div>
+			<input type="checkbox" data-dojo-attach-point="calendar1CB" data-dojo-type="dijit.form.CheckBox" checked="true"/>
+			<label for="calendar1CB">Calendar 1</label>
+		</div>
+				
+		<div style="margin-top:5px">
+			<input type="checkbox" data-dojo-attach-point="calendar2CB" data-dojo-type="dijit.form.CheckBox" checked="true"/>
+			<label for="calendar2CB">Calendar 2</label>
+		</div>
+	</div>
+	<div data-dojo-type="dijit.TitlePane" data-dojo-props="title:'Event properties', style:'margin-top:10px;width:250px'" >
+		<div><span class="propertyTitle">Summary:</span></div>
+		<div data-dojo-attach-point="itemSummaryEditor" data-dojo-type="dijit.form.TextBox" style="width:225px;" data-dojo-props="disabled:true"></div>
+		<div style="margin-top:10px"><span class="propertyTitle">Start:</span></div>
+		<div>
+			<div data-dojo-attach-point="itemStartDateEditor" data-dojo-type="dijit.form.DateTextBox" style="width:120px;"  data-dojo-props="disabled:true"></div>
+			<div data-dojo-attach-point="itemStartTimeEditor" data-dojo-type="dijit.form.TimeTextBox" style="width:100px;" data-dojo-props="disabled:true" ></div>
+		</div>
+		<div style="margin-top:10px"><span class="propertyTitle">End:</span></div>
+		<div>
+			<div data-dojo-attach-point="itemEndDateEditor" data-dojo-type="dijit.form.DateTextBox" style="width:120px;" data-dojo-props="disabled:true" ></div>
+			<div data-dojo-attach-point="itemEndTimeEditor" data-dojo-type="dijit.form.TimeTextBox" style="width:100px;" data-dojo-props="disabled:true" ></div>
+		</div>
+		<div style="margin-top:10px"><span class="propertyTitle">Calendar:</span></div>
+		<select data-dojo-attach-point="calendarEditor" data-dojo-type="dijit.form.ComboBox"  style="width:225px;" data-dojo-props="disabled:true" >
+			<option>Calendar 1</option>
+			<option>Calendar 2</option>									
+		</select>
+		<div style="margin-top:10px">
+			<input type="checkbox" data-dojo-attach-point="allDayCB" data-dojo-type="dijit.form.CheckBox" checked="false" data-dojo-props="disabled:true" />
+			<label for="allDayCB">All day</label>
+		</div>	
+		<div style="margin-top:10px; text-align:right">
+			<span style="text-align:left">
+				<button data-dojo-attach-point="deleteItemButton" class="deleteButton" data-dojo-type="dijit.form.Button"  data-dojo-props="disabled:true">Delete</button>
+			</span>
+			<span style="text-align:right">
+				<button data-dojo-attach-point="updateItemButton" data-dojo-type="dijit.form.Button" data-dojo-props="disabled:true" >Update</button>
+			</span>
+		</div>
+	</div>
+</div>
+		    

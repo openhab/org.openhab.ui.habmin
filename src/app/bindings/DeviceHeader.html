@@ -1,0 +1,44 @@
+<div class='habminDevice' role="presentation">
+    <div data-dojo-attach-point='focusNode'
+        role="tab" aria-expanded="false">
+        <table width="100%">
+            <tr data-dojo-attach-point='titleNode' data-dojo-attach-event='ondijitclick:_onTitleClick'>
+                <td class="habminDeviceIcon">
+                    <span role="presentation" data-dojo-attach-point="iconNode"><img src="app/images/tools_preferences.png" height="32" width="32"></span>
+                </td>
+                <td>
+                    <table width="100%">
+                        <tr>
+                            <td class='habminDeviceHeading'>
+                                <span role="presentation" data-dojo-attach-point='titleLabelNode, textDirNode'></span>
+                            </td>
+                            <td class='habminDeviceText'>
+                                <span role="presentation" data-dojo-attach-point='titleTextNode, textDirNode'></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class='habminDeviceHeading'>
+                                <span role="presentation" data-dojo-attach-point='typeLabelNode, textDirNode'></span>
+                            </td>
+                            <td class='habminDeviceText'>
+                                <span role="presentation" data-dojo-attach-point='typeTextNode, textDirNode'></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class='habminDeviceHeading'>
+                                <span role="presentation" data-dojo-attach-point='statusLabelNode, textDirNode'></span>
+                            </td>
+                            <td class='habminDeviceText'>
+                                <span role="presentation" data-dojo-attach-point='statusTextNode, textDirNode'></span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><div data-dojo-attach-point='categoriesNode' style='display: none;'></div></td>
+            </tr>
+        </table>
+    </div>
+</div>

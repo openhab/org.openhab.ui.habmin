@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+		"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title>doh.robot ToggleDir_rtl Test</title>
+
+		<style>
+			@import "../../../../util/doh/robot/robot.css";
+		</style>
+
+		<!-- required: dojo.js -->
+		<script type="text/javascript" src="../../../../dojo/dojo.js"></script>
+
+		<script type="text/javascript">
+			dojo.require("dijit.robotx");
+			dojo.require("dijit.tests.helpers");	// functions to help test
+
+			dojo.ready(function(){
+				doh.robot.initRobot('../test_ToggleDir_rtl.html');
+					
+				var metaKey = {ctrl: true};
+
+				var registry;
+				doh.register("setup", [
+					{
+						name: "wait for editors to load",
+						timeout: 5000,
+						runTest: waitForLoad
+					},
+					function setVars(){
+						registry = doh.robot.window.require("dijit/registry");
+					}
+				]);
+
+				doh.register("testToggleDir", [
+					{
+						name: "toggleDir_toggleOn",
+						timeout: 6000,
+						runTest: function(){
+							var d = new doh.Deferred();
+							
+							doh.robot.mouseMoveAt(dojo.query(".dijitEditorIconToggleDir")[0], 1000);
+							doh.robot.mouseClick({left:true}, 500);
+							
+							doh.robot.mouseMoveAt("ed0", 1000);
+							doh.robot.mouseClick({left:true}, 500);
+
+							doh.robot.sequence(d.getTestCallback(function(){
+								var editor = registry.byId("ed0");
+								var editDoc = editor.editorObject.contentWindow.document.documentElement;
+			                    editDoc = editDoc.getElementsByTagName("body")[0];
+			                    doh.is("ltr", editDoc.dir);
+							
+							}), 500);
+							return d;
+						}
+					},
+					{
+						name: "toggleDir_toggleOff",
+						timeout: 6000,
+						runTest: function(){
+							var d = new doh.Deferred();
+							
+							doh.robot.mouseMoveAt(dojo.query(".dijitEditorIconToggleDir")[0], 1000);
+							doh.robot.mouseClick({left:true}, 500);
+							
+							doh.robot.mouseMoveAt("ed0", 1000);
+							doh.robot.mouseClick({left:true}, 500);
+
+							doh.robot.sequence(d.getTestCallback(function(){
+								var editor = registry.byId("ed0");
+								var editDoc = editor.editorObject.contentWindow.document.documentElement;
+			                    editDoc = editDoc.getElementsByTagName("body")[0];
+			                    doh.is("rtl", editDoc.dir);
+							}), 500);
+							return d;
+						}
+					}					
+				]);
+				doh.run();
+			});
+		</script>
+	</head>
+</html>

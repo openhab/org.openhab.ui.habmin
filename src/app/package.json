@@ -1,0 +1,33 @@
+{
+	"name": "javelin",
+	"version": "0.1",
+	"main": "main",
+	"dependencies": {
+		"dojo": "1.9.2",
+		"dijit": "1.9.2",
+		"dojox": "1.9.2",
+		"util": "1.9.2"
+	},
+	"description": "Javelin home automation interface for openHAB / Eclipse SmartHome.",
+	"licenses": [
+		{
+			"type": "AFLv2.1",
+			"url": "http://bugs.dojotoolkit.org/browser/dojo/trunk/LICENSE#L43"
+		},
+		{
+			"type": "BSD",
+			"url": "http://bugs.dojotoolkit.org/browser/dojo/trunk/LICENSE#L13"
+		}
+	],
+	"bugs": "https://github.com/cdjackson/habmin/issues",
+	"keywords": ["openhab", "eclipse", "smarthome", "habmin", "automation", "zwave"],
+	"homepage": "https://github.com/cdjackson/habmin",
+	"dojoBuild": "package.js",
+    "maintainers": [{
+        "name": "Chris Jackson"
+    }],
+    "contributors": [{
+        "name": "Chris Jackson"
+    }
+    ]
+}

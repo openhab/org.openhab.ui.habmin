@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <title>stratease/dGrowl</title>
+	<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+	<link href="dGrowl.css" rel="stylesheet">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/dojo/1.8.2/dojo/dojo.js" data-dojo-config="baseUrl: window.location.pathname, aSync:true, packages:[{ name: 'dGrowl', location: './' }]"></script>
+	<style>
+		body {
+			background-color: #EEEEEE;
+		}
+		#mainWrap {
+			background-color: #FFFFFF;
+			width: 960px;
+			padding: 10px 25px;
+			margin: 0 auto;
+			border: 1px solid #CCCCCC;
+		}
+	</style>
+	<script type="text/javascript">
+		require(['dGrowl', 'dojo/topic'], function(dGrowl, topic)
+		{
+			var dg = new dGrowl({'channels':[{'name':'info','pos':2},{'name':'error', 'pos':1}]});
+			var duration = 8000;
+			dg.addNotification('Default style (first channel defined).... lasts '+ duration + ' msecs!',{duration:duration});
+			topic.publish('dGrowl', 'Published dGrowl Events work! This message is stickied!', {sticky:true});
+			dg.addNotification('I am an error channel! Defined as top position in notification display list!',{title:'Rut roh...', channel:'error', sticky:true});
+			dg.addNotification('I can handle a lot of content and <b>html</b> too! <a href="#cool">Cool!</a>.... Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',{sticky:true});
+		});
+		function runEvalCode()
+		{
+			var message = document.getElementById('mN');
+			var options = document.getElementById('oN');
+			if(options.value)
+				eval('var options = ' + options.value);
+			else
+				options = {};
+			require(['dojo/topic'], function(topic)
+			{
+				topic.publish('dGrowl', message.value, options);
+			});
+		}
+	</script>
+  </head>
+  <body>
+	<div class="navbar">
+		<div class="navbar-inner">
+			<ul class="nav nav-pills">
+				<li><a href="#api">API</a></li>
+				<li><a href="#example">Examples</a></li>
+				<li><a href="https://github.com/stratease/dGrowl">Github Project</a></li>
+			</ul>
+		</div>
+	</div>
+	<div id="mainWrap">
+		<h1>dGrowl</h1>
+		<p>
+			dGrowl is a simple notification system similar to the OS X's Growl notifications. The widget was built with the <a href="http://dojotoolkit.org">dojo</a> 1.8.2 framework. This version takes advantage of the dojo AMD loader. There is also a similar dojo widget called a <a href="http://dojotoolkit.org/reference-guide/1.9/dojox/widget/Toaster.html">Toaster</a>. dGrowl offers some desired features the Toaster lacked but it may still be a good choice depending on your needs.
+		</p>
+		<p><a href="#try">Try it out</a> below!</p>
+		<h2>Features</h2>
+		<p>
+			<ul>
+				<li><b>Channels</b> - a system for organization of various classifications of messages. A common usage example would be an "error" channel vs. an "info" channel. This allows custom styling for user defined channels, as well as grouping the notifications within their respective channel.</li>
+				<li><b>Customizable Styles</b> - there are several built in styles out of the box, but with the CSS class structure of the notification elements it makes it easy to modify to suit your needs.</li>
+				<li><b>Sticky notices</b> - you can determine any message to be important enough to wait until a user decides to close it by using the <a href="#sticky">sticky</a> flag.</li>
+				<li><b>CSS3 animations</b> - the built in stylesheet uses CSS transitions. This keeps it lightweight and more extensible.</li>
+				<li><b>Built in Topic Subscription</b> - utilizes dojo's <a href="https://dojotoolkit.org/reference-guide/1.9/dojo/topic.html#dojo-topic">topic</a> module, which makes it easy to use from various scopes of your application. Create one dGrowl instance and publish your events from anywhere. If desired, you can use the addNotification procedural API as well.</li>
+				<li><b>Event Hooks</b> - built in onShow and onHide events for the notification widgets.</li>
+			</ul>
+		</p>
+		<h2 id="example">Examples</h2>
+		<p>A simple example.
+			<pre>
+var dg = new dGrowl();
+dg.addNotification('Hello world!');
+			</pre>
+		</p>
+		<p>Creating two channels and publishing a <code>dGrowl</code> event.
+			<pre>
+var dg = new dGrowl({'channels':[{'name':'info','pos':2},{'name':'error', 'pos':1}]});
+dg.addNotification('Ut oh, something broke!',{'channel':'error'});
+topic.publish('dGrowl', 'This message is stickied!', {'title':"Onward ho!", 'sticky':true});
+			</pre>
+		</p>
+		<h2 id="api">API</h2>
+		<h3><i>dGrowl</i></h3>
+		<code>dGrowl([optionsl])</code>
+		<table class="table table-condensed table-striped">
+			<thead>
+				<tr>
+					<th>Property</th>
+					<th>Datatype</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><code>channels</code></td>
+					<td>array</td>
+					<td>[optional] List of channel definitions. The first item in this list is the default channel when one isn't specified for the notifications. Object properties include:
+						<ul>
+							<li><code>pos</code> - integer [optional]. The display order.</li>
+							<li><code>name</code> - string. The channel name.</li>
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<td><code>defaultChannel</code></td>
+					<td>string</td>
+					<td>[optional] The name of the default channel the <code>addNotification</code> method uses. When not specified, uses the first item in the channels list or <b>default</b>.</td>
+				</tr>
+				<tr>
+					<td><code>orientation</code></td>
+					<td>string</td>
+					<td>[optional] Defaults to topRight. This is the location on the window the widget is located. Available options: topRight, (planned: topLeft, bottomRight, bottomLeft)</td>
+				</tr>
+			</tbody>
+		</table>
+		<h3><i>addNotification</i> and <i>dGrowl topic</i></h3>
+		<form class="form form-inline" id="try">
+			<h4>Try it out!</h4>
+			<input id="mN" type="text" placeholder="message" title="Message parameter for the addNotification API" /> <input id="oN" type="text" title="Options parameter for the addNotification API" placeholder="{duration:1500, title:'Hi dude!'}" /> <button class="btn btn-primary" type="button" onclick="runEvalCode();">Add Notification!</button>
+		</form>
+		<code>addNotification( String message, [options])</code>
+		<table class="table table-condensed table-striped">
+			<thead>
+				<tr>
+					<th>Property</th>
+					<th>Datatype</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr id="sticky">
+					<td><code>sticky</code></td>
+					<td>boolean</td>
+					<td>[optional] Defaults to false. If true the notification will remain on the window until closed.</td>
+				</tr>
+				<tr>
+					<td><code>duration</code></td>
+					<td>integer</td>
+					<td>[optional] msecs the notification remains on the page. Defaults to 5000.</td>
+				</tr>
+				<tr>
+					<td><code>channel</code></td>
+					<td>string</td>
+					<td>[optional] Name of the channel this message is fired under.</td>
+				</tr>
+				<tr>
+					<td><code>title</code></td>
+					<td>string</td>
+					<td>[optional] A title displayed at the top of the message.</td>
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+  </body>
+</html>

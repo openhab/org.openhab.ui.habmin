@@ -1,0 +1,418 @@
+/**
+ * If you are developing a project that makes use of Dijit widgets, you will probably want to include the two files
+ * below; otherwise, you can remove them. When building for release, Dojo will automatically combine all of your
+ * @imported CSS files into a single file.
+ *
+ * It is highly, highly recommended that you develop your CSS using Stylus: http://learnboost.github.com/stylus/.
+ */
+@import '../../dojo/resources/dojo.css';
+@import '../../dijit/themes/claro/claro.css';
+
+html, body, #mainDiv {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+
+body, div, dl, dt, dd, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td {
+    margin: 0;
+    padding: 0;
+}
+
+fieldset, img {
+    border: 0 none;
+}
+
+address, caption, cite, code, dfn, th, var {
+    font-style: normal;
+    font-weight: normal;
+}
+
+caption, th {
+    text-align: left;
+}
+
+q:before, q:after {
+    content: "";
+}
+
+abbr, acronym {
+    border: 0;
+}
+
+body {
+    font: 12px Myriad, Helvetica, Tahoma, Arial, clean, sans-serif;
+    *font-size: 75%;
+}
+
+h1 {
+    font-size: 1.5em;
+    font-weight: normal;
+    line-height: 1em;
+    margin-top: 1em;
+    margin-bottom: 0;
+}
+
+h2 {
+    font-size: 1.1667em;
+    font-weight: bold;
+    line-height: 1.286em;
+    margin-top: 1.929em;
+    margin-bottom: 0.643em;
+}
+
+h3, h4, h5, h6 {
+    font-size: 1em;
+    font-weight: bold;
+    line-height: 1.5em;
+    margin-top: 1.5em;
+    margin-bottom: 0;
+}
+
+p {
+    font-size: 1em;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+    line-height: 1.5em;
+}
+
+blockquote {
+    font-size: 0.916em;
+    margin-top: 3.272em;
+    margin-bottom: 3.272em;
+    line-height: 1.636em;
+    padding: 1.636em;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+ol li, ul li {
+    font-size: 1em;
+    line-height: 1.5em;
+    margin: 0;
+}
+
+pre, code {
+    font-size: 115%;
+    *font-size: 100%;
+    font-family: Courier, "Courier New";
+    background-color: #efefef;
+    border: 1px solid #ccc;
+}
+
+pre {
+    border-width: 1px 0;
+    padding: 1.5em;
+}
+
+table {
+    font-size: 100%;
+}
+
+.dojoTabular {
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: 1px solid #ccc;
+    margin: 0 1.5em;
+}
+
+.dojoTabular th {
+    text-align: center;
+    font-weight: bold;
+}
+
+.dojoTabular thead,
+.dojoTabular tfoot {
+    background-color: #efefef;
+    border: 1px solid #ccc;
+    border-width: 1px 0;
+}
+
+.dojoTabular th,
+.dojoTabular td {
+    padding: 0.25em 0.5em;
+}
+
+.dojoxFisheyeListItemLabel {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #eee;
+    border: 2px solid #666;
+    padding: 2px;
+    text-align: center;
+    position: absolute;
+    display: none;
+    white-space: pre;
+}
+
+.dijitPlIconSave {
+    background-position: -18px;
+}
+
+.dijitPlIcon {
+    background-image: url('../images/wrench--plus.png');
+    background-repeat: no-repeat;
+    width: 18px;
+    height: 18px;
+    text-align: center;
+}
+
+.dojoxFisheyeListItemLabel.dojoxFishSelected {
+    display: block;
+}
+
+.dojoxFisheyeListItemImage {
+    border: 0px;
+    position: absolute;
+}
+
+.dojoxFisheyeListItem {
+    position: absolute;
+    z-index: 2;
+}
+
+.dojoxFisheyeListBar {
+    position: relative;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.hbminHeaderbar {
+    background-color: #666;
+    padding: 0px !important;
+    height:70px;
+    text-align: center;
+    border: 0px  !important;
+    width: 100%;
+    display: inline;
+    position: relative;
+}
+
+.page {
+    background-color: #ccc;
+    float: left;
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    position:relative;
+    overflow: auto;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 0;
+    margin: 0;
+    background-color: #fff;
+    background-image: none;
+    width: 100%;
+    height:100%;
+}
+
+.dijitButtonIcon {
+    background-image: url('../images/wrench--plus.png');
+    background-repeat: no-repeat;
+    width: 18px;
+    height: 18px;
+    text-align: center;
+}
+
+.dijitIconSave {
+    background-image: url('../images/tick.png');
+}
+
+.dijitIconCancel {
+    background-image: url('../images/cross.png');
+}
+
+.status-online,
+.status-offline,
+.status-unknown,
+.user-error {
+    background-repeat: no-repeat;
+    background-position: right 5px top;
+    text-align: right;
+    float: right;
+    margin-right: 5px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    padding-right: 25px;
+    color: white;
+}
+
+.status-unknown {
+    background-image: url('../images/status-offline.png');
+}
+
+.status-online {
+    background-image: url('../images/status.png');
+}
+
+.status-offline {
+    background-image: url('../images/status-busy.png');
+}
+
+.user-error {
+    background-image: url('../images/user-red.png');
+}
+
+.notification-list {
+    width: 45px;
+    height: 40px;
+    float: right;
+    margin: 0px;
+    background-image: url('../images/list.png');
+    background-repeat: no-repeat;
+    background-position: right 15px top 5px;
+}
+
+
+.loginMessage {
+    position: absolute;
+    left: 0;
+    padding: 7px;
+    color: red;
+}
+
+#tree .field-bool {
+    width: 4em;
+}
+#tree .field-type {
+    width: 5em;
+}
+
+
+
+
+
+
+
+
+
+
+/* === Blue Badge ==*/
+.mblDomButtonErrorBadge,
+.mblDomButtonWarningBadge
+{
+    position: relative;
+    width: 29px;
+    height: 20px;
+    text-align: right;
+    font-family: Helvetica;
+    font-size: 10px;
+    font-weight: bold;
+    float: right;
+}
+.mblDomButtonErrorBadge > div {
+    position: absolute;
+    display: inline;
+    padding: 0px 5px;
+    top: 2px;
+    right: 2px;
+    color: white;
+    border: 2px solid white;
+    border-radius: 12px;
+    text-align: center;
+    background: -webkit-gradient(linear, left top, left bottom, from(#f5bdc0), to(#ae0001), color-stop(0.5, #e44149), color-stop(0.5, #de151f));
+    background: linear-gradient(to bottom, #f5bdc0 0%, #e44149 50%, #de151f 50%, #ae0001 100%);
+    background-clip: padding-box;
+    -webkit-box-shadow: 2px 3px 2px rgba(0, 0, 0, 0.5);
+    box-shadow: 2px 3px 2px rgba(0, 0, 0, 0.5);
+}
+.mblDomButtonErrorBadge > div > div {
+    display: none;
+}
+.mblDomButtonWarningBadge > div {
+    position: absolute;
+    display: inline;
+    padding: 0px 5px;
+    top: 2px;
+    right: 2px;
+    color: white;
+    border: 2px solid white;
+    border-radius: 12px;
+    text-align: center;
+    background: -webkit-gradient(linear, left top, left bottom, from(#6ba2e7), to(#216dd6), color-stop(0.5, #4282de), color-stop(0.5, #216dd6));
+    background: linear-gradient(to bottom, #6ba2e7 0%, #4282de 50%, #216dd6 50%, #216dd6 100%);
+    background-clip: padding-box;
+    -webkit-box-shadow: 2px 3px 2px rgba(0, 0, 0, 0.5);
+    box-shadow: 2px 3px 2px rgba(0, 0, 0, 0.5);
+}
+.mblDomButtonWarningBadge > div > div {
+    display: none;
+}
+
+
+#splashscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    margin-top: 10%;
+    background-color: white;
+    vertical-align: middle;
+    margin: auto;
+}
+
+
+.content {
+    overflow:auto;
+    overflow-y:auto;
+    position: fixed;
+    top: 70px;
+    left: 0;
+}
+
+
+.habmin .dijitContainer {
+    padding: 0px;
+}
+
+.habmin .dijitToolbar {
+    padding: 0px;
+}
+
+.habminDevice {
+    margin: 5px;
+    border: solid #000;
+    border-width: 1px;
+    padding:4px;
+    border-color: #0c86b9;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 5px 5px 12px -10px , 1);
+    box-shadow: 5px 5px 12px -10px , 1);
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.habminDeviceIcon
+.habminDeviceIconError {
+    width:40px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    border-width: 0px;
+    background-clip: border-box;
+}
+
+.habminDeviceIconError {
+    background: -webkit-gradient(linear, left top, left bottom, from(#f5bdc0), to(#ae0001), color-stop(0.5, #e44149), color-stop(0.5, #de151f));
+    background: linear-gradient(to bottom, #f5bdc0 0%, #e44149 50%, #de151f 50%, #ae0001 100%);
+}
+
+.habminDeviceTitle {
+
+
+    margin-bottom: 5px;
+}
+
+.habminDeviceHeading {
+    font-weight: bold;
+    width:25%;
+    margin-right: 10px;
+}
+
+.habminDeviceText {
+
+}

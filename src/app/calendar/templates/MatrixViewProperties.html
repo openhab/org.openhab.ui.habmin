@@ -1,0 +1,64 @@
+<div>
+    <table class="formTable" >
+		<tr>
+			<td class="smallText">
+				<label for="roundToDayCB">Round to day:</label>
+			</td>
+			<td class="smallText">
+				<input type="checkbox" data-dojo-attach-point="roundToDayCB" data-dojo-type="dijit.form.CheckBox" checked="true"/>
+			</td>
+		</tr>
+		
+		<tr>
+			<td>Overlap (%):</td>
+			<td class="right"><div data-dojo-attach-point="overlapEditor" data-dojo-type="dijit.form.NumberSpinner" value="0" constraints="{min:0, max:100}" intermediateChanges="true" smallDelta="10"  ></div></td>
+		</tr>
+		
+		<tr>
+			<td>Vertical gap (px):</td>
+			<td class="right"><div data-dojo-attach-point="vGapEditor" data-dojo-type="dijit.form.NumberSpinner"  constraints="{min:0, max:30}" value="4" intermediateChanges="true" ></div></td>
+		</tr>
+		
+		<tr>
+			<td>Horiz. height (px):</td>
+			<td class="right"><div data-dojo-attach-point="hRendererHeightEditor" data-dojo-type="dijit.form.NumberSpinner"  constraints="{min:0, max:50}" value="17" intermediateChanges="true" ></div></td>
+		</tr>
+
+		<tr>
+			<td>Labels height (px):</td>
+			<td class="right"><div data-dojo-attach-point="lRendererHeightEditor" data-dojo-type="dijit.form.NumberSpinner"  constraints="{min:0, max:50}" value="14" intermediateChanges="true" ></div></td>
+		</tr>
+
+		<tr>
+			<td>Expand irs height (px):</td>
+			<td class="right"><div data-dojo-attach-point="eRendererHeightEditor" data-dojo-type="dijit.form.NumberSpinner"  constraints="{min:0, max:50}" value="15" intermediateChanges="true" ></div></td>
+		</tr>
+		
+		<tr>
+			<td>Renderer kind:</td>
+			<td class="right">
+				<select data-dojo-attach-point="rendererKindEditor" data-dojo-type="dijit.form.ComboBox" style="width:80px;" searchAttr="label">
+				</select>
+			</td>
+		</tr>
+	</table>
+	<table class="formTable" style="margin-top:10px">
+		<tr>
+			<td>Row format:</td>
+			<td class="right"><div data-dojo-attach-point="rowHeaderFormatEditor" data-dojo-type="dijit.form.TextBox"  placeHolder="ex: w"></div></td>
+		</tr>
+		<tr>
+			<td>Cell short format:</td>
+			<td class="right"><div data-dojo-attach-point="cellShortFormatEditor" data-dojo-type="dijit.form.TextBox"  placeHolder="ex: dd"></div></td>
+		</tr>
+		<tr>
+			<td>Cell long format:</td>
+			<td class="right"><div data-dojo-attach-point="cellLongFormatEditor" data-dojo-type="dijit.form.TextBox"  placeHolder="ex: MMMM, dd"></div></td>
+		</tr>
+		<tr>
+			<td colspan="2" style="text-align:right;padding-top:5px;padding-right:5px"><button data-dojo-attach-point="dateFormatButton" data-dojo-type="dijit.form.Button">Apply format</button></td>
+		</tr>
+	</table>
+
+</div>
+		    
