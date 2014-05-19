@@ -41,7 +41,7 @@ cd "$TOOLSDIR"
 if which node >/dev/null; then
 	node ../../dojo/dojo.js load=build --require "$LOADERCONF" --profile "$PROFILE" --releaseDir "$DISTDIR" $@
 elif which java >/dev/null; then
-	java -Xms256m -Xmx256m  -cp ../shrinksafe/js.jar:../closureCompiler/compiler.jar:../shrinksafe/shrinksafe.jar org.mozilla.javascript.tools.shell.Main  ../../dojo/dojo.js baseUrl=../../dojo load=build --require "$LOADERCONF" --profile "$PROFILE" --releaseDir "$DISTDIR" $@
+        java -Xms256m -Xmx256m  -cp ../shrinksafe/js.jar:../closureCompiler/compiler.jar:../shrinksafe/shrinksafe.jar org.mozilla.javascript.tools.shell.Main  ../../dojo/dojo.js baseUrl=../../dojo load=build --require "$LOADERCONF" --profile "$PROFILE" --releaseDir "$DISTDIR" $@
 else
 	echo "Need node.js or Java to build!"
 	exit 1
@@ -58,5 +58,13 @@ perl -pe "
   s/isDebug: *1/deps:['$LOADERMID']/;        # Remove isDebug, add deps
   s/<script src=\"$LOADERMID.*?\/script>//;  # Remove script app/run
   s/\s+/ /g;                                 # Collapse white-space" > "$DISTDIR/index.html"
+
+echo -n "Cleaning uncompressed files..."
+find $DISTDIR -name '*.js.consoleStripped.js' -delete
+find $DISTDIR -name '*.uncompressed.js' -delete
+find $DISTDIR -name '*.js.map' -delete
+
+rm build-report.txt
+mv $DISTDIR/build-report.txt ..
 
 echo "Build complete"

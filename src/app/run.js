@@ -27,7 +27,10 @@ require({
 
 		// For reference, this is what a more verbose package declaration looks like.
         { name: 'app', location: 'app', map: {} },
-        { name: 'app/main', location: 'app/main', map: {} }
+        { name: 'app/main', location: 'app/main', map: {} },
+        { name: 'app/calendar', location: 'app/calendar', map: {} },
+        { name: 'app/bindings', location: 'app/bindings', map: {} },
+        { name: 'app/chart', location: 'app/chart', map: {} }
 	]
 // Require `app`. This loads the main application module, `app/main`, since we registered the `app` package above.
 }, [ 'app' ]);

@@ -178,15 +178,15 @@ table {
     text-align: center;
 }
 
-.hbminHeaderbar {
+.habminHeaderbar {
     background-color: #666;
     padding: 0px !important;
     height:70px;
-    text-align: center;
     border: 0px  !important;
     width: 100%;
-    display: inline;
-    position: relative;
+    padding: 0px;
+    overflow-y: visible;
+    z-index: 3333;
 }
 
 .page {

@@ -58,21 +58,21 @@ define([ 'dojo/has', 'require' ], function (has, require) {
             function (Status, FisheyeList, FisheyeListItem, Login, Tooltip, dom, domAttr, domConstruct, fx, BorderContainer, ContentPane, headerTemplate) {
                 var currentPane = null;
 
-                bc = new BorderContainer({
+                var bc = new BorderContainer({
                     gutters: false,
                     style: "height: 100%; width: 100%;"
                 });
 
-                // create a ContentPane as the left pane in the BorderContainer
+                // Create a ContentPane as the top pane in the BorderContainer
                 var cp1 = new ContentPane({
                     region: "top",
                     style: "width: 100%;",
-                    class: "hbminHeaderbar",
+                    class: "habminHeaderbar",
                     content: headerTemplate
                 });
                 bc.addChild(cp1);
 
-                // create a ContentPane as the center pane in the BorderContainer
+                // Create a ContentPane as the center pane in the BorderContainer
                 var cp2 = new ContentPane({
                     region: "center",
                     id: "content",
@@ -84,7 +84,6 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                 bc.placeAt(document.body);
                 bc.startup();
 
-
                 var menu = new FisheyeList({
                     itemWidth: 64,
                     itemHeight: 64,
@@ -94,15 +93,23 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                     effectUnits: 0.75,
                     itemPadding: 15,
                     attachEdge: "top",
+//                    conservativeTrigger: true,
                     labelEdge: "bottom"
                 }, "mainMenu");
+//                menu.placeAt("mainMenu");
 
-                menu.addChild(new FisheyeListItem({id: "menuCharting",
+
+          //      menu.addChild(xxx);
+                var xxx = new FisheyeListItem({id: "menuCharting",
                     onClick: function () {
                     },
                     label: "Item 2",
                     iconSrc: "app/images/bar_chart.png"
-                }));
+                });
+//                xxx.parent = menu.domNode;
+//                xxx.postCreate();
+//                xxx.startup();
+                menu.addChild(xxx);
                 menu.addChild(new FisheyeListItem({id: "item3",
                     onClick: function () {
                         require(["app/bindings/zwave/ZWaveDevices"], function (ZWave) {
@@ -135,11 +142,13 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                     iconSrc: "app/images/businessman.png"
                 }));
                 menu.startup();
+//                menu.show();
 
-                new Tooltip({
-                    connectId: ["userStatus"],
-                    label: "Login Status"
-                });
+//                menu.placeAt("mainMenu");
+//                cp1.addChild(menu);
+                cp1.resize();
+
+
 
                 //               var loginDialog = new Login();
 //                loginDialog.placeAt(document.body);
@@ -148,6 +157,14 @@ define([ 'dojo/has', 'require' ], function (has, require) {
 
 //                new Status({}, "onlineStatus");
 
+
+
+                bc.resize();
+
+                new Tooltip({
+                    connectId: ["userStatus"],
+                    label: "Login Status"
+                });
 
                 // Hide and then remove the splash-screen.
                 fx.fadeOut({

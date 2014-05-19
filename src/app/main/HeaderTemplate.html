@@ -1,8 +1,13 @@
-<table width="100%" class="headerbar">
+<table width="100%" class="habminHeaderbar">
     <tbody style="width:100%">
     <tr>
         <td width="20%"></td>
-        <td width="60%"><span id="mainMenu"></span></td>
+        <td width="60%"><span id="mainMenu">    <div dojoType="dojox.widget.FisheyeListItem"
+                                                     id="item11"
+                                                     onclick="alert('click on ' + this.label + '(from widget id ' + this.widgetid + ')!');"
+                                                     label="Item 1"
+                                                     iconSrc="app/images/bar_chart.png">
+        </div></span></td>
         <td width="20%">
             <table align="right">
                 <tr>
