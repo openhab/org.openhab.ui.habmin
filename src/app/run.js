@@ -24,6 +24,9 @@ require({
 		'dijit',
 		'dojox',
         'dgrowl',
+        'dgrid',
+        'put-selector',
+        'xstyle',
 
 		// For reference, this is what a more verbose package declaration looks like.
         { name: 'app', location: 'app', map: {} },

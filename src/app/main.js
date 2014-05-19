@@ -42,20 +42,21 @@ define([ 'dojo/has', 'require' ], function (has, require) {
 
         require([
                 "app/main/onlineStatus",
-                "dojox/widget/FisheyeList",
-                "dojox/widget/FisheyeListItem",
                 "app/main/login",
                 "dijit/Tooltip",
+                "dojo/on",
                 "dojo/dom",
                 "dojo/dom-attr",
                 "dojo/dom-construct",
+                "dojo/dom-class",
+                "dojo/query",
                 "dojo/_base/fx",
                 "dijit/layout/BorderContainer",
                 "dijit/layout/ContentPane",
                 "dojo/text!app/main/HeaderTemplate.html",
                 "dojo/domReady!"
             ],
-            function (Status, FisheyeList, FisheyeListItem, Login, Tooltip, dom, domAttr, domConstruct, fx, BorderContainer, ContentPane, headerTemplate) {
+            function (Status, Login, Tooltip, on, dom, domAttr, domConstruct, domClass, query, fx, BorderContainer, ContentPane, headerTemplate) {
                 var currentPane = null;
 
                 var bc = new BorderContainer({
@@ -70,6 +71,7 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                     class: "habminHeaderbar",
                     content: headerTemplate
                 });
+
                 bc.addChild(cp1);
 
                 // Create a ContentPane as the center pane in the BorderContainer
@@ -84,69 +86,27 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                 bc.placeAt(document.body);
                 bc.startup();
 
-                var menu = new FisheyeList({
-                    itemWidth: 64,
-                    itemHeight: 64,
-                    itemMaxWidth: 128,
-                    itemMaxHeight: 128,
-                    orientation: "horizontal",
-                    effectUnits: 0.75,
-                    itemPadding: 15,
-                    attachEdge: "top",
-//                    conservativeTrigger: true,
-                    labelEdge: "bottom"
-                }, "mainMenu");
-//                menu.placeAt("mainMenu");
+ //               var menu = new Menu();
+   //             menu.placeAt("mainMenu");
+     //           menu.startup();
+//                menu.resize();
 
 
-          //      menu.addChild(xxx);
-                var xxx = new FisheyeListItem({id: "menuCharting",
-                    onClick: function () {
-                    },
-                    label: "Item 2",
-                    iconSrc: "app/images/bar_chart.png"
-                });
-//                xxx.parent = menu.domNode;
-//                xxx.postCreate();
-//                xxx.startup();
-                menu.addChild(xxx);
-                menu.addChild(new FisheyeListItem({id: "item3",
-                    onClick: function () {
-                        require(["app/bindings/zwave/ZWaveDevices"], function (ZWave) {
-                            var x = new ZWave({region: "center", lass: "content", style: "opacity: 100; width: 50%; height:100%;"});
-                            x.placeAt("content");
-                            x.startup();
-                            transition(currentPane, x);
-                        });
-                    },
-                    label: "Configuration",
-                    iconSrc: "app/images/tools_preferences.png"
-                }));
-                menu.addChild(new FisheyeListItem({
-                    id: "menuCalendar",
-                    onClick: function () {
-                        require(["app/calendar/main"], function (Calendar) {
-                            var x = new Calendar({region: "center", class: "content", style: "opacity: 0; width: 100%; height:100%;"});
-                            x.placeAt("content");
-                            x.startup();
-                            transition(currentPane, x);
-                        });
-                    },
-                    label: "Event Calendar",
-                    iconSrc: "app/images/appointment.png"
-                }));
-                menu.addChild(new FisheyeListItem({id: "item1",
-                    onClick: function () {
-                    },
-                    label: "Item 1",
-                    iconSrc: "app/images/businessman.png"
-                }));
-                menu.startup();
-//                menu.show();
+                var menu = domConstruct.place("<ul>", dom.byId("mainMenu"));
+                var x = domConstruct.place("<li>Charting 1</li>", menu, "last");
+                x.onclick = menuClick;
+                x.menuRef = 1;
+                x=domConstruct.place("<li>Charting 2</li>", menu, "last");
+                on(x, "click", menuClick);
+//                x.onclick = menuClick;
+                x.menuRef = 2;
+                x = domConstruct.place("<li>Charting 3</li>", menu, "last");
+                x.onclick = menuClick;
+                x.menuRef = 3;
+                x= domConstruct.place("<li>Charting 4</li>", menu, "last");
+                x.onclick = menuClick;
+                x.menuRef = 4;
 
-//                menu.placeAt("mainMenu");
-//                cp1.addChild(menu);
-                cp1.resize();
 
 
 
@@ -182,6 +142,40 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                  z.show();
                  });*/
 
+                function menuClick(event) {
+                    console.log("Menu selected: ", event);
+
+                    var selectedId = event.target.menuRef;
+                    var nodeList = query("#mainMenu ul > li");
+                    nodeList.forEach(function(node){
+                        if(selectedId == node.menuRef) {
+                            domClass.add(node, "menuSelected");
+                        }
+                        else {
+                            domClass.remove(node, "menuSelected");
+                        }
+                    });
+
+                    switch(selectedId) {
+                        case 1:
+                            require(["app/bindings/zwave/ZWaveDevices"], function (ZWave) {
+                                var x = new ZWave({region: "center", lass: "content", style: "opacity: 100; width: 50%; height:100%;"});
+                                x.placeAt("content");
+                                x.startup();
+                                transition(currentPane, x);
+                            });
+                            break;
+                        case 2:
+                            require(["app/calendar/main"], function (Calendar) {
+                                var x = new Calendar({region: "center", class: "content", style: "opacity: 0; width: 100%; height:100%;"});
+                                x.placeAt("content");
+                                x.startup();
+                                transition(currentPane, x);
+                            });
+                            break;
+                    }
+
+                }
 
                 function transition(fromOld, toNew) {
                     if (fromOld != null) {

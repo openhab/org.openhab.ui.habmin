@@ -1,5 +1,5 @@
 define([ "dojo/text", "dojo/_base/declare", "dijit/_WidgetBase", "dijit/_TemplatedMixin", "dojo/topic",
-        "dojo/dom-construct", "dGrowl/NotificationNode", "dojo/query", "dojo/_base/lang", "dojo/dom-class"],
+        "dojo/dom-construct", "dgrowl/NotificationNode", "dojo/query", "dojo/_base/lang", "dojo/dom-class"],
     function (t, declare, base, templated, topic, domCon, NotificationNode, query, lang, domClass) {
         return declare('dGrowl',
             [base, templated],
