@@ -8,14 +8,14 @@ define([
         "dojo/_base/array"
     ],
     function (declare, Container, Registry, Grid, Toolbar, Button, array) {
-        return declare(null, {
+        return declare(Container, {
             data: [
                 { first: "Bob", last: "Barker", age: 89 },
                 { first: "Vanna", last: "White", age: 55 },
                 { first: "Pat", last: "Sajak", age: 65 }
             ],
-            constructor: function (x, node) {
-                this.container = new Container();
+            postCreate: function (x, node) {
+                this.inherited(arguments);
 
                 toolbar = new Toolbar({region:"top"});
                 array.forEach(["Cut", "Copy", "Paste"], function(label){
@@ -26,7 +26,6 @@ define([
                         showLabel: false,
                         iconClass: "dijitButtonIcon dijitIconSave"
                     });
-
 
                     toolbar.addChild(button);
                 });
@@ -49,13 +48,14 @@ define([
                     }
                 });
 
-                this.container.addChild(toolbar);
-                this.container.addChild(this.grid);
-            },
-            show: function() {
-                this.container.placeAt("content");
-                this.grid.resize();
+                this.addChild(toolbar);
+                this.addChild(this.grid);
+
                 this.grid.renderArray(this.data);
+            },
+            startup: function() {
+                this.inherited(arguments);
+                this.resize();
             }
         });
     });
