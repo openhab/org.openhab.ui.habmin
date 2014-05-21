@@ -5,19 +5,15 @@ define([
         "dgrid/Grid",
         "dijit/Toolbar",
         "dijit/form/Button",
-        "dojo/_base/array"
+        "dojo/_base/array",
+        "dojo/_base/lang" // lang.hitch
     ],
-    function (declare, Container, Registry, Grid, Toolbar, Button, array) {
+    function (declare, Container, Registry, Grid, Toolbar, Button, array, lang) {
         return declare(Container, {
-            data: [
-                { first: "Bob", last: "Barker", age: 89 },
-                { first: "Vanna", last: "White", age: 55 },
-                { first: "Pat", last: "Sajak", age: 65 }
-            ],
-            postCreate: function (x, node) {
+            postCreate: function (arguments, node) {
                 this.inherited(arguments);
 
-                toolbar = new Toolbar({region:"top"});
+                this.toolbar = new Toolbar({region:"top"});
                 array.forEach(["Cut", "Copy", "Paste"], function(label){
                     var button = new Button({
                         // note: should always specify a label, for accessibility reasons.
@@ -29,33 +25,33 @@ define([
 
                     toolbar.addChild(button);
                 });
-/*
-                var grid = new Grid({
-                    region: "center",
-                    columns: {
-                        first: "First Name",
-                        last: "Last Name",
-                        age: "Age"
-                    }
-                });*/
 
                 this.grid = new (declare([Grid, Registry]))({
                     region: "center",
                     columns: {
-                        first: "First Name",
-                        last: "Last Name",
-                        age: "Age"
+                        model: "Model",
+                        icon: "Icon",
+                        name: "Sitemap Name"
                     }
                 });
 
-                this.addChild(toolbar);
+                this.addChild(this.toolbar);
                 this.addChild(this.grid);
-
-                this.grid.renderArray(this.data);
             },
             startup: function() {
                 this.inherited(arguments);
                 this.resize();
+            },
+            loadSitemapList: function() {
+                request("helloworld.txt", {
+                    timeout: this.timeout,
+                    handleAs: 'json'
+                }).then(
+                    lang.hitch(this, function (text) {
+                        console.log("The file's contents is: " + text);
+                        this.grid.renderArray(this.data);
+                    })
+                )
             }
         });
     });
