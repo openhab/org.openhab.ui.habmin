@@ -179,7 +179,7 @@ table {
 }
 
 .habminHeaderbar {
-    height:70px;
+    height:52px;
     margin: 0px !important;
     padding: 0px !important;
     width: 100%;
@@ -192,15 +192,6 @@ table {
     background-image: linear-gradient(top, rgb(29, 37, 75), rgb(3, 3, 6));
 }
 
-.page {
-    background-color: #fff;
-    float: left;
-    width: 100%;
-    height: 100%;
-    display: inline-block;
-    position:relative;
-    overflow: auto;
-}
 
 body {
     font-family: Arial, Helvetica, sans-serif;
@@ -360,21 +351,28 @@ body {
 }
 
 
-.content {
-    overflow:auto;
-    overflow-y:auto;
-    position: fixed;
-    top: 70px;
-    left: 0;
+#content {
+    overflow: hidden;
 }
 
 
 .habmin .dijitContainer {
-    padding: 0px;
+    overflow:hidden !important;
+    height:100% !important;
 }
 
 .habmin .dijitToolbar {
     padding: 0px;
+}
+
+.habminDeviceContainer {
+    overflow: auto;
+    padding-right: 0px;
+    width: 100%;
+    height: 100%;
+
+    margin-right: -100px;
+    padding-right: 100px;
 }
 
 .habminDevice {
@@ -405,8 +403,6 @@ body {
 }
 
 .habminDeviceTitle {
-
-
     margin-bottom: 5px;
 }
 
@@ -433,12 +429,12 @@ body {
 #mainMenu ul {
     overflow: hidden;
 
-    height: 60px;
+    height: 46px;
     float: left;
     width: 800px;
 
     list-style-type: none;
-    margin: 10px 0px 0px 0px;
+    margin: 0px;
     padding: 0px;
 }
 
@@ -459,8 +455,6 @@ body {
 #mainMenu li {
     float: left;
     height: 45px;
-    padding: 1px;
-    margin-bottom: 5px;
 }
 
 #mainMenu li {
