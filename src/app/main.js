@@ -51,13 +51,15 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                 "dojo/dom-class",
                 "dojo/query",
                 "dojo/_base/fx",
+                "dojo/_base/array",
                 "dijit/layout/BorderContainer",
                 "dijit/layout/ContentPane",
                 "dojo/text!app/main/HeaderTemplate.html",
                 "dojo/domReady!"
             ],
-            function (Status, Login, Tooltip, on, dom, domAttr, domConstruct, domClass, query, fx, BorderContainer, ContentPane, headerTemplate) {
+            function (Status, Login, Tooltip, on, dom, domAttr, domConstruct, domClass, query, fx, array, BorderContainer, ContentPane, headerTemplate) {
                 var currentPane = null;
+                var currentId = null;
 
                 var bc = new BorderContainer({
                     gutters: false,
@@ -77,8 +79,7 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                 // Create a ContentPane as the center pane in the BorderContainer
                 var cp2 = new ContentPane({
                     region: "center",
-                    id: "content",
-                    class: "page"
+                    id: "content"
                 });
                 bc.addChild(cp2);
 
@@ -86,28 +87,40 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                 bc.placeAt(document.body);
                 bc.startup();
 
- //               var menu = new Menu();
-   //             menu.placeAt("mainMenu");
-     //           menu.startup();
-//                menu.resize();
+                var menuDefinition = [
+                    {
+                        label: "Dashboard",
+                        menuRef: "chart"
+                    },
+                    {
+                        label: "Configuration",
+                        menuRef: "config"
+                    },
+                    {
+                        label: "Automation",
+                        menuRef: "automation"
+                    },
+                    {
+                        label: "Events",
+                        menuRef: "events"
+                    },
+                    {
+                        label: "System",
+                        menuRef: "system"
+                    },
+                    {
+                        label: "Settings",
+                        menuRef: "settings"
+                    }
+                ];
 
-
+                // Create the main menu
                 var menu = domConstruct.place("<ul>", dom.byId("mainMenu"));
-                var x = domConstruct.place("<li>Charting 1</li>", menu, "last");
-                x.onclick = menuClick;
-                x.menuRef = 1;
-                x=domConstruct.place("<li>Charting 2</li>", menu, "last");
-                on(x, "click", menuClick);
-//                x.onclick = menuClick;
-                x.menuRef = 2;
-                x = domConstruct.place("<li>Charting 3</li>", menu, "last");
-                x.onclick = menuClick;
-                x.menuRef = 3;
-                x= domConstruct.place("<li>Charting 4</li>", menu, "last");
-                x.onclick = menuClick;
-                x.menuRef = 4;
-
-
+                array.forEach(menuDefinition, function (def) {
+                    var x = domConstruct.place("<li>" + def.label + "</li>", menu, "last");
+                    x.onclick = menuClick;
+                    x.menuRef = def.menuRef;
+                });
 
 
                 //               var loginDialog = new Login();
@@ -118,13 +131,12 @@ define([ 'dojo/has', 'require' ], function (has, require) {
 //                new Status({}, "onlineStatus");
 
 
-
-                bc.resize();
-
                 new Tooltip({
                     connectId: ["userStatus"],
                     label: "Login Status"
                 });
+
+                bc.resize();
 
                 // Hide and then remove the splash-screen.
                 fx.fadeOut({
@@ -134,21 +146,18 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                             domConstruct.destroy("splashscreen");
                         } }
                 ).play();
-//                menu.resize();
-                bc.resize();
-
-                /*                require(["app/config/gridTest"], function (dev) {
-                 var z = new dev(null);
-                 z.show();
-                 });*/
 
                 function menuClick(event) {
                     console.log("Menu selected: ", event);
 
                     var selectedId = event.target.menuRef;
+                    if (selectedId == currentId)
+                        return;
+
+                    currentId = selectedId;
                     var nodeList = query("#mainMenu ul > li");
-                    nodeList.forEach(function(node){
-                        if(selectedId == node.menuRef) {
+                    nodeList.forEach(function (node) {
+                        if (selectedId == node.menuRef) {
                             domClass.add(node, "menuSelected");
                         }
                         else {
@@ -156,32 +165,40 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                         }
                     });
 
-                    switch(selectedId) {
-                        case 1:
+                    var windowSettings = {region: "center", class: "content", style: "opacity: 0; width: 100%; height:100%;"};
+                    switch (selectedId) {
+                        case "config":
                             require(["app/bindings/zwave/ZWaveDevices"], function (ZWave) {
-                                var x = new ZWave({region: "center", lass: "content", style: "opacity: 100; width: 50%; height:100%;"});
+                                var x = new ZWave(windowSettings);
                                 x.placeAt("content");
                                 x.startup();
                                 transition(currentPane, x);
                             });
                             break;
-                        case 2:
+                        case "events":
                             require(["app/calendar/main"], function (Calendar) {
-                                var x = new Calendar({region: "center", class: "content", style: "opacity: 0; width: 100%; height:100%;"});
+                                var x = new Calendar(windowSettings);
+                                x.placeAt("content");
+                                x.startup();
+                                transition(currentPane, x);
+                            });
+                            break;
+                        case "settings":
+                            require(["app/config/gridTest"], function (dev) {
+                                var x = new dev(windowSettings);
                                 x.placeAt("content");
                                 x.startup();
                                 transition(currentPane, x);
                             });
                             break;
                     }
-
                 }
 
                 function transition(fromOld, toNew) {
                     if (fromOld != null) {
                         fx.fadeOut({
                                 node: fromOld.domNode,
-                                duration: 500,
+                                duration: 350,
                                 onEnd: function () {
                                     console.log("Destroying " + this.node.id);
                                     domConstruct.destroy(this.node);
@@ -191,7 +208,7 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                     if (toNew != null) {
                         fx.fadeIn({
                                 node: toNew.domNode,
-                                duration: 500,
+                                duration: 300,
                                 onEnd: function () {
                                     console.log("Switched to " + this.node.id);
                                 }
@@ -200,7 +217,6 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                     }
                     currentPane = toNew;
                 }
-
             });
 
     }

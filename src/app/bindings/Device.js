@@ -63,7 +63,7 @@ define([
             iconClassAttr: "",
             _setIconClassAttr: { node: "iconNode", type: "img" },
 
-            baseClass: "habminDeviceTitle",
+            baseClass: "dijitTitlePaneTitle",
 
             _expanded: false,
 

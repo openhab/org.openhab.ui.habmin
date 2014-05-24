@@ -48,17 +48,11 @@ define([
         //		Amount of time (in ms) it takes to slide panes
         duration: manager.defaultDuration,
 
-        /*=====
-         // _verticalSpace: Number
-         //		Pixels of space available for the open pane
-         //		(my content box size minus the cumulative size of all the title bars)
-         _verticalSpace: 0,
-         =====*/
         baseClass: "habminDeviceContainer",
 
         buildRendering: function(){
             this.inherited(arguments);
-            this.domNode.style.overflow = "scroll";		// TODO: put this in dijit.css
+            this.domNode.style.overflow = "hidden";		// TODO: put this in dijit.css
  //           this.domNode.setAttribute("role", "tablist");
         },
 

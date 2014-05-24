@@ -367,12 +367,9 @@ body {
 
 .habminDeviceContainer {
     overflow: auto;
-    padding-right: 0px;
-    width: 100%;
-    height: 100%;
 
     margin-right: -100px;
-    padding-right: 100px;
+    padding-right: 150px;
 }
 
 .habminDevice {
@@ -386,6 +383,16 @@ body {
     -webkit-box-shadow: 5px 5px 12px -10px , 1);
     box-shadow: 5px 5px 12px -10px , 1);
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.habminDeviceChildTitle
+.habminDeviceChildTitleExpanded {
+    font-weight: bold;
+    padding: 4px;
+    padding-left: 20px;
+}
+
+.habminDeviceChildTitleExpanded {
 }
 
 .habminDeviceIcon
