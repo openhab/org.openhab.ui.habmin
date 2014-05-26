@@ -58,6 +58,23 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                 "dojo/domReady!"
             ],
             function (Status, Login, Tooltip, on, dom, domAttr, domConstruct, domClass, query, fx, array, BorderContainer, ContentPane, headerTemplate) {
+                // Hide and then remove the splash-screen.
+                /*               fx.fadeOut({
+                 node: "splashscreen",
+                 duration: 0,
+                 onEnd: function () {
+                 domConstruct.destroy("splashscreen");
+                 } }
+                 ).play();
+
+                 require(["app/config/gridTest"], function (dev) {
+                 var x = new dev({style: "opacity: 100; width: 100%; height:100%;"});
+                 x.placeAt(document.body);
+                 x.startup();
+                 });
+
+                 return;*/
+
                 var currentPane = null;
                 var currentId = null;
 
@@ -79,7 +96,8 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                 // Create a ContentPane as the center pane in the BorderContainer
                 var cp2 = new ContentPane({
                     region: "center",
-                    id: "content"
+                    id: "content",
+                    class: "page"
                 });
                 bc.addChild(cp2);
 
@@ -113,40 +131,40 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                         menuRef: "settings"
                     }
                 ];
-
+/*
                 // Create the main menu
                 var menu = domConstruct.place("<ul>", dom.byId("mainMenu"));
                 array.forEach(menuDefinition, function (def) {
                     var x = domConstruct.place("<li>" + def.label + "</li>", menu, "last");
                     x.onclick = menuClick;
                     x.menuRef = def.menuRef;
-                });
+                });*/
 
 
-                //               var loginDialog = new Login();
-//                loginDialog.placeAt(document.body);
-                //              loginDialog.startup();
-                //    loginDialog.show();
+                var loginDialog = new Login();
+                loginDialog.placeAt(document.body);
+                loginDialog.startup();
+                loginDialog.show();
 
 //                new Status({}, "onlineStatus");
-
+/*
 
                 new Tooltip({
                     connectId: ["userStatus"],
                     label: "Login Status"
                 });
-
-                bc.resize();
+*/
+//                bc.resize();
 
                 // Hide and then remove the splash-screen.
                 fx.fadeOut({
                         node: "splashscreen",
                         duration: 300,
                         onEnd: function () {
-                            domConstruct.destroy("splashscreen");
+//                            domConstruct.destroy("splashscreen");
                         } }
                 ).play();
-
+/*
                 function menuClick(event) {
                     console.log("Menu selected: ", event);
 
@@ -165,13 +183,13 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                         }
                     });
 
-                    var windowSettings = {region: "center", class: "content", style: "opacity: 0; width: 100%; height:100%;"};
+//                    var windowSettings = {region: "center", class: "content", style: "opacity: 0; width: 100%; height:100%;"};
+                    var windowSettings = {region: "center", style: "opacity: 100; width: 100%; height:100%;"};
                     switch (selectedId) {
                         case "config":
                             require(["app/bindings/zwave/ZWaveDevices"], function (ZWave) {
                                 var x = new ZWave(windowSettings);
                                 x.placeAt("content");
-                                x.startup();
                                 transition(currentPane, x);
                             });
                             break;
@@ -184,7 +202,7 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                             });
                             break;
                         case "settings":
-                            require(["app/config/gridTest"], function (dev) {
+                            require(["app/config/gridTestx"], function (dev) {
                                 var x = new dev(windowSettings);
                                 x.placeAt("content");
                                 x.startup();
@@ -216,8 +234,7 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                         ).play();
                     }
                     currentPane = toNew;
-                }
+                }*/
             });
-
     }
 });

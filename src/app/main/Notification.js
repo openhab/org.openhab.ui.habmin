@@ -27,6 +27,11 @@ define(
                     {'name': 'info', 'pos': 2},
                     {'name': 'error', 'pos': 1}
                 ]});
+
+                new Tooltip({
+                    connectId: ["notificationButton"],
+                    label: "Notifications"
+                });
             },
             alert: function (type, string) {
                 if (growl == null)

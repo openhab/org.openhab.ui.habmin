@@ -7,6 +7,11 @@
  */
 @import '../../dojo/resources/dojo.css';
 @import '../../dijit/themes/claro/claro.css';
+/*
+@import '../../dojox/calendar/themes/claro/Calendar.css';
+@import '../../dojox/calendar/themes/claro/MonthColumnView.css';
+@import '../../dgrowl/dGrowl.css'; */
+
 
 html, body, #mainDiv {
     width: 100%;
@@ -19,15 +24,6 @@ html, body, #mainDiv {
 body, div, dl, dt, dd, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td {
     margin: 0;
     padding: 0;
-}
-
-fieldset, img {
-    border: 0 none;
-}
-
-address, caption, cite, code, dfn, th, var {
-    font-style: normal;
-    font-weight: normal;
 }
 
 caption, th {
@@ -203,16 +199,12 @@ body {
     height:100%;
 }
 
-.dijitButtonIcon {
-    background-image: url('../images/wrench--plus.png');
-    background-repeat: no-repeat;
-    width: 18px;
-    height: 18px;
-    text-align: center;
-}
-
 .dijitIconSave {
     background-image: url('../images/tick.png');
+}
+
+.dijitIconHeal {
+    background-image: url('../images/bandaid--arrow.png');
 }
 
 .dijitIconCancel {
@@ -368,45 +360,52 @@ body {
 .habminDeviceContainer {
     overflow: auto;
 
-    margin-right: -100px;
-    padding-right: 150px;
+    margin-right: -200px;
+    padding-right: 250px;
 }
 
 .habminDevice {
-    margin: 5px;
-    border: solid #000;
-    border-width: 1px;
-    padding:4px;
-    border-color: #0c86b9;
+    margin: 5px 5px 0px 5px;
+    border: 1px solid #0c86b9;
+    padding:4px 4px 0px 4px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
-    -webkit-box-shadow: 5px 5px 12px -10px , 1);
-    box-shadow: 5px 5px 12px -10px , 1);
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.habminDeviceStatusOk {
+    box-shadow: inset 0px 1px 3px 0px #1bdc15;
+}
+
+.habminDeviceStatusError {
+    box-shadow: inset 0px 1px 3px 0px #dc1b15;
+}
+
+.habminDeviceOpen {
+    -webkit-border-radius: 5px 5px 0px 5px;
+    border-radius: 5px 5px 0px 5px;
+}
+
+.habminDeviceChildSections
+{
+    font-weight: bold;
+    border-top: none !important;
+    margin: 0px 5px 0px 55px;
+    padding: 3px;
+    -webkit-border-radius: 0px 0px 5px 5px;
+    border-radius: 0px 0px 5px 5px;
 }
 
 .habminDeviceChildTitle
-.habminDeviceChildTitleExpanded {
+{
+    border: 1px solid;
     font-weight: bold;
+    margin: 0px;
     padding: 4px;
-    padding-left: 20px;
 }
 
-.habminDeviceChildTitleExpanded {
-}
-
-.habminDeviceIcon
-.habminDeviceIconError {
-    width:40px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    border-width: 0px;
-    background-clip: border-box;
-}
-
-.habminDeviceIconError {
-    background: -webkit-gradient(linear, left top, left bottom, from(#f5bdc0), to(#ae0001), color-stop(0.5, #e44149), color-stop(0.5, #de151f));
-    background: linear-gradient(to bottom, #f5bdc0 0%, #e44149 50%, #de151f 50%, #ae0001 100%);
+.habminDeviceIcon {
+    width:32px;
+    height:32px;
 }
 
 .habminDeviceTitle {
@@ -421,6 +420,14 @@ body {
 
 .habminDeviceText {
 
+}
+
+.habminDevice .dijitButtonNode {
+    width:85px;
+    text-align: left;
+    border: none;
+    transition-duration: 0.3s;
+    background-color: rgba(171, 214, 255, 0);
 }
 
 
@@ -511,7 +518,6 @@ body {
     background-image: none;
     background-color: white;
     color: #000;
-    box-shadow: none;
     box-shadow: inset 0 2px 0 #0070a3,inset 0 4px 5px 0 #142a4a;
 }
 

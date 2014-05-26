@@ -23,6 +23,7 @@ define([
             gutters: false,
 
             postCreate: function() {
+                this.inherited(arguments);
                 var acc = new AccordionContainer({
                     splitter:false,
                     region: 'leading'
@@ -31,36 +32,28 @@ define([
                 var mainProperties = new ContentPane({
                     title: "Main Properties",
                     style: "width:250px",
-                    content:new MainProperties({
-                        style: "width:250px"
-                    })
+                    content:new MainProperties()
                 });
                 acc.addChild(mainProperties);
 
                 var columnViewProperties = new ContentPane({
                     title: "Column Properties",
                     style: "width:250px",
-                    content:new ColumnViewProperties({
-                        style: "width:250px"
-                    })
+                    content:new ColumnViewProperties()
                 });
                 acc.addChild(columnViewProperties);
 
                 var matrixViewProperties = new ContentPane({
                     title:"Matrix view properties",
                     style: "width:250px",
-                    content:new MatrixViewProperties({
-                        style: "width:250px"
-                    })
+                    content:new MatrixViewProperties()
                 });
                 acc.addChild(matrixViewProperties);
 
                 var monthColumnViewProperties = new ContentPane({
                     title: "Month column view properties",
                     style: "width:250px",
-                    content:new MonthColumnViewProperties({
-                        style: "width:250px"
-                    })
+                    content:new MonthColumnViewProperties()
                 });
                 acc.addChild(monthColumnViewProperties);
 

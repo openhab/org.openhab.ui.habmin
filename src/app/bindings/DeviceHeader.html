@@ -1,18 +1,20 @@
-<div class='habminDevice' role="presentation">
-    <div data-dojo-attach-point='focusNode'
-        role="tab" aria-expanded="false">
+<div role="presentation">
+    <div class='habminDevice dijitTitlePaneTitle' data-dojo-attach-point='titleNode, focusNode' role="tab"
+         aria-expanded="false">
         <table width="100%">
-            <tr data-dojo-attach-point='titleNode' data-dojo-attach-event='ondijitclick:_onTitleClick'>
-                <td class="habminDeviceIcon">
-                    <span role="presentation" data-dojo-attach-point="iconNode"><img src="app/images/tools_preferences.png" height="32" width="32"></span>
+            <tr class=""
+                data-dojo-attach-event='onmouseenter:_onHover,onmouseleave:_onUnhover,ondijitclick:_onTitleClick'>
+                <td width="40px">
+                    <div role="presentation" data-dojo-attach-point="iconNode" class="habminDeviceIcon"><img
+                            src="app/images/tools_preferences.png" height="32" width="32"></div>
                 </td>
                 <td>
                     <table width="100%">
                         <tr>
-                            <td class='habminDeviceHeading'>
+                            <td width="80" class='habminDeviceHeading'>
                                 <span role="presentation" data-dojo-attach-point='titleLabelNode, textDirNode'></span>
                             </td>
-                            <td class='habminDeviceText'>
+                            <td width="150" class='habminDeviceText'>
                                 <span role="presentation" data-dojo-attach-point='titleTextNode, textDirNode'></span>
                             </td>
                         </tr>
@@ -34,11 +36,30 @@
                         </tr>
                     </table>
                 </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><div data-dojo-attach-point='categoriesNode' style='display: none;'></div></td>
+                <td width="65px">
+                    <button
+                            data-dojo-type="dijit.form.Button"
+                            data-dojo-attach-point="healButton, textDirNode"
+                            data-dojo-props="iconClass:'dijitButtonIcon dijitIconHeal'"
+                            data-dojo-attach-event='ondijitclick:onHeal'
+                            type="button"
+                            >
+                        Heal
+                    </button>
+                    <button
+                            data-dojo-type="dijit.form.Button"
+                            data-dojo-attach-point="deleteButton, textDirNode"
+                            data-dojo-props="iconClass:'dijitButtonIcon dijitIconSave'"
+                            data-dojo-attach-event="ondijitclick:onCancel"
+                            type="button"
+                            >
+                        Delete
+                    </button>
+                </td>
             </tr>
         </table>
+    </div>
+    <div class='habminDeviceChildSections dijitTitlePaneTitle' data-dojo-attach-point='categoriesNode'
+         style='display: none;'>
     </div>
 </div>

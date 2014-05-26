@@ -5,10 +5,7 @@
     <title>HABmin Home Automation</title>
     <!-- Application-specific CSS should be stored in your application’s package to ensure portability and to allow
          the build system to combine & minify it. -->
-    <link rel="stylesheet" href="dojox/calendar/themes/claro/Calendar.css">
-    <link rel="stylesheet" href="dojox/calendar/themes/claro/MonthColumnView.css">
-    <link rel="stylesheet" href="dgrid/css/skins/claro.css">
-    <link rel="stylesheet" href="dGrowl/dGrowl.css">
+
     <link rel="stylesheet" href="app/resources/app.css">
 </head>
 
@@ -57,12 +54,12 @@
 
      NOTE: `build.sh` is responsible for removing the "isDebug" flag when deploying to production. If you modify
      this flag at all, you will break the build! -->
-<script data-dojo-config="async: 1, tlmSiblingOfDojo: 0, isDebug: 1" src="dojo/dojo.js"></script>
+    <script data-dojo-config="async: 1, tlmSiblingOfDojo: 0, isDebug: 1" src="dojo/dojo.js"></script>
 
 <!-- Load the loader configuration script. Note that this module ID is hard-coded in build.sh in order to provide
      an optimised build that loads as few as one script for the entire application. If you change the name or
      location of this module, you will need to update build.sh too. -->
-<script src="app/run.js"></script>
+    <script src="app/run.js"></script>
 </body>
 
 </html>

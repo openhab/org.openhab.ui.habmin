@@ -16,8 +16,7 @@ define([
         "dijit/form/Form",
         "dijit/form/ValidationTextBox",
         "dijit/form/Button",
-        "dijit/Tooltip",
-        "dojo/domReady!"
+        "dijit/Tooltip"
     ],
     function (declare, lang, on, dom, Evented, Deferred, JSON, domConstruct, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, Dialog, Form, TextBox, Button, Tooltip) {
 
@@ -60,11 +59,6 @@ define([
 
             postCreate: function () {
                 this.inherited(arguments);
-
-                new Tooltip({
-                    connectId: ["notificationButton"],
-                    label: "Notifications"
-                });
 
                 this.readyState = this.READY;
                 this.okLabel = this.submitButton.get("label");

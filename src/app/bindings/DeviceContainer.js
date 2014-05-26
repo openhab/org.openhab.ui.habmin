@@ -48,7 +48,7 @@ define([
         //		Amount of time (in ms) it takes to slide panes
         duration: manager.defaultDuration,
 
-        baseClass: "habminDeviceContainer",
+        baseClass: "",
 
         buildRendering: function(){
             this.inherited(arguments);
