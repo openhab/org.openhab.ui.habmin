@@ -202,7 +202,7 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                             });
                             break;
                         case "settings":
-                            require(["app/config/gridTestx"], function (dev) {
+                            require(["app/config/gridTest"], function (dev) {
                                 var x = new dev(windowSettings);
                                 x.placeAt("content");
                                 x.startup();
