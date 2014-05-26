@@ -432,7 +432,7 @@ define([
 			this.iconNode = iconUtils.setIcon(icon, this.iconPos, this.iconNode, this.alt, this.iconParentNode, this.refNode, this.position);
 		},
 
-		_setTitleAttr: function(/*String*/text){
+		_setLabelAttr: function(/*String*/text){
 			// tags:
 			//		private
 			this._set("label", text);

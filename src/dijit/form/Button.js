@@ -91,7 +91,7 @@ define([
 			this.set("label", content);
 		},
 
-		_setTitleAttr: function(/*String*/ content){
+		_setLabelAttr: function(/*String*/ content){
 			// summary:
 			//		Hook for set('label', ...) to work.
 			// description:
@@ -107,7 +107,7 @@ define([
 
 	if(has("dojo-bidi")){
 		Button = declare("dijit.form.Button", Button, {
-			_setTitleAttr: function(/*String*/ content){
+			_setLabelAttr: function(/*String*/ content){
 				this.inherited(arguments);
 				if(this.titleNode.title){
 					this.applyTextDir(this.titleNode, this.titleNode.title);
@@ -117,7 +117,7 @@ define([
 			_setTextDirAttr: function(/*String*/ textDir){
 				if(this._created && this.textDir != textDir){
 					this._set("textDir", textDir);
-					this._setTitleAttr(this.label); // call applyTextDir on both focusNode and titleNode
+					this._setLabelAttr(this.label); // call applyTextDir on both focusNode and titleNode
 				}
 			}
 		});

@@ -91,7 +91,7 @@ define([
 			return true;		// Boolean
 		},
 
-		_setTitleAttr: function(/*String*/ content){
+		_setLabelAttr: function(/*String*/ content){
 			// summary:
 			//		Hook for set('label', ...) to work.
 			// description:
@@ -104,7 +104,7 @@ define([
 
 	if(has("dojo-bidi")){
 		ButtonMixin = declare("dijit.form._ButtonMixin", ButtonMixin, {
-			_setTitleAttr: function(){
+			_setLabelAttr: function(){
 				this.inherited(arguments);
 				var labelNode = this.containerNode || this.focusNode;
 				this.applyTextDir(labelNode);

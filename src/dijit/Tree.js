@@ -78,7 +78,7 @@ define([
 		// label: String
 		//		Text of this tree node
 		label: "",
-		_setTitleAttr: function(val){
+		_setLabelAttr: function(val){
 			this.labelNode[this.labelType == "html" ? "innerHTML" : "innerText" in this.labelNode ?
 				"innerText" : "textContent"] = val;
 			this._set("label", val);

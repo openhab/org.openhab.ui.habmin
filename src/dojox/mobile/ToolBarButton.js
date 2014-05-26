@@ -94,7 +94,7 @@ define([
 			this.tableNode = domConstruct.create("table", {cellPadding:"0",cellSpacing:"0",border:"0"}, this.bodyNode);
 			if(!this.label && this.arrow){
 				// The class mblToolBarButtonText is needed for arrow shape too.
-				// If the button has a label, the class is set by _setTitleAttr. If no label, do it here.
+				// If the button has a label, the class is set by _setLabelAttr. If no label, do it here.
 				this.tableNode.className = "mblToolBarButtonText";
 			}
 
@@ -145,7 +145,7 @@ define([
 			//		callback
 		},
 
-		_setTitleAttr: function(/*String*/text){
+		_setLabelAttr: function(/*String*/text){
 			// summary:
 			//		Sets the button label text.
 			this.inherited(arguments);

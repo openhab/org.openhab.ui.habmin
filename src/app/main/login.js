@@ -15,8 +15,8 @@ define([
         "dijit/Dialog",
         "dijit/form/Form",
         "dijit/form/ValidationTextBox",
-        "dijit/form/Button",
-        "dijit/Tooltip"
+        "dijit/form/Button"//,
+//        "dijit/Tooltip"
     ],
     function (declare, lang, on, dom, Evented, Deferred, JSON, domConstruct, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, Dialog, Form, TextBox, Button, Tooltip) {
 

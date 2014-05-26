@@ -323,7 +323,7 @@ define([
 			//		Stub method to allow the application to connect.
 		},
 
-		_setTitleAttr: function(/*String*/text){
+		_setLabelAttr: function(/*String*/text){
 			// tags:
 			//		private
 			this.label = text;

@@ -166,7 +166,7 @@ define([
 			this.inherited(arguments);
 		},	
 
-		_setTitleAttr: function(/*String*/text){
+		_setLabelAttr: function(/*String*/text){
 			// tags:
 			//		private
 			if(!this.appView){ return; }

@@ -22,7 +22,7 @@ define([
 				domClass.add(this.domNode, cAdd2);
 			}
 		},
-		_setTitleAttr: function(/*String*/text){
+		_setLabelAttr: function(/*String*/text){
 			// summary:
 			//		Sets the button label text.
 			this.inherited(arguments);

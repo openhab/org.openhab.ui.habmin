@@ -20,7 +20,7 @@ define([
 			this.inherited(arguments);
 		},
 
-		_setTitleAttr: function(text){
+		_setLabelAttr: function(text){
 			if(this.textDir){
 				text = common.enforceTextDirWithUcc(text, this.textDir);
 			}

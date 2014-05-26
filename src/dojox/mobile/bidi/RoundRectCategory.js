@@ -13,7 +13,7 @@ define([
 		//		Implementation for text direction support for Label.
 		//		This class should not be used directly.
 		//		Mobile RoundRectCategory widget loads this module when user sets "has: {'dojo-bidi': true }" in data-dojo-config.
-		_setTitleAttr: function(text){
+		_setLabelAttr: function(text){
 			if(this.textDir){
 				text = common.enforceTextDirWithUcc(text, this.textDir);
 			}

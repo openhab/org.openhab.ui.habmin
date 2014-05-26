@@ -92,7 +92,7 @@ define([
 			}
 		},
 
-		_setTitleAttr: function(/*String*/ content){
+		_setLabelAttr: function(/*String*/ content){
 			// summary:
 			//		Hook for set('label', ...) to work.
 			// description:
@@ -108,7 +108,7 @@ define([
 
 	if(has("dojo-bidi")){
 		TabButton = declare("dijit.layout._TabButton", TabButton, {
-			_setTitleAttr: function(/*String*/ content){
+			_setLabelAttr: function(/*String*/ content){
 				this.inherited(arguments);
 				this.applyTextDir(this.iconNode, this.iconNode.alt);
 			}

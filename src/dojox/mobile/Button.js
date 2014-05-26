@@ -81,7 +81,7 @@ define([
 			this.connect(this.domNode, "onclick", "_onClick");
 		},
 
-		_setTitleAttr: function(/*String*/ content){
+		_setLabelAttr: function(/*String*/ content){
 			// tags:
 			//		private
 			this.inherited(arguments, [this._cv ? this._cv(content) : content]);

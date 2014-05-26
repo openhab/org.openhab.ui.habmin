@@ -39,7 +39,7 @@ define([
 			}
 		},
 
-		_setTitleAttr: function(/*String*/label){
+		_setLabelAttr: function(/*String*/label){
 			// summary:
 			//		Sets the category header text.
 			// tags:

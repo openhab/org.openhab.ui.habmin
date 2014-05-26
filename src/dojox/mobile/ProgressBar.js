@@ -61,7 +61,7 @@ define([
 			this.onChange(value, this.maximum, percent);
 		},
 
-		_setTitleAttr: function(label){
+		_setLabelAttr: function(label){
 			// summary:
 			//		Sets a label text to be shown at the center of the progress bar.
 			// tags:

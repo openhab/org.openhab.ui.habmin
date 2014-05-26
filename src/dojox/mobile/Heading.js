@@ -233,7 +233,7 @@ define([
 			}
 		},
 		
-		_setTitleAttr: function(/*String*/label){
+		_setLabelAttr: function(/*String*/label){
 			// tags:
 			//		private
 			this._set("label", label);

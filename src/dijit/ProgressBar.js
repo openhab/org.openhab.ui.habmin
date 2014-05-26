@@ -134,7 +134,7 @@ define([
 			}
 		},
 
-		_setTitleAttr: function(label){
+		_setLabelAttr: function(label){
 			this._set("label", label);
 			this.update();
 		},

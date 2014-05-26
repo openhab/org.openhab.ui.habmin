@@ -77,7 +77,7 @@ define([
 			return this.domNode.style.display !== "none";
 		},
 
-		_setTitleAttr: function(/*String*/text){
+		_setLabelAttr: function(/*String*/text){
 			// tags:
 			//		private
 			this._set("label", text);

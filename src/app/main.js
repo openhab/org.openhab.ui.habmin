@@ -131,20 +131,20 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                         menuRef: "settings"
                     }
                 ];
-/*
+
                 // Create the main menu
                 var menu = domConstruct.place("<ul>", dom.byId("mainMenu"));
                 array.forEach(menuDefinition, function (def) {
                     var x = domConstruct.place("<li>" + def.label + "</li>", menu, "last");
                     x.onclick = menuClick;
                     x.menuRef = def.menuRef;
-                });*/
+                });
 
 
                 var loginDialog = new Login();
                 loginDialog.placeAt(document.body);
                 loginDialog.startup();
-                loginDialog.show();
+              //  loginDialog.show();
 
 //                new Status({}, "onlineStatus");
 /*
@@ -154,17 +154,17 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                     label: "Login Status"
                 });
 */
-//                bc.resize();
+                bc.resize();
 
                 // Hide and then remove the splash-screen.
                 fx.fadeOut({
                         node: "splashscreen",
                         duration: 300,
                         onEnd: function () {
-//                            domConstruct.destroy("splashscreen");
+                            domConstruct.destroy("splashscreen");
                         } }
                 ).play();
-/*
+
                 function menuClick(event) {
                     console.log("Menu selected: ", event);
 
@@ -234,7 +234,7 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                         ).play();
                     }
                     currentPane = toNew;
-                }*/
+                }
             });
     }
 });

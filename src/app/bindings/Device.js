@@ -106,11 +106,12 @@ define([
             },
 
             postCreate: function() {
-//                this.connect(this.cancelButton, "onClick", "onCancel");
+                this.connect(this.deleteButton, "onClick", "onDelete");
+                this.connect(this.healButton, "onClick", "onHeal");
             },
 
-            onCancel: function(evt) {
-                console.log("onCancel");
+            onDelete: function(evt) {
+                console.log("onDelete");
                 event.stop(evt);
             },
 
@@ -142,8 +143,8 @@ define([
             },
 
             // into the button widget?
-            _onTitleClick: function () {
-                console.log("clicky");
+            _onTitleClick: function (evt) {
+                console.log("clicky ", evt);
                 var me = this;
                 if (this._expanded) {
                     this._expanded = false;
@@ -161,14 +162,14 @@ define([
                             if (entry.domain.indexOf("/", entry.domain.length - 1) !== -1) {
                                 var icon = "<img src='app/images/gear.png' width='16' height='16'>&nbsp;";
                                 var section = new TitlePane({open: false, title: icon + entry.label});
-                                domClass.add(section.get('', "habminIconConfig"));
+                                //domClass.add(section.get('', "habminIconConfig"));
                                 me.addChild(section);
                             }
                         });
                     }
 
-                    this.healButton.set('disabled', true);
-                    domClass.add(this.healButton.domNode, "habminDevice dijitInline");
+//                    this.healButton.set('disabled', true);
+//                    domClass.add(this.healButton.domNode, "habminDevice dijitToolbar dijitButton dijitButtonNode");
 
 
                     this._expanded = true;

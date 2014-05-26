@@ -1,6 +1,6 @@
 define([
         "dojo/_base/declare",
-        "dijit/layout/LayoutContainer",
+        "dijit/layout/BorderContainer",
         "dgrid/extensions/DijitRegistry",
         "dgrid/Grid",
         "dijit/Toolbar",

@@ -42,8 +42,8 @@ define([
 			}
 		},
 
-		_setTitleAttr: function(/*String*/text){
-			this.inherited("_setTitleAttr",arguments);
+		_setLabelAttr: function(/*String*/text){
+			this.inherited("_setLabelAttr",arguments);
 			this.labelNode.innerHTML = common.enforceTextDirWithUcc(this.labelNode.innerHTML, this.textDir);
 		},
 

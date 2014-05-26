@@ -31,7 +31,7 @@ define([
 		// label: String
 		//		Menu text as HTML
 		label: "",
-		_setTitleAttr: function(val){
+		_setLabelAttr: function(val){
 			this._set("label", val);
 			var shortcutKey = "";
 			var text;
@@ -181,7 +181,7 @@ define([
 
 	if(has("dojo-bidi")){
 		MenuItem = declare("dijit.MenuItem", MenuItem, {
-			_setTitleAttr: function(val){
+			_setLabelAttr: function(val){
 				this.inherited(arguments);
 				if(this.textDir === "auto"){
 					this.applyTextDir(this.textDirNode);

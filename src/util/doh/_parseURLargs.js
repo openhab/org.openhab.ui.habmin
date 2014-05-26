@@ -11,12 +11,12 @@
 			// zero to many AMD modules and/or URLs to load; provided by csv URL query parameter="test"
 			// For example, the URL...
 			//
-			//		 path-to-util/doh/runner.html?test=doh/selfTest,my/path/gridTest.js
+			//		 path-to-util/doh/runner.html?test=doh/selfTest,my/path/test.js
 			//
 			// ...will load...
 			//
 			//	 * the AMD module doh/selfTest
-			//	 * the plain old Javascript resource my/path/gridTest.js
+			//	 * the plain old Javascript resource my/path/test.js
 			//
 			["dojo/tests/module"],
 

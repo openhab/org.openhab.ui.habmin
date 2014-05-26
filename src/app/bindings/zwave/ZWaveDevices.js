@@ -1,6 +1,6 @@
 define([
         "dojo/_base/declare",
-        "dijit/layout/LayoutContainer",
+        "dijit/layout/BorderContainer",
         "dijit/Toolbar",
         "dijit/form/Button",
         "app/bindings/Device",
@@ -44,14 +44,31 @@ define([
                 this.inherited(arguments);
                 var me = this;
 
+                var toolDefinition = [
+                    {
+                        label: "Heal",
+                        menuRef: "heal",
+                        iconClass: "habminIconHeal"
+                    },
+                    {
+                        label: "Include",
+                        menuRef: "include",
+                        iconClass: "habminIconInclude"
+                    },
+                    {
+                        label: "Exclude",
+                        menuRef: "exclude",
+                        iconClass: "habminIconExclude"
+                    }
+                ];
                 var toolbar = new Toolbar({region:"top"});
-                array.forEach(["Cut", "Copy", "Paste"], function(label){
+                array.forEach(toolDefinition, function(def){
                     var button = new Button({
                         // note: should always specify a label, for accessibility reasons.
                         // Just set showLabel=false if you don't want it to be displayed normally
-                        label: label,
+                        label: def.label,
                         showLabel: true,
-                        iconClass: "dijitButtonIcon dijitIconSave"
+                        iconClass: "habminButtonIcon " + def.iconClass
                     });
 
                     toolbar.addChild(button);

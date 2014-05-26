@@ -63,7 +63,7 @@ define([
 		// label: String
 		//		Title of the pane
 		label: "",
-		_setTitleAttr: {node: "titleTextNode", type: "innerHTML" },
+		_setLabelAttr: {node: "titleTextNode", type: "innerHTML" },
 
 		// title: String
 		//		Tooltip that appears on hover
@@ -123,7 +123,7 @@ define([
 
 	if(has("dojo-bidi")){
 		AccordionButton.extend({
-			_setTitleAttr: function(label){
+			_setLabelAttr: function(label){
 				this._set("label", label);
 				domAttr.set(this.titleTextNode, "innerHTML", label);
 				this.applyTextDir(this.titleTextNode);

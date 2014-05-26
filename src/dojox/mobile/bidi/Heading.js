@@ -13,7 +13,7 @@ define([
 		//		Implementation for text direction support for Label and Back.
 		//		This class should not be used directly.
 		//		Mobile Heading widget loads this module when user sets "has: {'dojo-bidi': true }" in data-dojo-config.
-		_setTitleAttr: function(label){
+		_setLabelAttr: function(label){
 			this.inherited(arguments);
 			if(this.getTextDir(label) === "rtl"){ this.domNode.style.direction = "rtl"; } //for text-overflow: ellipsis;
 			this.labelDivNode.innerHTML = common.enforceTextDirWithUcc(this.labelDivNode.innerHTML, this.textDir);

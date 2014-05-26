@@ -13,7 +13,7 @@ define([
 		//		Implementation for text direction support for Label.
 		//		This class should not be used directly.
 		//		Mobile _ItemBase loads this module when user sets "has: {'dojo-bidi': true }" in data-dojo-config.
-		_setTitleAttr: function(/*String*/ text){
+		_setLabelAttr: function(/*String*/ text){
 			this._set("label", text);
 			this.labelNode.innerHTML = this._cv ? this._cv(text) : text;
 			if (!this.textDir){
