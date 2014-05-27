@@ -72,8 +72,8 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/connect", "dojo/has
 		constructor: function(chart, kwArgs){
 			// summary:
 			//		Create a cartesian base plot for cartesian charts.
-			// chart: dojox/chart/Chart
-			//		The chart this plot belongs to.
+			// dashboard: dojox/dashboard/Chart
+			//		The dashboard this plot belongs to.
 			// kwArgs: dojox.charting.plot2d.__CartesianCtorArgs?
 			//		An optional arguments object to help define the plot.
 			this.axes = ["hAxis", "vAxis"];

@@ -164,27 +164,27 @@ define(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/array","dojo/dom-att
 	
 	var Chart = declare(has("dojo-bidi")? "dojox.charting.widget.NonBidiChart" : "dojox.charting.widget.Chart", _WidgetBase, {
 		// summary:
-		//		A chart widget.  This is leveraging dojox/charting/Chart as a Dijit widget.
+		//		A dashboard widget.  This is leveraging dojox/charting/Chart as a Dijit widget.
 
 		// parameters for the markup
 
 		// theme: dojox/charting/SimpleTheme?
-		//		An optional theme to use for styling the chart.
+		//		An optional theme to use for styling the dashboard.
 		theme: null,
 		
 		// margins: Object?
-		//		The margins around the chart. Default is { l:10, t:10, r:10, b:10 }.
+		//		The margins around the dashboard. Default is { l:10, t:10, r:10, b:10 }.
 		margins: null,
 		
-		// chart area, define them as undefined to:
+		// dashboard area, define them as undefined to:
 		// allow the parser to take them into account
 		// but make sure they have no defined value to not override theme
 
 		// stroke: dojox.gfx.Stroke?
-		//		The outline of the chart (stroke in vector graphics terms).
+		//		The outline of the dashboard (stroke in vector graphics terms).
 		stroke: undefined,
 		// fill: dojox.gfx.Fill?
-		//		The color for the chart.
+		//		The color for the dashboard.
 		fill:   undefined,
 		
 		// methods
@@ -194,13 +194,13 @@ define(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/array","dojo/dom-att
 			
 			var n = this.domNode;
 			
-			// collect chart parameters
+			// collect dashboard parameters
 			var axes    = query("> .axis", n).map(collectAxisParams).filter(notNull),
 				plots   = query("> .plot", n).map(collectPlotParams).filter(notNull),
 				actions = query("> .action", n).map(collectActionParams).filter(notNull),
 				series  = query("> .series", n).map(collectDataParams).filter(notNull);
 			
-			// build the chart
+			// build the dashboard
 			n.innerHTML = "";
 			var c = this.chart = new ChartBase(n, {
 				margins: this.margins,

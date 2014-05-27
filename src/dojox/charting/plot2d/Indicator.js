@@ -106,7 +106,7 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/declare", "./Cartesia
 		start: false,
 
 		// animate: Boolean?|Number?
-		//		Whether or not to animate the chart to place. When a Number it specifies the duration of the animation.
+		//		Whether or not to animate the dashboard to place. When a Number it specifies the duration of the animation.
 		//		Default is false.
 		animate: false,
 
@@ -204,7 +204,7 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/declare", "./Cartesia
 	var Indicator = declare("dojox.charting.plot2d.Indicator", [CartesianBase, _PlotEvents], {
 		// summary:
 		//		A "faux" plot that can be placed behind or above other plots to represent a line or multi-line
-		//		threshold on the chart.
+		//		threshold on the dashboard.
 		defaultParams: {
 			vertical: true,
 			fixed: true,
@@ -240,8 +240,8 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/declare", "./Cartesia
 		constructor: function(chart, kwArgs){
 			// summary:
 			//		Create the faux Grid plot.
-			// chart: dojox/charting/Chart
-			//		The chart this plot belongs to.
+			// dashboard: dojox/charting/Chart
+			//		The dashboard this plot belongs to.
 			// kwArgs: dojox.charting.plot2d.__GridCtorArgs?
 			//		An optional keyword arguments object to help define the parameters of the underlying grid.
 			this.opt = lang.clone(this.defaultParams);

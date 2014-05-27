@@ -6,7 +6,7 @@ define(["dojo/_base/lang", "dojo/_base/array" ,"dojo/_base/declare",
 	/*=====
 	declare("dojox.charting.plot2d.__PieCtorArgs", dojox.charting.plot2d.__DefaultCtorArgs, {
 		// summary:
-		//		Specialized keyword arguments object for use in defining parameters on a Pie chart.
+		//		Specialized keyword arguments object for use in defining parameters on a Pie dashboard.
 	
 		// labels: Boolean?
 		//		Whether or not to draw labels for each pie slice.  Default is true.
@@ -79,7 +79,7 @@ define(["dojo/_base/lang", "dojo/_base/array" ,"dojo/_base/declare",
 
 	return declare("dojox.charting.plot2d.Pie", [Base, PlotEvents], {
 		// summary:
-		//		The plot that represents a typical pie chart.
+		//		The plot that represents a typical pie dashboard.
 		defaultParams: {
 			labels:			true,
 			ticks:			false,
@@ -129,7 +129,7 @@ define(["dojo/_base/lang", "dojo/_base/array" ,"dojo/_base/declare",
 		},
 		setAxis: function(axis){
 			// summary:
-			//		Dummy method, since axes are irrelevant with a Pie chart.
+			//		Dummy method, since axes are irrelevant with a Pie dashboard.
 			// returns: dojox/charting/plot2d/Pie
 			//		The reference to this plot for functional chaining.
 			return this;	//	dojox/charting/plot2d/Pie
@@ -156,7 +156,7 @@ define(["dojo/_base/lang", "dojo/_base/array" ,"dojo/_base/declare",
 		},
 		render: function(dim, offsets){
 			// summary:
-			//		Render the plot on the chart.
+			//		Render the plot on the dashboard.
 			// dim: Object
 			//		An object of the form { width, height }.
 			// offsets: Object
@@ -468,11 +468,11 @@ define(["dojo/_base/lang", "dojo/_base/array" ,"dojo/_base/declare",
 			this._eventSeries[this.run.name] = df.map(run, function(v){
 				return v <= 0 ? null : eventSeries[esi++];
 			});
-			// chart mirroring starts
+			// dashboard mirroring starts
 			if(has("dojo-bidi")){
 				this._checkOrientation(this.group, dim, offsets);
 			}
-			// chart mirroring ends
+			// dashboard mirroring ends
 			return this;	//	dojox/charting/plot2d/Pie
 		},
 		_getProperLabelRadius: function(slices, labelHeight, minRidius){

@@ -12,13 +12,13 @@ define(["dojo/_base/array", "dojo/dom","dojo/_base/declare", "dojox/gfx", "dojox
 		//		The keyword arguments that can be passed in a Chart constructor.
 		//
 		// node: Node
-		//		The DOM node to construct the chart on.
+		//		The DOM node to construct the dashboard on.
 		// lights:
 		//		Lighting properties for the 3d scene
 		// camera: Object
 		//		Camera properties describing the viewing camera position.
 		// theme: Object
-		//		Charting theme to use for coloring chart elements.
+		//		Charting theme to use for coloring dashboard elements.
 	};
 	=====*/
 	var observerVector = {x: 0, y: 0, z: 1}, v = gfx3d.vector, n = gfx.normalizedLength;

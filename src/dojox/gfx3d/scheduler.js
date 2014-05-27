@@ -135,7 +135,7 @@ gfx3d.drawer = {
 		// NOTE: ondemand may require the todos' objects to use setShape
 		// to redraw themselves to maintain the z-order.
 
-		// console.debug('chart draw');
+		// console.debug('dashboard draw');
 		arrayUtil.forEach(this.todos, function(item){
 			item.draw(viewport.lighting);
 		});

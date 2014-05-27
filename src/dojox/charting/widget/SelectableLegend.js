@@ -82,7 +82,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/query",
 			
 	var SelectableLegend = declare("dojox.charting.widget.SelectableLegend", Legend, {
 		// summary:
-		//		An enhanced chart legend supporting interactive events on data series
+		//		An enhanced dashboard legend supporting interactive events on data series
 		
 		//	theme component
 		outline:			false,	//	outline of vanished data series
@@ -126,7 +126,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/query",
 			//		Apply click-event on checkbox and hover-event on legend icon,
 			//		highlight data series or toggle it.
 			
-			// if the chart has not yet been refreshed it will crash here (targetData.group == null)
+			// if the dashboard has not yet been refreshed it will crash here (targetData.group == null)
 			if(this.chart.dirty){
 				return;
 			}
@@ -220,7 +220,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/query",
 			if(!this.legendAnim[plotName]){
 				this.legendAnim[plotName] = new Highlight(this.chart, plotName);
 				// calling this is marking the plot dirty however here this is a "fake" highlight action
-				// we don't want to re-render the chart, _highlight is the in charge of running the animation
+				// we don't want to re-render the dashboard, _highlight is the in charge of running the animation
 				this.chart.getPlot(plotName).dirty = false;
 			}
 			return this.legendAnim[plotName];

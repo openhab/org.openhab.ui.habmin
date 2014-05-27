@@ -18,7 +18,7 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/declare", "dojo/has",
 		//		data array is used.
 		defaultParams: {
 			gap:	2,		// gap between columns in pixels
-			animate: null	// animate chart to place
+			animate: null	// animate dashboard to place
 		},
 		optionalParams: {
 			minBarSize: 1,	// minimal bar size in pixels
@@ -34,9 +34,9 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/declare", "dojo/has",
 
 		constructor: function(chart, kwArgs){
 			// summary:
-			//		The constructor for a candlestick chart.
-			// chart: dojox/charting/Chart
-			//		The chart this plot belongs to.
+			//		The constructor for a candlestick dashboard.
+			// dashboard: dojox/charting/Chart
+			//		The dashboard this plot belongs to.
 			// kwArgs: dojox.charting.plot2d.__BarCtorArgs?
 			//		An optional keyword arguments object to help define the plot.
 			this.opt = lang.clone(this.defaultParams);
@@ -47,7 +47,7 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/declare", "dojo/has",
 
 		collectStats: function(series){
 			// summary:
-			//		Collect all statistics for drawing this chart.  Since the common
+			//		Collect all statistics for drawing this dashboard.  Since the common
 			//		functionality only assumes x and y, OHLC must create it's own
 			//		stats (since data has no y value, but open/close/high/low instead).
 			// series: dojox/charting/Series[]
@@ -186,11 +186,11 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/declare", "dojo/has",
 				run.dirty = false;
 			}
 			this.dirty = false;
-			// chart mirroring starts
+			// dashboard mirroring starts
 			if(has("dojo-bidi")){
 				this._checkOrientation(this.group, dim, offsets);
 			}
-			// chart mirroring ends
+			// dashboard mirroring ends
 			return this;	//	dojox/charting/plot2d/OHLC
 		},
 		_animateOHLC: function(shape, voffset, vsize){

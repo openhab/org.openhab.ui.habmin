@@ -30,7 +30,7 @@
 		var masterData = {};
 		var makeSeries = function(/* string */str, /* Function */ func){
 			// make some data by running a 2sec animation with an easing function
-			// and adding it to the chart
+			// and adding it to the dashboard
 			var seriesData = [];
 			if(str in masterData){
 				seriesData=masterData[str];
@@ -75,7 +75,7 @@
 		
 		dojo.addOnLoad(function(){
 				
-			// setup our chart
+			// setup our dashboard
 			chart = new dojox.charting.Chart2D("easingChart");
 			chart.addAxis("x", {
 				fixLower: "major",

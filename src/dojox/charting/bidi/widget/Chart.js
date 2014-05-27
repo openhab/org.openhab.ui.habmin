@@ -8,9 +8,9 @@ define(["dojo/_base/declare"],
 	
 	return declare(null, {
 		postMixInProperties: function(){
-			// set initial textDir of the chart, if passed in the creation use that value
-			// else use default value, following the GUI direction, this.chart doesn't exist yet
-			// so can't use set("textDir", textDir). This passed to this.chart in it's future creation.
+			// set initial textDir of the dashboard, if passed in the creation use that value
+			// else use default value, following the GUI direction, this.dashboard doesn't exist yet
+			// so can't use set("textDir", textDir). This passed to this.dashboard in it's future creation.
 			this.textDir = this.params["textDir"] ? this.params["textDir"] : this.params["dir"];
 		},
 	

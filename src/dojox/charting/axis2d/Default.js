@@ -18,7 +18,7 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/sniff", "dojo/_base/declare
 		// natural: Boolean?
 		//		Ensure tick marks are made on "natural" numbers. Defaults to false.
 		// leftBottom: Boolean?
-		//		The position of a vertical axis; if true, will be placed against the left-bottom corner of the chart.  Defaults to true.
+		//		The position of a vertical axis; if true, will be placed against the left-bottom corner of the dashboard.  Defaults to true.
 		// includeZero: Boolean?
 		//		Include 0 on the axis rendering.  Default is false.
 		// fixed: Boolean?
@@ -38,9 +38,9 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/sniff", "dojo/_base/declare
 		// max: Number?
 		//		The largest value on an axis. Default is 1.
 		// from: Number?
-		//		Force the chart to render data visible from this value. Default is 0.
+		//		Force the dashboard to render data visible from this value. Default is 0.
 		// to: Number?
-		//		Force the chart to render data visible to this value. Default is 1.
+		//		Force the dashboard to render data visible to this value. Default is 1.
 		// majorTickStep: Number?
 		//		The amount to skip before a major tick is drawn. When not set the major ticks step is computed from
 		//		the data range.
@@ -118,7 +118,7 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/sniff", "dojo/_base/declare
 		// scaler: Object
 		//		The calculated helper object to tell charts how to draw an axis and any data.
 		// ticks: Object
-		//		The calculated tick object that helps a chart draw the scaling on an axis.
+		//		The calculated tick object that helps a dashboard draw the scaling on an axis.
 		// dirty: Boolean
 		//		The state of the axis (whether it needs to be redrawn or not)
 		// scale: Number
@@ -188,8 +188,8 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/sniff", "dojo/_base/declare
 		constructor: function(chart, kwArgs){
 			// summary:
 			//		The constructor for an axis.
-			// chart: dojox/charting/Chart
-			//		The chart the axis belongs to.
+			// dashboard: dojox/charting/Chart
+			//		The dashboard the axis belongs to.
 			// kwArgs: __AxisCtorArgs?
 			//		Any optional keyword arguments to be used to define this axis.
 			this.opt = lang.clone(this.defaultParams);
@@ -550,7 +550,7 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/sniff", "dojo/_base/declare
 			// returns: dojox/charting/axis2d/Default
 			//		The reference to the axis for functional chaining.
 			
-			var isRtl = this._isRtl();	// chart mirroring
+			var isRtl = this._isRtl();	// dashboard mirroring
 			if(!this.dirty || !this.scaler){
 				return this;	//	dojox/charting/axis2d/Default
 			}
@@ -662,7 +662,7 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/sniff", "dojo/_base/declare
 				titleOffset = size * cosr + (cachedLabelW || 0) * sinr + labelGap + Math.max(taMajorTick.length > 0?taMajorTick.length:0,
 																		 					 taMinorTick.length > 0?taMinorTick.length:0) +
 					tsize + taTitleGap;
-				axisVector = {x: isRtl ? -1 : 1, y: 0}; 	// chart mirroring
+				axisVector = {x: isRtl ? -1 : 1, y: 0}; 	// dashboard mirroring
 				labelOffset = {x: 0, y: 0};
 				tickVector = {x: 0, y: 1};
 				anchorOffset = {x: 0, y: labelGap};
@@ -780,7 +780,7 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/sniff", "dojo/_base/declare
 			var canLabel = this.opt.majorLabels;
 			arr.forEach(t.major, function(tick, i){
 				var offset = f(tick.value), elem,
-					x = (isRtl ? stop.x : start.x) + axisVector.x * offset, // chart mirroring
+					x = (isRtl ? stop.x : start.x) + axisVector.x * offset, // dashboard mirroring
 					y = start.y + axisVector.y * offset;
 				i += rel;
 				this.createLine(s, {
@@ -834,7 +834,7 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/sniff", "dojo/_base/declare
 			arr.forEach(t.minor, function(tick){
 				var offset = f(tick.value), elem,
 					x = (isRtl ? stop.x : start.x)  + axisVector.x * offset,
-					y = start.y + axisVector.y * offset; // chart mirroring
+					y = start.y + axisVector.y * offset; // dashboard mirroring
 				this.createLine(s, {
 					x1: x, y1: y,
 					x2: x + dx,

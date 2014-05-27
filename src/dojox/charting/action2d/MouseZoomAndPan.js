@@ -12,13 +12,13 @@ define(["dojo/_base/declare", "dojo/_base/window", "dojo/_base/array", "dojo/_ba
 		// scaleFactor: Number?
 		//		The scale factor applied on mouse wheel zoom.  Default is 1.2.
 		// maxScale: Number?
-		//		The max scale factor accepted by this chart action.  Default is 100.
+		//		The max scale factor accepted by this dashboard action.  Default is 100.
 		// enableScroll: Boolean?
-		//		Whether mouse drag gesture should scroll the chart.  Default is true.
+		//		Whether mouse drag gesture should scroll the dashboard.  Default is true.
 		// enableDoubleClickZoom: Boolean?
-		//		Whether a double click gesture should toggle between fit and zoom on the chart.  Default is true.
+		//		Whether a double click gesture should toggle between fit and zoom on the dashboard.  Default is true.
 		// enableKeyZoom: Boolean?
-		//		Whether a keyZoomModifier + + or keyZoomModifier + - key press should zoom in our out on the chart.  Default is true.
+		//		Whether a keyZoomModifier + + or keyZoomModifier + - key press should zoom in our out on the dashboard.  Default is true.
 		// keyZoomModifier: String?
 		//		Which keyboard modifier should used for keyboard zoom in and out. This should be one of "alt", "ctrl", "shift" or "none" for no modifier. Default is "ctrl".
 	};
@@ -44,7 +44,7 @@ define(["dojo/_base/declare", "dojo/_base/window", "dojo/_base/array", "dojo/_ba
 		// summary:
 		//		Create an mouse zoom and pan action.
 		//		You can zoom in or out the data window with mouse wheel. You can scroll using mouse drag gesture. 
-		//		You can toggle between zoom and fit view using double click on the chart.
+		//		You can toggle between zoom and fit view using double click on the dashboard.
 
 		// the data description block for the widget parser
 		defaultParams: {
@@ -61,10 +61,10 @@ define(["dojo/_base/declare", "dojo/_base/window", "dojo/_base/array", "dojo/_ba
 		constructor: function(chart, plot, kwArgs){
 			// summary:
 			//		Create an mouse zoom and pan action and connect it.
-			// chart: dojox/charting/Chart
-			//		The chart this action applies to.
+			// dashboard: dojox/charting/Chart
+			//		The dashboard this action applies to.
 			// kwArgs: __MouseZoomAndPanCtorArgs?
-			//		Optional arguments for the chart action.
+			//		Optional arguments for the dashboard action.
 			this._listeners = [{eventName: mouse.wheel, methodName: "onMouseWheel"}];
 			if(!kwArgs){ kwArgs = {}; }
 			this.axis = kwArgs.axis ? kwArgs.axis : "x";
@@ -97,19 +97,19 @@ define(["dojo/_base/declare", "dojo/_base/window", "dojo/_base/array", "dojo/_ba
 		
 		connect: function(){
 			// summary:
-			//		Connect this action to the chart.
+			//		Connect this action to the dashboard.
 			this.inherited(arguments);
 			if(this.enableKeyZoom){
 				// we want to be able to get focus to receive key events 
 				domProp.set(this.chart.node, "tabindex", "0");
 				// if one doesn't want a focus border he can do something like
-				// dojo.style(this.chart.node, "outline", "none");
+				// dojo.style(this.dashboard.node, "outline", "none");
 			}
 		},
 		
 		disconnect: function(){
 			// summary:
-			//		Disconnect this action from the chart.
+			//		Disconnect this action from the dashboard.
 			this.inherited(arguments);
 			if(this.enableKeyZoom){
 				// we don't need anymore to be able to get focus to receive key events 
@@ -121,7 +121,7 @@ define(["dojo/_base/declare", "dojo/_base/window", "dojo/_base/array", "dojo/_ba
 	
 		onMouseDown: function(event){
 			// summary:
-			//		Called when mouse is down on the chart.
+			//		Called when mouse is down on the dashboard.
 			var chart = this.chart, axis = chart.getAxis(this.axis);
 			if(!axis.vertical){
 				this._startCoord = event.pageX;
@@ -131,7 +131,7 @@ define(["dojo/_base/declare", "dojo/_base/window", "dojo/_base/array", "dojo/_ba
 			this._startOffset = axis.getWindowOffset();
 			this._isPanning = true;
 			// we now want to capture mouse move events everywhere to avoid
-			// stop scrolling when going out of the chart window
+			// stop scrolling when going out of the dashboard window
 			if(has("ie")){
 				this._handles.push(connect.connect(this.chart.node, "onmousemove", this, "onMouseMove"));
 				this._handles.push(connect.connect(this.chart.node, "onmouseup", this, "onMouseUp"));
@@ -147,7 +147,7 @@ define(["dojo/_base/declare", "dojo/_base/window", "dojo/_base/array", "dojo/_ba
 	
 		onMouseMove: function(event){
 			// summary:
-			//		Called when mouse is moved on the chart.
+			//		Called when mouse is moved on the dashboard.
 			if(this._isPanning){
 				var chart = this.chart, axis = chart.getAxis(this.axis);
 				var delta = this._getDelta(event);
@@ -163,14 +163,14 @@ define(["dojo/_base/declare", "dojo/_base/window", "dojo/_base/array", "dojo/_ba
 	
 		onMouseUp: function(event){
 			// summary:
-			//		Called when mouse is up on the chart.
+			//		Called when mouse is up on the dashboard.
 			this._isPanning = false;
 			this._disconnectHandles();
 		},
 		
 		onMouseWheel: function(event){
 			// summary:
-			//		Called when mouse wheel is used on the chart.
+			//		Called when mouse wheel is used on the dashboard.
 			var scroll = event.wheelDelta / sUnit;
 			// on Mozilla the sUnit might actually not always be 3
 			// make sure we never have -1 < scroll < 1
@@ -184,7 +184,7 @@ define(["dojo/_base/declare", "dojo/_base/window", "dojo/_base/array", "dojo/_ba
 		
 		onKeyPress: function(event){
 			// summary:
-			//		Called when a key is pressed on the chart.
+			//		Called when a key is pressed on the dashboard.
 			if(keyTests[this.keyZoomModifier](event)){
 				if(event.keyChar == "+" || event.keyCode == keys.NUMPAD_PLUS){
 					this._onZoom(1, event);
@@ -196,7 +196,7 @@ define(["dojo/_base/declare", "dojo/_base/window", "dojo/_base/array", "dojo/_ba
 		
 		onDoubleClick: function(event){
 			// summary:
-			//		Called when the mouse is double is double clicked on the chart. Toggle between zoom and fit chart.
+			//		Called when the mouse is double is double clicked on the dashboard. Toggle between zoom and fit dashboard.
 			var chart = this.chart, axis = chart.getAxis(this.axis);
 			var scale = 1 / this.scaleFactor;
 			// are we fit?

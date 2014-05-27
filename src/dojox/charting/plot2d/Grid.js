@@ -106,8 +106,8 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/array", "dojo/sniff
 		constructor: function(chart, kwArgs){
 			// summary:
 			//		Create the faux Grid plot.
-			// chart: dojox/charting/Chart
-			//		The chart this plot belongs to.
+			// dashboard: dojox/charting/Chart
+			//		The dashboard this plot belongs to.
 			// kwArgs: dojox.charting.plot2d.__GridCtorArgs?
 			//		An optional keyword arguments object to help define the parameters of the underlying grid.
 			this.opt = lang.clone(this.defaultParams);
@@ -177,7 +177,7 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/array", "dojo/sniff
 		
 		render: function(dim, offsets){
 			// summary:
-			//		Render the plot on the chart.
+			//		Render the plot on the dashboard.
 			// dim: Object
 			//		An object of the form { width, height }.
 			// offsets: Object

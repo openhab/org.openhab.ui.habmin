@@ -10,12 +10,12 @@ define(["dojo/_base/lang", "dojo/_base/declare", "./Element"],
 	=====*/
 	return declare("dojox.charting.Series", Element, {
 		// summary:
-		//		An object representing a series of data for plotting on a chart.
+		//		An object representing a series of data for plotting on a dashboard.
 		constructor: function(chart, data, kwArgs){
 			// summary:
 			//		Create a new data series object for use within charting.
-			// chart: dojox/charting/Chart
-			//		The chart that this series belongs to.
+			// dashboard: dojox/charting/Chart
+			//		The dashboard that this series belongs to.
 			// data: Array|Object
 			//		The array of data points (either numbers or objects) that
 			//		represents the data to be drawn. Or it can be an object. In

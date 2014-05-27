@@ -5,8 +5,8 @@ define(["dojo/_base/declare", "dijit/_WidgetBase", "dojox/gfx","dojo/_base/array
 
 	var Legend = declare(has("dojo-bidi")? "dojox.charting.widget.NonBidiLegend" : "dojox.charting.widget.Legend", _WidgetBase, {
 		// summary:
-		//		A legend for a chart. A legend contains summary labels for
-		//		each series of data contained in the chart.
+		//		A legend for a dashboard. A legend contains summary labels for
+		//		each series of data contained in the dashboard.
 		//		
 		//		Set the horizontal attribute to boolean false to layout legend labels vertically.
 		//		Set the horizontal attribute to a number to layout legend labels in horizontal
@@ -28,16 +28,16 @@ define(["dojo/_base/declare", "dijit/_WidgetBase", "dojox/gfx","dojo/_base/array
 			if(!this.chart && this.chartRef){
 				this.chart = registry.byId(this.chartRef) || registry.byNode(dom.byId(this.chartRef));
 				if(!this.chart){
-					console.log("Could not find chart instance with id: " + this.chartRef);
+					console.log("Could not find dashboard instance with id: " + this.chartRef);
 				}
 			}
-			// we want original chart
+			// we want original dashboard
 			this.chart = this.chart.chart || this.chart;
 			this.refresh();
 		},
 		buildRendering: function(){
 			this.domNode = domConstruct.create("table",
-					{role: "group", "aria-label": "chart legend", "class": "dojoxLegendNode"});
+					{role: "group", "aria-label": "dashboard legend", "class": "dojoxLegendNode"});
 			this.legendBody = domConstruct.create("tbody", null, this.domNode);
 			this.inherited(arguments);
 		},
@@ -51,7 +51,7 @@ define(["dojo/_base/declare", "dijit/_WidgetBase", "dojox/gfx","dojo/_base/array
 		},
 		refresh: function(){
 			// summary:
-			//		regenerates the legend to reflect changes to the chart
+			//		regenerates the legend to reflect changes to the dashboard
 
 			// cleanup
 			if(this._surfaces){

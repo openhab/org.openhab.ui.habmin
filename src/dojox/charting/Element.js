@@ -3,10 +3,10 @@ define(["dojo/_base/array", "dojo/dom-construct","dojo/_base/declare", "dojox/gf
 
 	return declare("dojox.charting.Element", null, {
 		// summary:
-		//		A base class that is used to build other elements of a chart, such as
+		//		A base class that is used to build other elements of a dashboard, such as
 		//		a series.
-		// chart: dojox/charting/Chart
-		//		The parent chart for this element.
+		// dashboard: dojox/charting/Chart
+		//		The parent dashboard for this element.
 		// group: dojox/gfx/shape.Group
 		//		The visual GFX group representing this element.
 		// htmlElement: Array
@@ -22,8 +22,8 @@ define(["dojo/_base/array", "dojo/dom-construct","dojo/_base/declare", "dojox/gf
 		constructor: function(chart){
 			// summary:
 			//		Creates a new charting element.
-			// chart: dojox/charting/Chart
-			//		The chart that this element belongs to.
+			// dashboard: dojox/charting/Chart
+			//		The dashboard that this element belongs to.
 			this.chart = chart;
 			this.group = null;
 			this.htmlElements = [];

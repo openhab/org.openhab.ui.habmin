@@ -25,7 +25,7 @@ define(["dojox/main", "dojo/_base/declare", "dojo/_base/lang", "dojo/dom-style",
 		textDir:"",
 		
 		// dir: String
-		//		Mirroring support,	the main variable which is responsible for the direction of the chart.
+		//		Mirroring support,	the main variable which is responsible for the direction of the dashboard.
 		//
 		//		Allowed values:
 		//		1. "ltr"
@@ -57,9 +57,9 @@ define(["dojox/main", "dojo/_base/declare", "dojo/_base/lang", "dojo/dom-style",
 
 		postscript: function(node,args){
 			// summary:
-			//		Kicks off chart instantiation.
+			//		Kicks off dashboard instantiation.
 			// description:
-			//		Used for setting the textDir of the chart. 
+			//		Used for setting the textDir of the dashboard.
 			// tags:
 			//		private
 
@@ -75,13 +75,13 @@ define(["dojox/main", "dojo/_base/declare", "dojo/_base/lang", "dojo/dom-style",
 			// textDir dynamically
 			this.htmlElementsRegistry = [];
 			this.truncatedLabelsRegistry = [];
-			// chart mirroring starts
+			// dashboard mirroring starts
 			var chartDir = "ltr";
 			if(domAttr.has(node, "direction")){
 				chartDir = domAttr.get(node, "direction");
 			}
 			this.setDir(args ? (args.dir ? args.dir: chartDir) : chartDir);
-			// chart mirroring ends
+			// dashboard mirroring ends
 		},
 
 		setTextDir: function(newTextDir, obj){
@@ -121,7 +121,7 @@ define(["dojox/main", "dojo/_base/declare", "dojo/_base/lang", "dojo/dom-style",
 				
 				// re-render axes with html labels. for recalculation of the labels
 				// positions etc.
-				// create array of keys for all the axis in chart 
+				// create array of keys for all the axis in dashboard
 				var axesKeyArr = df.keys(this.axes);
 				if(axesKeyArr.length > 0){
 					// iterate over the axes, and for each that have html labels render it.
@@ -175,8 +175,8 @@ define(["dojox/main", "dojo/_base/declare", "dojo/_base/lang", "dojo/dom-style",
 			//		Setter for the dir attribute.
 			// description:
 			//		Allows dynamically set the dri attribute, which will used to
-			//		updates the chart rendering direction.
-			//	dir : the desired chart direction [rtl: for right to left ,ltr: for left to right]
+			//		updates the dashboard rendering direction.
+			//	dir : the desired dashboard direction [rtl: for right to left ,ltr: for left to right]
  
 			if(dir == "rtl" || dir == "ltr"){
 				if(this.dir != dir){
@@ -190,16 +190,16 @@ define(["dojox/main", "dojo/_base/declare", "dojo/_base/lang", "dojo/dom-style",
 		
 		isRightToLeft: function(){
 			// summary:
-			//		check the direction of the chart.
+			//		check the direction of the dashboard.
 			// description:
 			//		check the dir attribute to determine the rendering direction
-			//		of the chart.
+			//		of the dashboard.
 			return this.dir == "rtl";
         },
         
 		applyMirroring: function(plot, dim, offsets){
 			// summary:
-			//		apply the mirroring operation to the current chart plots.
+			//		apply the mirroring operation to the current dashboard plots.
 			//
 			utils.reverseMatrix(plot, dim, offsets, this.dir == "rtl");
 			//force the direction of the node to be ltr to properly render the axes and the plots labels.

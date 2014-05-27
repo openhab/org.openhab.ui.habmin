@@ -60,7 +60,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/Deferred"],
 			// summary:
 			//		Sets a dojox.charting.Series object we will be working with.
 			// series: dojox/charting/Series
-			//		Our interface to the chart.
+			//		Our interface to the dashboard.
 			this.series = series;
 		},
 	
@@ -68,7 +68,7 @@ define(["dojo/_base/array", "dojo/_base/declare", "dojo/_base/Deferred"],
 	
 		fetch: function(){
 			// summary:
-			//		Fetches data from the store and updates a chart.
+			//		Fetches data from the store and updates a dashboard.
 			var self = this;
 			if(this.observeHandle){
 				this.observeHandle.remove();

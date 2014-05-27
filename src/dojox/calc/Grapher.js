@@ -45,7 +45,7 @@ define([
 		addXYAxes: function(chart){
 			// summary:
 			//		add or re-add the default x/y axes to the Chart provided
-			// chart: dojox.charting.Chart
+			// dashboard: dojox.charting.Chart
 
 			return chart.addAxis("x", {
 				max: parseInt(this.graphMaxX.get("value")),
@@ -102,7 +102,7 @@ define([
 		},
 		erase: function(i){
 			// summary:
-			//		erase the chart inside this.array with the index i
+			//		erase the dashboard inside this.array with the index i
 			// i: Integer
 			//		index to this.array that represents the current row number in the table
 			var nameNum = 0;
@@ -250,8 +250,8 @@ define([
 		},
 		changedColor: function(){
 			// summary:
-			//		Make the color of the chart the new color.
-			//		The context is changed to the colorPalette, and a reference to chart was added to it a an attribute.
+			//		Make the color of the dashboard the new color.
+			//		The context is changed to the colorPalette, and a reference to dashboard was added to it a an attribute.
 			var chart = this.get("chart");
 			var colorBoxFieldset = this.get("colorBox");
 			for(var i = 0; i < chart.series.length; i++){
@@ -341,12 +341,12 @@ define([
 	return lang.mixin(calc, {
 		draw: function(/*Chart*/ chart, /*Function*/ functionToGraph, params){
 			// summary:
-			//		graph a chart with the given function.
-			// chart: dojox.charting.Chart
+			//		graph a dashboard with the given function.
+			// dashboard: dojox.charting.Chart
 			// functionToGraph: Function
 			//		Function with one numeric parameter (x or y typically)
 			// params: Object
-			//		can contain the number of the graph in the chart it is (an integer), a boolean saying if the functionToGraph is a function of x (otherwise y)
+			//		can contain the number of the graph in the dashboard it is (an integer), a boolean saying if the functionToGraph is a function of x (otherwise y)
 			//		and the color, which is an object with a stroke with a color's name eg: color:{stroke:"black"}
 
 			params = lang.mixin({}, defaultParams, params);
@@ -394,15 +394,15 @@ define([
 			// y: String
 			//		x and y are Strings which always have the values of "x" or "y".  If y="x" and x="y" then it is creating points for the function as though it was a function of y
 			// minX:
-			//		minX, maxX, minY, and maxY are all bounds of the chart.  If x="y" then maxY should be the maximum bound of x rather than y
+			//		minX, maxX, minY, and maxY are all bounds of the dashboard.  If x="y" then maxY should be the maximum bound of x rather than y
 			// maxX:
-			//		minX, maxX, minY, and maxY are all bounds of the chart.  If x="y" then maxY should be the maximum bound of x rather than y
+			//		minX, maxX, minY, and maxY are all bounds of the dashboard.  If x="y" then maxY should be the maximum bound of x rather than y
 			// minY:
-			//		minX, maxX, minY, and maxY are all bounds of the chart.  If x="y" then maxY should be the maximum bound of x rather than y
+			//		minX, maxX, minY, and maxY are all bounds of the dashboard.  If x="y" then maxY should be the maximum bound of x rather than y
 			// maxY:
-			//		minX, maxX, minY, and maxY are all bounds of the chart.  If x="y" then maxY should be the maximum bound of x rather than y
+			//		minX, maxX, minY, and maxY are all bounds of the dashboard.  If x="y" then maxY should be the maximum bound of x rather than y
 			// width:
-			//		pixel width of the chart
+			//		pixel width of the dashboard
 			// output:
 			//		an array of arrays of points
 			var pow2 = (1 << Math.ceil(Math.log(width) / log2));

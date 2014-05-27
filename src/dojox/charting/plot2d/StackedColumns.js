@@ -3,7 +3,7 @@ define(["dojo/_base/declare", "./Columns", "./commonStacked"],
 
 	return declare("dojox.charting.plot2d.StackedColumns", Columns, {
 		// summary:
-		//		The plot object representing a stacked column chart (vertical bars).
+		//		The plot object representing a stacked column dashboard (vertical bars).
 		getSeriesStats: function(){
 			// summary:
 			//		Calculate the min/max on all attached series in both directions.

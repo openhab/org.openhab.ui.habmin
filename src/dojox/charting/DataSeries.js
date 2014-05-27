@@ -59,7 +59,7 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/array", "dojo/_base
 			// summary:
 			//		Sets a dojox.charting.Series object we will be working with.
 			// series: dojox.charting.Series
-			//		Our interface to the chart.
+			//		Our interface to the dashboard.
 			this.series = series;
 		},
 	
@@ -85,7 +85,7 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/array", "dojo/_base
 	
 		fetch: function(){
 			// summary:
-			//		Fetches data from the store and updates a chart.
+			//		Fetches data from the store and updates a dashboard.
 			if(!this._inFlight){
 				this._inFlight = true;
 				var kwArgs = Lang.delegate(this.kwArgs);

@@ -15,7 +15,7 @@ define(["dojo/_base/lang", "dojo/_base/declare", "./Base", "../scaler/linear",
 		// natural: Boolean?
 		//		Ensure tick marks are made on "natural" numbers. Defaults to false.
 		// leftBottom: Boolean?
-		//		The position of a vertical axis; if true, will be placed against the left-bottom corner of the chart.  Defaults to true.
+		//		The position of a vertical axis; if true, will be placed against the left-bottom corner of the dashboard.  Defaults to true.
 		// includeZero: Boolean?
 		//		Include 0 on the axis rendering.  Default is false.
 		// fixed: Boolean?
@@ -25,9 +25,9 @@ define(["dojo/_base/lang", "dojo/_base/declare", "./Base", "../scaler/linear",
 		// max: Number?
 		//		The largest value on an axis. Default is 1.
 		// from: Number?
-		//		Force the chart to render data visible from this value. Default is 0.
+		//		Force the dashboard to render data visible from this value. Default is 0.
 		// to: Number?
-		//		Force the chart to render data visible to this value. Default is 1.
+		//		Force the dashboard to render data visible to this value. Default is 1.
 		// majorTickStep: Number?
 		//		The amount to skip before a major tick is drawn. When not set the major ticks step is computed from
 		//		the data range.
@@ -59,7 +59,7 @@ define(["dojo/_base/lang", "dojo/_base/declare", "./Base", "../scaler/linear",
 		// scaler: Object
 		//		The calculated helper object to tell charts how to draw an axis and any data.
 		// ticks: Object
-		//		The calculated tick object that helps a chart draw the scaling on an axis.
+		//		The calculated tick object that helps a dashboard draw the scaling on an axis.
 		// dirty: Boolean
 		//		The state of the axis (whether it needs to be redrawn or not)
 		// scale: Number
@@ -96,8 +96,8 @@ define(["dojo/_base/lang", "dojo/_base/declare", "./Base", "../scaler/linear",
 		constructor: function(chart, kwArgs){
 			// summary:
 			//		The constructor for an invisible axis.
-			// chart: dojox/charting/Chart
-			//		The chart the axis belongs to.
+			// dashboard: dojox/charting/Chart
+			//		The dashboard the axis belongs to.
 			// kwArgs: __InvisibleAxisCtorArgs?
 			//		Any optional keyword arguments to be used to define this axis.
 			this.opt = lang.clone(this.defaultParams);

@@ -10,7 +10,7 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/connect", "dojo/_ba
 
 	var Spider = declare("dojox.charting.plot2d.Spider", [Base, PlotEvents], {
 		// summary:
-		//		The plot that represents a typical Spider chart.
+		//		The plot that represents a typical Spider dashboard.
 		defaultParams: {
 			labels:			true,
 			ticks:			false,
@@ -45,8 +45,8 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/connect", "dojo/_ba
 		constructor: function(chart, kwArgs){
 			// summary:
 			//		Create a Spider plot.
-			// chart: dojox/charting/Chart
-			//		The chart this plot belongs to.
+			// dashboard: dojox/charting/Chart
+			//		The dashboard this plot belongs to.
 			// kwArgs: dojox.charting.plot2d.__DefaultCtorArgs?
 			//		An optional keyword arguments object to help define this plot's parameters.
 			this.opt = lang.clone(this.defaultParams);
@@ -128,7 +128,7 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/connect", "dojo/_ba
 		},
 		render: function(dim, offsets){
 			// summary:
-			//		Render the plot on the chart.
+			//		Render the plot on the dashboard.
 			// dim: Object
 			//		An object of the form { width, height }.
 			// offsets: Object

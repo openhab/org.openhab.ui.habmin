@@ -20,8 +20,8 @@ define(["dojo/_base/declare", "../Element"],
 		constructor: function(chart, kwArgs){
 			// summary:
 			//		Return a new base axis.
-			// chart: dojox/charting/Chart
-			//		The chart this axis belongs to.
+			// dashboard: dojox/charting/Chart
+			//		The dashboard this axis belongs to.
 			// kwArgs: __BaseAxisCtorArgs?
 			//		An optional arguments object to define the axis parameters.
 			this.vertical = kwArgs && kwArgs.vertical;

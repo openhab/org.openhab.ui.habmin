@@ -9,7 +9,7 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/connect", "dojo/_ba
 		// series: String
 		//		Target series name for this action.
 		// autoScroll: Boolean?
-		//		Whether when moving indicator the chart is automatically scrolled. Default is true.
+		//		Whether when moving indicator the dashboard is automatically scrolled. Default is true.
 		// lines: Boolean?
 		//		Whether the indicator lines are visible or not. Default is true.
 		// labels: Boolean?
@@ -74,7 +74,7 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/connect", "dojo/_ba
 
 	return declare("dojox.charting.action2d.MouseIndicator", ChartAction, {
 		// summary:
-		//		Create a mouse indicator action. You can drag mouse over the chart to display a data indicator.
+		//		Create a mouse indicator action. You can drag mouse over the dashboard to display a data indicator.
 
 		// the data description block for the widget parser
 		defaultParams: {
@@ -113,10 +113,10 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/connect", "dojo/_ba
 		constructor: function(chart, plot, kwArgs){
 			// summary:
 			//		Create an mouse indicator action and connect it.
-			// chart: dojox/charting/Chart
-			//		The chart this action applies to.
+			// dashboard: dojox/charting/Chart
+			//		The dashboard this action applies to.
 			// kwArgs: __MouseIndicatorCtorArgs?
-			//		Optional arguments for the chart action.
+			//		Optional arguments for the dashboard action.
 			this.opt = lang.clone(this.defaultParams);
 			du.updateWithObject(this.opt, kwArgs);
 			du.updateWithPattern(this.opt, kwArgs, this.optionalParams);
@@ -137,8 +137,8 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/connect", "dojo/_ba
 
 		connect: function(){
 			// summary:
-			//		Connect this action to the chart. This adds a indicator plot
-			//		to the chart that's why Chart.render() must be called after connect.
+			//		Connect this action to the dashboard. This adds a indicator plot
+			//		to the dashboard that's why Chart.render() must be called after connect.
 			this.inherited(arguments);
 			// add plot with unique name
 			this.chart.addPlot(this._uName, {type: IndicatorElement, inter: this });
@@ -146,7 +146,7 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/connect", "dojo/_ba
 
 		disconnect: function(){
 			// summary:
-			//		Disconnect this action from the chart.
+			//		Disconnect this action from the dashboard.
 			if(this._isMouseDown){
 				this.onMouseUp();
 			}
@@ -165,11 +165,11 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/connect", "dojo/_ba
 
 		onMouseDown: function(event){
 			// summary:
-			//		Called when mouse is down on the chart.
+			//		Called when mouse is down on the dashboard.
 			this._isMouseDown = true;
 			
 			// we now want to capture mouse move events everywhere to avoid
-			// stop scrolling when going out of the chart window
+			// stop scrolling when going out of the dashboard window
 			if(has("ie")){
 				this._handles.push(hub.connect(this.chart.node, "onmousemove", this, "onMouseMove"));
 				this._handles.push(hub.connect(this.chart.node, "onmouseup", this, "onMouseUp"));
@@ -184,7 +184,7 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/connect", "dojo/_ba
 
 		onMouseMove: function(event){
 			// summary:
-			//		Called when the mouse is moved on the chart.
+			//		Called when the mouse is moved on the dashboard.
 			if(this._isMouseDown || this.opt.mouseOver){
 				this._onMouseSingle(event);
 			}
@@ -200,7 +200,7 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/connect", "dojo/_ba
 
 		onMouseUp: function(event){
 			// summary:
-			//		Called when mouse is up on the chart.
+			//		Called when mouse is up on the dashboard.
 			var plot = this.chart.getPlot(this._uName);
 			plot.stopTrack();
 			this._isMouseDown = false;

@@ -58,7 +58,7 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/declare", "dojo/has",
 
 	return declare("dojox.charting.plot2d.Bars", [CartesianBase, _PlotEvents], {
 		// summary:
-		//		The plot object representing a bar chart (horizontal bars).
+		//		The plot object representing a bar dashboard (horizontal bars).
 		defaultParams: {
 			gap:	0,		// gap between columns in pixels
 			animate: null,   // animate bars into place
@@ -80,9 +80,9 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/declare", "dojo/has",
 
 		constructor: function(chart, kwArgs){
 			// summary:
-			//		The constructor for a bar chart.
-			// chart: dojox/charting/Chart
-			//		The chart this plot belongs to.
+			//		The constructor for a bar dashboard.
+			// dashboard: dojox/charting/Chart
+			//		The dashboard this plot belongs to.
 			// kwArgs: dojox.charting.plot2d.__BarCtorArgs?
 			//		An optional keyword arguments object to help define the plot.
 			this.opt = lang.clone(lang.mixin(this.opt, this.defaultParams));
@@ -255,11 +255,11 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/declare", "dojo/has",
 				run.dirty = false;
 			}
 			this.dirty = false;
-			// chart mirroring starts
+			// dashboard mirroring starts
 			if(has("dojo-bidi")){
 				this._checkOrientation(this.group, dim, offsets);
 			}
-			// chart mirroring ends
+			// dashboard mirroring ends
 			return this;	//	dojox/charting/plot2d/Bars
 		},
 		getValue: function(value, j, seriesIndex, indexed){

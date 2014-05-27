@@ -6,10 +6,10 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/declare", "dojo/has",
 
 	return declare("dojox.charting.plot2d.Scatter", [CartesianBase, _PlotEvents], {
 		// summary:
-		//		A plot object representing a typical scatter chart.
+		//		A plot object representing a typical scatter dashboard.
 		defaultParams: {
 			shadows: null,	// draw shadows
-			animate: null	// animate chart to place
+			animate: null	// animate dashboard to place
 		},
 		optionalParams: {
 			// theme component
@@ -25,8 +25,8 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/declare", "dojo/has",
 		constructor: function(chart, kwArgs){
 			// summary:
 			//		Create the scatter plot.
-			// chart: dojox/charting/Chart
-			//		The chart this plot belongs to.
+			// dashboard: dojox/charting/Chart
+			//		The dashboard this plot belongs to.
 			// kwArgs: dojox.charting.plot2d.__DefaultCtorArgs?
 			//		An optional keyword arguments object to help define this plot's parameters.
 			this.opt = lang.clone(lang.mixin(this.opt, this.defaultParams));
@@ -179,11 +179,11 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/declare", "dojo/has",
 				run.dirty = false;
 			}
 			this.dirty = false;
-			// chart mirroring starts
+			// dashboard mirroring starts
 			if(has("dojo-bidi")){
 				this._checkOrientation(this.group, dim, offsets);
 			}
-			// chart mirroring ends
+			// dashboard mirroring ends
 			return this;	//	dojox/charting/plot2d/Scatter
 		},
 		_animateScatter: function(shape, offset){

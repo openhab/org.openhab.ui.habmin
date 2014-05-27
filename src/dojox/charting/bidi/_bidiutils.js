@@ -5,9 +5,9 @@
 			//plot:
 			//  the plot which has the matrix to be reversed.
 			//dim:
-			//  the dimension (width,height) of the chart.
+			//  the dimension (width,height) of the dashboard.
 			//offsets:
-			//  the offsets of the chart
+			//  the offsets of the dashboard
 			var shift = offsets.l - offsets.r;
 			var xx = rtl? -1 : 1;
 			var xy = 0;

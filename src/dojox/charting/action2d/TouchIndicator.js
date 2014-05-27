@@ -8,7 +8,7 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/event", "dojo/touch
 			// series: String
 			//		Target series name for this action.
 			// autoScroll: Boolean?
-			//		Whether when moving indicator the chart is automatically scrolled. Default is true.
+			//		Whether when moving indicator the dashboard is automatically scrolled. Default is true.
 			// lines: Boolean?
 			//		Whether the indicator lines are visible or not. Default is true.
 			// labels: Boolean?
@@ -71,7 +71,7 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/event", "dojo/touch
 
 	return declare("dojox.charting.action2d.TouchIndicator", ChartAction, {
 		// summary:
-		//		Create a touch indicator action. You can touch over the chart to display a data indicator.
+		//		Create a touch indicator action. You can touch over the dashboard to display a data indicator.
 
 		// the data description block for the widget parser
 		defaultParams: {
@@ -110,10 +110,10 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/event", "dojo/touch
 		constructor: function(chart, plot, kwArgs){
 			// summary:
 			//		Create a new touch indicator action and connect it.
-			// chart: dojox/charting/Chart
-			//		The chart this action applies to.
+			// dashboard: dojox/charting/Chart
+			//		The dashboard this action applies to.
 			// kwArgs: __TouchIndicatorCtorArgs?
-			//		Optional arguments for the chart action.
+			//		Optional arguments for the dashboard action.
 			this._listeners = [
 				{eventName: touch.press, methodName: "onTouchStart"},
 				{eventName: touch.move, methodName: "onTouchMove"},
@@ -129,8 +129,8 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/event", "dojo/touch
 		
 		connect: function(){
 			// summary:
-			//		Connect this action to the chart. This adds a indicator plot
-			//		to the chart that's why Chart.render() must be called after connect.
+			//		Connect this action to the dashboard. This adds a indicator plot
+			//		to the dashboard that's why Chart.render() must be called after connect.
 			this.inherited(arguments);
 			// add plot with unique name
 			this.chart.addPlot(this._uName, {type: IndicatorElement, inter: this});
@@ -138,7 +138,7 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/event", "dojo/touch
 
 		disconnect: function(){
 			// summary:
-			//		Disconnect this action from the chart.
+			//		Disconnect this action from the dashboard.
 			var plot = this.chart.getPlot(this._uName);
 			if(plot.pageCoord){
 				// we might still have something drawn on the screen
@@ -159,7 +159,7 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/event", "dojo/touch
 
 		onTouchStart: function(event){
 			// summary:
-			//		Called when touch is started on the chart.
+			//		Called when touch is started on the dashboard.
 			if(!event.touches || event.touches.length == 1){
 				this._onTouchSingle(event, true);
 			}else if(this.opt.dualIndicator && event.touches.length == 2){
@@ -169,7 +169,7 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/event", "dojo/touch
 
 		onTouchMove: function(event){
 			// summary:
-			//		Called when touch is moved on the chart.
+			//		Called when touch is moved on the dashboard.
 			if(!event.touches || event.touches.length == 1){
 				this._onTouchSingle(event);
 			}else if(this.opt.dualIndicator && event.touches.length == 2){
@@ -209,7 +209,7 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/event", "dojo/touch
 
 		onTouchEnd: function(event){
 			// summary:
-			//		Called when touch is ended or canceled on the chart.
+			//		Called when touch is ended or canceled on the dashboard.
 			var plot = this.chart.getPlot(this._uName);
 			plot.stopTrack();
 			plot.pageCoord = null;

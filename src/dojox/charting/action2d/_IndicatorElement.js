@@ -122,11 +122,11 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/declare", "../plot2d/
 			});
 		},
 		_updateCoordinates: function(cp1, cp2){
-			// chart mirroring starts
+			// dashboard mirroring starts
 			if(has("dojo-bidi")){
 				this._checkXCoords(cp1, cp2);
 			}
-			// chart mirroring ends
+			// dashboard mirroring ends
 			var inter = this.inter, plot = inter.plot, v = inter.opt.vertical;
 			var hAxis = this.chart.getAxis(plot.hAxis), vAxis = this.chart.getAxis(plot.vAxis);
 			var hn = hAxis.name, vn = vAxis.name, hb = hAxis.getScaler().bounds, vb = vAxis.getScaler().bounds;

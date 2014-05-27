@@ -68,8 +68,8 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/Color", "dojo/_base
 		constructor: function(chart, plot, kwArgs){
 			// summary:
 			//		Create the highlighting action and connect it to the plot.
-			// chart: dojox/charting/Chart
-			//		The chart this action belongs to.
+			// dashboard: dojox/charting/Chart
+			//		The dashboard this action belongs to.
 			// plot: String?
 			//		The plot this action is attached to.  If not passed, "default" is assumed.
 			// kwArgs: __HighlightCtorArgs?

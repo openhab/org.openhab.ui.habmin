@@ -20,7 +20,7 @@ define(["dojo/_base/connect", "dojo/_base/declare", "./PlotAction",
 
 	return declare("dojox.charting.action2d.Shake", PlotAction, {
 		// summary:
-		//		Create a shaking action for use on an element in a chart.
+		//		Create a shaking action for use on an element in a dashboard.
 
 		// the data description block for the widget parser
 		defaultParams: {
@@ -34,8 +34,8 @@ define(["dojo/_base/connect", "dojo/_base/declare", "./PlotAction",
 		constructor: function(chart, plot, kwArgs){
 			// summary:
 			//		Create the shaking action and connect it to the plot.
-			// chart: dojox/charting/Chart
-			//		The chart this action belongs to.
+			// dashboard: dojox/charting/Chart
+			//		The dashboard this action belongs to.
 			// plot: String?
 			//		The plot this action is attached to.  If not passed, "default" is assumed.
 			// kwArgs: __ShakeCtorArgs?

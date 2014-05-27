@@ -20,14 +20,14 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/array", "dojo/has",
 		markers: false,
 	
 		// tension: Number|String?
-		//		Whether or not to apply 'tensioning' to the lines on this chart.
+		//		Whether or not to apply 'tensioning' to the lines on this dashboard.
 		//		Options include a number, "X", "x", or "S"; if a number is used, the
 		//		simpler bezier curve calculations are used to draw the lines.  If X, x or S
 		//		is used, the more accurate smoothing algorithm is used.
 		tension: "",
 	
 		// animate: Boolean?|Number?
-		//		Whether or not to animate the chart to place. When a Number it specifies the duration of the animation.
+		//		Whether or not to animate the dashboard to place. When a Number it specifies the duration of the animation.
 		//		Default is false.
 		animate: false,
 	
@@ -113,7 +113,7 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/array", "dojo/has",
 			areas:   false,	// draw areas
 			markers: false,	// draw markers
 			tension: "",	// draw curved lines (tension is "X", "x", or "S")
-			animate: false, // animate chart to place
+			animate: false, // animate dashboard to place
 			enableCache: false,
 			interpolate: false
 		},
@@ -142,8 +142,8 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/array", "dojo/has",
 		constructor: function(chart, kwArgs){
 			// summary:
 			//		Return a new plot.
-			// chart: dojox/charting/Chart
-			//		The chart this plot belongs to.
+			// dashboard: dojox/charting/Chart
+			//		The dashboard this plot belongs to.
 			// kwArgs: dojox.charting.plot2d.__DefaultCtorArgs?
 			//		An optional arguments object to help define this plot.
 			this.opt = lang.clone(lang.mixin(this.opt, this.defaultParams));
@@ -434,11 +434,11 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/array", "dojo/has",
 				}
 				run.dirty = false;
 			}
-			// chart mirroring starts
+			// dashboard mirroring starts
 			if(has("dojo-bidi")){
 				this._checkOrientation(this.group, dim, offsets);
 			}
-			// chart mirroring ends
+			// dashboard mirroring ends
 			if(this.animate){
 				// grow from the bottom
 				var plotGroup = this.getGroup();

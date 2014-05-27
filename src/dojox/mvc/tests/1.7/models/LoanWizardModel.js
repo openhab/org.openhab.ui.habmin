@@ -7,7 +7,7 @@ define([
 
 	return declare("dojox.mvc.tests.models.LoanWizardModel", [StatefulModel], {
 
-		// data store for pie chart
+		// data store for pie dashboard
 		chartStore: new ItemFileWriteStore({ data: {
 			"hierarchical" : false,
 			"identifier"   : "id",
@@ -83,7 +83,7 @@ define([
 			this.TotalHousing.set("value", totalHousing);
 			this.TotalIncome.set("value", totalIncome);
 
-			// map the values into the data source structure required for chart display as well...
+			// map the values into the data source structure required for dashboard display as well...
 			var mortgageItem = this._lookupItem(this.chartStore, "mortgage");
 			var taxesItem = this._lookupItem(this.chartStore, "taxes");
 			var otherItem = this._lookupItem(this.chartStore, "otherhousing");

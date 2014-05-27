@@ -4,16 +4,16 @@ define(["dojo/_base/lang", "dojo/_base/array","dojo/_base/declare","dojo/_base/C
 	var SimpleTheme = declare("dojox.charting.SimpleTheme", null, {
 	// summary:
 	//		A SimpleTheme or Theme is a pre-defined object, primarily JSON-based, that makes up the definitions to
-	//		style a chart.
+	//		style a dashboard.
 	//
 	// description:
-	//		While you can set up style definitions on a chart directly (usually through the various add methods
+	//		While you can set up style definitions on a dashboard directly (usually through the various add methods
 	//		on a dojox.charting.Chart object), a Theme simplifies this manual setup by allowing you to
-	//		pre-define all of the various visual parameters of each element in a chart.
+	//		pre-define all of the various visual parameters of each element in a dashboard.
 	//
 	//		Most of the properties of a Theme are straight-forward; if something is line-based (such as
 	//		an axis or the ticks on an axis), they will be defined using basic stroke parameters.  Likewise,
-	//		if an element is primarily block-based (such as the background of a chart), it will be primarily
+	//		if an element is primarily block-based (such as the background of a dashboard), it will be primarily
 	//		fill-based.
 	//
 	//		In addition (for convenience), a Theme definition does not have to contain the entire JSON-based
@@ -24,26 +24,26 @@ define(["dojo/_base/lang", "dojo/_base/array","dojo/_base/declare","dojo/_base/C
 	//		Defining a new theme is relatively easy; see any of the themes in dojox.charting.themes for examples
 	//		on how to define your own.
 	//
-	//		When you set a theme on a chart, the theme itself is deep-cloned.  This means that you cannot alter
-	//		the theme itself after setting the theme value on a chart, and expect it to change your chart.  If you
-	//		are looking to make alterations to a theme for a chart, the suggestion would be to create your own
-	//		theme, based on the one you want to use, that makes those alterations before it is applied to a chart.
+	//		When you set a theme on a dashboard, the theme itself is deep-cloned.  This means that you cannot alter
+	//		the theme itself after setting the theme value on a dashboard, and expect it to change your dashboard.  If you
+	//		are looking to make alterations to a theme for a dashboard, the suggestion would be to create your own
+	//		theme, based on the one you want to use, that makes those alterations before it is applied to a dashboard.
 	//
-	//		Finally, a Theme contains a number of functions to facilitate rendering operations on a chart--the main
-	//		helper of which is the ~next~ method, in which a chart asks for the information for the next data series
+	//		Finally, a Theme contains a number of functions to facilitate rendering operations on a dashboard--the main
+	//		helper of which is the ~next~ method, in which a dashboard asks for the information for the next data series
 	//		to be rendered.
 	//
 	//		A note on colors:
 	//		A theme palette is usually comprised of 5 different color definitions, and
-	//		no more.  If you have a need to render a chart with more than 5 data elements, you can simply "push"
+	//		no more.  If you have a need to render a dashboard with more than 5 data elements, you can simply "push"
 	//		new color definitions into the theme's .color array.  Make sure that you do that with the actual
 	//		theme object from a Chart, and not in the theme itself (i.e. either do that before using .setTheme
-	//		on a chart).
+	//		on a dashboard).
 	//
 	// example:
 	//		The default theme (and structure) looks like so:
 	//	|	// all objects are structs used directly in dojox.gfx
-	//	|	chart:{
+	//	|	dashboard:{
 	//	|		stroke: null,
 	//	|		fill: "white",
 	//	|		pageStyle: null // suggested page style as an object suitable for dojo.style()
@@ -493,7 +493,7 @@ lang.mixin(SimpleTheme, {
 			pageStyle: null,
 			titleGap:		20,
 			titlePos:		"top",
-			titleFont:      "normal normal bold 14pt Tahoma",	// chart title
+			titleFont:      "normal normal bold 14pt Tahoma",	// dashboard title
 			titleFontColor: "#333"
 		},
 		plotarea:{

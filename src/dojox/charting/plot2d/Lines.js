@@ -2,7 +2,7 @@ define(["dojo/_base/declare", "./Default"], function(declare, Default){
 
 	return declare("dojox.charting.plot2d.Lines", Default, {
 		// summary:
-		//		A convenience constructor to create a typical line chart.
+		//		A convenience constructor to create a typical line dashboard.
 		constructor: function(){
 			// summary:
 			//		Preset our default plot to be line-based.

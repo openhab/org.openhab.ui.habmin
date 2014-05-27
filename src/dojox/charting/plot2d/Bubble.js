@@ -28,8 +28,8 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/array", "dojo/has",
 		constructor: function(chart, kwArgs){
 			// summary:
 			//		Create a plot of bubbles.
-			// chart: dojox/charting/Chart
-			//		The chart this plot belongs to.
+			// dashboard: dojox/charting/Chart
+			//		The dashboard this plot belongs to.
 			// kwArgs: dojox.charting.plot2d.__DefaultCtorArgs?
 			//		Optional keyword arguments object to help define plot parameters.
 			this.opt = lang.clone(lang.mixin(this.opt, this.defaultParams));
@@ -87,7 +87,7 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/array", "dojo/has",
 				}
 
 				if(typeof run.data[0] == "number"){
-					console.warn("dojox.charting.plot2d.Bubble: the data in the following series cannot be rendered as a bubble chart; ", run);
+					console.warn("dojox.charting.plot2d.Bubble: the data in the following series cannot be rendered as a bubble dashboard; ", run);
 					continue;
 				}
 
@@ -214,11 +214,11 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/array", "dojo/has",
 				run.dirty = false;
 			}
 			this.dirty = false;
-			// chart mirroring starts
+			// dashboard mirroring starts
 			if(has("dojo-bidi")){
 				this._checkOrientation(this.group, dim, offsets);
 			}
-			// chart mirroring ends
+			// dashboard mirroring ends
 			return this;	//	dojox/charting/plot2d/Bubble
 		},
 		_animateBubble: function(shape, offset, size){

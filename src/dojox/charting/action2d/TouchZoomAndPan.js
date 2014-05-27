@@ -57,11 +57,11 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/event", "dojo/sniff
 			// scaleFactor: Number?
 			//		The scale factor applied on mouse wheel zoom.  Default is 1.2.
 			// maxScale: Number?
-			//		The max scale factor accepted by this chart action.  Default is 100.
+			//		The max scale factor accepted by this dashboard action.  Default is 100.
 			// enableScroll: Boolean?
-			//		Whether touch drag gesture should scroll the chart.  Default is true.
+			//		Whether touch drag gesture should scroll the dashboard.  Default is true.
 			// enableZoom: Boolean?
-			//		Whether touch pinch and spread gesture should zoom out or in the chart.  Default is true.
+			//		Whether touch pinch and spread gesture should zoom out or in the dashboard.  Default is true.
 	};
 	=====*/
 
@@ -85,8 +85,8 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/event", "dojo/sniff
 		constructor: function(chart, plot, kwArgs){
 			// summary:
 			//		Create a new touch zoom and pan action and connect it.
-			// chart: dojox/charting/Chart
-			//		The chart this action applies to.
+			// dashboard: dojox/charting/Chart
+			//		The dashboard this action applies to.
 			// kwArgs: __TouchZoomAndPanCtorArgs?
 			//		Optional arguments for the action.
 			this._listeners = [
@@ -106,8 +106,8 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/event", "dojo/sniff
 
 		connect: function(){
 			// summary:
-			//		Connect this action to the chart. On iOS this adds a new glass view plot
-			//		to the chart that's why Chart.render() must be called after connect.
+			//		Connect this action to the dashboard. On iOS this adds a new glass view plot
+			//		to the dashboard that's why Chart.render() must be called after connect.
 			this.inherited(arguments);
 			// this is needed to workaround issue on iOS Safari + SVG, because a touch start action
 			// started above a item that is removed during the touch action will stop
@@ -119,7 +119,7 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/event", "dojo/sniff
 
 		disconnect: function(){
 			// summary:
-			//		Disconnect this action from the chart.
+			//		Disconnect this action from the dashboard.
 			if(this.chart.surface.declaredClass.indexOf("svg")!=-1){
 				this.chart.removePlot(this._uName);
 			}
@@ -128,7 +128,7 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/event", "dojo/sniff
 
 		onTouchStart: function(event){
 			// summary:
-			//		Called when touch is started on the chart.
+			//		Called when touch is started on the dashboard.
 
 			// we always want to be above regular plots and not clipped
 			var chart = this.chart, axis = chart.getAxis(this.axis);
@@ -181,7 +181,7 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/event", "dojo/sniff
 
 		onTouchMove: function(event){
 			// summary:
-			//		Called when touch is moved on the chart.
+			//		Called when touch is moved on the dashboard.
 			var chart = this.chart, axis = chart.getAxis(this.axis);
 			var length = event.touches ? event.touches.length : 1;
 			var pAttr = axis.vertical?"pageY":"pageX",
@@ -216,7 +216,7 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/event", "dojo/sniff
 
 		onTouchEnd: function(event){
 			// summary:
-			//		Called when touch is ended on the chart.
+			//		Called when touch is ended on the dashboard.
 			var chart = this.chart, axis = chart.getAxis(this.axis);
 			if((!event.touches || event.touches.length == 1) && this.enableScroll){
 				// still one touch available, let's start back from here for
@@ -238,7 +238,7 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/event", "dojo/sniff
 
 		onDoubleTap: function(event){
 			// summary:
-			//		Called when double tap is performed on the chart.
+			//		Called when double tap is performed on the dashboard.
 			var chart = this.chart, axis = chart.getAxis(this.axis);
 			var scale = 1 / this.scaleFactor;
 			// are we fit?

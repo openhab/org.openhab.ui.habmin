@@ -23,7 +23,7 @@ define(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/declare", "dojo/_bas
 	var _xaxis = {
 		natural: true, 		// true - no fractions
 		majorLabels: true, 	//show labels on major ticks
-		includeZero: false, // do not change on upating chart
+		includeZero: false, // do not change on upating dashboard
 		majorTickStep: 1,
 		majorTick: {stroke: "black", length: 8},
 		fixUpper:"major",
@@ -32,7 +32,7 @@ define(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/declare", "dojo/_bas
 		from:1
 	};
 
-	// default for chart elements
+	// default for dashboard elements
 	var chartPlot = {
 		markers: true,
 		tension:2,
@@ -41,9 +41,9 @@ define(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/declare", "dojo/_bas
 
 	return declare("dojox.charting.DataChart", Chart, {
 		// summary:
-		//		Extension to the 2D chart that connects to a data store in
+		//		Extension to the 2D dashboard that connects to a data store in
 		//		a simple manner. Convenience methods have been added for
-		//		connecting store item labels to the chart labels.
+		//		connecting store item labels to the dashboard labels.
 		// description:
 		//		This code should be considered very experimental and the APIs subject
 		//		to change. This is currently an alpha version and will need some testing
@@ -52,19 +52,19 @@ define(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/declare", "dojo/_bas
 		//		The main reason for this extension is to create animated charts, generally
 		//		available with scroll=true, and a property field that gets continually updated.
 		//		The previous property settings are kept in memory and displayed until scrolled
-		//		off the chart.
+		//		off the dashboard.
 		//
 		//		Although great effort was made to maintain the integrity of the current
 		//		charting APIs, some things have been added or modified in order to get
 		//		the store to connect and also to get the data to scroll/animate.
 		//		"displayRange" in particular is used to force the xaxis to a specific
-		//		size and keep the chart from stretching or squashing to fit the data.
+		//		size and keep the dashboard from stretching or squashing to fit the data.
 		//
 		//		Currently, plot lines can only be set at initialization. Setting
 		//		a new store query will have no effect (although using setStore
 		//		may work but its untested).
 		// example:
-		//	|	var chart = new dojox.charting.DataChart("myNode", {
+		//	|	var dashboard = new dojox.charting.DataChart("myNode", {
 		//	|		displayRange:8,
 		//	|		store:dataStore,
 		//	|		query:{symbol:"*"},
@@ -105,7 +105,7 @@ define(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/declare", "dojo/_bas
 		fieldName: "value",
 
 		// chartTheme: dojox.charting.themes.*
-		//		The theme to style the chart. Defaults to PlotKit.blue.
+		//		The theme to style the dashboard. Defaults to PlotKit.blue.
 		chartTheme: blue,
 
 		// displayRange: Number
@@ -113,21 +113,21 @@ define(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/declare", "dojo/_bas
 		displayRange:0,
 
 		// stretchToFit: Boolean
-		//		If true, chart is sized to data. If false, chart is a
+		//		If true, dashboard is sized to data. If false, dashboard is a
 		//		fixed size. Note, is overridden by displayRange.
 		//		TODO: Stretch for the y-axis?
 		stretchToFit:true,
 
 		// minWidth: Number
-		//		The the smallest the chart width can be
+		//		The the smallest the dashboard width can be
 		minWidth:200,
 
 		// minHeight: Number
-		//		The the smallest the chart height can be
+		//		The the smallest the dashboard height can be
 		minHeight:100,
 
 		// showing: Boolean
-		//		Whether the chart is showing (default) on
+		//		Whether the dashboard is showing (default) on
 		//		initialization or hidden.
 		showing: true,
 
@@ -138,16 +138,16 @@ define(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/declare", "dojo/_bas
 
 		constructor: function(node, kwArgs){
 			// summary:
-			//		Set up properties and initialize chart build.
+			//		Set up properties and initialize dashboard build.
 			// node: DomNode
-			//		The node to attach the chart to.
+			//		The node to attach the dashboard to.
 			// kwArgs: Object
 			//		- xaxis: Object: optional parameters for xaxis (see above)
 			//		- yaxis: Object: optional parameters for yaxis (see above)
 			//		- store: Object: dojo.data store (currently nly supports Persevere)
 			//		- xaxis: Object: First query for store
 			//		- grid: Object: Options for the grid plot
-			//		- chartPlot: Object: Options for chart elements (lines, bars, etc)
+			//		- chartPlot: Object: Options for dashboard elements (lines, bars, etc)
 
 			this.domNode = dom.byId(node);
 
@@ -218,7 +218,7 @@ define(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/declare", "dojo/_bas
 
 		setStore: function(/*Object*/store, /* ? String*/query, /* ? String*/fieldName, /* ? Object */queryOptions){
 			// summary:
-			//		Sets the chart store and query
+			//		Sets the dashboard store and query
 			//		then does the first fetch and
 			//		connects to subsequent changes.
 
@@ -241,7 +241,7 @@ define(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/declare", "dojo/_bas
 
 		show: function(){
 			// summary:
-			//		If chart is hidden, show it
+			//		If dashboard is hidden, show it
 			if(!this.showing){
 				html.style(this.domNode, "display", "");
 				this.showing = true;
@@ -250,7 +250,7 @@ define(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/declare", "dojo/_bas
 		},
 		hide: function(){
 			// summary:
-			//		If chart is showing, hide it
+			//		If dashboard is showing, hide it
 			//		Prevents rendering while hidden
 			if(this.showing){
 				html.style(this.domNode, "display", "none");
@@ -266,7 +266,7 @@ define(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/declare", "dojo/_bas
 			//		array to onData().
 
 			// FIXME: Using labels instead of IDs for item
-			//	identifiers here and in the chart series. This
+			//	identifiers here and in the dashboard series. This
 			//	is obviously short sighted, but currently used
 			//	for seriesLabels. Workaround for potential bugs
 			//	is to assign a label for which all items are unique.
@@ -325,8 +325,8 @@ define(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/declare", "dojo/_bas
 			// summary:
 			//		Called after a completed fetch
 			//		or when store items change.
-			//		On first run, sets the chart data,
-			//		then updates chart and legends.
+			//		On first run, sets the dashboard data,
+			//		then updates dashboard and legends.
 
 			//console.log("Store:", store);console.log("items: (", items.length+")", items);console.log("Chart:", this);
 			if(!items || !items.length){ return; }
@@ -384,7 +384,7 @@ define(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/declare", "dojo/_bas
 							// Data updates, and "moves in place". Columns and
 							//	line markers go up and down
 							//
-							// create empty chart elements by starting an array
+							// create empty dashboard elements by starting an array
 							//	with zeros until we reach our relevant data
 							var ar = arr.map(new Array(i+1), function(){ return 0; });
 							ar.push(Number(field));
@@ -406,11 +406,11 @@ define(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/declare", "dojo/_bas
 			}
 
 			// displayData is the segment of the data array that is within
-			// the chart boundaries
+			// the dashboard boundaries
 			var displayData;
 			if(this.firstRun){
-				// First time around we need to add the series (chart lines)
-				//	to the chart.
+				// First time around we need to add the series (dashboard lines)
+				//	to the dashboard.
 				this.firstRun = false;
 				for(nm in this.seriesData){
 					this.addSeries(nm, this.seriesData[nm]);
@@ -424,7 +424,7 @@ define(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/declare", "dojo/_bas
 					displayData = this.seriesData[nm];
 
 					if(this.scroll && displayData.length > this.displayRange){
-						// chart lines have gone beyond the right boundary.
+						// dashboard lines have gone beyond the right boundary.
 						this.dataOffset = displayData.length-this.displayRange - 1;
 						displayData = displayData.slice(displayData.length-this.displayRange, displayData.length);
 					}
@@ -495,7 +495,7 @@ define(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/declare", "dojo/_bas
 
 		resizeChart: function(/*Object*/dim){
 			// summary:
-			//		Call this function to change the chart size.
+			//		Call this function to change the dashboard size.
 			//		Can be connected to a layout widget that calls
 			//		resize.
 

@@ -5,7 +5,7 @@ define(["dojo/_base/lang", "dojo/_base/declare", "dojo/_base/Color", "./SimpleTh
 	var Theme = declare("dojox.charting.Theme", SimpleTheme, {
 	// summary:
 	//		A Theme is a pre-defined object, primarily JSON-based, that makes up the definitions to
-	//		style a chart. It extends SimpleTheme with additional features like color definition by
+	//		style a dashboard. It extends SimpleTheme with additional features like color definition by
 	//		palettes and gradients definition.
 	});
 

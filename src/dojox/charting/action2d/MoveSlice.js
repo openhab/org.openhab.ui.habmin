@@ -23,7 +23,7 @@ define(["dojo/_base/connect", "dojo/_base/declare", "dojo/_base/array", "./PlotA
 
 	return declare("dojox.charting.action2d.MoveSlice", PlotAction, {
 		// summary:
-		//		Create an action for a pie chart that moves and scales a pie slice.
+		//		Create an action for a pie dashboard that moves and scales a pie slice.
 
 		// the data description block for the widget parser
 		defaultParams: {
@@ -37,8 +37,8 @@ define(["dojo/_base/connect", "dojo/_base/declare", "dojo/_base/array", "./PlotA
 		constructor: function(chart, plot, kwArgs){
 			// summary:
 			//		Create the slice moving action and connect it to the plot.
-			// chart: dojox/charting/Chart
-			//		The chart this action belongs to.
+			// dashboard: dojox/charting/Chart
+			//		The dashboard this action belongs to.
 			// plot: String?
 			//		The plot this action is attached to.  If not passed, "default" is assumed.
 			// kwArgs: __MoveSliceCtorArgs?

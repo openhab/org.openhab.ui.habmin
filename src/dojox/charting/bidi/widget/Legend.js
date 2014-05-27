@@ -9,12 +9,12 @@ define(["dojo/_base/declare", "dojo/dom", "dijit/registry", "dojo/_base/connect"
 	return declare(null, {
 		postMixInProperties: function(){
 			// summary:
-			//		Connect the setter of textDir legend to setTextDir of the chart,
-			//		so _setTextDirAttr of the legend will be called after setTextDir of the chart is called.
+			//		Connect the setter of textDir legend to setTextDir of the dashboard,
+			//		so _setTextDirAttr of the legend will be called after setTextDir of the dashboard is called.
 			// tags:
 			//		private
 
-			// find the chart that is the owner of this legend, use it's
+			// find the dashboard that is the owner of this legend, use it's
 			// textDir
 			if(!this.chart){
 				if(!this.chartRef){ return; }

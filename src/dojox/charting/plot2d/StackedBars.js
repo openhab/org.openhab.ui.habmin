@@ -3,7 +3,7 @@ define(["dojo/_base/declare", "./Bars", "./commonStacked"],
 
 	return declare("dojox.charting.plot2d.StackedBars", Bars, {
 		// summary:
-		//		The plot object representing a stacked bar chart (horizontal bars).
+		//		The plot object representing a stacked bar dashboard (horizontal bars).
 		getSeriesStats: function(){
 			// summary:
 			//		Calculate the min/max on all attached series in both directions.

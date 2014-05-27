@@ -23,8 +23,8 @@ dojox.charting.plot2d.__PlotCtorArgs = {
 		constructor: function(chart, kwArgs){
 			// summary:
 			//		Create a base plot for charting.
-			// chart: dojox/chart/Chart
-			//		The chart this plot belongs to.
+			// dashboard: dojox/dashboard/Chart
+			//		The dashboard this plot belongs to.
 			// kwArgs: dojox.charting.plot2d.__PlotCtorArgs?
 			//		An optional arguments object to help define the plot.
 	
@@ -106,7 +106,7 @@ dojox.charting.plot2d.__PlotCtorArgs = {
 		},
 		render: function(dim, offsets){
 			// summary:
-			//		Render the plot on the chart.
+			//		Render the plot on the dashboard.
 			// dim: Object
 			//		An object of the form { width, height }.
 			// offsets: Object
@@ -119,7 +119,7 @@ dojox.charting.plot2d.__PlotCtorArgs = {
 			var elem = ac.createText[this.opt.htmlLabels && gfx.renderer != "vml" ? "html" : "gfx"]
 				(this.chart, group, x, y, align?align:"middle", label, theme.series.font, theme.series.fontColor);
 			// if the label is inside we need to avoid catching events on it this would prevent action on
-			// chart elements
+			// dashboard elements
 			if(block){
 				// TODO this won't work in IE neither in VML nor in HTML
 				// a solution would be to catch the event on the label and refire it to the element

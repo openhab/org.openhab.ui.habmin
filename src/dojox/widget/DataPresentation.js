@@ -11,7 +11,7 @@ dojo.require("dojo.data.ItemFileWriteStore");
 
 (function(){
 	
-	// sort out the labels for the independent axis of the chart
+	// sort out the labels for the independent axis of the dashboard
 	var getLabels = function(range, labelMod, charttype, domNode){
 		
 		// prepare labels for the independent axis
@@ -51,7 +51,7 @@ dojo.require("dojo.data.ItemFileWriteStore");
 		return labels;
 	};
 	
-	// get the configuration of an independent axis for the chart
+	// get the configuration of an independent axis for the dashboard
 	var getIndependentAxisArgs = function(charttype, labels){
 
 		var args = { vertical: false, labels: labels, min: 0, max: labels.length-1, majorTickStep: 1, minorTickStep: 1 };
@@ -70,7 +70,7 @@ dojo.require("dojo.data.ItemFileWriteStore");
 		return args;
 	};
 
-	// get the configuration of a dependent axis for the chart
+	// get the configuration of a dependent axis for the dashboard
 	var getDependentAxisArgs = function(charttype, axistype, minval, maxval){
 		
 		var args = { vertical: true, fixLower: "major", fixUpper: "major", natural: true };
@@ -94,7 +94,7 @@ dojo.require("dojo.data.ItemFileWriteStore");
 		return args;
 	};
 	
-	// get the configuration of a plot for the chart
+	// get the configuration of a plot for the dashboard
 	var getPlotArgs = function(charttype, axistype, animate){
 		
 		var args = { type: charttype, hAxis: "independent", vAxis: "dependent-" + axistype, gap: 4, lines: false, areas: false, markers: false };
@@ -121,13 +121,13 @@ dojo.require("dojo.data.ItemFileWriteStore");
 		}
 		
 		// turn on shadow for Hybrid-Lines
-		// also, Hybrid-Lines is not a true chart type: use Lines for the actual plot
+		// also, Hybrid-Lines is not a true dashboard type: use Lines for the actual plot
 		if(charttype === "Hybrid-Lines"){
 			args.shadows = {dx: 2, dy: 2, dw: 2};
 			args.type = "Lines";
 		}
 		
-		// also, Hybrid-ClusteredColumns is not a true chart type: use ClusteredColumns for the actual plot
+		// also, Hybrid-ClusteredColumns is not a true dashboard type: use ClusteredColumns for the actual plot
 		if(charttype === "Hybrid-ClusteredColumns"){
 			args.type = "ClusteredColumns";
 		}
@@ -140,12 +140,12 @@ dojo.require("dojo.data.ItemFileWriteStore");
 		return args;
 	};
 
-	// set up a chart presentation
+	// set up a dashboard presentation
 	var setupChart = function(/*DomNode*/domNode, /*Object?*/chart, /*String*/type, /*Boolean*/reverse, /*Object*/animate, /*Integer*/labelMod, /*String*/theme, /*String*/tooltip, /*Object?*/store, /*String?*/query, /*String?*/queryOptions){
 		var _chart = chart;
 		
 		if(!_chart){
-			domNode.innerHTML = "";  // any other content in the node disrupts the chart rendering
+			domNode.innerHTML = "";  // any other content in the node disrupts the dashboard rendering
 			_chart = new dojox.charting.Chart2D(domNode);
 		}
 		
@@ -203,7 +203,7 @@ dojo.require("dojo.data.ItemFileWriteStore");
 		// set x values & max data value
 		var nseries = store.series_name.length;
 		for(var i = 0; i < nseries; i++){
-			// only include series with chart=true and with some data values in
+			// only include series with dashboard=true and with some data values in
 			if(store.series_chart[i] && (store.series_data[i].length > 0)){
 
 				var charttype = type;
@@ -362,7 +362,7 @@ dojo.require("dojo.data.ItemFileWriteStore");
 		//		and also provides some additional convenience mechanisms
 		//		for connecting to common data sources without needing to
 		//		explicitly construct a Dojo data store. The widget can then
-		//		present the data in several forms: as a graphical chart,
+		//		present the data in several forms: as a graphical dashboard,
 		//		as a tabular grid, or as display panels presenting meta-data
 		//		(title, creation information, etc) from the data. The
 		//		widget can also create and manage several of these forms
@@ -372,7 +372,7 @@ dojo.require("dojo.data.ItemFileWriteStore");
 		//		are subject to substantial change in later drafts.
 		// example:
 		// |	var pres = new dojox.data.DataPresentation("myChartNode", {
-		// |		type: "chart",
+		// |		type: "dashboard",
 		// |		url: "/data/mydata",
 		// |		gridNode: "myGridNode"
 		// |	});
@@ -441,11 +441,11 @@ dojo.require("dojo.data.ItemFileWriteStore");
 		//			contains the name the series, used in the legend and grid
 		//			headings. If both name and namefield are supplied, name takes
 		//		    precedence. If neither are supplied, a default name is used.
-		//		- chart: true if the series should be included in a chart presentation (default: true)
-		//		- charttype: the type of presentation of the series in the chart, which can be
+		//		- dashboard: true if the series should be included in a dashboard presentation (default: true)
+		//		- charttype: the type of presentation of the series in the dashboard, which can be
 		//			"range", "line", "bar" (default: "bar")
 		//		- linestyle: the stroke style for lines (if applicable) (default: "Solid")
-		//		- axis: the dependant axis to which the series will be attached in the chart,
+		//		- axis: the dependant axis to which the series will be attached in the dashboard,
 		//		    which can be "primary" or "secondary"
 		//		- grid: true if the series should be included in a data grid presentation (default: true)
 		//		- gridformatter: an optional formatter to use for this series in the data grid
@@ -462,22 +462,22 @@ dojo.require("dojo.data.ItemFileWriteStore");
 
 		// type: String
 		//		the type of presentation to be applied at the DOM attach point.
-		//		This can be 'chart', 'legend', 'grid', 'title', 'footer'. The
-		//		default type is 'chart'.
+		//		This can be 'dashboard', 'legend', 'grid', 'title', 'footer'. The
+		//		default type is 'dashboard'.
 		type: "chart",
 
 		// chartType: String
-		//		the type of chart to display. This can be 'clusteredbars',
+		//		the type of dashboard to display. This can be 'clusteredbars',
 		//		'areas', 'stackedcolumns', 'stackedbars', 'stackedareas',
 		//		'lines', 'hybrid'. The default type is 'bar'.
 		chartType: "clusteredBars",
 
 		// reverse: Boolean
-		//		true if the chart independent axis should be reversed.
+		//		true if the dashboard independent axis should be reversed.
 		reverse: false,
 
 		// animate: Object
-		//		if an object is supplied, then the chart bars or columns will animate
+		//		if an object is supplied, then the dashboard bars or columns will animate
 		//		into place. If the object contains a field 'duration' then the value
 		//		supplied is the duration of the animation in milliseconds, otherwise
 		//		a default duration is used. A boolean value true can alternatively be
@@ -491,12 +491,12 @@ dojo.require("dojo.data.ItemFileWriteStore");
 		labelMod: 1,
 
 		// tooltip: String|Function
-		//		a string pattern defining the tooltip text to be applied to chart
+		//		a string pattern defining the tooltip text to be applied to dashboard
 		//		data points, or a function which takes a single parameter and returns
-		//		the tooltip text to be applied to chart data points. The string pattern
+		//		the tooltip text to be applied to dashboard data points. The string pattern
 		//		will have the following substitutions applied:
 		//
-		//		- {0} - the type of chart element ('bar', 'surface', etc)
+		//		- {0} - the type of dashboard element ('bar', 'surface', etc)
 		//		- {1} - the name of the data series
 		//		- {2} - the independent axis value at the tooltip data point
 		//		- {3} - the series value at the tooltip data point point
@@ -515,17 +515,17 @@ dojo.require("dojo.data.ItemFileWriteStore");
 		legendHorizontal: true,
 
 		// theme: String|Theme
-		//		a theme to use for the chart, or the name of a theme.
+		//		a theme to use for the dashboard, or the name of a theme.
 
 		// chartNode: String|DomNode
 		//		an optional DOM node or the id of a DOM node to receive a
-		//		chart presentation of the data. Supply only when a chart is
-		//		required and the type is not 'chart'; when the type is
-		//		'chart' this property will be set to the widget attach point.
+		//		dashboard presentation of the data. Supply only when a dashboard is
+		//		required and the type is not 'dashboard'; when the type is
+		//		'dashboard' this property will be set to the widget attach point.
 
 		// legendNode: String|DomNode
 		//		an optional DOM node or the id of a DOM node to receive a
-		//		chart legend for the data. Supply only when a legend is
+		//		dashboard legend for the data. Supply only when a legend is
 		//		required and the type is not 'legend'; when the type is
 		//		'legend' this property will be set to the widget attach point.
 
@@ -548,7 +548,7 @@ dojo.require("dojo.data.ItemFileWriteStore");
 		//		'footer' this property will be set to the widget attach point.
 
 		// chartWidget: Object
-		//		the chart widget, if any
+		//		the dashboard widget, if any
 
 		// legendWidget: Object
 		//		the legend widget, if any
@@ -813,8 +813,8 @@ dojo.require("dojo.data.ItemFileWriteStore");
 		
 		renderChartWidget: function(){
 			// summary:
-			//		Renders the chart widget (if any). This method is
-			//		called whenever a chart widget is created or
+			//		Renders the dashboard widget (if any). This method is
+			//		called whenever a dashboard widget is created or
 			//		configured, and may be connected to.
 			if(this.chartWidget){
 				this.chartWidget.render();
@@ -833,8 +833,8 @@ dojo.require("dojo.data.ItemFileWriteStore");
 		
 		getChartWidget: function(){
 			// summary:
-			//		Returns the chart widget (if any) created if the type
-			//		is "chart" or the "chartNode" property was supplied.
+			//		Returns the dashboard widget (if any) created if the type
+			//		is "dashboard" or the "chartNode" property was supplied.
 			return this.chartWidget;
 		},
 		
