@@ -25,6 +25,7 @@ define([
             postCreate: function() {
                 this.inherited(arguments);
                 var acc = new AccordionContainer({
+                    style: "width:250px",
                     splitter:false,
                     region: 'leading'
                 });
