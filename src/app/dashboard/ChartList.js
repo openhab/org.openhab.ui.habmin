@@ -29,18 +29,19 @@ define([
                         iconClass: "habminIconEdit"
                     }
                 ];
-                var toolbar = new Toolbar({region:"top"});
-                array.forEach(toolDefinition, function(def){
+                this.toolbar = new Toolbar({region: "top"});
+                array.forEach(toolDefinition, lang.hitch(this, function (def) {
                     var button = new Button({
                         // note: should always specify a label, for accessibility reasons.
                         // Just set showLabel=false if you don't want it to be displayed normally
                         label: def.label,
                         showLabel: true,
+                        disabled: true,
                         iconClass: "habminButtonIcon " + def.iconClass
                     });
 
-                    toolbar.addChild(button);
-                });
+                    this.toolbar.addChild(button);
+                }));
 
                 this.grid = new (declare([Grid, Registry, Selection]))({
                     region: "center",
@@ -51,17 +52,22 @@ define([
                     ]
                 });
 
-                this.grid.on(".dgrid-cell:click", lang.hitch(this, function(evt){
+                this.grid.on(".dgrid-cell:click", lang.hitch(this, function (evt) {
+                    // Enable the toolbar
+                    this.toolbar.getChildren()[0].set("disabled", false);
+                    this.toolbar.getChildren()[1].set("disabled", false);
+
                     var cell = this.grid.cell(evt);
 
                     // cell.row.data.id
                 }));
 
-                this.addChild(toolbar);
+                this.addChild(this.toolbar);
                 this.addChild(this.grid);
 
                 function cellRenderer(object, value, node, options) {
-                    node.innerHTML = "<span class='habminListIcon'><img src='/images/" + object.icon + ".png'></span>" + value;
+                    node.innerHTML =
+                        "<span class='habminListIcon'><img src='/images/" + object.icon + ".png'></span>" + value;
                 }
             },
             startup: function () {
@@ -69,7 +75,7 @@ define([
                 this.resize();
 
                 request("http://localhost:8080/services/habmin/persistence/charts", {
-                    timeout: 3333, //this.timeout,
+                    timeout: 5000,
                     handleAs: 'json',
                     headers: {
                         "Content-Type": 'application/json; charset=utf-8',
