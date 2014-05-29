@@ -9,9 +9,10 @@ define([
         "dgrid/Keyboard",
         "dijit/form/Button",
         "dijit/Toolbar",
-        "dojo/_base/array"
+        "dojo/_base/array",
+        "dojo/topic"
     ],
-    function (declare, lang, Container, request, Grid, Registry, Selection, Keyboard, Button, Toolbar, array) {
+    function (declare, lang, Container, request, Grid, Registry, Selection, Keyboard, Button, Toolbar, array, topic) {
         return declare(Container, {
 
             buildRendering: function () {
@@ -59,7 +60,8 @@ define([
 
                     var cell = this.grid.cell(evt);
 
-                    // cell.row.data.id
+                    //
+                    topic.publish("/dashboard/set", "chart", cell.row.data.id);
                 }));
 
                 this.addChild(this.toolbar);
@@ -77,6 +79,7 @@ define([
                 request("http://localhost:8080/services/habmin/persistence/charts", {
                     timeout: 5000,
                     handleAs: 'json',
+                    preventCache: true,
                     headers: {
                         "Content-Type": 'application/json; charset=utf-8',
                         "Accept": "application/json"
