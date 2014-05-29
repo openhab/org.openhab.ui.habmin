@@ -76,7 +76,7 @@ define([
                 this.inherited(arguments);
                 this.resize();
 
-                request("http://localhost:8080/services/habmin/persistence/charts", {
+                request("/services/habmin/persistence/charts", {
                     timeout: 5000,
                     handleAs: 'json',
                     preventCache: true,

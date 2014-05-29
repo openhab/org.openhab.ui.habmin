@@ -7,6 +7,7 @@
  */
 @import '../../dojo/resources/dojo.css';
 @import '../../dijit/themes/claro/claro.css';
+@import '../../dgrid/css/skins/claro.css';
 
 @import '../../dojox/calendar/themes/claro/Calendar.css';
 @import '../../dojox/calendar/themes/claro/MonthColumnView.css';
@@ -156,6 +157,16 @@ body {
     height:100%;
 }
 
+.habminListIcon {
+    padding-left:5px;
+}
+
+.habminListIcon img {
+    width: 16px;
+    height: 16px;
+    float:left;
+}
+
 .habminButtonIcon {
     width: 16px;
     height: 16px;
@@ -163,6 +174,10 @@ body {
 
 .habminIconSave {
     background-image: url('../images/tick.png');
+}
+
+.habminIconChart {
+    background-image: url('../images/chart-up.png');
 }
 
 .habminIconHeal {
@@ -173,8 +188,16 @@ body {
     background-image: url('../images/cross.png');
 }
 
+.habminIconEdit {
+    background-image: url('../images/layer--pencil.png');
+}
+
 .habminIconDelete {
     background-image: url('../images/cross.png');
+}
+
+.habminIconUpdate {
+    background-image: url('../images/external.png');
 }
 
 .habminIconInclude {
@@ -243,8 +266,13 @@ body {
 
 
 
+.habminChildNoPadding {
+    padding: 0px !important;
+}
 
-
+.habminAccordionChild {
+    padding: 0px !important;
+}
 
 
 
@@ -319,6 +347,9 @@ body {
 
 #content {
     overflow: hidden;
+    margin: 3px 0px 0px 0px;
+    border-top: 1px #b5bcc7 solid;
+    padding: 0px 0px 0px 0px;
 }
 
 

@@ -33,6 +33,7 @@ define([
                     title: "Main",
                     region: "center"
                 });
+                domClass.add(dashboard.domNode, "habminChildNoPadding");
 
                 this.addChild(dashboard);
 
