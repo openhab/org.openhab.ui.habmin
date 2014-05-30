@@ -25,7 +25,7 @@ define([
             postCreate: function() {
                 this.inherited(arguments);
                 var acc = new AccordionContainer({
-                    style: "width:250px",
+                    style: "width:275px",
                     splitter:false,
                     region: 'leading'
                 });
@@ -62,18 +62,16 @@ define([
                 this.addChild(acc);
 
                 var calendar = new Calendar({
-                    style:"position:absolute;left:10px;top:10px;bottom:30px;right:10px"
                 });
                 var mn2 = new ContentPane({
                     region: 'center',
-                    style: "width:250px",
+                    style: "border:none;",
                     splitter: false,
                     content: calendar
                 });
+                domClass.add(mn2.domNode, "habminChildNoPadding");
 
                 this.addChild(mn2);
-
-//                utils.initHints(hint);
 
                 calendar.set("cssClassFunc", function (item) {
                     // Use custom css class on renderers depending of a parameter (calendar).
