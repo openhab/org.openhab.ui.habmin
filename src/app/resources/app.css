@@ -282,7 +282,9 @@ body {
     padding: 0px !important;
 }
 
-
+.habminLegendDisabled {
+    color: #dcd2c7;
+}
 
 
 

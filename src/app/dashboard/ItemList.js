@@ -81,10 +81,12 @@ define([
                     if (size > 0) {
                         this.toolbar.getChildren()[0].set("disabled", false);
                         this.toolbar.getChildren()[1].set("disabled", false);
+                        this.toolbar.getChildren()[2].set("disabled", false);
                     }
                     else {
                         this.toolbar.getChildren()[0].set("disabled", true);
                         this.toolbar.getChildren()[1].set("disabled", true);
+                        this.toolbar.getChildren()[2].set("disabled", true);
                     }
                 }));
 

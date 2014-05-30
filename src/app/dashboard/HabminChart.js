@@ -9,7 +9,7 @@ define([
         "dojo/request",
 
         "dojox/charting/widget/Chart",
-        "dojox/charting/widget/SelectableLegend",
+        "app/dashboard/SelectableLegend",
         "dojox/charting/themes/PlotKit/blue",
         "dojox/charting/axis2d/Default",
         "dojox/charting/plot2d/Lines"
@@ -64,10 +64,10 @@ define([
 
                 this._createPlots();
 
-                var stop = Math.round((new Date()).getTime());
-                var start = stop - (2 * 86400 * 1000);
+                this.chartStop = Math.round((new Date()).getTime());
+                this.chartStart = this.chartStop - (2 * 86400 * 1000);
                 array.forEach(items, lang.hitch(this, function (item) {
-                    this._loadItem(item, start, stop);
+                    this._loadItem(item, this.chartStart, this.chartStop);
                 }));
             },
             loadChart: function (chartRef) {
@@ -92,10 +92,10 @@ define([
 
                         this._createPlots();
 
-                        var stop = Math.round((new Date()).getTime());
-                        var start = stop - (data.period * 1000);
+                        this.chartStop = Math.round((new Date()).getTime());
+                        this.chartStart = this.chartStop - (data.period * 1000);
                         array.forEach(data.items, lang.hitch(this, function (item) {
-                            this._loadItem(item.item, start, stop);
+                            this._loadItem(item.item, this.chartStart, this.chartStop);
                         }));
                     }),
                     lang.hitch(this, function (error) {
@@ -164,6 +164,8 @@ define([
                     }
                 }));
 
+               // _calculateXTicks();
+
                 // Create the x (time) axis
                 // TODO: Add time config?
                 this.chart.addAxis("x", {labelFunc: labelfTime});
@@ -191,6 +193,7 @@ define([
                             axisOptions.title = axis.label;
                             if(axis.color != null && axis.color.length > 0) {
                                 axisOptions.titleFontColor = axis.color;
+                                axisOptions.fontColor = axis.color
                             }
                         }
                         if(axis.position == "right") {
@@ -208,7 +211,7 @@ define([
                 function labelfTime(o) {
                     var dt = new Date();
                     dt.setTime(Number(o));
-                    var d = dt.getHours() + ":" + dt.getMinutes() + " " + (dt.getDate() + 1) + "/" + dt.getMonth() +
+                    var d = dt.getHours() + ":" + dt.getMinutes() + " " + (dt.getDate() + 1) + "/" + (dt.getMonth()+1) +
                         "/" + dt.getFullYear();
                     return d;
                 }
@@ -244,7 +247,10 @@ define([
                 if (itemCfg.lineColor != undefined && itemCfg.lineColor.length > 0)
                     plotOptions.stroke.color = itemCfg.lineColor;
                 console.log("Adding item " + item.name + ":", plotOptions);
-                this.chart.addSeries(itemCfg.label, data, plotOptions);
+                if(itemCfg.label == null)
+                    this.chart.addSeries(item.name, data, plotOptions);
+                else
+                    this.chart.addSeries(itemCfg.label, data, plotOptions);
 
                 // If everything is loaded, create the legend and render
                 this.itemsLoaded++;
@@ -253,8 +259,8 @@ define([
                     console.log("Rendering chart");
                     if (this.chartLegend == true) {
                         this.legend = new Legend({region: "bottom", chartRef: this.chart});
-                                              this.addChild(this.legend);
-                                            this.legend.refresh();
+                        this.addChild(this.legend);
+                        this.legend.refresh();
                     }
                     this.chart.render();
                 }
@@ -268,6 +274,29 @@ define([
                     if (item.lineColor == undefined || item.lineColor.length == 0)
                         config.items[ref].lineColor = this.colors[ref];
                 }));
+            },
+            _calculateXTicks: function() {
+                // Derive x labels
+                var span = this.chartStop - this.chartStart;
+
+                // X - holds the time between ticks
+                var x = span / 8;
+
+                // Define the mode
+                var mode = 0;
+                if(x < 3600000)
+                    mode = 1;
+                else (x < 86400000)
+                    mode = 2;
+
+                switch(mode) {
+                    case 0:
+                        break;
+                    case 2:
+//                        if()
+                        break;
+                }
             }
+
         })
     });
