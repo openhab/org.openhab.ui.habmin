@@ -34,6 +34,27 @@ define([
                 this.addChild(this.chartWidget);
                 this.chart = this.chartWidget.chart;
             },
+            loadItems: function (items) {
+                items = [].concat(items);
+
+                // Create the chart definition
+                this.chartDef = {};
+                this.chartDef.items = [];
+                array.forEach(items, lang.hitch(this, function (item) {
+                    var newItem = {};
+                    newItem.item = item;
+                    this.chartDef.items.push(newItem);
+                }));
+
+                this.itemsTotal = items.length;
+                this.itemsLoaded = 0;
+
+                var stop = Math.round((new Date()).getTime());
+                var start = stop - (2 * 86400 * 1000);
+                array.forEach(items, lang.hitch(this, function (item) {
+                    this._loadItem(item, start, stop);
+                }));
+            },
             loadChart: function (chartRef) {
                 console.log("Loading chart: " + chartRef);
 
@@ -54,7 +75,7 @@ define([
                         this.itemsLoaded = 0;
                         var stop = Math.round((new Date()).getTime());
                         var start = stop - (data.period * 1000);
-                        array.forEach(data.items, lang.hitch(this, function (item, ref) {
+                        array.forEach(data.items, lang.hitch(this, function (item) {
                             this._loadItem(item.item, start, stop);
                         }));
                     }),

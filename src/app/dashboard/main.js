@@ -64,6 +64,15 @@ define([
                                 chart.startup();
                             });
                             break;
+                        case "items":
+                            domConstruct.empty(dashboard.domNode);
+                            require(["app/dashboard/HabminChart"], function (Dashboard) {
+                                var chart = new Chart();
+                                chart.loadItems(data);
+                                chart.placeAt(dashboard);
+                                chart.startup();
+                            });
+                            break;
                     }
                 });
             },

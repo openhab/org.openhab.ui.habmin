@@ -4,7 +4,7 @@ define([ "dojo/text", "dojo/_base/declare", "dijit/_WidgetBase", "dijit/_Templat
         return declare('dGrowl',
             [base, templated],
             {
-                'templateString': dojo.cache('dGrowl', 'main.html'),
+                'templateString': dojo.cache('dgrowl', 'main.html'),
                 'channels': [
                     {name: 'default', pos: 0}
                 ], // channel user definitions

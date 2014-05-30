@@ -33,7 +33,7 @@ require({
         { name: 'app/main', location: 'app/main', map: {} },
         { name: 'app/calendar', location: 'app/calendar', map: {} },
         { name: 'app/bindings', location: 'app/bindings', map: {} },
-        { name: 'app/chart', location: 'app/chart', map: {} }
+        { name: 'app/dashboard', location: 'app/dashboard', map: {} }
 	]
 // Require `app`. This loads the main application module, `app/main`, since we registered the `app` package above.
 }, [ 'app' ]);

@@ -108,7 +108,7 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                 var menuDefinition = [
                     {
                         label: "Dashboard",
-                        menuRef: "chart"
+                        menuRef: "dashboard"
                     },
                     {
                         label: "Configuration",
@@ -186,6 +186,13 @@ define([ 'dojo/has', 'require' ], function (has, require) {
 //                    var windowSettings = {region: "center", class: "content", style: "opacity: 0; width: 100%; height:100%;"};
                     var windowSettings = {region: "center", style: "opacity: 100; width: 100%; height:100%;"};
                     switch (selectedId) {
+                        case "dashboard":
+                            require(["app/dashboard/main"], function (Dashboard) {
+                                var x = new Dashboard(windowSettings);
+                                x.placeAt("content");
+                                transition(currentPane, x);
+                            });
+                            break;
                         case "config":
                             require(["app/bindings/zwave/ZWaveDevices"], function (ZWave) {
                                 var x = new ZWave(windowSettings);

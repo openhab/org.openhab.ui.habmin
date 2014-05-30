@@ -20,7 +20,7 @@ define([
     function (declare, lang, fx, dom, domConstruct, domAttr, domClass, utils, Calendar, BorderContainer, AccordionContainer, ContentPane, MainProperties, ColumnViewProperties, MatrixViewProperties, MonthColumnViewProperties) {
         return declare(BorderContainer, {
             design: 'sidebar',
-            gutters: false,
+            gutters: true,
 
             postCreate: function() {
                 this.inherited(arguments);

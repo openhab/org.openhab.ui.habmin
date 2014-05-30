@@ -106,7 +106,14 @@ define([
                 function updateChart() {
                     console.log("updateChart pressed");
                     //
-//                    topic.publish("/dashboard/set", "chart", cell.row.data.id);
+                    var selected = this.grid.selection;
+                    var items = [];
+                    var key;
+                    for (key in selected) {
+                        if (selected.hasOwnProperty(key))
+                            items.push(key);
+                    }
+                    topic.publish("/dashboard/set", "items", items);
                 }
 
                 function cellRenderer(object, value, node, options) {
