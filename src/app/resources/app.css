@@ -192,6 +192,10 @@ body {
     background-image: url('../images/layer--pencil.png');
 }
 
+.habminIconClear {
+    background-image: url('../images/arrow-circle-225-left.png');
+}
+
 .habminIconDelete {
     background-image: url('../images/cross.png');
 }

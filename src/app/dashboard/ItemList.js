@@ -22,6 +22,12 @@ define([
 
                 var toolDefinition = [
                     {
+                        label: "Clear",
+                        menuRef: "clear",
+                        iconClass: "habminIconClear",
+                        select: clearChart
+                    },
+                    {
                         label: "Save",
                         menuRef: "save",
                         iconClass: "habminIconSave",
@@ -97,6 +103,10 @@ define([
                 function filterList(value) {
                     console.log("Filter changed to:", value);
                     this.grid.set("query", { name: new RegExp(value, "i") });
+                }
+
+                function clearChart() {
+                    console.log("clearChart pressed");
                 }
 
                 function saveChart() {

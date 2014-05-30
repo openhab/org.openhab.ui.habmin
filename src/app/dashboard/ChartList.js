@@ -86,7 +86,7 @@ define([
                     }
                 }).then(
                     lang.hitch(this, function (data) {
-                        console.log("The file's contents is: ", data);
+                        console.log("The (ChartList) response is: ", data);
                         this.grid.renderArray(data.chart);
                     }),
                     lang.hitch(this, function (error) {
