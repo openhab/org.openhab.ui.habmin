@@ -49,7 +49,7 @@ define([
                     showHeader: false,
                     selectionMode: "single",
                     columns: [
-                        {label: "Property", field: 'name', renderCell: cellRenderer}
+                        {label: "Name", field: 'name', renderCell: cellRenderer}
                     ]
                 });
 

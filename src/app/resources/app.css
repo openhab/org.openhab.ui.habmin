@@ -196,6 +196,10 @@ body {
     background-image: url('../images/cross.png');
 }
 
+.habminIconItems {
+    background-image: url('../images/category-group.png');
+}
+
 .habminIconUpdate {
     background-image: url('../images/external.png');
 }

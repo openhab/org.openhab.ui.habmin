@@ -13,9 +13,10 @@ define([
         "dijit/layout/ContentPane",
 
         "app/dashboard/ChartList",
+        "app/dashboard/ItemList",
         "app/dashboard/HabminChart"
     ],
-    function (declare, lang, topic, fx, dom, domConstruct, domAttr, domClass, BorderContainer, AccordionContainer, ContentPane, ChartList, Chart) {
+    function (declare, lang, topic, fx, dom, domConstruct, domAttr, domClass, BorderContainer, AccordionContainer, ContentPane, ChartList, ItemList, Chart) {
         return declare(BorderContainer, {
             design: 'sidebar',
             gutters: true,
@@ -34,7 +35,6 @@ define([
                     region: "center"
                 });
                 domClass.add(dashboard.domNode, "habminChildNoPadding");
-
                 this.addChild(dashboard);
 
                 var chartList = new ContentPane({
@@ -44,6 +44,14 @@ define([
                 });
                 domClass.add(chartList.domNode, "habminAccordionChild");
                 acc.addChild(chartList);
+
+                var itemList = new ContentPane({
+                    title: "Items",
+                    iconClass:"habminButtonIcon habminIconItems",
+                    content: new ItemList()
+                });
+                domClass.add(itemList.domNode, "habminAccordionChild");
+                acc.addChild(itemList);
 
                 topic.subscribe("/dashboard/set", function(type, data) {
                     switch(type) {
