@@ -1,6 +1,7 @@
 define([
         "dojo/_base/declare", // declare
         "dojo/_base/array", // array.map
+        "dijit/layout/BorderContainer",
         "dojo/date",
         "dojo/date/locale",
         "dojo/dom-attr", // domAttr.get
@@ -13,10 +14,9 @@ define([
         "dijit/_CssStateMixin",
         "dijit/_TemplatedMixin"
     ],
-    function (array, date, local, declare, domAttr, domClass, kernel, keys, lang, on, has, _Widget, _CssStateMixin, _TemplatedMixin, DropDownButton) {
-        return declare(null, [_Widget], {
-            postCreate: function (arguments, node) {
-                this.inherited(arguments);
+    function (array, date, Border, local, declare, domAttr, domClass, kernel, keys, lang, on, has, _Widget, _CssStateMixin, _TemplatedMixin, DropDownButton) {
+        return declare(null, [Border], {
+            postCreate: function () {
 
                 // Create the sitemap list
 

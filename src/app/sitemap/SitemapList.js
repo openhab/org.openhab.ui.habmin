@@ -10,8 +10,7 @@ define([
     ],
     function (declare, Container, Registry, Grid, Toolbar, Button, array, lang) {
         return declare(Container, {
-            postCreate: function (arguments, node) {
-                this.inherited(arguments);
+            postCreate: function () {
 
                 this.toolbar = new Toolbar({region:"top"});
                 array.forEach(["Cut", "Copy", "Paste"], function(label){

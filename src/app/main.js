@@ -87,8 +87,8 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                 var cp1 = new ContentPane({
                     region: "top",
                     style: "width: 100%;",
-                    class: "habminHeaderbar",
-                    content: headerTemplate
+                    'class': "habminHeaderbar",
+                    'content': headerTemplate
                 });
 
                 bc.addChild(cp1);
@@ -97,7 +97,7 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                 var cp2 = new ContentPane({
                     region: "center",
                     id: "content",
-                    class: "page"
+                    'class': "page"
                 });
                 bc.addChild(cp2);
 

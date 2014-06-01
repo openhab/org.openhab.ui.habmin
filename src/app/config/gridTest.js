@@ -10,8 +10,8 @@ define([
         "dijit/Toolbar",
         "dijit/form/Button",
         "dojo/_base/array",
-        "dojo/store/Memory",
-        "dijit.form.FilteringSelect"
+        "dojo/store/Memory"//,
+//        "dijit.form.FilteringSelect"
     ],
     function (declare, Container, Registry, Grid, Selection, Keyboard, Editor, NumberSpinner, Toolbar, Button, array, Store, FilteringSelect) {
         var             data = [
@@ -79,8 +79,8 @@ define([
         var columns = [
             {label: 'Id', field: 'id', sortable: false},
             Editor({label: 'Display name', field: 'displayName'}, "text", "dblclick"),
-            {label: 'Email', field: 'email'},
-            Editor({label: 'Role', get: getRole, set: setRole, field: 'roles', editorArgs: {store: rolesStore, searchAttr: "role", style: "width:120px;"}}, FilteringSelect)
+            {label: 'Email', field: 'email'}//,
+//            Editor({label: 'Role', get: getRole, set: setRole, field: 'roles', editorArgs: {store: rolesStore, searchAttr: "role", style: "width:120px;"}}, FilteringSelect)
         ];
         var grid = new (declare([Grid, Selection, Keyboard]))({
             store: store,

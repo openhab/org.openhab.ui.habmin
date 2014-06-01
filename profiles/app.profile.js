@@ -70,14 +70,7 @@ var profile = {
             // load as possible, so we configure it as a custom, bootable base.
             boot: true,
             customBase: true
-        },
-
-        // In the demo application, we conditionally require `app/Dialog` on the client-side, so here we build a
-        // separate layer containing just that client-side code. (Practically speaking, you would probably just want
-        // to roll everything into a single layer, but this helps provide a basic illustration of multi-layer builds.)
-        // Note that when you create a new layer, the module referenced by the layer is always included in the layer
-        // (in this case, `app/Dialog`), so it does not need to be explicitly defined in the `include` array.
-        'app/Dialog': {}
+        }
 
 /*      ,
         "app/main": {

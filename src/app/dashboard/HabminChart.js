@@ -10,13 +10,16 @@ define([
 
         "dojox/charting/widget/Chart",
         "app/dashboard/SelectableLegend",
+        "dojox/charting/action2d/Tooltip",
         "dojox/charting/themes/PlotKit/blue",
         "dojox/charting/axis2d/Default",
         "dojox/charting/plot2d/Lines"
     ],
-    function (declare, lang, array, domClass, Container, Toolbar, Button, request, Chart, Legend) {
+    function (declare, lang, array, domClass, Container, Toolbar, Button, request, Chart, Legend, Tooltip) {
         return declare(Container, {
             chartLegend: true,
+            tooltips:true,
+
             gutters: false,
             colors: [
                 '#2f7ed8',
@@ -152,6 +155,7 @@ define([
                     plotOptions.type = this.chartDef.items[ref].plotType;
                     plotOptions.hAxis = "x";
                     plotOptions.vAxis = "y"+axis;
+//                    plotOptions.markers= false;
 
 //                    tension: "X"//,
 //                    markers: itemCfg.markerSymbol == "" ? false : true,
@@ -161,6 +165,10 @@ define([
                     if(this.chart.getPlot(this.chartDef.items[ref].plotName) == null) {
                         console.log("Adding plot " + this.chartDef.items[ref].plotName + ":", plotOptions)
                         this.chart.addPlot(this.chartDef.items[ref].plotName, plotOptions);
+
+                        if(this.tooltips == true) {
+                            new Tooltip(this.chart, this.chartDef.items[ref].plotName, {text: this._tooltipFunction});
+                        }
                     }
                 }));
 
@@ -274,6 +282,9 @@ define([
                     if (item.lineColor == undefined || item.lineColor.length == 0)
                         config.items[ref].lineColor = this.colors[ref];
                 }));
+            },
+            _tooltipFunction: function() {
+                return "Tooltip here!";
             },
             _calculateXTicks: function() {
                 // Derive x labels

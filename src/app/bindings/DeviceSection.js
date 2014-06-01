@@ -29,8 +29,7 @@ define([
     function (require, array, declare, fx, dom, domAttr, domClass, domConstruct, domGeometry, keys, lang, has, topic, focus, manager, query, _Widget, _Container, _TemplatedMixin, _CssStateMixin, StackContainer, ContentPane, TextBox, template) {
         return declare([ContentPane], {
 /*
-            postCreate: function (arguments, node) {
-                this.inherited(arguments);
+            postCreate: function () {
                 this.content = "Hello";
             },
 
