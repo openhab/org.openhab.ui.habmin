@@ -2,6 +2,9 @@ define([
         "dojo/_base/declare", // declare
         "dojo/_base/array", // array.map
         "dijit/layout/BorderContainer",
+        "app/sitemap/WidgetList",
+        "app/sitemap/SitemapWindow",
+        "dojo/dnd/Source",
         "dojo/date",
         "dojo/date/locale",
         "dojo/dom-attr", // domAttr.get
@@ -14,11 +17,26 @@ define([
         "dijit/_CssStateMixin",
         "dijit/_TemplatedMixin"
     ],
-    function (array, date, Border, local, declare, domAttr, domClass, kernel, keys, lang, on, has, _Widget, _CssStateMixin, _TemplatedMixin, DropDownButton) {
-        return declare(null, [Border], {
-            postCreate: function () {
+    function (declare, array, BorderContainer, WidgetList, Sitemap, Source, date, local, domAttr, domClass, kernel, keys, lang, on, has, _Widget, _CssStateMixin, _TemplatedMixin, DropDownButton) {
+        return declare(BorderContainer, {
+            design: 'sidebar',
+            gutters: true,
+            liveSplitters:true,
 
-                // Create the sitemap list
+            postCreate: function() {
+                var widgetPane = new WidgetList({
+                    style: "width:250px;height:100%",
+                    splitter:true,
+                    region: 'leading'
+                });
+                this.addChild(widgetPane);
+
+                var sitemapPane = new Sitemap({
+                    style: "height:100%",
+                    splitter:true,
+                    region: 'center'
+                });
+                this.addChild(sitemapPane);
 
                 // Create the widgets bar
 

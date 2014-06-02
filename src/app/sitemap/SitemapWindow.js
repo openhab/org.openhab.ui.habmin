@@ -1,25 +1,23 @@
 define([
         "dojo/_base/declare", // declare
         "dojo/_base/array", // array.map
-        "dojo/date",
-        "dojo/date/locale",
-        "dojo/dom-attr", // domAttr.get
-        "dojo/dom-class", // domClass.add domClass.contains domClass.remove domClass.toggle
-        "dojo/_base/kernel", // kernel.deprecated
-        "dojo/keys", // keys
-        "dojo/_base/lang", // lang.hitch
-        "dojo/on",
-        "dijit/_Widget",
-        "dijit/_CssStateMixin",
-        "dijit/_TemplatedMixin"
+        "dijit/layout/ContentPane",
+        "dojo/dnd/Source"
     ],
-    function (array, date, local, declare, domAttr, domClass, kernel, keys, lang, on, has, _Widget, _CssStateMixin, _TemplatedMixin, DropDownButton) {
-        return declare(null, [_Widget], {
-            postCreate: function () {
+    function (declare, array, ContentPane, Source) {
+        return declare(ContentPane, {
+            postCreate: function() {
                 // Create the top "toolbar" for our sitemap GUI
 
                 // Create the sitemap itself
-
+                var sitemapList = new Source(this.domNode);
+                sitemapList.insertNodes(false, [
+                    "Wrist watch",
+                    "Life jacket",
+                    "Toy bulldozer",
+                    "Vintage microphone",
+                    "TIE fighter"
+                ]);
             },
 
             // Set the sitemap page
