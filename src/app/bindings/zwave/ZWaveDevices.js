@@ -6,10 +6,11 @@ define([
         "app/bindings/Device",
         "app/bindings/DeviceSection",
         "dijit/layout/ContentPane",
+        "dojo/dnd/Source",
         "dojo/_base/array", // array.forEach array.map
         "dojo/dom-class" // domClass.remove
     ],
-    function (declare, Container, Toolbar, Button, Device, Section, Pane, array, domClass) {
+    function (declare, Container, Toolbar, Button, Device, Section, ContentPane, Source, array, domClass) {
         return declare(Container, {
             records: [
                 {"domain": "nodes/node1/", "label": "Node 1", "optional": "false", "readonly": "true", "state": "OK", "value": "Z-Stick S2 Z-Wave USB Controller", "actionlist": {"entry": {"key": "Heal", "value": "Heal Node"}}},
@@ -74,7 +75,13 @@ define([
                 });
                 this.addChild(toolbar);
 
-                var pane = new Pane({region:"center"})
+                var devicePane = new ContentPane({
+                    region: 'center',
+                    'class': 'habminDeviceContainer'
+                });
+                var deviceList = new Source(devicePane.domNode);
+
+//                var pane = new Pane({region:"center"});
 
                 array.forEach(this.records, function (entry, i) {
                     console.debug(entry, "at index", i);
@@ -85,15 +92,16 @@ define([
                         typeLabel: "Type",
                         type: entry.value != null ? entry.value : "",
                         statusLabel: "Location",
-                        baseClass: ""
+                        'class': 'dojoDndItem'
                     });
 
                     device.setStatus(entry.state);
 
-                    pane.addChild(device);
+                    deviceList.insertNodes(false, [device.domNode]);
+//                    deviceList.addChild(device);
                 });
 
-                this.addChild(pane);
+                this.addChild(devicePane);
             },
             startup: function () {
                 this.inherited(arguments);

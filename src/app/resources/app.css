@@ -287,7 +287,6 @@ body {
 }
 
 
-
 /* === Blue Badge ==*/
 .mblDomButtonErrorBadge,
 .mblDomButtonWarningBadge
@@ -373,19 +372,31 @@ body {
 }
 
 .habminDeviceContainer {
-    overflow: auto;
-
-    margin-right: -200px;
-    padding-right: 250px;
 }
 
 .habminDevice {
-    margin: 5px 5px 0px 5px;
+    margin: 0px 5px 0px 5px;
     border: 1px solid #0c86b9;
-    padding:4px 4px 0px 4px;
+    padding:0px 4px 0px 4px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
 }
+
+.habminDeviceContainer .dojoDndItem {
+    border: none;
+    background-color: white;
+    background-image: none;
+    padding: 0px;
+}
+
+.habminDeviceContainer .dojoDndItemBefore {
+    border-top: 2px solid;
+}
+
+.habminDeviceContainer .dojoDndItemAfter {
+    border-bottom: 2px solid green;
+}
+
 
 .habminDeviceStatusOk {
     box-shadow: inset 0px 1px 3px 0px #1bdc15;
