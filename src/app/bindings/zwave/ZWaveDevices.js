@@ -39,8 +39,24 @@ define([
                 {"domain": "nodes/node18/", "label": "Node 18", "optional": "false", "readonly": "true", "state": "OK", "value": "FGK101 Door Opening Sensor", "actionlist": {"entry": {"key": "Heal", "value": "Heal Node"}}}
             ],
 
-            associations: {"records":[{"domain":"nodes/node5/associations/association1/","name":"association1/","label":"Switch 1","optional":"false","readonly":"false","value":"0 of 5 group members","actionlist":{"entry":{"key":"Refresh","value":"Refresh"}}},{"domain":"nodes/node5/associations/association2/","name":"association2/","label":"Switch 2","optional":"false","readonly":"false","value":"0 of 5 group members","actionlist":{"entry":{"key":"Refresh","value":"Refresh"}}},{"domain":"nodes/node5/associations/association3/","name":"association3/","label":"Controller Updates","optional":"false","readonly":"true","value":"1 of 1 group members","actionlist":{"entry":{"key":"Refresh","value":"Refresh"}}}]},
-            status: {"records":[{"domain":"nodes/node5/status/LastUpdated","name":"LastUpdated","label":"Last Updated","optional":"false","readonly":"true","value":"Tue May 20 12:35:35 BST 2014"},{"domain":"nodes/node5/status/LastHeal","name":"LastHeal","label":"Heal Status","optional":"false","readonly":"true","value":"DONE @ Tue May 20 02:06:26 BST 2014"},{"domain":"nodes/node5/status/NodeStage","name":"NodeStage","label":"Node Stage","optional":"false","readonly":"true","value":"Node Complete @ Mon May 19 15:43:42 BST 2014"},{"domain":"nodes/node5/status/Listening","name":"Listening","label":"Listening","optional":"false","readonly":"true","value":"true"},{"domain":"nodes/node5/status/Routing","name":"Routing","label":"Routing","optional":"false","readonly":"true","value":"true"},{"domain":"nodes/node5/status/Packets","name":"Packets","label":"Packet Statistics","optional":"false","readonly":"true","value":"1 / 134"},{"domain":"nodes/node5/status/Dead","name":"Dead","label":"Dead","optional":"false","readonly":"true","value":"false"},{"domain":"nodes/node5/status/Power","name":"Power","label":"Power","optional":"false","readonly":"true","value":"Mains"},{"domain":"nodes/node5/status/LibType","name":"LibType","label":"Library Type","optional":"false","readonly":"true","value":"Slave Enhanced"},{"domain":"nodes/node5/status/ProtocolVersion","name":"ProtocolVersion","label":"Protocol Version","optional":"false","readonly":"true","value":"6.4"},{"domain":"nodes/node5/status/AppVersion","name":"AppVersion","label":"Application Version","optional":"false","readonly":"true","value":"1.6"}]},
+            associations: {"records": [
+                {"domain": "nodes/node5/associations/association1/", "name": "association1/", "label": "Switch 1", "optional": "false", "readonly": "false", "value": "0 of 5 group members", "actionlist": {"entry": {"key": "Refresh", "value": "Refresh"}}},
+                {"domain": "nodes/node5/associations/association2/", "name": "association2/", "label": "Switch 2", "optional": "false", "readonly": "false", "value": "0 of 5 group members", "actionlist": {"entry": {"key": "Refresh", "value": "Refresh"}}},
+                {"domain": "nodes/node5/associations/association3/", "name": "association3/", "label": "Controller Updates", "optional": "false", "readonly": "true", "value": "1 of 1 group members", "actionlist": {"entry": {"key": "Refresh", "value": "Refresh"}}}
+            ]},
+            status: {"records": [
+                {"domain": "nodes/node5/status/LastUpdated", "name": "LastUpdated", "label": "Last Updated", "optional": "false", "readonly": "true", "value": "Tue May 20 12:35:35 BST 2014"},
+                {"domain": "nodes/node5/status/LastHeal", "name": "LastHeal", "label": "Heal Status", "optional": "false", "readonly": "true", "value": "DONE @ Tue May 20 02:06:26 BST 2014"},
+                {"domain": "nodes/node5/status/NodeStage", "name": "NodeStage", "label": "Node Stage", "optional": "false", "readonly": "true", "value": "Node Complete @ Mon May 19 15:43:42 BST 2014"},
+                {"domain": "nodes/node5/status/Listening", "name": "Listening", "label": "Listening", "optional": "false", "readonly": "true", "value": "true"},
+                {"domain": "nodes/node5/status/Routing", "name": "Routing", "label": "Routing", "optional": "false", "readonly": "true", "value": "true"},
+                {"domain": "nodes/node5/status/Packets", "name": "Packets", "label": "Packet Statistics", "optional": "false", "readonly": "true", "value": "1 / 134"},
+                {"domain": "nodes/node5/status/Dead", "name": "Dead", "label": "Dead", "optional": "false", "readonly": "true", "value": "false"},
+                {"domain": "nodes/node5/status/Power", "name": "Power", "label": "Power", "optional": "false", "readonly": "true", "value": "Mains"},
+                {"domain": "nodes/node5/status/LibType", "name": "LibType", "label": "Library Type", "optional": "false", "readonly": "true", "value": "Slave Enhanced"},
+                {"domain": "nodes/node5/status/ProtocolVersion", "name": "ProtocolVersion", "label": "Protocol Version", "optional": "false", "readonly": "true", "value": "6.4"},
+                {"domain": "nodes/node5/status/AppVersion", "name": "AppVersion", "label": "Application Version", "optional": "false", "readonly": "true", "value": "1.6"}
+            ]},
 
             postCreate: function () {
                 this.inherited(arguments);
@@ -63,8 +79,8 @@ define([
                         iconClass: "habminIconExclude"
                     }
                 ];
-                var toolbar = new Toolbar({region:"top"});
-                array.forEach(toolDefinition, function(def){
+                var toolbar = new Toolbar({region: "top"});
+                array.forEach(toolDefinition, function (def) {
                     var button = new Button({
                         // note: should always specify a label, for accessibility reasons.
                         // Just set showLabel=false if you don't want it to be displayed normally
@@ -83,8 +99,6 @@ define([
                 });
                 var deviceList = new Source(devicePane.domNode);
 
-//                var pane = new Pane({region:"center"});
-
                 array.forEach(this.records, function (entry, i) {
                     console.debug(entry, "at index", i);
 
@@ -100,7 +114,6 @@ define([
                     device.setStatus(entry.state);
 
                     deviceList.insertNodes(false, [device.domNode]);
-//                    deviceList.addChild(device);
                 });
 
                 this.addChild(devicePane);
