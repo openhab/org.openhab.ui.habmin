@@ -12,6 +12,8 @@ define([
     ],
     function (declare, Container, Toolbar, Button, Device, Section, ContentPane, Source, array, domClass) {
         return declare(Container, {
+            gutters: false,
+
             records: [
                 {"domain": "nodes/node1/", "label": "Node 1", "optional": "false", "readonly": "true", "state": "OK", "value": "Z-Stick S2 Z-Wave USB Controller", "actionlist": {"entry": {"key": "Heal", "value": "Heal Node"}}},
                 {"domain": "nodes/node33/", "label": "Node 33", "optional": "false", "readonly": "true", "state": "INITIALIZING", "value": "FGMS01 Movement Sensor", "actionlist": {"entry": [
