@@ -216,6 +216,52 @@ body {
     background-image: url('../images/wrench--minus.png');
 }
 
+
+.habminWidget {
+    width: 32px;
+    height: 32px;
+    padding-left: 40px;
+    vertical-align:middle;
+    text-align: center;
+    display: table-cell;
+    background-repeat: no-repeat;
+    background-size: 32px 32px;
+}
+
+.habminWidgetChart {
+    background-image: url('../images/widgetChart.png');
+}
+
+.habminWidgetSwitch {
+    background-image: url('../images/widgetSwitch.png');
+}
+
+.habminWidgetSlider {
+    background-image: url('../images/widgetSlider.png');
+}
+
+.habminWidgetFrame {
+    background-image: url('../images/widgetFrame.png');
+}
+
+.habminWidgetWebview {
+    background-image: url('../images/widgetWebview.png');
+}
+
+.habminWidgetText {
+    background-image: url('../images/widgetText.png');
+}
+
+.habminWidgetImage {
+    background-image: url('../images/widgetImage.png');
+}
+
+.habminWidgetVideo {
+    background-image: url('../images/widgetVideo.png');
+}
+
+
+
 .status-online,
 .status-offline,
 .status-unknown,
