@@ -7,6 +7,7 @@ define([
         "dijit/Toolbar",
         "dijit/form/Button",
         "dojo/request",
+        "dojox/string/sprintf",
 
         "dojox/charting/widget/Chart",
         "app/dashboard/SelectableLegend",
@@ -15,7 +16,7 @@ define([
         "dojox/charting/axis2d/Default",
         "dojox/charting/plot2d/Lines"
     ],
-    function (declare, lang, array, domClass, Container, Toolbar, Button, request, Chart, Legend, Tooltip) {
+    function (declare, lang, array, domClass, Container, Toolbar, Button, request, sprintf, Chart, Legend, Tooltip) {
         return declare(Container, {
             chartLegend: true,
             tooltips:true,
@@ -190,26 +191,27 @@ define([
                         if(axis == null)
                             return;
 
-                        var axisOptions = {};
-                        axisOptions.vertical = true;
+                        var verticalOptions = {vertical: true};
 
+//                        if(axis.label != null && axis.label.length > 0)
+//                            verticalOptions.labelFunc = labelVertical;
                         if(axis.minimum != null && axis.minimum.length > 0)
-                            axisOptions.min = Number(axis.minimum);
+                            verticalOptions.min = Number(axis.minimum);
                         if(axis.maximum != null && axis.maximum.length > 0)
-                            axisOptions.max = Number(axis.maximum);
+                            verticalOptions.max = Number(axis.maximum);
                         if(axis.label != null && axis.label.length > 0) {
-                            axisOptions.title = axis.label;
+                            verticalOptions.title = axis.label;
                             if(axis.color != null && axis.color.length > 0) {
-                                axisOptions.titleFontColor = axis.color;
-                                axisOptions.fontColor = axis.color
+                                verticalOptions.titleFontColor = axis.color;
+                                verticalOptions.fontColor = axis.color
                             }
                         }
                         if(axis.position == "right") {
-                            axisOptions.leftBottom = false;
+                            verticalOptions.leftBottom = false;
                         }
 
-                        console.log("Adding axis 'y" + axis.axis + "' :", axisOptions);
-                        this.chart.addAxis('y'+axis.axis, axisOptions);
+                        console.log("Adding axis 'y" + axis.axis + "' :", verticalOptions);
+                        this.chart.addAxis('y'+axis.axis, verticalOptions);
                     }));
                 }
 
@@ -222,6 +224,10 @@ define([
                     var d = dt.getHours() + ":" + dt.getMinutes() + " " + (dt.getDate() + 1) + "/" + (dt.getMonth()+1) +
                         "/" + dt.getFullYear();
                     return d;
+                }
+
+                function labelVertical(o) {
+                    return sprintf("%.1f", o);
                 }
             },
             _addChartItem: function (item) {
