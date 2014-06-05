@@ -14,9 +14,10 @@ define([
 
         "app/dashboard/ChartList",
         "app/dashboard/ItemList",
-        "app/dashboard/HabminChart"
+        "app/dashboard/HabminChart",
+        "app/dashboard/DashboardList"
     ],
-    function (declare, lang, topic, fx, dom, domConstruct, domAttr, domClass, BorderContainer, AccordionContainer, ContentPane, ChartList, ItemList, Chart) {
+    function (declare, lang, topic, fx, dom, domConstruct, domAttr, domClass, BorderContainer, AccordionContainer, ContentPane, ChartList, ItemList, Chart, DashList) {
         return declare(BorderContainer, {
             design: 'sidebar',
             gutters: true,
@@ -36,6 +37,14 @@ define([
                 });
                 domClass.add(dashboard.domNode, "habminChildNoPadding");
                 this.addChild(dashboard);
+
+                var dashList = new ContentPane({
+                    title: "Dashboards",
+                    iconClass:"habminButtonIcon habminIconDashboard",
+                    content: new DashList()
+                });
+                domClass.add(dashList.domNode, "habminAccordionChild");
+                acc.addChild(dashList);
 
                 var chartList = new ContentPane({
                     title: "Charts",
