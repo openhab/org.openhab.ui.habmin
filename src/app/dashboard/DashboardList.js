@@ -10,9 +10,12 @@ define([
         "dijit/form/Button",
         "dijit/Toolbar",
         "dojo/_base/array",
-        "dojo/topic"
+        "dojo/dom-construct",
+        "dojo/topic",
+        "dojo/on",
+        "app/dashboard/DashboardToolbar"
     ],
-    function (declare, lang, Container, request, Grid, Registry, Selection, Keyboard, Button, Toolbar, array, topic) {
+    function (declare, lang, Container, request, Grid, Registry, Selection, Keyboard, Button, Toolbar, array, domConstruct, topic, on, dTool) {
         return declare(Container, {
 
             buildRendering: function () {
@@ -22,17 +25,20 @@ define([
                     {
                         label: "New",
                         menuRef: "new",
-                        iconClass: "habminIconNew"
+                        iconClass: "habminIconNew",
+                        select: menuNew
                     },
                     {
                         label: "Delete",
                         menuRef: "delete",
-                        iconClass: "habminIconDelete"
+                        iconClass: "habminIconDelete",
+                        select: xNew
                     },
                     {
                         label: "Edit",
                         menuRef: "edit",
-                        iconClass: "habminIconEdit"
+                        iconClass: "habminIconEdit",
+                        select: yNew
                     }
                 ];
                 this.toolbar = new Toolbar({region: "top"});
@@ -42,9 +48,10 @@ define([
                         // Just set showLabel=false if you don't want it to be displayed normally
                         label: def.label,
                         showLabel: true,
-                        disabled: true,
+//                        disabled: true,
                         iconClass: "habminButtonIcon " + def.iconClass
                     });
+                    on(button, "click", lang.hitch(this, def.select));
 
                     this.toolbar.addChild(button);
                 }));
@@ -76,6 +83,29 @@ define([
                     node.innerHTML =
                         "<span class='habminListIcon'><img src='/images/" + object.icon + ".png'></span>" + value;
                 }
+
+                function menuNew() {
+                    console.log("menuNew pressed");
+                    var x = new dTool();
+                    x.placeAt(document.body);
+                    x.startup();
+                    x.show();
+                }
+
+                function xNew() {
+                    console.log("menuNew pressed");
+                    var x = new dTool();
+                    x.placeAt(document.body);
+                    x.startup();
+                    x.show();
+                }
+
+                function yNew() {
+                    console.log("menuNew pressed");
+                    var x = new dTool({style: "width:180px;"}, domConstruct.create('div', null, this.domNode));
+                    x.startup();
+                }
+
             },
             startup: function () {
                 this.inherited(arguments);
