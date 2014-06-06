@@ -38,7 +38,7 @@ define([
                         label: "Edit",
                         menuRef: "edit",
                         iconClass: "habminIconEdit",
-                        select: yNew
+                        select: toolbarEdit
                     }
                 ];
                 this.toolbar = new Toolbar({region: "top"});
@@ -100,8 +100,9 @@ define([
                     x.show();
                 }
 
-                function yNew() {
-                    console.log("menuNew pressed");
+                function toolbarEdit() {
+                    console.log("Dashboard EDIT pressed");
+                    topic.publish("/dashboard/edit", "current");
                     var x = new dTool({style: "width:180px;"}, domConstruct.create('div', null, this.domNode));
                     x.startup();
                 }
