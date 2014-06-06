@@ -25,7 +25,7 @@ define([
 
             postCreate: function() {
                 var widgetPane = new WidgetList({
-                    style: "width:250px;height:100%",
+                    style: "width:150px;height:100%",
                     splitter:true,
                     region: 'leading'
                 });
