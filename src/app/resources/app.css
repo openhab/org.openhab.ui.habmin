@@ -11,6 +11,9 @@
 
 @import '../../dojox/calendar/themes/claro/Calendar.css';
 @import '../../dojox/calendar/themes/claro/MonthColumnView.css';
+@import "../../dojox/layout/resources/FloatingPane.css";
+@import "../../dojox/layout/resources/ResizeHandle.css";
+
 @import '../../dgrowl/dGrowl.css';
 
 
@@ -172,6 +175,14 @@ body {
     height: 16px;
 }
 
+.habminIconDashboard {
+    background-image: url('../images/dashboard.png');
+}
+
+.habminIconNew {
+    background-image: url('../images/plus-button.png');
+}
+
 .habminIconSave {
     background-image: url('../images/tick.png');
 }
@@ -258,6 +269,10 @@ body {
 
 .habminWidgetVideo {
     background-image: url('../images/widgetVideo.png');
+}
+
+.habminWidgetColorpicker {
+    background-image: url('../images/widgetColorpicker.png');
 }
 
 
@@ -607,3 +622,103 @@ body {
     text-shadow: none;
 }
 
+
+
+
+.habmin .dojoxFloatingPane {
+    padding: 0px !important;
+    border: 1px;
+}
+
+.habmin .dojoxFloatingPaneTitle {
+/*    font-size: 0.9em;
+    font-weight: bold;
+    line-height:1em;*/
+}
+
+
+.habminDashboardContainer {
+    box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box;
+    position: absolute;
+}
+
+
+
+
+
+
+
+
+
+.habminDashboardPane {
+    background-color:#fff;
+    box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box;
+    position: absolute;
+    border: 1px solid #dedede;
+    overflow: hidden;
+    padding: 0px !important;
+}
+
+/* titleNode */
+.habminDashboardPaneTitle {
+    background: #cccccc;
+    background:#fafafa repeat-x bottom left;
+    border:1px solid #bfbfbf;
+    border-left: none;
+    border-right: none;
+    margin:10px 0px 0px 0px;
+    padding:4px 0px 2px 0px;
+    cursor: pointer;
+    white-space: nowrap;
+    position: absolute;
+    width:100%;
+    z-index: 200;
+}
+
+
+
+/* Icons */
+.dojoxFloatingCloseIcon {
+    background:url('../../../dijit/themes/tundra/images/tabClose.png') no-repeat center center;
+    width:16px;
+    height:16px;
+    overflow:hidden;
+    float:right;
+}
+
+.habminDashboardPaneResizeHandle {
+    background:url('icons/resize.png') no-repeat bottom right;
+    position:absolute;
+    right:0;
+    bottom:0;
+    width:16px;
+    height:16px;
+    cursor:nw-resize;
+}
+
+.habminDashboardPaneCloseIcon {
+    width:15px;
+    height:15px;
+    overflow:hidden;
+    float:right;
+    cursor:pointer;
+    background:url("../../../dijit/themes/soria/images/spriteRoundedIconsSmallBl.png") no-repeat -60px top;
+}
+
+/* Modifications */
+
+.habminDashboardPaneContent {
+    overflow: auto;
+    background-color: #fff;
+    height: 100%;
+    width:	100%;
+    position: absolute;
+    z-index: 100;
+}
+
+.habminDashboardPaneCanvas {
+}
