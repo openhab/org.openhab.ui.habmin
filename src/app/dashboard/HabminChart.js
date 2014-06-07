@@ -8,6 +8,7 @@ define([
         "dijit/form/Button",
         "dojo/request",
         "dojox/string/sprintf",
+        "dojo/date/locale",
 
         "dojox/charting/widget/Chart",
         "app/dashboard/SelectableLegend",
@@ -16,7 +17,7 @@ define([
         "dojox/charting/axis2d/Default",
         "dojox/charting/plot2d/Lines"
     ],
-    function (declare, lang, array, domClass, Container, Toolbar, Button, request, sprintf, Chart, Legend, Tooltip) {
+    function (declare, lang, array, domClass, Container, Toolbar, Button, request, sprintf, locale, Chart, Legend, Tooltip) {
         return declare(Container, {
             chartLegend: true,
             tooltips:true,
@@ -66,10 +67,11 @@ define([
                 this.itemsTotal = items.length;
                 this.itemsLoaded = 0;
 
-                this._createPlots();
-
                 this.chartStop = Math.round((new Date()).getTime());
                 this.chartStart = this.chartStop - (2 * 86400 * 1000);
+
+                this._createPlots();
+
                 array.forEach(items, lang.hitch(this, function (item) {
                     this._loadItem(item, this.chartStart, this.chartStop);
                 }));
@@ -94,10 +96,11 @@ define([
                         this.itemsTotal = data.items.length;
                         this.itemsLoaded = 0;
 
-                        this._createPlots();
-
                         this.chartStop = Math.round((new Date()).getTime());
                         this.chartStart = this.chartStop - (data.period * 1000);
+
+                        this._createPlots();
+
                         array.forEach(data.items, lang.hitch(this, function (item) {
                             this._loadItem(item.item, this.chartStart, this.chartStop);
                         }));
@@ -173,11 +176,10 @@ define([
                     }
                 }));
 
-               // _calculateXTicks();
-
                 // Create the x (time) axis
                 // TODO: Add time config?
-                this.chart.addAxis("x", {labelFunc: labelfTime});
+                this.chart.addAxis("x", this._calculateXTicks());
+//                this.chart.addAxis("x");
 
                 // Now loop through and create all the axis
                 if(this.chartDef.axis == null) {
@@ -292,27 +294,73 @@ define([
             _tooltipFunction: function() {
                 return "Tooltip here!";
             },
+
+
+            _timeTicks: [
+                {tick: 5000, bound: 60000, formatTick: "mm:ss", formatBound: "dd EEE HH:mm"},
+                {tick: 10000, bound: 60000, formatTick: "mm:ss", formatBound: "dd EEE HH:mm"},
+                {tick: 10800000, bound: 86400000, formatTick: "HH:mm", formatBound: "dd EEE HH:mm"},
+                {tick: 21600000, bound: 86400000, formatTick: "HH:mm", formatBound: "EEE dd MMM HH:mm"},
+                {tick: 43200000, bound: 86400000, formatTick: "HH:mm", formatBound: "EEE dd MMM HH:mm"},
+                {tick: 86400000, bound: 604800000, formatTick: "EEE dd", formatBound: "EEE dd MMM"},
+                {tick: 100800000, bound: 86400000, formatTick: "HH:mm", formatBound: "dd EEE HH:mm"}
+            ],
+
             _calculateXTicks: function() {
                 // Derive x labels
                 var span = this.chartStop - this.chartStart;
 
                 // X - holds the time between ticks
-                var x = span / 8;
+                var x = span / 7;
 
-                // Define the mode
-                var mode = 0;
-                if(x < 3600000)
-                    mode = 1;
-                else (x < 86400000)
-                    mode = 2;
+                console.log("Chart start: ", this.chartStart);
+                console.log("Chart stop: ", this.chartStop);
+                console.log("Chart span: ", span);
+                console.log("Chart step: ", x);
 
-                switch(mode) {
-                    case 0:
+                // Now find the step from the tick table
+                var step;
+                for (var i = this._timeTicks.length-1; i >= 0; i--) {
+                    if (x > this._timeTicks[i].tick) {
+                        step = this._timeTicks[i];
+                        console.log("Selected tick config ", step);
                         break;
-                    case 2:
-//                        if()
-                        break;
+                    }
+                };
+
+                // TODO : Handle local time
+
+                var labels = [];
+                var config = {
+                    min: start - step.tick
+                };
+
+                // Get the first tick
+                var start = Math.ceil((this.chartStart + 1) / step.tick) * step.tick;
+                var dt = new Date();
+                while(start < this.chartStop) {
+                    dt.setTime(start);
+
+                    var label = {};
+                    label.value = start;
+                    if(start % step.bound == 0)
+                        label.text = locale.format(dt, {selector: "date", datePattern: step.formatBound});
+                    else
+                        label.text = locale.format(dt, {selector: "date", datePattern: step.formatTick});
+                    labels.push(label);
+                    start += step.tick;
+
+                    console.log("Chart tick: ", label);
                 }
+
+                config.labels = labels;
+                config.max = start;
+                config.from = this.chartStart;
+                config.to = this.chartStop;
+                config.majorTickStep = step.tick;
+                config.minorLabels = false;
+
+                return config;
             }
 
         })
