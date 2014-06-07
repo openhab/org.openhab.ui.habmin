@@ -349,8 +349,6 @@ define([
                         label.text = locale.format(dt, {selector: "date", datePattern: step.formatTick});
                     labels.push(label);
                     start += step.tick;
-
-                    console.log("Chart tick: ", label);
                 }
 
                 config.labels = labels;
@@ -359,6 +357,8 @@ define([
                 config.to = this.chartStop;
                 config.majorTickStep = step.tick;
                 config.minorLabels = false;
+
+                console.log("Chart X-Axis config: ", config);
 
                 return config;
             }
