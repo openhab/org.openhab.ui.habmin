@@ -90,10 +90,6 @@ define([
 
                 function xNew() {
                     console.log("menuNew pressed");
-                    var x = new dTool();
-                    x.placeAt(document.body);
-                    x.startup();
-                    x.show();
                 }
 
                 function toolbarEdit() {

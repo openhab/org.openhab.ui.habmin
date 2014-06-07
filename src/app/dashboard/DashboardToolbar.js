@@ -7,7 +7,9 @@ define([
         "dojo/dom-construct",
         "dojo/dom-attr",
         "dojo/dom-class",
+        "dojo/dom-geometry",
         "dojo/on",
+        "dojo/query",
 
         "dojox/layout/FloatingPane",
         "dijit/form/Button",
@@ -18,15 +20,19 @@ define([
         "dojo/_base/array",
 
         "dijit/layout/ContentPane",
-        "dojo/text!app/dashboard/DashboardToolbar.html"
+
+        "dgrid/Grid",
+        "dgrid/Selection",
+        "dgrid/Keyboard"
 
     ],
-    function (declare, lang, topic, fx, dom, domConstruct, domAttr, domClass, on, FloatingPane, Button, Toolbar, TextBox, move, array, ContentPane, template) {
+    function (declare, lang, topic, fx, dom, domConstruct, domAttr, domClass, domGeometry, on, query, FloatingPane, Button, Toolbar, TextBox, move, array, ContentPane, Grid, Selection, Keyboard) {
         return declare([FloatingPane], {
             title: "Dashboard Editing Menu",
             resizable: false,
             dockable: false,
             closable: false,
+            baseClass: "habminDashboardToolbar",
 
             postCreate: function () {
                 this.inherited(arguments);
@@ -42,7 +48,7 @@ define([
                         label: "Delete",
                         menuRef: "delete",
                         iconClass: "habminIconDelete",
-                        select: yNew
+                        select: deleteButton
                     },
                     {
                         label: "Edit",
@@ -51,7 +57,7 @@ define([
                         select: yNew
                     }
                 ];
-                this.toolbar = new Toolbar({region: "top", style: "border: 1px;"});
+                this.toolbar = new Toolbar({style: "border: 1px;"});
                 array.forEach(toolDefinition, lang.hitch(this, function (def) {
                     var button = new Button({
                         // note: should always specify a label, for accessibility reasons.
@@ -67,23 +73,35 @@ define([
                 }));
 
                 var cp = new ContentPane({content: this.toolbar});
+                domClass.add(cp.domNode, "habminChildNoPadding");
+
                 this.set("content", cp);
 
                 this.moveable = new move.parentConstrainedMoveable(
                     this.domNode, {
                         handle: this.focusNode,
-                        constraints: function () {
-                            var coordsWindow = {
-                                l: 0,
-                                t: 0,
-                                w: window.innerWidth,
-                                h: window.innerHeight
-                            };
-
-                            return coordsWindow;
-                        },
                         within: true
                     });
+
+                function deleteButton() {
+                    var grid = new (declare([Grid, Selection, Keyboard]))({
+                        getBeforePut: false,
+                        columns: {label: 'Email', field: 'email'},
+                        selectionMode: "none"
+                    });
+
+                    var cp = new ContentPane({content: this.toolbar});
+                    domClass.add(cp.domNode, "habminChildNoPadding");
+                    cp.domNode.appendChild(grid.domNode);
+                    cp.startup();
+                    this.set("content", cp);
+
+                    // Calculate size and resize content
+                    var ct = domGeometry.getContentBox(grid.domNode);
+                    this.tb = domGeometry.getContentBox(this.toolbar.domNode);
+                    this.resize({h: 21 + this.tb.h + ct.h, w: Math.max(this.tb.w, ct.w)});
+
+                }
 
                 function yNew() {
                     var filterBox = new TextBox({
@@ -94,11 +112,15 @@ define([
                     });
 
                     var cp = new ContentPane({content: this.toolbar});
+                    domClass.add(cp.domNode, "habminChildNoPadding");
                     cp.domNode.appendChild(filterBox.domNode);
+                    cp.startup();
                     this.set("content", cp);
 
                     // Calculate size and resize content
-                    this.resize({h:110, w:200});
+                    var ct = domGeometry.getContentBox(filterBox.domNode);
+                    this.tb = domGeometry.getContentBox(this.toolbar.domNode);
+                    this.resize({h: 21 + this.tb.h + ct.h, w: Math.max(this.tb.w, ct.w)});
                 }
             }
         })

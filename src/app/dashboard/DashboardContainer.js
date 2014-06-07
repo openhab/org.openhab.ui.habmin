@@ -3,6 +3,7 @@ define([
         "dojo/_base/lang",
         "dijit/layout/BorderContainer",
         "app/dashboard/DashboardPane",
+        "app/dashboard/DashboardToolbar",
         "dojo/request",
         "dojo/_base/array",
         "dojo/dom-construct",
@@ -11,7 +12,7 @@ define([
         "dojo/on",
         "dojo/dom-geometry"
     ],
-    function (declare, lang, Container, DashboardPane, request, array, domConstruct, domClass, topic, on, domGeometry) {
+    function (declare, lang, Container, DashboardPane, DashboardToolbar, request, array, domConstruct, domClass, topic, on, domGeometry) {
         return declare(Container, {
             gridX: 12,
             gridY: 8,
@@ -26,6 +27,8 @@ define([
             },
             postCreate: function () {
                 domClass.add(this.domNode, "habminChildNoPadding");
+                var toolbar = DashboardToolbar();
+                toolbar.placeAt(this.domNode);
             },
 
             _snapToGrid: function (xVal, gridPattern) {
@@ -85,7 +88,6 @@ define([
                 var contentBox = domGeometry.getContentBox(this.domNode);
                 this.gridXpx = contentBox.w / this.gridX;
                 this.gridYpx = contentBox.h / this.gridY;
-
             },
 
             _enableMove: function () {

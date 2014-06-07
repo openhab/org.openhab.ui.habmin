@@ -628,13 +628,22 @@ body {
 .habmin .dojoxFloatingPane {
     padding: 0px !important;
     border: 1px;
+    z-index: 50;
 }
 
 .habmin .dojoxFloatingPaneTitle {
-/*    font-size: 0.9em;
+    font-size: 0.9em;
     font-weight: bold;
-    line-height:1em;*/
+    line-height:1em;
 }
+
+.habmin .dojoxFloatingPaneContent {
+    padding: 0px !important;
+    border: 1px;
+}
+
+
+
 
 
 .habminDashboardContainer {
@@ -717,7 +726,4 @@ body {
     width:	100%;
     position: absolute;
     z-index: 100;
-}
-
-.habminDashboardPaneCanvas {
 }
