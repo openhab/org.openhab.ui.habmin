@@ -59,6 +59,12 @@ define([
                     var n = me.domNode.parentNode;
                     var s = domStyle.getComputedStyle(n);
                     var c = this.constraintBox = domGeometry.getMarginBox(n, s);
+
+                    c.r = c.l + c.w;
+                    c.b = c.t + c.h;
+                    var mb = domGeometry.getMarginSize(mover.node);
+                    c.r -= mb.w;
+                    c.b -= mb.h;
                 };
 
                 this._resizeHandle = new ResizeHandle({
@@ -101,13 +107,9 @@ define([
 
                 this.inherited(arguments);
 
-                // Initial resize to give child the opportunity to lay itself out
-//                this.resize(domGeom.position(this.domNode));
-
                 this._started = true;
             },
             editEnable: function(enable) {
-//                habminDashboardPaneEditor
                 if(enable == true) {
                     this.editNode.style.display = "";
                 }
