@@ -37,15 +37,11 @@ define([
                 });
 
                 this.moveable.onMove = function (/*Mover*/ mover, /*Object*/ leftTop) {
-                    console.log("My override");
+                    console.log("Dashboard pane MOVE ", mover, leftTop);
                     if (me.resizeCallback != null) {
                         leftTop = me.moveCallback(this, leftTop.l, leftTop.t);
                     }
 
-//                    return;
-                    // summary:
-                    //		called during every move notification;
-                    //		should actually move the node; can be overwritten.
                     var c = this.constraintBox;
                     var s = mover.node.style;
                     this.onMoving(mover, leftTop);
@@ -63,12 +59,6 @@ define([
                     var n = me.domNode.parentNode;
                     var s = domStyle.getComputedStyle(n);
                     var c = this.constraintBox = domGeometry.getMarginBox(n, s);
-
-                    c.r = c.l + c.w;
-                    c.b = c.t + c.h;
-                    var mb = domGeometry.getMarginSize(mover.node);
-                    c.r -= mb.w;
-                    c.b -= mb.h;
                 };
 
                 this._resizeHandle = new ResizeHandle({
@@ -76,10 +66,7 @@ define([
                     resizeAxis: "xy",
                     minHeight: 20,
                     minWidth: 20,
-//                    activeResize: true,
-                    intermediateChanges: true,
-                    onResize: this.resize
-
+                    intermediateChanges: true
                 }, this.resizeHandle);
 
                 this._resizeHandle._checkConstraints = function (newW, newH) {
@@ -94,7 +81,7 @@ define([
                     // summary:
                     //		called when moving the ResizeHandle ... determines
                     //		new size based on settings/position and sets styles.
-                    console.log("dddddsds ", this);
+                    console.log("Dashboard pane UPDATE SIZING ", this);
 
                     if (this.activeResize) {
                         this._changeSizing(e);
@@ -108,52 +95,27 @@ define([
                     e.preventDefault();
                 };
             },
+            startup: function() {
+                if(this._started)
+                    return;
 
-            resize: function (/* Object */dim) {
-                console.log("Resize ", dim);
-                // summary:
-                //		Size the Pane and place accordingly
-                dim = dim || this._naturalState;
-                this._currentState = dim;
+                this.inherited(arguments);
 
-                // From the ResizeHandle we only get width and height information
-                var dns = this.domNode.style;
-                if ("t" in dim) {
-                    dns.top = dim.t + "px";
-                }
-                else if ("y" in dim) {
-                    dns.top = dim.y + "px";
-                }
-                if ("l" in dim) {
-                    dns.left = dim.l + "px";
-                }
-                else if ("x" in dim) {
-                    dns.left = dim.x + "px";
-                }
-                dns.width = dim.w + "px";
-                dns.height = dim.h + "px";
+                // Initial resize to give child the opportunity to lay itself out
+//                this.resize(domGeom.position(this.domNode));
 
-                // Now resize canvas
-//                var mbCanvas = { l: 0, t: 0, w: dim.w, h: (dim.h - this.domNode.offsetHeight) };
-                var mbCanvas = { w: dim.w, h: (dim.h - this.domNode.offsetHeight) };
-                domGeometry.setMarginBox(this.domNode, mbCanvas);
-
-                // If the single child can resize, forward resize event to it so it can
-                // fit itself properly into the content area
-                //         this._checkIfSingleChild();
-                //               if(this._singleChild && this._singleChild.resize){
-                //                 this._singleChild.resize(mbCanvas);
-                //           }
-
+                this._started = true;
             },
-            _snapToGrid: function (xVal, gridPattern) {
-                var xMod = xVal % gridPattern;
-                if (xMod == 0) //no transform
-                    return(xVal);
-                if (xMod < gridPattern / 2) //snap no number below
-                    return(xVal - xMod);
-                return(xVal + (gridPattern - xMod));
+            editEnable: function(enable) {
+//                habminDashboardPaneEditor
+                if(enable == true) {
+                    this.editNode.style.display = "";
+                }
+                else {
+                    this.editNode.style.display = "none";
+                }
             },
+
             destroy: function () {
                 // summary:
                 //		Destroy this FloatingPane completely

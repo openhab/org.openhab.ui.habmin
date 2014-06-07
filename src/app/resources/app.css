@@ -665,7 +665,6 @@ body {
 
 /* titleNode */
 .habminDashboardPaneTitle {
-    background: #cccccc;
     background:#fafafa repeat-x bottom left;
     border:1px solid #bfbfbf;
     border-left: none;
@@ -676,7 +675,7 @@ body {
     white-space: nowrap;
     position: absolute;
     width:100%;
-    z-index: 200;
+    z-index: 18;
 }
 
 
