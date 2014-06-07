@@ -12,10 +12,9 @@ define([
         "dojo/_base/array",
         "dojo/dom-construct",
         "dojo/topic",
-        "dojo/on",
-        "app/dashboard/DashboardToolbar"
+        "dojo/on"
     ],
-    function (declare, lang, Container, request, Grid, Registry, Selection, Keyboard, Button, Toolbar, array, domConstruct, topic, on, dTool) {
+    function (declare, lang, Container, request, Grid, Registry, Selection, Keyboard, Button, Toolbar, array, domConstruct, topic, on) {
         return declare(Container, {
 
             buildRendering: function () {
@@ -85,11 +84,8 @@ define([
                 }
 
                 function menuNew() {
-                    console.log("menuNew pressed");
-                    var x = new dTool();
-                    x.placeAt(document.body);
-                    x.startup();
-                    x.show();
+                    console.log("Dashboard NEW pressed");
+                    topic.publish("/dashboard/set", "newdash");
                 }
 
                 function xNew() {
@@ -102,9 +98,9 @@ define([
 
                 function toolbarEdit() {
                     console.log("Dashboard EDIT pressed");
-                    topic.publish("/dashboard/edit", "current");
-                    var x = new dTool({style: "width:180px;"}, domConstruct.create('div', null, this.domNode));
-                    x.startup();
+//                    topic.publish("/dashboard/edit", "current");
+  //                  var x = new dTool({style: "width:180px;"}, domConstruct.create('div', null, this.domNode));
+    //                x.startup();
                 }
 
             },

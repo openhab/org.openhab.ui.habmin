@@ -14,10 +14,9 @@ define([
 
         "app/dashboard/ChartList",
         "app/dashboard/ItemList",
-        "app/dashboard/HabminChart",
         "app/dashboard/DashboardList"
     ],
-    function (declare, lang, topic, fx, dom, domConstruct, domAttr, domClass, BorderContainer, AccordionContainer, ContentPane, ChartList, ItemList, Chart, DashList) {
+    function (declare, lang, topic, fx, dom, domConstruct, domAttr, domClass, BorderContainer, AccordionContainer, ContentPane, ChartList, ItemList, DashList) {
         return declare(BorderContainer, {
             design: 'sidebar',
             gutters: true,
@@ -66,7 +65,7 @@ define([
                     switch(type) {
                         case "chart":
                             domConstruct.empty(dashboard.domNode);
-                            require(["app/dashboard/HabminChart"], function (Dashboard) {
+                            require(["app/dashboard/HabminChart"], function (Chart) {
                                 var chart = new Chart();
                                 chart.loadChart(data);
                                 chart.placeAt(dashboard);
@@ -75,10 +74,24 @@ define([
                             break;
                         case "items":
                             domConstruct.empty(dashboard.domNode);
-                            require(["app/dashboard/HabminChart"], function (Dashboard) {
+                            require(["app/dashboard/HabminChart"], function (Chart) {
                                 var chart = new Chart();
                                 chart.loadItems(data);
                                 chart.placeAt(dashboard);
+                                chart.startup();
+                            });
+                            break;
+                        case "newdash":
+                            domConstruct.empty(dashboard.domNode);
+                            require(["app/dashboard/DashboardContainer","app/dashboard/HabminChart"], function (Dashboard, Chart) {
+                                var dash = new Dashboard();
+                                dash.placeAt(dashboard);
+                                dash.startup();
+                                var x = dash.addContainer(1, 0, 0, 6, 2);
+                                dash.addContainer(2, 1, 2, 4, 1);
+                                var chart = new Chart();
+                                chart.loadChart("5");
+                                chart.placeAt(x.domNode);
                                 chart.startup();
                             });
                             break;

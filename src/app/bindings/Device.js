@@ -144,7 +144,7 @@ define([
 
             // into the button widget?
             _onTitleClick: function (evt) {
-                console.log("clicky ", evt);
+                console.log("Device header clicked ", evt);
                 var me = this;
                 if (this._expanded) {
                     this._expanded = false;
