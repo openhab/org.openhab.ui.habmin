@@ -13,7 +13,8 @@ define([
         "dojo/dom-construct",
         "dojo/topic",
         "dojo/on"
-    ],
+
+ ],
     function (declare, lang, Container, request, Grid, Registry, Selection, Keyboard, Button, Toolbar, array, domConstruct, topic, on) {
         return declare(Container, {
 
@@ -91,7 +92,7 @@ define([
                 this.inherited(arguments);
                 this.resize();
 
-                request("/services/habmin/persistence/dashboard", {
+                request("/services/habmin/config/designer", {
                     timeout: 5000,
                     handleAs: 'json',
                     preventCache: true,
@@ -101,11 +102,11 @@ define([
                     }
                 }).then(
                     lang.hitch(this, function (data) {
-                        console.log("The (Dashboard) response is: ", data);
-                        this.grid.renderArray(data.chart);
+                        console.log("The (Rule) response is: ", data);
+                        this.grid.renderArray(data.designs);
                     }),
                     lang.hitch(this, function (error) {
-                        console.log("An error occurred with dashboard response: " + error);
+                        console.log("An error occurred with rule response: " + error);
                     })
                 );
             }

@@ -13,10 +13,9 @@ define([
         "dojo/dom-style",
         "dojo/topic",
         "dojo/on",
-        "dojo/dom-geometry",
         "dojo/text!app/dashboard/DashboardPane.html"
     ],
-    function (declare, lang, ContentPane, TemplatedMixin, Moveable, ResizeHandle, request, array, domConstruct, domClass, domGeometry, domStyle, topic, on, domGeometry, template) {
+    function (declare, lang, ContentPane, TemplatedMixin, Moveable, ResizeHandle, request, array, domConstruct, domClass, domGeometry, domStyle, topic, on, template) {
         return declare([ ContentPane, TemplatedMixin ], {
             // contentClass: String
             //		The className to give to the inner node which has the content
