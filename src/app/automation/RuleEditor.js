@@ -7,21 +7,28 @@ define([
         "dijit/Toolbar",
         "dijit/form/Button",
         "dojo/request",
+
+        "app/automation/Codemirror"
     ],
-    function (declare, lang, array, domClass, Container, Toolbar, Button, request) {
+    function (declare, lang, array, domClass, Container, Toolbar, Button, request, CodeEditor) {
         return declare(Container, {
             chartLegend: true,
-            tooltips:true,
+            tooltips: true,
 
             gutters: false,
             postCreate: function () {
                 domClass.add(this.domNode, "habminChildNoPadding");
-                this._createChart();
+
+                var editorPane = new CodeEditor({region:'center'
+                });
+                domClass.add(editorPane.domNode, "habminChildNoPadding");
+
+
+                this.addChild(editorPane);
             },
             startup: function () {
                 this.inherited(arguments);
                 this.resize();
-                this.chart.resize();
             }
         })
     });

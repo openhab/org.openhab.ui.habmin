@@ -43,15 +43,15 @@ define([
                 domClass.add(ruleList.domNode, "habminAccordionChild");
                 acc.addChild(ruleList);
 
-                topic.subscribe("/automation/set", function(type, data) {
+                topic.subscribe("/automation/rule", function(type, data) {
                     switch(type) {
                         case "editor":
                             domConstruct.empty(dashboard.domNode);
-                            require(["ace/AceEditor"], function (AceEditor) {
-                                var chart = new AceEditor();
-                                chart.loadChart(data);
-                                chart.placeAt(dashboard);
-                                chart.startup();
+                            require(["app/automation/RuleEditor"], function (RuleEditor) {
+                                var editor = new RuleEditor();
+//                                editor.loadChart(data);
+                                editor.placeAt(dashboard);
+                                editor.startup();
                             });
                             break;
                         case "blocks":

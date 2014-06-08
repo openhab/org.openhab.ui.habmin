@@ -32,12 +32,6 @@ define([
                         menuRef: "delete",
                         iconClass: "habminIconDelete",
                         select: xNew
-                    },
-                    {
-                        label: "Edit",
-                        menuRef: "edit",
-                        iconClass: "habminIconEdit",
-                        select: toolbarEdit
                     }
                 ];
                 this.toolbar = new Toolbar({region: "top"});
@@ -84,19 +78,12 @@ define([
                 }
 
                 function menuNew() {
-                    console.log("Dashboard NEW pressed");
-                    topic.publish("/dashboard/set", "newdash");
+                    console.log("Rule NEW pressed");
+                    topic.publish("/automation/rule", "editor", "");
                 }
 
                 function xNew() {
                     console.log("menuNew pressed");
-                }
-
-                function toolbarEdit() {
-                    console.log("Dashboard EDIT pressed");
-//                    topic.publish("/dashboard/edit", "current");
-  //                  var x = new dTool({style: "width:180px;"}, domConstruct.create('div', null, this.domNode));
-    //                x.startup();
                 }
 
             },
