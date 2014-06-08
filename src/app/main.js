@@ -193,6 +193,13 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                                 transition(currentPane, x);
                             });
                             break;
+                        case "automation":
+                            require(["app/automation/main"], function (Automation) {
+                                var x = new Automation(windowSettings);
+                                x.placeAt("content");
+                                transition(currentPane, x);
+                            });
+                            break;
                         case "config":
                             require(["app/bindings/zwave/ZWaveDevices"], function (ZWave) {
                                 var x = new ZWave(windowSettings);
@@ -203,6 +210,14 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                         case "events":
                             require(["app/calendar/main"], function (Calendar) {
                                 var x = new Calendar(windowSettings);
+                                x.placeAt("content");
+                                x.startup();
+                                transition(currentPane, x);
+                            });
+                            break;
+                        case "system":
+                            require(["app/sitemap/SitemapEditor"], function (Editor) {
+                                var x = new Editor(windowSettings);
                                 x.placeAt("content");
                                 x.startup();
                                 transition(currentPane, x);

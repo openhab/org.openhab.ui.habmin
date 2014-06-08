@@ -203,6 +203,10 @@ body {
     background-image: url('../images/layer--pencil.png');
 }
 
+.habminIconRules {
+    background-image: url('../images/compass.png');
+}
+
 .habminIconClear {
     background-image: url('../images/arrow-circle-225-left.png');
 }

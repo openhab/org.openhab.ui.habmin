@@ -99,10 +99,8 @@ define([
                 });
             },
             startup: function() {
-
                 this.inherited(arguments);
                 this.resize();
-//                x.resize();
             }
         });
     });
