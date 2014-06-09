@@ -1,5 +1,5 @@
 {
-	"name": "javelin",
+	"name": "HABmin",
 	"version": "0.1",
 	"main": "main",
 	"dependencies": {
@@ -8,7 +8,7 @@
 		"dojox": "1.9.2",
 		"util": "1.9.2"
 	},
-	"description": "Javelin home automation interface for openHAB / Eclipse SmartHome.",
+	"description": "HABmin home automation interface for openHAB / Eclipse SmartHome.",
 	"licenses": [
 		{
 			"type": "AFLv2.1",

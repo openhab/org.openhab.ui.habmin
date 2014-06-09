@@ -126,5 +126,5 @@ define([
                 }
                 this.inherited(arguments);
             }
-        })
+        });
     });

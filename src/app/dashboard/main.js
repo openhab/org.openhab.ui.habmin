@@ -7,11 +7,9 @@ define([
         "dojo/dom-construct",
         "dojo/dom-attr",
         "dojo/dom-class",
-
         "dijit/layout/BorderContainer",
         "dijit/layout/AccordionContainer",
         "dijit/layout/ContentPane",
-
         "app/dashboard/ChartList",
         "app/dashboard/ItemList",
         "app/dashboard/DashboardList"

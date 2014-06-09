@@ -20,7 +20,7 @@ var profile = {
     // itself is defined by `build.sh`. You should probably not use this; it is a legacy option dating back to Dojo
     // 0.4.
     // If you do use this, you will need to update build.sh, too.
-    // releaseName: '',
+    //releaseName: '',
 
     // Builds a new release.
     action: 'release',
@@ -58,18 +58,21 @@ var profile = {
         // This is the main loader module. It is a little special because it is treated like an AMD module even though
         // it is actually just plain JavaScript. There is some extra magic in the build system specifically for this
         // module ID.
-        'dojo/dojo': {
+        'dist/dojo': {
             // In addition to the loader `dojo/dojo` and the loader configuration file `app/run`, we are also including
             // the main application `app/main` and the `dojo/i18n` and `dojo/domReady` modules because, while they are
             // all conditional dependencies in `app/main`, we do not want to have to make extra HTTP requests for such
             // tiny files.
-            include: [ 'dojo/i18n', 'dojo/domReady', 'app/main', 'app/run' ],
+            include: [ 'dojo/dojo', 'dojo/i18n', 'dojo/domReady', 'app/main', 'app/run', 'dgrowl/main', 'app/dashboard/main'],
 
             // By default, the build system will try to include `dojo/main` in the built `dojo/dojo` layer, which adds
             // a bunch of stuff we do not want or need. We want the initial script load to be as small and quick to
             // load as possible, so we configure it as a custom, bootable base.
             boot: true,
             customBase: true
+        },
+        'dist/chart': {
+            include: ['dojox/charting/Chart']
         }
 
 /*      ,

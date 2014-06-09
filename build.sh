@@ -12,7 +12,7 @@ SRCDIR="$BASEDIR/src"
 TOOLSDIR="$SRCDIR/util/buildscripts"
 
 # Destination directory for built code
-DISTDIR="$BASEDIR/dist"
+DISTDIR="$BASEDIR/build"
 
 # Module ID of the main application package loader configuration
 LOADERMID="app/run"
