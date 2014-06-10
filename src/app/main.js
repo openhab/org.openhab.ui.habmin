@@ -58,22 +58,10 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                 "dojo/domReady!"
             ],
             function (Status, Login, Tooltip, on, dom, domAttr, domConstruct, domClass, query, fx, array, BorderContainer, ContentPane, headerTemplate) {
-                // Hide and then remove the splash-screen.
-                /*               fx.fadeOut({
-                 node: "splashscreen",
-                 duration: 0,
-                 onEnd: function () {
-                 domConstruct.destroy("splashscreen");
-                 } }
-                 ).play();
 
-                 require(["app/config/gridTest"], function (dev) {
-                 var x = new dev({style: "opacity: 100; width: 100%; height:100%;"});
-                 x.placeAt(document.body);
-                 x.startup();
-                 });
-
-                 return;*/
+//                require(["app/config/test"], function (test) {
+//                    var x = new test();
+//                });
 
                 var currentPane = null;
                 var currentId = null;

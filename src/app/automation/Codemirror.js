@@ -37,6 +37,7 @@ define([
 
                 this.editor = CodeMirror(this.domNode, {
                     mode: "javascript",
+                    theme: "eclipse",
                     lineNumbers: true,
                     foldGutter: true,
                     gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
