@@ -231,6 +231,10 @@ body {
     background-image: url('../images/wrench--minus.png');
 }
 
+.habminIconExclude {
+    background-image: url('../images/wrench--minus.png');
+}
+
 
 .habminWidget {
     width: 32px;
@@ -691,7 +695,13 @@ body {
     z-index: 18;
 }
 
-
+.habminToolbarTab {
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    width: 100%;
+    border:1px solid #bfbfbf;
+}
 
 /* Icons */
 .dojoxFloatingCloseIcon {
