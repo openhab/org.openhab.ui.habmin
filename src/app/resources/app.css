@@ -235,6 +235,10 @@ body {
     background-image: url('../images/wrench--minus.png');
 }
 
+.habminIconBlock {
+    background-image: url('../images/block.png');
+}
+
 
 .habminWidget {
     width: 32px;

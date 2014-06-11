@@ -14,9 +14,10 @@ define([
         "dijit/form/Button",
         "dojo/request",
 
-        "app/automation/Codemirror"
+        "app/automation/Codemirror",
+        "app/automation/BlockEditor"
     ],
-    function (declare, lang, on, array, domClass, domStyle, domConstruct, domGeometry, query, Container, TabContainer, Toolbar, Button, request, CodeEditor) {
+    function (declare, lang, on, array, domClass, domStyle, domConstruct, domGeometry, query, Container, TabContainer, Toolbar, Button, request, CodeEditor, BlockEditor) {
         return declare(Container, {
             chartLegend: true,
             tooltips: true,
@@ -25,29 +26,36 @@ define([
             postCreate: function () {
                 domClass.add(this.domNode, "habminChildNoPadding");
 
+                // Create the tab container
                 this.tabContainer = new TabContainer({
                     style: "height: 100%; width: 100%;",
                     region: 'center'
                 });
                 domClass.add(this.tabContainer.domNode, "habminChildNoPadding");
 
+                // Add the block editor to the tab
+                this.blockPane = new BlockEditor({
+                    title: "Rule",
+                    iconClass: "habminButtonIcon habminIconBlock"
+                });
+                domClass.add(this.blockPane.domNode, "habminChildNoPadding");
+                this.tabContainer.addChild(this.blockPane);
+
+                // Add the code editor to the tab
                 this.editorPane = new CodeEditor({
                     title: "Source",
                     iconClass: "habminButtonIcon habminIconEdit"
                 });
                 domClass.add(this.editorPane.domNode, "habminChildNoPadding");
-
                 this.tabContainer.addChild(this.editorPane);
-                this.addChild(this.tabContainer);
 
-                this.alignTabs();
+                // Now add the tab container
+                this.addChild(this.tabContainer);
 
                 on(this.tabContainer, "resize", lang.hitch(this, this.alignTabs));
 
-
-
-
-
+                // Create the toolbar. This will be placed into the tab container so it's
+                // available to all editor.
                 var toolDefinition = [
                     {
                         label: "New",
