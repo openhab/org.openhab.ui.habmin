@@ -3,10 +3,10 @@ define([
         "dojo/_base/lang",
         "dojo/_base/array",
         "dojo/dom-class",
-        "dijit/layout/ContentPane"
+        "dblockly/Blockly"
     ],
-    function (declare, lang, array, domClass, Container) {
-        return declare(Container, {
+    function (declare, lang, array, domClass, Blockly) {
+        return declare(Blockly, {
             initialized: false,
 
             postCreate: function () {

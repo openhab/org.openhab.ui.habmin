@@ -28,6 +28,18 @@ require({
         'put-selector',
         'xstyle',
         'app'
-	]
+	],
+
+    paths: {
+        "use": "use/use"
+    },
+
+    use: {
+        'dblockly/core': {
+            deps: ["use!dblockly/core/blocks",
+            "use!dblockly/core/block"],
+            attach: "Blockly"
+        }
+    }
 // Require `app`. This loads the main application module, `app/main`, since we registered the `app` package above.
 }, [ 'app' ]);
