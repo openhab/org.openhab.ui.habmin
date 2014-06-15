@@ -8,7 +8,7 @@ define([
         "dojo/dom-construct",
         "dojo/dom-geometry",
         "dojo/query",
-        "dijit/layout/BorderContainer",
+        "dijit/layout/ContentPane",
         "dijit/layout/TabContainer",
         "dijit/Toolbar",
         "dijit/form/Button",
@@ -17,19 +17,18 @@ define([
         "app/automation/CodeEditor",
         "app/automation/BlockEditor"
     ],
-    function (declare, lang, on, array, domClass, domStyle, domConstruct, domGeometry, query, Container, TabContainer, Toolbar, Button, request, CodeEditor, BlockEditor) {
+    function (declare, lang, on, array, domClass, domStyle, domConstruct, domGeometry, query, ContentPane, TabContainer, Toolbar, Button, request, CodeEditor, BlockEditor) {
         return declare(TabContainer, {
             initialized: false,
             chartLegend: true,
             tooltips: true,
+            style: "width:100%;height:100%",
 
             postCreate: function () {
                 domClass.add(this.domNode, "habminChildNoPadding");
 
                 // Add the block editor to the tab
-                this.blockPane = new BlockEditor({
-                    title: "Rule",
-                    iconClass: "habminButtonIcon habminIconBlock",
+                this.blockEditor = new BlockEditor({
                     style: "width:100%;height:100%",
                     blockly: {
                         toolbox: true,
@@ -57,8 +56,14 @@ define([
                         path: "dblockly/"
                     }
                 });
+                domClass.add(this.blockEditor.domNode, "habminChildNoPadding");
+
+                this.blockPane = new ContentPane({
+                    title: "Rule",
+                    iconClass: "habminButtonIcon habminIconBlock",
+                    content: this.blockEditor
+                });
                 domClass.add(this.blockPane.domNode, "habminChildNoPadding");
-//                this.tabContainer.addChild(this.blockPane);
                 this.addChild(this.blockPane);
 
                 // Add the code editor to the tab
@@ -68,13 +73,7 @@ define([
                     iconClass: "habminButtonIcon habminIconEdit"
                 });
                 domClass.add(this.editorPane.domNode, "habminChildNoPadding");
-//                this.tabContainer.addChild(this.editorPane);
                 this.addChild(this.editorPane);
-
-                // Now add the tab container
-//                this.addChild(this.tabContainer);
-
- //               on(this.tabContainer, "resize", lang.hitch(this, this.alignTabs));
 
                 // Create the toolbar. This will be placed into the tab container so it's
                 // available to all editor.
@@ -108,9 +107,8 @@ define([
                 }));
                 domClass.add(this.toolbar.domNode, "habminToolbarTab");
 
-//                var tabStripNode = query("div.dijitTabListWrapper", this.tabContainer.tablist.domNode)[0];
+                // Add the toolbar into the tab container
                 var tabStripNode = query("div.dijitTabListWrapper", this.tablist.domNode)[0];
-
                 domConstruct.place(this.toolbar.domNode, tabStripNode, "first");
             },
             alignTabs: function() {
@@ -126,16 +124,14 @@ define([
                 domStyle.set(tabStripNode, "width", tabListCoords.w + "px");
                 domStyle.set(tabStripNode, "textAlign", "right");
 
+                // Calculate the sizes of all tabs and subtract this off the size of the toolbar
                 var tabList = query("div.dijitTab", tabListNode);
                 var tabWidth = 5;
                 array.forEach(tabList, lang.hitch(this, function (tab) {
                     var coords = domGeometry.position(tab);
                     tabWidth += coords.w;
                 }));
-
                 domStyle.set(this.toolbar.domNode, "width", (tabListCoords.w - tabWidth) + "px");
-
-    //            domStyle.set(this.toolbar.domNode, "width", tabListCoords.w - 400 + "px");
             },
             startup: function () {
                 if(this.initialized == true)
