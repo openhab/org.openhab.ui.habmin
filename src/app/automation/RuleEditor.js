@@ -22,7 +22,6 @@ define([
             initialized: false,
             chartLegend: true,
             tooltips: true,
-            style: "width:100%;height:100%",
 
             postCreate: function () {
                 domClass.add(this.domNode, "habminChildNoPadding");
@@ -164,7 +163,6 @@ define([
             resize: function(size) {
                 this.inherited(arguments);
                 this.alignTabs();
-                this.blockPane.resize(size);
             }
         })
     });
