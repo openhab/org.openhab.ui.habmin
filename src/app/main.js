@@ -44,11 +44,13 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                 "app/main/onlineStatus",
                 "app/main/login",
                 "dijit/Tooltip",
+                "dojo/_base/lang",
                 "dojo/on",
                 "dojo/dom",
                 "dojo/dom-attr",
                 "dojo/dom-construct",
                 "dojo/dom-class",
+                "dojo/dom-style",
                 "dojo/query",
                 "dojo/_base/fx",
                 "dojo/_base/array",
@@ -57,11 +59,7 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                 "dojo/text!app/main/HeaderTemplate.html",
                 "dojo/domReady!"
             ],
-            function (Status, Login, Tooltip, on, dom, domAttr, domConstruct, domClass, query, fx, array, BorderContainer, ContentPane, headerTemplate) {
-
-//                require(["app/config/test"], function (test) {
-//                    var x = new test();
-//                });
+            function (Status, Login, Tooltip, lang, on, dom, domAttr, domConstruct, domClass, domStyle, query, fx, array, BorderContainer, ContentPane, headerTemplate) {
 
                 var currentPane = null;
                 var currentId = null;
@@ -132,16 +130,16 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                 var loginDialog = new Login();
                 loginDialog.placeAt(document.body);
                 loginDialog.startup();
-              //  loginDialog.show();
+                //  loginDialog.show();
 
 //                new Status({}, "onlineStatus");
-/*
+                /*
 
-                new Tooltip({
-                    connectId: ["userStatus"],
-                    label: "Login Status"
-                });
-*/
+                 new Tooltip({
+                 connectId: ["userStatus"],
+                 label: "Login Status"
+                 });
+                 */
                 bc.resize();
 
                 // Hide and then remove the splash-screen.
@@ -175,18 +173,28 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                     var windowSettings = {region: "center", style: "opacity: 100; width: 100%; height:100%;"};
                     switch (selectedId) {
                         case "dashboard":
-                            require(["app/dashboard/main"], function (Dashboard) {
-                                var x = new Dashboard(windowSettings);
-                                x.placeAt("content");
-                                transition(currentPane, x);
-                            });
+                            if (this.dashboard == null) {
+                                require(["app/dashboard/main"], lang.hitch(this, function (Dashboard) {
+                                    this.dashboard = new Dashboard(windowSettings);
+                                    this.dashboard.placeAt("content");
+                                    transition(currentPane, this.dashboard);
+                                }));
+                            }
+                            else {
+                                transition(currentPane, this.dashboard);
+                            }
                             break;
                         case "automation":
-                            require(["app/automation/main"], function (Automation) {
-                                var x = new Automation(windowSettings);
-                                x.placeAt("content");
-                                transition(currentPane, x);
-                            });
+                            if (this.automation == null) {
+                                require(["app/automation/main"], lang.hitch(this, function (Automation) {
+                                    this.automation = new Automation(windowSettings);
+                                    this.automation.placeAt("content");
+                                    transition(currentPane, this.automation);
+                                }));
+                            }
+                            else {
+                                transition(currentPane, this.automation);
+                            }
                             break;
                         case "config":
                             require(["app/bindings/zwave/ZWaveDevices"], function (ZWave) {
@@ -228,12 +236,12 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                                 node: fromOld.domNode,
                                 duration: 350,
                                 onEnd: function () {
-                                    console.log("Destroying " + this.node.id);
-                                    domConstruct.destroy(this.node);
+                                    domStyle.set(this.node, "display", "none");
                                 } }
                         ).play();
                     }
                     if (toNew != null) {
+                        domStyle.set(toNew.domNode, "display", "");
                         fx.fadeIn({
                                 node: toNew.domNode,
                                 duration: 300,
