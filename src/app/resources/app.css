@@ -745,3 +745,8 @@ body {
     position: absolute;
     z-index: 100;
 }
+
+.CodeMirror {
+    height: 100%;
+    width: 100%;
+}

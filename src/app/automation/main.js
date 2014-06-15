@@ -7,6 +7,7 @@ define([
         "dojo/dom-construct",
         "dojo/dom-attr",
         "dojo/dom-class",
+        "dojo/dom-style",
 
         "dijit/layout/BorderContainer",
         "dijit/layout/AccordionContainer",
@@ -14,54 +15,62 @@ define([
 
         "app/automation/RuleList"
     ],
-    function (declare, lang, topic, fx, dom, domConstruct, domAttr, domClass, BorderContainer, AccordionContainer, ContentPane, RuleList) {
+    function (declare, lang, topic, fx, dom, domConstruct, domAttr, domClass, domStyle, BorderContainer, AccordionContainer, ContentPane, RuleList) {
         return declare(BorderContainer, {
             design: 'sidebar',
             gutters: true,
-            liveSplitters:true,
+            liveSplitters: true,
 
-            postCreate: function() {
+            postCreate: function () {
                 var acc = new AccordionContainer({
                     style: "width:250px",
-                    splitter:true,
+                    splitter: true,
                     region: 'leading'
                 });
 
                 this.addChild(acc);
-                var dashboard = new ContentPane({
+                this.dashboard = new ContentPane({
                     title: "Main",
                     region: "center"
                 });
-                domClass.add(dashboard.domNode, "habminChildNoPadding");
-                this.addChild(dashboard);
+                domClass.add(this.dashboard.domNode, "habminChildNoPadding");
+                this.addChild(this.dashboard);
 
                 var ruleList = new ContentPane({
                     title: "Rules",
-                    iconClass:"habminButtonIcon habminIconRules",
+                    iconClass: "habminButtonIcon habminIconRules",
                     content: new RuleList()
                 });
                 domClass.add(ruleList.domNode, "habminAccordionChild");
                 acc.addChild(ruleList);
 
-                topic.subscribe("/automation/rule", function(type, data) {
-                    switch(type) {
+                this.topicHandler = topic.subscribe("/automation/rule", lang.hitch(this, function (type, data) {
+                    switch (type) {
                         case "editor":
-                            domConstruct.empty(dashboard.domNode);
-                            require(["app/automation/RuleEditor"], function (RuleEditor) {
-                                var editor = new RuleEditor();
-//                                editor.loadChart(data);
-                                editor.placeAt(dashboard);
-                                editor.startup();
-                            });
+                            domConstruct.empty(this.dashboard.domNode);
+
+                            if (this.ruleEditor != null) {
+                                this.ruleEditor.destroy();
+                            }
+                            console.log("Loading rule editor", ruleList);
+                            require(["app/automation/RuleEditor"], lang.hitch(this, function (RuleEditor) {
+                                this.ruleEditor = new RuleEditor();
+                                this.ruleEditor.placeAt(this.dashboard);
+                                this.ruleEditor.startup();
+                            }));
                             break;
                         case "blocks":
                             break;
                     }
-                });
+                }));
             },
-            startup: function() {
+            startup: function () {
                 this.inherited(arguments);
                 this.resize();
+            },
+            destroy: function () {
+                this.inherited(arguments);
+                this.topicHandler.remove();
             }
         });
     });

@@ -28,10 +28,6 @@ define([
             },
 
             startup: function () {
-                this.initialize();
-            },
-
-            initialize: function () {
                 if (this.initialized)
                     return;
 
@@ -52,6 +48,12 @@ define([
 
             setCode: function (code) {
                 this.editor.setValue(code);
+            },
+
+            resize: function() {
+                this.inherited(arguments);
+
+                this.editor.refresh();
             }
         })
     });
