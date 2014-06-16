@@ -6,20 +6,20 @@ define([
         "dblockly/Blockly"
     ],
     function (declare, lang, array, domClass, Blockly) {
+
         return declare(Blockly, {
             initialized: false,
+            style:"width:100%;height:100%",
 
             postCreate: function () {
                 this.inherited(arguments);
             },
 
             startup: function () {
-                this.initialize();
-            },
-
-            initialize: function () {
                 if (this.initialized)
                     return;
+
+                this.inherited(arguments);
 
                 this.initialized = true;
             }

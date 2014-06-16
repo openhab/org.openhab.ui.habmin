@@ -52,8 +52,11 @@ define([
 
                 // Do we want to show the toolbox?
                 if (this.blockly.toolbox == true) {
+                    var len = 0;
+                    if(this.blockly.toolboxCategories != null)
+                        len = this.blockly.toolboxCategories.length;
                     // Create an array of category stores and grids.
-                    for (var i = 0; i < this.blockly.toolboxCategories.length; i++) {
+                    for (var i = 0; i < len; i++) {
                         // We create separate lists for each accordion.
                         var cat = {};
                         cat.store = [];
@@ -86,12 +89,21 @@ define([
             },
             startup: function () {
                 this.inherited(arguments);
+                this.show();
+
+                console.log("Blockly Pane is", this.blocklyPane);
+                if(document.getElementById(this.blocklyPane.domNode.id) == null) {
+                    console.error("Blockly Pane is not in DOM: ",this.blocklyPane.domNode.id);
+                    return;
+                }
+
                 // Initialise Blockly
                 Blockly.inject(document.getElementById(this.blocklyPane.domNode.id), {
                     path: this.blockly.path,
                     collapse: this.blockly.collapse,
                     trashcan: this.blockly.trashcan
                 });
+                this.resize();
 
                 // Loop through all records in the toolbox and create the SVG graphic
                 for (var i = 0; i < this.toolboxGrids.length; i++) {
@@ -102,7 +114,6 @@ define([
                         }
                         else {
                             var svg = '<svg height="' + block.getHeightWidth().height + '" width="' + (block.getHeightWidth().width + 10) + '"><g transform=\"translate(10)\">' + block.getSvgRoot().outerHTML + "</g></svg>";
-                            console.log("Block SVG = ", svg);
                             record.svg = svg;
                             Blockly.getMainWorkspace().clear();
 
@@ -121,7 +132,6 @@ define([
 
                 // If a change listener is specified, add it
 
-                this.resize();
             },
             setBlocks: function (blocks) {
                 // Clear any existing workspace
@@ -129,9 +139,15 @@ define([
                     Blockly.getMainWorkspace().clear();
 
                 Blockly.Json.setWorkspace(Blockly.getMainWorkspace(), blocks);
+                Blockly.getMainWorkspace().render();
             },
             getBlocks: function() {
                 return Blockly.Json.getWorkspace(Blockly.getMainWorkspace());
+            },
+            destroy: function() {
+                this.inherited(arguments);
+                if(Blockly != null && Blockly.getMainWorkspace() != null)
+                    Blockly.getMainWorkspace().dispose();
             }
     });
     });
