@@ -3,10 +3,12 @@ define([
         "dojo/_base/lang",
         "dojo/_base/array",
         "dojo/dom-class",
-        "dijit/layout/ContentPane"//,
+        "dijit/layout/ContentPane",
+        "dojox/xml/parser",
+        "dojox/xml/DomParser"//,
 //        "dblockly/Blockly"
     ],
-    function (declare, lang, array, domClass, Container) {
+    function (declare, lang, array, domClass, Container, xmlParser, DomParser) {
 
         return declare(Container, {
             initialized: false,
@@ -28,6 +30,7 @@ define([
                         trashcan: true,
                         toolbox: '<xml>' +
                             '<category name="Logic">' +
+                            '<block type="openhab_rule"></block>' +
                             '<block type="controls_if"></block>' +
                             '<block type="logic_compare"></block>' +
                             '<block type="logic_operation"></block>' +
@@ -58,6 +61,17 @@ define([
                     });
 
                 this.initialized = true;
+            },
+            setBlocks: function (blocks) {
+                // Clear any existing workspace
+                if(Blockly.getMainWorkspace() != null)
+                    Blockly.getMainWorkspace().clear();
+
+                xmlParser
+                xmlParser.
+
+//                Blockly.Json.setWorkspace(Blockly.getMainWorkspace(), blocks);
+                Blockly.getMainWorkspace().render();
             }
         })
     });

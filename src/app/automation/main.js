@@ -46,7 +46,7 @@ define([
 
                 this.topicHandler = topic.subscribe("/automation/rule", lang.hitch(this, function (type, data) {
                     switch (type) {
-                        case "editor":
+                        case "new":
                             domConstruct.empty(this.dashboard.domNode);
 
                             if (this.ruleEditor != null) {
@@ -57,9 +57,22 @@ define([
                                 this.ruleEditor = new RuleEditor();
                                 this.ruleEditor.placeAt(this.dashboard);
                                 this.ruleEditor.startup();
+                                this.ruleEditor.setBlocks({blocks: {
+                                    block: [
+                                        {
+                                            type: 'openhab_rule',
+                                            deletable: false,
+                                            movable: false,
+                                            fields: [
+                                                {name: "NAME", value: "New Rule"} //language.rule_DesignerNewRule}
+                                            ]
+                                        }
+                                    ]
+                                }
+                                });
                             }));
                             break;
-                        case "blocks":
+                        case "open":
                             break;
                     }
                 }));

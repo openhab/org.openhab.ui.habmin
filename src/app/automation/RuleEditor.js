@@ -38,8 +38,8 @@ define([
                         ],
                         toolboxTools: [
                             {category: "Procedures", block: {type: "controls_if"}, name: "X"},
-                            {category: "Procedures", block: {type:'variables_get'}},
-                            {category: "Procedures", block: {type:'logic_operation'}},
+                            {category: "Procedures", block: {type: 'variables_get'}},
+                            {category: "Procedures", block: {type: 'logic_operation'}},
 
                             {category: "Procedures", block: {type: "controls_if", mutation: {name: "elseif", value: 2}}, name: "X"},
                             {category: "Procedures", block: {type: "text"}, name: "X"}/*,
@@ -51,7 +51,17 @@ define([
                              {category: "Math", block: "<xml><block type='variables_set'></block></xml>", name: "X"}*/
                         ],
                         trashcan: true,
-                        blocks: {"block":[{"type":"controls_if","id":"6","children":[{"type":"value","name":"IF0","block":{"type":"logic_operation","id":"9","mutation":[{"name":"operators","value":2}],"fields":[{"name":"OP1","value":"AND"},{"name":"OP2","value":"AND"},{"name":"OP3","value":"AND"}],"inline":true}}],"inline":false,"movable":false,"x":0,"y":0}]},
+                        blocks: {"block": [
+                            {"type": "controls_if", "id": "6", "children": [
+                                {"type": "value", "name": "IF0", "block": {"type": "logic_operation", "id": "9", "mutation": [
+                                    {"name": "operators", "value": 2}
+                                ], "fields": [
+                                    {"name": "OP1", "value": "AND"},
+                                    {"name": "OP2", "value": "AND"},
+                                    {"name": "OP3", "value": "AND"}
+                                ], "inline": true}}
+                            ], "inline": false, "movable": false, "x": 0, "y": 0}
+                        ]},
                         path: "dblockly/"
                     }
                 });
@@ -110,7 +120,7 @@ define([
                 var tabStripNode = query("div.dijitTabListWrapper", this.tablist.domNode)[0];
                 domConstruct.place(this.toolbar.domNode, tabStripNode, "first");
             },
-            alignTabs: function() {
+            alignTabs: function () {
                 var tabListNode = this.tablist.domNode;
                 var tabStripNode = query("div.nowrapTabStrip", tabListNode)[0];
 
@@ -133,7 +143,7 @@ define([
                 domStyle.set(this.toolbar.domNode, "width", (tabListCoords.w - tabWidth) + "px");
             },
             startup: function () {
-                if(this.initialized == true)
+                if (this.initialized == true)
                     return;
 
                 this.inherited(arguments);
@@ -160,9 +170,12 @@ define([
 
                 this.initialized = true;
             },
-            resize: function(size) {
+            resize: function (size) {
                 this.inherited(arguments);
                 this.alignTabs();
+            },
+            setBlocks: function (blocks) {
+                this.blockEditor.setBlocks(blocks);
             }
         })
     });

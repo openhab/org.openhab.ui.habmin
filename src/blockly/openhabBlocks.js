@@ -154,7 +154,7 @@ Blockly.Blocks['openhab_rule'] = {
         this.setHelpUrl("HELP");
         this.setColour(45);
         this.appendDummyInput()
-            .appendField(language.rule_DesignerRuleName)
+            .appendField("Name")    //language.rule_DesignerRuleName)
             .appendField(new Blockly.FieldTextInput(name,
                 Blockly.Procedures.rename), 'NAME')
             .appendField('', 'PARAMS');
@@ -163,7 +163,7 @@ Blockly.Blocks['openhab_rule'] = {
             .appendField("Definitions");
         this.appendStatementInput('STACK')
             .appendField("Rule");
-        this.setTooltip(language.rule_DesignerRuleTooltip);
+        this.setTooltip("Tooltip");//language.rule_DesignerRuleTooltip);
     }
 };
 

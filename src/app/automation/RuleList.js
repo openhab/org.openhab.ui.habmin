@@ -32,7 +32,7 @@ define([
                         label: "Delete",
                         menuRef: "delete",
                         iconClass: "habminIconDelete",
-                        select: xNew
+                        select: menuDelete
                     }
                 ];
                 this.toolbar = new Toolbar({region: "top"});
@@ -67,7 +67,7 @@ define([
                     var cell = this.grid.cell(evt);
 
                     //
-                    topic.publish("/dashboard/set", "chart", cell.row.data.id);
+                    topic.publish("/automation/rule", "open", cell.row.data.id);
                 }));
 
                 this.addChild(this.toolbar);
@@ -80,11 +80,11 @@ define([
 
                 function menuNew() {
                     console.log("Rule NEW pressed");
-                    topic.publish("/automation/rule", "editor", "");
+                    topic.publish("/automation/rule", "new");
                 }
 
-                function xNew() {
-                    console.log("menuNew pressed");
+                function menuDelete() {
+                    console.log("Rule DELETE pressed");
                 }
 
             },
