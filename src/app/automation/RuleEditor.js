@@ -8,7 +8,6 @@ define([
         "dojo/dom-construct",
         "dojo/dom-geometry",
         "dojo/query",
-        "dijit/layout/ContentPane",
         "dijit/layout/TabContainer",
         "dijit/Toolbar",
         "dijit/form/Button",
@@ -17,18 +16,32 @@ define([
         "app/automation/CodeEditor",
         "app/automation/BlockEditor"
     ],
-    function (declare, lang, on, array, domClass, domStyle, domConstruct, domGeometry, query, ContentPane, TabContainer, Toolbar, Button, request, CodeEditor, BlockEditor) {
+    function (declare, lang, on, array, domClass, domStyle, domConstruct, domGeometry, query, TabContainer, Toolbar, Button, request, CodeEditor, BlockEditor) {
         return declare(TabContainer, {
             initialized: false,
             chartLegend: true,
             tooltips: true,
+            newruleBlocks: {
+                block: [
+                {
+                    type: 'openhab_rule',
+                    deletable: false,
+                    movable: false,
+                    fields: [
+                        {name: "NAME", value: "New Rule"}//language.rule_DesignerNewRule}
+                    ]
+                }
+            ]},
+            newruleCode:'// Imports\n\n\n// Rule\nrule "New Rule"\nwhen\n\nthen\n\nend\n',
 
             postCreate: function () {
                 domClass.add(this.domNode, "habminChildNoPadding");
 
                 // Add the block editor to the tab
                 this.blockEditor = new BlockEditor({
-                    style: "width:100%;height:100%",
+                    title: "Rule",
+                    iconClass: "habminButtonIcon habminIconBlock",
+                    style: "width:100%;height:100%;overflow:hidden;",
                     blockly: {
                         toolbox: true,
                         collapse: true,
@@ -66,23 +79,16 @@ define([
                     }
                 });
                 domClass.add(this.blockEditor.domNode, "habminChildNoPadding");
-
-                this.blockPane = new ContentPane({
-                    title: "Rule",
-                    iconClass: "habminButtonIcon habminIconBlock",
-                    content: this.blockEditor
-                });
-                domClass.add(this.blockPane.domNode, "habminChildNoPadding");
-                this.addChild(this.blockPane);
+                this.addChild(this.blockEditor);
 
                 // Add the code editor to the tab
-                this.editorPane = new CodeEditor({
+                this.codeEditor = new CodeEditor({
                     title: "Source",
                     style: "height: 100%; width: 100%;",
                     iconClass: "habminButtonIcon habminIconEdit"
                 });
-                domClass.add(this.editorPane.domNode, "habminChildNoPadding");
-                this.addChild(this.editorPane);
+                domClass.add(this.codeEditor.domNode, "habminChildNoPadding");
+                this.addChild(this.codeEditor);
 
                 // Create the toolbar. This will be placed into the tab container so it's
                 // available to all editor.
@@ -150,6 +156,17 @@ define([
                 this.resize();
                 this.alignTabs();
 
+                this.initialized = true;
+            },
+            resize: function (size) {
+                this.inherited(arguments);
+                this.alignTabs();
+            },
+            newRule: function () {
+                this.blockEditor.setBlocks(this.newruleBlocks);
+                this.codeEditor.setCode(this.newruleCode);
+            },
+            loadRule: function() {
                 request("/services/habmin/config/rules/model/source/habmin-autorules", {
                     timeout: 5000,
                     handleAs: 'json',
@@ -161,21 +178,30 @@ define([
                 }).then(
                     lang.hitch(this, function (data) {
                         console.log("The (Rule Source) response is: ", data);
-                        this.editorPane.setCode(data.source);
+                        this.codeEditor.setCode(data.source);
                     }),
                     lang.hitch(this, function (error) {
                         console.log("An error occurred with rule source response: " + error);
                     })
                 );
 
-                this.initialized = true;
-            },
-            resize: function (size) {
-                this.inherited(arguments);
-                this.alignTabs();
-            },
-            setBlocks: function (blocks) {
-                this.blockEditor.setBlocks(blocks);
+                request("/services/habmin/config/designer/4", {
+                    timeout: 5000,
+                    handleAs: 'json',
+                    preventCache: true,
+                    headers: {
+                        "Content-Type": 'application/json; charset=utf-8',
+                        "Accept": "application/json"
+                    }
+                }).then(
+                    lang.hitch(this, function (data) {
+                        console.log("The (Block Source) response is: ", data);
+                        this.blockPane.setCode(data.source);
+                    }),
+                    lang.hitch(this, function (error) {
+                        console.log("An error occurred with block source response: " + error);
+                    })
+                );
             }
         })
     });
