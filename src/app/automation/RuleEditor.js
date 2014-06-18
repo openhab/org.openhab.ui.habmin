@@ -166,7 +166,7 @@ define([
                 this.blockEditor.setBlocks(this.newruleBlocks);
                 this.codeEditor.setCode(this.newruleCode);
             },
-            loadRule: function() {
+            loadRule: function(ruleId) {
                 request("/services/habmin/config/rules/model/source/habmin-autorules", {
                     timeout: 5000,
                     handleAs: 'json',
@@ -185,7 +185,7 @@ define([
                     })
                 );
 
-                request("/services/habmin/config/designer/4", {
+                request("/services/habmin/config/designer/" + ruleId, {
                     timeout: 5000,
                     handleAs: 'json',
                     preventCache: true,
@@ -196,7 +196,7 @@ define([
                 }).then(
                     lang.hitch(this, function (data) {
                         console.log("The (Block Source) response is: ", data);
-                        this.blockPane.setCode(data.source);
+                        this.blockEditor.setBlocks(data);
                     }),
                     lang.hitch(this, function (error) {
                         console.log("An error occurred with block source response: " + error);

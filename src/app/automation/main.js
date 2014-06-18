@@ -57,22 +57,22 @@ define([
                                 this.ruleEditor = new RuleEditor();
                                 this.ruleEditor.placeAt(this.dashboard);
                                 this.ruleEditor.startup();
-                                this.ruleEditor.setBlocks({blocks: {
-                                    block: [
-                                        {
-                                            type: 'openhab_rule',
-                                            deletable: false,
-                                            movable: false,
-                                            fields: [
-                                                {name: "NAME", value: "New Rule"} //language.rule_DesignerNewRule}
-                                            ]
-                                        }
-                                    ]
-                                }
-                                });
+                                this.ruleEditor.newRule();
                             }));
                             break;
                         case "open":
+                            domConstruct.empty(this.dashboard.domNode);
+
+                            if (this.ruleEditor != null) {
+                                this.ruleEditor.destroy();
+                            }
+                            console.log("Loading rule editor", ruleList);
+                            require(["app/automation/RuleEditor"], lang.hitch(this, function (RuleEditor) {
+                                this.ruleEditor = new RuleEditor();
+                                this.ruleEditor.placeAt(this.dashboard);
+                                this.ruleEditor.startup();
+                                this.ruleEditor.loadRule(data);
+                            }));
                             break;
                     }
                 }));
