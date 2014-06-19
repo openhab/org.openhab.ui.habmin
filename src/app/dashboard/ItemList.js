@@ -2,6 +2,7 @@ define([
         "dojo/_base/declare",
         "dojo/_base/lang",
         "dijit/layout/LayoutContainer",
+        "app/dashboard/SaveChart",
         "dojo/request",
         "dojo/store/Memory",
         "dojo/on",
@@ -15,7 +16,7 @@ define([
         "dojo/_base/array",
         "dojo/topic"
     ],
-    function (declare, lang, Container, request, Store, on, Grid, Registry, Selection, Keyboard, Button, Toolbar, TextBox, array, topic) {
+    function (declare, lang, Container, SaveChart, request, Store, on, Grid, Registry, Selection, Keyboard, Button, Toolbar, TextBox, array, topic) {
         return declare(Container, {
             buildRendering: function () {
                 this.inherited(arguments);
@@ -113,6 +114,10 @@ define([
 
                 function saveChart() {
                     console.log("saveChart pressed");
+                    var x = new SaveChart();
+                    x.placeAt(document.body);
+                    x.startup();
+                    x.show();
                 }
 
                 function updateChart() {
