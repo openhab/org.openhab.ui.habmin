@@ -160,6 +160,12 @@ body {
     height:100%;
 }
 
+.habminListNoIcon {
+    background-repeat: no-repeat;
+    background-size: 16px 16px;
+    padding-left:21px;
+}
+
 .habminListIcon {
     padding-left:5px;
 }

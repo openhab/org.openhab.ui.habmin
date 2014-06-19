@@ -14,7 +14,7 @@ define([
         "dojo/topic",
         "dojo/on"
 
- ],
+    ],
     function (declare, lang, Container, request, Grid, Registry, Selection, Keyboard, Button, Toolbar, array, domConstruct, topic, on) {
         return declare(Container, {
 
@@ -75,7 +75,7 @@ define([
 
                 function cellRenderer(object, value, node, options) {
                     node.innerHTML =
-                        "<span class='habminListIcon'><img src='/images/" + object.icon + ".png'></span>" + value;
+                        "<span class='habminListNoIcon habminIconBlock'></span>" + value;
                 }
 
                 function menuNew() {
