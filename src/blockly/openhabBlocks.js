@@ -34,7 +34,7 @@
  *
  * @author Chris Jackson
  */
-Blockly.Blocks['openhab_persistence_get'] = {
+    Blockly.Blocks['openhab_persistence_get'] = {
     init: function () {
         this.setHelpUrl('http://www.example.com/');
         this.setColour(290);
@@ -130,6 +130,7 @@ Blockly.Blocks['openhab_persistence_get'] = {
         this.setValue(option);
         // Rebuild the block's optional inputs.
         if(option == 'TIME') {
+
             this.sourceBlock_.appendDummyInput("TIME")
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("minus")

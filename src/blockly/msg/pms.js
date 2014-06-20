@@ -7,7 +7,8 @@ goog.provide('Blockly.Msg.pms');
 goog.require('Blockly.Msg');
 
 Blockly.Msg.ADD_COMMENT = "Gionté un coment";
-Blockly.Msg.AUTH = "Për piasì, ch'a autorisa costa aplicassion a përmëtte ëd salvé sò travaj e a autoriselo a esse partagià da chiel.";
+Blockly.Msg.AUTH =
+    "Për piasì, ch'a autorisa costa aplicassion a përmëtte ëd salvé sò travaj e a autoriselo a esse partagià da chiel.";
 Blockly.Msg.CHANGE_VALUE_TITLE = "Modifiché ël valor:";
 Blockly.Msg.CHAT = "Ch'a ciaciara con sò colaborator an scrivend an costa casela!";
 Blockly.Msg.COLLAPSE_ALL = "Arduve ij blòch";
@@ -28,22 +29,26 @@ Blockly.Msg.COLOUR_RGB_GREEN = "verd";
 Blockly.Msg.COLOUR_RGB_HELPURL = "http://www.december.com/html/spec/colorper.html";  // untranslated
 Blockly.Msg.COLOUR_RGB_RED = "ross";
 Blockly.Msg.COLOUR_RGB_TITLE = "coloré con";
-Blockly.Msg.COLOUR_RGB_TOOLTIP = "Creé un color con la quantità spessificà ëd ross, verd e bleu. Tuti ij valor a devo esse antra 0 e 100.";
+Blockly.Msg.COLOUR_RGB_TOOLTIP =
+    "Creé un color con la quantità spessificà ëd ross, verd e bleu. Tuti ij valor a devo esse antra 0 e 100.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#Loop_Termination_Blocks";  // untranslated
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_BREAK = "seurte da la liassa";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_CONTINUE = "continué con l'iterassion sucessiva dla liassa";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_BREAK = "Seurte da la liassa anglobanta.";
-Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE = "Sauté ël rest ëd sa liassa, e continué con l'iterassion apress.";
+Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE =
+    "Sauté ël rest ëd sa liassa, e continué con l'iterassion apress.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_WARNING = "Atension: Ës blòch a peul mach esse dovrà andrinta a na liassa.";
 Blockly.Msg.CONTROLS_FOREACH_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#for_each for each block";  // untranslated
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST = "ant la lista";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST_TAIL = "";  // untranslated
 Blockly.Msg.CONTROLS_FOREACH_INPUT_ITEM = "për minca element";
-Blockly.Msg.CONTROLS_FOREACH_TOOLTIP = "Për minca element an na lista, dé ël valor ëd l'element a la variàbil '%1', peui eseguì chèiche anstrussion.";
+Blockly.Msg.CONTROLS_FOREACH_TOOLTIP =
+    "Për minca element an na lista, dé ël valor ëd l'element a la variàbil '%1', peui eseguì chèiche anstrussion.";
 Blockly.Msg.CONTROLS_FOR_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#count_with";  // untranslated
 Blockly.Msg.CONTROLS_FOR_INPUT_FROM_TO_BY = "da %1 a %2 për %3";
 Blockly.Msg.CONTROLS_FOR_INPUT_WITH = "conté con";
-Blockly.Msg.CONTROLS_FOR_TOOLTIP = "Fé an manera che la variàbil %1 a pija ij valor dal nùmer inissial fin-a al nùmer final, an contand për l'antërval ëspessificà, e eseguì ij bloch ëspessificà.";
+Blockly.Msg.CONTROLS_FOR_TOOLTIP =
+    "Fé an manera che la variàbil %1 a pija ij valor dal nùmer inissial fin-a al nùmer final, an contand për l'antërval ëspessificà, e eseguì ij bloch ëspessificà.";
 Blockly.Msg.CONTROLS_IF_ELSEIF_TOOLTIP = "Gionté na condission al blòch si.";
 Blockly.Msg.CONTROLS_IF_ELSE_TOOLTIP = "Gionté na condission final ch'a cheuj tut al blòch si.";
 Blockly.Msg.CONTROLS_IF_HELPURL = "https://code.google.com/p/blockly/wiki/If_Then";  // untranslated
@@ -52,9 +57,12 @@ Blockly.Msg.CONTROLS_IF_MSG_ELSE = "dësnò";
 Blockly.Msg.CONTROLS_IF_MSG_ELSEIF = "dësnò si";
 Blockly.Msg.CONTROLS_IF_MSG_IF = "si";
 Blockly.Msg.CONTROLS_IF_TOOLTIP_1 = "Si un valor a l'é ver, antlora eseguì chèiche anstrussion.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_2 = "Si un valor a l'é ver, antlora eseguì ël prim blòch d'anstrussion. Dësnò, eseguì ël second blòch d'anstrussion.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_3 = "Si ël prim valor a l'é ver, antlora fé andé ël prim blòch d'anstrussion. Dësnò, si ël second valor a l'é ver, fé andé ël second blòch d'anstrussion.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_4 = "Si ël prim valor a l'é ver, antlora fé andé ël prim blòch d'anstrussion. Dësnò, si ël second valor a l'é ver, fé andé ël second blòcj d'anstrussion. Si gnun dij valor a l'é ver, fé andé l'ùltim blòch d'anstrussion.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_2 =
+    "Si un valor a l'é ver, antlora eseguì ël prim blòch d'anstrussion. Dësnò, eseguì ël second blòch d'anstrussion.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_3 =
+    "Si ël prim valor a l'é ver, antlora fé andé ël prim blòch d'anstrussion. Dësnò, si ël second valor a l'é ver, fé andé ël second blòch d'anstrussion.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_4 =
+    "Si ël prim valor a l'é ver, antlora fé andé ël prim blòch d'anstrussion. Dësnò, si ël second valor a l'é ver, fé andé ël second blòcj d'anstrussion. Si gnun dij valor a l'é ver, fé andé l'ùltim blòch d'anstrussion.";
 Blockly.Msg.CONTROLS_REPEAT_HELPURL = "https://en.wikipedia.org/wiki/For_loop";
 Blockly.Msg.CONTROLS_REPEAT_INPUT_DO = "fé";
 Blockly.Msg.CONTROLS_REPEAT_TITLE = "arpete %1 vire";
@@ -80,7 +88,8 @@ Blockly.Msg.LISTS_CREATE_EMPTY_HELPURL = "https://en.wikipedia.org/wiki/Linked_l
 Blockly.Msg.LISTS_CREATE_EMPTY_TITLE = "creé na lista veuida";
 Blockly.Msg.LISTS_CREATE_EMPTY_TOOLTIP = "Smon-e na lista, ëd longheur 0, ch'a conten gnun-a argistrassion";
 Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TITLE_ADD = "lista";
-Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TOOLTIP = "Gionté, gavé o riordiné le session për configuré torna cost blòch ëd lista.";
+Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TOOLTIP =
+    "Gionté, gavé o riordiné le session për configuré torna cost blòch ëd lista.";
 Blockly.Msg.LISTS_CREATE_WITH_INPUT_WITH = "creé na lista con";
 Blockly.Msg.LISTS_CREATE_WITH_ITEM_TOOLTIP = "Gionté n'element a la lista.";
 Blockly.Msg.LISTS_CREATE_WITH_TOOLTIP = "Creé na lista con un nùmer qualsëssìa d'element.";
@@ -94,18 +103,24 @@ Blockly.Msg.LISTS_GET_INDEX_RANDOM = "a l'ancàpit";
 Blockly.Msg.LISTS_GET_INDEX_REMOVE = "eliminé";
 Blockly.Msg.LISTS_GET_INDEX_TAIL = "";  // untranslated
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FIRST = "A smon ël prim element an na lista.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_END = "A smon l'element a la posission ëspessificà an na lista. #1 a l'é l'ùltim element.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START = "A smon l'element a la posission ëspessificà an na lista. #1 a l'é ël prim element.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_END =
+    "A smon l'element a la posission ëspessificà an na lista. #1 a l'é l'ùltim element.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START =
+    "A smon l'element a la posission ëspessificà an na lista. #1 a l'é ël prim element.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_LAST = "A smon l'ùltim element an na lista.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_RANDOM = "A smon n'element a l'ancàpit an na lista.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FIRST = "A gava e a smon ël prim element an na lista.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END = "A gava e a smon l'element a la posission ëspessificà an na lista. #1 a l'é l'ùltim element.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START = "A gava e a smon l'element a la posission ëspessificà an na lista. #1 a l'é 'l prim element.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END =
+    "A gava e a smon l'element a la posission ëspessificà an na lista. #1 a l'é l'ùltim element.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START =
+    "A gava e a smon l'element a la posission ëspessificà an na lista. #1 a l'é 'l prim element.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_LAST = "A gava e a smon l'ùltim element an na lista.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_RANDOM = "A gava e a smon n'element a l'ancàpit an na lista.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FIRST = "A gava ël prim element an na lista.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END = "A gava l'element a la posission ëspessificà an na lista. #1 a l'é l'ùltim element.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START = "A gava l'element a la posission ëspessificà an na lista. #1 a l'é ël prim element.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END =
+    "A gava l'element a la posission ëspessificà an na lista. #1 a l'é l'ùltim element.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START =
+    "A gava l'element a la posission ëspessificà an na lista. #1 a l'é ël prim element.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_LAST = "A gava l'ùltim element an na lista.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_RANDOM = "A gava n'element a l'ancàpit da na lista.";
 Blockly.Msg.LISTS_GET_SUBLIST_END_FROM_END = "fin-a a # da la fin";
@@ -120,7 +135,8 @@ Blockly.Msg.LISTS_GET_SUBLIST_TOOLTIP = "A crea na còpia dël tòch ëspessific
 Blockly.Msg.LISTS_INDEX_OF_FIRST = "trové la prima ocorensa dl'element";
 Blockly.Msg.LISTS_INDEX_OF_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#Getting_Items_from_a_List";  // untranslated
 Blockly.Msg.LISTS_INDEX_OF_LAST = "trové l'ùltima ocorensa dl'element";
-Blockly.Msg.LISTS_INDEX_OF_TOOLTIP = "A smon l'ìndes ëd la prima/ùltima ocorensa dl'element ant la lista. A smon 0 se ël test a l'é nen trovà.";
+Blockly.Msg.LISTS_INDEX_OF_TOOLTIP =
+    "A smon l'ìndes ëd la prima/ùltima ocorensa dl'element ant la lista. A smon 0 se ël test a l'é nen trovà.";
 Blockly.Msg.LISTS_INLIST = "ant la lista";
 Blockly.Msg.LISTS_IS_EMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#is_empty";  // untranslated
 Blockly.Msg.LISTS_IS_EMPTY_TITLE = "%1 a l'é veuid";
@@ -135,13 +151,17 @@ Blockly.Msg.LISTS_SET_INDEX_INPUT_TO = "tanme";
 Blockly.Msg.LISTS_SET_INDEX_INSERT = "anserì an";
 Blockly.Msg.LISTS_SET_INDEX_SET = "buté";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FIRST = "A anseriss l'element al prinsipi ëd na lista.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END = "A anseriss l'element a la posission ëspessificà an na lista. #1 a l'é l'ùltim element.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START = "A anseriss l'element a la posission ëspessificà an na lista. #1 a l'é ël prim element.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END =
+    "A anseriss l'element a la posission ëspessificà an na lista. #1 a l'é l'ùltim element.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START =
+    "A anseriss l'element a la posission ëspessificà an na lista. #1 a l'é ël prim element.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_LAST = "Gionté l'element a la fin ëd na lista.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_RANDOM = "A anseriss l'element a l'ancàpit an na lista.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FIRST = "A fissa ël prim element an na lista.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END = "A fissa l'element a la posission ëspessificà an na lista. #1 a l'é l'ùltim element.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START = "A fissa l'element a la posission ëspessificà an na lista. #1 a l'é ël prim element.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END =
+    "A fissa l'element a la posission ëspessificà an na lista. #1 a l'é l'ùltim element.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START =
+    "A fissa l'element a la posission ëspessificà an na lista. #1 a l'é ël prim element.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_LAST = "A fissa l'ùltim element an na lista.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_RANDOM = "A fissa n'element a l'ancàpit an na lista.";
 Blockly.Msg.LISTS_TOOLTIP = "A smon ver se la lista a l'é veuida.";
@@ -158,7 +178,8 @@ Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LTE = "Rësponde ver si la prima imission a l'
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_NEQ = "Rësponde ver si le doe imission a son nen uguaj.";
 Blockly.Msg.LOGIC_NEGATE_HELPURL = "https://code.google.com/p/blockly/wiki/Not";  // untranslated
 Blockly.Msg.LOGIC_NEGATE_TITLE = "nen %1";
-Blockly.Msg.LOGIC_NEGATE_TOOLTIP = "A rëspond ver se l'imission a l'é fàussa. A rëspond fàuss se l'imission a l'é vera.";
+Blockly.Msg.LOGIC_NEGATE_TOOLTIP =
+    "A rëspond ver se l'imission a l'é fàussa. A rëspond fàuss se l'imission a l'é vera.";
 Blockly.Msg.LOGIC_NULL = "gnente";
 Blockly.Msg.LOGIC_NULL_HELPURL = "https://en.wikipedia.org/wiki/Nullable_type";  // untranslated
 Blockly.Msg.LOGIC_NULL_TOOLTIP = "A rëspond gnente.";
@@ -171,7 +192,8 @@ Blockly.Msg.LOGIC_TERNARY_CONDITION = "preuva";
 Blockly.Msg.LOGIC_TERNARY_HELPURL = "https://en.wikipedia.org/wiki/%3F:";  // untranslated
 Blockly.Msg.LOGIC_TERNARY_IF_FALSE = "se fàuss";
 Blockly.Msg.LOGIC_TERNARY_IF_TRUE = "se ver";
-Blockly.Msg.LOGIC_TERNARY_TOOLTIP = "Controlé la condission an 'preuva'. Se la condission a l'é vera, a rëspond con ël valor 'se ver'; dësnò a rëspond con ël valor 'se fàuss'.";
+Blockly.Msg.LOGIC_TERNARY_TOOLTIP =
+    "Controlé la condission an 'preuva'. Se la condission a l'é vera, a rëspond con ël valor 'se ver'; dësnò a rëspond con ël valor 'se fàuss'.";
 Blockly.Msg.MATH_ADDITION_SYMBOL = "+";  // untranslated
 Blockly.Msg.MATH_ARITHMETIC_HELPURL = "https://en.wikipedia.org/wiki/Arithmetic";
 Blockly.Msg.MATH_ARITHMETIC_TOOLTIP_ADD = "A smon la soma ëd doi nùmer.";
@@ -184,7 +206,8 @@ Blockly.Msg.MATH_CHANGE_INPUT_BY = "për";
 Blockly.Msg.MATH_CHANGE_TITLE_CHANGE = "ancrementé";
 Blockly.Msg.MATH_CHANGE_TOOLTIP = "Gionté un nùmer a la variàbil '%1'.";
 Blockly.Msg.MATH_CONSTANT_HELPURL = "https://en.wikipedia.org/wiki/Mathematical_constant";
-Blockly.Msg.MATH_CONSTANT_TOOLTIP = "A smon un-a dle costante comun-e π (3.141…), e (2.718…), φ (1.618…), sqrt(2) (1.414…), sqrt(½) (0.707…) o ∞ (infinì).";
+Blockly.Msg.MATH_CONSTANT_TOOLTIP =
+    "A smon un-a dle costante comun-e π (3.141…), e (2.718…), φ (1.618…), sqrt(2) (1.414…), sqrt(½) (0.707…) o ∞ (infinì).";
 Blockly.Msg.MATH_CONSTRAIN_HELPURL = "https://en.wikipedia.org/wiki/Clamping_%28graphics%29";  // untranslated
 Blockly.Msg.MATH_CONSTRAIN_TITLE = "limité %1 antra %2 e %3";
 Blockly.Msg.MATH_CONSTRAIN_TOOLTIP = "Limité un nùmer a esse antra le limitassion ëspessificà (comprèise).";
@@ -195,7 +218,8 @@ Blockly.Msg.MATH_IS_NEGATIVE = "a l'é negativ";
 Blockly.Msg.MATH_IS_ODD = "a l'é dëscobi";
 Blockly.Msg.MATH_IS_POSITIVE = "a l'é positiv";
 Blockly.Msg.MATH_IS_PRIME = "a l'é prim";
-Blockly.Msg.MATH_IS_TOOLTIP = "A contròla si un nùmer a l'é cobi, dëscobi, prim, antreghm positiv, negativ, o s'a l'é divisìbil për un nùmer dàit. A rëspond ver o fàuss.";
+Blockly.Msg.MATH_IS_TOOLTIP =
+    "A contròla si un nùmer a l'é cobi, dëscobi, prim, antreghm positiv, negativ, o s'a l'é divisìbil për un nùmer dàit. A rëspond ver o fàuss.";
 Blockly.Msg.MATH_IS_WHOLE = "a l'é antregh";
 Blockly.Msg.MATH_MODULO_HELPURL = "https://en.wikipedia.org/wiki/Modulo_operation";
 Blockly.Msg.MATH_MODULO_TITLE = "resta ëd %1:%2";
@@ -322,7 +346,8 @@ Blockly.Msg.TEXT_INDEXOF_INPUT_INTEXT = "ant ël test";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_FIRST = "trové la prima ocorensa dël test";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_LAST = "trové l'ùltima ocorensa dël test";
 Blockly.Msg.TEXT_INDEXOF_TAIL = "";  // untranslated
-Blockly.Msg.TEXT_INDEXOF_TOOLTIP = "A smon l'ìndes dla prima/ùltima ocorensa dël prim test ant ël second test. A smon 0 se ël test a l'é nen trovà.";
+Blockly.Msg.TEXT_INDEXOF_TOOLTIP =
+    "A smon l'ìndes dla prima/ùltima ocorensa dël prim test ant ël second test. A smon 0 se ël test a l'é nen trovà.";
 Blockly.Msg.TEXT_ISEMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Text#Checking_for_empty_text";  // untranslated
 Blockly.Msg.TEXT_ISEMPTY_TITLE = "%1 a l'é veuid";
 Blockly.Msg.TEXT_ISEMPTY_TOOLTIP = "A smon ver se ël test fornì a l'é veuid.";

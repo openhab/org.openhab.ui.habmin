@@ -28,7 +28,8 @@ Blockly.Msg.COLOUR_RGB_GREEN = "yaşıl";
 Blockly.Msg.COLOUR_RGB_HELPURL = "http://www.december.com/html/spec/colorper.html";
 Blockly.Msg.COLOUR_RGB_RED = "qırmızı";
 Blockly.Msg.COLOUR_RGB_TITLE = "rəngin komponentləri:";
-Blockly.Msg.COLOUR_RGB_TOOLTIP = "Qırmızı, yaşıl və mavinin göstərilən miqdarı ilə bir rəng düzəlt. Bütün qiymətlər 0 ilə 100 arasında olmalıdır.";
+Blockly.Msg.COLOUR_RGB_TOOLTIP =
+    "Qırmızı, yaşıl və mavinin göstərilən miqdarı ilə bir rəng düzəlt. Bütün qiymətlər 0 ilə 100 arasında olmalıdır.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#Loop_Termination_Blocks";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_BREAK = "dövrdən çıx";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_CONTINUE = "dövrün növbəti addımından davam et";
@@ -39,22 +40,28 @@ Blockly.Msg.CONTROLS_FOREACH_HELPURL = "https://code.google.com/p/blockly/wiki/L
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST = "siyahıda";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST_TAIL = "";  // untranslated
 Blockly.Msg.CONTROLS_FOREACH_INPUT_ITEM = "hər element üçün";
-Blockly.Msg.CONTROLS_FOREACH_TOOLTIP = "Siyahıdakı hər element üçün \"%1\" dəyişənini elementə mənimsət və bundan sonra bəzi əmrləri yerinə yetir.";
+Blockly.Msg.CONTROLS_FOREACH_TOOLTIP =
+    "Siyahıdakı hər element üçün \"%1\" dəyişənini elementə mənimsət və bundan sonra bəzi əmrləri yerinə yetir.";
 Blockly.Msg.CONTROLS_FOR_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#count_with";
 Blockly.Msg.CONTROLS_FOR_INPUT_FROM_TO_BY = "%1 ilə başlayıb, %2 qiymətinə kimi %3 qədər dəyiş";
 Blockly.Msg.CONTROLS_FOR_INPUT_WITH = "say:";
-Blockly.Msg.CONTROLS_FOR_TOOLTIP = "%1 dəyişəni başlanğıc ədəddən son ədədə qədər göstərilən aralıqla qiymətlər aldıqca göstərilən blokları yerinə yetir.";
+Blockly.Msg.CONTROLS_FOR_TOOLTIP =
+    "%1 dəyişəni başlanğıc ədəddən son ədədə qədər göstərilən aralıqla qiymətlər aldıqca göstərilən blokları yerinə yetir.";
 Blockly.Msg.CONTROLS_IF_ELSEIF_TOOLTIP = "\"Əgər\" blokuna bir şərt əlavə et.";
 Blockly.Msg.CONTROLS_IF_ELSE_TOOLTIP = "\"Əgər\" blokuna qalan bütün halları əhatə edəb son bir şərt əlavə et.";
 Blockly.Msg.CONTROLS_IF_HELPURL = "http://code.google.com/p/blockly/wiki/If_Then";
-Blockly.Msg.CONTROLS_IF_IF_TOOLTIP = "Bu \"əgər\" blokunu dəyişdirmək üçün bölümlərin yenisini əlavə et, sil və ya yerini dəyiş.";
+Blockly.Msg.CONTROLS_IF_IF_TOOLTIP =
+    "Bu \"əgər\" blokunu dəyişdirmək üçün bölümlərin yenisini əlavə et, sil və ya yerini dəyiş.";
 Blockly.Msg.CONTROLS_IF_MSG_ELSE = "əks halda";
 Blockly.Msg.CONTROLS_IF_MSG_ELSEIF = "əks halda əgər";
 Blockly.Msg.CONTROLS_IF_MSG_IF = "əgər";
 Blockly.Msg.CONTROLS_IF_TOOLTIP_1 = "Əgər qiymət doğrudursa, onda bəzi əmrləri yerinə yetir.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_2 = "Əgər qiymət doğrudursa, onda birinci əmrlər blokunu yerinə yetir. Əks halda isə ikinci əmrlər blokunu yerinə yetir.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_3 = "Əgər birinci qiymət doğrudursa, onda birinci əmrlər blokunu yerinə yetir. Əks halda əgər ikinci qiymət doğrudursa, onda ikinci əmrlər blokunu yerinə yetir.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_4 = "Əgər birinci qiymət doğrudursa, onda birinci əmrlər blokunu yerinə yetir. Əks halda əgər ikinci qiymət doğrudursa, onda ikinci əmrlər blokunu yerinə yetir. Əgər qiymətlərdən heç biri doğru deyilsə, onda axırıncı əmrlər blokunu yerinə yetir.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_2 =
+    "Əgər qiymət doğrudursa, onda birinci əmrlər blokunu yerinə yetir. Əks halda isə ikinci əmrlər blokunu yerinə yetir.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_3 =
+    "Əgər birinci qiymət doğrudursa, onda birinci əmrlər blokunu yerinə yetir. Əks halda əgər ikinci qiymət doğrudursa, onda ikinci əmrlər blokunu yerinə yetir.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_4 =
+    "Əgər birinci qiymət doğrudursa, onda birinci əmrlər blokunu yerinə yetir. Əks halda əgər ikinci qiymət doğrudursa, onda ikinci əmrlər blokunu yerinə yetir. Əgər qiymətlərdən heç biri doğru deyilsə, onda axırıncı əmrlər blokunu yerinə yetir.";
 Blockly.Msg.CONTROLS_REPEAT_HELPURL = "https://en.wikipedia.org/wiki/For_loop";  // untranslated
 Blockly.Msg.CONTROLS_REPEAT_INPUT_DO = "icra et";
 Blockly.Msg.CONTROLS_REPEAT_TITLE = "%1 dəfə təkrar et";
@@ -80,7 +87,8 @@ Blockly.Msg.LISTS_CREATE_EMPTY_HELPURL = "https://en.wikipedia.org/wiki/Linked_l
 Blockly.Msg.LISTS_CREATE_EMPTY_TITLE = "boş siyahı düzəlt";
 Blockly.Msg.LISTS_CREATE_EMPTY_TOOLTIP = "Heç bir verilən qeyd olunmamış, uzunluğu 0 olan bir siyahı verir";
 Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TITLE_ADD = "siyahı";
-Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TOOLTIP = "Bu siyahı blokunu yenidən konfigurasiya etmək üçün bölmələri əlavə edin, silin və ya yerlərini dəyişin.";
+Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TOOLTIP =
+    "Bu siyahı blokunu yenidən konfigurasiya etmək üçün bölmələri əlavə edin, silin və ya yerlərini dəyişin.";
 Blockly.Msg.LISTS_CREATE_WITH_INPUT_WITH = "bunlardan siyahı düzəlt";
 Blockly.Msg.LISTS_CREATE_WITH_ITEM_TOOLTIP = "Siyahıya element əlavə edin.";
 Blockly.Msg.LISTS_CREATE_WITH_TOOLTIP = "İstənilən ölçülü siyahı yaradın.";
@@ -94,18 +102,24 @@ Blockly.Msg.LISTS_GET_INDEX_RANDOM = "təsadüfi";
 Blockly.Msg.LISTS_GET_INDEX_REMOVE = "yığışdır";
 Blockly.Msg.LISTS_GET_INDEX_TAIL = "";  // untranslated
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FIRST = "Siyahının ilk elementini qaytarır.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_END = "Siyahıdan təyin olunmuş indeksli elementi qaytarır. #1 son elementdir.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START = "Siyahıdan təyin olunmuş indeksli elementi qaytarır. #1 ilk elementdir.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_END =
+    "Siyahıdan təyin olunmuş indeksli elementi qaytarır. #1 son elementdir.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START =
+    "Siyahıdan təyin olunmuş indeksli elementi qaytarır. #1 ilk elementdir.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_LAST = "Siyahının son elementini qaytarır.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_RANDOM = "Siyahıdan hər hansı təsadüfi elementi qaytarır.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FIRST = "Siyahıdan ilk elementi silir və qaytarır.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END = "Siyahıdan təyin olunmuş indeksli elementi silir və qaytarır. #1 son elementdir.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START = "Siyahıdan təyin olunmuş indeksli elementi silir və qaytarır. #1 ilk elementdir.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END =
+    "Siyahıdan təyin olunmuş indeksli elementi silir və qaytarır. #1 son elementdir.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START =
+    "Siyahıdan təyin olunmuş indeksli elementi silir və qaytarır. #1 ilk elementdir.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_LAST = "Siyahıdan son elementi silir və qaytarır.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_RANDOM = "Siyahıdan təsadufi elementi silir və qaytarır.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FIRST = "Siyahıdan ilk elementi silir.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END = "Siyahıdan təyin olunmuş indeksli elementi silir. #1 son elementdir.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START = "Siyahıdan təyin olunmuş indeksli elementi silir. #1 ilk elementdir.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END =
+    "Siyahıdan təyin olunmuş indeksli elementi silir. #1 son elementdir.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START =
+    "Siyahıdan təyin olunmuş indeksli elementi silir. #1 ilk elementdir.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_LAST = "Siyahıdan son elementi silir.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_RANDOM = "Siyahıdan təsadüfi bir elementi silir.";
 Blockly.Msg.LISTS_GET_SUBLIST_END_FROM_END = "sondan # nömrəliyə";
@@ -120,7 +134,8 @@ Blockly.Msg.LISTS_GET_SUBLIST_TOOLTIP = "Siyahının təyin olunmuş hissəsinin
 Blockly.Msg.LISTS_INDEX_OF_FIRST = "Element ilə ilk rastlaşma indeksini müəyyən edin";
 Blockly.Msg.LISTS_INDEX_OF_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#Getting_Items_from_a_List";
 Blockly.Msg.LISTS_INDEX_OF_LAST = "Element ilə son rastlaşma indeksini müəyyən edin";
-Blockly.Msg.LISTS_INDEX_OF_TOOLTIP = "Siyahıda element ilə ilk/son rastlaşma indeksini qaytarır. Əgər tekst siyahıda tapılmazsa, 0 qaytarılır.";
+Blockly.Msg.LISTS_INDEX_OF_TOOLTIP =
+    "Siyahıda element ilə ilk/son rastlaşma indeksini qaytarır. Əgər tekst siyahıda tapılmazsa, 0 qaytarılır.";
 Blockly.Msg.LISTS_INLIST = "siyahıda";
 Blockly.Msg.LISTS_IS_EMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#is_empty";
 Blockly.Msg.LISTS_IS_EMPTY_TITLE = "%1 boşdur";
@@ -129,19 +144,24 @@ Blockly.Msg.LISTS_LENGTH_TITLE = "%1 siyahısının uzunluğu";
 Blockly.Msg.LISTS_LENGTH_TOOLTIP = "Siyahının uzunluğunu verir.";
 Blockly.Msg.LISTS_REPEAT_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#create_list_with";
 Blockly.Msg.LISTS_REPEAT_TITLE = "%1 elementinin %2 dəfə təkrarlandığı siyahı düzəlt";
-Blockly.Msg.LISTS_REPEAT_TOOLTIP = "Təyin olunmuş elementin/qiymətin təyin olunmuş sayda təkrarlandığı siyahını yaradır.";
+Blockly.Msg.LISTS_REPEAT_TOOLTIP =
+    "Təyin olunmuş elementin/qiymətin təyin olunmuş sayda təkrarlandığı siyahını yaradır.";
 Blockly.Msg.LISTS_SET_INDEX_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#in_list_..._set";
 Blockly.Msg.LISTS_SET_INDEX_INPUT_TO = "Kimi";
 Blockly.Msg.LISTS_SET_INDEX_INSERT = "daxil et";
 Blockly.Msg.LISTS_SET_INDEX_SET = "təyin et";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FIRST = "Elementi siyahının əvvəlinə daxil edir.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END = "Elementi siyahıda göstərilən yerə daxil edir. #1 axırıncı elementdir.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START = "Elementi siyahıda göstərilən yerə daxil edir. #1 birinci elementdir.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END =
+    "Elementi siyahıda göstərilən yerə daxil edir. #1 axırıncı elementdir.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START =
+    "Elementi siyahıda göstərilən yerə daxil edir. #1 birinci elementdir.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_LAST = "Elementi siyahının sonuna artırır.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_RANDOM = "Elementi siyahıda təsadüfi seçilmiş bir yerə atır.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FIRST = "Siyahıda birinci elementi təyin edir.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END = "Siyahının göstərilən yerdəki elementini təyin edir. #1 axırıncı elementdir.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START = "Siyahının göstərilən yerdəki elementini təyin edir. #1 birinci elementdir.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END =
+    "Siyahının göstərilən yerdəki elementini təyin edir. #1 axırıncı elementdir.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START =
+    "Siyahının göstərilən yerdəki elementini təyin edir. #1 birinci elementdir.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_LAST = "Siyahının sonuncu elementini təyin edir.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_RANDOM = "Siyahının təsadüfi seçilmiş bir elementini təyin edir.";
 Blockly.Msg.LISTS_TOOLTIP = "Siyahı boşdursa \"doğru\" cavabını qaytarır.";
@@ -152,13 +172,16 @@ Blockly.Msg.LOGIC_BOOLEAN_TRUE = "doğru";
 Blockly.Msg.LOGIC_COMPARE_HELPURL = "https://en.wikipedia.org/wiki/Inequality_(mathematics)";  // untranslated
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_EQ = "Girişlər bir birinə bərabərdirsə \"doğru\" cavabını qaytarır.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GT = "Birinci giriş ikincidən böyükdürsə \"doğru\" cavabını qaytarır.";
-Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GTE = "Birinci giriş ikincidən böyük və ya bərarbərdirsə \"doğru\" cavabını qaytarır.";
+Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GTE =
+    "Birinci giriş ikincidən böyük və ya bərarbərdirsə \"doğru\" cavabını qaytarır.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LT = "Birinci giriş ikincidən kiçikdirsə \"doğru\" cavabını qaytarır.";
-Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LTE = "Birinci giriş ikincidən kiçik və ya bərarbərdirsə \"doğru\" cavabını qaytarır.";
+Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LTE =
+    "Birinci giriş ikincidən kiçik və ya bərarbərdirsə \"doğru\" cavabını qaytarır.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_NEQ = "Girişlər bərabər deyillərsə \"doğru\" cavabını qaytarır.";
 Blockly.Msg.LOGIC_NEGATE_HELPURL = "http://code.google.com/p/blockly/wiki/Not";
 Blockly.Msg.LOGIC_NEGATE_TITLE = "%1 deyil";
-Blockly.Msg.LOGIC_NEGATE_TOOLTIP = "Giriş \"yalan\"-dursa \"doğru\" cavabını qaytarır. Giriş \"doğru\"-dursa \"yalan\" cavabını qaytarır.";
+Blockly.Msg.LOGIC_NEGATE_TOOLTIP =
+    "Giriş \"yalan\"-dursa \"doğru\" cavabını qaytarır. Giriş \"doğru\"-dursa \"yalan\" cavabını qaytarır.";
 Blockly.Msg.LOGIC_NULL = "boş";
 Blockly.Msg.LOGIC_NULL_HELPURL = "https://en.wikipedia.org/wiki/Nullable_type";  // untranslated
 Blockly.Msg.LOGIC_NULL_TOOLTIP = "Boş cavab qaytarır.";
@@ -171,7 +194,8 @@ Blockly.Msg.LOGIC_TERNARY_CONDITION = "test";
 Blockly.Msg.LOGIC_TERNARY_HELPURL = "https://en.wikipedia.org/wiki/%3F:";  // untranslated
 Blockly.Msg.LOGIC_TERNARY_IF_FALSE = "əgər yalandırsa";
 Blockly.Msg.LOGIC_TERNARY_IF_TRUE = "əgər doğrudursa";
-Blockly.Msg.LOGIC_TERNARY_TOOLTIP = "'Yoxla' əmrindəki şərtə nəzər yetirin. Əgər şərt \"doğru\"-dursa \"əgər doğru\", əks halda isə \"əgər yalan\" cavabını qaytarır.";
+Blockly.Msg.LOGIC_TERNARY_TOOLTIP =
+    "'Yoxla' əmrindəki şərtə nəzər yetirin. Əgər şərt \"doğru\"-dursa \"əgər doğru\", əks halda isə \"əgər yalan\" cavabını qaytarır.";
 Blockly.Msg.MATH_ADDITION_SYMBOL = "+";
 Blockly.Msg.MATH_ARITHMETIC_HELPURL = "https://az.wikipedia.org/wiki/Hesab";
 Blockly.Msg.MATH_ARITHMETIC_TOOLTIP_ADD = "İki ədədin cəmini qaytarır.";
@@ -184,10 +208,12 @@ Blockly.Msg.MATH_CHANGE_INPUT_BY = "buna:";
 Blockly.Msg.MATH_CHANGE_TITLE_CHANGE = "dəyiş:";
 Blockly.Msg.MATH_CHANGE_TOOLTIP = "'%1' dəyişəninin üzərinə bir ədəd artır.";
 Blockly.Msg.MATH_CONSTANT_HELPURL = "https://en.wikipedia.org/wiki/Mathematical_constant";  // untranslated
-Blockly.Msg.MATH_CONSTANT_TOOLTIP = "Ümumi sabitlərdən birini qaytarır π (3.141…), e (2.718…), φ (1.618…), sqrt(2) (1.414…), sqrt(½) (0.707…), və ya ∞ (sonsuzluq).";
+Blockly.Msg.MATH_CONSTANT_TOOLTIP =
+    "Ümumi sabitlərdən birini qaytarır π (3.141…), e (2.718…), φ (1.618…), sqrt(2) (1.414…), sqrt(½) (0.707…), və ya ∞ (sonsuzluq).";
 Blockly.Msg.MATH_CONSTRAIN_HELPURL = "https://en.wikipedia.org/wiki/Clamping_%28graphics%29";  // untranslated
 Blockly.Msg.MATH_CONSTRAIN_TITLE = "%1 üçün ən aşağı %2, ən yuxarı %3 olmağı tələb et";
-Blockly.Msg.MATH_CONSTRAIN_TOOLTIP = "Bir ədədin verilmiş iki ədəd arasında olmasını tələb edir (sərhədlər də daxil olmaqla).";
+Blockly.Msg.MATH_CONSTRAIN_TOOLTIP =
+    "Bir ədədin verilmiş iki ədəd arasında olmasını tələb edir (sərhədlər də daxil olmaqla).";
 Blockly.Msg.MATH_DIVISION_SYMBOL = "÷";
 Blockly.Msg.MATH_IS_DIVISIBLE_BY = "bölünür";
 Blockly.Msg.MATH_IS_EVEN = "cütdür";
@@ -195,7 +221,8 @@ Blockly.Msg.MATH_IS_NEGATIVE = "mənfidir";
 Blockly.Msg.MATH_IS_ODD = "təkdir";
 Blockly.Msg.MATH_IS_POSITIVE = "müsətdir";
 Blockly.Msg.MATH_IS_PRIME = "sadədir";
-Blockly.Msg.MATH_IS_TOOLTIP = "Bir ədədin cüt, tək, sadə, tam, müsbət, mənfi olmasını və ya müəyyən bir ədədə bölünməsini yoxlayır. \"Doğru\" və ya \"yalan\" qiymətini qaytarır.";
+Blockly.Msg.MATH_IS_TOOLTIP =
+    "Bir ədədin cüt, tək, sadə, tam, müsbət, mənfi olmasını və ya müəyyən bir ədədə bölünməsini yoxlayır. \"Doğru\" və ya \"yalan\" qiymətini qaytarır.";
 Blockly.Msg.MATH_IS_WHOLE = "tamdır";
 Blockly.Msg.MATH_MODULO_HELPURL = "https://en.wikipedia.org/wiki/Modulo_operation";  // untranslated
 Blockly.Msg.MATH_MODULO_TITLE = "%1 ÷ %2 bölməsinin qalığı";
@@ -223,10 +250,12 @@ Blockly.Msg.MATH_ONLIST_TOOLTIP_SUM = "Siyahıdakı bütün ədədlərin cəmini
 Blockly.Msg.MATH_POWER_SYMBOL = "^";
 Blockly.Msg.MATH_RANDOM_FLOAT_HELPURL = "https://en.wikipedia.org/wiki/Random_number_generation";  // untranslated
 Blockly.Msg.MATH_RANDOM_FLOAT_TITLE_RANDOM = "təsadüfi kəsr";
-Blockly.Msg.MATH_RANDOM_FLOAT_TOOLTIP = "0.0 (daxil olmaqla) və 1.0 (daxil olmamaqla) ədədlərinin arasından təsadüfi bir kəsr ədəd qaytarır.";
+Blockly.Msg.MATH_RANDOM_FLOAT_TOOLTIP =
+    "0.0 (daxil olmaqla) və 1.0 (daxil olmamaqla) ədədlərinin arasından təsadüfi bir kəsr ədəd qaytarır.";
 Blockly.Msg.MATH_RANDOM_INT_HELPURL = "https://en.wikipedia.org/wiki/Random_number_generation";  // untranslated
 Blockly.Msg.MATH_RANDOM_INT_TITLE = "%1 ilə %2 arasından təsadüfi tam ədəd";
-Blockly.Msg.MATH_RANDOM_INT_TOOLTIP = "Verilmiş iki ədəd arasından (ədədrlər də daxil olmaqla) təsadüfi bir tam ədəd qaytarır.";
+Blockly.Msg.MATH_RANDOM_INT_TOOLTIP =
+    "Verilmiş iki ədəd arasından (ədədrlər də daxil olmaqla) təsadüfi bir tam ədəd qaytarır.";
 Blockly.Msg.MATH_ROUND_HELPURL = "https://en.wikipedia.org/wiki/Rounding";  // untranslated
 Blockly.Msg.MATH_ROUND_OPERATOR_ROUND = "yuvarlaqlaşdır";
 Blockly.Msg.MATH_ROUND_OPERATOR_ROUNDDOWN = "aşağı yuvarlaqlaşdır";
@@ -278,7 +307,8 @@ Blockly.Msg.PROCEDURES_DEFRETURN_TOOLTIP = "Nəticəsi olan funksiya yaradır.";
 Blockly.Msg.PROCEDURES_DEF_DUPLICATE_WARNING = "Xəbərdarlıq: Bu funksiyanın təkrar olunmuş parametrləri var.";
 Blockly.Msg.PROCEDURES_HIGHLIGHT_DEF = "Funksiyanın təyinatını vurğula";
 Blockly.Msg.PROCEDURES_IFRETURN_TOOLTIP = "Əgər bir dəyər \"doğru\"-dursa onda ikinci dəyəri qaytar.";
-Blockly.Msg.PROCEDURES_IFRETURN_WARNING = "Xəbərdarlıq: Bu blok ancaq bir funksiyanın təyinatı daxilində işlədilə bilər.";
+Blockly.Msg.PROCEDURES_IFRETURN_WARNING =
+    "Xəbərdarlıq: Bu blok ancaq bir funksiyanın təyinatı daxilində işlədilə bilər.";
 Blockly.Msg.PROCEDURES_MUTATORARG_TITLE = "Giriş adı:";
 Blockly.Msg.PROCEDURES_MUTATORARG_TOOLTIP = "Add an input to the function.";  // untranslated
 Blockly.Msg.PROCEDURES_MUTATORCONTAINER_TITLE = "girişlər";
@@ -306,7 +336,8 @@ Blockly.Msg.TEXT_CHARAT_TAIL = "";  // untranslated
 Blockly.Msg.TEXT_CHARAT_TOOLTIP = "Göstərilən mövqedəki hərfi qaytarır.";
 Blockly.Msg.TEXT_CREATE_JOIN_ITEM_TOOLTIP = "Mətnə bir element əlavə et.";
 Blockly.Msg.TEXT_CREATE_JOIN_TITLE_JOIN = "birləşdir";
-Blockly.Msg.TEXT_CREATE_JOIN_TOOLTIP = "Bu mətn blokunu yenidən konfigurasiya etmək üçün bölmələri əlavə edin, silin və ya yerlərini dəyişin.";
+Blockly.Msg.TEXT_CREATE_JOIN_TOOLTIP =
+    "Bu mətn blokunu yenidən konfigurasiya etmək üçün bölmələri əlavə edin, silin və ya yerlərini dəyişin.";
 Blockly.Msg.TEXT_GET_SUBSTRING_END_FROM_END = "axırdan bu nömrəli hərfə qədər";
 Blockly.Msg.TEXT_GET_SUBSTRING_END_FROM_START = "bu nömrəli hərfə qədər";
 Blockly.Msg.TEXT_GET_SUBSTRING_END_LAST = "son hərfə qədər";
@@ -322,7 +353,8 @@ Blockly.Msg.TEXT_INDEXOF_INPUT_INTEXT = "mətndə";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_FIRST = "Bu mətn ilə ilk rastlaşmanı tap:";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_LAST = "Bu mətn ilə son rastlaşmanı tap:";
 Blockly.Msg.TEXT_INDEXOF_TAIL = "";  // untranslated
-Blockly.Msg.TEXT_INDEXOF_TOOLTIP = "Birinci mətnin ikinci mətndə ilk/son rastlaşma indeksini qaytarır. Əgər rastlaşma baş verməzsə, 0 qaytarır.";
+Blockly.Msg.TEXT_INDEXOF_TOOLTIP =
+    "Birinci mətnin ikinci mətndə ilk/son rastlaşma indeksini qaytarır. Əgər rastlaşma baş verməzsə, 0 qaytarır.";
 Blockly.Msg.TEXT_ISEMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Text#Checking_for_empty_text";
 Blockly.Msg.TEXT_ISEMPTY_TITLE = "%1 boşdur";
 Blockly.Msg.TEXT_ISEMPTY_TOOLTIP = "Verilmiş mətn boşdursa, doğru qiymətini qaytarır.";

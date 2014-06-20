@@ -54,7 +54,8 @@ Blockly.Msg.CONTROLS_IF_MSG_IF = "만약에";
 Blockly.Msg.CONTROLS_IF_TOOLTIP_1 = "조건식의 계산 결과가 참이면, 명령을 실행합니다.";
 Blockly.Msg.CONTROLS_IF_TOOLTIP_2 = "조건식의 계산 결과가 참이면, 첫번째 블럭의 명령을 실행하고, 그렇지 않으면 두번째 블럭의 명령을 실행합니다.";
 Blockly.Msg.CONTROLS_IF_TOOLTIP_3 = "첫번째 조건식의 계산 결과가 참이면, 첫번째 블럭의 명령을 실행하고, 두번째 조건식의 계산 결과가 참이면, 두번째 블럭의 명령을 실행합니다.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_4 = "첫번째 조건식의 계산 결과가 참이면, 첫번째 블럭의 명령을 실행하고, 두번째 조건식의 계산 결과가 참이면, 두번째 블럭의 명령을 실행하고, ... , 어떤 조건식의 계산 결과도 참이 아니면, 마지막 블럭의 명령을 실행합니다.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_4 =
+    "첫번째 조건식의 계산 결과가 참이면, 첫번째 블럭의 명령을 실행하고, 두번째 조건식의 계산 결과가 참이면, 두번째 블럭의 명령을 실행하고, ... , 어떤 조건식의 계산 결과도 참이 아니면, 마지막 블럭의 명령을 실행합니다.";
 Blockly.Msg.CONTROLS_REPEAT_HELPURL = "https://ko.wikipedia.org/wiki/For_루프";
 Blockly.Msg.CONTROLS_REPEAT_INPUT_DO = "하기";
 Blockly.Msg.CONTROLS_REPEAT_TITLE = "%1회 반복";
@@ -184,7 +185,8 @@ Blockly.Msg.MATH_CHANGE_INPUT_BY = "만큼";
 Blockly.Msg.MATH_CHANGE_TITLE_CHANGE = "바꾸기";
 Blockly.Msg.MATH_CHANGE_TOOLTIP = "변수 '%1' 에 저장되어있는 값에, 어떤 수를 더해, 변수에 다시 저장합니다.";
 Blockly.Msg.MATH_CONSTANT_HELPURL = "https://en.wikipedia.org/wiki/Mathematical_constant";
-Blockly.Msg.MATH_CONSTANT_TOOLTIP = "일반적인 상수 값들 중 하나를 돌려줍니다. : π (3.141…), e (2.718…), φ (1.618…), sqrt(2) (1.414…), sqrt(½) (0.707…), or ∞ (infinity).";
+Blockly.Msg.MATH_CONSTANT_TOOLTIP =
+    "일반적인 상수 값들 중 하나를 돌려줍니다. : π (3.141…), e (2.718…), φ (1.618…), sqrt(2) (1.414…), sqrt(½) (0.707…), or ∞ (infinity).";
 Blockly.Msg.MATH_CONSTRAIN_HELPURL = "https://en.wikipedia.org/wiki/Clamping_%28graphics%29";
 Blockly.Msg.MATH_CONSTRAIN_TITLE = "%1 의 값을, 최소 %2 최대 %3 으로 조정";
 Blockly.Msg.MATH_CONSTRAIN_TOOLTIP = "어떤 수를, 특정 범위의 값이 되도록 강제로 조정합니다.";
@@ -195,7 +197,8 @@ Blockly.Msg.MATH_IS_NEGATIVE = "가 음(-)수 이면";
 Blockly.Msg.MATH_IS_ODD = "가 홀수(odd) 이면";
 Blockly.Msg.MATH_IS_POSITIVE = "가 양(+)수 이면";
 Blockly.Msg.MATH_IS_PRIME = "가 소수(prime) 이면";
-Blockly.Msg.MATH_IS_TOOLTIP = "어떤 수가 짝 수, 홀 수, 소 수, 정 수, 양 수, 음 수, 나누어 떨어지는 수 인지 검사해 결과값을 돌려줍니다. 참(true) 또는 거짓(false) 값을 돌려줌.";
+Blockly.Msg.MATH_IS_TOOLTIP =
+    "어떤 수가 짝 수, 홀 수, 소 수, 정 수, 양 수, 음 수, 나누어 떨어지는 수 인지 검사해 결과값을 돌려줍니다. 참(true) 또는 거짓(false) 값을 돌려줌.";
 Blockly.Msg.MATH_IS_WHOLE = "가 정수이면";
 Blockly.Msg.MATH_MODULO_HELPURL = "https://en.wikipedia.org/wiki/Modulo_operation";
 Blockly.Msg.MATH_MODULO_TITLE = "%1 를 %2 로 나눈 나머지";

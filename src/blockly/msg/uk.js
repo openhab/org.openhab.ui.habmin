@@ -7,7 +7,8 @@ goog.provide('Blockly.Msg.uk');
 goog.require('Blockly.Msg');
 
 Blockly.Msg.ADD_COMMENT = "Додати коментар";
-Blockly.Msg.AUTH = "Будь ласка, авторизуйте цю програму, аби можна було зберігати вашу роботу і для надання можливості вам поширювати її.";
+Blockly.Msg.AUTH =
+    "Будь ласка, авторизуйте цю програму, аби можна було зберігати вашу роботу і для надання можливості вам поширювати її.";
 Blockly.Msg.CHANGE_VALUE_TITLE = "Змінити значення:";
 Blockly.Msg.CHAT = "Спілкуйтеся з вашими співавторами, набираючи у цьому полі!";
 Blockly.Msg.COLLAPSE_ALL = "Згорнути блоки";
@@ -28,33 +29,41 @@ Blockly.Msg.COLOUR_RGB_GREEN = "зелений";
 Blockly.Msg.COLOUR_RGB_HELPURL = "http://www.december.com/html/spec/colorper.html";
 Blockly.Msg.COLOUR_RGB_RED = "червоний";
 Blockly.Msg.COLOUR_RGB_TITLE = "колір з";
-Blockly.Msg.COLOUR_RGB_TOOLTIP = "Створити колір з указаного червоного, зеленого та синього.  Усі значення мають бути від 0 до 100.";
+Blockly.Msg.COLOUR_RGB_TOOLTIP =
+    "Створити колір з указаного червоного, зеленого та синього.  Усі значення мають бути від 0 до 100.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#Loop_Termination_Blocks";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_BREAK = "перервати цикл";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_CONTINUE = "продовжити з наступної ітерації циклу";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_BREAK = "Вирватися з циклічних оточень.";
-Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE = "Пропустити залишок цього циклу і перейти до виконання наступної ітерації.";
+Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE =
+    "Пропустити залишок цього циклу і перейти до виконання наступної ітерації.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_WARNING = "Попередження: цей блок може бути використаний тільки в межах циклу.";
 Blockly.Msg.CONTROLS_FOREACH_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#for_each for each block";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST = "у списку";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST_TAIL = "блок тексту";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_ITEM = "для кожного елемента";
-Blockly.Msg.CONTROLS_FOREACH_TOOLTIP = "Для кожного елемента в списку задайте змінну '%1' для елемента, а потім зробіть деякі заяви.";
+Blockly.Msg.CONTROLS_FOREACH_TOOLTIP =
+    "Для кожного елемента в списку задайте змінну '%1' для елемента, а потім зробіть деякі заяви.";
 Blockly.Msg.CONTROLS_FOR_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#count_with";
 Blockly.Msg.CONTROLS_FOR_INPUT_FROM_TO_BY = "від %1 до %2 через %3";
 Blockly.Msg.CONTROLS_FOR_INPUT_WITH = "рахувати з";
-Blockly.Msg.CONTROLS_FOR_TOOLTIP = "Наявна змінна %1 приймає значення від початкового значення до кінцевого значення, враховуючи заданий інтервал, і зробіть вказані блоки.";
+Blockly.Msg.CONTROLS_FOR_TOOLTIP =
+    "Наявна змінна %1 приймає значення від початкового значення до кінцевого значення, враховуючи заданий інтервал, і зробіть вказані блоки.";
 Blockly.Msg.CONTROLS_IF_ELSEIF_TOOLTIP = "Додати умову до якщо блокувати.";
 Blockly.Msg.CONTROLS_IF_ELSE_TOOLTIP = "Додати остаточну, всеосяжну умова до блоку якщо.";
 Blockly.Msg.CONTROLS_IF_HELPURL = "http://code.google.com/p/blockly/wiki/If_Then";
-Blockly.Msg.CONTROLS_IF_IF_TOOLTIP = "Додати, видалити або змінити порядок розділів переналаштувати це, якщо блокується.";
+Blockly.Msg.CONTROLS_IF_IF_TOOLTIP =
+    "Додати, видалити або змінити порядок розділів переналаштувати це, якщо блокується.";
 Blockly.Msg.CONTROLS_IF_MSG_ELSE = "інакше";
 Blockly.Msg.CONTROLS_IF_MSG_ELSEIF = "Інакше якщо";
 Blockly.Msg.CONTROLS_IF_MSG_IF = "якщо";
 Blockly.Msg.CONTROLS_IF_TOOLTIP_1 = "Якщо значення true, зробити деякі заяви.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_2 = "Якщо значення істина, то виконується перший блок операторів. В іншому випадку виконується другий блок операторів.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_3 = "Якщо перше значення істина, то виконується перший блок операторів. В іншому випадку, якщо друге значення істина, то виконується другий блок операторів.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_4 = "Якщо перше значення істина, то виконується перший блок операторів. В іншому випадку, якщо друге значення істина, то виконується другий блок операторів. Якщо жодне із значень не є істинним, то виконується останній блок операторів.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_2 =
+    "Якщо значення істина, то виконується перший блок операторів. В іншому випадку виконується другий блок операторів.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_3 =
+    "Якщо перше значення істина, то виконується перший блок операторів. В іншому випадку, якщо друге значення істина, то виконується другий блок операторів.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_4 =
+    "Якщо перше значення істина, то виконується перший блок операторів. В іншому випадку, якщо друге значення істина, то виконується другий блок операторів. Якщо жодне із значень не є істинним, то виконується останній блок операторів.";
 Blockly.Msg.CONTROLS_REPEAT_HELPURL = "http://en.Wikipedia.org/Wiki/For_loop";
 Blockly.Msg.CONTROLS_REPEAT_INPUT_DO = "зробити";
 Blockly.Msg.CONTROLS_REPEAT_TITLE = "повторити %1 разів";
@@ -80,7 +89,8 @@ Blockly.Msg.LISTS_CREATE_EMPTY_HELPURL = "https://uk.wikipedia.org/wiki/Зв%27�
 Blockly.Msg.LISTS_CREATE_EMPTY_TITLE = "створити порожній список";
 Blockly.Msg.LISTS_CREATE_EMPTY_TOOLTIP = "Повертає список, довжиною 0, що не містить записів даних";
 Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TITLE_ADD = "список";
-Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TOOLTIP = "Додати, видалити або змінити порядок розділів для переналаштування блокування списку.";
+Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TOOLTIP =
+    "Додати, видалити або змінити порядок розділів для переналаштування блокування списку.";
 Blockly.Msg.LISTS_CREATE_WITH_INPUT_WITH = "створює список з";
 Blockly.Msg.LISTS_CREATE_WITH_ITEM_TOOLTIP = "Додати елемент до списку.";
 Blockly.Msg.LISTS_CREATE_WITH_TOOLTIP = "Створює список з будь-якою кількістю елементів.";
@@ -94,18 +104,24 @@ Blockly.Msg.LISTS_GET_INDEX_RANDOM = "випадковий";
 Blockly.Msg.LISTS_GET_INDEX_REMOVE = "вилучити";
 Blockly.Msg.LISTS_GET_INDEX_TAIL = "-ий.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FIRST = "Повертає перший елемент у списку.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_END = "Повертає елемент у заданій позиції у списку. #1 - це останній пункт.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START = "Повертає елемент у заданій позицію у списку. #1 - це перший пункт.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_END =
+    "Повертає елемент у заданій позиції у списку. #1 - це останній пункт.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START =
+    "Повертає елемент у заданій позицію у списку. #1 - це перший пункт.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_LAST = "Повертає останній елемент списку.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_RANDOM = "Повертає випадковий елемент у списку.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FIRST = "Видаляє і повертає перший елемент у списку.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END = "Видаляє і повертає елемент у заданій позиції у списку. #1 - це останній пункт.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START = "Видаляє і повертає елемент у заданій позиції у списку. #1 - це перший пункт.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END =
+    "Видаляє і повертає елемент у заданій позиції у списку. #1 - це останній пункт.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START =
+    "Видаляє і повертає елемент у заданій позиції у списку. #1 - це перший пункт.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_LAST = "Видаляє і повертає останній елемент списку.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_RANDOM = "Видаляє і повертає випадковий елемент у список.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FIRST = "Видаляє перший елемент у списку.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END = "Вилучає елемент у вказаній позиції списку. #1 - це останній пункт.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START = "Вилучає елемент у вказаній позиції списку. #1 - це перший пункт.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END =
+    "Вилучає елемент у вказаній позиції списку. #1 - це останній пункт.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START =
+    "Вилучає елемент у вказаній позиції списку. #1 - це перший пункт.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_LAST = "Видаляє останній елемент списку.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_RANDOM = "Видаляє випадковий елемент у списку.";
 Blockly.Msg.LISTS_GET_SUBLIST_END_FROM_END = "до # з кінця";
@@ -120,7 +136,8 @@ Blockly.Msg.LISTS_GET_SUBLIST_TOOLTIP = "Створює копію вказан�
 Blockly.Msg.LISTS_INDEX_OF_FIRST = "знайти перше входження елемента";
 Blockly.Msg.LISTS_INDEX_OF_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#Getting_Items_from_a_List";
 Blockly.Msg.LISTS_INDEX_OF_LAST = "знайти останнє входження елемента";
-Blockly.Msg.LISTS_INDEX_OF_TOOLTIP = "Повертає індекс першого/останнього входження першого елементу у списку. Повертає 0, якщо текст не знайдений.";
+Blockly.Msg.LISTS_INDEX_OF_TOOLTIP =
+    "Повертає індекс першого/останнього входження першого елементу у списку. Повертає 0, якщо текст не знайдений.";
 Blockly.Msg.LISTS_INLIST = "у списку";
 Blockly.Msg.LISTS_IS_EMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#is_empty";
 Blockly.Msg.LISTS_IS_EMPTY_TITLE = "%1 є порожнім";
@@ -129,14 +146,17 @@ Blockly.Msg.LISTS_LENGTH_TITLE = "довжина %1";
 Blockly.Msg.LISTS_LENGTH_TOOLTIP = "Повертає довжину списку.";
 Blockly.Msg.LISTS_REPEAT_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#create_list_with";
 Blockly.Msg.LISTS_REPEAT_TITLE = "створити список з елемента %1 повтореного %2 разів";
-Blockly.Msg.LISTS_REPEAT_TOOLTIP = "Створює список, що складається з заданого значення повтореного певну кількість разів.";
+Blockly.Msg.LISTS_REPEAT_TOOLTIP =
+    "Створює список, що складається з заданого значення повтореного певну кількість разів.";
 Blockly.Msg.LISTS_SET_INDEX_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#in_list_..._set";
 Blockly.Msg.LISTS_SET_INDEX_INPUT_TO = "як";
 Blockly.Msg.LISTS_SET_INDEX_INSERT = "вставити в";
 Blockly.Msg.LISTS_SET_INDEX_SET = "встановити";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FIRST = "Вставляє елемент на початок списку.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END = "Вставляє елемент у вказану позицію списку. #1 - це останній пункт.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START = "Вставка елемента у вказану позицію списку.  #1 є першим пунктом.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END =
+    "Вставляє елемент у вказану позицію списку. #1 - це останній пункт.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START =
+    "Вставка елемента у вказану позицію списку.  #1 є першим пунктом.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_LAST = "Додає елемент до кінця списку.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_RANDOM = "Випадковим чином вставляє елемент у списку.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FIRST = "Задає перший елемент у списку.";
@@ -158,7 +178,8 @@ Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LTE = "Повертає true, якщо пер�
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_NEQ = "Повертає true, якщо обидва входи не дорівнюють один одному.";
 Blockly.Msg.LOGIC_NEGATE_HELPURL = "http://code.google.com/p/blockly/wiki/Not";
 Blockly.Msg.LOGIC_NEGATE_TITLE = "не %1";
-Blockly.Msg.LOGIC_NEGATE_TOOLTIP = "Повертає істина, якщо вхідне значення хибність. Повертає хибність, якщо вхідна значення істина.";
+Blockly.Msg.LOGIC_NEGATE_TOOLTIP =
+    "Повертає істина, якщо вхідне значення хибність. Повертає хибність, якщо вхідна значення істина.";
 Blockly.Msg.LOGIC_NULL = "нічого";
 Blockly.Msg.LOGIC_NULL_HELPURL = "https://en.wikipedia.org/wiki/Nullable_type";
 Blockly.Msg.LOGIC_NULL_TOOLTIP = "Повертає null.";
@@ -171,7 +192,8 @@ Blockly.Msg.LOGIC_TERNARY_CONDITION = "тест";
 Blockly.Msg.LOGIC_TERNARY_HELPURL = "https://en.wikipedia.org/wiki/%3F:";
 Blockly.Msg.LOGIC_TERNARY_IF_FALSE = "Якщо хибність";
 Blockly.Msg.LOGIC_TERNARY_IF_TRUE = "якщо істина";
-Blockly.Msg.LOGIC_TERNARY_TOOLTIP = "Перевірте умову в 'test'. Якщо умова істинна, то повертає  значення типу 'якщо істина'; в іншому випадку повертає значення 'якщо хибність'.";
+Blockly.Msg.LOGIC_TERNARY_TOOLTIP =
+    "Перевірте умову в 'test'. Якщо умова істинна, то повертає  значення типу 'якщо істина'; в іншому випадку повертає значення 'якщо хибність'.";
 Blockly.Msg.MATH_ADDITION_SYMBOL = "+";  // untranslated
 Blockly.Msg.MATH_ARITHMETIC_HELPURL = "https://uk.wikipedia.org/wiki/Арифметика";
 Blockly.Msg.MATH_ARITHMETIC_TOOLTIP_ADD = "Повертає суму двох чисел.";
@@ -184,7 +206,8 @@ Blockly.Msg.MATH_CHANGE_INPUT_BY = "від";
 Blockly.Msg.MATH_CHANGE_TITLE_CHANGE = "змінити";
 Blockly.Msg.MATH_CHANGE_TOOLTIP = "Додати число змінній '%1'.";
 Blockly.Msg.MATH_CONSTANT_HELPURL = "https://uk.wikipedia.org/wiki/Математична_константа";
-Blockly.Msg.MATH_CONSTANT_TOOLTIP = "Повертає одну з поширених констант: π (3.141...), e (2.718...), φ (1,618...), sqrt(2) (1.414...), sqrt(½) (0.707...) або ∞ (безмежність).";
+Blockly.Msg.MATH_CONSTANT_TOOLTIP =
+    "Повертає одну з поширених констант: π (3.141...), e (2.718...), φ (1,618...), sqrt(2) (1.414...), sqrt(½) (0.707...) або ∞ (безмежність).";
 Blockly.Msg.MATH_CONSTRAIN_HELPURL = "https://en.wikipedia.org/wiki/Clamping_%28graphics%29";
 Blockly.Msg.MATH_CONSTRAIN_TITLE = "обмежити %1 від %2 до %3";
 Blockly.Msg.MATH_CONSTRAIN_TOOLTIP = "Обмежує число вказаними межами (включно).";
@@ -195,7 +218,8 @@ Blockly.Msg.MATH_IS_NEGATIVE = "від'ємне";
 Blockly.Msg.MATH_IS_ODD = "непарне";
 Blockly.Msg.MATH_IS_POSITIVE = "додатне";
 Blockly.Msg.MATH_IS_PRIME = "просте";
-Blockly.Msg.MATH_IS_TOOLTIP = "Перевіряє, чи число парне, непарне, просте, ціле, додатне, від'ємне або чи воно ділиться на певне число без остачі. Повертає істина або хибність.";
+Blockly.Msg.MATH_IS_TOOLTIP =
+    "Перевіряє, чи число парне, непарне, просте, ціле, додатне, від'ємне або чи воно ділиться на певне число без остачі. Повертає істина або хибність.";
 Blockly.Msg.MATH_IS_WHOLE = "ціле";
 Blockly.Msg.MATH_MODULO_HELPURL = "https://uk.wikipedia.org/wiki/Ділення_з_остачею";
 Blockly.Msg.MATH_MODULO_TITLE = "остача від %1 ÷ %2";
@@ -278,11 +302,13 @@ Blockly.Msg.PROCEDURES_DEFRETURN_TOOLTIP = "Створює функцію з в�
 Blockly.Msg.PROCEDURES_DEF_DUPLICATE_WARNING = "Увага: ця функція має дубльовані параметри.";
 Blockly.Msg.PROCEDURES_HIGHLIGHT_DEF = "Визначення функції підсвітки";
 Blockly.Msg.PROCEDURES_IFRETURN_TOOLTIP = "Якщо значення true, то повернути друге значення.";
-Blockly.Msg.PROCEDURES_IFRETURN_WARNING = "Попередження: Цей блок може використовуватися лише в межах визначення функції.";
+Blockly.Msg.PROCEDURES_IFRETURN_WARNING =
+    "Попередження: Цей блок може використовуватися лише в межах визначення функції.";
 Blockly.Msg.PROCEDURES_MUTATORARG_TITLE = "ім'я входу:";
 Blockly.Msg.PROCEDURES_MUTATORARG_TOOLTIP = "Додати вхідні параметри в функцію.";
 Blockly.Msg.PROCEDURES_MUTATORCONTAINER_TITLE = "вхід";
-Blockly.Msg.PROCEDURES_MUTATORCONTAINER_TOOLTIP = "Додати, видалити або змінити порядок вхідних параметрів для цієї функції.";
+Blockly.Msg.PROCEDURES_MUTATORCONTAINER_TOOLTIP =
+    "Додати, видалити або змінити порядок вхідних параметрів для цієї функції.";
 Blockly.Msg.REMOVE_COMMENT = "Видалити коментар";
 Blockly.Msg.RENAME_VARIABLE = "Перейменувати змінну...";
 Blockly.Msg.RENAME_VARIABLE_TITLE = "Перейменувати усі змінні \"%1\" до:";
@@ -298,7 +324,8 @@ Blockly.Msg.TEXT_CHANGECASE_TOOLTIP = "Повернути копію текст�
 Blockly.Msg.TEXT_CHARAT_FIRST = "отримати перший символ";
 Blockly.Msg.TEXT_CHARAT_FROM_END = "отримати символ # з кінця";
 Blockly.Msg.TEXT_CHARAT_FROM_START = "отримати символ";
-Blockly.Msg.TEXT_CHARAT_HELPURL = "http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm";
+Blockly.Msg.TEXT_CHARAT_HELPURL =
+    "http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm";
 Blockly.Msg.TEXT_CHARAT_INPUT_INTEXT = "у тексті";
 Blockly.Msg.TEXT_CHARAT_LAST = "отримати останній символ";
 Blockly.Msg.TEXT_CHARAT_RANDOM = "отримати випадковий символ";
@@ -306,7 +333,8 @@ Blockly.Msg.TEXT_CHARAT_TAIL = "-ий.";
 Blockly.Msg.TEXT_CHARAT_TOOLTIP = "Повертає символ у зазначеній позиції.";
 Blockly.Msg.TEXT_CREATE_JOIN_ITEM_TOOLTIP = "Додати елемент до тексту.";
 Blockly.Msg.TEXT_CREATE_JOIN_TITLE_JOIN = "приєднати";
-Blockly.Msg.TEXT_CREATE_JOIN_TOOLTIP = "Додати, видалити або змінити порядок розділів для переналаштування блокування тексту.";
+Blockly.Msg.TEXT_CREATE_JOIN_TOOLTIP =
+    "Додати, видалити або змінити порядок розділів для переналаштування блокування тексту.";
 Blockly.Msg.TEXT_GET_SUBSTRING_END_FROM_END = "до символу з кінця";
 Blockly.Msg.TEXT_GET_SUBSTRING_END_FROM_START = "до символу #";
 Blockly.Msg.TEXT_GET_SUBSTRING_END_LAST = "до останнього символу";
@@ -322,7 +350,8 @@ Blockly.Msg.TEXT_INDEXOF_INPUT_INTEXT = "у тексті";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_FIRST = "знайти перше входження тексту";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_LAST = "знайти останнє входження тексту";
 Blockly.Msg.TEXT_INDEXOF_TAIL = ".";
-Blockly.Msg.TEXT_INDEXOF_TOOLTIP = "Повертає індекс першого/останнього входження першого тексту у другому. Повертає 0, якщо текст не знайдений.";
+Blockly.Msg.TEXT_INDEXOF_TOOLTIP =
+    "Повертає індекс першого/останнього входження першого тексту у другому. Повертає 0, якщо текст не знайдений.";
 Blockly.Msg.TEXT_ISEMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Text#Checking_for_empty_text";
 Blockly.Msg.TEXT_ISEMPTY_TITLE = "%1 є порожнім";
 Blockly.Msg.TEXT_ISEMPTY_TOOLTIP = "Повертає true, якщо вказаний текст порожній.";

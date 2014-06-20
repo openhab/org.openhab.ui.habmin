@@ -28,22 +28,26 @@ Blockly.Msg.COLOUR_RGB_GREEN = "màu xanh lá cây";
 Blockly.Msg.COLOUR_RGB_HELPURL = "http://www.december.com/html/spec/colorper.html";  // untranslated
 Blockly.Msg.COLOUR_RGB_RED = "màu đỏ";
 Blockly.Msg.COLOUR_RGB_TITLE = "Tạo màu từ";
-Blockly.Msg.COLOUR_RGB_TOOLTIP = "Tạo màu từ ba màu: đỏ, xanh lá cây, xanh dương với số lượng cụ thể.  Mỗi số phải có giá trị từ 0 đến 100.";
+Blockly.Msg.COLOUR_RGB_TOOLTIP =
+    "Tạo màu từ ba màu: đỏ, xanh lá cây, xanh dương với số lượng cụ thể.  Mỗi số phải có giá trị từ 0 đến 100.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#Loop_Termination_Blocks";  // untranslated
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_BREAK = "thoát";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_CONTINUE = "sang lần lặp tiếp theo";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_BREAK = "Thoát khỏi vòng lặp hiện tại.";
-Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE = "Bỏ qua phần còn lại trong vòng lặp này, và sang lần lặp tiếp theo.";
+Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE =
+    "Bỏ qua phần còn lại trong vòng lặp này, và sang lần lặp tiếp theo.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_WARNING = "Chú ý: Mảnh này chỉ có thế dùng trong các vòng lặp.";
 Blockly.Msg.CONTROLS_FOREACH_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#for_each for each block";  // untranslated
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST = "trong danh sách";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST_TAIL = "";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_ITEM = "với mỗi thành phần";
-Blockly.Msg.CONTROLS_FOREACH_TOOLTIP = "Trong một danh sách, lấy từng thành phần, gán vào biến \"%1\", rồi thực hiện một số lệnh.";
+Blockly.Msg.CONTROLS_FOREACH_TOOLTIP =
+    "Trong một danh sách, lấy từng thành phần, gán vào biến \"%1\", rồi thực hiện một số lệnh.";
 Blockly.Msg.CONTROLS_FOR_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#count_with";  // untranslated
 Blockly.Msg.CONTROLS_FOR_INPUT_FROM_TO_BY = "từ %1 đến %2 mỗi lần thêm %3";
 Blockly.Msg.CONTROLS_FOR_INPUT_WITH = "đếm theo";
-Blockly.Msg.CONTROLS_FOR_TOOLTIP = "Đếm từ số đầu đến số cuối. Khi đến mỗi số, gán số vào biến \"%1\" rồi thực hiện các lệnh.";
+Blockly.Msg.CONTROLS_FOR_TOOLTIP =
+    "Đếm từ số đầu đến số cuối. Khi đến mỗi số, gán số vào biến \"%1\" rồi thực hiện các lệnh.";
 Blockly.Msg.CONTROLS_IF_ELSEIF_TOOLTIP = "Thêm một điều kiện vào mảnh nếu.";
 Blockly.Msg.CONTROLS_IF_ELSE_TOOLTIP = "Cuối cùng, khi không điều kiện nào đúng.";
 Blockly.Msg.CONTROLS_IF_HELPURL = "https://code.google.com/p/blockly/wiki/If_Then";  // untranslated
@@ -53,8 +57,10 @@ Blockly.Msg.CONTROLS_IF_MSG_ELSEIF = "nếu không nếu";
 Blockly.Msg.CONTROLS_IF_MSG_IF = "nếu";
 Blockly.Msg.CONTROLS_IF_TOOLTIP_1 = "Nếu điều kiện đúng, thực hiện các lệnh.";
 Blockly.Msg.CONTROLS_IF_TOOLTIP_2 = "Nếu điều kiện đúng, thực hiện các lệnh đầu.  Nếu sai, thực hiện các lệnh sau.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_3 = "Nếu điều kiện đúng, thực hiện các lệnh đầu.  Nếu không, nếu điều kiện thứ hai đúng, thực hiện các lệnh thứ hai.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_4 = "Nếu điều kiện đúng, thực hiện các lệnh đầu.  Nếu không, nếu điều kiện thứ hai đúng, thực hiện các lệnh thứ hai.  Nếu không điều kiện nào đúng, thực hiện các lệnh cuối cùng.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_3 =
+    "Nếu điều kiện đúng, thực hiện các lệnh đầu.  Nếu không, nếu điều kiện thứ hai đúng, thực hiện các lệnh thứ hai.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_4 =
+    "Nếu điều kiện đúng, thực hiện các lệnh đầu.  Nếu không, nếu điều kiện thứ hai đúng, thực hiện các lệnh thứ hai.  Nếu không điều kiện nào đúng, thực hiện các lệnh cuối cùng.";
 Blockly.Msg.CONTROLS_REPEAT_HELPURL = "https://en.wikipedia.org/wiki/For_loop";
 Blockly.Msg.CONTROLS_REPEAT_INPUT_DO = "thực hiện";
 Blockly.Msg.CONTROLS_REPEAT_TITLE = "lặp lại %1 lần";
@@ -64,7 +70,8 @@ Blockly.Msg.CONTROLS_REPEAT_TOOLTIP = "Thực hiện các lệnh vài lần.";
 Blockly.Msg.CONTROLS_WHILEUNTIL_HELPURL = "https://code.google.com/p/blockly/wiki/Repeat";  // untranslated
 Blockly.Msg.CONTROLS_WHILEUNTIL_OPERATOR_UNTIL = "lặp lại cho đến khi";
 Blockly.Msg.CONTROLS_WHILEUNTIL_OPERATOR_WHILE = "lặp lại trong khi";
-Blockly.Msg.CONTROLS_WHILEUNTIL_TOOLTIP_UNTIL = "Miễn là điều kiện còn sai, thì thực hiện các lệnh.  Khi điều kiện đúng thì ngưng.";
+Blockly.Msg.CONTROLS_WHILEUNTIL_TOOLTIP_UNTIL =
+    "Miễn là điều kiện còn sai, thì thực hiện các lệnh.  Khi điều kiện đúng thì ngưng.";
 Blockly.Msg.CONTROLS_WHILEUNTIL_TOOLTIP_WHILE = "Miễn là điều kiện còn đúng, thì thực hiện các lệnh.";
 Blockly.Msg.DELETE_BLOCK = "Xóa Mảnh Này";
 Blockly.Msg.DELETE_X_BLOCKS = "Xóa %1 Mảnh";
@@ -80,7 +87,8 @@ Blockly.Msg.LISTS_CREATE_EMPTY_HELPURL = "https://en.wikipedia.org/wiki/Linked_l
 Blockly.Msg.LISTS_CREATE_EMPTY_TITLE = "tạo danh sách trống";
 Blockly.Msg.LISTS_CREATE_EMPTY_TOOLTIP = "Hoàn trả một danh sách, với độ dài 0, không có thành tố nào cả";
 Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TITLE_ADD = "danh sách";
-Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TOOLTIP = "Thêm, bỏ, hoặc sắp xếp lại các thành phần để tạo dựng mảnh danh sách này.";
+Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TOOLTIP =
+    "Thêm, bỏ, hoặc sắp xếp lại các thành phần để tạo dựng mảnh danh sách này.";
 Blockly.Msg.LISTS_CREATE_WITH_INPUT_WITH = "tạo danh sách gồm";
 Blockly.Msg.LISTS_CREATE_WITH_ITEM_TOOLTIP = "Thêm vật vào danh sách.";
 Blockly.Msg.LISTS_CREATE_WITH_TOOLTIP = "Tạo một danh sách bao gồm nhiều vậts, với một số lượng bất kỳ.";
@@ -94,18 +102,24 @@ Blockly.Msg.LISTS_GET_INDEX_RANDOM = "bất kỳ";
 Blockly.Msg.LISTS_GET_INDEX_REMOVE = "xóa thành tố";
 Blockly.Msg.LISTS_GET_INDEX_TAIL = "";  // untranslated
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FIRST = "Hoàn trả thành tố đầu tiên trong danh sách.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_END = "Hoàn trả thành tố trong danh sách ở vị trí ấn định.  Số 1 là thành tố cuối cùng.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START = "Hoàn trả thành tố trong danh sách ở vị trí ấn định.  Số 1 là thành tố đầu tiên.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_END =
+    "Hoàn trả thành tố trong danh sách ở vị trí ấn định.  Số 1 là thành tố cuối cùng.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START =
+    "Hoàn trả thành tố trong danh sách ở vị trí ấn định.  Số 1 là thành tố đầu tiên.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_LAST = "Hoàn trả thành tố cuối cùng trong danh sách.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_RANDOM = "Hoàn trả một thành tố bất kỳ trong danh sách.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FIRST = "Hoàn trả và xóa thành tố đầu tiên trong danh sách.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END = "Hoàn trả và xóa thành tố trong danh sách ở vị trí ấn định.  Số 1 là thành tố cuối cùng.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START = "Hoàn trả và xóa thành tố trong danh sách ở vị trí ấn định.  Số 1 là thành tố đầu tiên.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END =
+    "Hoàn trả và xóa thành tố trong danh sách ở vị trí ấn định.  Số 1 là thành tố cuối cùng.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START =
+    "Hoàn trả và xóa thành tố trong danh sách ở vị trí ấn định.  Số 1 là thành tố đầu tiên.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_LAST = "Hoàn trả và xóa thành tố cuối cùng trong danh sách.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_RANDOM = "Hoàn trả và xóa mộtthành tố bất kỳ trong danh sách.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FIRST = "Xóa thành tố đầu tiên trong danh sách.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END = "Xóa thành tố trong danh sách ở vị trí ấn định.  Số 1 là thành tố cuối cùng.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START = "Xóa thành tố trong danh sách ở vị trí ấn định.  Số 1 là thành tố đầu tiên.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END =
+    "Xóa thành tố trong danh sách ở vị trí ấn định.  Số 1 là thành tố cuối cùng.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START =
+    "Xóa thành tố trong danh sách ở vị trí ấn định.  Số 1 là thành tố đầu tiên.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_LAST = "Xóa thành tố cuối cùng trong danh sách.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_RANDOM = "Xóa thành tố bất kỳ trong danh sách.";
 Blockly.Msg.LISTS_GET_SUBLIST_END_FROM_END = "đến (đếm từ cuối) thứ";
@@ -120,7 +134,8 @@ Blockly.Msg.LISTS_GET_SUBLIST_TOOLTIP = "Lấy một mảng của danh sách nà
 Blockly.Msg.LISTS_INDEX_OF_FIRST = "tìm sự có mặt đầu tiên của vật";
 Blockly.Msg.LISTS_INDEX_OF_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#Getting_Items_from_a_List";  // untranslated
 Blockly.Msg.LISTS_INDEX_OF_LAST = "tìm sự có mặt cuối cùng của vật";
-Blockly.Msg.LISTS_INDEX_OF_TOOLTIP = "Hoàn trả vị trí xuất hiện đầu/cuối của vật trong danh sách.  Nếu không tìm thấy thì hoàn trả số 0.";
+Blockly.Msg.LISTS_INDEX_OF_TOOLTIP =
+    "Hoàn trả vị trí xuất hiện đầu/cuối của vật trong danh sách.  Nếu không tìm thấy thì hoàn trả số 0.";
 Blockly.Msg.LISTS_INLIST = "trong dánh sách";
 Blockly.Msg.LISTS_IS_EMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#is_empty";  // untranslated
 Blockly.Msg.LISTS_IS_EMPTY_TITLE = "%1 trống rỗng";
@@ -135,13 +150,17 @@ Blockly.Msg.LISTS_SET_INDEX_INPUT_TO = "giá trị";
 Blockly.Msg.LISTS_SET_INDEX_INSERT = "gắn chèn vào vị trí";
 Blockly.Msg.LISTS_SET_INDEX_SET = "đặt thành tố";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FIRST = "Gắn chèn vật vào đầu danh sách.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END = "Gắn chèn vật vào danh sách theo vị trí ấn định từ phía cuối.  #1 là thành tố cuối cùng.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START = "Gắn chèn vật vào danh sách theo vị trí ấn định.  #1 là thành tố đầu tiên.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END =
+    "Gắn chèn vật vào danh sách theo vị trí ấn định từ phía cuối.  #1 là thành tố cuối cùng.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START =
+    "Gắn chèn vật vào danh sách theo vị trí ấn định.  #1 là thành tố đầu tiên.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_LAST = "Gắn thêm vật vào cuối danh sách.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_RANDOM = "Gắn chèn vật vào danh sách ở vị trí ngẫu nhiên.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FIRST = "Đặt giá trị của thành tố đầu tiên trong danh sách.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END = "Đặt giá trị của thành tố trong một danh sách ở vị trí ấn định từ phía cuối.  #1 là thành tố cuối cùng.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START = "Đặt giá trị của thành tố ở vị trí ấn định trong một danh sách.  #1 là thành tố đầu tiên.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END =
+    "Đặt giá trị của thành tố trong một danh sách ở vị trí ấn định từ phía cuối.  #1 là thành tố cuối cùng.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START =
+    "Đặt giá trị của thành tố ở vị trí ấn định trong một danh sách.  #1 là thành tố đầu tiên.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_LAST = "Đặt giá trị của thành tố cuối cùng trong danh sách.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_RANDOM = "Đặt giá trị của thành tố ngẫu nhiên trong danh sách.";
 Blockly.Msg.LISTS_TOOLTIP = "Hoàn trả “đúng\" nếu danh sách không có thành tử nào.";
@@ -152,13 +171,16 @@ Blockly.Msg.LOGIC_BOOLEAN_TRUE = "đúng";
 Blockly.Msg.LOGIC_COMPARE_HELPURL = "https://vi.wikipedia.org/wiki/B%E1%BA%A5t_%C4%91%E1%BA%B3ng_th%E1%BB%A9c";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_EQ = "Hoàn trả giá trị \"đúng\" (true) nếu giá trị hai đầu vào bằng nhau.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GT = "Hoàn trả giá trị \"đúng\" (true) nếu đầu vào thứ nhất lớn hơn đầu vào thứ hai.";
-Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GTE = "Hoàn trả giá trị \"đúng\" (true) nếu đầu vào thứ nhất lớn hơn hoặc bằng đầu vào thứ hai.";
+Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GTE =
+    "Hoàn trả giá trị \"đúng\" (true) nếu đầu vào thứ nhất lớn hơn hoặc bằng đầu vào thứ hai.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LT = "Hoàn trả giá trị \"đúng\" (true) nếu đầu vào thứ nhất nhỏ hơn đầu vào thứ hai.";
-Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LTE = "Hoàn trả giá trị \"đúng\" (true) nếu đầu vào thứ nhất nhỏ hơn hoặc bằng đầu vào thứ hai.";
+Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LTE =
+    "Hoàn trả giá trị \"đúng\" (true) nếu đầu vào thứ nhất nhỏ hơn hoặc bằng đầu vào thứ hai.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_NEQ = "Hoàn trả giá trị \"đúng\" (true) nếu giá trị hai đầu vào không bằng nhau.";
 Blockly.Msg.LOGIC_NEGATE_HELPURL = "https://code.google.com/p/blockly/wiki/Not";  // untranslated
 Blockly.Msg.LOGIC_NEGATE_TITLE = "không %1";
-Blockly.Msg.LOGIC_NEGATE_TOOLTIP = "Hoàn trả \"đúng\" (true) nếu đầu vào sai.  Hoàn trả \"sai\" (false) nếu đầu vào đúng.";
+Blockly.Msg.LOGIC_NEGATE_TOOLTIP =
+    "Hoàn trả \"đúng\" (true) nếu đầu vào sai.  Hoàn trả \"sai\" (false) nếu đầu vào đúng.";
 Blockly.Msg.LOGIC_NULL = "trống không";
 Blockly.Msg.LOGIC_NULL_HELPURL = "https://en.wikipedia.org/wiki/Nullable_type";  // untranslated
 Blockly.Msg.LOGIC_NULL_TOOLTIP = "Hoàn trả trống không.";
@@ -171,7 +193,8 @@ Blockly.Msg.LOGIC_TERNARY_CONDITION = "kiểm tra";
 Blockly.Msg.LOGIC_TERNARY_HELPURL = "https://en.wikipedia.org/wiki/%3F:";  // untranslated
 Blockly.Msg.LOGIC_TERNARY_IF_FALSE = "nếu sai";
 Blockly.Msg.LOGIC_TERNARY_IF_TRUE = "nếu đúng";
-Blockly.Msg.LOGIC_TERNARY_TOOLTIP = "Kiểm tra điều kiện. Nếu điều kiện đúng, hoàn trả giá trị từ mệnh đề \"nếu đúng\" nếu không đúng, hoàn trả giá trị từ mệnh đề \"nếu sai\".";
+Blockly.Msg.LOGIC_TERNARY_TOOLTIP =
+    "Kiểm tra điều kiện. Nếu điều kiện đúng, hoàn trả giá trị từ mệnh đề \"nếu đúng\" nếu không đúng, hoàn trả giá trị từ mệnh đề \"nếu sai\".";
 Blockly.Msg.MATH_ADDITION_SYMBOL = "+";  // untranslated
 Blockly.Msg.MATH_ARITHMETIC_HELPURL = "https://vi.wikipedia.org/wiki/S%E1%BB%91_h%E1%BB%8Dc";
 Blockly.Msg.MATH_ARITHMETIC_TOOLTIP_ADD = "Hoàn trả tổng của hai con số.";
@@ -184,7 +207,8 @@ Blockly.Msg.MATH_CHANGE_INPUT_BY = "giá trị";
 Blockly.Msg.MATH_CHANGE_TITLE_CHANGE = "cộng vào";
 Blockly.Msg.MATH_CHANGE_TOOLTIP = "Cộng số đầu vào vào biến \"%1\".";
 Blockly.Msg.MATH_CONSTANT_HELPURL = "https://en.wikipedia.org/wiki/Mathematical_constant";
-Blockly.Msg.MATH_CONSTANT_TOOLTIP = "Hoàn trả các đẳng số thường gặp: π (3.141…), e (2.718…), φ (1.618…), sqrt(2) (1.414…), sqrt(½) (0.707…), or ∞ (vô cực).";
+Blockly.Msg.MATH_CONSTANT_TOOLTIP =
+    "Hoàn trả các đẳng số thường gặp: π (3.141…), e (2.718…), φ (1.618…), sqrt(2) (1.414…), sqrt(½) (0.707…), or ∞ (vô cực).";
 Blockly.Msg.MATH_CONSTRAIN_HELPURL = "https://en.wikipedia.org/wiki/Clamping_%28graphics%29";  // untranslated
 Blockly.Msg.MATH_CONSTRAIN_TITLE = "giới hạn %1 không dưới %2 không hơn %3";
 Blockly.Msg.MATH_CONSTRAIN_TOOLTIP = "Giới hạn số đầu vào để không dưới số thứ nhất và không hơn số thứ hai.";
@@ -195,7 +219,8 @@ Blockly.Msg.MATH_IS_NEGATIVE = "là số âm";
 Blockly.Msg.MATH_IS_ODD = "lẻ";
 Blockly.Msg.MATH_IS_POSITIVE = "là số dương";
 Blockly.Msg.MATH_IS_PRIME = "là số nguyên tố";
-Blockly.Msg.MATH_IS_TOOLTIP = "Kiểm tra con số xem nó có phải là số chẵn, lẻ, nguyên tố, nguyên, dương, âm,  hay xem nó có chia hết cho số đầu vào hay không.  Hoàn trả đúng hay sai.";
+Blockly.Msg.MATH_IS_TOOLTIP =
+    "Kiểm tra con số xem nó có phải là số chẵn, lẻ, nguyên tố, nguyên, dương, âm,  hay xem nó có chia hết cho số đầu vào hay không.  Hoàn trả đúng hay sai.";
 Blockly.Msg.MATH_IS_WHOLE = "là số nguyên";
 Blockly.Msg.MATH_MODULO_HELPURL = "https://en.wikipedia.org/wiki/Modulo_operation";
 Blockly.Msg.MATH_MODULO_TITLE = "số dư của %1 ÷ %2";
@@ -226,7 +251,8 @@ Blockly.Msg.MATH_RANDOM_FLOAT_TITLE_RANDOM = "phân số bất kỳ";
 Blockly.Msg.MATH_RANDOM_FLOAT_TOOLTIP = "Hoàn trả một phân số bất kỳ không nhỏ hơn 0.0 và không lớn hơn 1.0.";
 Blockly.Msg.MATH_RANDOM_INT_HELPURL = "https://en.wikipedia.org/wiki/Random_number_generation";
 Blockly.Msg.MATH_RANDOM_INT_TITLE = "Một số nguyên bất kỳ từ %1 đến %2";
-Blockly.Msg.MATH_RANDOM_INT_TOOLTIP = "Hoàn trả một số nguyên bất kỳ lớn hơn hoặc bằng số đầu và nhỏ hơn hoặc bằng số sau.";
+Blockly.Msg.MATH_RANDOM_INT_TOOLTIP =
+    "Hoàn trả một số nguyên bất kỳ lớn hơn hoặc bằng số đầu và nhỏ hơn hoặc bằng số sau.";
 Blockly.Msg.MATH_ROUND_HELPURL = "https://en.wikipedia.org/wiki/Rounding";
 Blockly.Msg.MATH_ROUND_OPERATOR_ROUND = "làm tròn";
 Blockly.Msg.MATH_ROUND_OPERATOR_ROUNDDOWN = "làm tròn xuống";
@@ -322,7 +348,8 @@ Blockly.Msg.TEXT_INDEXOF_INPUT_INTEXT = "trong văn bản";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_FIRST = "tìm sự có mặt đầu tiên của";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_LAST = "tìm sự có mặt cuối cùng của";
 Blockly.Msg.TEXT_INDEXOF_TAIL = "";  // untranslated
-Blockly.Msg.TEXT_INDEXOF_TOOLTIP = "Hoàn trả vị trí xuất hiện đầu/cuối của văn bản thứ nhất trong văn bản thứ hai.  Nếu không tìm thấy thì hoàn trả số 0.";
+Blockly.Msg.TEXT_INDEXOF_TOOLTIP =
+    "Hoàn trả vị trí xuất hiện đầu/cuối của văn bản thứ nhất trong văn bản thứ hai.  Nếu không tìm thấy thì hoàn trả số 0.";
 Blockly.Msg.TEXT_ISEMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Text#Checking_for_empty_text";  // untranslated
 Blockly.Msg.TEXT_ISEMPTY_TITLE = "%1 trống không";
 Blockly.Msg.TEXT_ISEMPTY_TOOLTIP = "Hoàn trả “đúng nếu văn bản không có ký tự nào.";

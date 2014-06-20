@@ -28,33 +28,41 @@ Blockly.Msg.COLOUR_RGB_GREEN = "grün";
 Blockly.Msg.COLOUR_RGB_HELPURL = "https://de.wikipedia.org/wiki/RGB-Farbraum";
 Blockly.Msg.COLOUR_RGB_RED = "rot";
 Blockly.Msg.COLOUR_RGB_TITLE = "Farbe mit";
-Blockly.Msg.COLOUR_RGB_TOOLTIP = "Kreiere eine Farbe mit selbst definierten rot, grün und blau Werten. Alle Werte müssen zwischen 0 und 100 liegen.";
+Blockly.Msg.COLOUR_RGB_TOOLTIP =
+    "Kreiere eine Farbe mit selbst definierten rot, grün und blau Werten. Alle Werte müssen zwischen 0 und 100 liegen.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_HELPURL = "https://de.wikipedia.org/wiki/Kontrollstruktur";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_BREAK = "ausbrechen aus der Schleife";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_CONTINUE = "mit der nächsten Iteration fortfahren aus der Schleife";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_BREAK = "Die umgebene Schleife beenden.";
-Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE = "Diese Anweisung abbrechen und mit der nächsten Schleifeniteration fortfahren.";
+Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE =
+    "Diese Anweisung abbrechen und mit der nächsten Schleifeniteration fortfahren.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_WARNING = "Warnung: Diese block sollte nur in einer Schleife verwendet werden.";
 Blockly.Msg.CONTROLS_FOREACH_HELPURL = "https://de.wikipedia.org/wiki/For-Schleif";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST = "aus der Liste";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST_TAIL = "";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_ITEM = "Für Wert";
-Blockly.Msg.CONTROLS_FOREACH_TOOLTIP = "Führe eine Anweisung für jeden Wert in der Liste aus und setzte dabei die Variable \"%1\" auf den aktuellen Listen Wert.";
+Blockly.Msg.CONTROLS_FOREACH_TOOLTIP =
+    "Führe eine Anweisung für jeden Wert in der Liste aus und setzte dabei die Variable \"%1\" auf den aktuellen Listen Wert.";
 Blockly.Msg.CONTROLS_FOR_HELPURL = "https://de.wikipedia.org/wiki/For-Schleif";
 Blockly.Msg.CONTROLS_FOR_INPUT_FROM_TO_BY = "von %1 bis %2 mit %3";
 Blockly.Msg.CONTROLS_FOR_INPUT_WITH = "Zähle";
-Blockly.Msg.CONTROLS_FOR_TOOLTIP = "Zähle die Variable \"%1\" von einem Startwert bis zu einem Zielwert und führe für jeden Wert eine Anweisung aus.";
+Blockly.Msg.CONTROLS_FOR_TOOLTIP =
+    "Zähle die Variable \"%1\" von einem Startwert bis zu einem Zielwert und führe für jeden Wert eine Anweisung aus.";
 Blockly.Msg.CONTROLS_IF_ELSEIF_TOOLTIP = "Eine weitere Bedingung hinzufügen.";
-Blockly.Msg.CONTROLS_IF_ELSE_TOOLTIP = "Eine oder Bedingung hinzufügen, führt eine Anweisung aus falls keine Bedingung zutrifft.";
+Blockly.Msg.CONTROLS_IF_ELSE_TOOLTIP =
+    "Eine oder Bedingung hinzufügen, führt eine Anweisung aus falls keine Bedingung zutrifft.";
 Blockly.Msg.CONTROLS_IF_HELPURL = "http://code.google.com/p/blockly/wiki/If_Then";
 Blockly.Msg.CONTROLS_IF_IF_TOOLTIP = "Hinzufügen, entfernen oder sortieren von Sektionen";
 Blockly.Msg.CONTROLS_IF_MSG_ELSE = "oder";
 Blockly.Msg.CONTROLS_IF_MSG_ELSEIF = "oder wenn";
 Blockly.Msg.CONTROLS_IF_MSG_IF = "wenn";
 Blockly.Msg.CONTROLS_IF_TOOLTIP_1 = "Wenn eine Bedingung wahr (true) ist, dann führe eine Anweisung aus.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_2 = "Wenn eine Bedingung wahr (true) ist, dann führe die erste Anweisung aus.  Ansonsten führe die zweite Anweisung aus.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_3 = "Wenn der erste Bedingung wahr (true) ist, dann führe die erste Anweisung aus.  Oder wenn die zweite Bedingung wahr (true) ist, dann führe die zweite Anweisung aus.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_4 = "Wenn der erste Bedingung wahr (true) ist, dann führe die erste Anweisung aus.  Oder wenn die zweite Bedingung wahr (true) ist, dann führe die zweite Anweisung aus.  Falls keine der beiden Bedingungen wahr (true) ist, dann führe die dritte Anweisung aus.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_2 =
+    "Wenn eine Bedingung wahr (true) ist, dann führe die erste Anweisung aus.  Ansonsten führe die zweite Anweisung aus.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_3 =
+    "Wenn der erste Bedingung wahr (true) ist, dann führe die erste Anweisung aus.  Oder wenn die zweite Bedingung wahr (true) ist, dann führe die zweite Anweisung aus.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_4 =
+    "Wenn der erste Bedingung wahr (true) ist, dann führe die erste Anweisung aus.  Oder wenn die zweite Bedingung wahr (true) ist, dann führe die zweite Anweisung aus.  Falls keine der beiden Bedingungen wahr (true) ist, dann führe die dritte Anweisung aus.";
 Blockly.Msg.CONTROLS_REPEAT_HELPURL = "https://de.wikipedia.org/wiki/For-Schleife";
 Blockly.Msg.CONTROLS_REPEAT_INPUT_DO = "mache";
 Blockly.Msg.CONTROLS_REPEAT_TITLE = "wiederhole %1 mal";
@@ -99,7 +107,8 @@ Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START = "Extrahiere das #1te Elemen
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_LAST = "Extrahiere das letzte Element von der Liste.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_RANDOM = "Extrahiere ein zufälliges Element von der Liste.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FIRST = "Extrahiere und entfernt das erste Element von der Liste.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END = "Extrahiere und entfernt das #1te Element vom Ende der Liste.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END =
+    "Extrahiere und entfernt das #1te Element vom Ende der Liste.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START = "Extrahiere und entfernt das #1te Element von der Liste.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_LAST = "Extrahiere und entfernt das letzte Element von der Liste.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_RANDOM = "Extrahiere und entfernt ein zufälliges Element von der Liste.";
@@ -111,37 +120,46 @@ Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_RANDOM = "Entfernt ein zufälliges El
 Blockly.Msg.LISTS_GET_SUBLIST_END_FROM_END = "zu # vom Ende";
 Blockly.Msg.LISTS_GET_SUBLIST_END_FROM_START = "zu #";
 Blockly.Msg.LISTS_GET_SUBLIST_END_LAST = "zum Letzten";
-Blockly.Msg.LISTS_GET_SUBLIST_HELPURL = "http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm";
+Blockly.Msg.LISTS_GET_SUBLIST_HELPURL =
+    "http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm";
 Blockly.Msg.LISTS_GET_SUBLIST_START_FIRST = "erhalte Unterliste vom Ersten";
 Blockly.Msg.LISTS_GET_SUBLIST_START_FROM_END = "erhalte Unterliste von # vom Ende";
 Blockly.Msg.LISTS_GET_SUBLIST_START_FROM_START = "erhalte Unterliste von #";
 Blockly.Msg.LISTS_GET_SUBLIST_TAIL = "";
 Blockly.Msg.LISTS_GET_SUBLIST_TOOLTIP = "Creates a copy of the specified portion of a list.";
 Blockly.Msg.LISTS_INDEX_OF_FIRST = "Suche erstes Vorkommniss";
-Blockly.Msg.LISTS_INDEX_OF_HELPURL = "http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm";
+Blockly.Msg.LISTS_INDEX_OF_HELPURL =
+    "http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm";
 Blockly.Msg.LISTS_INDEX_OF_LAST = "Suche letztes Vorkommniss";
-Blockly.Msg.LISTS_INDEX_OF_TOOLTIP = "Sucht die Position (index) eines Elementes in der Liste Gibt 0 zurück wenn nichts gefunden wurde.";
+Blockly.Msg.LISTS_INDEX_OF_TOOLTIP =
+    "Sucht die Position (index) eines Elementes in der Liste Gibt 0 zurück wenn nichts gefunden wurde.";
 Blockly.Msg.LISTS_INLIST = "in der Liste";
 Blockly.Msg.LISTS_IS_EMPTY_HELPURL = "http://www.liv.ac.uk/HPC/HTMLF90Course/HTMLF90CourseNotesnode91.html";
 Blockly.Msg.LISTS_IS_EMPTY_TITLE = "%1 ist leer?";
 Blockly.Msg.LISTS_LENGTH_HELPURL = "http://www.liv.ac.uk/HPC/HTMLF90Course/HTMLF90CourseNotesnode91.html";
 Blockly.Msg.LISTS_LENGTH_TITLE = "länge %1";
 Blockly.Msg.LISTS_LENGTH_TOOLTIP = "Die Anzahl von Elementen in der Liste.";
-Blockly.Msg.LISTS_REPEAT_HELPURL = "http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm";
+Blockly.Msg.LISTS_REPEAT_HELPURL =
+    "http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm";
 Blockly.Msg.LISTS_REPEAT_TITLE = "Erzeuge Liste mit Element %1 wiederhole es %2 mal";
 Blockly.Msg.LISTS_REPEAT_TOOLTIP = "Erzeugt eine Liste mit einer variablen Anzahl von Elementen";
-Blockly.Msg.LISTS_SET_INDEX_HELPURL = "http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm";
+Blockly.Msg.LISTS_SET_INDEX_HELPURL =
+    "http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm";
 Blockly.Msg.LISTS_SET_INDEX_INPUT_TO = "auf";
 Blockly.Msg.LISTS_SET_INDEX_INSERT = "insert";
 Blockly.Msg.LISTS_SET_INDEX_SET = "set";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FIRST = "Inserts the item at the start of a list.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END = "Inserts the item at the specified position in a list.  #1 is the last item.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START = "Inserts the item at the specified position in a list.  #1 is the first item.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END =
+    "Inserts the item at the specified position in a list.  #1 is the last item.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START =
+    "Inserts the item at the specified position in a list.  #1 is the first item.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_LAST = "Append the item to the end of a list.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_RANDOM = "Inserts the item randomly in a list.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FIRST = "Sets the first item in a list.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END = "Sets the item at the specified position in a list.  #1 is the last item.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START = "Sets the item at the specified position in a list.  #1 is the first item.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END =
+    "Sets the item at the specified position in a list.  #1 is the last item.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START =
+    "Sets the item at the specified position in a list.  #1 is the first item.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_LAST = "Sets the last item in a list.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_RANDOM = "Sets a random item in a list.";
 Blockly.Msg.LISTS_TOOLTIP = "Ist wahr (true), wenn die Liste leer ist.";
@@ -152,13 +170,16 @@ Blockly.Msg.LOGIC_BOOLEAN_TRUE = "wahr";
 Blockly.Msg.LOGIC_COMPARE_HELPURL = "https://de.wikipedia.org/wiki/Vergleich_%28Zahlen%29";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_EQ = "Ist wahr (true) wenn beide Werte identisch sind.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GT = "Ist wahr (true) wenn der erste Wert grösser als der zweite Wert ist.";
-Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GTE = "Ist wahr (true) wenn der erste Wert grösser als oder gleich gross wie zweite Wert ist.";
+Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GTE =
+    "Ist wahr (true) wenn der erste Wert grösser als oder gleich gross wie zweite Wert ist.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LT = "Ist wahr (true) wenn der erste Wert kleiner als der zweite Wert ist.";
-Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LTE = "Ist wahr (true) wenn der erste Wert kleiner als oder gleich gross wie zweite Wert ist.";
+Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LTE =
+    "Ist wahr (true) wenn der erste Wert kleiner als oder gleich gross wie zweite Wert ist.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_NEQ = "Ist wahr (true) wenn beide Werte unterschiedlich sind.";
 Blockly.Msg.LOGIC_NEGATE_HELPURL = "http://code.google.com/p/blockly/wiki/Not";
 Blockly.Msg.LOGIC_NEGATE_TITLE = "nicht %1";
-Blockly.Msg.LOGIC_NEGATE_TOOLTIP = "Ist wahr (true) wenn der Eingabewert falsch (false) ist.  Ist falsch (false) wenn der Eingabewert wahr (true) ist.";
+Blockly.Msg.LOGIC_NEGATE_TOOLTIP =
+    "Ist wahr (true) wenn der Eingabewert falsch (false) ist.  Ist falsch (false) wenn der Eingabewert wahr (true) ist.";
 Blockly.Msg.LOGIC_NULL = "null";
 Blockly.Msg.LOGIC_NULL_HELPURL = "https://de.wikipedia.org/wiki/Nullwert";
 Blockly.Msg.LOGIC_NULL_TOOLTIP = "Ist NULL.";
@@ -171,7 +192,8 @@ Blockly.Msg.LOGIC_TERNARY_CONDITION = "test";
 Blockly.Msg.LOGIC_TERNARY_HELPURL = "https://de.wikipedia.org/wiki/%3F:#Auswahloperator";
 Blockly.Msg.LOGIC_TERNARY_IF_FALSE = "wenn falsch";
 Blockly.Msg.LOGIC_TERNARY_IF_TRUE = "wenn wahr";
-Blockly.Msg.LOGIC_TERNARY_TOOLTIP = "Überprüft eine Bedingung \"test\". Wenn die Bedingung wahr ist wird der \"wenn wahr\" Wert zurückgegeben, andernfalls der \"wenn falsch\" Wert";
+Blockly.Msg.LOGIC_TERNARY_TOOLTIP =
+    "Überprüft eine Bedingung \"test\". Wenn die Bedingung wahr ist wird der \"wenn wahr\" Wert zurückgegeben, andernfalls der \"wenn falsch\" Wert";
 Blockly.Msg.MATH_ADDITION_SYMBOL = "+";  // untranslated
 Blockly.Msg.MATH_ARITHMETIC_HELPURL = "https://de.wikipedia.org/wiki/Grundrechenart";
 Blockly.Msg.MATH_ARITHMETIC_TOOLTIP_ADD = "Ist die Summe zweier Werte.";
@@ -184,7 +206,8 @@ Blockly.Msg.MATH_CHANGE_INPUT_BY = "um";
 Blockly.Msg.MATH_CHANGE_TITLE_CHANGE = "erhöhe";
 Blockly.Msg.MATH_CHANGE_TOOLTIP = "Addiert einen Wert zur Variable \"%1\" hinzu.";
 Blockly.Msg.MATH_CONSTANT_HELPURL = "https://de.wikipedia.org/wiki/Mathematische_Konstante";
-Blockly.Msg.MATH_CONSTANT_TOOLTIP = "Mathematische Konstanten wie: π (3.141…), e (2.718…), φ (1.618…), sqrt(2) (1.414…), sqrt(½) (0.707…) oder ∞ (unendlich).";
+Blockly.Msg.MATH_CONSTANT_TOOLTIP =
+    "Mathematische Konstanten wie: π (3.141…), e (2.718…), φ (1.618…), sqrt(2) (1.414…), sqrt(½) (0.707…) oder ∞ (unendlich).";
 Blockly.Msg.MATH_CONSTRAIN_HELPURL = "https://en.wikipedia.org/wiki/Clamping_%28graphics%29";
 Blockly.Msg.MATH_CONSTRAIN_TITLE = "begrenzen %1 von %2 bis %3";
 Blockly.Msg.MATH_CONSTRAIN_TOOLTIP = "Begrenzt den Wertebereich mittels von / bis Werte. (inklusiv)";
@@ -195,7 +218,8 @@ Blockly.Msg.MATH_IS_NEGATIVE = "ist negativ";
 Blockly.Msg.MATH_IS_ODD = "ist ungerade";
 Blockly.Msg.MATH_IS_POSITIVE = "ist positiv";
 Blockly.Msg.MATH_IS_PRIME = "ist eine Primenzahl";
-Blockly.Msg.MATH_IS_TOOLTIP = "Überprüft ob eine Zahl gerade, ungerade, eine Primenzahl, ganzzahlig, positiv, negativ oder durch eine zweite Zahl teilbar ist.  Gibt wahr (true) oder falsch (false) zurück.";
+Blockly.Msg.MATH_IS_TOOLTIP =
+    "Überprüft ob eine Zahl gerade, ungerade, eine Primenzahl, ganzzahlig, positiv, negativ oder durch eine zweite Zahl teilbar ist.  Gibt wahr (true) oder falsch (false) zurück.";
 Blockly.Msg.MATH_IS_WHOLE = "ganze Zahl";
 Blockly.Msg.MATH_MODULO_HELPURL = "https://de.wikipedia.org/wiki/Modulo";
 Blockly.Msg.MATH_MODULO_TITLE = "Rest von %1 ÷ %2";
@@ -216,7 +240,8 @@ Blockly.Msg.MATH_ONLIST_TOOLTIP_AVERAGE = "Ist der Durchschnittswert aller Werte
 Blockly.Msg.MATH_ONLIST_TOOLTIP_MAX = "Ist der grösste Wert in einer Liste.";
 Blockly.Msg.MATH_ONLIST_TOOLTIP_MEDIAN = "Ist der Zentralwert aller Werte in einer Liste.";
 Blockly.Msg.MATH_ONLIST_TOOLTIP_MIN = "Ist der kleinste Wert in einer Liste.";
-Blockly.Msg.MATH_ONLIST_TOOLTIP_MODE = "Findet den am häufigsten vorkommenden Wert in einer Liste.  Falls kein Wert öfter vorkomme als alle anderen, wird die originale Liste zurückgegen";
+Blockly.Msg.MATH_ONLIST_TOOLTIP_MODE =
+    "Findet den am häufigsten vorkommenden Wert in einer Liste.  Falls kein Wert öfter vorkomme als alle anderen, wird die originale Liste zurückgegen";
 Blockly.Msg.MATH_ONLIST_TOOLTIP_RANDOM = "Gebe einen Zufallswert aus der Liste zurück.";
 Blockly.Msg.MATH_ONLIST_TOOLTIP_STD_DEV = "Ist die standartiesierte Standartabweichung aller Werte in der Liste";
 Blockly.Msg.MATH_ONLIST_TOOLTIP_SUM = "Ist die Summe aller Werte in einer Liste.";
@@ -278,11 +303,13 @@ Blockly.Msg.PROCEDURES_DEFRETURN_TOOLTIP = "Ein Funktionsblock mit Rückgabewert
 Blockly.Msg.PROCEDURES_DEF_DUPLICATE_WARNING = "Warnung: dieser Funktionsblock hat doppelte Parameter.";
 Blockly.Msg.PROCEDURES_HIGHLIGHT_DEF = "Markiere Funktionsblock";
 Blockly.Msg.PROCEDURES_IFRETURN_TOOLTIP = "Wenn der erste Wert wahr (true) ist, Gebe den zweiten Wert zurück.";
-Blockly.Msg.PROCEDURES_IFRETURN_WARNING = "Warnung: Dieser Block darf nur innerhalb eines Funktionsblock genutzt werden.";
+Blockly.Msg.PROCEDURES_IFRETURN_WARNING =
+    "Warnung: Dieser Block darf nur innerhalb eines Funktionsblock genutzt werden.";
 Blockly.Msg.PROCEDURES_MUTATORARG_TITLE = "Variable:";
 Blockly.Msg.PROCEDURES_MUTATORARG_TOOLTIP = "Eine Eingabe zur Funktion hinzufügen.";
 Blockly.Msg.PROCEDURES_MUTATORCONTAINER_TITLE = "Parameter";
-Blockly.Msg.PROCEDURES_MUTATORCONTAINER_TOOLTIP = "Die Eingaben zu dieser Funktion hinzufügen, entfernen oder neu anordnen.";
+Blockly.Msg.PROCEDURES_MUTATORCONTAINER_TOOLTIP =
+    "Die Eingaben zu dieser Funktion hinzufügen, entfernen oder neu anordnen.";
 Blockly.Msg.REMOVE_COMMENT = "Kommentar entfernen";
 Blockly.Msg.RENAME_VARIABLE = "Variable umbenennen...";
 Blockly.Msg.RENAME_VARIABLE_TITLE = "Alle \"%1\" Variablen umbenennen in:";
@@ -294,11 +321,13 @@ Blockly.Msg.TEXT_CHANGECASE_HELPURL = "http://www.liv.ac.uk/HPC/HTMLF90Course/HT
 Blockly.Msg.TEXT_CHANGECASE_OPERATOR_LOWERCASE = "umwandeln in kleinbuchstaben";
 Blockly.Msg.TEXT_CHANGECASE_OPERATOR_TITLECASE = "umwandeln in Wörter";
 Blockly.Msg.TEXT_CHANGECASE_OPERATOR_UPPERCASE = "umwandeln in GROSSBUCHSTABEN";
-Blockly.Msg.TEXT_CHANGECASE_TOOLTIP = "Wandelt Schreibweise von Texten um, in Grossbuchstaben, Kleinbuchstaben oder den ersten Buchstaben jedes Wortes gross und die anderen klein.";
+Blockly.Msg.TEXT_CHANGECASE_TOOLTIP =
+    "Wandelt Schreibweise von Texten um, in Grossbuchstaben, Kleinbuchstaben oder den ersten Buchstaben jedes Wortes gross und die anderen klein.";
 Blockly.Msg.TEXT_CHARAT_FIRST = "Nehme ersten Buchstabe";
 Blockly.Msg.TEXT_CHARAT_FROM_END = "Nehme #te Buchstabe von hinten";
 Blockly.Msg.TEXT_CHARAT_FROM_START = "Nehme Buchstabe #ten";
-Blockly.Msg.TEXT_CHARAT_HELPURL = "http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm";
+Blockly.Msg.TEXT_CHARAT_HELPURL =
+    "http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm";
 Blockly.Msg.TEXT_CHARAT_INPUT_INTEXT = "vom Text";
 Blockly.Msg.TEXT_CHARAT_LAST = "Nehme letzten Buchstabe";
 Blockly.Msg.TEXT_CHARAT_RANDOM = "Nehme zufälligen Buchstabe";
@@ -310,19 +339,22 @@ Blockly.Msg.TEXT_CREATE_JOIN_TOOLTIP = "Hinzufügen, entfernen und sortieren von
 Blockly.Msg.TEXT_GET_SUBSTRING_END_FROM_END = "bis #te Buchstabe von hinten";
 Blockly.Msg.TEXT_GET_SUBSTRING_END_FROM_START = "bis Buchstabe #ten";
 Blockly.Msg.TEXT_GET_SUBSTRING_END_LAST = "bis letzten Buchstabe";
-Blockly.Msg.TEXT_GET_SUBSTRING_HELPURL = "http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm";
+Blockly.Msg.TEXT_GET_SUBSTRING_HELPURL =
+    "http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm";
 Blockly.Msg.TEXT_GET_SUBSTRING_INPUT_IN_TEXT = "in Text";
 Blockly.Msg.TEXT_GET_SUBSTRING_START_FIRST = "ersten Buchstabe";
 Blockly.Msg.TEXT_GET_SUBSTRING_START_FROM_END = "#te Buchstabe von hinten";
 Blockly.Msg.TEXT_GET_SUBSTRING_START_FROM_START = "Buchstabe #ten";
 Blockly.Msg.TEXT_GET_SUBSTRING_TAIL = "";
 Blockly.Msg.TEXT_GET_SUBSTRING_TOOLTIP = "Returns a specified portion of the text.";
-Blockly.Msg.TEXT_INDEXOF_HELPURL = "http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm";
+Blockly.Msg.TEXT_INDEXOF_HELPURL =
+    "http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm";
 Blockly.Msg.TEXT_INDEXOF_INPUT_INTEXT = "im Text";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_FIRST = "Suche erstes Vorkommniss des Begriff";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_LAST = "Suche letztes Vorkommniss des Begriff";
 Blockly.Msg.TEXT_INDEXOF_TAIL = "";
-Blockly.Msg.TEXT_INDEXOF_TOOLTIP = "Findest das erste / letzte Vorkommniss eines cuchbegriffes in einem Text.  Gibt die Position des Begriffes oder 0 zurück.";
+Blockly.Msg.TEXT_INDEXOF_TOOLTIP =
+    "Findest das erste / letzte Vorkommniss eines cuchbegriffes in einem Text.  Gibt die Position des Begriffes oder 0 zurück.";
 Blockly.Msg.TEXT_ISEMPTY_HELPURL = "http://www.liv.ac.uk/HPC/HTMLF90Course/HTMLF90CourseNotesnode91.html";
 Blockly.Msg.TEXT_ISEMPTY_TITLE = "%1 ist leer?";
 Blockly.Msg.TEXT_ISEMPTY_TOOLTIP = "Ist wahr (true), wenn der Text leer ist.";

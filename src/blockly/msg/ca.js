@@ -28,33 +28,41 @@ Blockly.Msg.COLOUR_RGB_GREEN = "verd";
 Blockly.Msg.COLOUR_RGB_HELPURL = "http://www.december.com/html/spec/colorper.html";  // untranslated
 Blockly.Msg.COLOUR_RGB_RED = "vermell";
 Blockly.Msg.COLOUR_RGB_TITLE = "color amb";
-Blockly.Msg.COLOUR_RGB_TOOLTIP = "Crear un color amb les quantitats especificades de vermell, verd i blau. Tots els valors han de ser entre 0 i 100.";
+Blockly.Msg.COLOUR_RGB_TOOLTIP =
+    "Crear un color amb les quantitats especificades de vermell, verd i blau. Tots els valors han de ser entre 0 i 100.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#Loop_Termination_Blocks";  // untranslated
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_BREAK = "sortir del bucle";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_CONTINUE = "continuar amb la següent iteració del bucle";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_BREAK = "Sortir del bucle interior.";
-Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE = "Ometre la resta d'aquest bucle, i continuar amb la següent iteració.";
+Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE =
+    "Ometre la resta d'aquest bucle, i continuar amb la següent iteració.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_WARNING = "Advertència: Aquest bloc només es pot utilitzar dins d'un bucle.";
 Blockly.Msg.CONTROLS_FOREACH_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#for_each for each block";  // untranslated
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST = "en la llista";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST_TAIL = "";  // untranslated
 Blockly.Msg.CONTROLS_FOREACH_INPUT_ITEM = "per a cada element";
-Blockly.Msg.CONTROLS_FOREACH_TOOLTIP = "Per a cada element en la llista, desar l'element dins la variable '%1', i llavors executar unes sentències.";
+Blockly.Msg.CONTROLS_FOREACH_TOOLTIP =
+    "Per a cada element en la llista, desar l'element dins la variable '%1', i llavors executar unes sentències.";
 Blockly.Msg.CONTROLS_FOR_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#count_with";  // untranslated
 Blockly.Msg.CONTROLS_FOR_INPUT_FROM_TO_BY = "des de %1 fins a %2 en increments de %3";
 Blockly.Msg.CONTROLS_FOR_INPUT_WITH = "comptar amb";
-Blockly.Msg.CONTROLS_FOR_TOOLTIP = "Fer que la variable %1 prengui els valors des del nombre inicial fins al nombre final, incrementant a cada pas l'interval indicat, i executar els blocs especificats.";
+Blockly.Msg.CONTROLS_FOR_TOOLTIP =
+    "Fer que la variable %1 prengui els valors des del nombre inicial fins al nombre final, incrementant a cada pas l'interval indicat, i executar els blocs especificats.";
 Blockly.Msg.CONTROLS_IF_ELSEIF_TOOLTIP = "Afegeix una condició al bloc 'si'.";
-Blockly.Msg.CONTROLS_IF_ELSE_TOOLTIP = "Afegeix una condició final, que recull qualsevol altra possibilitat, al bloc 'si'.";
+Blockly.Msg.CONTROLS_IF_ELSE_TOOLTIP =
+    "Afegeix una condició final, que recull qualsevol altra possibilitat, al bloc 'si'.";
 Blockly.Msg.CONTROLS_IF_HELPURL = "https://code.google.com/p/blockly/wiki/If_Then";  // untranslated
 Blockly.Msg.CONTROLS_IF_IF_TOOLTIP = "Afegeix, esborra o reordena seccions per reconfigurar aquest bloc 'si'.";
 Blockly.Msg.CONTROLS_IF_MSG_ELSE = "si no";
 Blockly.Msg.CONTROLS_IF_MSG_ELSEIF = "si no, si";
 Blockly.Msg.CONTROLS_IF_MSG_IF = "si";
 Blockly.Msg.CONTROLS_IF_TOOLTIP_1 = "Si un valor és cert, llavors executar unes sentències.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_2 = "Si un valor és cert, llavors executar el primer bloc de sentències. En cas contrari, executar el segon bloc de sentències.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_3 = "Si el primer valor és cert, llavors executar el primer bloc de sentències. En cas contrari, si el segon valor és cert, executar el segon bloc de sentències.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_4 = "Si el primer valor és cert, llavors executar el primer bloc de sentències. En cas contrari, si el segon valor és cert, executar el segon bloc de sentències. Si cap dels valors és cert, executar l'últim bloc de sentències.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_2 =
+    "Si un valor és cert, llavors executar el primer bloc de sentències. En cas contrari, executar el segon bloc de sentències.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_3 =
+    "Si el primer valor és cert, llavors executar el primer bloc de sentències. En cas contrari, si el segon valor és cert, executar el segon bloc de sentències.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_4 =
+    "Si el primer valor és cert, llavors executar el primer bloc de sentències. En cas contrari, si el segon valor és cert, executar el segon bloc de sentències. Si cap dels valors és cert, executar l'últim bloc de sentències.";
 Blockly.Msg.CONTROLS_REPEAT_HELPURL = "https://ca.wikipedia.org/wiki/Bucle_For";
 Blockly.Msg.CONTROLS_REPEAT_INPUT_DO = "fer";
 Blockly.Msg.CONTROLS_REPEAT_TITLE = "repetir %1 vegades";
@@ -80,7 +88,8 @@ Blockly.Msg.LISTS_CREATE_EMPTY_HELPURL = "https://en.wikipedia.org/wiki/Linked_l
 Blockly.Msg.LISTS_CREATE_EMPTY_TITLE = "crear llista buida";
 Blockly.Msg.LISTS_CREATE_EMPTY_TOOLTIP = "Retorna una llista, de longitud 0, que no conté cap dada.";
 Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TITLE_ADD = "llista";
-Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TOOLTIP = "Afegeix, esborra o reordena seccions per reconfigurar aquest bloc de llista.";
+Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TOOLTIP =
+    "Afegeix, esborra o reordena seccions per reconfigurar aquest bloc de llista.";
 Blockly.Msg.LISTS_CREATE_WITH_INPUT_WITH = "crear llista amb";
 Blockly.Msg.LISTS_CREATE_WITH_ITEM_TOOLTIP = "Afegeix un element a la llista.";
 Blockly.Msg.LISTS_CREATE_WITH_TOOLTIP = "Crea una llista amb qualsevol nombre d'elements.";
@@ -94,18 +103,24 @@ Blockly.Msg.LISTS_GET_INDEX_RANDOM = "a l'atzar";
 Blockly.Msg.LISTS_GET_INDEX_REMOVE = "esborra";
 Blockly.Msg.LISTS_GET_INDEX_TAIL = "";  // untranslated
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FIRST = "Retorna el primer element d'una llista.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_END = "Retorna l'element de la posició especificada a la llista. #1 és l'últim element.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START = "Retorna l'element de la posició especificada a la llista. #1 és el primer element.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_END =
+    "Retorna l'element de la posició especificada a la llista. #1 és l'últim element.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START =
+    "Retorna l'element de la posició especificada a la llista. #1 és el primer element.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_LAST = "Retorna l'últim element d'una llista.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_RANDOM = "Retorna un element a l'atzar d'una llista.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FIRST = "Esborra i retorna el primer element d'una llista.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END = "Esborra i retorna l'element de la posició especificada de la llista. #1 és l'últim element.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START = "Esborra i retorna l'element de la posició especificada de la llista. #1 és el primer element.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END =
+    "Esborra i retorna l'element de la posició especificada de la llista. #1 és l'últim element.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START =
+    "Esborra i retorna l'element de la posició especificada de la llista. #1 és el primer element.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_LAST = "Esborra i retorna l'últim element d'una llista.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_RANDOM = "Esborra i retorna un element a l'atzar d'una llista.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FIRST = "Esborra el primer element d'una llista.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END = "Esborra l'element de la posició especificada de la llista. #1 és l'últim element.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START = "Esborra l'element de la posició especificada de la llista. #1 és el primer element.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END =
+    "Esborra l'element de la posició especificada de la llista. #1 és l'últim element.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START =
+    "Esborra l'element de la posició especificada de la llista. #1 és el primer element.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_LAST = "Esborra l'últim element d'una llista.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_RANDOM = "Esborra un element a l'atzar d'una llista.";
 Blockly.Msg.LISTS_GET_SUBLIST_END_FROM_END = "fins # des del final";
@@ -120,7 +135,8 @@ Blockly.Msg.LISTS_GET_SUBLIST_TOOLTIP = "Crea una còpia de la part especificada
 Blockly.Msg.LISTS_INDEX_OF_FIRST = "buscar primera aparició d'un element";
 Blockly.Msg.LISTS_INDEX_OF_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#Getting_Items_from_a_List";  // untranslated
 Blockly.Msg.LISTS_INDEX_OF_LAST = "buscar última aparició d'un element";
-Blockly.Msg.LISTS_INDEX_OF_TOOLTIP = "Retorna l'índex de la primera/última aparició d'un element a la llista. Retorna 0 si no s'hi troba el text.";
+Blockly.Msg.LISTS_INDEX_OF_TOOLTIP =
+    "Retorna l'índex de la primera/última aparició d'un element a la llista. Retorna 0 si no s'hi troba el text.";
 Blockly.Msg.LISTS_INLIST = "en la llista";
 Blockly.Msg.LISTS_IS_EMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#is_empty";  // untranslated
 Blockly.Msg.LISTS_IS_EMPTY_TITLE = "%1 és buida";
@@ -135,13 +151,17 @@ Blockly.Msg.LISTS_SET_INDEX_INPUT_TO = "com";
 Blockly.Msg.LISTS_SET_INDEX_INSERT = "insereix a";
 Blockly.Msg.LISTS_SET_INDEX_SET = "modifica";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FIRST = "Insereix l'element al principi d'una llista.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END = "Insereix l'element a la posició especificada d'una llista. #1 és l'últim element.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START = "Insereix l'element a la posició especificada d'una llista. #1 és el primer element.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END =
+    "Insereix l'element a la posició especificada d'una llista. #1 és l'últim element.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START =
+    "Insereix l'element a la posició especificada d'una llista. #1 és el primer element.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_LAST = "Afegeix l'element al final d'una llista.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_RANDOM = "Insereix l'element en una posició a l'atzar d'una llista.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FIRST = "Modifica el primer element d'una llista.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END = "Modifica l'element de la posició especificada d'una llista. #1 és l'últim element.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START = "Modifica l'element de la posició especificada d'una llista. #1 és el primer element.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END =
+    "Modifica l'element de la posició especificada d'una llista. #1 és l'últim element.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START =
+    "Modifica l'element de la posició especificada d'una llista. #1 és el primer element.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_LAST = "Modifica l'últim element d'una llista.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_RANDOM = "Modifica un element a l'atzar d'una llista.";
 Blockly.Msg.LISTS_TOOLTIP = "Retorna cert si la llista és buida.";
@@ -171,7 +191,8 @@ Blockly.Msg.LOGIC_TERNARY_CONDITION = "condició";
 Blockly.Msg.LOGIC_TERNARY_HELPURL = "https://en.wikipedia.org/wiki/%3F:";  // untranslated
 Blockly.Msg.LOGIC_TERNARY_IF_FALSE = "si és fals";
 Blockly.Msg.LOGIC_TERNARY_IF_TRUE = "si és cert";
-Blockly.Msg.LOGIC_TERNARY_TOOLTIP = "Comprova la condició de 'condició'. Si la condició és certa, retorna el valor 'si és cert'; en cas contrari, retorna el valor 'si és fals'.";
+Blockly.Msg.LOGIC_TERNARY_TOOLTIP =
+    "Comprova la condició de 'condició'. Si la condició és certa, retorna el valor 'si és cert'; en cas contrari, retorna el valor 'si és fals'.";
 Blockly.Msg.MATH_ADDITION_SYMBOL = "+";  // untranslated
 Blockly.Msg.MATH_ARITHMETIC_HELPURL = "https://ca.wikipedia.org/wiki/Aritm%C3%A8tica";
 Blockly.Msg.MATH_ARITHMETIC_TOOLTIP_ADD = "Retorna la suma dels dos nombres.";
@@ -184,7 +205,8 @@ Blockly.Msg.MATH_CHANGE_INPUT_BY = "per";
 Blockly.Msg.MATH_CHANGE_TITLE_CHANGE = "canvia";
 Blockly.Msg.MATH_CHANGE_TOOLTIP = "Afegeix un nombre a la variable '%1'.";
 Blockly.Msg.MATH_CONSTANT_HELPURL = "https://ca.wikipedia.org/wiki/Constant_matem%C3%A0tica";
-Blockly.Msg.MATH_CONSTANT_TOOLTIP = "Retorna una de les constants més habituals: π (3,141…), e (2,718…), φ (1,618…), sqrt(2) (1,414…), sqrt(½) (0,707…), o ∞ (infinit).";
+Blockly.Msg.MATH_CONSTANT_TOOLTIP =
+    "Retorna una de les constants més habituals: π (3,141…), e (2,718…), φ (1,618…), sqrt(2) (1,414…), sqrt(½) (0,707…), o ∞ (infinit).";
 Blockly.Msg.MATH_CONSTRAIN_HELPURL = "https://en.wikipedia.org/wiki/Clamping_%28graphics%29";  // untranslated
 Blockly.Msg.MATH_CONSTRAIN_TITLE = "limitar %1 entre %2 i %3";
 Blockly.Msg.MATH_CONSTRAIN_TOOLTIP = "Limita un nombre per tal que estigui entre els límits especificats (inclosos).";
@@ -195,7 +217,8 @@ Blockly.Msg.MATH_IS_NEGATIVE = "és negatiu";
 Blockly.Msg.MATH_IS_ODD = "és senar";
 Blockly.Msg.MATH_IS_POSITIVE = "és positiu";
 Blockly.Msg.MATH_IS_PRIME = "és primer";
-Blockly.Msg.MATH_IS_TOOLTIP = "Comprova si un nombre és parell, senar, enter, positium negatiu, o si és divisible per un cert nombre. Retorna cert o fals.";
+Blockly.Msg.MATH_IS_TOOLTIP =
+    "Comprova si un nombre és parell, senar, enter, positium negatiu, o si és divisible per un cert nombre. Retorna cert o fals.";
 Blockly.Msg.MATH_IS_WHOLE = "és enter";
 Blockly.Msg.MATH_MODULO_HELPURL = "https://ca.wikipedia.org/wiki/Residu_%28aritm%C3%A8tica%29";
 Blockly.Msg.MATH_MODULO_TITLE = "residu de %1 ÷ %2";
@@ -278,7 +301,8 @@ Blockly.Msg.PROCEDURES_DEFRETURN_TOOLTIP = "Crea una funció amb una sortida.";
 Blockly.Msg.PROCEDURES_DEF_DUPLICATE_WARNING = "Advertència: Aquesta funció té paràmetres duplicats.";
 Blockly.Msg.PROCEDURES_HIGHLIGHT_DEF = "Iluminar la definició de la funció";
 Blockly.Msg.PROCEDURES_IFRETURN_TOOLTIP = "Si el valor és cert, llavors retorna un segon valor.";
-Blockly.Msg.PROCEDURES_IFRETURN_WARNING = "Advertència: Aquest bloc només es pot utilitzar dins de la definició d'una funció.";
+Blockly.Msg.PROCEDURES_IFRETURN_WARNING =
+    "Advertència: Aquest bloc només es pot utilitzar dins de la definició d'una funció.";
 Blockly.Msg.PROCEDURES_MUTATORARG_TITLE = "nom d'entrada:";
 Blockly.Msg.PROCEDURES_MUTATORARG_TOOLTIP = "Add an input to the function.";  // untranslated
 Blockly.Msg.PROCEDURES_MUTATORCONTAINER_TITLE = "entrades";
@@ -322,7 +346,8 @@ Blockly.Msg.TEXT_INDEXOF_INPUT_INTEXT = "en el text";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_FIRST = "trobar la primera aparició del text";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_LAST = "trobar l'última aparició del text";
 Blockly.Msg.TEXT_INDEXOF_TAIL = "";  // untranslated
-Blockly.Msg.TEXT_INDEXOF_TOOLTIP = "Retorna l'índex de la primera/última aparició del primer text dins el segon. Retorna 0 si no es troba el text.";
+Blockly.Msg.TEXT_INDEXOF_TOOLTIP =
+    "Retorna l'índex de la primera/última aparició del primer text dins el segon. Retorna 0 si no es troba el text.";
 Blockly.Msg.TEXT_ISEMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Text#Checking_for_empty_text";  // untranslated
 Blockly.Msg.TEXT_ISEMPTY_TITLE = "%1 està buit";
 Blockly.Msg.TEXT_ISEMPTY_TOOLTIP = "Retorna cert si el text proporcionat està buit.";

@@ -43,7 +43,8 @@ Blockly.Msg.CONTROLS_FOREACH_TOOLTIP = "הגדר את המשתנה '%1' לכל �
 Blockly.Msg.CONTROLS_FOR_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#count_with";
 Blockly.Msg.CONTROLS_FOR_INPUT_FROM_TO_BY = "מ- %1 ל- %2 עד- %3";
 Blockly.Msg.CONTROLS_FOR_INPUT_WITH = "תספור עם";
-Blockly.Msg.CONTROLS_FOR_TOOLTIP = "Have the variable %1 take on the values from the start number to the end number, counting by the specified interval, and do the specified blocks.";
+Blockly.Msg.CONTROLS_FOR_TOOLTIP =
+    "Have the variable %1 take on the values from the start number to the end number, counting by the specified interval, and do the specified blocks.";
 Blockly.Msg.CONTROLS_IF_ELSEIF_TOOLTIP = "תוסיף תנאי לבלוק If.";
 Blockly.Msg.CONTROLS_IF_ELSE_TOOLTIP = "לסיום, כל התנאים תקפים לגבי בלוק If.";
 Blockly.Msg.CONTROLS_IF_HELPURL = "http://code.google.com/p/blockly/wiki/If_Then";
@@ -52,9 +53,12 @@ Blockly.Msg.CONTROLS_IF_MSG_ELSE = "אחרת";
 Blockly.Msg.CONTROLS_IF_MSG_ELSEIF = "אחרת אם";
 Blockly.Msg.CONTROLS_IF_MSG_IF = "אם";
 Blockly.Msg.CONTROLS_IF_TOOLTIP_1 = "אם ערך נכון, בצע מספר חישובים.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_2 = "אם הערך נכון, אז תבצע את הבלוק הראשון של הצהרות. אחרת, בצע את הבלוק השני של הצהרות.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_3 = "אם הערך הראשון שווה לנכון, אז בצע את הבלוק הראשון של הצהרות. אחרת, אם הערך השני נכון, בצע את הבלוק השני של הצהרות.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_4 = "אם הערך הראשון נכון, אז תבצע את הבלוק הראשון של הצהרות. אחרת, אם הערך השני נכון, בצע את הבלוק השני של הצהרות. אם אף אחד מהם לא נכון, בצע את הבלוק האחרון של הצהרות.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_2 =
+    "אם הערך נכון, אז תבצע את הבלוק הראשון של הצהרות. אחרת, בצע את הבלוק השני של הצהרות.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_3 =
+    "אם הערך הראשון שווה לנכון, אז בצע את הבלוק הראשון של הצהרות. אחרת, אם הערך השני נכון, בצע את הבלוק השני של הצהרות.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_4 =
+    "אם הערך הראשון נכון, אז תבצע את הבלוק הראשון של הצהרות. אחרת, אם הערך השני נכון, בצע את הבלוק השני של הצהרות. אם אף אחד מהם לא נכון, בצע את הבלוק האחרון של הצהרות.";
 Blockly.Msg.CONTROLS_REPEAT_HELPURL = "http://en.wikipedia.org/wiki/For_loop";
 Blockly.Msg.CONTROLS_REPEAT_INPUT_DO = "תעשה";
 Blockly.Msg.CONTROLS_REPEAT_TITLE = "חזור על הפעולה %1 פעמים";
@@ -99,8 +103,10 @@ Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START = "מחזיר פריט במי
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_LAST = "מחזיר את הפריט האחרון ברשימה.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_RANDOM = "מחזיר פריט אקראי מהרשימה.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FIRST = "מסיר ומחזיר את הפריט הראשון ברשימה.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END = "מסיר ומחזיר את הפריט במיקום שצוין ברשימה.  #1 הוא הפריט האחרון.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START = "מסיר ומחזיר את הפריט במיקום שצוין ברשימה.  #1 הוא הפריט הראשון.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END =
+    "מסיר ומחזיר את הפריט במיקום שצוין ברשימה.  #1 הוא הפריט האחרון.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START =
+    "מסיר ומחזיר את הפריט במיקום שצוין ברשימה.  #1 הוא הפריט הראשון.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_LAST = "מסיר ומחזיר את הפריט האחרון ברשימה.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_RANDOM = "מחק והחזר פריט אקראי מהרשימה.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FIRST = "הסר את הפריט הראשון ברשימה.";
@@ -120,7 +126,8 @@ Blockly.Msg.LISTS_GET_SUBLIST_TOOLTIP = "יוצרת עותק של חלק מסו�
 Blockly.Msg.LISTS_INDEX_OF_FIRST = "מחזירה את המיקום הראשון של פריט ברשימה";
 Blockly.Msg.LISTS_INDEX_OF_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#Getting_Items_from_a_List";
 Blockly.Msg.LISTS_INDEX_OF_LAST = "מחזירה את המיקום האחרון של פריט ברשימה";
-Blockly.Msg.LISTS_INDEX_OF_TOOLTIP = "מחזירה את האינדקס של המופע ראשון/אחרון של הפריט ברשימה.  מחזירה 0 אם טקסט אינו נמצא.";
+Blockly.Msg.LISTS_INDEX_OF_TOOLTIP =
+    "מחזירה את האינדקס של המופע ראשון/אחרון של הפריט ברשימה.  מחזירה 0 אם טקסט אינו נמצא.";
 Blockly.Msg.LISTS_INLIST = "ברשימה";
 Blockly.Msg.LISTS_IS_EMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#is_empty";
 Blockly.Msg.LISTS_IS_EMPTY_TITLE = "%1 הוא ריק";
@@ -171,9 +178,11 @@ Blockly.Msg.LOGIC_TERNARY_CONDITION = "בדיקה";
 Blockly.Msg.LOGIC_TERNARY_HELPURL = "http://en.wikipedia.org/wiki/%3F:";
 Blockly.Msg.LOGIC_TERNARY_IF_FALSE = "אם שגוי";
 Blockly.Msg.LOGIC_TERNARY_IF_TRUE = "אם נכון";
-Blockly.Msg.LOGIC_TERNARY_TOOLTIP = "בדוק את התנאי ב'מבחן'. אם התנאי נכון, תחזיר את הערך 'אם נכון'; אחרת תחזיר את הערך 'אם שגוי'.";
+Blockly.Msg.LOGIC_TERNARY_TOOLTIP =
+    "בדוק את התנאי ב'מבחן'. אם התנאי נכון, תחזיר את הערך 'אם נכון'; אחרת תחזיר את הערך 'אם שגוי'.";
 Blockly.Msg.MATH_ADDITION_SYMBOL = "+";
-Blockly.Msg.MATH_ARITHMETIC_HELPURL = "http://he.wikipedia.org/wiki/%D7%90%D7%A8%D7%99%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94";
+Blockly.Msg.MATH_ARITHMETIC_HELPURL =
+    "http://he.wikipedia.org/wiki/%D7%90%D7%A8%D7%99%D7%AA%D7%9E%D7%98%D7%99%D7%A7%D7%94";
 Blockly.Msg.MATH_ARITHMETIC_TOOLTIP_ADD = "תחזיר את סכום שני המספרים.";
 Blockly.Msg.MATH_ARITHMETIC_TOOLTIP_DIVIDE = "Return the quotient of the two numbers.";
 Blockly.Msg.MATH_ARITHMETIC_TOOLTIP_MINUS = "Return the difference of the two numbers.";
@@ -184,7 +193,8 @@ Blockly.Msg.MATH_CHANGE_INPUT_BY = "by";
 Blockly.Msg.MATH_CHANGE_TITLE_CHANGE = "שנה";
 Blockly.Msg.MATH_CHANGE_TOOLTIP = "הוסף מספר למשתנה '%1'.";
 Blockly.Msg.MATH_CONSTANT_HELPURL = "http://en.wikipedia.org/wiki/Mathematical_constant";
-Blockly.Msg.MATH_CONSTANT_TOOLTIP = "Return one of the common constants: π (3.141…), e (2.718…), φ (1.618…), sqrt(2) (1.414…), sqrt(½) (0.707…), or ∞ (infinity).";
+Blockly.Msg.MATH_CONSTANT_TOOLTIP =
+    "Return one of the common constants: π (3.141…), e (2.718…), φ (1.618…), sqrt(2) (1.414…), sqrt(½) (0.707…), or ∞ (infinity).";
 Blockly.Msg.MATH_CONSTRAIN_HELPURL = "http://en.wikipedia.org/wiki/Clamping_%28graphics%29";
 Blockly.Msg.MATH_CONSTRAIN_TITLE = "constrain %1 low %2 high %3";
 Blockly.Msg.MATH_CONSTRAIN_TOOLTIP = "Constrain a number to be between the specified limits (inclusive).";
@@ -195,7 +205,8 @@ Blockly.Msg.MATH_IS_NEGATIVE = "שלילי";
 Blockly.Msg.MATH_IS_ODD = "אי-זוגי";
 Blockly.Msg.MATH_IS_POSITIVE = "חיובי";
 Blockly.Msg.MATH_IS_PRIME = "ראשוני";
-Blockly.Msg.MATH_IS_TOOLTIP = "Check if a number is an even, odd, prime, whole, positive, negative, or if it is divisible by certain number.  Returns true or false.";
+Blockly.Msg.MATH_IS_TOOLTIP =
+    "Check if a number is an even, odd, prime, whole, positive, negative, or if it is divisible by certain number.  Returns true or false.";
 Blockly.Msg.MATH_IS_WHOLE = "שלם";
 Blockly.Msg.MATH_MODULO_HELPURL = "http://en.wikipedia.org/wiki/Modulo_operation";
 Blockly.Msg.MATH_MODULO_TITLE = "שארית החילוק %1 ÷ %2";
@@ -322,7 +333,8 @@ Blockly.Msg.TEXT_INDEXOF_INPUT_INTEXT = "in text";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_FIRST = "find first occurrence of text";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_LAST = "find last occurrence of text";
 Blockly.Msg.TEXT_INDEXOF_TAIL = "";  // untranslated
-Blockly.Msg.TEXT_INDEXOF_TOOLTIP = "Returns the index of the first/last occurrence of first text in the second text.  Returns 0 if text is not found.";
+Blockly.Msg.TEXT_INDEXOF_TOOLTIP =
+    "Returns the index of the first/last occurrence of first text in the second text.  Returns 0 if text is not found.";
 Blockly.Msg.TEXT_ISEMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Text#Checking_for_empty_text";
 Blockly.Msg.TEXT_ISEMPTY_TITLE = "%1 is empty";
 Blockly.Msg.TEXT_ISEMPTY_TOOLTIP = "Returns true if the provided text is empty.";

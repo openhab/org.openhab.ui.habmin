@@ -53,8 +53,10 @@ Blockly.Msg.CONTROLS_IF_MSG_ELSEIF = "他でもし";
 Blockly.Msg.CONTROLS_IF_MSG_IF = "もし";
 Blockly.Msg.CONTROLS_IF_TOOLTIP_1 = "値が true の場合はその後ステートメントを行をいくつかします。";
 Blockly.Msg.CONTROLS_IF_TOOLTIP_2 = "値が true 場合は、ステートメントの最初のブロックを行います。それ以外の場合は、ステートメントの 2 番目のブロックを行います。";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_3 = "最初の値が true 場合は、ステートメントの最初のブロックを行います。それ以外の場合は、2 番目の値が true の場合、ステートメントの 2 番目のブロックをします。";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_4 = "最初の値が true 場合は、ステートメントの最初のブロックを行います。2 番目の値が true の場合は、ステートメントの 2 番目のブロックを行います。それ以外の場合は最後のブロックのステートメントを行います。";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_3 =
+    "最初の値が true 場合は、ステートメントの最初のブロックを行います。それ以外の場合は、2 番目の値が true の場合、ステートメントの 2 番目のブロックをします。";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_4 =
+    "最初の値が true 場合は、ステートメントの最初のブロックを行います。2 番目の値が true の場合は、ステートメントの 2 番目のブロックを行います。それ以外の場合は最後のブロックのステートメントを行います。";
 Blockly.Msg.CONTROLS_REPEAT_HELPURL = "https://ja.wikipedia.org/wiki/for文";
 Blockly.Msg.CONTROLS_REPEAT_INPUT_DO = "してください";
 Blockly.Msg.CONTROLS_REPEAT_TITLE = "%1 回、繰り返します";
@@ -184,7 +186,8 @@ Blockly.Msg.MATH_CHANGE_INPUT_BY = "に";
 Blockly.Msg.MATH_CHANGE_TITLE_CHANGE = "変更";
 Blockly.Msg.MATH_CHANGE_TOOLTIP = "'%1' をたします。";
 Blockly.Msg.MATH_CONSTANT_HELPURL = "https://ja.wikipedia.org/wiki/数学定数";
-Blockly.Msg.MATH_CONSTANT_TOOLTIP = "いずれかの共通の定数のを返す: π (3.141…), e (2.718…), φ (1.618…), sqrt(2) (1.414…), sqrt(½) (0.707…), or ∞ (無限).";
+Blockly.Msg.MATH_CONSTANT_TOOLTIP =
+    "いずれかの共通の定数のを返す: π (3.141…), e (2.718…), φ (1.618…), sqrt(2) (1.414…), sqrt(½) (0.707…), or ∞ (無限).";
 Blockly.Msg.MATH_CONSTRAIN_HELPURL = "https://en.wikipedia.org/wiki/Clamping_%28graphics%29";
 Blockly.Msg.MATH_CONSTRAIN_TITLE = "制限%1下リミット%2上限リミット%3";
 Blockly.Msg.MATH_CONSTRAIN_TOOLTIP = "値を、上限 x と下限 y のあいだに制限んする（上限と下限が、x と  y　とに同じ場合わ、上限の値は　x, 下限の値はy）。";
@@ -195,7 +198,8 @@ Blockly.Msg.MATH_IS_NEGATIVE = "負の値";
 Blockly.Msg.MATH_IS_ODD = "奇数です。";
 Blockly.Msg.MATH_IS_POSITIVE = "正の値";
 Blockly.Msg.MATH_IS_PRIME = "素数です";
-Blockly.Msg.MATH_IS_TOOLTIP = "数字が、偶数、奇数、素数、整数、正数、負数、またはそれが特定の数で割り切れる場合かどうかを確認してください。どの制限が一つでも本当でしたら true をかえしてください、そうでない場合わ falseを返してください。";
+Blockly.Msg.MATH_IS_TOOLTIP =
+    "数字が、偶数、奇数、素数、整数、正数、負数、またはそれが特定の数で割り切れる場合かどうかを確認してください。どの制限が一つでも本当でしたら true をかえしてください、そうでない場合わ falseを返してください。";
 Blockly.Msg.MATH_IS_WHOLE = "は整数";
 Blockly.Msg.MATH_MODULO_HELPURL = "https://en.wikipedia.org/wiki/Modulo_operation";
 Blockly.Msg.MATH_MODULO_TITLE = "残りの %1 ÷ %2";

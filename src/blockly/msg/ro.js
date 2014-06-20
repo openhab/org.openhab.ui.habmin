@@ -28,22 +28,27 @@ Blockly.Msg.COLOUR_RGB_GREEN = "verde";
 Blockly.Msg.COLOUR_RGB_HELPURL = "http://www.december.com/html/spec/colorper.html";
 Blockly.Msg.COLOUR_RGB_RED = "roşu";
 Blockly.Msg.COLOUR_RGB_TITLE = "colorează cu";
-Blockly.Msg.COLOUR_RGB_TOOLTIP = "Creează o culoare cu suma specificată de roşu, verde şi albastru.  Toate valorile trebuie să fie între 0 şi 100.";
+Blockly.Msg.COLOUR_RGB_TOOLTIP =
+    "Creează o culoare cu suma specificată de roşu, verde şi albastru.  Toate valorile trebuie să fie între 0 şi 100.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#Loop_Termination_Blocks";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_BREAK = "ieşi din bucla";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_CONTINUE = "continuă cu următoarea iterație a buclei";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_BREAK = "Ieși din bucla care conţine.";
-Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE = "Sari peste restul aceastei bucle, şi continuă cu urmatoarea iteratie.";
-Blockly.Msg.CONTROLS_FLOW_STATEMENTS_WARNING = "Avertisment: Acest bloc pote fi utilizat numai în interiorul unei bucle.";
+Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE =
+    "Sari peste restul aceastei bucle, şi continuă cu urmatoarea iteratie.";
+Blockly.Msg.CONTROLS_FLOW_STATEMENTS_WARNING =
+    "Avertisment: Acest bloc pote fi utilizat numai în interiorul unei bucle.";
 Blockly.Msg.CONTROLS_FOREACH_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#for_each for each block";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST = "în listă";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST_TAIL = "";  // untranslated
 Blockly.Msg.CONTROLS_FOREACH_INPUT_ITEM = "pentru fiecare element";
-Blockly.Msg.CONTROLS_FOREACH_TOOLTIP = "Pentru fiecare element din listă, setaţi variabila '%1' ca valoarea elementului, şi apoi faceţi unele declaraţii.";
+Blockly.Msg.CONTROLS_FOREACH_TOOLTIP =
+    "Pentru fiecare element din listă, setaţi variabila '%1' ca valoarea elementului, şi apoi faceţi unele declaraţii.";
 Blockly.Msg.CONTROLS_FOR_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#count_with";
 Blockly.Msg.CONTROLS_FOR_INPUT_FROM_TO_BY = "de la %1 la %2 prin %3";
 Blockly.Msg.CONTROLS_FOR_INPUT_WITH = "numără cu";
-Blockly.Msg.CONTROLS_FOR_TOOLTIP = "Cu variablia %1 ia o valoare din numărul început la numărul final, numara in intervalul specificat, apoi face blocurile specificate.";
+Blockly.Msg.CONTROLS_FOR_TOOLTIP =
+    "Cu variablia %1 ia o valoare din numărul început la numărul final, numara in intervalul specificat, apoi face blocurile specificate.";
 Blockly.Msg.CONTROLS_IF_ELSEIF_TOOLTIP = "Adăugaţi o condiţie in blocul if.";
 Blockly.Msg.CONTROLS_IF_ELSE_TOOLTIP = "Adauga o stare finala, cuprinde toata conditia din blocul if.";
 Blockly.Msg.CONTROLS_IF_HELPURL = "http://code.google.com/p/blockly/wiki/If_Then";
@@ -52,9 +57,12 @@ Blockly.Msg.CONTROLS_IF_MSG_ELSE = "altfel";
 Blockly.Msg.CONTROLS_IF_MSG_ELSEIF = "altfel dacă";
 Blockly.Msg.CONTROLS_IF_MSG_IF = "dacă";
 Blockly.Msg.CONTROLS_IF_TOOLTIP_1 = "Dacă o valoare este adevărată, atunci fa unele declaraţii.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_2 = "Dacă o valoare este adevărat, atunci face primul bloc de declaraţii.  Altfel, face al doilea bloc de declaraţii.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_3 = "Dacă prima valoare este adevărat, atunci face primul bloc de declaraţii.  Altfel, dacă a doua valoare este adevărat, face al doilea bloc de declaraţii.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_4 = "Dacă prima valoare este adevărat, atunci face primul bloc de declaraţii.  Altfel, dacă a doua valoare este adevărat, face al doilea bloc de declaraţii.  În cazul în care niciuna din  valorilor nu este adevărat, face ultimul bloc de declaraţii.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_2 =
+    "Dacă o valoare este adevărat, atunci face primul bloc de declaraţii.  Altfel, face al doilea bloc de declaraţii.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_3 =
+    "Dacă prima valoare este adevărat, atunci face primul bloc de declaraţii.  Altfel, dacă a doua valoare este adevărat, face al doilea bloc de declaraţii.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_4 =
+    "Dacă prima valoare este adevărat, atunci face primul bloc de declaraţii.  Altfel, dacă a doua valoare este adevărat, face al doilea bloc de declaraţii.  În cazul în care niciuna din  valorilor nu este adevărat, face ultimul bloc de declaraţii.";
 Blockly.Msg.CONTROLS_REPEAT_HELPURL = "https://en.wikipedia.org/wiki/For_loop";
 Blockly.Msg.CONTROLS_REPEAT_INPUT_DO = "fă";
 Blockly.Msg.CONTROLS_REPEAT_TITLE = "repetă de %1 ori";
@@ -80,7 +88,8 @@ Blockly.Msg.LISTS_CREATE_EMPTY_HELPURL = "https://en.wikipedia.org/wiki/Linked_l
 Blockly.Msg.LISTS_CREATE_EMPTY_TITLE = "creează listă goală";
 Blockly.Msg.LISTS_CREATE_EMPTY_TOOLTIP = "Returnează o listă, de lungime 0, care nu conţine înregistrări de date";
 Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TITLE_ADD = "listă";
-Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TOOLTIP = "Adaugă, elimină sau reordonează secţiuni ca să reconfiguraţi aceste blocuri de listă.";
+Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TOOLTIP =
+    "Adaugă, elimină sau reordonează secţiuni ca să reconfiguraţi aceste blocuri de listă.";
 Blockly.Msg.LISTS_CREATE_WITH_INPUT_WITH = "creează listă cu";
 Blockly.Msg.LISTS_CREATE_WITH_ITEM_TOOLTIP = "Adăugaţi un element la listă.";
 Blockly.Msg.LISTS_CREATE_WITH_TOOLTIP = "Creaţi o listă cu orice număr de elemente.";
@@ -94,18 +103,24 @@ Blockly.Msg.LISTS_GET_INDEX_RANDOM = "aleator";
 Blockly.Msg.LISTS_GET_INDEX_REMOVE = "elimină";
 Blockly.Msg.LISTS_GET_INDEX_TAIL = "";  // untranslated
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FIRST = "Returnează primul element dintr-o listă.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_END = "Returneaza elementul la poziţia specificată într-o listă.  #1 este ultimul element.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START = "Returneaza elementul la poziţia specificată într-o listă.  #1 este primul element.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_END =
+    "Returneaza elementul la poziţia specificată într-o listă.  #1 este ultimul element.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START =
+    "Returneaza elementul la poziţia specificată într-o listă.  #1 este primul element.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_LAST = "Returnează ultimul element într-o listă.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_RANDOM = "Returneaza un element aleatoriu într-o listă.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FIRST = "Elimină şi returnează primul element într-o listă.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END = "Elimină şi returneaza elementul la poziţia specificată într-o listă.  #1 este ultimul element.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START = "Elimină şi returneaza elementul la poziţia specificată într-o listă.  #1 este primul element.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END =
+    "Elimină şi returneaza elementul la poziţia specificată într-o listă.  #1 este ultimul element.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START =
+    "Elimină şi returneaza elementul la poziţia specificată într-o listă.  #1 este primul element.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_LAST = "Elimină şi returnează ultimul element într-o listă.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_RANDOM = "Elimină şi returnează un element aleatoriu într-o listă.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FIRST = "Elimină primul element într-o listă.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END = "Elimină elementul la poziţia specificată într-o listă.  #1 este ultimul element.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START = "Elimină elementul la poziţia specificată într-o listă.  #1 este primul element.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END =
+    "Elimină elementul la poziţia specificată într-o listă.  #1 este ultimul element.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START =
+    "Elimină elementul la poziţia specificată într-o listă.  #1 este primul element.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_LAST = "Elimină ultimul element într-o listă.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_RANDOM = "Elimină un element aleatoriu într-o listă.";
 Blockly.Msg.LISTS_GET_SUBLIST_END_FROM_END = "la # de la sfarsit";
@@ -120,7 +135,8 @@ Blockly.Msg.LISTS_GET_SUBLIST_TOOLTIP = "Creează o copie a porţiunii specifica
 Blockly.Msg.LISTS_INDEX_OF_FIRST = "Găseşte prima apariţie a elementului";
 Blockly.Msg.LISTS_INDEX_OF_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#Getting_Items_from_a_List";
 Blockly.Msg.LISTS_INDEX_OF_LAST = "găseşte ultima apariţie a elementului";
-Blockly.Msg.LISTS_INDEX_OF_TOOLTIP = "Returneaza indexul de la prima/ultima aparitie a elementuli din lista. Returneaza 0 daca textul nu este gasit.";
+Blockly.Msg.LISTS_INDEX_OF_TOOLTIP =
+    "Returneaza indexul de la prima/ultima aparitie a elementuli din lista. Returneaza 0 daca textul nu este gasit.";
 Blockly.Msg.LISTS_INLIST = "în listă";
 Blockly.Msg.LISTS_IS_EMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#is_empty";
 Blockly.Msg.LISTS_IS_EMPTY_TITLE = "%1 este gol";
@@ -129,19 +145,24 @@ Blockly.Msg.LISTS_LENGTH_TITLE = "lungime de %1";
 Blockly.Msg.LISTS_LENGTH_TOOLTIP = "Returnează lungimea unei liste.";
 Blockly.Msg.LISTS_REPEAT_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#create_list_with";
 Blockly.Msg.LISTS_REPEAT_TITLE = "creaza lista cu %1 elemente repetate de %2 ori";
-Blockly.Msg.LISTS_REPEAT_TOOLTIP = "Creează o listă alcătuită dintr-o anumită valoare repetată de numărul specificat de ori.";
+Blockly.Msg.LISTS_REPEAT_TOOLTIP =
+    "Creează o listă alcătuită dintr-o anumită valoare repetată de numărul specificat de ori.";
 Blockly.Msg.LISTS_SET_INDEX_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#in_list_..._set";
 Blockly.Msg.LISTS_SET_INDEX_INPUT_TO = "ca";
 Blockly.Msg.LISTS_SET_INDEX_INSERT = "introduceţi la";
 Blockly.Msg.LISTS_SET_INDEX_SET = "seteaza";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FIRST = "Inserează elementul la începutul unei liste.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END = "Inserează elementul la poziţia specificată într-o listă.  #1 este ultimul element.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START = "Inserează elementul la poziţia specificată într-o listă.  #1 este primul element.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END =
+    "Inserează elementul la poziţia specificată într-o listă.  #1 este ultimul element.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START =
+    "Inserează elementul la poziţia specificată într-o listă.  #1 este primul element.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_LAST = "Adăugă elementul la sfârşitul unei liste.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_RANDOM = "Inserează elementul aleatoriu într-o listă.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FIRST = "Setează primul element într-o listă.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END = "Setează elementul la poziţia specificată într-o listă.  #1 este ultimul element.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START = "Setează elementul la poziţia specificată într-o listă.  #1 este primul element.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END =
+    "Setează elementul la poziţia specificată într-o listă.  #1 este ultimul element.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START =
+    "Setează elementul la poziţia specificată într-o listă.  #1 este primul element.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_LAST = "Setează ultimul element într-o listă.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_RANDOM = "Setează un element aleator într-o listă.";
 Blockly.Msg.LISTS_TOOLTIP = "Returnează adevărat dacă lista este goală.";
@@ -152,13 +173,16 @@ Blockly.Msg.LOGIC_BOOLEAN_TRUE = "adevărat";
 Blockly.Msg.LOGIC_COMPARE_HELPURL = "https://en.wikipedia.org/wiki/Inequality_(mathematics)";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_EQ = "Returnează adevărat dacă ambele intrări sunt egale.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GT = "Returnează adevărat dacă prima intrare este mai mare decât a doua intrare.";
-Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GTE = "Returnează adevărat dacă prima intrare este mai mare sau egală cu a doua intrare.";
+Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GTE =
+    "Returnează adevărat dacă prima intrare este mai mare sau egală cu a doua intrare.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LT = "Returnează adevărat dacă prima intrare este mai mică decât a doua intrare.";
-Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LTE = "Returnează adevărat dacă prima intrare este mai mică sau egală cu a doua intrare.";
+Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LTE =
+    "Returnează adevărat dacă prima intrare este mai mică sau egală cu a doua intrare.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_NEQ = "Returnează adevărat daca cele două intrări nu sunt egale.";
 Blockly.Msg.LOGIC_NEGATE_HELPURL = "http://code.google.com/p/blockly/wiki/Not";
 Blockly.Msg.LOGIC_NEGATE_TITLE = "non %1";
-Blockly.Msg.LOGIC_NEGATE_TOOLTIP = "Returnează adevărat dacă intrarea este falsă.  Returnează fals dacă intrarea este adevărată.";
+Blockly.Msg.LOGIC_NEGATE_TOOLTIP =
+    "Returnează adevărat dacă intrarea este falsă.  Returnează fals dacă intrarea este adevărată.";
 Blockly.Msg.LOGIC_NULL = "nul";
 Blockly.Msg.LOGIC_NULL_HELPURL = "https://en.wikipedia.org/wiki/Nullable_type";
 Blockly.Msg.LOGIC_NULL_TOOLTIP = "returnează nul.";
@@ -171,20 +195,23 @@ Blockly.Msg.LOGIC_TERNARY_CONDITION = "test";
 Blockly.Msg.LOGIC_TERNARY_HELPURL = "https://en.wikipedia.org/wiki/%3F:";
 Blockly.Msg.LOGIC_TERNARY_IF_FALSE = "dacă este fals";
 Blockly.Msg.LOGIC_TERNARY_IF_TRUE = "dacă este adevărat";
-Blockly.Msg.LOGIC_TERNARY_TOOLTIP = "Verifică condiţia din \"test\". Dacă condiţia este adevărată, returnează valoarea \"în cazul în care adevărat\"; în caz contrar întoarce valoarea \"în cazul în care e fals\".";
+Blockly.Msg.LOGIC_TERNARY_TOOLTIP =
+    "Verifică condiţia din \"test\". Dacă condiţia este adevărată, returnează valoarea \"în cazul în care adevărat\"; în caz contrar întoarce valoarea \"în cazul în care e fals\".";
 Blockly.Msg.MATH_ADDITION_SYMBOL = "+";
 Blockly.Msg.MATH_ARITHMETIC_HELPURL = "https://ro.wikipedia.org/wiki/Aritmetic%C4%83";
 Blockly.Msg.MATH_ARITHMETIC_TOOLTIP_ADD = "Returnează suma a două numere.";
 Blockly.Msg.MATH_ARITHMETIC_TOOLTIP_DIVIDE = "Returnează câtul celor două numere.";
 Blockly.Msg.MATH_ARITHMETIC_TOOLTIP_MINUS = "Returneaza diferenţa dintre cele două numere.";
 Blockly.Msg.MATH_ARITHMETIC_TOOLTIP_MULTIPLY = "Returnează produsul celor două numere.";
-Blockly.Msg.MATH_ARITHMETIC_TOOLTIP_POWER = "Returneaza numărul rezultat prin ridicarea primului număr la puterea celui de-al doilea.";
+Blockly.Msg.MATH_ARITHMETIC_TOOLTIP_POWER =
+    "Returneaza numărul rezultat prin ridicarea primului număr la puterea celui de-al doilea.";
 Blockly.Msg.MATH_CHANGE_HELPURL = "https://en.wikipedia.org/wiki/Programming_idiom#Incrementing_a_counter";
 Blockly.Msg.MATH_CHANGE_INPUT_BY = "de";
 Blockly.Msg.MATH_CHANGE_TITLE_CHANGE = "schimbă";
 Blockly.Msg.MATH_CHANGE_TOOLTIP = "Adaugă un număr variabilei '%1'.";
 Blockly.Msg.MATH_CONSTANT_HELPURL = "https://ro.wikipedia.org/wiki/Constant%C4%83_matematic%C4%83";
-Blockly.Msg.MATH_CONSTANT_TOOLTIP = "Întoarcă una din constantele comune: π (3.141...), e (2.718...), φ (1,618...), sqrt(2) (1.414...), sqrt(½) (0.707...) sau ∞ (infinitate).";
+Blockly.Msg.MATH_CONSTANT_TOOLTIP =
+    "Întoarcă una din constantele comune: π (3.141...), e (2.718...), φ (1,618...), sqrt(2) (1.414...), sqrt(½) (0.707...) sau ∞ (infinitate).";
 Blockly.Msg.MATH_CONSTRAIN_HELPURL = "https://en.wikipedia.org/wiki/Clamping_%28graphics%29";
 Blockly.Msg.MATH_CONSTRAIN_TITLE = "constrânge %1 redus %2 ridicat %3";
 Blockly.Msg.MATH_CONSTRAIN_TOOLTIP = "Constrânge un număr să fie între limitele specificate (inclusiv).";
@@ -195,7 +222,8 @@ Blockly.Msg.MATH_IS_NEGATIVE = "este negativ";
 Blockly.Msg.MATH_IS_ODD = "este impar";
 Blockly.Msg.MATH_IS_POSITIVE = "este pozitiv";
 Blockly.Msg.MATH_IS_PRIME = "este prim";
-Blockly.Msg.MATH_IS_TOOLTIP = "Verifică dacă un număr este un par, impar, prim, întreg, pozitiv, negativ, sau dacă este divizibil cu un anumit număr.  Returnează true sau false.";
+Blockly.Msg.MATH_IS_TOOLTIP =
+    "Verifică dacă un număr este un par, impar, prim, întreg, pozitiv, negativ, sau dacă este divizibil cu un anumit număr.  Returnează true sau false.";
 Blockly.Msg.MATH_IS_WHOLE = "este întreg";
 Blockly.Msg.MATH_MODULO_HELPURL = "https://en.wikipedia.org/wiki/Modulo_operation";
 Blockly.Msg.MATH_MODULO_TITLE = "restul la %1 ÷ %2";
@@ -226,7 +254,8 @@ Blockly.Msg.MATH_RANDOM_FLOAT_TITLE_RANDOM = "fracții aleatorii";
 Blockly.Msg.MATH_RANDOM_FLOAT_TOOLTIP = "Returnează o fracţie aleatoare între 0.0 (inclusiv) si 1.0 (exclusiv).";
 Blockly.Msg.MATH_RANDOM_INT_HELPURL = "https://en.wikipedia.org/wiki/Random_number_generation";
 Blockly.Msg.MATH_RANDOM_INT_TITLE = "un număr întreg aleator de la %1 la %2";
-Blockly.Msg.MATH_RANDOM_INT_TOOLTIP = "Returnează un număr întreg aleator aflat între cele două limite specificate, inclusiv.";
+Blockly.Msg.MATH_RANDOM_INT_TOOLTIP =
+    "Returnează un număr întreg aleator aflat între cele două limite specificate, inclusiv.";
 Blockly.Msg.MATH_ROUND_HELPURL = "https://en.wikipedia.org/wiki/Rounding";
 Blockly.Msg.MATH_ROUND_OPERATOR_ROUND = "rotund";
 Blockly.Msg.MATH_ROUND_OPERATOR_ROUNDDOWN = "rotunjit";
@@ -322,7 +351,8 @@ Blockly.Msg.TEXT_INDEXOF_INPUT_INTEXT = "în text";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_FIRST = "găseşte prima apariţie a textului";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_LAST = "găseşte ultima apariţie a textului";
 Blockly.Msg.TEXT_INDEXOF_TAIL = "";  // untranslated
-Blockly.Msg.TEXT_INDEXOF_TOOLTIP = "Returnează indicele primei/ultimei apariţii din primul text în al doilea text.  Returnează 0 dacă textul nu este găsit.";
+Blockly.Msg.TEXT_INDEXOF_TOOLTIP =
+    "Returnează indicele primei/ultimei apariţii din primul text în al doilea text.  Returnează 0 dacă textul nu este găsit.";
 Blockly.Msg.TEXT_ISEMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Text#Checking_for_empty_text";
 Blockly.Msg.TEXT_ISEMPTY_TITLE = "%1 este gol";
 Blockly.Msg.TEXT_ISEMPTY_TOOLTIP = "Returnează adevărat dacă textul furnizat este gol.";

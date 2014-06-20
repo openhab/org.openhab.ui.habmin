@@ -7,7 +7,8 @@ goog.provide('Blockly.Msg.ms');
 goog.require('Blockly.Msg');
 
 Blockly.Msg.ADD_COMMENT = "Berikan Komen";
-Blockly.Msg.AUTH = "Sila benarkan aplikasi ini untuk membolehkan hasil kerja anda disimpan, malah dikongsikan oleh anda.";
+Blockly.Msg.AUTH =
+    "Sila benarkan aplikasi ini untuk membolehkan hasil kerja anda disimpan, malah dikongsikan oleh anda.";
 Blockly.Msg.CHANGE_VALUE_TITLE = "Ubah nilai:";
 Blockly.Msg.CHAT = "Bersembang dengan rakan kerjasama anda dengan menaip di dalam petak ini!";
 Blockly.Msg.COLLAPSE_ALL = "Lipat Blok²";
@@ -28,33 +29,41 @@ Blockly.Msg.COLOUR_RGB_GREEN = "hijau";
 Blockly.Msg.COLOUR_RGB_HELPURL = "http://www.december.com/html/spec/colorper.html";  // untranslated
 Blockly.Msg.COLOUR_RGB_RED = "merah";
 Blockly.Msg.COLOUR_RGB_TITLE = "warnakan";
-Blockly.Msg.COLOUR_RGB_TOOLTIP = "Peroleh satu warna dengan menentukan amaun campuran merah, hijau dan biru. Kesemua nilai haruslah antara 0 hingga 100.";
+Blockly.Msg.COLOUR_RGB_TOOLTIP =
+    "Peroleh satu warna dengan menentukan amaun campuran merah, hijau dan biru. Kesemua nilai haruslah antara 0 hingga 100.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#Loop_Termination_Blocks";  // untranslated
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_BREAK = "Keluar daripada gelung lingkaran";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_CONTINUE = "Teruskan dengan pengulangan seterusnya gelung";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_BREAK = "Pecahkan kandungan lingkaran.";
-Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE = "Langkau seluruh gelung ini, dan teruskan dengan lelaran seterusnya.";
+Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE =
+    "Langkau seluruh gelung ini, dan teruskan dengan lelaran seterusnya.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_WARNING = "Amaran: Blok ini hanya boleh digunakan dalam satu lingkaran.";
 Blockly.Msg.CONTROLS_FOREACH_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#for_each for each block";  // untranslated
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST = "dalam senarai";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST_TAIL = "";  // untranslated
 Blockly.Msg.CONTROLS_FOREACH_INPUT_ITEM = "untuk setiap perkara";
-Blockly.Msg.CONTROLS_FOREACH_TOOLTIP = "Untuk setiap perkara dalam senarai, tetapkan pembolehubah '%1' pada perkara, kemudian lakukan beberapa perintah.";
+Blockly.Msg.CONTROLS_FOREACH_TOOLTIP =
+    "Untuk setiap perkara dalam senarai, tetapkan pembolehubah '%1' pada perkara, kemudian lakukan beberapa perintah.";
 Blockly.Msg.CONTROLS_FOR_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#count_with";  // untranslated
 Blockly.Msg.CONTROLS_FOR_INPUT_FROM_TO_BY = "dari %1 hingga %2 selang %3";
 Blockly.Msg.CONTROLS_FOR_INPUT_WITH = "kira dengan";
-Blockly.Msg.CONTROLS_FOR_TOOLTIP = "Gunakan pembolehubah %1 pada nilai-nilai dari nombor pangkal hingga nombor hujung, mengira mengikut selang yang ditentukan, dan lakukan blok-blok yang tertentu.";
+Blockly.Msg.CONTROLS_FOR_TOOLTIP =
+    "Gunakan pembolehubah %1 pada nilai-nilai dari nombor pangkal hingga nombor hujung, mengira mengikut selang yang ditentukan, dan lakukan blok-blok yang tertentu.";
 Blockly.Msg.CONTROLS_IF_ELSEIF_TOOLTIP = "Tambah satu syarat kepada blok jika.";
 Blockly.Msg.CONTROLS_IF_ELSE_TOOLTIP = "Tambah yang terakhir, alihkan semua keadaan ke blok jika.";
 Blockly.Msg.CONTROLS_IF_HELPURL = "https://code.google.com/p/blockly/wiki/If_Then";  // untranslated
-Blockly.Msg.CONTROLS_IF_IF_TOOLTIP = "Tambah, alih keluar, atau susun semula bahagian-bahagian untuk menyusun semula blok jika.";
+Blockly.Msg.CONTROLS_IF_IF_TOOLTIP =
+    "Tambah, alih keluar, atau susun semula bahagian-bahagian untuk menyusun semula blok jika.";
 Blockly.Msg.CONTROLS_IF_MSG_ELSE = "lain";
 Blockly.Msg.CONTROLS_IF_MSG_ELSEIF = "lain jika";
 Blockly.Msg.CONTROLS_IF_MSG_IF = "jika";
 Blockly.Msg.CONTROLS_IF_TOOLTIP_1 = "Jika nilai yang benar, lakukan beberapa penyata.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_2 = "Jika suatu nilai benar, lakukan penyata blok pertama.  Jika tidak, bina penyata blok kedua.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_3 = "Jika nilai yang pertama adalah benar, lakukan penyata pertama blok.  Sebaliknya, jika nilai kedua adalah benar, lakukan penyata blok kedua.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_4 = "Jika nilai yang pertama adalah benar, lakukan penyata blok pertama.  Sebaliknya, jika nilai kedua adalah benar, lakukan penyata blok kedua.  Jika tiada nilai adalah benar, lakukan penyata blok terakhir.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_2 =
+    "Jika suatu nilai benar, lakukan penyata blok pertama.  Jika tidak, bina penyata blok kedua.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_3 =
+    "Jika nilai yang pertama adalah benar, lakukan penyata pertama blok.  Sebaliknya, jika nilai kedua adalah benar, lakukan penyata blok kedua.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_4 =
+    "Jika nilai yang pertama adalah benar, lakukan penyata blok pertama.  Sebaliknya, jika nilai kedua adalah benar, lakukan penyata blok kedua.  Jika tiada nilai adalah benar, lakukan penyata blok terakhir.";
 Blockly.Msg.CONTROLS_REPEAT_HELPURL = "https://en.wikipedia.org/wiki/For_loop";
 Blockly.Msg.CONTROLS_REPEAT_INPUT_DO = "lakukan";
 Blockly.Msg.CONTROLS_REPEAT_TITLE = "ulang %1 kali";
@@ -80,7 +89,8 @@ Blockly.Msg.LISTS_CREATE_EMPTY_HELPURL = "https://en.wikipedia.org/wiki/Linked_l
 Blockly.Msg.LISTS_CREATE_EMPTY_TITLE = "Wujudkan senarai kosong";
 Blockly.Msg.LISTS_CREATE_EMPTY_TOOLTIP = "Kembalikan senarai panjang 0, yang tidak mengandungi rekod data";
 Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TITLE_ADD = "senarai";
-Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TOOLTIP = "Tambah, alih keluar, atau susun semula bahagian-bahagian untuk menyusun semula senarai blok.";
+Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TOOLTIP =
+    "Tambah, alih keluar, atau susun semula bahagian-bahagian untuk menyusun semula senarai blok.";
 Blockly.Msg.LISTS_CREATE_WITH_INPUT_WITH = "wujudkan senarai dengan";
 Blockly.Msg.LISTS_CREATE_WITH_ITEM_TOOLTIP = "Tambah item ke dalam senarai.";
 Blockly.Msg.LISTS_CREATE_WITH_TOOLTIP = "Wujudkan senarai dengan apa jua nombor item.";
@@ -94,18 +104,24 @@ Blockly.Msg.LISTS_GET_INDEX_RANDOM = "rawak";
 Blockly.Msg.LISTS_GET_INDEX_REMOVE = "alihkan";
 Blockly.Msg.LISTS_GET_INDEX_TAIL = "";  // untranslated
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FIRST = "Kembalikan item pertama dalam senarai.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_END = "Kembalikan item dalam kedudukan yang ditetapkan dalam senarai. #1 ialah item terakhir.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START = "Kembalikan item dalam kedudukan yang ditetapkan dalam senarai. #1 ialah item terakhir.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_END =
+    "Kembalikan item dalam kedudukan yang ditetapkan dalam senarai. #1 ialah item terakhir.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START =
+    "Kembalikan item dalam kedudukan yang ditetapkan dalam senarai. #1 ialah item terakhir.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_LAST = "Kembalikan item pertama dalam senarai.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_RANDOM = "Kembalikan item rawak dalam senarai.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FIRST = "Alihkan dan kembalikan item pertama dalam senarai.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END = "Alihkan dan kembalikan item mengikut spesifikasi posisi dalam senarai. #1 ialah item terakhir.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START = "Alihkan dan kembalikan item mengikut spesifikasi posisi dalam senarai. #1 ialah item pertama.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END =
+    "Alihkan dan kembalikan item mengikut spesifikasi posisi dalam senarai. #1 ialah item terakhir.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START =
+    "Alihkan dan kembalikan item mengikut spesifikasi posisi dalam senarai. #1 ialah item pertama.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_LAST = "Alihkan dan kembalikan item terakhir dalam senarai.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_RANDOM = "Alihkan dan kembalikan item rawak dalam senarai.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FIRST = "Alihkan item pertama dalam senarai.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END = "Alihkan item mengikut spesifikasi posisi dalam senarai. #1 ialah item terakhir.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START = "Alihkan item pada posisi mengikut spesifikasi dalam senarai. #1 ialah item pertama.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END =
+    "Alihkan item mengikut spesifikasi posisi dalam senarai. #1 ialah item terakhir.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START =
+    "Alihkan item pada posisi mengikut spesifikasi dalam senarai. #1 ialah item pertama.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_LAST = "Alihkan item terakhir dalam senarai.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_RANDOM = "Alihkan item rawak dalam senarai.";
 Blockly.Msg.LISTS_GET_SUBLIST_END_FROM_END = "ke  # dari akhir";
@@ -120,7 +136,8 @@ Blockly.Msg.LISTS_GET_SUBLIST_TOOLTIP = "Wujudkan salinan bahagian yang ditentuk
 Blockly.Msg.LISTS_INDEX_OF_FIRST = "cari pertama item kejadian";
 Blockly.Msg.LISTS_INDEX_OF_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#Getting_Items_from_a_List";  // untranslated
 Blockly.Msg.LISTS_INDEX_OF_LAST = "cari kejadian akhir item";
-Blockly.Msg.LISTS_INDEX_OF_TOOLTIP = "Kembalikan indeks kejadian pertama/terakhir item dalam senarai. Kembalikan 0 jika teks tidak ditemui.";
+Blockly.Msg.LISTS_INDEX_OF_TOOLTIP =
+    "Kembalikan indeks kejadian pertama/terakhir item dalam senarai. Kembalikan 0 jika teks tidak ditemui.";
 Blockly.Msg.LISTS_INLIST = "dalam senarai";
 Blockly.Msg.LISTS_IS_EMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#is_empty";  // untranslated
 Blockly.Msg.LISTS_IS_EMPTY_TITLE = "%1 adalah kosong";
@@ -129,19 +146,24 @@ Blockly.Msg.LISTS_LENGTH_TITLE = "panjang %1";
 Blockly.Msg.LISTS_LENGTH_TOOLTIP = "Kembalikan panjang senarai";
 Blockly.Msg.LISTS_REPEAT_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#create_list_with";  // untranslated
 Blockly.Msg.LISTS_REPEAT_TITLE = "wujudkan senarai dengan item %1 diulangi %2 kali";
-Blockly.Msg.LISTS_REPEAT_TOOLTIP = "Wujudkan senarai yang terdiri daripada nilai berulang mengikut nombor yang ditentukan.";
+Blockly.Msg.LISTS_REPEAT_TOOLTIP =
+    "Wujudkan senarai yang terdiri daripada nilai berulang mengikut nombor yang ditentukan.";
 Blockly.Msg.LISTS_SET_INDEX_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#in_list_..._set";  // untranslated
 Blockly.Msg.LISTS_SET_INDEX_INPUT_TO = "sebagai";
 Blockly.Msg.LISTS_SET_INDEX_INSERT = "masukkan pada";
 Blockly.Msg.LISTS_SET_INDEX_SET = "set";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FIRST = "Selit item pada permulaan senarai.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END = "Masukkan item pada posisi yang ditentukan dalam senarai. #1 ialah item terakhir.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START = "Masukkan item pada posisi yand ditentukan dalam senarai. #1 ialah item terakhir.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END =
+    "Masukkan item pada posisi yang ditentukan dalam senarai. #1 ialah item terakhir.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START =
+    "Masukkan item pada posisi yand ditentukan dalam senarai. #1 ialah item terakhir.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_LAST = "Tambahkan item dalam senarai akhir.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_RANDOM = "Selit item secara rawak di dalam senarai.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FIRST = "Set item pertama dalam senarai.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END = "Masukkan item pada posisi yang ditentukan dalam senarai. #1 ialah item terakhir.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START = "Masukkan item pada posisi yang ditentukan dalam senarai. #1 ialah item terakhir.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END =
+    "Masukkan item pada posisi yang ditentukan dalam senarai. #1 ialah item terakhir.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START =
+    "Masukkan item pada posisi yang ditentukan dalam senarai. #1 ialah item terakhir.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_LAST = "Set item terakhir dalam senarai.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_RANDOM = "Set item rawak dalam senarai.";
 Blockly.Msg.LISTS_TOOLTIP = "Kembalikan benar jika senarai kosong.";
@@ -152,13 +174,16 @@ Blockly.Msg.LOGIC_BOOLEAN_TRUE = "benar";
 Blockly.Msg.LOGIC_COMPARE_HELPURL = "https://id.wikipedia.org/wiki/Pertidaksamaan";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_EQ = "Kembali benar jika kedua-dua input benar antara satu sama lain.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GT = "Kembali benar jika input pertama adalah lebih besar daripada input kedua.";
-Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GTE = "Kembali benar jika input pertama adalah lebih besar daripada atau sama dengan input kedua.";
+Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GTE =
+    "Kembali benar jika input pertama adalah lebih besar daripada atau sama dengan input kedua.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LT = "Kembali benar jika input pertama adalah lebih kecil daripada input kedua.";
-Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LTE = "Kembali benar jika input pertama adalah lebih kecil daripada atau sama dengan input kedua.";
+Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LTE =
+    "Kembali benar jika input pertama adalah lebih kecil daripada atau sama dengan input kedua.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_NEQ = "Taip balik benar jika kedua-dua input tidak sama.";
 Blockly.Msg.LOGIC_NEGATE_HELPURL = "https://code.google.com/p/blockly/wiki/Not";  // untranslated
 Blockly.Msg.LOGIC_NEGATE_TITLE = "bukan %1";
-Blockly.Msg.LOGIC_NEGATE_TOOLTIP = "'Benar' akan dibalas jika inputnya salah. 'Salah' akan dibalas jika inputnya benar.";
+Blockly.Msg.LOGIC_NEGATE_TOOLTIP =
+    "'Benar' akan dibalas jika inputnya salah. 'Salah' akan dibalas jika inputnya benar.";
 Blockly.Msg.LOGIC_NULL = "null";
 Blockly.Msg.LOGIC_NULL_HELPURL = "https://en.wikipedia.org/wiki/Nullable_type";  // untranslated
 Blockly.Msg.LOGIC_NULL_TOOLTIP = "Returns null.";
@@ -171,7 +196,8 @@ Blockly.Msg.LOGIC_TERNARY_CONDITION = "test";
 Blockly.Msg.LOGIC_TERNARY_HELPURL = "https://en.wikipedia.org/wiki/%3F:";  // untranslated
 Blockly.Msg.LOGIC_TERNARY_IF_FALSE = "Jika palsu";
 Blockly.Msg.LOGIC_TERNARY_IF_TRUE = "Jika benar";
-Blockly.Msg.LOGIC_TERNARY_TOOLTIP = "Check the condition in 'test'. If the condition is true, returns the 'if true' value; otherwise returns the 'if false' value.";
+Blockly.Msg.LOGIC_TERNARY_TOOLTIP =
+    "Check the condition in 'test'. If the condition is true, returns the 'if true' value; otherwise returns the 'if false' value.";
 Blockly.Msg.MATH_ADDITION_SYMBOL = "+";
 Blockly.Msg.MATH_ARITHMETIC_HELPURL = "https://ms.wikipedia.org/wiki/Aritmetik";
 Blockly.Msg.MATH_ARITHMETIC_TOOLTIP_ADD = "Return the sum of the two numbers.";
@@ -184,7 +210,8 @@ Blockly.Msg.MATH_CHANGE_INPUT_BY = "oleh";
 Blockly.Msg.MATH_CHANGE_TITLE_CHANGE = "perubahan";
 Blockly.Msg.MATH_CHANGE_TOOLTIP = "Tambah nombor kepada pembolehubah '%1'.";
 Blockly.Msg.MATH_CONSTANT_HELPURL = "https://ms.wikipedia.org/wiki/Pemalar_matematik";
-Blockly.Msg.MATH_CONSTANT_TOOLTIP = "Return one of the common constants: π (3.141…), e (2.718…), φ (1.618…), sqrt(2) (1.414…), sqrt(½) (0.707…), or ∞ (infinity).";
+Blockly.Msg.MATH_CONSTANT_TOOLTIP =
+    "Return one of the common constants: π (3.141…), e (2.718…), φ (1.618…), sqrt(2) (1.414…), sqrt(½) (0.707…), or ∞ (infinity).";
 Blockly.Msg.MATH_CONSTRAIN_HELPURL = "https://en.wikipedia.org/wiki/Clamping_%28graphics%29";  // untranslated
 Blockly.Msg.MATH_CONSTRAIN_TITLE = "constrain %1 low %2 high %3";
 Blockly.Msg.MATH_CONSTRAIN_TOOLTIP = "Constrain a number to be between the specified limits (inclusive).";
@@ -195,7 +222,8 @@ Blockly.Msg.MATH_IS_NEGATIVE = "negatif";
 Blockly.Msg.MATH_IS_ODD = "aneh";
 Blockly.Msg.MATH_IS_POSITIVE = "adalah positif";
 Blockly.Msg.MATH_IS_PRIME = "is prime";
-Blockly.Msg.MATH_IS_TOOLTIP = "Check if a number is an even, odd, prime, whole, positive, negative, or if it is divisible by certain number.  Returns true or false.";
+Blockly.Msg.MATH_IS_TOOLTIP =
+    "Check if a number is an even, odd, prime, whole, positive, negative, or if it is divisible by certain number.  Returns true or false.";
 Blockly.Msg.MATH_IS_WHOLE = "is whole";
 Blockly.Msg.MATH_MODULO_HELPURL = "https://id.wikipedia.org/wiki/Operasi_modulus";
 Blockly.Msg.MATH_MODULO_TITLE = "remainder of %1 ÷ %2";
@@ -322,7 +350,8 @@ Blockly.Msg.TEXT_INDEXOF_INPUT_INTEXT = "dalam teks";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_FIRST = "mencari kejadian pertama teks";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_LAST = "mencari kejadian terakhir teks";
 Blockly.Msg.TEXT_INDEXOF_TAIL = "";  // untranslated
-Blockly.Msg.TEXT_INDEXOF_TOOLTIP = "Kembalikan Indeks kejadian pertama/terakhir dari teks pertama ke dalam teks kedua.  Kembalikan 0 Jika teks tidak ditemui.";
+Blockly.Msg.TEXT_INDEXOF_TOOLTIP =
+    "Kembalikan Indeks kejadian pertama/terakhir dari teks pertama ke dalam teks kedua.  Kembalikan 0 Jika teks tidak ditemui.";
 Blockly.Msg.TEXT_ISEMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Text#Checking_for_empty_text";  // untranslated
 Blockly.Msg.TEXT_ISEMPTY_TITLE = "%1 adalah kosong";
 Blockly.Msg.TEXT_ISEMPTY_TOOLTIP = "Kembalikan benar jika teks yang disediakan adalah kosong.";
@@ -346,7 +375,8 @@ Blockly.Msg.TEXT_TRIM_HELPURL = "https://code.google.com/p/blockly/wiki/Text#Tri
 Blockly.Msg.TEXT_TRIM_OPERATOR_BOTH = "mengurangkan kawasan dari kedua-dua belah";
 Blockly.Msg.TEXT_TRIM_OPERATOR_LEFT = "mengurangkan ruang dari sebelah kiri";
 Blockly.Msg.TEXT_TRIM_OPERATOR_RIGHT = "mengurangkan kawasan dari sisi kanan";
-Blockly.Msg.TEXT_TRIM_TOOLTIP = "Kembali salinan teks dengan ruang yang dikeluarkan daripada satu atau hujung kedua belah.";
+Blockly.Msg.TEXT_TRIM_TOOLTIP =
+    "Kembali salinan teks dengan ruang yang dikeluarkan daripada satu atau hujung kedua belah.";
 Blockly.Msg.VARIABLES_DEFAULT_NAME = "Perkara";
 Blockly.Msg.VARIABLES_GET_CREATE_SET = "Hasilkan 'set %1'";
 Blockly.Msg.VARIABLES_GET_HELPURL = "https://code.google.com/p/blockly/wiki/Variables#Get";  // untranslated

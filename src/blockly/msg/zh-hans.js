@@ -184,7 +184,8 @@ Blockly.Msg.MATH_CHANGE_INPUT_BY = "由";
 Blockly.Msg.MATH_CHANGE_TITLE_CHANGE = "更改";
 Blockly.Msg.MATH_CHANGE_TOOLTIP = "将一个数添加到变量“%1”。";
 Blockly.Msg.MATH_CONSTANT_HELPURL = "https://zh.wikipedia.org/wiki/数学常数";
-Blockly.Msg.MATH_CONSTANT_TOOLTIP = "返回一个常见常量：π (3.141......)，e (2.718...)、φ (1.618...)、 sqrt(2) (1.414......)、sqrt(½) (0.707......)或 ∞（无穷大）。";
+Blockly.Msg.MATH_CONSTANT_TOOLTIP =
+    "返回一个常见常量：π (3.141......)，e (2.718...)、φ (1.618...)、 sqrt(2) (1.414......)、sqrt(½) (0.707......)或 ∞（无穷大）。";
 Blockly.Msg.MATH_CONSTRAIN_HELPURL = "https://en.wikipedia.org/wiki/Clamping_%28graphics%29";
 Blockly.Msg.MATH_CONSTRAIN_TITLE = "限制数字 %1 介于 (低) %2 到 (高) %3";
 Blockly.Msg.MATH_CONSTRAIN_TOOLTIP = "限制数字介于两个指定的数字之间";

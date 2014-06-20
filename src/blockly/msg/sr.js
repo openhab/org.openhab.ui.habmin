@@ -28,22 +28,26 @@ Blockly.Msg.COLOUR_RGB_GREEN = "зелена";
 Blockly.Msg.COLOUR_RGB_HELPURL = "http://www.december.com/html/spec/colorper.html";
 Blockly.Msg.COLOUR_RGB_RED = "црвена";
 Blockly.Msg.COLOUR_RGB_TITLE = "боја са";
-Blockly.Msg.COLOUR_RGB_TOOLTIP = "Креирај боју са одређеном количином црвене,зелене, и плаве. Све вредности морају бити између 0 и 100.";
+Blockly.Msg.COLOUR_RGB_TOOLTIP =
+    "Креирај боју са одређеном количином црвене,зелене, и плаве. Све вредности морају бити између 0 и 100.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#Loop_Termination_Blocks";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_BREAK = "Изађите из петље";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_CONTINUE = "настави са следећом итерацијом петље";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_BREAK = "Напусти садржај петље.";
-Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE = "Прескочи остатак ове петље, и настави са следећом итерацијом(понављанјем).";
+Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE =
+    "Прескочи остатак ове петље, и настави са следећом итерацијом(понављанјем).";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_WARNING = "Упозорење: Овај блок може да се употреби само унутар петље.";
 Blockly.Msg.CONTROLS_FOREACH_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#for_each";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST = "на списку";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST_TAIL = "";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_ITEM = "за сваку ставку";
-Blockly.Msg.CONTROLS_FOREACH_TOOLTIP = "За сваку ставку унутар листе, подеси промењиву '%1' по ставци, и онда начини неке изјаве-наредбе.";
+Blockly.Msg.CONTROLS_FOREACH_TOOLTIP =
+    "За сваку ставку унутар листе, подеси промењиву '%1' по ставци, и онда начини неке изјаве-наредбе.";
 Blockly.Msg.CONTROLS_FOR_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#count_with";
 Blockly.Msg.CONTROLS_FOR_INPUT_FROM_TO_BY = "од %1 до %2 од %3";
 Blockly.Msg.CONTROLS_FOR_INPUT_WITH = "преброј са";
-Blockly.Msg.CONTROLS_FOR_TOOLTIP = "Имај промењиву %1 узми вредности од почетног броја до задњег броја, бројећи по одређеном интервалу, и изврши одређене блокове.";
+Blockly.Msg.CONTROLS_FOR_TOOLTIP =
+    "Имај промењиву %1 узми вредности од почетног броја до задњег броја, бројећи по одређеном интервалу, и изврши одређене блокове.";
 Blockly.Msg.CONTROLS_IF_ELSEIF_TOOLTIP = "Додајте услов блоку „ако“.";
 Blockly.Msg.CONTROLS_IF_ELSE_TOOLTIP = "Додај коначни, catch-all  (ухвати све) услове иф блока.";
 Blockly.Msg.CONTROLS_IF_HELPURL = "http://code.google.com/p/blockly/wiki/If_Then";
@@ -52,9 +56,12 @@ Blockly.Msg.CONTROLS_IF_MSG_ELSE = "иначе";
 Blockly.Msg.CONTROLS_IF_MSG_ELSEIF = "иначе-ако";
 Blockly.Msg.CONTROLS_IF_MSG_IF = "ако";
 Blockly.Msg.CONTROLS_IF_TOOLTIP_1 = "ако је вредност тачна, онда изврши неке наредбе-изјаве.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_2 = "ако је вредност тачна, онда изврши први блок наредби, У супротном, изврши други блок наредби.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_3 = "Ако је прва вредност тачна, онда изврши први блок наредби, у супротном, ако је друга вредност тачна , изврши други блок наредби.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_4 = "Ако је прва вредност тачна, онда изврши први блок наредби, у супротном, ако је друга вредност тачна , изврши други блок наредби. Ако ни једна од вредности није тачна, изврши последнји блок наредби.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_2 =
+    "ако је вредност тачна, онда изврши први блок наредби, У супротном, изврши други блок наредби.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_3 =
+    "Ако је прва вредност тачна, онда изврши први блок наредби, у супротном, ако је друга вредност тачна , изврши други блок наредби.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_4 =
+    "Ако је прва вредност тачна, онда изврши први блок наредби, у супротном, ако је друга вредност тачна , изврши други блок наредби. Ако ни једна од вредности није тачна, изврши последнји блок наредби.";
 Blockly.Msg.CONTROLS_REPEAT_HELPURL = "https://sr.wikipedia.org/wiki/For_петља";
 Blockly.Msg.CONTROLS_REPEAT_INPUT_DO = "изврши";
 Blockly.Msg.CONTROLS_REPEAT_TITLE = "понови %1 пута";
@@ -80,7 +87,8 @@ Blockly.Msg.LISTS_CREATE_EMPTY_HELPURL = "https://en.wikipedia.org/wiki/Linked_l
 Blockly.Msg.LISTS_CREATE_EMPTY_TITLE = "направи празан списак";
 Blockly.Msg.LISTS_CREATE_EMPTY_TOOLTIP = "враћа листу, дужине 0, не садржавајући  евиденцију података";
 Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TITLE_ADD = "списак";
-Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TOOLTIP = "Додајте, избришите, или преуредите делове како би се реорганизовали овај блок листе.";
+Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TOOLTIP =
+    "Додајте, избришите, или преуредите делове како би се реорганизовали овај блок листе.";
 Blockly.Msg.LISTS_CREATE_WITH_INPUT_WITH = "направи списак са";
 Blockly.Msg.LISTS_CREATE_WITH_ITEM_TOOLTIP = "Додајте ставку на списак.";
 Blockly.Msg.LISTS_CREATE_WITH_TOOLTIP = "Креирај листу са било којим бројем ставки.";
@@ -99,13 +107,17 @@ Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START = "Враћа ставку н
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_LAST = "Враћа последњу ставку на списку.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_RANDOM = "Враћа случајну ставку са списка.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FIRST = "Уклања и враћа прву ставку са списка.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END = "Уклања и враћа ставку са одређеног положаја на списку. #1 је последња ставка.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START = "Уклања и враћа ставку са одређеног положаја на списку. #1 је прва ставка.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END =
+    "Уклања и враћа ставку са одређеног положаја на списку. #1 је последња ставка.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START =
+    "Уклања и враћа ставку са одређеног положаја на списку. #1 је прва ставка.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_LAST = "Уклања и враћа последњу ставку са списка.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_RANDOM = "Уклања и враћа случајну ставку са списка.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FIRST = "Уклања прву ставку са списка.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END = "Уклања ставку са одређеног положаја на списку. #1 је последња ставка.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START = "Уклања ставку са одређеног положаја на списку. #1 је прва ставка.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END =
+    "Уклања ставку са одређеног положаја на списку. #1 је последња ставка.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START =
+    "Уклања ставку са одређеног положаја на списку. #1 је прва ставка.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_LAST = "Уклања последњу ставку са списка.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_RANDOM = "Уклања случајну ставку са списка.";
 Blockly.Msg.LISTS_GET_SUBLIST_END_FROM_END = "до # од краја";
@@ -120,7 +132,8 @@ Blockly.Msg.LISTS_GET_SUBLIST_TOOLTIP = "Прави копију одређен�
 Blockly.Msg.LISTS_INDEX_OF_FIRST = "пронађи прво појављивање ставке";
 Blockly.Msg.LISTS_INDEX_OF_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#Getting_Items_from_a_List";
 Blockly.Msg.LISTS_INDEX_OF_LAST = "пронађи последње појављивање ставке";
-Blockly.Msg.LISTS_INDEX_OF_TOOLTIP = "Враћа однос првог/последнјег појавлјиванја ставке у листи. Враћа 0 ако се текст не наће.";
+Blockly.Msg.LISTS_INDEX_OF_TOOLTIP =
+    "Враћа однос првог/последнјег појавлјиванја ставке у листи. Враћа 0 ако се текст не наће.";
 Blockly.Msg.LISTS_INLIST = "на списку";
 Blockly.Msg.LISTS_IS_EMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#is_empty";
 Blockly.Msg.LISTS_IS_EMPTY_TITLE = "%1 је празан";
@@ -129,19 +142,24 @@ Blockly.Msg.LISTS_LENGTH_TITLE = "дужина списка %1";
 Blockly.Msg.LISTS_LENGTH_TOOLTIP = "Враћа дужину списка.";
 Blockly.Msg.LISTS_REPEAT_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#create_list_with";
 Blockly.Msg.LISTS_REPEAT_TITLE = "Направити листу са ставком %1 која се понавлја %2 пута";
-Blockly.Msg.LISTS_REPEAT_TOOLTIP = "Прави листу која се састоји од задане вредности коју понавлјамо одређени број шута.";
+Blockly.Msg.LISTS_REPEAT_TOOLTIP =
+    "Прави листу која се састоји од задане вредности коју понавлјамо одређени број шута.";
 Blockly.Msg.LISTS_SET_INDEX_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#in_list_..._set";
 Blockly.Msg.LISTS_SET_INDEX_INPUT_TO = "као";
 Blockly.Msg.LISTS_SET_INDEX_INSERT = "убаци на";
 Blockly.Msg.LISTS_SET_INDEX_SET = "постави";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FIRST = "Убацује ставку на почетак списка.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END = "Убацује ставку на одређени положај на списку. #1 је последња ставка.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START = "Убацује ставку на одређени положај на списку. #1 је прва ставка.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END =
+    "Убацује ставку на одређени положај на списку. #1 је последња ставка.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START =
+    "Убацује ставку на одређени положај на списку. #1 је прва ставка.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_LAST = "Додајте ставку на крај списка.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_RANDOM = "Убацује ставку на случајно место на списку.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FIRST = "Поставља прву ставку на списку.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END = "Поставља ставку на одређени положај на списку. #1 је последња ставка.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START = "Поставља ставку на одређени положај на списку. #1 је прва ставка.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END =
+    "Поставља ставку на одређени положај на списку. #1 је последња ставка.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START =
+    "Поставља ставку на одређени положај на списку. #1 је прва ставка.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_LAST = "Поставља последњу ставку на списку.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_RANDOM = "Поставља случајну ставку на списку.";
 Blockly.Msg.LISTS_TOOLTIP = "Враћа вредност тачно ако је листа празна.";
@@ -158,7 +176,8 @@ Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LTE = "Враћа вредност „тачн
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_NEQ = "Враћа вредност „тачно“ ако су оба улаза неједнака.";
 Blockly.Msg.LOGIC_NEGATE_HELPURL = "http://code.google.com/p/blockly/wiki/Not";
 Blockly.Msg.LOGIC_NEGATE_TITLE = "није %1";
-Blockly.Msg.LOGIC_NEGATE_TOOLTIP = "Враћа вредност „тачно“ ако је улаз нетачан. Враћа вредност „нетачно“ ако је улаз тачан.";
+Blockly.Msg.LOGIC_NEGATE_TOOLTIP =
+    "Враћа вредност „тачно“ ако је улаз нетачан. Враћа вредност „нетачно“ ако је улаз тачан.";
 Blockly.Msg.LOGIC_NULL = "без вредности";
 Blockly.Msg.LOGIC_NULL_HELPURL = "https://en.wikipedia.org/wiki/Nullable_type";
 Blockly.Msg.LOGIC_NULL_TOOLTIP = "Враћа „без вредности“.";
@@ -171,7 +190,8 @@ Blockly.Msg.LOGIC_TERNARY_CONDITION = "тест";
 Blockly.Msg.LOGIC_TERNARY_HELPURL = "https://en.wikipedia.org/wiki/%3F:";
 Blockly.Msg.LOGIC_TERNARY_IF_FALSE = "ако је нетачно";
 Blockly.Msg.LOGIC_TERNARY_IF_TRUE = "ако је тачно";
-Blockly.Msg.LOGIC_TERNARY_TOOLTIP = "Провери услов у 'test'. Ако је услов тачан, тада враћа 'if true' вредност; у другом случају враћа 'if false' вредност.";
+Blockly.Msg.LOGIC_TERNARY_TOOLTIP =
+    "Провери услов у 'test'. Ако је услов тачан, тада враћа 'if true' вредност; у другом случају враћа 'if false' вредност.";
 Blockly.Msg.MATH_ADDITION_SYMBOL = "+";
 Blockly.Msg.MATH_ARITHMETIC_HELPURL = "https://en.wikipedia.org/wiki/Arithmetic";
 Blockly.Msg.MATH_ARITHMETIC_TOOLTIP_ADD = "Вратите збир два броја.";
@@ -184,7 +204,8 @@ Blockly.Msg.MATH_CHANGE_INPUT_BY = "за";
 Blockly.Msg.MATH_CHANGE_TITLE_CHANGE = "промени";
 Blockly.Msg.MATH_CHANGE_TOOLTIP = "Додајте број променљивој „%1“.";
 Blockly.Msg.MATH_CONSTANT_HELPURL = "https://sr.wikipedia.org/wiki/Математичка_константа";
-Blockly.Msg.MATH_CONSTANT_TOOLTIP = "врати једну од заједничких константи: π (3.141…), e (2.718…), φ (1.618…), sqrt(2) (1.414…), sqrt(½) (0.707…), или ∞ (infinity).";
+Blockly.Msg.MATH_CONSTANT_TOOLTIP =
+    "врати једну од заједничких константи: π (3.141…), e (2.718…), φ (1.618…), sqrt(2) (1.414…), sqrt(½) (0.707…), или ∞ (infinity).";
 Blockly.Msg.MATH_CONSTRAIN_HELPURL = "https://en.wikipedia.org/wiki/Clamping_%28graphics%29";
 Blockly.Msg.MATH_CONSTRAIN_TITLE = "ограничи %1 ниско %2 високо %3";
 Blockly.Msg.MATH_CONSTRAIN_TOOLTIP = "Ограничава број на доње и горње границе (укључиво).";
@@ -195,7 +216,8 @@ Blockly.Msg.MATH_IS_NEGATIVE = "је негативан";
 Blockly.Msg.MATH_IS_ODD = "је непаран";
 Blockly.Msg.MATH_IS_POSITIVE = "је позитиван";
 Blockly.Msg.MATH_IS_PRIME = "је прост";
-Blockly.Msg.MATH_IS_TOOLTIP = "Провјерава да ли је број паран, непаран, прост, цио, позитиван, негативан, или да ли је делјив са одређеним бројем. Враћа тачно или нетачно.";
+Blockly.Msg.MATH_IS_TOOLTIP =
+    "Провјерава да ли је број паран, непаран, прост, цио, позитиван, негативан, или да ли је делјив са одређеним бројем. Враћа тачно или нетачно.";
 Blockly.Msg.MATH_IS_WHOLE = "је цео";
 Blockly.Msg.MATH_MODULO_HELPURL = "https://sr.wikipedia.org/wiki/Конгруенција";
 Blockly.Msg.MATH_MODULO_TITLE = "подсетник од %1 ÷ %2";
@@ -306,7 +328,8 @@ Blockly.Msg.TEXT_CHARAT_TAIL = "";
 Blockly.Msg.TEXT_CHARAT_TOOLTIP = "Враћа слово на одређени положај.";
 Blockly.Msg.TEXT_CREATE_JOIN_ITEM_TOOLTIP = "Додајте ставку у текст.";
 Blockly.Msg.TEXT_CREATE_JOIN_TITLE_JOIN = "спајањем";
-Blockly.Msg.TEXT_CREATE_JOIN_TOOLTIP = "Додај, уклони, или другачије поредај одјелке како би изнова поставили овај текст блок.";
+Blockly.Msg.TEXT_CREATE_JOIN_TOOLTIP =
+    "Додај, уклони, или другачије поредај одјелке како би изнова поставили овај текст блок.";
 Blockly.Msg.TEXT_GET_SUBSTRING_END_FROM_END = "слову # са краја";
 Blockly.Msg.TEXT_GET_SUBSTRING_END_FROM_START = "слову #";
 Blockly.Msg.TEXT_GET_SUBSTRING_END_LAST = "последњем слову";
@@ -322,7 +345,8 @@ Blockly.Msg.TEXT_INDEXOF_INPUT_INTEXT = "у тексту";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_FIRST = "пронађи прво појављивање текста";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_LAST = "пронађи последње појављивање текста";
 Blockly.Msg.TEXT_INDEXOF_TAIL = "";
-Blockly.Msg.TEXT_INDEXOF_TOOLTIP = "Враћа однос првог/заднјег појавлјиванја текста у другом тексту. Врађа 0 ако текст није пронађен.";
+Blockly.Msg.TEXT_INDEXOF_TOOLTIP =
+    "Враћа однос првог/заднјег појавлјиванја текста у другом тексту. Врађа 0 ако текст није пронађен.";
 Blockly.Msg.TEXT_ISEMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Text#Checking_for_empty_text";
 Blockly.Msg.TEXT_ISEMPTY_TITLE = "%1 је празан";
 Blockly.Msg.TEXT_ISEMPTY_TOOLTIP = "Враћа тачно ако је доставлјени текст празан.";

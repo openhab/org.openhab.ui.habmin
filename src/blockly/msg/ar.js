@@ -28,14 +28,16 @@ Blockly.Msg.COLOUR_RGB_GREEN = "أخضر";
 Blockly.Msg.COLOUR_RGB_HELPURL = "http://www.december.com/html/spec/colorper.html";
 Blockly.Msg.COLOUR_RGB_RED = "أحمر";
 Blockly.Msg.COLOUR_RGB_TITLE = "لون مع";
-Blockly.Msg.COLOUR_RGB_TOOLTIP = "إنشئ لون بالكمية المحددة من الأحمر, الأخضر والأزرق. بحيث يجب تكون كافة القيم بين 0 و 100.";
+Blockly.Msg.COLOUR_RGB_TOOLTIP =
+    "إنشئ لون بالكمية المحددة من الأحمر, الأخضر والأزرق. بحيث يجب تكون كافة القيم بين 0 و 100.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#Loop_Termination_Blocks";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_BREAK = "اخرج من الحلقة";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_CONTINUE = "استمر ابتداءا من التكرار التالي من الحلقة";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_BREAK = "اخرج من الحلقة الحالية.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE = "تخط ما تبقى من هذه الحلقة، واستمر ابتداءا من التكرار التالي.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_WARNING = "تحذير: يمكن استخدام هذه القطعة فقط داخل حلقة.";
-Blockly.Msg.CONTROLS_FOREACH_HELPURL = "_each https://code.google.com/p/blockly/wiki/Loops#for العبارة الشرطية \"لِكُل\"";
+Blockly.Msg.CONTROLS_FOREACH_HELPURL =
+    "_each https://code.google.com/p/blockly/wiki/Loops#for العبارة الشرطية \"لِكُل\"";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST = "في قائمة";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST_TAIL = "";  // untranslated
 Blockly.Msg.CONTROLS_FOREACH_INPUT_ITEM = "لكل عنصر";
@@ -43,7 +45,8 @@ Blockly.Msg.CONTROLS_FOREACH_TOOLTIP = "لكل عنصر في قائمة ما، �
 Blockly.Msg.CONTROLS_FOR_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#count_with";
 Blockly.Msg.CONTROLS_FOR_INPUT_FROM_TO_BY = "من %1 إلى %2 بمعدل %3";
 Blockly.Msg.CONTROLS_FOR_INPUT_WITH = "عد بـ";
-Blockly.Msg.CONTROLS_FOR_TOOLTIP = "اجعل المتغير  %1 يأخذ القيم من رقم البداية الى رقم النهاية، قم بالعد داخل المجال المحدد، وطبق أوامر القطع المحددة.";
+Blockly.Msg.CONTROLS_FOR_TOOLTIP =
+    "اجعل المتغير  %1 يأخذ القيم من رقم البداية الى رقم النهاية، قم بالعد داخل المجال المحدد، وطبق أوامر القطع المحددة.";
 Blockly.Msg.CONTROLS_IF_ELSEIF_TOOLTIP = "إضف شرطا إلى القطعة الشرطية \"إذا\".";
 Blockly.Msg.CONTROLS_IF_ELSE_TOOLTIP = "أضف شرط \"نهاية، إجمع\" إلى القطعة الشرطية \"إذا\".";
 Blockly.Msg.CONTROLS_IF_HELPURL = "http://code.google.com/p/blockly/wiki/If_Then";
@@ -52,9 +55,12 @@ Blockly.Msg.CONTROLS_IF_MSG_ELSE = "والا";
 Blockly.Msg.CONTROLS_IF_MSG_ELSEIF = "وإﻻ إذا";
 Blockly.Msg.CONTROLS_IF_MSG_IF = "إذا";
 Blockly.Msg.CONTROLS_IF_TOOLTIP_1 = "إذا كانت قيمة ما تساوي صحيح, إذن قم بتنفيذ أمر ما.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_2 = "إذا كانت قيمة ما تساوي \"صحيح\"، إذن قم بتنفيذ أول قطعة من الأوامر. والا ،قم بتنفيذ القطعة الثانية من الأوامر.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_3 = "إذا كانت القيمة الأولى تساوي \"صحيح\", إذن قم بتنفيذ القطعة الأولى من الأوامر. والا, إذا كانت القيمة الثانية تساوي \"صحيح\", قم بتنفيذ القطعة الثانية من الأوامر.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_4 = "إذا كانت القيمة الأولى تساوي \"صحيح\", إذن قم بتنفيذ القطعة الأولى من الأوامر. والا , إذا كانت القيمة الثانية تساوي \"صحيح\", قم بتنفيذ القطعة الثانية من الأوامر. إذا لم تكن هناك أي قيمة تساوي صحيح, قم بتنفيذ آخر قطعة من الأوامر.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_2 =
+    "إذا كانت قيمة ما تساوي \"صحيح\"، إذن قم بتنفيذ أول قطعة من الأوامر. والا ،قم بتنفيذ القطعة الثانية من الأوامر.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_3 =
+    "إذا كانت القيمة الأولى تساوي \"صحيح\", إذن قم بتنفيذ القطعة الأولى من الأوامر. والا, إذا كانت القيمة الثانية تساوي \"صحيح\", قم بتنفيذ القطعة الثانية من الأوامر.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_4 =
+    "إذا كانت القيمة الأولى تساوي \"صحيح\", إذن قم بتنفيذ القطعة الأولى من الأوامر. والا , إذا كانت القيمة الثانية تساوي \"صحيح\", قم بتنفيذ القطعة الثانية من الأوامر. إذا لم تكن هناك أي قيمة تساوي صحيح, قم بتنفيذ آخر قطعة من الأوامر.";
 Blockly.Msg.CONTROLS_REPEAT_HELPURL = "https://en.wikipedia.org/wiki/For_loop";
 Blockly.Msg.CONTROLS_REPEAT_INPUT_DO = "نفّذ";
 Blockly.Msg.CONTROLS_REPEAT_TITLE = "كرر  %1 مرات";
@@ -80,7 +86,8 @@ Blockly.Msg.LISTS_CREATE_EMPTY_HELPURL = "https://en.wikipedia.org/wiki/Linked_l
 Blockly.Msg.LISTS_CREATE_EMPTY_TITLE = "إنشئ قائمة فارغة";
 Blockly.Msg.LISTS_CREATE_EMPTY_TOOLTIP = "تقوم بإرجاع قائمة، طولها 0, لا تحتوي على أية سجلات البيانات";
 Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TITLE_ADD = "قائمة";
-Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TOOLTIP = "أضف, إزل, أو أعد ترتيب المقاطع لإعادة تكوين القطعة قائمة القطع التالية.";
+Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TOOLTIP =
+    "أضف, إزل, أو أعد ترتيب المقاطع لإعادة تكوين القطعة قائمة القطع التالية.";
 Blockly.Msg.LISTS_CREATE_WITH_INPUT_WITH = "أتشئ قائمة مع";
 Blockly.Msg.LISTS_CREATE_WITH_ITEM_TOOLTIP = "أضف عنصرا إلى القائمة.";
 Blockly.Msg.LISTS_CREATE_WITH_TOOLTIP = "أنشيء قائمة من أي عدد من العناصر.";
@@ -94,18 +101,24 @@ Blockly.Msg.LISTS_GET_INDEX_RANDOM = "عشوائي";
 Blockly.Msg.LISTS_GET_INDEX_REMOVE = "ازل";
 Blockly.Msg.LISTS_GET_INDEX_TAIL = "";  // untranslated
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FIRST = "يرجع العنصر الأول في قائمة ما.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_END = "يقوم بإرجاع العنصر في الموضع المحدد في قائمة ما.  #1 هو العنصر الأخير.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START = "يقوم بإرجاع العنصر في الموضع المحدد في قائمة ما.  #1 هو العنصر الأول.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_END =
+    "يقوم بإرجاع العنصر في الموضع المحدد في قائمة ما.  #1 هو العنصر الأخير.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START =
+    "يقوم بإرجاع العنصر في الموضع المحدد في قائمة ما.  #1 هو العنصر الأول.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_LAST = "يرجع العنصر الأخير في قائمة ما.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_RANDOM = "يرجع عنصرا عشوائيا في قائمة.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FIRST = "يزيل ويرجع العنصر الأول في قائمة.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END = "يزيل ويقوم بإرجاع العنصر في الموضع المحدد في قائمة ما.  #1 هو العنصر الأخير.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START = "يزيل ويقوم بإرجاع العنصر في الموضع المحدد في قائمة ما.  #1 هو العنصر الأول.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END =
+    "يزيل ويقوم بإرجاع العنصر في الموضع المحدد في قائمة ما.  #1 هو العنصر الأخير.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START =
+    "يزيل ويقوم بإرجاع العنصر في الموضع المحدد في قائمة ما.  #1 هو العنصر الأول.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_LAST = "يزيل ويرجع العنصر الأخير في قائمة ما.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_RANDOM = "يزيل و يرجع عنصرا عشوائيا في قائمة ما.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FIRST = "يزيل العنصر الأول في قائمة ما.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END = "يزيل العنصر الموجود في الموضع المحدد في قائمة ما.  #1 هو العنصر الأخير.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START = "يزيل العنصر الموجود في الموضع المحدد في قائمة ما.  #1 هو العنصر الأول.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END =
+    "يزيل العنصر الموجود في الموضع المحدد في قائمة ما.  #1 هو العنصر الأخير.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START =
+    "يزيل العنصر الموجود في الموضع المحدد في قائمة ما.  #1 هو العنصر الأول.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_LAST = "يزيل العنصر الأخير في قائمة ما.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_RANDOM = "يزيل عنصرا عشوائيا في قائمة ما.";
 Blockly.Msg.LISTS_GET_SUBLIST_END_FROM_END = "إلى # من نهاية";
@@ -120,7 +133,8 @@ Blockly.Msg.LISTS_GET_SUBLIST_TOOLTIP = "يقوم بإنشاء نسخة من ا�
 Blockly.Msg.LISTS_INDEX_OF_FIRST = "ابحث على على التواجد الأول للعنصر";
 Blockly.Msg.LISTS_INDEX_OF_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#Getting_Items_from_a_List";
 Blockly.Msg.LISTS_INDEX_OF_LAST = "ابحث على التواجد الأخير للعنصر";
-Blockly.Msg.LISTS_INDEX_OF_TOOLTIP = "تقوم بإرجاع مؤشر التواجد  الأول/الأخير في القائمة.  تقوم بإرجاع 0 إذا لم يتم العثور على النص.";
+Blockly.Msg.LISTS_INDEX_OF_TOOLTIP =
+    "تقوم بإرجاع مؤشر التواجد  الأول/الأخير في القائمة.  تقوم بإرجاع 0 إذا لم يتم العثور على النص.";
 Blockly.Msg.LISTS_INLIST = "في قائمة";
 Blockly.Msg.LISTS_IS_EMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#is_empty";
 Blockly.Msg.LISTS_IS_EMPTY_TITLE = "%1 فارغ";
@@ -135,8 +149,10 @@ Blockly.Msg.LISTS_SET_INDEX_INPUT_TO = "مثل";
 Blockly.Msg.LISTS_SET_INDEX_INSERT = "أدخل في";
 Blockly.Msg.LISTS_SET_INDEX_SET = "تعيين";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FIRST = "يقوم بإدراج هذا العنصر في بداية قائمة.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END = "يقوم بإدخال العنصر في الموضع المحدد في قائمة ما.  #1 هو العنصر الأخير.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START = "يقوم بإدخال العنصر في الموضع المحدد في قائمة ما.  #1 هو العنصر الأول.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END =
+    "يقوم بإدخال العنصر في الموضع المحدد في قائمة ما.  #1 هو العنصر الأخير.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START =
+    "يقوم بإدخال العنصر في الموضع المحدد في قائمة ما.  #1 هو العنصر الأول.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_LAST = "ألصق هذا العنصر بنهاية قائمة.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_RANDOM = "ادخل العنصر عشوائياً في القائمة.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FIRST = "يحدد العنصر الأول في قائمة.";
@@ -171,7 +187,8 @@ Blockly.Msg.LOGIC_TERNARY_CONDITION = "اختبار";
 Blockly.Msg.LOGIC_TERNARY_HELPURL = "https://en.wikipedia.org/wiki/%3F:";
 Blockly.Msg.LOGIC_TERNARY_IF_FALSE = "إذا كانت العبارة خاطئة";
 Blockly.Msg.LOGIC_TERNARY_IF_TRUE = "إذا كانت العبارة صحيحة";
-Blockly.Msg.LOGIC_TERNARY_TOOLTIP = "تحقق الشرط في 'الاختبار'. إذا كان الشرط صحيح، يقوم بإرجاع قيمة 'اذا كانت العبارة صحيحة'؛ خلاف ذلك يرجع قيمة 'اذا كانت العبارة خاطئة'.";
+Blockly.Msg.LOGIC_TERNARY_TOOLTIP =
+    "تحقق الشرط في 'الاختبار'. إذا كان الشرط صحيح، يقوم بإرجاع قيمة 'اذا كانت العبارة صحيحة'؛ خلاف ذلك يرجع قيمة 'اذا كانت العبارة خاطئة'.";
 Blockly.Msg.MATH_ADDITION_SYMBOL = "+";
 Blockly.Msg.MATH_ARITHMETIC_HELPURL = "https://en.wikipedia.org/wiki/Arithmetic";
 Blockly.Msg.MATH_ARITHMETIC_TOOLTIP_ADD = "يرجع مجموع الرقمين.";
@@ -184,7 +201,8 @@ Blockly.Msg.MATH_CHANGE_INPUT_BY = "بـ";
 Blockly.Msg.MATH_CHANGE_TITLE_CHANGE = "غير";
 Blockly.Msg.MATH_CHANGE_TOOLTIP = "إضف رقم إلى متغير '%1'.";
 Blockly.Msg.MATH_CONSTANT_HELPURL = "https://en.wikipedia.org/wiki/Mathematical_constant";
-Blockly.Msg.MATH_CONSTANT_TOOLTIP = "ير جع واحد من الثوابت الشائعة : π (3.141…), e (2.718…), φ (1.618…), sqrt(2) (1.414…), sqrt(½) (0.707…), or ∞ (infinity).";
+Blockly.Msg.MATH_CONSTANT_TOOLTIP =
+    "ير جع واحد من الثوابت الشائعة : π (3.141…), e (2.718…), φ (1.618…), sqrt(2) (1.414…), sqrt(½) (0.707…), or ∞ (infinity).";
 Blockly.Msg.MATH_CONSTRAIN_HELPURL = "https://en.wikipedia.org/wiki/Clamping_%28graphics%29";
 Blockly.Msg.MATH_CONSTRAIN_TITLE = "تقيد %1 منخفض %2 مرتفع %3";
 Blockly.Msg.MATH_CONSTRAIN_TOOLTIP = "تقييد العددليكون بين الحدود المحددة (ضمناً).";
@@ -195,7 +213,8 @@ Blockly.Msg.MATH_IS_NEGATIVE = "هو سالب";
 Blockly.Msg.MATH_IS_ODD = "هو فرذي";
 Blockly.Msg.MATH_IS_POSITIVE = "هو موجب";
 Blockly.Msg.MATH_IS_PRIME = "هو أولي";
-Blockly.Msg.MATH_IS_TOOLTIP = "تحقق إذا كان عدد ما زوجيا، فرذيا, أوليا، صحيحا،موجبا أو سالبا، أو إذا كان قابلا للقسمة على عدد معين.  يرجع صحيح أو خاطئ.";
+Blockly.Msg.MATH_IS_TOOLTIP =
+    "تحقق إذا كان عدد ما زوجيا، فرذيا, أوليا، صحيحا،موجبا أو سالبا، أو إذا كان قابلا للقسمة على عدد معين.  يرجع صحيح أو خاطئ.";
 Blockly.Msg.MATH_IS_WHOLE = "هو صحيح";
 Blockly.Msg.MATH_MODULO_HELPURL = "https://en.wikipedia.org/wiki/Modulo_operation";
 Blockly.Msg.MATH_MODULO_TITLE = "باقي %1 ÷ %2";
@@ -322,7 +341,8 @@ Blockly.Msg.TEXT_INDEXOF_INPUT_INTEXT = "في النص";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_FIRST = "ابحث عن التواجد الأول للنص";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_LAST = "ابحث عن التواجد الأخير للنص";
 Blockly.Msg.TEXT_INDEXOF_TAIL = "";  // untranslated
-Blockly.Msg.TEXT_INDEXOF_TOOLTIP = "تقوم بإرجاع مؤشر التواجد الأول/الأخير للنص الأول في النص الثاني.  تقوم بإرجاع 0 إذا لم يتم العثور على النص.";
+Blockly.Msg.TEXT_INDEXOF_TOOLTIP =
+    "تقوم بإرجاع مؤشر التواجد الأول/الأخير للنص الأول في النص الثاني.  تقوم بإرجاع 0 إذا لم يتم العثور على النص.";
 Blockly.Msg.TEXT_ISEMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Text#Checking_for_empty_text";
 Blockly.Msg.TEXT_ISEMPTY_TITLE = "%1 فارغ";
 Blockly.Msg.TEXT_ISEMPTY_TOOLTIP = "يرجع \"صحيح\" إذا كان النص المقدم فارغ.";

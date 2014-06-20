@@ -28,33 +28,41 @@ Blockly.Msg.COLOUR_RGB_GREEN = "groen";
 Blockly.Msg.COLOUR_RGB_HELPURL = "http://www.december.com/html/spec/colorper.html";
 Blockly.Msg.COLOUR_RGB_RED = "rood";
 Blockly.Msg.COLOUR_RGB_TITLE = "kleuren met";
-Blockly.Msg.COLOUR_RGB_TOOLTIP = "Maak een kleur met de opgegeven hoeveelheid rood, groen en blauw.  Alle waarden moeten tussen 0 en 100 liggen.";
+Blockly.Msg.COLOUR_RGB_TOOLTIP =
+    "Maak een kleur met de opgegeven hoeveelheid rood, groen en blauw.  Alle waarden moeten tussen 0 en 100 liggen.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#Loop_Termination_Blocks";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_BREAK = "uit lus breken";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_CONTINUE = "doorgaan met de volgende iteratie van de lus";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_BREAK = "uit de bovenliggende lus breken";
-Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE = "De rest van deze lus overslaan en doorgaan met de volgende herhaling.";
+Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE =
+    "De rest van deze lus overslaan en doorgaan met de volgende herhaling.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_WARNING = "Waarschuwing: dit blok mag alleen gebruikt worden in een lus.";
 Blockly.Msg.CONTROLS_FOREACH_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#for_each for each block";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST = "in lijst";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST_TAIL = "";  // untranslated
 Blockly.Msg.CONTROLS_FOREACH_INPUT_ITEM = "voor ieder item";
-Blockly.Msg.CONTROLS_FOREACH_TOOLTIP = "Voor ieder item in een lijst, stel de variabele \"%1\" in op het item en voer daarna opdrachten uit.";
+Blockly.Msg.CONTROLS_FOREACH_TOOLTIP =
+    "Voor ieder item in een lijst, stel de variabele \"%1\" in op het item en voer daarna opdrachten uit.";
 Blockly.Msg.CONTROLS_FOR_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#count_with";
 Blockly.Msg.CONTROLS_FOR_INPUT_FROM_TO_BY = "van %1 tot %2 in stappen van %3";
 Blockly.Msg.CONTROLS_FOR_INPUT_WITH = "rekenen met";
-Blockly.Msg.CONTROLS_FOR_TOOLTIP = "Laat de variabele %1 de waarden aannemen van het beginnummer tot het laatste nummer, tellende met het opgegeven interval, en met uitvoering van de opgegeven blokken.";
+Blockly.Msg.CONTROLS_FOR_TOOLTIP =
+    "Laat de variabele %1 de waarden aannemen van het beginnummer tot het laatste nummer, tellende met het opgegeven interval, en met uitvoering van de opgegeven blokken.";
 Blockly.Msg.CONTROLS_IF_ELSEIF_TOOLTIP = "Voeg een voorwaarde toe aan het als-blok.";
 Blockly.Msg.CONTROLS_IF_ELSE_TOOLTIP = "Voeg een laatste, vang-alles conditie toe aan het als-statement.";
 Blockly.Msg.CONTROLS_IF_HELPURL = "http://code.google.com/p/blockly/wiki/If_Then";
-Blockly.Msg.CONTROLS_IF_IF_TOOLTIP = "Voeg stukken toe, verwijder of verander de volgorde om dit \"als\"-blok te wijzigen.";
+Blockly.Msg.CONTROLS_IF_IF_TOOLTIP =
+    "Voeg stukken toe, verwijder of verander de volgorde om dit \"als\"-blok te wijzigen.";
 Blockly.Msg.CONTROLS_IF_MSG_ELSE = "anders";
 Blockly.Msg.CONTROLS_IF_MSG_ELSEIF = "anders als";
 Blockly.Msg.CONTROLS_IF_MSG_IF = "als";
 Blockly.Msg.CONTROLS_IF_TOOLTIP_1 = "Als een waarde waar is, voer dan opdrachten uit.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_2 = "Als een waarde waar is, voert dan het eerste blok met opdrachten uit. Voer andere het tweede blok met opdrachten uit.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_3 = "Als de eerste waarde waar is, voer dan het eerste blok met opdrachten uit. Voer anders, als de tweede waarde waar is, het tweede blok met opdrachten uit.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_4 = "Als de eerste waarde \"waar\" is, voer dan het eerste blok uit. Voer anders wanneer de tweede waarde \"waar\" is, het tweede blok uit. Als geen van beide waarden waar zijn, voer dan het laatste blok uit.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_2 =
+    "Als een waarde waar is, voert dan het eerste blok met opdrachten uit. Voer andere het tweede blok met opdrachten uit.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_3 =
+    "Als de eerste waarde waar is, voer dan het eerste blok met opdrachten uit. Voer anders, als de tweede waarde waar is, het tweede blok met opdrachten uit.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_4 =
+    "Als de eerste waarde \"waar\" is, voer dan het eerste blok uit. Voer anders wanneer de tweede waarde \"waar\" is, het tweede blok uit. Als geen van beide waarden waar zijn, voer dan het laatste blok uit.";
 Blockly.Msg.CONTROLS_REPEAT_HELPURL = "https://nl.wikipedia.org/wiki/Repetitie_(informatica)#For_en_Foreach";
 Blockly.Msg.CONTROLS_REPEAT_INPUT_DO = "voer uit";
 Blockly.Msg.CONTROLS_REPEAT_TITLE = "%1 keer herhalen";
@@ -80,7 +88,8 @@ Blockly.Msg.LISTS_CREATE_EMPTY_HELPURL = "https://en.wikipedia.org/wiki/Linked_l
 Blockly.Msg.LISTS_CREATE_EMPTY_TITLE = "maak een lege lijst";
 Blockly.Msg.LISTS_CREATE_EMPTY_TOOLTIP = "Geeft een lijst terug met lengte 0, zonder items";
 Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TITLE_ADD = "lijst";
-Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TOOLTIP = "Voeg stukken toe, verwijder ze of verander de volgorde om dit lijstblok aan te passen.";
+Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TOOLTIP =
+    "Voeg stukken toe, verwijder ze of verander de volgorde om dit lijstblok aan te passen.";
 Blockly.Msg.LISTS_CREATE_WITH_INPUT_WITH = "maak een lijst met";
 Blockly.Msg.LISTS_CREATE_WITH_ITEM_TOOLTIP = "Voeg iets toe aan de lijst.";
 Blockly.Msg.LISTS_CREATE_WITH_TOOLTIP = "Maak een lijst met een willekeurig aantal items.";
@@ -94,18 +103,25 @@ Blockly.Msg.LISTS_GET_INDEX_RANDOM = "willekeurig";
 Blockly.Msg.LISTS_GET_INDEX_REMOVE = "verwijder";
 Blockly.Msg.LISTS_GET_INDEX_TAIL = "";  // untranslated
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FIRST = "Geeft het eerste item in een lijst terug.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_END = "Geeft het item op de opgegeven positie in een lijst terug. Item 1 is het laatste item.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START = "Geeft het item op de opgegeven positie in een lijst. Item 1 is het eerste item.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_END =
+    "Geeft het item op de opgegeven positie in een lijst terug. Item 1 is het laatste item.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START =
+    "Geeft het item op de opgegeven positie in een lijst. Item 1 is het eerste item.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_LAST = "Geeft het laatste item in een lijst terug.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_RANDOM = "Geeft een willekeurig item uit een lijst.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FIRST = "Geeft het laatste item in een lijst terug en verwijdert het.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END = "Verwijdert en geeft het item op de opgegeven positie in de lijst. Item 1 is het laatste item.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START = "Geeft het item op de opgegeven positie in een lijst terug en verwijdert het. Item 1 is het eerste item.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END =
+    "Verwijdert en geeft het item op de opgegeven positie in de lijst. Item 1 is het laatste item.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START =
+    "Geeft het item op de opgegeven positie in een lijst terug en verwijdert het. Item 1 is het eerste item.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_LAST = "Geeft het laatste item uit een lijst terug en verwijdert het.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_RANDOM = "Geeft een willekeurig item in een lijst terug en verwijdert het.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_RANDOM =
+    "Geeft een willekeurig item in een lijst terug en verwijdert het.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FIRST = "Verwijdert het eerste item in een lijst.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END = "Verwijdert een item op de opgegeven positie in een lijst. Item 1 is het laatste item.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START = "Verwijdert het item op de opgegeven positie in een lijst. Item 1 is het eerste item.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END =
+    "Verwijdert een item op de opgegeven positie in een lijst. Item 1 is het laatste item.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START =
+    "Verwijdert het item op de opgegeven positie in een lijst. Item 1 is het eerste item.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_LAST = "Verwijdert het laatste item uit een lijst.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_RANDOM = "Verwijdert een willekeurig item uit een lijst.";
 Blockly.Msg.LISTS_GET_SUBLIST_END_FROM_END = "naar # vanaf einde";
@@ -120,7 +136,8 @@ Blockly.Msg.LISTS_GET_SUBLIST_TOOLTIP = "Maakt een kopie van het opgegeven deel 
 Blockly.Msg.LISTS_INDEX_OF_FIRST = "zoek eerste voorkomen van item";
 Blockly.Msg.LISTS_INDEX_OF_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#Getting_Items_from_a_List";
 Blockly.Msg.LISTS_INDEX_OF_LAST = "zoek laatste voorkomen van item";
-Blockly.Msg.LISTS_INDEX_OF_TOOLTIP = "Geeft de index van het eerste of laatste voorkomen van een item in de lijst terug. Geeft 0 terug als de tekst niet is gevonden.";
+Blockly.Msg.LISTS_INDEX_OF_TOOLTIP =
+    "Geeft de index van het eerste of laatste voorkomen van een item in de lijst terug. Geeft 0 terug als de tekst niet is gevonden.";
 Blockly.Msg.LISTS_INLIST = "in lijst";
 Blockly.Msg.LISTS_IS_EMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#is_empty";
 Blockly.Msg.LISTS_IS_EMPTY_TITLE = "%1 is leeg";
@@ -129,19 +146,24 @@ Blockly.Msg.LISTS_LENGTH_TITLE = "lengte van %1";
 Blockly.Msg.LISTS_LENGTH_TOOLTIP = "Geeft de lengte van een lijst terug.";
 Blockly.Msg.LISTS_REPEAT_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#create_list_with";
 Blockly.Msg.LISTS_REPEAT_TITLE = "Maak lijst met item %1, %2 keer herhaald";
-Blockly.Msg.LISTS_REPEAT_TOOLTIP = "Maakt een lijst die bestaat uit de opgegeven waarde, het opgegeven aantal keer herhaald.";
+Blockly.Msg.LISTS_REPEAT_TOOLTIP =
+    "Maakt een lijst die bestaat uit de opgegeven waarde, het opgegeven aantal keer herhaald.";
 Blockly.Msg.LISTS_SET_INDEX_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#in_list_..._set";
 Blockly.Msg.LISTS_SET_INDEX_INPUT_TO = "als";
 Blockly.Msg.LISTS_SET_INDEX_INSERT = "tussenvoegen op";
 Blockly.Msg.LISTS_SET_INDEX_SET = "stel in";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FIRST = "Voegt het item toe aan het begin van de lijst.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END = "Voegt het item op de opgegeven positie toe aan een lijst in. Item 1 is het laatste item.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START = "Voegt het item op een opgegeven positie in een lijst in. Item 1 is het eerste item.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END =
+    "Voegt het item op de opgegeven positie toe aan een lijst in. Item 1 is het laatste item.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START =
+    "Voegt het item op een opgegeven positie in een lijst in. Item 1 is het eerste item.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_LAST = "Voeg het item aan het einde van een lijst toe.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_RANDOM = "Voegt het item op een willekeurige positie in de lijst in.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FIRST = "Stelt het eerste item in een lijst in.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END = "Stelt het item op een opgegeven positie in de lijst in. Item 1 is het laatste item.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START = "Stelt het item op de opgegeven positie in de lijst in. Item 1 is het eerste item.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END =
+    "Stelt het item op een opgegeven positie in de lijst in. Item 1 is het laatste item.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START =
+    "Stelt het item op de opgegeven positie in de lijst in. Item 1 is het eerste item.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_LAST = "Stelt het laatste item van een lijst in.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_RANDOM = "Stelt een willekeurig item uit de lijst in.";
 Blockly.Msg.LISTS_TOOLTIP = "Geeft waar terug als de lijst leeg is.";
@@ -152,13 +174,16 @@ Blockly.Msg.LOGIC_BOOLEAN_TRUE = "waar";
 Blockly.Msg.LOGIC_COMPARE_HELPURL = "https://nl.wikipedia.org/wiki/Ongelijkheid";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_EQ = "Geeft \"waar\", als beide waarden gelijk aan elkaar zijn.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GT = "Geeft \"waar\" terug als de eerste invoer meer is dan de tweede invoer.";
-Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GTE = "Geeft \"waar\" terug als de eerste invoer groter is of gelijk aan de tweede invoer.";
+Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GTE =
+    "Geeft \"waar\" terug als de eerste invoer groter is of gelijk aan de tweede invoer.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LT = "Geeft \"waar\" als de eerste invoer kleiner is dan de tweede invoer.";
-Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LTE = "Geeft \"waar\" terug als de eerste invoer kleiner of gelijk is aan de tweede invoer.";
+Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LTE =
+    "Geeft \"waar\" terug als de eerste invoer kleiner of gelijk is aan de tweede invoer.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_NEQ = "Geeft \"waar\" terug als de waarden niet gelijk zijn aan elkaar.";
 Blockly.Msg.LOGIC_NEGATE_HELPURL = "http://code.google.com/p/blockly/wiki/Not";
 Blockly.Msg.LOGIC_NEGATE_TITLE = "niet %1";
-Blockly.Msg.LOGIC_NEGATE_TOOLTIP = "Geeft \"waar\" terug als de invoer \"onwaar\" is. Geeft \"onwaar\" als de invoer \"waar\" is.";
+Blockly.Msg.LOGIC_NEGATE_TOOLTIP =
+    "Geeft \"waar\" terug als de invoer \"onwaar\" is. Geeft \"onwaar\" als de invoer \"waar\" is.";
 Blockly.Msg.LOGIC_NULL = "niets";
 Blockly.Msg.LOGIC_NULL_HELPURL = "https://en.wikipedia.org/wiki/Nullable_type";
 Blockly.Msg.LOGIC_NULL_TOOLTIP = "Geeft niets terug.";
@@ -171,7 +196,8 @@ Blockly.Msg.LOGIC_TERNARY_CONDITION = "test";
 Blockly.Msg.LOGIC_TERNARY_HELPURL = "https://en.wikipedia.org/wiki/%3F:";
 Blockly.Msg.LOGIC_TERNARY_IF_FALSE = "als onwaar";
 Blockly.Msg.LOGIC_TERNARY_IF_TRUE = "als waar";
-Blockly.Msg.LOGIC_TERNARY_TOOLTIP = "Test de voorwaarde in \"test\". Als de voorwaarde \"waar\" is, geef de waarde van \"als waar\" terug; geef anders de waarde van \"als onwaar\" terug.";
+Blockly.Msg.LOGIC_TERNARY_TOOLTIP =
+    "Test de voorwaarde in \"test\". Als de voorwaarde \"waar\" is, geef de waarde van \"als waar\" terug; geef anders de waarde van \"als onwaar\" terug.";
 Blockly.Msg.MATH_ADDITION_SYMBOL = "+";
 Blockly.Msg.MATH_ARITHMETIC_HELPURL = "https://nl.wikipedia.org/wiki/Rekenen";
 Blockly.Msg.MATH_ARITHMETIC_TOOLTIP_ADD = "Geeft de som van 2 getallen.";
@@ -184,7 +210,8 @@ Blockly.Msg.MATH_CHANGE_INPUT_BY = "met";
 Blockly.Msg.MATH_CHANGE_TITLE_CHANGE = "wijzigen";
 Blockly.Msg.MATH_CHANGE_TOOLTIP = "Voegt een getal toe aan variabele \"%1\".";
 Blockly.Msg.MATH_CONSTANT_HELPURL = "https://nl.wikipedia.org/wiki/Wiskundige_constante";
-Blockly.Msg.MATH_CONSTANT_TOOLTIP = "Geeft een van de vaak voorkomende constante waardes:  π (3.141…), e (2.718…), φ (1.618…), √2 (1.414…), √½ (0.707…), of ∞ (oneindig).";
+Blockly.Msg.MATH_CONSTANT_TOOLTIP =
+    "Geeft een van de vaak voorkomende constante waardes:  π (3.141…), e (2.718…), φ (1.618…), √2 (1.414…), √½ (0.707…), of ∞ (oneindig).";
 Blockly.Msg.MATH_CONSTRAIN_HELPURL = "https://en.wikipedia.org/wiki/Clamping_%28graphics%29";
 Blockly.Msg.MATH_CONSTRAIN_TITLE = "beperk %1 van minimaal %2 tot maximaal %3";
 Blockly.Msg.MATH_CONSTRAIN_TOOLTIP = "Beperk een getal tussen de twee opgegeven limieten (inclusief).";
@@ -195,7 +222,8 @@ Blockly.Msg.MATH_IS_NEGATIVE = "is negatief";
 Blockly.Msg.MATH_IS_ODD = "is oneven";
 Blockly.Msg.MATH_IS_POSITIVE = "is positief";
 Blockly.Msg.MATH_IS_PRIME = "is priemgetal";
-Blockly.Msg.MATH_IS_TOOLTIP = "Test of een getal even, oneven, een priemgetal, geheel, positief of negatief is, of deelbaar is door een bepaald getal. Geeft \"waar\" of \"onwaar\".";
+Blockly.Msg.MATH_IS_TOOLTIP =
+    "Test of een getal even, oneven, een priemgetal, geheel, positief of negatief is, of deelbaar is door een bepaald getal. Geeft \"waar\" of \"onwaar\".";
 Blockly.Msg.MATH_IS_WHOLE = "is geheel getal";
 Blockly.Msg.MATH_MODULO_HELPURL = "https://nl.wikipedia.org/wiki/Modulair_rekenen";
 Blockly.Msg.MATH_MODULO_TITLE = "restgetal van %1 ÷ %2";
@@ -265,7 +293,8 @@ Blockly.Msg.PROCEDURES_CALLNORETURN_CALL = "";  // untranslated
 Blockly.Msg.PROCEDURES_CALLNORETURN_HELPURL = "https://nl.wikipedia.org/wiki/Subprogramma";
 Blockly.Msg.PROCEDURES_CALLNORETURN_TOOLTIP = "Voer de door de gebruiker gedefinieerde functie \"%1\" uit.";
 Blockly.Msg.PROCEDURES_CALLRETURN_HELPURL = "https://nl.wikipedia.org/wiki/Subprogramma";
-Blockly.Msg.PROCEDURES_CALLRETURN_TOOLTIP = "Voer de door de gebruiker gedefinieerde functie \"%1\" uit en gebruik de uitvoer.";
+Blockly.Msg.PROCEDURES_CALLRETURN_TOOLTIP =
+    "Voer de door de gebruiker gedefinieerde functie \"%1\" uit en gebruik de uitvoer.";
 Blockly.Msg.PROCEDURES_CREATE_DO = "Maak \"%1\"";
 Blockly.Msg.PROCEDURES_DEFNORETURN_DO = "";  // untranslated
 Blockly.Msg.PROCEDURES_DEFNORETURN_HELPURL = "https://nl.wikipedia.org/wiki/Subprogramma";
@@ -278,7 +307,8 @@ Blockly.Msg.PROCEDURES_DEFRETURN_TOOLTIP = "Maakt een functie met een uitvoer.";
 Blockly.Msg.PROCEDURES_DEF_DUPLICATE_WARNING = "Waarschuwing: deze functie heeft parameters met dezelfde naam.";
 Blockly.Msg.PROCEDURES_HIGHLIGHT_DEF = "Accentueer functiedefinitie";
 Blockly.Msg.PROCEDURES_IFRETURN_TOOLTIP = "Als de eerste waarde \"waar\" is, geef dan de tweede waarde terug.";
-Blockly.Msg.PROCEDURES_IFRETURN_WARNING = "Waarschuwing: dit blok mag alleen gebruikt worden binnen de definitie van een functie.";
+Blockly.Msg.PROCEDURES_IFRETURN_WARNING =
+    "Waarschuwing: dit blok mag alleen gebruikt worden binnen de definitie van een functie.";
 Blockly.Msg.PROCEDURES_MUTATORARG_TITLE = "invoernaam:";
 Blockly.Msg.PROCEDURES_MUTATORARG_TOOLTIP = "Een invoer aan de functie toevoegen.";
 Blockly.Msg.PROCEDURES_MUTATORCONTAINER_TITLE = "ingangen";
@@ -306,7 +336,8 @@ Blockly.Msg.TEXT_CHARAT_TAIL = "";  // untranslated
 Blockly.Msg.TEXT_CHARAT_TOOLTIP = "Geeft de letter op de opgegeven positie terug.";
 Blockly.Msg.TEXT_CREATE_JOIN_ITEM_TOOLTIP = "Voegt een item aan de tekst toe.";
 Blockly.Msg.TEXT_CREATE_JOIN_TITLE_JOIN = "samenvoegen";
-Blockly.Msg.TEXT_CREATE_JOIN_TOOLTIP = "Toevoegen, verwijderen of volgorde veranderen van secties om dit tekstblok opnieuw in te stellen.";
+Blockly.Msg.TEXT_CREATE_JOIN_TOOLTIP =
+    "Toevoegen, verwijderen of volgorde veranderen van secties om dit tekstblok opnieuw in te stellen.";
 Blockly.Msg.TEXT_GET_SUBSTRING_END_FROM_END = "van letter # tot einde";
 Blockly.Msg.TEXT_GET_SUBSTRING_END_FROM_START = "naar letter #";
 Blockly.Msg.TEXT_GET_SUBSTRING_END_LAST = "naar laatste letter";
@@ -322,7 +353,8 @@ Blockly.Msg.TEXT_INDEXOF_INPUT_INTEXT = "in tekst";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_FIRST = "zoek eerste voorkomen van tekst";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_LAST = "zoek het laatste voorkomen van tekst";
 Blockly.Msg.TEXT_INDEXOF_TAIL = "";  // untranslated
-Blockly.Msg.TEXT_INDEXOF_TOOLTIP = "Geeft de index terug van de eerste/laatste aanwezigheid van de eerste tekst in de tweede tekst. Geeft 0 terug als de tekst niet gevonden is.";
+Blockly.Msg.TEXT_INDEXOF_TOOLTIP =
+    "Geeft de index terug van de eerste/laatste aanwezigheid van de eerste tekst in de tweede tekst. Geeft 0 terug als de tekst niet gevonden is.";
 Blockly.Msg.TEXT_ISEMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Text#Checking_for_empty_text";
 Blockly.Msg.TEXT_ISEMPTY_TITLE = "%1 is leeg";
 Blockly.Msg.TEXT_ISEMPTY_TOOLTIP = "Geeft \"waar\" terug, als de opgegeven tekst leeg is.";

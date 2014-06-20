@@ -28,33 +28,41 @@ Blockly.Msg.COLOUR_RGB_GREEN = "grün";
 Blockly.Msg.COLOUR_RGB_HELPURL = "http://www.december.com/html/spec/colorper.html";  // untranslated
 Blockly.Msg.COLOUR_RGB_RED = "rot";
 Blockly.Msg.COLOUR_RGB_TITLE = "Färreb mit";
-Blockly.Msg.COLOUR_RGB_TOOLTIP = "Kreiere ene Farreb mit sellrbst definierte rot, grün und blau Wearte. All Wearte müsse zwischich 0 und 100 liehe.";
+Blockly.Msg.COLOUR_RGB_TOOLTIP =
+    "Kreiere ene Farreb mit sellrbst definierte rot, grün und blau Wearte. All Wearte müsse zwischich 0 und 100 liehe.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#Loop_Termination_Blocks";  // untranslated
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_BREAK = "ausbreche aus der Schleif";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_CONTINUE = "mit der nächste Iteration fortfoohre aus der Schleifa";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_BREAK = "Die umgebne Schleif beenne.";
-Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE = "Die Oonweisung abbreche und mit der nächste Schleifiteration fortfoohre.";
+Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE =
+    "Die Oonweisung abbreche und mit der nächste Schleifiteration fortfoohre.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_WARNING = "Warnung: Die block sollt nuar in en Schleif verwennet sin.";
 Blockly.Msg.CONTROLS_FOREACH_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#for_each for each block";  // untranslated
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST = "aus der List";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST_TAIL = "";  // untranslated
 Blockly.Msg.CONTROLS_FOREACH_INPUT_ITEM = "Für Weart";
-Blockly.Msg.CONTROLS_FOREACH_TOOLTIP = "Füahr en Oonweisung für jede Weart in der List aus und setzt dabei die Variable \"%1\" uff den aktuelle List Weart.";
+Blockly.Msg.CONTROLS_FOREACH_TOOLTIP =
+    "Füahr en Oonweisung für jede Weart in der List aus und setzt dabei die Variable \"%1\" uff den aktuelle List Weart.";
 Blockly.Msg.CONTROLS_FOR_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#count_with";  // untranslated
 Blockly.Msg.CONTROLS_FOR_INPUT_FROM_TO_BY = "von %1 bis %2 mit %3";
 Blockly.Msg.CONTROLS_FOR_INPUT_WITH = "Zähl";
-Blockly.Msg.CONTROLS_FOR_TOOLTIP = "Zähl die Variable \"%1\" von enem Startweart bis zu enem Zielweart und füahrefür jede Weart en Oonweisung aus.";
+Blockly.Msg.CONTROLS_FOR_TOOLTIP =
+    "Zähl die Variable \"%1\" von enem Startweart bis zu enem Zielweart und füahrefür jede Weart en Oonweisung aus.";
 Blockly.Msg.CONTROLS_IF_ELSEIF_TOOLTIP = "En weitre Bedingung hinzufüche.";
-Blockly.Msg.CONTROLS_IF_ELSE_TOOLTIP = "En orrer Bedingung hinzufüche, füahrt en Oonweisung aus falls ken Bedingung zutrifft.";
+Blockly.Msg.CONTROLS_IF_ELSE_TOOLTIP =
+    "En orrer Bedingung hinzufüche, füahrt en Oonweisung aus falls ken Bedingung zutrifft.";
 Blockly.Msg.CONTROLS_IF_HELPURL = "https://code.google.com/p/blockly/wiki/If_Then";  // untranslated
 Blockly.Msg.CONTROLS_IF_IF_TOOLTIP = "Hinzufüche, entferne orrer sortiere von Sektione";
 Blockly.Msg.CONTROLS_IF_MSG_ELSE = "orrer";
 Blockly.Msg.CONTROLS_IF_MSG_ELSEIF = "orrer wenn";
 Blockly.Msg.CONTROLS_IF_MSG_IF = "wenn";
 Blockly.Msg.CONTROLS_IF_TOOLTIP_1 = "Wenn en Bedingung woahr (true) ist, dann füahr en Oonweisung aus.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_2 = "Wenn en Bedingung woahr (true) ist, dann füahr die earscht Oonweisung aus.  Ansonscht füahr die zwooite Oonweisung aus.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_3 = "Wenn der erschte Bedingung woahr (true) ist, dann füahr die erschte Oonweisung aus.  Orrer wenn die zwooite Bedingung woahr (true) ist, dann füahr die zwooite Oonweisung aus.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_4 = "Wenn der erscht Bedingung woahr (true) ist, dann füahr die erschte Oonweisung aus.  Orrer wenn die zwooite Bedingung woahr (true) ist, dann füahr die zwooite Oonweisung aus.  Falls ken der beide Bedingungen woahr (true) ist, dann füahr die dritte Oonweisung aus.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_2 =
+    "Wenn en Bedingung woahr (true) ist, dann füahr die earscht Oonweisung aus.  Ansonscht füahr die zwooite Oonweisung aus.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_3 =
+    "Wenn der erschte Bedingung woahr (true) ist, dann füahr die erschte Oonweisung aus.  Orrer wenn die zwooite Bedingung woahr (true) ist, dann füahr die zwooite Oonweisung aus.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_4 =
+    "Wenn der erscht Bedingung woahr (true) ist, dann füahr die erschte Oonweisung aus.  Orrer wenn die zwooite Bedingung woahr (true) ist, dann füahr die zwooite Oonweisung aus.  Falls ken der beide Bedingungen woahr (true) ist, dann füahr die dritte Oonweisung aus.";
 Blockly.Msg.CONTROLS_REPEAT_HELPURL = "https://hrx.wikipedia.org/wiki/For-Schleif";
 Blockly.Msg.CONTROLS_REPEAT_INPUT_DO = "mach";
 Blockly.Msg.CONTROLS_REPEAT_TITLE = "wiederhol %1 mol";
@@ -120,7 +128,8 @@ Blockly.Msg.LISTS_GET_SUBLIST_TOOLTIP = "Generiert en Kopie von en definierte Te
 Blockly.Msg.LISTS_INDEX_OF_FIRST = "Such earstes Voarkommniss";
 Blockly.Msg.LISTS_INDEX_OF_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#Getting_Items_from_a_List";  // untranslated
 Blockly.Msg.LISTS_INDEX_OF_LAST = "Such letztes Voarkommniss";
-Blockly.Msg.LISTS_INDEX_OF_TOOLTIP = "Sucht die Position (index) von en Element in der List Gebt 0 zurück wenn nixs gefunn woard.";
+Blockly.Msg.LISTS_INDEX_OF_TOOLTIP =
+    "Sucht die Position (index) von en Element in der List Gebt 0 zurück wenn nixs gefunn woard.";
 Blockly.Msg.LISTS_INLIST = "in der List";
 Blockly.Msg.LISTS_IS_EMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#is_empty";  // untranslated
 Blockly.Msg.LISTS_IS_EMPTY_TITLE = "%1 ist leear?";
@@ -135,13 +144,17 @@ Blockly.Msg.LISTS_SET_INDEX_INPUT_TO = "uff";
 Blockly.Msg.LISTS_SET_INDEX_INSERT = "tue ren setz an";
 Blockly.Msg.LISTS_SET_INDEX_SET = "setz";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FIRST = "Tut das Element an en Oonfang von en List ren setze.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END = "Tut das Element ren setze an en definierte Position an en List.  #1 ist das letzte Element.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START = "Tut das Element ren setze an en definierte Position an en List.  #1 ist das earschte Element.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END =
+    "Tut das Element ren setze an en definierte Position an en List.  #1 ist das letzte Element.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START =
+    "Tut das Element ren setze an en definierte Position an en List.  #1 ist das earschte Element.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_LAST = "Oonhängt das Element zu en List sei End.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_RANDOM = "Tut das Element zufällich an en List ren setze.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FIRST = "Sets the first item in a list.Setzt das earschte Element an en list.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END = "Setzt das Element zu en definierte Position an en List. #1 ist das letzte Element.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START = "Setzt das Element zu en definierte Stell in en List.  #1 ist das earschte Element.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END =
+    "Setzt das Element zu en definierte Position an en List. #1 ist das letzte Element.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START =
+    "Setzt das Element zu en definierte Stell in en List.  #1 ist das earschte Element.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_LAST = "Setzt das letzte Element an en List.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_RANDOM = "Setzt en zufälliches Element an en List.";
 Blockly.Msg.LISTS_TOOLTIP = "Ist woahr (true), wenn die List leear ist.";
@@ -152,13 +165,16 @@ Blockly.Msg.LOGIC_BOOLEAN_TRUE = "woahr";
 Blockly.Msg.LOGIC_COMPARE_HELPURL = "https://hrx.wikipedia.org/wiki/Vergleich_%28Zahlen%29";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_EQ = "Ist woahr (true) wenn beide Wearte identisch sind.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GT = "Ist woahr (true) wenn der erschte Weart grösser als der zwooite Weart ist.";
-Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GTE = "Ist woahr (true) wenn der erschte Weart grösser als orrer gleich gross wie zwooite Weart ist.";
+Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GTE =
+    "Ist woahr (true) wenn der erschte Weart grösser als orrer gleich gross wie zwooite Weart ist.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LT = "Ist woahr (true) wenn der earschte Weart klener als der zwooite Weart ist.";
-Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LTE = "Ist woahr (true) wenn der earscht Weart klener als orrer gleich gross wie zwooite Weart ist.";
+Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LTE =
+    "Ist woahr (true) wenn der earscht Weart klener als orrer gleich gross wie zwooite Weart ist.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_NEQ = "Ist woahr (true) wenn beide Wearte unnerschiedlich sind.";
 Blockly.Msg.LOGIC_NEGATE_HELPURL = "https://code.google.com/p/blockly/wiki/Not";  // untranslated
 Blockly.Msg.LOGIC_NEGATE_TITLE = "net %1";
-Blockly.Msg.LOGIC_NEGATE_TOOLTIP = "Ist woahr (true) wenn der Ingäweweart falsch (false) ist.  Ist falsch (false) wenn der Ingäweweart woahr (true) ist.";
+Blockly.Msg.LOGIC_NEGATE_TOOLTIP =
+    "Ist woahr (true) wenn der Ingäweweart falsch (false) ist.  Ist falsch (false) wenn der Ingäweweart woahr (true) ist.";
 Blockly.Msg.LOGIC_NULL = "null";
 Blockly.Msg.LOGIC_NULL_HELPURL = "https://en.wikipedia.org/wiki/Nullable_type";  // untranslated
 Blockly.Msg.LOGIC_NULL_TOOLTIP = "Is NULL.";
@@ -171,7 +187,8 @@ Blockly.Msg.LOGIC_TERNARY_CONDITION = "test";
 Blockly.Msg.LOGIC_TERNARY_HELPURL = "https://en.wikipedia.org/wiki/%3F:";  // untranslated
 Blockly.Msg.LOGIC_TERNARY_IF_FALSE = "wenn falsch";
 Blockly.Msg.LOGIC_TERNARY_IF_TRUE = "wenn woahr";
-Blockly.Msg.LOGIC_TERNARY_TOOLTIP = "Üwerprüft en Bedingung \"test\". Wenn die Bedingung woahr ist weerd der \"wenn woahr\" Weart zurückgeb, annerfalls der \"wenn falsch\" Weart";
+Blockly.Msg.LOGIC_TERNARY_TOOLTIP =
+    "Üwerprüft en Bedingung \"test\". Wenn die Bedingung woahr ist weerd der \"wenn woahr\" Weart zurückgeb, annerfalls der \"wenn falsch\" Weart";
 Blockly.Msg.MATH_ADDITION_SYMBOL = "+";  // untranslated
 Blockly.Msg.MATH_ARITHMETIC_HELPURL = "https://hrx.wikipedia.org/wiki/Grundrechenoort";
 Blockly.Msg.MATH_ARITHMETIC_TOOLTIP_ADD = "Ist die Summe zwooier Wearte.";
@@ -184,7 +201,8 @@ Blockly.Msg.MATH_CHANGE_INPUT_BY = "um";
 Blockly.Msg.MATH_CHANGE_TITLE_CHANGE = "mach höcher / erhöhe";
 Blockly.Msg.MATH_CHANGE_TOOLTIP = "Addiert en Weart zur Variable \"%1\" hinzu.";
 Blockly.Msg.MATH_CONSTANT_HELPURL = "https://hrx.wikipedia.org/wiki/Mathematische_Konstante";
-Blockly.Msg.MATH_CONSTANT_TOOLTIP = "Mathematische Konstante wie: π (3.141…), e (2.718…), φ (1.618…), sqrt(2) (1.414…), sqrt(½) (0.707…) oder ∞ (unendlich).";
+Blockly.Msg.MATH_CONSTANT_TOOLTIP =
+    "Mathematische Konstante wie: π (3.141…), e (2.718…), φ (1.618…), sqrt(2) (1.414…), sqrt(½) (0.707…) oder ∞ (unendlich).";
 Blockly.Msg.MATH_CONSTRAIN_HELPURL = "https://en.wikipedia.org/wiki/Clamping_%28graphics%29";  // untranslated
 Blockly.Msg.MATH_CONSTRAIN_TITLE = "begrenze %1 von %2 bis %3";
 Blockly.Msg.MATH_CONSTRAIN_TOOLTIP = "Begrenzt den Weartebereich mittels von / bis Wearte. (inklusiv)";
@@ -195,7 +213,8 @@ Blockly.Msg.MATH_IS_NEGATIVE = "ist negativ";
 Blockly.Msg.MATH_IS_ODD = "ist ungrood";
 Blockly.Msg.MATH_IS_POSITIVE = "ist positiv";
 Blockly.Msg.MATH_IS_PRIME = "ist en Primenzoohl";
-Blockly.Msg.MATH_IS_TOOLTIP = "Üwerprüft ob en Zoohl grood, ungrood, en Primenzoohl, ganzzoohlich, positiv, negativ orrer doorrich en zwooite Zoohl telbar ist.  Gebt woahr (true) orrer falsch (false) zurück.";
+Blockly.Msg.MATH_IS_TOOLTIP =
+    "Üwerprüft ob en Zoohl grood, ungrood, en Primenzoohl, ganzzoohlich, positiv, negativ orrer doorrich en zwooite Zoohl telbar ist.  Gebt woahr (true) orrer falsch (false) zurück.";
 Blockly.Msg.MATH_IS_WHOLE = "ganze Zoohl";
 Blockly.Msg.MATH_MODULO_HELPURL = "https://hrx.wikipedia.org/wiki/Modulo";
 Blockly.Msg.MATH_MODULO_TITLE = "Rest von %1 ÷ %2";
@@ -216,9 +235,11 @@ Blockly.Msg.MATH_ONLIST_TOOLTIP_AVERAGE = "Ist der Doorrichschnittsweart von all
 Blockly.Msg.MATH_ONLIST_TOOLTIP_MAX = "Ist der grösste Weart in en List.";
 Blockly.Msg.MATH_ONLIST_TOOLTIP_MEDIAN = "Ist der Zentralweart von aller Wearte in en List.";
 Blockly.Msg.MATH_ONLIST_TOOLTIP_MIN = "Ist der klenste Weart in en List.";
-Blockly.Msg.MATH_ONLIST_TOOLTIP_MODE = "Findt den am häifichste voarkommend Weart in en List.  Falls ken Weart öftersch voarkomme als all annre, weard die originale List zurückgeche";
+Blockly.Msg.MATH_ONLIST_TOOLTIP_MODE =
+    "Findt den am häifichste voarkommend Weart in en List.  Falls ken Weart öftersch voarkomme als all annre, weard die originale List zurückgeche";
 Blockly.Msg.MATH_ONLIST_TOOLTIP_RANDOM = "Geb en Zufallsweart aus der List zurück.";
-Blockly.Msg.MATH_ONLIST_TOOLTIP_STD_DEV = "Ist die standartiesierte/padronisierte Standartabweichung/Padrongabweichung von aller Wearte in der List";
+Blockly.Msg.MATH_ONLIST_TOOLTIP_STD_DEV =
+    "Ist die standartiesierte/padronisierte Standartabweichung/Padrongabweichung von aller Wearte in der List";
 Blockly.Msg.MATH_ONLIST_TOOLTIP_SUM = "Ist die Summ aller Wearte in en List.";
 Blockly.Msg.MATH_POWER_SYMBOL = "^";  // untranslated
 Blockly.Msg.MATH_RANDOM_FLOAT_HELPURL = "https://hex.wikipedia.org/wiki/Zufallszoohle";
@@ -294,7 +315,8 @@ Blockly.Msg.TEXT_CHANGECASE_HELPURL = "https://code.google.com/p/blockly/wiki/Te
 Blockly.Msg.TEXT_CHANGECASE_OPERATOR_LOWERCASE = "umwandle in klenbuchstoobe";
 Blockly.Msg.TEXT_CHANGECASE_OPERATOR_TITLECASE = "umwandle in Wörter";
 Blockly.Msg.TEXT_CHANGECASE_OPERATOR_UPPERCASE = "umwandle in GROSSBUCHSTOOBE";
-Blockly.Msg.TEXT_CHANGECASE_TOOLTIP = "Wandelt Schreibweise von Texte um, in Grossbuchstoobe, Klenbuchstoobe orrer den earste Buchstoob von jedes Wort gross und die annre klen.";
+Blockly.Msg.TEXT_CHANGECASE_TOOLTIP =
+    "Wandelt Schreibweise von Texte um, in Grossbuchstoobe, Klenbuchstoobe orrer den earste Buchstoob von jedes Wort gross und die annre klen.";
 Blockly.Msg.TEXT_CHARAT_FIRST = "hol earschte Buchstoob";
 Blockly.Msg.TEXT_CHARAT_FROM_END = "hol Buchstoob # von End";
 Blockly.Msg.TEXT_CHARAT_FROM_START = "hol Buchstoob #";
@@ -322,7 +344,8 @@ Blockly.Msg.TEXT_INDEXOF_INPUT_INTEXT = "im Text";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_FIRST = "Such der Begriff sein earstes Voarkommniss";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_LAST = "Suche der Begriff sein letztes Vorkommniss.";
 Blockly.Msg.TEXT_INDEXOF_TAIL = "";  // untranslated
-Blockly.Msg.TEXT_INDEXOF_TOOLTIP = "Findt das earste / letzte Voarkommniss von en Suchbegriffes in enem Text.  Gebt die Position von dem Begriff orrer 0 zurück.";
+Blockly.Msg.TEXT_INDEXOF_TOOLTIP =
+    "Findt das earste / letzte Voarkommniss von en Suchbegriffes in enem Text.  Gebt die Position von dem Begriff orrer 0 zurück.";
 Blockly.Msg.TEXT_ISEMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Text#Checking_for_empty_text";  // untranslated
 Blockly.Msg.TEXT_ISEMPTY_TITLE = "%1 ist leer?";
 Blockly.Msg.TEXT_ISEMPTY_TOOLTIP = "Ist woahr (true), wenn der Text leer ist.";
@@ -340,7 +363,8 @@ Blockly.Msg.TEXT_PROMPT_TOOLTIP_NUMBER = "Frocht den Benutzer noh en Zoohl.";
 Blockly.Msg.TEXT_PROMPT_TOOLTIP_TEXT = "Frocht den Benutzer noh enem Text.";
 Blockly.Msg.TEXT_PROMPT_TYPE_NUMBER = "Frächt noh Zoohl mit Hinweis";
 Blockly.Msg.TEXT_PROMPT_TYPE_TEXT = "Frocht noh Text mit Hinweis";
-Blockly.Msg.TEXT_TEXT_HELPURL = "https://en.wikipedia.org/wiki/String_(computer_science)https://hrx.wikipedia.org/wiki/Zeichenkette";
+Blockly.Msg.TEXT_TEXT_HELPURL =
+    "https://en.wikipedia.org/wiki/String_(computer_science)https://hrx.wikipedia.org/wiki/Zeichenkette";
 Blockly.Msg.TEXT_TEXT_TOOLTIP = "En Buchstoob, Text orrer Satz.";
 Blockly.Msg.TEXT_TRIM_HELPURL = "https://code.google.com/p/blockly/wiki/Text#Trimming_%28removing%29_spaces";  // untranslated
 Blockly.Msg.TEXT_TRIM_OPERATOR_BOTH = "entfern Leerzeiche von Oonfang und End Seite";

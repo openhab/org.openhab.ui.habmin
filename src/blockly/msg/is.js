@@ -28,12 +28,14 @@ Blockly.Msg.COLOUR_RGB_GREEN = "grænt";
 Blockly.Msg.COLOUR_RGB_HELPURL = "http://www.december.com/html/spec/colorper.html";  // untranslated
 Blockly.Msg.COLOUR_RGB_RED = "rautt";
 Blockly.Msg.COLOUR_RGB_TITLE = "litur";
-Blockly.Msg.COLOUR_RGB_TOOLTIP = "Búa til lit úr tilteknu magni af rauðu, grænu og bláu. Allar tölurnar verða að vera á bilinu 0 til 100.";
+Blockly.Msg.COLOUR_RGB_TOOLTIP =
+    "Búa til lit úr tilteknu magni af rauðu, grænu og bláu. Allar tölurnar verða að vera á bilinu 0 til 100.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#Loop_Termination_Blocks";  // untranslated
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_BREAK = "fara út úr lykkju";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_CONTINUE = "fara beint í næstu umferð lykkjunnar";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_BREAK = "Fara út úr umlykjandi lykkju.";
-Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE = "Sleppa afganginum af lykkjunni og fara beint í næstu umferð hennar.";
+Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE =
+    "Sleppa afganginum af lykkjunni og fara beint í næstu umferð hennar.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_WARNING = "Aðvörun: Þennan kubb má aðeins nota innan lykkju.";
 Blockly.Msg.CONTROLS_FOREACH_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#for_each for each block";  // untranslated
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST = "í lista";
@@ -43,18 +45,23 @@ Blockly.Msg.CONTROLS_FOREACH_TOOLTIP = "Fyrir hvert atriði í lista er breyta '
 Blockly.Msg.CONTROLS_FOR_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#count_with";  // untranslated
 Blockly.Msg.CONTROLS_FOR_INPUT_FROM_TO_BY = "frá %1 til %2 um %3";
 Blockly.Msg.CONTROLS_FOR_INPUT_WITH = "telja með";
-Blockly.Msg.CONTROLS_FOR_TOOLTIP = "Láta breytuna %1 taka inn gildi frá fyrstu tölu til síðustu tölu hlaupandi á bilinu og endurtaka kubbana fyrir hverja tölu.";
+Blockly.Msg.CONTROLS_FOR_TOOLTIP =
+    "Láta breytuna %1 taka inn gildi frá fyrstu tölu til síðustu tölu hlaupandi á bilinu og endurtaka kubbana fyrir hverja tölu.";
 Blockly.Msg.CONTROLS_IF_ELSEIF_TOOLTIP = "Bæta skilyrði við EF kubbinn.";
-Blockly.Msg.CONTROLS_IF_ELSE_TOOLTIP = "Bæta við hluta EF kubbs sem grípur öll tilfelli sem uppfylla ekki hin skilyrðin.";
+Blockly.Msg.CONTROLS_IF_ELSE_TOOLTIP =
+    "Bæta við hluta EF kubbs sem grípur öll tilfelli sem uppfylla ekki hin skilyrðin.";
 Blockly.Msg.CONTROLS_IF_HELPURL = "https://code.google.com/p/blockly/wiki/If_Then";  // untranslated
 Blockly.Msg.CONTROLS_IF_IF_TOOLTIP = "Bæta við, fjarlægja eða umraða til að breyta skipan þessa EF kubbs.";
 Blockly.Msg.CONTROLS_IF_MSG_ELSE = "annars";
 Blockly.Msg.CONTROLS_IF_MSG_ELSEIF = "annars ef";
 Blockly.Msg.CONTROLS_IF_MSG_IF = "ef";
 Blockly.Msg.CONTROLS_IF_TOOLTIP_1 = "Ef gildi er satt skal gera einhverjar skipanir.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_2 = "Ef gildi er satt skal gera skipanir í fyrri kubbnum. Annars skal gera skipanir í seinni kubbnum.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_3 = "Ef fyrra gildið er satt skal gera skipanir í fyrri kubbnum. Annars, ef seinna gildið er satt, þá skal gera skipanir í seinni kubbnum.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_4 = "Ef fyrra gildið er satt skal gera skipanir í fyrri kubbnum. Annars, ef seinna gildið er satt, skal gera skipanir í seinni kubbnum. Ef hvorugt gildið er satt, skal gera skipanir í síðasta kubbnum.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_2 =
+    "Ef gildi er satt skal gera skipanir í fyrri kubbnum. Annars skal gera skipanir í seinni kubbnum.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_3 =
+    "Ef fyrra gildið er satt skal gera skipanir í fyrri kubbnum. Annars, ef seinna gildið er satt, þá skal gera skipanir í seinni kubbnum.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_4 =
+    "Ef fyrra gildið er satt skal gera skipanir í fyrri kubbnum. Annars, ef seinna gildið er satt, skal gera skipanir í seinni kubbnum. Ef hvorugt gildið er satt, skal gera skipanir í síðasta kubbnum.";
 Blockly.Msg.CONTROLS_REPEAT_HELPURL = "https://en.wikipedia.org/wiki/For_loop";
 Blockly.Msg.CONTROLS_REPEAT_INPUT_DO = "gera";
 Blockly.Msg.CONTROLS_REPEAT_TITLE = "endurtaka %1 sinnum";
@@ -80,7 +87,8 @@ Blockly.Msg.LISTS_CREATE_EMPTY_HELPURL = "https://en.wikipedia.org/wiki/Linked_l
 Blockly.Msg.LISTS_CREATE_EMPTY_TITLE = "búa til tóman lista";
 Blockly.Msg.LISTS_CREATE_EMPTY_TOOLTIP = "Skilar lista með lengdina 0 án gagna";
 Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TITLE_ADD = "listi";
-Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TOOLTIP = "Bæta við, fjarlægja eða umraða hlutum til að breyta skipan þessa listakubbs.";
+Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TOOLTIP =
+    "Bæta við, fjarlægja eða umraða hlutum til að breyta skipan þessa listakubbs.";
 Blockly.Msg.LISTS_CREATE_WITH_INPUT_WITH = "búa til lista með";
 Blockly.Msg.LISTS_CREATE_WITH_ITEM_TOOLTIP = "Bæta atriði við listann.";
 Blockly.Msg.LISTS_CREATE_WITH_TOOLTIP = "Búa til lista með einhverjum fjölda atriða.";
@@ -94,18 +102,24 @@ Blockly.Msg.LISTS_GET_INDEX_RANDOM = "eitthvert";
 Blockly.Msg.LISTS_GET_INDEX_REMOVE = "fjarlægja";
 Blockly.Msg.LISTS_GET_INDEX_TAIL = "";  // untranslated
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FIRST = "Skilar fyrsta atriði í lista.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_END = "Skilar atriðinu á hinum tiltekna stað í lista. #1 er síðasta atriðið.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START = "Skilar atriðinu í hinum tiltekna stað í lista. #1 er fyrsta atriðið.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_END =
+    "Skilar atriðinu á hinum tiltekna stað í lista. #1 er síðasta atriðið.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START =
+    "Skilar atriðinu í hinum tiltekna stað í lista. #1 er fyrsta atriðið.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_LAST = "Skilar síðasta atriði í lista.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_RANDOM = "Skilar einhverju atriði úr lista.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FIRST = "Fjarlægir og skilar fyrsta atriðinu í lista.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END = "Fjarlægir og skilar atriðinu á hinum tiltekna stað í lista. #1 er síðasta atriðið.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START = "Fjarlægir og skilar atriðinu á hinum tiltekna stað í lista. #1 er fyrsta atriðið.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END =
+    "Fjarlægir og skilar atriðinu á hinum tiltekna stað í lista. #1 er síðasta atriðið.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START =
+    "Fjarlægir og skilar atriðinu á hinum tiltekna stað í lista. #1 er fyrsta atriðið.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_LAST = "Fjarlægir og skilar síðasta atriðinu í lista.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_RANDOM = "Fjarlægir og skilar einhverju atriði úr lista.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FIRST = "Fjarlægir fyrsta atriðið í lista.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END = "Fjarlægir atriðið á hinum tiltekna stað í lista. #1 er síðasta atriðið.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START = "Fjarlægir atriðið á hinum tiltekna stað í lista. #1 er fyrsta atriðið.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END =
+    "Fjarlægir atriðið á hinum tiltekna stað í lista. #1 er síðasta atriðið.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START =
+    "Fjarlægir atriðið á hinum tiltekna stað í lista. #1 er fyrsta atriðið.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_LAST = "Fjarlægir síðasta atriðið í lista.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_RANDOM = "Fjarlægir eitthvert atriði úr lista.";
 Blockly.Msg.LISTS_GET_SUBLIST_END_FROM_END = "til # frá enda";
@@ -120,7 +134,8 @@ Blockly.Msg.LISTS_GET_SUBLIST_TOOLTIP = "Býr til afrit af tilteknum hluta lista
 Blockly.Msg.LISTS_INDEX_OF_FIRST = "finna fyrsta tilfelli atriðis";
 Blockly.Msg.LISTS_INDEX_OF_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#Getting_Items_from_a_List";  // untranslated
 Blockly.Msg.LISTS_INDEX_OF_LAST = "finna síðasta tilfelli atriðis";
-Blockly.Msg.LISTS_INDEX_OF_TOOLTIP = "Finnur hvar atriðið kemur fyrir fyrst/síðast í listanum og skilar sæti þess. Skilar 0 ef textinn finnst ekki.";
+Blockly.Msg.LISTS_INDEX_OF_TOOLTIP =
+    "Finnur hvar atriðið kemur fyrir fyrst/síðast í listanum og skilar sæti þess. Skilar 0 ef textinn finnst ekki.";
 Blockly.Msg.LISTS_INLIST = "í lista";
 Blockly.Msg.LISTS_IS_EMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#is_empty";  // untranslated
 Blockly.Msg.LISTS_IS_EMPTY_TITLE = "%1 er tómur";
@@ -135,8 +150,10 @@ Blockly.Msg.LISTS_SET_INDEX_INPUT_TO = "sem";
 Blockly.Msg.LISTS_SET_INDEX_INSERT = "bæta við";
 Blockly.Msg.LISTS_SET_INDEX_SET = "setja í";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FIRST = "Bætir atriðinu fremst í listann.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END = "Bætir atriðinu í listann á tilteknum stað. #1 er síðasta atriðið.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START = "Bætir atriðinu í listann á tilteknum stað. #1 er fyrsta atriðið.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END =
+    "Bætir atriðinu í listann á tilteknum stað. #1 er síðasta atriðið.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START =
+    "Bætir atriðinu í listann á tilteknum stað. #1 er fyrsta atriðið.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_LAST = "Bætir atriðinu aftan við listann.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_RANDOM = "Bætir atriðinu einhversstaðar við listann.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FIRST = "Setur atriðið í fyrsta sæti lista.";
@@ -171,7 +188,8 @@ Blockly.Msg.LOGIC_TERNARY_CONDITION = "prófun";
 Blockly.Msg.LOGIC_TERNARY_HELPURL = "https://en.wikipedia.org/wiki/%3F:";  // untranslated
 Blockly.Msg.LOGIC_TERNARY_IF_FALSE = "ef ósatt";
 Blockly.Msg.LOGIC_TERNARY_IF_TRUE = "ef satt";
-Blockly.Msg.LOGIC_TERNARY_TOOLTIP = "Kanna skilyrðið í 'prófun'. Skilar 'ef satt' gildinu ef skilyrðið er satt, en skilar annars 'ef ósatt' gildinu.";
+Blockly.Msg.LOGIC_TERNARY_TOOLTIP =
+    "Kanna skilyrðið í 'prófun'. Skilar 'ef satt' gildinu ef skilyrðið er satt, en skilar annars 'ef ósatt' gildinu.";
 Blockly.Msg.MATH_ADDITION_SYMBOL = "+";  // untranslated
 Blockly.Msg.MATH_ARITHMETIC_HELPURL = "https://en.wikipedia.org/wiki/Arithmetic";
 Blockly.Msg.MATH_ARITHMETIC_TOOLTIP_ADD = "Skila summu talnanna tveggja.";
@@ -184,7 +202,8 @@ Blockly.Msg.MATH_CHANGE_INPUT_BY = "um";
 Blockly.Msg.MATH_CHANGE_TITLE_CHANGE = "breyta";
 Blockly.Msg.MATH_CHANGE_TOOLTIP = "Bæta tölu við breytu '%1'.";
 Blockly.Msg.MATH_CONSTANT_HELPURL = "https://en.wikipedia.org/wiki/Mathematical_constant";
-Blockly.Msg.MATH_CONSTANT_TOOLTIP = "Skila algengum fasta: π (3.141…), e (2.718…), φ (1.618…), kvrót(2) (1.414…), kvrót(½) (0.707…) eða ∞ (óendanleika).";
+Blockly.Msg.MATH_CONSTANT_TOOLTIP =
+    "Skila algengum fasta: π (3.141…), e (2.718…), φ (1.618…), kvrót(2) (1.414…), kvrót(½) (0.707…) eða ∞ (óendanleika).";
 Blockly.Msg.MATH_CONSTRAIN_HELPURL = "https://en.wikipedia.org/wiki/Clamping_%28graphics%29";  // untranslated
 Blockly.Msg.MATH_CONSTRAIN_TITLE = "þröngva %1 lægst %2 hæst %3";
 Blockly.Msg.MATH_CONSTRAIN_TOOLTIP = "Þröngva tölu til að vera innan hinna tilgreindu marka (að báðum meðtöldum).";
@@ -195,7 +214,8 @@ Blockly.Msg.MATH_IS_NEGATIVE = "er neikvæð";
 Blockly.Msg.MATH_IS_ODD = "er oddatala";
 Blockly.Msg.MATH_IS_POSITIVE = "er jákvæð";
 Blockly.Msg.MATH_IS_PRIME = "er prímtala";
-Blockly.Msg.MATH_IS_TOOLTIP = "Kanna hvort tala sé jöfn tala, oddatala, jákvæð, neikvæð eða deilanleg með tiltekinni tölu. Skilar sönnu eða ósönnu.";
+Blockly.Msg.MATH_IS_TOOLTIP =
+    "Kanna hvort tala sé jöfn tala, oddatala, jákvæð, neikvæð eða deilanleg með tiltekinni tölu. Skilar sönnu eða ósönnu.";
 Blockly.Msg.MATH_IS_WHOLE = "er heiltala";
 Blockly.Msg.MATH_MODULO_HELPURL = "https://en.wikipedia.org/wiki/Modulo_operation";
 Blockly.Msg.MATH_MODULO_TITLE = "afgangur af %1 ÷ %2";
@@ -223,10 +243,12 @@ Blockly.Msg.MATH_ONLIST_TOOLTIP_SUM = "Skila summu allra talna í listanum.";
 Blockly.Msg.MATH_POWER_SYMBOL = "^";  // untranslated
 Blockly.Msg.MATH_RANDOM_FLOAT_HELPURL = "https://en.wikipedia.org/wiki/Random_number_generation";
 Blockly.Msg.MATH_RANDOM_FLOAT_TITLE_RANDOM = "slembibrot";
-Blockly.Msg.MATH_RANDOM_FLOAT_TOOLTIP = "Skila broti sem er valið af handahófi úr tölum á bilinu frá og með 0.0 til (en ekki með) 1.0.";
+Blockly.Msg.MATH_RANDOM_FLOAT_TOOLTIP =
+    "Skila broti sem er valið af handahófi úr tölum á bilinu frá og með 0.0 til (en ekki með) 1.0.";
 Blockly.Msg.MATH_RANDOM_INT_HELPURL = "https://en.wikipedia.org/wiki/Random_number_generation";
 Blockly.Msg.MATH_RANDOM_INT_TITLE = "slembitala frá %1 til %2";
-Blockly.Msg.MATH_RANDOM_INT_TOOLTIP = "Skila heiltölu sem valin er af handahófi og er innan tilgreindra marka, að báðum meðtöldum.";
+Blockly.Msg.MATH_RANDOM_INT_TOOLTIP =
+    "Skila heiltölu sem valin er af handahófi og er innan tilgreindra marka, að báðum meðtöldum.";
 Blockly.Msg.MATH_ROUND_HELPURL = "https://en.wikipedia.org/wiki/Rounding";
 Blockly.Msg.MATH_ROUND_OPERATOR_ROUND = "námunda";
 Blockly.Msg.MATH_ROUND_OPERATOR_ROUNDDOWN = "námunda niður";
@@ -322,7 +344,8 @@ Blockly.Msg.TEXT_INDEXOF_INPUT_INTEXT = "í texta";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_FIRST = "finna fyrsta tilfelli texta";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_LAST = "finna síðasta tilfelli texta";
 Blockly.Msg.TEXT_INDEXOF_TAIL = "";  // untranslated
-Blockly.Msg.TEXT_INDEXOF_TOOLTIP = "Finnur fyrsta/síðasta tilfelli fyrri textans í seinni textanum og skilar sæti hans. Skilar 0 ef textinn finnst ekki.";
+Blockly.Msg.TEXT_INDEXOF_TOOLTIP =
+    "Finnur fyrsta/síðasta tilfelli fyrri textans í seinni textanum og skilar sæti hans. Skilar 0 ef textinn finnst ekki.";
 Blockly.Msg.TEXT_ISEMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Text#Checking_for_empty_text";  // untranslated
 Blockly.Msg.TEXT_ISEMPTY_TITLE = "%1 er tómur";
 Blockly.Msg.TEXT_ISEMPTY_TOOLTIP = "Skilar sönnu ef gefni textinn er tómur.";

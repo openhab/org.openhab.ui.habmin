@@ -7,7 +7,8 @@ goog.provide('Blockly.Msg.el');
 goog.require('Blockly.Msg');
 
 Blockly.Msg.ADD_COMMENT = "Πρόσθεσε Σχόλιο";
-Blockly.Msg.AUTH = "Παρακαλώ κάνε έγκριση της εφαρμογής για να επιτρέπεται  η αποθήκευση και κοινοποίηση της εργασίας σου.";
+Blockly.Msg.AUTH =
+    "Παρακαλώ κάνε έγκριση της εφαρμογής για να επιτρέπεται  η αποθήκευση και κοινοποίηση της εργασίας σου.";
 Blockly.Msg.CHANGE_VALUE_TITLE = "Άλλαξε την τιμή:";
 Blockly.Msg.CHAT = "Μπορείς να μιλήσεις με τον συνεργάτη σου πληκτρολογώντας σ'αυτό το πλαίσιο!";
 Blockly.Msg.COLLAPSE_ALL = "Σύμπτυξτε Όλα Τα Μπλοκ";
@@ -28,33 +29,43 @@ Blockly.Msg.COLOUR_RGB_GREEN = "πράσινο";
 Blockly.Msg.COLOUR_RGB_HELPURL = "http://www.december.com/html/spec/colorper.html";
 Blockly.Msg.COLOUR_RGB_RED = "κόκκινο";
 Blockly.Msg.COLOUR_RGB_TITLE = "χρώμα με";
-Blockly.Msg.COLOUR_RGB_TOOLTIP = "Δημιουργεί χρώμα με το συγκεκριμένο ποσό του κόκκινου, πράσινου και μπλε που ορίζεις. Όλες οι τιμές πρέπει να είναι μεταξύ 0 και 100.";
+Blockly.Msg.COLOUR_RGB_TOOLTIP =
+    "Δημιουργεί χρώμα με το συγκεκριμένο ποσό του κόκκινου, πράσινου και μπλε που ορίζεις. Όλες οι τιμές πρέπει να είναι μεταξύ 0 και 100.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#Loop_Termination_Blocks";  // untranslated
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_BREAK = "φεύγει από το μπλοκ επαναλήψεως";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_CONTINUE = "συνέχισε με την επόμενη επανάληψη του μπλοκ επαναλήψεως";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_BREAK = "Ξεφεύγει (βγαίνει έξω) από την επανάληψη.";
-Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE = "Παραλείπει το υπόλοιπο τμήμα αυτού του μπλοκ επαναλήψεως, και συνεχίζει με την επόμενη επανάληψη.";
-Blockly.Msg.CONTROLS_FLOW_STATEMENTS_WARNING = "Προειδοποίηση: Αυτό το μπλοκ μπορεί να χρησιμοποιηθεί μόνο μέσα σε μια επανάληψη.";
+Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE =
+    "Παραλείπει το υπόλοιπο τμήμα αυτού του μπλοκ επαναλήψεως, και συνεχίζει με την επόμενη επανάληψη.";
+Blockly.Msg.CONTROLS_FLOW_STATEMENTS_WARNING =
+    "Προειδοποίηση: Αυτό το μπλοκ μπορεί να χρησιμοποιηθεί μόνο μέσα σε μια επανάληψη.";
 Blockly.Msg.CONTROLS_FOREACH_HELPURL = "https://code.Google.com/p/blockly/wiki/loops#for _each ΓΙΑ ΚΑΘΕ μπλοκ";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST = "στη λίστα";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST_TAIL = "";  // untranslated
 Blockly.Msg.CONTROLS_FOREACH_INPUT_ITEM = "για κάθε στοιχείο";
-Blockly.Msg.CONTROLS_FOREACH_TOOLTIP = "Για κάθε στοιχείο σε μια λίστα, ορίζει τη μεταβλητή «%1» στο στοιχείο και, στη συνέχεια, εκτελεί κάποιες εντολές.";
+Blockly.Msg.CONTROLS_FOREACH_TOOLTIP =
+    "Για κάθε στοιχείο σε μια λίστα, ορίζει τη μεταβλητή «%1» στο στοιχείο και, στη συνέχεια, εκτελεί κάποιες εντολές.";
 Blockly.Msg.CONTROLS_FOR_HELPURL = "Blockly";
 Blockly.Msg.CONTROLS_FOR_INPUT_FROM_TO_BY = "από το %1 έως το %2 ανά %3";
 Blockly.Msg.CONTROLS_FOR_INPUT_WITH = "μέτρησε με";
-Blockly.Msg.CONTROLS_FOR_TOOLTIP = "Η μεταβλητή %1 παίρνει τιμές ξεκινώντας από τον αριθμό έναρξης μέχρι τον αριθμό τέλους αυξάνοντας κάθε φορά με το καθορισμένο βήμα και εκτελώντας το καθορισμένο μπλοκ.";
+Blockly.Msg.CONTROLS_FOR_TOOLTIP =
+    "Η μεταβλητή %1 παίρνει τιμές ξεκινώντας από τον αριθμό έναρξης μέχρι τον αριθμό τέλους αυξάνοντας κάθε φορά με το καθορισμένο βήμα και εκτελώντας το καθορισμένο μπλοκ.";
 Blockly.Msg.CONTROLS_IF_ELSEIF_TOOLTIP = "Πρόσθετει μια κατάσταση/συνθήκη στο μπλοκ «εάν».";
-Blockly.Msg.CONTROLS_IF_ELSE_TOOLTIP = "Προσθέτει μια τελική κατάσταση/συνθήκη, που πιάνει όλες τις άλλες περιπτώσεις, στο μπλοκ «εάν».";
+Blockly.Msg.CONTROLS_IF_ELSE_TOOLTIP =
+    "Προσθέτει μια τελική κατάσταση/συνθήκη, που πιάνει όλες τις άλλες περιπτώσεις, στο μπλοκ «εάν».";
 Blockly.Msg.CONTROLS_IF_HELPURL = "http://code.google.com/p/blockly/wiki/If_Then ΑΝ_ΤΟΤΕ";
-Blockly.Msg.CONTROLS_IF_IF_TOOLTIP = "Προσθέτει, αφαιρεί ή αναδιατάσσει τα τμήματα για να αναδιαμορφώσει αυτό το μπλοκ «εάν».";
+Blockly.Msg.CONTROLS_IF_IF_TOOLTIP =
+    "Προσθέτει, αφαιρεί ή αναδιατάσσει τα τμήματα για να αναδιαμορφώσει αυτό το μπλοκ «εάν».";
 Blockly.Msg.CONTROLS_IF_MSG_ELSE = "αλλιώς";
 Blockly.Msg.CONTROLS_IF_MSG_ELSEIF = "εναλλακτικά αν";
 Blockly.Msg.CONTROLS_IF_MSG_IF = "αν";
 Blockly.Msg.CONTROLS_IF_TOOLTIP_1 = "Αν μια τιμή είναι αληθής, τότε εκτελεί κάποιες εντολές.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_2 = "Αν μια τιμή είναι αληθής, τότε εκτελεί το πρώτο τμήμα εντολών. Διαφορετικά, εκτελεί το δεύτερο τμήμα εντολών.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_3 = "Αν η πρώτη τιμή είναι αληθής, τότε εκτελεί το πρώτο τμήμα εντολών. Διαφορετικά, αν η δεύτερη τιμή είναι αληθής, εκτελεί το δεύτερο μπλοκ εντολών.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_4 = "Αν η πρώτη τιμή είναι αληθής, τότε εκτελεί το πρώτο τμήμα εντολών.  Διαφορετικά, αν η δεύτερη τιμή είναι αληθής, εκτελεί το δεύτερο τμήμα εντολών. Αν καμία από τις τιμές δεν είναι αληθής, εκτελεί το τελευταίο τμήμα εντολών.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_2 =
+    "Αν μια τιμή είναι αληθής, τότε εκτελεί το πρώτο τμήμα εντολών. Διαφορετικά, εκτελεί το δεύτερο τμήμα εντολών.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_3 =
+    "Αν η πρώτη τιμή είναι αληθής, τότε εκτελεί το πρώτο τμήμα εντολών. Διαφορετικά, αν η δεύτερη τιμή είναι αληθής, εκτελεί το δεύτερο μπλοκ εντολών.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_4 =
+    "Αν η πρώτη τιμή είναι αληθής, τότε εκτελεί το πρώτο τμήμα εντολών.  Διαφορετικά, αν η δεύτερη τιμή είναι αληθής, εκτελεί το δεύτερο τμήμα εντολών. Αν καμία από τις τιμές δεν είναι αληθής, εκτελεί το τελευταίο τμήμα εντολών.";
 Blockly.Msg.CONTROLS_REPEAT_HELPURL = "https://en.wikipedia.org/wiki/For_loop";
 Blockly.Msg.CONTROLS_REPEAT_INPUT_DO = "κάνε";
 Blockly.Msg.CONTROLS_REPEAT_TITLE = "επανάλαβε %1 φορές";
@@ -80,7 +91,8 @@ Blockly.Msg.LISTS_CREATE_EMPTY_HELPURL = "λίστα";
 Blockly.Msg.LISTS_CREATE_EMPTY_TITLE = "δημιούργησε κενή λίστα";
 Blockly.Msg.LISTS_CREATE_EMPTY_TOOLTIP = "Επιστρέφει μια λίστα, με μήκος 0, η οποία δεν περιέχει εγγραφές δεδομένων";
 Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TITLE_ADD = "λίστα";
-Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TOOLTIP = "Προσθέτει, αφαιρεί ή αναδιατάσσει τα τμήματα για να αναδιαμορφώσει αυτό το μπλοκ λίστας.";
+Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TOOLTIP =
+    "Προσθέτει, αφαιρεί ή αναδιατάσσει τα τμήματα για να αναδιαμορφώσει αυτό το μπλοκ λίστας.";
 Blockly.Msg.LISTS_CREATE_WITH_INPUT_WITH = "δημιούργησε λίστα με";
 Blockly.Msg.LISTS_CREATE_WITH_ITEM_TOOLTIP = "Προσθέτει αντικείμενο στη λίστα.";
 Blockly.Msg.LISTS_CREATE_WITH_TOOLTIP = "Δημιουργεί λίστα με οποιονδήποτε αριθμό αντικειμένων.";
@@ -94,18 +106,24 @@ Blockly.Msg.LISTS_GET_INDEX_RANDOM = "τυχαίο";
 Blockly.Msg.LISTS_GET_INDEX_REMOVE = "αφαίρεσε";
 Blockly.Msg.LISTS_GET_INDEX_TAIL = "";  // untranslated
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FIRST = "Επιστρέφει το πρώτο στοιχείο σε μια λίστα.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_END = "Επιστρέφει το στοιχείο στην καθορισμένη θέση σε μια λίστα. Το #1 είναι το τελευταίο στοιχείο.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START = "Επιστρέφει το στοιχείο στην καθορισμένη θέση σε μια λίστα. Το #1 είναι το πρώτο στοιχείο.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_END =
+    "Επιστρέφει το στοιχείο στην καθορισμένη θέση σε μια λίστα. Το #1 είναι το τελευταίο στοιχείο.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START =
+    "Επιστρέφει το στοιχείο στην καθορισμένη θέση σε μια λίστα. Το #1 είναι το πρώτο στοιχείο.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_LAST = "Επιστρέφει το τελευταίο στοιχείο σε μια λίστα.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_RANDOM = "Επιστρέφει ένα τυχαίο στοιχείο σε μια λίστα.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FIRST = "Καταργεί και επιστρέφει το πρώτο στοιχείο σε μια λίστα.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END = "Καταργεί και επιστρέφει το στοιχείο στην καθορισμένη θέση σε μια λίστα. Το #1 είναι το τελευταίο στοιχείο.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START = "Καταργεί και επιστρέφει το στοιχείο στην καθορισμένη θέση σε μια λίστα. Το #1 είναι το πρώτο στοιχείο.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END =
+    "Καταργεί και επιστρέφει το στοιχείο στην καθορισμένη θέση σε μια λίστα. Το #1 είναι το τελευταίο στοιχείο.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START =
+    "Καταργεί και επιστρέφει το στοιχείο στην καθορισμένη θέση σε μια λίστα. Το #1 είναι το πρώτο στοιχείο.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_LAST = "Καταργεί και επιστρέφει το τελευταίο στοιχείο σε μια λίστα.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_RANDOM = "Καταργεί και επιστρέφει ένα τυχαίο στοιχείο σε μια λίστα.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FIRST = "Καταργεί το πρώτο στοιχείο σε μια λίστα.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END = "Καταργεί το στοιχείο στην καθορισμένη θέση σε μια λίστα. Το #1 είναι το τελευταίο στοιχείο.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START = "Καταργεί το στοιχείο στην καθορισμένη θέση σε μια λίστα. Το #1 είναι το πρώτο στοιχείο.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END =
+    "Καταργεί το στοιχείο στην καθορισμένη θέση σε μια λίστα. Το #1 είναι το τελευταίο στοιχείο.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START =
+    "Καταργεί το στοιχείο στην καθορισμένη θέση σε μια λίστα. Το #1 είναι το πρώτο στοιχείο.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_LAST = "Καταργεί το τελευταίο στοιχείο σε μια λίστα.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_RANDOM = "Καταργεί ένα τυχαίο στοιχείο σε μια λίστα.";
 Blockly.Msg.LISTS_GET_SUBLIST_END_FROM_END = "έως # από το τέλος";
@@ -120,7 +138,8 @@ Blockly.Msg.LISTS_GET_SUBLIST_TOOLTIP = "Δημιουργεί ένα αντίγ�
 Blockly.Msg.LISTS_INDEX_OF_FIRST = "βρες την πρώτη εμφάνιση του στοιχείου";
 Blockly.Msg.LISTS_INDEX_OF_HELPURL = "Blockly";
 Blockly.Msg.LISTS_INDEX_OF_LAST = "βρες την τελευταία εμφάνιση του στοιχείου";
-Blockly.Msg.LISTS_INDEX_OF_TOOLTIP = "Επιστρέφει τον δείκτη της πρώτης/τελευταίας εμφάνισης του στοιχείου στη λίστα.  Επιστρέφει τιμή 0, αν το κείμενο δεν βρεθεί.";
+Blockly.Msg.LISTS_INDEX_OF_TOOLTIP =
+    "Επιστρέφει τον δείκτη της πρώτης/τελευταίας εμφάνισης του στοιχείου στη λίστα.  Επιστρέφει τιμή 0, αν το κείμενο δεν βρεθεί.";
 Blockly.Msg.LISTS_INLIST = "στη λίστα";
 Blockly.Msg.LISTS_IS_EMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#is_empty ΕΙΝΑΙ_ΑΔΕΙΑ";
 Blockly.Msg.LISTS_IS_EMPTY_TITLE = "το %1 είναι κενό";
@@ -129,19 +148,24 @@ Blockly.Msg.LISTS_LENGTH_TITLE = "το μήκος του %1";
 Blockly.Msg.LISTS_LENGTH_TOOLTIP = "Επιστρέφει το μήκος μιας λίστας.";
 Blockly.Msg.LISTS_REPEAT_HELPURL = "Blockly";
 Blockly.Msg.LISTS_REPEAT_TITLE = "δημιούργησε λίστα με το στοιχείο %1 να επαναλαμβάνεται %2 φορές";
-Blockly.Msg.LISTS_REPEAT_TOOLTIP = "Δημιουργεί μια λίστα που αποτελείται από την δεδομένη τιμή που επαναλαμβάνεται για συγκεκριμένο αριθμό επαναλήψεων.";
+Blockly.Msg.LISTS_REPEAT_TOOLTIP =
+    "Δημιουργεί μια λίστα που αποτελείται από την δεδομένη τιμή που επαναλαμβάνεται για συγκεκριμένο αριθμό επαναλήψεων.";
 Blockly.Msg.LISTS_SET_INDEX_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#in_list_..._set";
 Blockly.Msg.LISTS_SET_INDEX_INPUT_TO = "σε";
 Blockly.Msg.LISTS_SET_INDEX_INSERT = "είσαγε στο";
 Blockly.Msg.LISTS_SET_INDEX_SET = "όρισε";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FIRST = "Εισάγει το στοιχείο στην αρχή μιας λίστας.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END = "Εισάγει το στοιχείο σε συγκεκριμένη θέση σε μια λίστα. Το #1 είναι το τελευταίο στοιχείο.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START = "Εισάγει το στοιχείο στην καθορισμένη θέση σε μια λίστα. Το #1 είναι το πρώτο στοιχείο.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END =
+    "Εισάγει το στοιχείο σε συγκεκριμένη θέση σε μια λίστα. Το #1 είναι το τελευταίο στοιχείο.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START =
+    "Εισάγει το στοιχείο στην καθορισμένη θέση σε μια λίστα. Το #1 είναι το πρώτο στοιχείο.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_LAST = "Αναθέτει το στοιχείο στο τέλος μιας λίστας.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_RANDOM = "Εισάγει το στοιχείο τυχαία σε μια λίστα.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FIRST = "Ορίζει το πρώτο στοιχείο σε μια λίστα.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END = "Ορίζει το στοιχείο στην καθορισμένη θέση σε μια λίστα. Το #1 είναι το τελευταίο στοιχείο.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START = "Ορίζει το στοιχείο στην καθορισμένη θέση σε μια λίστα. Το #1 είναι το πρώτο στοιχείο.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END =
+    "Ορίζει το στοιχείο στην καθορισμένη θέση σε μια λίστα. Το #1 είναι το τελευταίο στοιχείο.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START =
+    "Ορίζει το στοιχείο στην καθορισμένη θέση σε μια λίστα. Το #1 είναι το πρώτο στοιχείο.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_LAST = "Ορίζει το τελευταίο στοιχείο σε μια λίστα.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_RANDOM = "Ορίζει ένα τυχαίο στοιχείο σε μια λίστα.";
 Blockly.Msg.LISTS_TOOLTIP = "Επιστρέφει αληθής αν η λίστα είναι κενή.";
@@ -152,13 +176,16 @@ Blockly.Msg.LOGIC_BOOLEAN_TRUE = "αληθής";
 Blockly.Msg.LOGIC_COMPARE_HELPURL = "https://en.wikipedia.org/wiki/Inequality_(mathematics)";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_EQ = "Επιστρέφει αληθής αν και οι δύο είσοδοι είναι ίσες μεταξύ τους.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GT = "Επιστρέφει αληθής αν η πρώτη είσοδος είναι μεγαλύτερη από τη δεύτερη είσοδο.";
-Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GTE = "Επιστρέφει αληθής αν η πρώτη είσοδος είναι μικρότερη ή ίση με τη δεύτερη είσοδο.";
+Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GTE =
+    "Επιστρέφει αληθής αν η πρώτη είσοδος είναι μικρότερη ή ίση με τη δεύτερη είσοδο.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LT = "Επιστρέφει αληθής αν η πρώτη είσοδος είναι μικρότερη από τη δεύτερη είσοδο.";
-Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LTE = "Επιστρέφει αληθής αν η πρώτη είσοδος είναι μικρότερη από ή ίση με τη δεύτερη είσοδο.";
+Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LTE =
+    "Επιστρέφει αληθής αν η πρώτη είσοδος είναι μικρότερη από ή ίση με τη δεύτερη είσοδο.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_NEQ = "Επιστρέφει αληθής αν και οι δύο είσοδοι δεν είναι ίσες μεταξύ τους.";
 Blockly.Msg.LOGIC_NEGATE_HELPURL = "http://code.google.com/p/blockly/wiki/Not";
 Blockly.Msg.LOGIC_NEGATE_TITLE = "όχι %1";
-Blockly.Msg.LOGIC_NEGATE_TOOLTIP = "Επιστρέφει αληθής αν η είσοδος είναι ψευδής. Επιστρέφει ψευδής αν η είσοδος είναι αληθής.";
+Blockly.Msg.LOGIC_NEGATE_TOOLTIP =
+    "Επιστρέφει αληθής αν η είσοδος είναι ψευδής. Επιστρέφει ψευδής αν η είσοδος είναι αληθής.";
 Blockly.Msg.LOGIC_NULL = "κενό";
 Blockly.Msg.LOGIC_NULL_HELPURL = "https://en.wikipedia.org/wiki/Nullable_type";
 Blockly.Msg.LOGIC_NULL_TOOLTIP = "Επιστρέφει κενό.";
@@ -171,7 +198,8 @@ Blockly.Msg.LOGIC_TERNARY_CONDITION = "έλεγχος";
 Blockly.Msg.LOGIC_TERNARY_HELPURL = "https://en.wikipedia.org/wiki/%3F:";
 Blockly.Msg.LOGIC_TERNARY_IF_FALSE = "αν είναι ψευδής";
 Blockly.Msg.LOGIC_TERNARY_IF_TRUE = "αν είναι αληθής";
-Blockly.Msg.LOGIC_TERNARY_TOOLTIP = "Ελέγχει την κατάσταση/συνθήκη στον «έλεγχο». Αν η κατάσταση/συνθήκη είναι αληθής, επιστρέφει την τιμή «αν αληθής», διαφορετικά επιστρέφει την τιμή «αν ψευδής».";
+Blockly.Msg.LOGIC_TERNARY_TOOLTIP =
+    "Ελέγχει την κατάσταση/συνθήκη στον «έλεγχο». Αν η κατάσταση/συνθήκη είναι αληθής, επιστρέφει την τιμή «αν αληθής», διαφορετικά επιστρέφει την τιμή «αν ψευδής».";
 Blockly.Msg.MATH_ADDITION_SYMBOL = "+";
 Blockly.Msg.MATH_ARITHMETIC_HELPURL = "https://el.wikipedia.org/wiki/Αριθμητική";
 Blockly.Msg.MATH_ARITHMETIC_TOOLTIP_ADD = "Επιστρέφει το άθροισμα των δύο αριθμών.";
@@ -184,7 +212,8 @@ Blockly.Msg.MATH_CHANGE_INPUT_BY = "από";
 Blockly.Msg.MATH_CHANGE_TITLE_CHANGE = "άλλαξε";
 Blockly.Msg.MATH_CHANGE_TOOLTIP = "Προσθέτει έναν αριθμό στη μεταβλητή «%1».";
 Blockly.Msg.MATH_CONSTANT_HELPURL = "https://en.wikipedia.org/wiki/Mathematical_constant";
-Blockly.Msg.MATH_CONSTANT_TOOLTIP = "Επιστρέφει μία από τις κοινές σταθερές: π (3.141...), e (2.718...), φ (1.618...), sqrt(2) (1.414...), sqrt(½) (0.707...), ή ∞ (άπειρο).";
+Blockly.Msg.MATH_CONSTANT_TOOLTIP =
+    "Επιστρέφει μία από τις κοινές σταθερές: π (3.141...), e (2.718...), φ (1.618...), sqrt(2) (1.414...), sqrt(½) (0.707...), ή ∞ (άπειρο).";
 Blockly.Msg.MATH_CONSTRAIN_HELPURL = "https://en.wikipedia.org/wiki/Clamping_%28graphics%29 ΓΡΑΦΙΚΑ";
 Blockly.Msg.MATH_CONSTRAIN_TITLE = "περιόρισε %1 χαμηλή %2 υψηλή %3";
 Blockly.Msg.MATH_CONSTRAIN_TOOLTIP = "Περιορίζει έναν αριθμό μεταξύ των προβλεπόμενων ορίων (χωρίς αποκλεισμούς).";
@@ -195,7 +224,8 @@ Blockly.Msg.MATH_IS_NEGATIVE = "είναι αρνητικός";
 Blockly.Msg.MATH_IS_ODD = "είναι περιττός";
 Blockly.Msg.MATH_IS_POSITIVE = "είναι θετικός";
 Blockly.Msg.MATH_IS_PRIME = "είναι πρώτος";
-Blockly.Msg.MATH_IS_TOOLTIP = "Ελέγχει αν ένας αριθμός είναι άρτιος, περιττός, πρώτος, ακέραιος, θετικός, αρνητικός, ή αν είναι διαιρετός από έναν ορισμένο αριθμό. Επιστρέφει αληθής ή ψευδής.";
+Blockly.Msg.MATH_IS_TOOLTIP =
+    "Ελέγχει αν ένας αριθμός είναι άρτιος, περιττός, πρώτος, ακέραιος, θετικός, αρνητικός, ή αν είναι διαιρετός από έναν ορισμένο αριθμό. Επιστρέφει αληθής ή ψευδής.";
 Blockly.Msg.MATH_IS_WHOLE = "είναι ακέραιος";
 Blockly.Msg.MATH_MODULO_HELPURL = "https://en.wikipedia.org/wiki/Modulo_operation";
 Blockly.Msg.MATH_MODULO_TITLE = "υπόλοιπο της %1 ÷ %2";
@@ -226,7 +256,8 @@ Blockly.Msg.MATH_RANDOM_FLOAT_TITLE_RANDOM = "τυχαίο κλάσμα";
 Blockly.Msg.MATH_RANDOM_FLOAT_TOOLTIP = "Επιστρέψει ένα τυχαία κλάσμα μεταξύ 0,0 (κλειστό) και 1,0 (ανοικτό).";
 Blockly.Msg.MATH_RANDOM_INT_HELPURL = "https://en.wikipedia.org/wiki/Random_number_generation";
 Blockly.Msg.MATH_RANDOM_INT_TITLE = "τυχαίος ακέραιος από το %1 έως το %2";
-Blockly.Msg.MATH_RANDOM_INT_TOOLTIP = "Επιστρέφει έναν τυχαίο ακέραιο αριθμό μεταξύ δύο συγκεκριμένων ορίων (εντός - συμπεριλαμβανομένων και των ακραίων τιμών).";
+Blockly.Msg.MATH_RANDOM_INT_TOOLTIP =
+    "Επιστρέφει έναν τυχαίο ακέραιο αριθμό μεταξύ δύο συγκεκριμένων ορίων (εντός - συμπεριλαμβανομένων και των ακραίων τιμών).";
 Blockly.Msg.MATH_ROUND_HELPURL = "https://en.wikipedia.org/wiki/Rounding";
 Blockly.Msg.MATH_ROUND_OPERATOR_ROUND = "στρογγυλοποίησε";
 Blockly.Msg.MATH_ROUND_OPERATOR_ROUNDDOWN = "στρογγυλοποίησε προς τα κάτω";
@@ -265,7 +296,8 @@ Blockly.Msg.PROCEDURES_CALLNORETURN_CALL = "";  // untranslated
 Blockly.Msg.PROCEDURES_CALLNORETURN_HELPURL = "https://el.wikipedia.org/wiki/Διαδικασία_(υπολογιστές)";
 Blockly.Msg.PROCEDURES_CALLNORETURN_TOOLTIP = "Εκτελεί την ορισμένη από τον χρήστη συνάρτηση «%1».";
 Blockly.Msg.PROCEDURES_CALLRETURN_HELPURL = "https://el.wikipedia.org/wiki/Διαδικασία_(υπολογιστές)";
-Blockly.Msg.PROCEDURES_CALLRETURN_TOOLTIP = "Εκτελεί την ορισμένη από τον χρήστη συνάρτηση «%1» και χρησιμοποίησε την έξοδό της.";
+Blockly.Msg.PROCEDURES_CALLRETURN_TOOLTIP =
+    "Εκτελεί την ορισμένη από τον χρήστη συνάρτηση «%1» και χρησιμοποίησε την έξοδό της.";
 Blockly.Msg.PROCEDURES_CREATE_DO = "Δημιούργησε «%1»";
 Blockly.Msg.PROCEDURES_DEFNORETURN_DO = "";  // untranslated
 Blockly.Msg.PROCEDURES_DEFNORETURN_HELPURL = "https://en.wikipedia.org/wiki/Procedure_%28computer_science%29";
@@ -278,7 +310,8 @@ Blockly.Msg.PROCEDURES_DEFRETURN_TOOLTIP = "Δημιουργεί μια συνά
 Blockly.Msg.PROCEDURES_DEF_DUPLICATE_WARNING = "Προειδοποίηση: Αυτή η συνάρτηση έχει διπλότυπες παραμέτρους.";
 Blockly.Msg.PROCEDURES_HIGHLIGHT_DEF = "Επισημάνετε τον ορισμό συνάρτησης";
 Blockly.Msg.PROCEDURES_IFRETURN_TOOLTIP = "Αν μια τιμή είναι αληθής, τότε επιστρέφει τη δεύτερη τιμή.";
-Blockly.Msg.PROCEDURES_IFRETURN_WARNING = "Προειδοποίηση: Αυτό το μπλοκ μπορεί να χρησιμοποιηθεί μόνο στον ορισμό μιας συνάρτησης.";
+Blockly.Msg.PROCEDURES_IFRETURN_WARNING =
+    "Προειδοποίηση: Αυτό το μπλοκ μπορεί να χρησιμοποιηθεί μόνο στον ορισμό μιας συνάρτησης.";
 Blockly.Msg.PROCEDURES_MUTATORARG_TITLE = "όνομα εισόδου:";
 Blockly.Msg.PROCEDURES_MUTATORARG_TOOLTIP = "Πρόσθεσε μια είσοδος στη συνάρτηση";
 Blockly.Msg.PROCEDURES_MUTATORCONTAINER_TITLE = "είσοδοι";
@@ -306,7 +339,8 @@ Blockly.Msg.TEXT_CHARAT_TAIL = "";  // untranslated
 Blockly.Msg.TEXT_CHARAT_TOOLTIP = "Επιστρέφει το γράμμα στην καθορισμένη θέση.";
 Blockly.Msg.TEXT_CREATE_JOIN_ITEM_TOOLTIP = "Προσθέτει ένα στοιχείο στο κείμενο.";
 Blockly.Msg.TEXT_CREATE_JOIN_TITLE_JOIN = "ένωσε";
-Blockly.Msg.TEXT_CREATE_JOIN_TOOLTIP = "Προσθέτει, αφαιρεί ή αναδιατάσσει τους τομείς για να αναδιαμορφώσει αυτό το μπλοκ κειμένου.";
+Blockly.Msg.TEXT_CREATE_JOIN_TOOLTIP =
+    "Προσθέτει, αφαιρεί ή αναδιατάσσει τους τομείς για να αναδιαμορφώσει αυτό το μπλοκ κειμένου.";
 Blockly.Msg.TEXT_GET_SUBSTRING_END_FROM_END = "μέχρι το # γράμμα από το τέλος";
 Blockly.Msg.TEXT_GET_SUBSTRING_END_FROM_START = "μέχρι το # γράμμα";
 Blockly.Msg.TEXT_GET_SUBSTRING_END_LAST = "μέχρι το τελευταίο γράμμα";
@@ -322,7 +356,8 @@ Blockly.Msg.TEXT_INDEXOF_INPUT_INTEXT = "στο κείμενο";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_FIRST = "βρες την πρώτη εμφάνιση του κειμένου";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_LAST = "βρες την τελευταία εμφάνιση του κειμένου";
 Blockly.Msg.TEXT_INDEXOF_TAIL = "";  // untranslated
-Blockly.Msg.TEXT_INDEXOF_TOOLTIP = "Επιστρέφει τον δείκτη της πρώτης/τελευταίας εμφάνισης του πρώτου κειμένου στο δεύτερο κείμενο.  Επιστρέφει τιμή 0, αν δε βρει το κείμενο.";
+Blockly.Msg.TEXT_INDEXOF_TOOLTIP =
+    "Επιστρέφει τον δείκτη της πρώτης/τελευταίας εμφάνισης του πρώτου κειμένου στο δεύτερο κείμενο.  Επιστρέφει τιμή 0, αν δε βρει το κείμενο.";
 Blockly.Msg.TEXT_ISEMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Text#Checking_for_empty_text";
 Blockly.Msg.TEXT_ISEMPTY_TITLE = "το %1 είναι κενό";
 Blockly.Msg.TEXT_ISEMPTY_TOOLTIP = "Επιστρέφει αληθής αν το παρεχόμενο κείμενο είναι κενό.";
@@ -331,11 +366,13 @@ Blockly.Msg.TEXT_JOIN_TITLE_CREATEWITH = "δημιούργησε κείμενο 
 Blockly.Msg.TEXT_JOIN_TOOLTIP = "Δημιουργεί ένα κομμάτι κειμένου ενώνοντας έναν  απεριόριστο αριθμό αντικειμένων.";
 Blockly.Msg.TEXT_LENGTH_HELPURL = "https://code.google.com/p/blockly/wiki/Text#Text_modification ΑΛΛΑΓΗ_ΚΕΙΜΕΝΟΥ";
 Blockly.Msg.TEXT_LENGTH_TITLE = "το μήκος του %1";
-Blockly.Msg.TEXT_LENGTH_TOOLTIP = "Επιστρέφει το πλήθος των γραμμάτων (συμπεριλαμβανομένων και των κενών διαστημάτων) στο παρεχόμενο κείμενο.";
+Blockly.Msg.TEXT_LENGTH_TOOLTIP =
+    "Επιστρέφει το πλήθος των γραμμάτων (συμπεριλαμβανομένων και των κενών διαστημάτων) στο παρεχόμενο κείμενο.";
 Blockly.Msg.TEXT_PRINT_HELPURL = "https://code.google.com/p/blockly/wiki/Text#Printing_text ΕΜΦΑΝΙΣΗ_ΚΕΙΜΕΝΟΥ";
 Blockly.Msg.TEXT_PRINT_TITLE = "εκτύπωσε %1";
 Blockly.Msg.TEXT_PRINT_TOOLTIP = "Εκτυπώνει το καθορισμένο κείμενο, αριθμό ή άλλη τιμή.";
-Blockly.Msg.TEXT_PROMPT_HELPURL = "https://code.google.com/p/blockly/wiki/Text#Getting_input_from_the_user ΕΙΣΑΓΩΓΗ_ΔΕΔΟΜΕΝΩΝ_ΑΠΟ_ΤΟΝ_ΧΡΗΣΤΗ";
+Blockly.Msg.TEXT_PROMPT_HELPURL =
+    "https://code.google.com/p/blockly/wiki/Text#Getting_input_from_the_user ΕΙΣΑΓΩΓΗ_ΔΕΔΟΜΕΝΩΝ_ΑΠΟ_ΤΟΝ_ΧΡΗΣΤΗ";
 Blockly.Msg.TEXT_PROMPT_TOOLTIP_NUMBER = "Δημιουργεί προτροπή για τον χρήστη για να δώσει ένα αριθμό.";
 Blockly.Msg.TEXT_PROMPT_TOOLTIP_TEXT = "Δημιουργεί προτροπή για το χρήστη για να δώσει κάποιο κείμενο.";
 Blockly.Msg.TEXT_PROMPT_TYPE_NUMBER = "πρότρεψε με μήνυμα για να δοθεί αριθμός";
@@ -346,7 +383,8 @@ Blockly.Msg.TEXT_TRIM_HELPURL = "https://code.google.com/p/blockly/wiki/Text#Tri
 Blockly.Msg.TEXT_TRIM_OPERATOR_BOTH = "περίκοψε τα κενά και από τις δυο πλευρές του";
 Blockly.Msg.TEXT_TRIM_OPERATOR_LEFT = "περίκοψε τα κενά από την αριστερή πλευρά του";
 Blockly.Msg.TEXT_TRIM_OPERATOR_RIGHT = "περίκοψε τα κενά από την δεξιά πλευρά του";
-Blockly.Msg.TEXT_TRIM_TOOLTIP = "Επιστρέφει ένα αντίγραφο του κειμένου με αφαιρεμένα τα κενά από το ένα ή και τα δύο άκρα.";
+Blockly.Msg.TEXT_TRIM_TOOLTIP =
+    "Επιστρέφει ένα αντίγραφο του κειμένου με αφαιρεμένα τα κενά από το ένα ή και τα δύο άκρα.";
 Blockly.Msg.VARIABLES_DEFAULT_NAME = "αντικείμενο";
 Blockly.Msg.VARIABLES_GET_CREATE_SET = "Δημιούργησε «όρισε %1»";
 Blockly.Msg.VARIABLES_GET_HELPURL = "http://code.google.com/p/blockly/wiki/Variables#Get";

@@ -28,33 +28,41 @@ Blockly.Msg.COLOUR_RGB_GREEN = "grøn";
 Blockly.Msg.COLOUR_RGB_HELPURL = "http://www.december.com/html/spec/colorper.html";  // untranslated
 Blockly.Msg.COLOUR_RGB_RED = "rød";
 Blockly.Msg.COLOUR_RGB_TITLE = "farve med";
-Blockly.Msg.COLOUR_RGB_TOOLTIP = "Lav en farve med den angivne mængde af rød, grøn og blå. Alle værdier skal være mellem 0 og 100.";
+Blockly.Msg.COLOUR_RGB_TOOLTIP =
+    "Lav en farve med den angivne mængde af rød, grøn og blå. Alle værdier skal være mellem 0 og 100.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#Loop_Termination_Blocks";  // untranslated
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_BREAK = "bryd ud af løkken";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_CONTINUE = "fortsæt med den næste gentagelse i løkken";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_BREAK = "Bryd ud af den omgivende løkke.";
-Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE = "Spring resten af denne løkke over, og fortsæt med den næste gentagelse.";
+Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE =
+    "Spring resten af denne løkke over, og fortsæt med den næste gentagelse.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_WARNING = "Advarsel: Denne blok kan kun bruges i en løkke.";
 Blockly.Msg.CONTROLS_FOREACH_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#for_each for each block";  // untranslated
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST = "i listen";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST_TAIL = "";  // untranslated
 Blockly.Msg.CONTROLS_FOREACH_INPUT_ITEM = "for hvert element";
-Blockly.Msg.CONTROLS_FOREACH_TOOLTIP = "For hvert element i en liste, sæt variablen '%1' til elementet, og udfør derefter nogle kommandoer.";
+Blockly.Msg.CONTROLS_FOREACH_TOOLTIP =
+    "For hvert element i en liste, sæt variablen '%1' til elementet, og udfør derefter nogle kommandoer.";
 Blockly.Msg.CONTROLS_FOR_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#count_with";  // untranslated
 Blockly.Msg.CONTROLS_FOR_INPUT_FROM_TO_BY = "fra %1 til %2 med %3";
 Blockly.Msg.CONTROLS_FOR_INPUT_WITH = "tæl med";
-Blockly.Msg.CONTROLS_FOR_TOOLTIP = "Få variablen %1 til at have værdierne fra startværdien til slutværdien, mens der tælles med det angivne interval, og udfør de angivne blokke.";
+Blockly.Msg.CONTROLS_FOR_TOOLTIP =
+    "Få variablen %1 til at have værdierne fra startværdien til slutværdien, mens der tælles med det angivne interval, og udfør de angivne blokke.";
 Blockly.Msg.CONTROLS_IF_ELSEIF_TOOLTIP = "Tilføj en betingelse til denne \"hvis\" blok.";
 Blockly.Msg.CONTROLS_IF_ELSE_TOOLTIP = "Tilføj en sidste fang-alt betingelse, til denne \"hvis\" blok.";
 Blockly.Msg.CONTROLS_IF_HELPURL = "https://code.google.com/p/blockly/wiki/If_Then";  // untranslated
-Blockly.Msg.CONTROLS_IF_IF_TOOLTIP = "Tilføj, fjern eller byt om på rækkefølgen af delene for at konfigurere denne \"hvis\" blok.";
+Blockly.Msg.CONTROLS_IF_IF_TOOLTIP =
+    "Tilføj, fjern eller byt om på rækkefølgen af delene for at konfigurere denne \"hvis\" blok.";
 Blockly.Msg.CONTROLS_IF_MSG_ELSE = "ellers";
 Blockly.Msg.CONTROLS_IF_MSG_ELSEIF = "ellers hvis";
 Blockly.Msg.CONTROLS_IF_MSG_IF = "hvis";
 Blockly.Msg.CONTROLS_IF_TOOLTIP_1 = "Hvis en værdi er sand, så udfør nogle kommandoer.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_2 = "Hvis en værdi er sand, så udfør den første blok af kommandoer. Ellers udfør den anden blok af kommandoer.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_3 = "Hvis den første værdi er sand, så udfør den første blok af kommandoer.  Ellers, hvis den anden værdi er sand, så udfør den anden blok af kommandoer.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_4 = "Hvis den første værdi er sand, så udfør den første blok af kommandoer. Ellers, hvis den anden værdi er sand, så udfør den anden blok af kommandoer. Hvis ingen af værdierne er sande, så udfør den sidste blok af kommandoer.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_2 =
+    "Hvis en værdi er sand, så udfør den første blok af kommandoer. Ellers udfør den anden blok af kommandoer.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_3 =
+    "Hvis den første værdi er sand, så udfør den første blok af kommandoer.  Ellers, hvis den anden værdi er sand, så udfør den anden blok af kommandoer.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_4 =
+    "Hvis den første værdi er sand, så udfør den første blok af kommandoer. Ellers, hvis den anden værdi er sand, så udfør den anden blok af kommandoer. Hvis ingen af værdierne er sande, så udfør den sidste blok af kommandoer.";
 Blockly.Msg.CONTROLS_REPEAT_HELPURL = "https://da.wikipedia.org/wiki/For-l%C3%B8kke";
 Blockly.Msg.CONTROLS_REPEAT_INPUT_DO = "udfør";
 Blockly.Msg.CONTROLS_REPEAT_TITLE = "gentag %1 gange";
@@ -80,7 +88,8 @@ Blockly.Msg.LISTS_CREATE_EMPTY_HELPURL = "https://en.wikipedia.org/wiki/Linked_l
 Blockly.Msg.LISTS_CREATE_EMPTY_TITLE = "opret en tom liste";
 Blockly.Msg.LISTS_CREATE_EMPTY_TOOLTIP = "Returnerer en liste af længde 0, som ikke indeholder nogen data";
 Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TITLE_ADD = "liste";
-Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TOOLTIP = "Tilføj, fjern eller byt om på rækkefølgen af delene for at konfigurere denne blok.";
+Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TOOLTIP =
+    "Tilføj, fjern eller byt om på rækkefølgen af delene for at konfigurere denne blok.";
 Blockly.Msg.LISTS_CREATE_WITH_INPUT_WITH = "opret liste med";
 Blockly.Msg.LISTS_CREATE_WITH_ITEM_TOOLTIP = "Føj et element til listen.";
 Blockly.Msg.LISTS_CREATE_WITH_TOOLTIP = "Opret en liste med et vilkårligt antal elementer.";
@@ -94,18 +103,24 @@ Blockly.Msg.LISTS_GET_INDEX_RANDOM = "tilfældig";
 Blockly.Msg.LISTS_GET_INDEX_REMOVE = "fjern";
 Blockly.Msg.LISTS_GET_INDEX_TAIL = "";  // untranslated
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FIRST = "Returnerer det første element i en liste.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_END = "Returnerer elementet på den angivne position på en liste. #1 er det sidste element.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START = "Returnerer elementet på den angivne position på en liste. #1 er det første element.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_END =
+    "Returnerer elementet på den angivne position på en liste. #1 er det sidste element.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START =
+    "Returnerer elementet på den angivne position på en liste. #1 er det første element.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_LAST = "Returnerer den sidste element i en liste.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_RANDOM = "Returnerer et tilfældigt element i en liste.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FIRST = "Fjerner og returnerer det første element i en liste.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END = "Fjerner og returnerer elementet på den angivne position på en liste. #1 er det sidste element.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START = "Fjerner og returnerer elementet på den angivne position på en liste. #1 er det første element.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END =
+    "Fjerner og returnerer elementet på den angivne position på en liste. #1 er det sidste element.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START =
+    "Fjerner og returnerer elementet på den angivne position på en liste. #1 er det første element.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_LAST = "Fjerner og returnerer det sidste element i en liste.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_RANDOM = "Fjerner og returnerer et tilfældigt element i en liste.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FIRST = "Fjerner det første element i en liste.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END = "Fjerner elementet på den angivne position på en liste. #1 er det sidste element.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START = "Fjerner elementet på den angivne position på en liste. #1 er det første element.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END =
+    "Fjerner elementet på den angivne position på en liste. #1 er det sidste element.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START =
+    "Fjerner elementet på den angivne position på en liste. #1 er det første element.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_LAST = "Fjerner sidste element i en liste.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_RANDOM = "Fjerner et tilfældigt element i en liste.";
 Blockly.Msg.LISTS_GET_SUBLIST_END_FROM_END = "til # fra slutningen";
@@ -120,7 +135,8 @@ Blockly.Msg.LISTS_GET_SUBLIST_TOOLTIP = "Opretter en kopi af den angivne del af 
 Blockly.Msg.LISTS_INDEX_OF_FIRST = "find første forekomst af elementet";
 Blockly.Msg.LISTS_INDEX_OF_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#Getting_Items_from_a_List";  // untranslated
 Blockly.Msg.LISTS_INDEX_OF_LAST = "find sidste forekomst af elementet";
-Blockly.Msg.LISTS_INDEX_OF_TOOLTIP = "Returnerer indeks for første/sidste forekomst af elementet i listen. Returnerer 0, hvis teksten ikke er fundet.";
+Blockly.Msg.LISTS_INDEX_OF_TOOLTIP =
+    "Returnerer indeks for første/sidste forekomst af elementet i listen. Returnerer 0, hvis teksten ikke er fundet.";
 Blockly.Msg.LISTS_INLIST = "i listen";
 Blockly.Msg.LISTS_IS_EMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#is_empty";  // untranslated
 Blockly.Msg.LISTS_IS_EMPTY_TITLE = "%1 er tom";
@@ -135,13 +151,17 @@ Blockly.Msg.LISTS_SET_INDEX_INPUT_TO = "som";
 Blockly.Msg.LISTS_SET_INDEX_INSERT = "sæt ind ved";
 Blockly.Msg.LISTS_SET_INDEX_SET = "sæt";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FIRST = "Indsætter elementet i starten af en liste.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END = "Indsætter elementet på den angivne position i en liste. #1 er det sidste element.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START = "Indsætter elementet på den angivne position i en liste. #1 er det første element.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END =
+    "Indsætter elementet på den angivne position i en liste. #1 er det sidste element.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START =
+    "Indsætter elementet på den angivne position i en liste. #1 er det første element.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_LAST = "Føj elementet til slutningen af en liste.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_RANDOM = "Indsætter elementet tilfældigt i en liste.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FIRST = "Sætter det første element i en liste.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END = "Sætter elementet på den angivne position i en liste. #1 er det sidste element.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START = "Sætter elementet på den angivne position i en liste. #1 er det første element.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END =
+    "Sætter elementet på den angivne position i en liste. #1 er det sidste element.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START =
+    "Sætter elementet på den angivne position i en liste. #1 er det første element.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_LAST = "Sætter det sidste element i en liste.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_RANDOM = "Sætter et tilfældigt element i en liste.";
 Blockly.Msg.LISTS_TOOLTIP = "Returnerer sand, hvis listen er tom.";
@@ -152,9 +172,11 @@ Blockly.Msg.LOGIC_BOOLEAN_TRUE = "sand";
 Blockly.Msg.LOGIC_COMPARE_HELPURL = "https://da.wikipedia.org/wiki/Ulighed_(matematik)";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_EQ = "Returnere sand, hvis begge inputs er lig med hinanden.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GT = "Returnere sand, hvis det første input er større end det andet input.";
-Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GTE = "Returnere sand, hvis det første input er større end eller lig med det andet input.";
+Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GTE =
+    "Returnere sand, hvis det første input er større end eller lig med det andet input.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LT = "Returnere sand, hvis det første input er mindre end det andet input.";
-Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LTE = "Returnere sand, hvis det første input er mindre end eller lig med det andet input.";
+Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LTE =
+    "Returnere sand, hvis det første input er mindre end eller lig med det andet input.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_NEQ = "Returnere sand, hvis begge inputs ikke er lig med hinanden.";
 Blockly.Msg.LOGIC_NEGATE_HELPURL = "https://code.google.com/p/blockly/wiki/Not";  // untranslated
 Blockly.Msg.LOGIC_NEGATE_TITLE = "ikke %1";
@@ -171,7 +193,8 @@ Blockly.Msg.LOGIC_TERNARY_CONDITION = "test";
 Blockly.Msg.LOGIC_TERNARY_HELPURL = "https://en.wikipedia.org/wiki/%3F:";  // untranslated
 Blockly.Msg.LOGIC_TERNARY_IF_FALSE = "hvis falsk";
 Blockly.Msg.LOGIC_TERNARY_IF_TRUE = "hvis sand";
-Blockly.Msg.LOGIC_TERNARY_TOOLTIP = "Kontrollér betingelsen i 'test'. Hvis betingelsen er sand, returnér \"hvis sand\" værdien; ellers returnér \"hvis falsk\" værdien.";
+Blockly.Msg.LOGIC_TERNARY_TOOLTIP =
+    "Kontrollér betingelsen i 'test'. Hvis betingelsen er sand, returnér \"hvis sand\" værdien; ellers returnér \"hvis falsk\" værdien.";
 Blockly.Msg.MATH_ADDITION_SYMBOL = "+";  // untranslated
 Blockly.Msg.MATH_ARITHMETIC_HELPURL = "https://da.wikipedia.org/wiki/Aritmetik";
 Blockly.Msg.MATH_ARITHMETIC_TOOLTIP_ADD = "Returnere summen af de to tal.";
@@ -184,7 +207,8 @@ Blockly.Msg.MATH_CHANGE_INPUT_BY = "med";
 Blockly.Msg.MATH_CHANGE_TITLE_CHANGE = "ændr";
 Blockly.Msg.MATH_CHANGE_TOOLTIP = "Læg et tal til variablen '%1'.";
 Blockly.Msg.MATH_CONSTANT_HELPURL = "https://da.wikipedia.org/wiki/Matematisk_konstant";
-Blockly.Msg.MATH_CONSTANT_TOOLTIP = "Returnere en af de ofte brugte konstanter: π (3.141…), e (2.718…), φ (1.618…), sqrt(2) (1.414…), sqrt(2) (1.414…), sqrt(½) (0.707…) eller ∞ (uendeligt).";
+Blockly.Msg.MATH_CONSTANT_TOOLTIP =
+    "Returnere en af de ofte brugte konstanter: π (3.141…), e (2.718…), φ (1.618…), sqrt(2) (1.414…), sqrt(2) (1.414…), sqrt(½) (0.707…) eller ∞ (uendeligt).";
 Blockly.Msg.MATH_CONSTRAIN_HELPURL = "https://en.wikipedia.org/wiki/Clamping_%28graphics%29";  // untranslated
 Blockly.Msg.MATH_CONSTRAIN_TITLE = "begræns %1 til mellem %2 og %3";
 Blockly.Msg.MATH_CONSTRAIN_TOOLTIP = "Begræns et tal til at være mellem de angivne grænser (inklusiv).";
@@ -195,7 +219,8 @@ Blockly.Msg.MATH_IS_NEGATIVE = "er negativt";
 Blockly.Msg.MATH_IS_ODD = "er ulige";
 Blockly.Msg.MATH_IS_POSITIVE = "er positivt";
 Blockly.Msg.MATH_IS_PRIME = "er et primtal";
-Blockly.Msg.MATH_IS_TOOLTIP = "Kontrollere, om et tal er lige, ulige, primtal, helt, positivt, negativt, eller om det er deleligt med bestemt tal. Returnere sandt eller falskt.";
+Blockly.Msg.MATH_IS_TOOLTIP =
+    "Kontrollere, om et tal er lige, ulige, primtal, helt, positivt, negativt, eller om det er deleligt med bestemt tal. Returnere sandt eller falskt.";
 Blockly.Msg.MATH_IS_WHOLE = "er helt";
 Blockly.Msg.MATH_MODULO_HELPURL = "https://da.wikipedia.org/wiki/Modulo";
 Blockly.Msg.MATH_MODULO_TITLE = "resten af %1 : %2";
@@ -282,7 +307,8 @@ Blockly.Msg.PROCEDURES_IFRETURN_WARNING = "Advarsel: Denne blok kan kun anvendes
 Blockly.Msg.PROCEDURES_MUTATORARG_TITLE = "parameternavn:";
 Blockly.Msg.PROCEDURES_MUTATORARG_TOOLTIP = "Tilføj et input til funktionen.";
 Blockly.Msg.PROCEDURES_MUTATORCONTAINER_TITLE = "inputs";
-Blockly.Msg.PROCEDURES_MUTATORCONTAINER_TOOLTIP = "Tilføje, fjerne eller ændre rækkefølgen af input til denne funktion.";
+Blockly.Msg.PROCEDURES_MUTATORCONTAINER_TOOLTIP =
+    "Tilføje, fjerne eller ændre rækkefølgen af input til denne funktion.";
 Blockly.Msg.REMOVE_COMMENT = "Fjern kommentar";
 Blockly.Msg.RENAME_VARIABLE = "Omdøb variabel...";
 Blockly.Msg.RENAME_VARIABLE_TITLE = "Omdøb alle '%1' variabler til:";
@@ -294,7 +320,8 @@ Blockly.Msg.TEXT_CHANGECASE_HELPURL = "https://code.google.com/p/blockly/wiki/Te
 Blockly.Msg.TEXT_CHANGECASE_OPERATOR_LOWERCASE = "til små bogstaver";
 Blockly.Msg.TEXT_CHANGECASE_OPERATOR_TITLECASE = "til Stort Begyndelsesbogstav";
 Blockly.Msg.TEXT_CHANGECASE_OPERATOR_UPPERCASE = "til STORE BOGSTAVER";
-Blockly.Msg.TEXT_CHANGECASE_TOOLTIP = "Returner en kopi af teksten hvor bogstaverne enten er udelukkende store eller små, eller hvor første bogstav i hvert ord er stort.";
+Blockly.Msg.TEXT_CHANGECASE_TOOLTIP =
+    "Returner en kopi af teksten hvor bogstaverne enten er udelukkende store eller små, eller hvor første bogstav i hvert ord er stort.";
 Blockly.Msg.TEXT_CHARAT_FIRST = "hent første bogstav";
 Blockly.Msg.TEXT_CHARAT_FROM_END = "hent bogstav # fra slutningen";
 Blockly.Msg.TEXT_CHARAT_FROM_START = "hent bogstav #";
@@ -306,7 +333,8 @@ Blockly.Msg.TEXT_CHARAT_TAIL = "";  // untranslated
 Blockly.Msg.TEXT_CHARAT_TOOLTIP = "Returnerer bogstavet på den angivne placering.";
 Blockly.Msg.TEXT_CREATE_JOIN_ITEM_TOOLTIP = "Føj et element til teksten.";
 Blockly.Msg.TEXT_CREATE_JOIN_TITLE_JOIN = "sammenføj";
-Blockly.Msg.TEXT_CREATE_JOIN_TOOLTIP = "Tilføj, fjern eller byt om på rækkefølgen af delene for at konfigurere denne tekstblok.";
+Blockly.Msg.TEXT_CREATE_JOIN_TOOLTIP =
+    "Tilføj, fjern eller byt om på rækkefølgen af delene for at konfigurere denne tekstblok.";
 Blockly.Msg.TEXT_GET_SUBSTRING_END_FROM_END = "til bogstav # fra slutningen";
 Blockly.Msg.TEXT_GET_SUBSTRING_END_FROM_START = "til bogstav #";
 Blockly.Msg.TEXT_GET_SUBSTRING_END_LAST = "til sidste bogstav";
@@ -322,7 +350,8 @@ Blockly.Msg.TEXT_INDEXOF_INPUT_INTEXT = "i teksten";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_FIRST = "find første forekomst af teksten";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_LAST = "find sidste forekomst af teksten";
 Blockly.Msg.TEXT_INDEXOF_TAIL = "";  // untranslated
-Blockly.Msg.TEXT_INDEXOF_TOOLTIP = "Returnerer indeks for første/sidste forekomst af første tekst i den anden tekst.  Returnerer 0, hvis teksten ikke kan findes.";
+Blockly.Msg.TEXT_INDEXOF_TOOLTIP =
+    "Returnerer indeks for første/sidste forekomst af første tekst i den anden tekst.  Returnerer 0, hvis teksten ikke kan findes.";
 Blockly.Msg.TEXT_ISEMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Text#Checking_for_empty_text";  // untranslated
 Blockly.Msg.TEXT_ISEMPTY_TITLE = "%1 er tom";
 Blockly.Msg.TEXT_ISEMPTY_TOOLTIP = "Returnerer sand, hvis den angivne tekst er tom.";

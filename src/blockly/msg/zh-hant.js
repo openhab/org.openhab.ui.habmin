@@ -184,7 +184,8 @@ Blockly.Msg.MATH_CHANGE_INPUT_BY = "自";
 Blockly.Msg.MATH_CHANGE_TITLE_CHANGE = "修改";
 Blockly.Msg.MATH_CHANGE_TOOLTIP = "將數字添加到變量 '%1'。";
 Blockly.Msg.MATH_CONSTANT_HELPURL = "https://en.wikipedia.org/wiki/Mathematical_constant";
-Blockly.Msg.MATH_CONSTANT_TOOLTIP = "返回一個的常見常量： π (3.141......)，e (2.718...)、 φ (1.618...)、 開方(2) (1.414......)、 開方(½) (0.707......) 或 ∞ （無窮大）。";
+Blockly.Msg.MATH_CONSTANT_TOOLTIP =
+    "返回一個的常見常量： π (3.141......)，e (2.718...)、 φ (1.618...)、 開方(2) (1.414......)、 開方(½) (0.707......) 或 ∞ （無窮大）。";
 Blockly.Msg.MATH_CONSTRAIN_HELPURL = "https://en.wikipedia.org/wiki/Clamping_%28graphics%29";  // untranslated
 Blockly.Msg.MATH_CONSTRAIN_TITLE = "限制數字 %1 介於 (低) %2 到 (高) %3";
 Blockly.Msg.MATH_CONSTRAIN_TOOLTIP = "限制數字介於兩個指定的數字之間";

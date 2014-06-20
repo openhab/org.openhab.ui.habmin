@@ -28,34 +28,43 @@ Blockly.Msg.COLOUR_RGB_GREEN = "zöld";
 Blockly.Msg.COLOUR_RGB_HELPURL = "http://www.december.com/html/spec/colorper.html";  // untranslated
 Blockly.Msg.COLOUR_RGB_RED = "vörös";
 Blockly.Msg.COLOUR_RGB_TITLE = "Szín";
-Blockly.Msg.COLOUR_RGB_TOOLTIP = "Szín előállítása a megadott vörös, zöld, és kék értékekkel.  Minden értéknek 0 és 100 közé kell esnie.";
+Blockly.Msg.COLOUR_RGB_TOOLTIP =
+    "Szín előállítása a megadott vörös, zöld, és kék értékekkel.  Minden értéknek 0 és 100 közé kell esnie.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#Loop_Termination_Blocks";  // untranslated
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_BREAK = "befejezi az ismétlést";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_CONTINUE = "folytatja a következővel";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_BREAK = "Megszakítja végtelen ciklust.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE = "Megszakítja az aktuális futást és folytatja elölről.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_WARNING = "Figyelem: Ez a blokk, csak egy ciklusban használható.";
-Blockly.Msg.CONTROLS_FOREACH_HELPURL = "https://hu.wikipedia.org/wiki/Ciklus_(programoz%C3%A1s)#Iter.C3.A1l.C3.B3_ciklus";
+Blockly.Msg.CONTROLS_FOREACH_HELPURL =
+    "https://hu.wikipedia.org/wiki/Ciklus_(programoz%C3%A1s)#Iter.C3.A1l.C3.B3_ciklus";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST = "elemre a";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST_TAIL = "listában";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_ITEM = "Minden";
-Blockly.Msg.CONTROLS_FOREACH_TOOLTIP = "A lista elemszámának megfelelő lépésszámú ciklus.  A \"%1\" változó minden lépésben megkapja a lista adott elemének értékét.  Minden lépésben végrehajtódnak az utasítások.";
+Blockly.Msg.CONTROLS_FOREACH_TOOLTIP =
+    "A lista elemszámának megfelelő lépésszámú ciklus.  A \"%1\" változó minden lépésben megkapja a lista adott elemének értékét.  Minden lépésben végrehajtódnak az utasítások.";
 Blockly.Msg.CONTROLS_FOR_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#count_with";  // untranslated
 Blockly.Msg.CONTROLS_FOR_INPUT_FROM_TO_BY = "értékét %1 és %2 között, lépésköz: %3";
 Blockly.Msg.CONTROLS_FOR_INPUT_WITH = "Számold ki";
-Blockly.Msg.CONTROLS_FOR_TOOLTIP = "Véges lépésszámú ciklus.  A \"%1\" változó értékét számolja ki a kezdőérték és a végérték között.  Minden lépésben végrehajtódnak az utasítások.";
+Blockly.Msg.CONTROLS_FOR_TOOLTIP =
+    "Véges lépésszámú ciklus.  A \"%1\" változó értékét számolja ki a kezdőérték és a végérték között.  Minden lépésben végrehajtódnak az utasítások.";
 Blockly.Msg.CONTROLS_IF_ELSEIF_TOOLTIP = "Újabb feltételes elágazás.";
 Blockly.Msg.CONTROLS_IF_ELSE_TOOLTIP = "Végső, 'egyébként' feltételt ad a 'ha' blokkhoz.";
 Blockly.Msg.CONTROLS_IF_HELPURL = "https://code.google.com/p/blockly/wiki/If_Then";  // untranslated
-Blockly.Msg.CONTROLS_IF_IF_TOOLTIP = "A feltételes elágazás (ha) blokk testreszabásához bővítsd, töröld vagy rendezd át a részeit.";
+Blockly.Msg.CONTROLS_IF_IF_TOOLTIP =
+    "A feltételes elágazás (ha) blokk testreszabásához bővítsd, töröld vagy rendezd át a részeit.";
 Blockly.Msg.CONTROLS_IF_MSG_ELSE = "különben";
 Blockly.Msg.CONTROLS_IF_MSG_ELSEIF = "ha";
 Blockly.Msg.CONTROLS_IF_MSG_IF = "Ha";
 Blockly.Msg.CONTROLS_IF_TOOLTIP_1 = "Ha a kifejezés igaz, akkor végrehajtjuk az utasításokat.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_2 = "Ha a kifejezés igaz, akkor végrehajtjuk az első utasítás blokkot.  Különben a második utasítás blokk kerül végrehajtásra.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_3 = "Ha az első kifejezés igaz, akkor végrehajtjuk az első utasítás blokkot.  Ha a második kifejezés igaz, akkor végrehajtjuk a második utasítás blokkot.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_4 = "Ha az első kifejezés igaz, akkor végrehajtjuk az első utasítás blokkot.  Ha a második kifejezés igaz, akkor végrehajtjuk a második utasítás blokkot.  Amennyiben egyik kifejezés sem igaz, akkor az utolsó utasítás blokk kerül végrehajtásra.";
-Blockly.Msg.CONTROLS_REPEAT_HELPURL = "https://hu.wikipedia.org/wiki/Ciklus_(programoz%C3%A1s)#Sz.C3.A1ml.C3.A1l.C3.B3s_.28FOR.29_ciklus";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_2 =
+    "Ha a kifejezés igaz, akkor végrehajtjuk az első utasítás blokkot.  Különben a második utasítás blokk kerül végrehajtásra.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_3 =
+    "Ha az első kifejezés igaz, akkor végrehajtjuk az első utasítás blokkot.  Ha a második kifejezés igaz, akkor végrehajtjuk a második utasítás blokkot.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_4 =
+    "Ha az első kifejezés igaz, akkor végrehajtjuk az első utasítás blokkot.  Ha a második kifejezés igaz, akkor végrehajtjuk a második utasítás blokkot.  Amennyiben egyik kifejezés sem igaz, akkor az utolsó utasítás blokk kerül végrehajtásra.";
+Blockly.Msg.CONTROLS_REPEAT_HELPURL =
+    "https://hu.wikipedia.org/wiki/Ciklus_(programoz%C3%A1s)#Sz.C3.A1ml.C3.A1l.C3.B3s_.28FOR.29_ciklus";
 Blockly.Msg.CONTROLS_REPEAT_INPUT_DO = "";
 Blockly.Msg.CONTROLS_REPEAT_TITLE = "Ismételd %1 alkalommal";
 Blockly.Msg.CONTROLS_REPEAT_TITLE_REPEAT = "Ismételd";
@@ -94,18 +103,24 @@ Blockly.Msg.LISTS_GET_INDEX_RANDOM = "bármely";
 Blockly.Msg.LISTS_GET_INDEX_REMOVE = "listából törlése";
 Blockly.Msg.LISTS_GET_INDEX_TAIL = "elemnek";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FIRST = "A lista első elemét adja eredményül.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_END = "A lista megadott sorszámú elemét adja eredményül.  1 az utolsó elemet jelenti.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START = "A lista megadott sorszámú elemét adja eredményül.  1 az első elemet jelenti.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_END =
+    "A lista megadott sorszámú elemét adja eredményül.  1 az utolsó elemet jelenti.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START =
+    "A lista megadott sorszámú elemét adja eredményül.  1 az első elemet jelenti.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_LAST = "A lista utolsó elemét adja eredményül.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_RANDOM = "A lista véletlenszerűen választott elemét adja eredményül.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FIRST = "Az első elem kivétele a listából.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END = "A megadott sorszámú elem kivétele a listából 1 az utolsó elemet jelenti.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START = "A megadott sorszámú elem kivétele a listából 1 az első elemet jelenti.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END =
+    "A megadott sorszámú elem kivétele a listából 1 az utolsó elemet jelenti.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START =
+    "A megadott sorszámú elem kivétele a listából 1 az első elemet jelenti.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_LAST = "Az utolsó elem kivétele a listából.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_RANDOM = "Véletlenszerűen választott elem kivétele a listából.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FIRST = "Az első elem törlése a listából.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END = "A megadott sorszámú elem törlése a listából 1 az utolsó elemet jelenti.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START = "A megadott sorszámú elem törlése a listából 1 az első elemet jelenti.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END =
+    "A megadott sorszámú elem törlése a listából 1 az utolsó elemet jelenti.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START =
+    "A megadott sorszámú elem törlése a listából 1 az első elemet jelenti.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_LAST = "Az utolsó elem törlése a listából.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_RANDOM = "Véletlenszerűen választott elem törlése a listából.";
 Blockly.Msg.LISTS_GET_SUBLIST_END_FROM_END = "és a végétől számított";
@@ -120,7 +135,8 @@ Blockly.Msg.LISTS_GET_SUBLIST_TOOLTIP = "A lista adott részéről másolat.";
 Blockly.Msg.LISTS_INDEX_OF_FIRST = "listában első előfordulásaː";
 Blockly.Msg.LISTS_INDEX_OF_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#Getting_Items_from_a_List";  // untranslated
 Blockly.Msg.LISTS_INDEX_OF_LAST = "listában utolsó előfordulásaː";
-Blockly.Msg.LISTS_INDEX_OF_TOOLTIP = "A megadtott elem eslő vagy utolsó előfordulásával tér vissza.  0 esetén nincs ilyen eleme a listának.";
+Blockly.Msg.LISTS_INDEX_OF_TOOLTIP =
+    "A megadtott elem eslő vagy utolsó előfordulásával tér vissza.  0 esetén nincs ilyen eleme a listának.";
 Blockly.Msg.LISTS_INLIST = "A(z)";
 Blockly.Msg.LISTS_IS_EMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#is_empty";  // untranslated
 Blockly.Msg.LISTS_IS_EMPTY_TITLE = "%1 üres lista?";
@@ -135,13 +151,17 @@ Blockly.Msg.LISTS_SET_INDEX_INPUT_TO = "elemkéntː";
 Blockly.Msg.LISTS_SET_INDEX_INSERT = "listába szúrd be";
 Blockly.Msg.LISTS_SET_INDEX_SET = "listába állítsd be";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FIRST = "Beszúrás a lista elejére.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END = "Beszúrás a megadott sorszámú elem elé a listában.  1 az utolsó elemet jelenti.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START = "Beszúrás a megadott sorszámú elem elé a listában.  1 az első elemet jelenti.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END =
+    "Beszúrás a megadott sorszámú elem elé a listában.  1 az utolsó elemet jelenti.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START =
+    "Beszúrás a megadott sorszámú elem elé a listában.  1 az első elemet jelenti.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_LAST = "Beszúrás a lista végére.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_RANDOM = "Beszúrás véletlenszerűen választott elem elé a listában.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FIRST = "Az első elem cseréje a listában.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END = "A megadott sorszámú elem cseréje a listában.  1 az utolsó elemet jelenti.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START = "A megadott sorszámú elem cseréje a listában.  1 az első elemet jelenti.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END =
+    "A megadott sorszámú elem cseréje a listában.  1 az utolsó elemet jelenti.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START =
+    "A megadott sorszámú elem cseréje a listában.  1 az első elemet jelenti.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_LAST = "Az utolsó elem cseréje a listában.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_RANDOM = "Véletlenszerűen választott elem cseréje a listában.";
 Blockly.Msg.LISTS_TOOLTIP = "Az eredmény igaz, ha a lista nem tartalmaz elemeket.";
@@ -171,7 +191,8 @@ Blockly.Msg.LOGIC_TERNARY_CONDITION = "kifejezés:";
 Blockly.Msg.LOGIC_TERNARY_HELPURL = "https://en.wikipedia.org/wiki/%3F:";  // untranslated
 Blockly.Msg.LOGIC_TERNARY_IF_FALSE = "érték, ha hamis:";
 Blockly.Msg.LOGIC_TERNARY_IF_TRUE = "érték, ha igaz:";
-Blockly.Msg.LOGIC_TERNARY_TOOLTIP = "Kiértékeli a kifejezést.  Ha a kifejezés igaz visszatér az \"érték, ha igaz\" értékkel, különben az \"érték, ha hamis\" értékkel.";
+Blockly.Msg.LOGIC_TERNARY_TOOLTIP =
+    "Kiértékeli a kifejezést.  Ha a kifejezés igaz visszatér az \"érték, ha igaz\" értékkel, különben az \"érték, ha hamis\" értékkel.";
 Blockly.Msg.MATH_ADDITION_SYMBOL = "+";  // untranslated
 Blockly.Msg.MATH_ARITHMETIC_HELPURL = "https://hu.wikipedia.org/wiki/Matematikai_m%C5%B1velet";
 Blockly.Msg.MATH_ARITHMETIC_TOOLTIP_ADD = "Két szám összege.";
@@ -184,7 +205,8 @@ Blockly.Msg.MATH_CHANGE_INPUT_BY = "értékét, (növekmény)ː";
 Blockly.Msg.MATH_CHANGE_TITLE_CHANGE = "Növeld";
 Blockly.Msg.MATH_CHANGE_TOOLTIP = "A(z) \"%1\" változó értékének növelése.";
 Blockly.Msg.MATH_CONSTANT_HELPURL = "https://hu.wikipedia.org/wiki/Matematikai_konstans";
-Blockly.Msg.MATH_CONSTANT_TOOLTIP = "Ismert matematikai konstans: π (3.141…), e (2.718…), φ (1.618…), gyök(2) (1.414…), gyök(½) (0.707…), vagy ∞ (végtelen).";
+Blockly.Msg.MATH_CONSTANT_TOOLTIP =
+    "Ismert matematikai konstans: π (3.141…), e (2.718…), φ (1.618…), gyök(2) (1.414…), gyök(½) (0.707…), vagy ∞ (végtelen).";
 Blockly.Msg.MATH_CONSTRAIN_HELPURL = "https://en.wikipedia.org/wiki/Clamping_%28graphics%29";  // untranslated
 Blockly.Msg.MATH_CONSTRAIN_TITLE = "korlátozd %1 -t %2 és %3 közé";
 Blockly.Msg.MATH_CONSTRAIN_TOOLTIP = "Egy változó értékének korlátozása a megadott zárt intervallumra.";
@@ -195,7 +217,8 @@ Blockly.Msg.MATH_IS_NEGATIVE = "negatív szám?";
 Blockly.Msg.MATH_IS_ODD = "páratlan szám?";
 Blockly.Msg.MATH_IS_POSITIVE = "pozitív szám?";
 Blockly.Msg.MATH_IS_PRIME = "prímszám?";
-Blockly.Msg.MATH_IS_TOOLTIP = "Megadja a számról, hogy páros, páratlan, prím, egész, pozitív vagy negatív szám, illetve osztható-e a másodikkal.  Igaz, vagy Hamis értéket ad eredményül.";
+Blockly.Msg.MATH_IS_TOOLTIP =
+    "Megadja a számról, hogy páros, páratlan, prím, egész, pozitív vagy negatív szám, illetve osztható-e a másodikkal.  Igaz, vagy Hamis értéket ad eredményül.";
 Blockly.Msg.MATH_IS_WHOLE = "egész szám?";
 Blockly.Msg.MATH_MODULO_HELPURL = "https://hu.wikipedia.org/wiki/Eg%C3%A9szr%C3%A9sz#Als.C3.B3_eg.C3.A9szr.C3.A9sz";
 Blockly.Msg.MATH_MODULO_TITLE = "maradék %1 ÷ %2";
@@ -306,7 +329,8 @@ Blockly.Msg.TEXT_CHARAT_TAIL = "karaktere";
 Blockly.Msg.TEXT_CHARAT_TOOLTIP = "A szöveg egy megadott karakterét adja eredményül.";
 Blockly.Msg.TEXT_CREATE_JOIN_ITEM_TOOLTIP = "Elem hozzáfűzése a szöveghez.";
 Blockly.Msg.TEXT_CREATE_JOIN_TITLE_JOIN = "összefűz";
-Blockly.Msg.TEXT_CREATE_JOIN_TOOLTIP = "Összefűzéssel, törléssel vagy rendezéssel kapcsolato sblokkok szöveg szerkesztéséhez.";
+Blockly.Msg.TEXT_CREATE_JOIN_TOOLTIP =
+    "Összefűzéssel, törléssel vagy rendezéssel kapcsolato sblokkok szöveg szerkesztéséhez.";
 Blockly.Msg.TEXT_GET_SUBSTRING_END_FROM_END = "betűtől a hátulról számított";
 Blockly.Msg.TEXT_GET_SUBSTRING_END_FROM_START = "betűtől a(z)";
 Blockly.Msg.TEXT_GET_SUBSTRING_END_LAST = "betűtől az utolsó";
@@ -322,7 +346,8 @@ Blockly.Msg.TEXT_INDEXOF_INPUT_INTEXT = "A(z)";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_FIRST = "szövegben első előfordulásának indexe";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_LAST = "szövegben utolsó előfordulásának indexe";
 Blockly.Msg.TEXT_INDEXOF_TAIL = "szövegnek";
-Blockly.Msg.TEXT_INDEXOF_TOOLTIP = "A keresett szöveg első vagy utolsó előfordulásával tér vissza.  0 esetén a szövegrészlet nem található.";
+Blockly.Msg.TEXT_INDEXOF_TOOLTIP =
+    "A keresett szöveg első vagy utolsó előfordulásával tér vissza.  0 esetén a szövegrészlet nem található.";
 Blockly.Msg.TEXT_ISEMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Text#Checking_for_empty_text";  // untranslated
 Blockly.Msg.TEXT_ISEMPTY_TITLE = "%1 üres sztring?";
 Blockly.Msg.TEXT_ISEMPTY_TOOLTIP = "Igaz, ha a vizsgált sztring üres.";

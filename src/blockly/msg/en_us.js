@@ -215,7 +215,8 @@ Blockly.Msg.MATH_TRIG_TOOLTIP_ACOS = 'Return the arccosine of a number.';
 Blockly.Msg.MATH_TRIG_TOOLTIP_ATAN = 'Return the arctangent of a number.';
 
 Blockly.Msg.MATH_CONSTANT_HELPURL = 'http://en.wikipedia.org/wiki/Mathematical_constant';
-Blockly.Msg.MATH_CONSTANT_TOOLTIP = 'Return one of the common constants: \u03c0 (3.141\u2026), e (2.718\u2026), \u03c6 (1.618\u2026),\n' +
+Blockly.Msg.MATH_CONSTANT_TOOLTIP =
+    'Return one of the common constants: \u03c0 (3.141\u2026), e (2.718\u2026), \u03c6 (1.618\u2026),\n' +
     'sqrt(2) (1.414\u2026), sqrt(\u00bd) (0.707\u2026), or \u221e (infinity).';
 
 Blockly.Msg.MATH_IS_EVEN = 'is even';
@@ -308,7 +309,8 @@ Blockly.Msg.TEXT_ISEMPTY_HELPURL = 'http://www.liv.ac.uk/HPC/HTMLF90Course/HTMLF
 Blockly.Msg.TEXT_ISEMPTY_INPUT_ISEMPTY = 'is empty';
 Blockly.Msg.TEXT_ISEMPTY_TOOLTIP = 'Returns true if the provided text is empty.';
 
-Blockly.Msg.TEXT_INDEXOF_HELPURL = 'http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm';
+Blockly.Msg.TEXT_INDEXOF_HELPURL =
+    'http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm';
 Blockly.Msg.TEXT_INDEXOF_INPUT_INTEXT = 'in text';
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_FIRST = 'find first occurrence of text';
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_LAST = 'find last occurrence of text';
@@ -316,7 +318,8 @@ Blockly.Msg.TEXT_INDEXOF_TOOLTIP = 'Returns the index of the first/last occurren
     'of first text in the second text.\n' +
     'Returns 0 if text is not found.';
 
-Blockly.Msg.TEXT_CHARAT_HELPURL = 'http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm';
+Blockly.Msg.TEXT_CHARAT_HELPURL =
+    'http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm';
 Blockly.Msg.TEXT_CHARAT_INPUT_INTEXT = 'in text';
 Blockly.Msg.TEXT_CHARAT_FROM_START = 'get letter #';
 Blockly.Msg.TEXT_CHARAT_FROM_END = 'get letter # from end';
@@ -325,7 +328,8 @@ Blockly.Msg.TEXT_CHARAT_LAST = 'get last letter';
 Blockly.Msg.TEXT_CHARAT_RANDOM = 'get random letter';
 Blockly.Msg.TEXT_CHARAT_TOOLTIP = 'Returns the letter at the specified position.';
 
-Blockly.Msg.TEXT_SUBSTRING_HELPURL = 'http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm';
+Blockly.Msg.TEXT_SUBSTRING_HELPURL =
+    'http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm';
 Blockly.Msg.TEXT_SUBSTRING_INPUT_IN_TEXT = 'in text';
 Blockly.Msg.TEXT_SUBSTRING_INPUT_AT1 = 'get substring from';
 Blockly.Msg.TEXT_SUBSTRING_INPUT_AT2 = 'to';
@@ -372,7 +376,8 @@ Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TOOLTIP = 'Add, remove, or reorder secti
 Blockly.Msg.LISTS_CREATE_WITH_ITEM_TITLE = 'item';
 Blockly.Msg.LISTS_CREATE_WITH_ITEM_TOOLTIP = 'Add an item to the list.';
 
-Blockly.Msg.LISTS_REPEAT_HELPURL = 'http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm';
+Blockly.Msg.LISTS_REPEAT_HELPURL =
+    'http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm';
 Blockly.Msg.LISTS_REPEAT_INPUT_WITH = 'create list with item';
 Blockly.Msg.LISTS_REPEAT_INPUT_REPEATED = 'repeated';
 Blockly.Msg.LISTS_REPEAT_INPUT_TIMES = 'times';
@@ -387,7 +392,8 @@ Blockly.Msg.LISTS_IS_EMPTY_HELPURL = 'http://www.liv.ac.uk/HPC/HTMLF90Course/HTM
 Blockly.Msg.LISTS_INPUT_IS_EMPTY = 'is empty';
 Blockly.Msg.LISTS_TOOLTIP = 'Returns true if the list is empty.';
 
-Blockly.Msg.LISTS_INDEX_OF_HELPURL = 'http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm';
+Blockly.Msg.LISTS_INDEX_OF_HELPURL =
+    'http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm';
 Blockly.Msg.LISTS_INDEX_OF_INPUT_IN_LIST = 'in list';
 Blockly.Msg.LISTS_INDEX_OF_FIRST = 'find first occurrence of item';
 Blockly.Msg.LISTS_INDEX_OF_LAST = 'find last occurrence of item';
@@ -395,7 +401,8 @@ Blockly.Msg.LISTS_INDEX_OF_TOOLTIP = 'Returns the index of the first/last occurr
     'of the item in the list.\n' +
     'Returns 0 if text is not found.';
 
-Blockly.Msg.LISTS_GET_INDEX_HELPURL = 'http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm';
+Blockly.Msg.LISTS_GET_INDEX_HELPURL =
+    'http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm';
 Blockly.Msg.LISTS_GET_INDEX_GET = 'get';
 Blockly.Msg.LISTS_GET_INDEX_GET_REMOVE = 'get and remove';
 Blockly.Msg.LISTS_GET_INDEX_REMOVE = 'remove';
@@ -427,7 +434,8 @@ Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FIRST = 'Removes the first item in a 
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_LAST = 'Removes the last item in a list.';
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_RANDOM = 'Removes a random item in a list.';
 
-Blockly.Msg.LISTS_SET_INDEX_HELPURL = 'http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm';
+Blockly.Msg.LISTS_SET_INDEX_HELPURL =
+    'http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm';
 Blockly.Msg.LISTS_SET_INDEX_INPUT_IN_LIST = 'in list';
 Blockly.Msg.LISTS_SET_INDEX_SET = 'set';
 Blockly.Msg.LISTS_SET_INDEX_INSERT = 'insert at';
@@ -447,7 +455,8 @@ Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FIRST = 'Inserts the item at the star
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_LAST = 'Append the item to the end of a list.';
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_RANDOM = 'Inserts the item randomly in a list.';
 
-Blockly.Msg.LISTS_GET_SUBLIST_HELPURL = 'http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm';
+Blockly.Msg.LISTS_GET_SUBLIST_HELPURL =
+    'http://publib.boulder.ibm.com/infocenter/lnxpcomp/v8v101/index.jsp?topic=%2Fcom.ibm.xlcpp8l.doc%2Flanguage%2Fref%2Farsubex.htm';
 Blockly.Msg.LISTS_GET_SUBLIST_INPUT_IN_LIST = 'in list';
 Blockly.Msg.LISTS_GET_SUBLIST_INPUT_AT1 = 'get sub-list from';
 Blockly.Msg.LISTS_GET_SUBLIST_INPUT_AT2 = 'to';

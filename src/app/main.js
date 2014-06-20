@@ -130,7 +130,7 @@ define([ 'dojo/has', 'require' ], function (has, require) {
                 var loginDialog = new Login();
                 loginDialog.placeAt(document.body);
                 loginDialog.startup();
-                //  loginDialog.show();
+              //  loginDialog.show();
 
 //                new Status({}, "onlineStatus");
                 /*

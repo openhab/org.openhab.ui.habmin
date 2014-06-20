@@ -28,7 +28,8 @@ Blockly.Msg.COLOUR_RGB_GREEN = "vihreä";
 Blockly.Msg.COLOUR_RGB_HELPURL = "http://www.december.com/html/spec/colorper.html";
 Blockly.Msg.COLOUR_RGB_RED = "punainen";
 Blockly.Msg.COLOUR_RGB_TITLE = "väri, jossa on";
-Blockly.Msg.COLOUR_RGB_TOOLTIP = "Luo väri, jossa on tietty määrä punaista, vihreää ja sinistä. Kaikkien arvojen tulee olla välillä 0 - 100.";
+Blockly.Msg.COLOUR_RGB_TOOLTIP =
+    "Luo väri, jossa on tietty määrä punaista, vihreää ja sinistä. Kaikkien arvojen tulee olla välillä 0 - 100.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#Loop_Termination_Blocks";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_BREAK = "poistu silmukasta";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_CONTINUE = "jatka silmukan seuraavaan toistoon";
@@ -39,11 +40,13 @@ Blockly.Msg.CONTROLS_FOREACH_HELPURL = "https://code.google.com/p/blockly/wiki/L
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST = "listassa";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST_TAIL = "";  // untranslated
 Blockly.Msg.CONTROLS_FOREACH_INPUT_ITEM = "kullekin kohteelle";
-Blockly.Msg.CONTROLS_FOREACH_TOOLTIP = "Aseta muuttujan %1 arvoksi kukin listan kohde vuorollaan ja suorita joukko lausekkeita.";
+Blockly.Msg.CONTROLS_FOREACH_TOOLTIP =
+    "Aseta muuttujan %1 arvoksi kukin listan kohde vuorollaan ja suorita joukko lausekkeita.";
 Blockly.Msg.CONTROLS_FOR_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#count_with";  // untranslated
 Blockly.Msg.CONTROLS_FOR_INPUT_FROM_TO_BY = "Väli %1-%2 %3:n välein";
 Blockly.Msg.CONTROLS_FOR_INPUT_WITH = "laske";
-Blockly.Msg.CONTROLS_FOR_TOOLTIP = "Aseta muuttujaan %1 arvot alkuarvosta loppuarvoon annetun askeleen välein ja suorita joka askeleella annettu koodilohko.";
+Blockly.Msg.CONTROLS_FOR_TOOLTIP =
+    "Aseta muuttujaan %1 arvot alkuarvosta loppuarvoon annetun askeleen välein ja suorita joka askeleella annettu koodilohko.";
 Blockly.Msg.CONTROLS_IF_ELSEIF_TOOLTIP = "Lisää ehto \"jos\" lohkoon.";
 Blockly.Msg.CONTROLS_IF_ELSE_TOOLTIP = "Lisää lopullinen \"muuten\" lohko \"jos\" lohkoon.";
 Blockly.Msg.CONTROLS_IF_HELPURL = "https://code.google.com/p/blockly/wiki/If_Then";  // untranslated
@@ -52,9 +55,12 @@ Blockly.Msg.CONTROLS_IF_MSG_ELSE = "muuten";
 Blockly.Msg.CONTROLS_IF_MSG_ELSEIF = "muuten jos";
 Blockly.Msg.CONTROLS_IF_MSG_IF = "jos";
 Blockly.Msg.CONTROLS_IF_TOOLTIP_1 = "Jos arvo on tosi, suorita lauseke.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_2 = "Jos arvo on tosi, suorita ensimmäinen lohko lausekkeita. Muuten suorita toinen lohko lausekkeita.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_3 = "Jos ensimmäinen arvo on tosi, suorita ensimmäinen lohko lausekkeita. Muuten, jos toinen arvo on tosi, suorita toinen lohko lausekkeita.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_4 = "Jos ensimmäinen arvo on tosi, suorita ensimmäinen lohko lausekkeita. Muuten, jos toinen arvo on tosi, suorita toinen lohko lausekkeita. Jos mikään arvoista ei ole tosi, suorita viimeinen lohko lausekkeita.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_2 =
+    "Jos arvo on tosi, suorita ensimmäinen lohko lausekkeita. Muuten suorita toinen lohko lausekkeita.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_3 =
+    "Jos ensimmäinen arvo on tosi, suorita ensimmäinen lohko lausekkeita. Muuten, jos toinen arvo on tosi, suorita toinen lohko lausekkeita.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_4 =
+    "Jos ensimmäinen arvo on tosi, suorita ensimmäinen lohko lausekkeita. Muuten, jos toinen arvo on tosi, suorita toinen lohko lausekkeita. Jos mikään arvoista ei ole tosi, suorita viimeinen lohko lausekkeita.";
 Blockly.Msg.CONTROLS_REPEAT_HELPURL = "https://en.wikipedia.org/wiki/For_loop";
 Blockly.Msg.CONTROLS_REPEAT_INPUT_DO = "tee";
 Blockly.Msg.CONTROLS_REPEAT_TITLE = "toista %1 kertaa";
@@ -94,18 +100,24 @@ Blockly.Msg.LISTS_GET_INDEX_RANDOM = "satunnainen";
 Blockly.Msg.LISTS_GET_INDEX_REMOVE = "poista";
 Blockly.Msg.LISTS_GET_INDEX_TAIL = "";  // untranslated
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FIRST = "Palauta ensimmäinen kohde listalta.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_END = "Palauta kohde annetusta kohdasta listaa. Numero 1 tarkoittaa listan viimeistä kohdetta.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START = "Palauta kohde annetusta kohdasta listaa. Numero 1 tarkoittaa listan ensimmäistä kohdetta.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_END =
+    "Palauta kohde annetusta kohdasta listaa. Numero 1 tarkoittaa listan viimeistä kohdetta.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START =
+    "Palauta kohde annetusta kohdasta listaa. Numero 1 tarkoittaa listan ensimmäistä kohdetta.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_LAST = "Palauttaa listan viimeisen kohteen.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_RANDOM = "Palauttaa satunnaisen kohteen listalta.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FIRST = "Poistaa ja palauttaa ensimmäisen kohteen listalta.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END = "Poistaa ja palauttaa kohteen annetusta kohden listaa. Nro 1 on ensimmäinen kohde.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START = "Poistaa ja palauttaa kohteen annetusta kohden listaa. Nro 1 on ensimmäinen kohde.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END =
+    "Poistaa ja palauttaa kohteen annetusta kohden listaa. Nro 1 on ensimmäinen kohde.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START =
+    "Poistaa ja palauttaa kohteen annetusta kohden listaa. Nro 1 on ensimmäinen kohde.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_LAST = "Poistaa ja palauttaa viimeisen kohteen listalta.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_RANDOM = "Poistaa ja palauttaa satunnaisen kohteen listalta.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FIRST = "Poistaa ensimmäisen kohteen listalta.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END = "Poistaa kohteen listalta annetusta kohtaa. Nro 1 on viimeinen kohde.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START = "Poistaa kohteen listalta annetusta kohtaa. Nro 1 on ensimmäinen kohde.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END =
+    "Poistaa kohteen listalta annetusta kohtaa. Nro 1 on viimeinen kohde.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START =
+    "Poistaa kohteen listalta annetusta kohtaa. Nro 1 on ensimmäinen kohde.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_LAST = "Poistaa viimeisen kohteen listalta.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_RANDOM = "Poistaa satunnaisen kohteen listalta.";
 Blockly.Msg.LISTS_GET_SUBLIST_END_FROM_END = "päättyen kohtaan (lopusta laskien)";
@@ -120,7 +132,8 @@ Blockly.Msg.LISTS_GET_SUBLIST_TOOLTIP = "Luo kopio määrätystä kohden listaa.
 Blockly.Msg.LISTS_INDEX_OF_FIRST = "etsi ensimmäinen esiintymä kohteelle";
 Blockly.Msg.LISTS_INDEX_OF_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#Getting_Items_from_a_List";  // untranslated
 Blockly.Msg.LISTS_INDEX_OF_LAST = "etsi viimeinen esiintymä kohteelle";
-Blockly.Msg.LISTS_INDEX_OF_TOOLTIP = "Palauttaa kohteen ensimmäisen/viimeisen esiintymän kohdan. Palauttaa 0 jos tekstiä ei löydy.";
+Blockly.Msg.LISTS_INDEX_OF_TOOLTIP =
+    "Palauttaa kohteen ensimmäisen/viimeisen esiintymän kohdan. Palauttaa 0 jos tekstiä ei löydy.";
 Blockly.Msg.LISTS_INLIST = "listassa";
 Blockly.Msg.LISTS_IS_EMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#is_empty";  // untranslated
 Blockly.Msg.LISTS_IS_EMPTY_TITLE = "%1 on tyhjä";
@@ -136,12 +149,15 @@ Blockly.Msg.LISTS_SET_INDEX_INSERT = "lisää kohtaan";
 Blockly.Msg.LISTS_SET_INDEX_SET = "aseta";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FIRST = "Lisää kohteen listan kärkeen.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END = "Lisää kohteen annettuun kohtaan listaa. Nro 1 on listan häntä.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START = "Lisää kohteen listan annettuun kohtaan. Nro 1 on listan kärki.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START =
+    "Lisää kohteen listan annettuun kohtaan. Nro 1 on listan kärki.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_LAST = "Lisää kohteen listan loppuun.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_RANDOM = "Lisää kohteen satunnaiseen kohtaan listassa.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FIRST = "Asettaa listan ensimmäisen kohteen.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END = "Asettaa listan määrätyssä kohtaa olevan kohteen. Nro 1 on listan loppu.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START = "Asettaa kohteen määrättyyn kohtaa listassa. Nro 1 on listan alku.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END =
+    "Asettaa listan määrätyssä kohtaa olevan kohteen. Nro 1 on listan loppu.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START =
+    "Asettaa kohteen määrättyyn kohtaa listassa. Nro 1 on listan alku.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_LAST = "Asettaa listan viimeisen kohteen.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_RANDOM = "Asettaa satunnaisen kohteen listassa.";
 Blockly.Msg.LISTS_TOOLTIP = "Palauttaa tosi, jos lista on tyhjä.";
@@ -152,9 +168,11 @@ Blockly.Msg.LOGIC_BOOLEAN_TRUE = "tosi";
 Blockly.Msg.LOGIC_COMPARE_HELPURL = "https://fi.wikipedia.org/wiki/Ep%C3%A4yht%C3%A4l%C3%B6";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_EQ = "Palauta tosi, jos syötteet ovat keskenään samat.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GT = "Palauttaa tosi, jos ensimmäinen syöte on suurempi, kuin toinen.";
-Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GTE = "Palauttaa tosi, jos ensimmäinen syöte on suurempi tai yhtä suuri, kuin toinen.";
+Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GTE =
+    "Palauttaa tosi, jos ensimmäinen syöte on suurempi tai yhtä suuri, kuin toinen.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LT = "Palauttaa tosi, jos ensimmäinen syöte on pienempi, kuin toinen.";
-Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LTE = "Palauttaa tosi, jos ensimmäinen syöte on pienempi tai yhtä suuri, kuin toinen.";
+Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LTE =
+    "Palauttaa tosi, jos ensimmäinen syöte on pienempi tai yhtä suuri, kuin toinen.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_NEQ = "Palauttaa tosi, jos syötteet eivät ole keskenään samoja.";
 Blockly.Msg.LOGIC_NEGATE_HELPURL = "https://code.google.com/p/blockly/wiki/Not";  // untranslated
 Blockly.Msg.LOGIC_NEGATE_TITLE = "ei %1";
@@ -171,7 +189,8 @@ Blockly.Msg.LOGIC_TERNARY_CONDITION = "ehto";
 Blockly.Msg.LOGIC_TERNARY_HELPURL = "https://en.wikipedia.org/wiki/%3F:";  // untranslated
 Blockly.Msg.LOGIC_TERNARY_IF_FALSE = "jos epätosi";
 Blockly.Msg.LOGIC_TERNARY_IF_TRUE = "jos tosi";
-Blockly.Msg.LOGIC_TERNARY_TOOLTIP = "Tarkistaa testin ehdon. Jos ehto on tosi, palauttaa \"jos tosi\" arvon, muuten palauttaa \"jos epätosi\" arvon.";
+Blockly.Msg.LOGIC_TERNARY_TOOLTIP =
+    "Tarkistaa testin ehdon. Jos ehto on tosi, palauttaa \"jos tosi\" arvon, muuten palauttaa \"jos epätosi\" arvon.";
 Blockly.Msg.MATH_ADDITION_SYMBOL = "+";
 Blockly.Msg.MATH_ARITHMETIC_HELPURL = "http://fi.wikipedia.org/wiki/Aritmetiikka";
 Blockly.Msg.MATH_ARITHMETIC_TOOLTIP_ADD = "Palauttaa kahden luvun summan.";
@@ -184,7 +203,8 @@ Blockly.Msg.MATH_CHANGE_INPUT_BY = "arvolla";
 Blockly.Msg.MATH_CHANGE_TITLE_CHANGE = "muuta";
 Blockly.Msg.MATH_CHANGE_TOOLTIP = "Lisää arvo muuttujaan '%1'.";
 Blockly.Msg.MATH_CONSTANT_HELPURL = "https://en.wikipedia.org/wiki/Mathematical_constant";
-Blockly.Msg.MATH_CONSTANT_TOOLTIP = "Palauttaa jonkin seuraavista vakioista: π (3.141…), e (2.718…), φ (1.618…), neliöjuuri(2) (1.414…), neliöjuuri(½) (0.707…), or ∞ (ääretön).";
+Blockly.Msg.MATH_CONSTANT_TOOLTIP =
+    "Palauttaa jonkin seuraavista vakioista: π (3.141…), e (2.718…), φ (1.618…), neliöjuuri(2) (1.414…), neliöjuuri(½) (0.707…), or ∞ (ääretön).";
 Blockly.Msg.MATH_CONSTRAIN_HELPURL = "https://en.wikipedia.org/wiki/Clamping_%28graphics%29";  // untranslated
 Blockly.Msg.MATH_CONSTRAIN_TITLE = "rajoita %1 vähintään %2 enintään %3";
 Blockly.Msg.MATH_CONSTRAIN_TOOLTIP = "Rajoittaa arvon annetulle suljetulle välille.";
@@ -195,7 +215,8 @@ Blockly.Msg.MATH_IS_NEGATIVE = "on negatiivinen";
 Blockly.Msg.MATH_IS_ODD = "on pariton";
 Blockly.Msg.MATH_IS_POSITIVE = "on positiivinen";
 Blockly.Msg.MATH_IS_PRIME = "on alkuluku";
-Blockly.Msg.MATH_IS_TOOLTIP = "Tarkistaa onko numero parillinen, pariton, alkuluku, kokonaisluku, positiivinen, negatiivinen, tai jos se on jaollinen toisella luvulla. Palauttaa tosi tai epätosi.";
+Blockly.Msg.MATH_IS_TOOLTIP =
+    "Tarkistaa onko numero parillinen, pariton, alkuluku, kokonaisluku, positiivinen, negatiivinen, tai jos se on jaollinen toisella luvulla. Palauttaa tosi tai epätosi.";
 Blockly.Msg.MATH_IS_WHOLE = "on kokonaisluku";
 Blockly.Msg.MATH_MODULO_HELPURL = "https://en.wikipedia.org/wiki/Modulo_operation";
 Blockly.Msg.MATH_MODULO_TITLE = "%1 ÷ %2 jakojäännös";
@@ -322,7 +343,8 @@ Blockly.Msg.TEXT_INDEXOF_INPUT_INTEXT = "tekstistä";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_FIRST = "etsi ensimmäinen esiintymä merkkijonolle";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_LAST = "etsi viimeinen esiintymä merkkijonolle";
 Blockly.Msg.TEXT_INDEXOF_TAIL = "";  // untranslated
-Blockly.Msg.TEXT_INDEXOF_TOOLTIP = "Palauttaa ensin annetun tekstin ensimmäisen/viimeisen esiintymän osoitteen toisessa tekstissä. Palauttaa osoitteen 0 jos tekstiä ei löytynyt.";
+Blockly.Msg.TEXT_INDEXOF_TOOLTIP =
+    "Palauttaa ensin annetun tekstin ensimmäisen/viimeisen esiintymän osoitteen toisessa tekstissä. Palauttaa osoitteen 0 jos tekstiä ei löytynyt.";
 Blockly.Msg.TEXT_ISEMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Text#Checking_for_empty_text";  // untranslated
 Blockly.Msg.TEXT_ISEMPTY_TITLE = "%1 on tyhjä";
 Blockly.Msg.TEXT_ISEMPTY_TOOLTIP = "Palauttaa tosi, jos annettu teksti on tyhjä.";
@@ -346,7 +368,8 @@ Blockly.Msg.TEXT_TRIM_HELPURL = "https://code.google.com/p/blockly/wiki/Text#Tri
 Blockly.Msg.TEXT_TRIM_OPERATOR_BOTH = "poistaa välilyönnit kummaltakin puolelta";
 Blockly.Msg.TEXT_TRIM_OPERATOR_LEFT = "poistaa välilyönnit vasemmalta puolelta";
 Blockly.Msg.TEXT_TRIM_OPERATOR_RIGHT = "poistaa välilyönnit oikealta puolelta";
-Blockly.Msg.TEXT_TRIM_TOOLTIP = "Palauttaa kopion tekstistä siten, että välilyönnit on poistettu yhdestä tai molemmista päistä.";
+Blockly.Msg.TEXT_TRIM_TOOLTIP =
+    "Palauttaa kopion tekstistä siten, että välilyönnit on poistettu yhdestä tai molemmista päistä.";
 Blockly.Msg.VARIABLES_DEFAULT_NAME = "kohde";
 Blockly.Msg.VARIABLES_GET_CREATE_SET = "Luo 'aseta %1'";
 Blockly.Msg.VARIABLES_GET_HELPURL = "https://code.google.com/p/blockly/wiki/Variables#Get";  // untranslated

@@ -28,22 +28,26 @@ Blockly.Msg.COLOUR_RGB_GREEN = "jeshile";
 Blockly.Msg.COLOUR_RGB_HELPURL = "http://www.december.com/html/spec/colorper.html";
 Blockly.Msg.COLOUR_RGB_RED = "e kuqe";
 Blockly.Msg.COLOUR_RGB_TITLE = "ngjyre me";
-Blockly.Msg.COLOUR_RGB_TOOLTIP = "Krijo një ngjyrë me shumën e specifikuar te te kuqes, te gjelbëres, dhe bluse. Te gjitha vlerat duhet te jene mes 0 dhe 100.";
+Blockly.Msg.COLOUR_RGB_TOOLTIP =
+    "Krijo një ngjyrë me shumën e specifikuar te te kuqes, te gjelbëres, dhe bluse. Te gjitha vlerat duhet te jene mes 0 dhe 100.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#Loop_Termination_Blocks";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_BREAK = "dil nga nje faze perseritese";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_CONTINUE = "vazhdo me elementin tjeter te nje faze perseritese";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_BREAK = "Ndahu nga unaza.";
-Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE = "Kapërce pjesën e mbetur të unazës, dhe vazhdo me ripërsëritjen tjetër.";
+Blockly.Msg.CONTROLS_FLOW_STATEMENTS_TOOLTIP_CONTINUE =
+    "Kapërce pjesën e mbetur të unazës, dhe vazhdo me ripërsëritjen tjetër.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_WARNING = "Paralajmërim: Ky bllok mund të përdoret vetëm brenda unazës.";
 Blockly.Msg.CONTROLS_FOREACH_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#for_each";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST = "ne liste";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST_TAIL = "";  // untranslated
 Blockly.Msg.CONTROLS_FOREACH_INPUT_ITEM = "per cdo produkt";
-Blockly.Msg.CONTROLS_FOREACH_TOOLTIP = "Per cdo produkt ne nje \"liste\" \"vendos\" ndryshoren '%1' produktit, dhe pastaj bej disa deklarata.";
+Blockly.Msg.CONTROLS_FOREACH_TOOLTIP =
+    "Per cdo produkt ne nje \"liste\" \"vendos\" ndryshoren '%1' produktit, dhe pastaj bej disa deklarata.";
 Blockly.Msg.CONTROLS_FOR_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#count_with";
 Blockly.Msg.CONTROLS_FOR_INPUT_FROM_TO_BY = "nga '%1' ne '%2' me nga '%3'";
 Blockly.Msg.CONTROLS_FOR_INPUT_WITH = "numero me";
-Blockly.Msg.CONTROLS_FOR_TOOLTIP = "Bëje identifikuesin %1 që ta ketë vlerat prej numrit të fillimit deri tek numri i fundit, duke numëruar nga intervali i specifikuar, dhe ti bëj blloqet e specifikuara.";
+Blockly.Msg.CONTROLS_FOR_TOOLTIP =
+    "Bëje identifikuesin %1 që ta ketë vlerat prej numrit të fillimit deri tek numri i fundit, duke numëruar nga intervali i specifikuar, dhe ti bëj blloqet e specifikuara.";
 Blockly.Msg.CONTROLS_IF_ELSEIF_TOOLTIP = "\"Vendos\" \"kushtein\"tek \"pjesa\" \"if\"";
 Blockly.Msg.CONTROLS_IF_ELSE_TOOLTIP = "Shto një përfundues, që i mbërrin të gjitha kushtet në bllokun nëse.";
 Blockly.Msg.CONTROLS_IF_HELPURL = "http://code.google.com/p/blockly/wiki/If_Then";
@@ -52,9 +56,12 @@ Blockly.Msg.CONTROLS_IF_MSG_ELSE = "përndryshe";
 Blockly.Msg.CONTROLS_IF_MSG_ELSEIF = "përndryshe nëse";
 Blockly.Msg.CONTROLS_IF_MSG_IF = "nëse";
 Blockly.Msg.CONTROLS_IF_TOOLTIP_1 = "Nëse një vlerë është e saktë, atëherë ekzekuto disa fjali.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_2 = "Nëse një vlerë është e saktë, atëherë ekzekuto bllokun e parë të fjalive. Përndryshe, ekzekuto bllokun e dytë të fjalive.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_3 = "Nëse vlera e parë është e saktë, atëherë ekzekuto bllokun e parë të fjalive. Përndryshe, nëse vlera e dytë është e saktë, ekzekuto bllokun e dytë të fjalive.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_4 = "Nëse vlera e parë është e saktë, atëherë ekzekuto bllokun e parë të fjalive. Përndryshe, nëse vlera e dytë është e saktë, ekzekuto bllokun e dytë të fjalive. Nëse asnjëra nga vlerat nuk është e saktë, ekzekuto bllokun e fundit të fjalive.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_2 =
+    "Nëse një vlerë është e saktë, atëherë ekzekuto bllokun e parë të fjalive. Përndryshe, ekzekuto bllokun e dytë të fjalive.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_3 =
+    "Nëse vlera e parë është e saktë, atëherë ekzekuto bllokun e parë të fjalive. Përndryshe, nëse vlera e dytë është e saktë, ekzekuto bllokun e dytë të fjalive.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_4 =
+    "Nëse vlera e parë është e saktë, atëherë ekzekuto bllokun e parë të fjalive. Përndryshe, nëse vlera e dytë është e saktë, ekzekuto bllokun e dytë të fjalive. Nëse asnjëra nga vlerat nuk është e saktë, ekzekuto bllokun e fundit të fjalive.";
 Blockly.Msg.CONTROLS_REPEAT_HELPURL = "http://en.wikipedia.org/wiki/For_loop";
 Blockly.Msg.CONTROLS_REPEAT_INPUT_DO = "ekzekuto";
 Blockly.Msg.CONTROLS_REPEAT_TITLE = "përsërit %1 herë";
@@ -78,9 +85,11 @@ Blockly.Msg.HELP = "Ndihmë";
 Blockly.Msg.INLINE_INPUTS = "Hyrjet e brendshme";
 Blockly.Msg.LISTS_CREATE_EMPTY_HELPURL = "http://en.wikipedia.org/wiki/Linked_list#Empty_lists";
 Blockly.Msg.LISTS_CREATE_EMPTY_TITLE = "krijo një listë të zbrazët";
-Blockly.Msg.LISTS_CREATE_EMPTY_TOOLTIP = "Kthen një listë, te gjatësisë 0, duke mos përmbajtur asnjë regjistrim të të dhënave";
+Blockly.Msg.LISTS_CREATE_EMPTY_TOOLTIP =
+    "Kthen një listë, te gjatësisë 0, duke mos përmbajtur asnjë regjistrim të të dhënave";
 Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TITLE_ADD = "listë";
-Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TOOLTIP = "Shto, fshij, ose rirregullo sektoret për ta rikonfiguruar këtë bllok të listës.";
+Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TOOLTIP =
+    "Shto, fshij, ose rirregullo sektoret për ta rikonfiguruar këtë bllok të listës.";
 Blockly.Msg.LISTS_CREATE_WITH_INPUT_WITH = "krijo listë me";
 Blockly.Msg.LISTS_CREATE_WITH_ITEM_TOOLTIP = "Shto një send në listë.";
 Blockly.Msg.LISTS_CREATE_WITH_TOOLTIP = "Krijo një listë me ndonjë numbër të sendeve.";
@@ -94,18 +103,24 @@ Blockly.Msg.LISTS_GET_INDEX_RANDOM = "i rastësishëm";
 Blockly.Msg.LISTS_GET_INDEX_REMOVE = "largo";
 Blockly.Msg.LISTS_GET_INDEX_TAIL = "";  // untranslated
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FIRST = "Rikthen tek artikulli i par në list.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_END = "Kthen një send në pozicionin e specifikuar në listë. #1 është sendi i fundit.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START = "Kthen një send në pozicionin e specifikuar në listë. #1 është sendi i parë.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_END =
+    "Kthen një send në pozicionin e specifikuar në listë. #1 është sendi i fundit.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START =
+    "Kthen një send në pozicionin e specifikuar në listë. #1 është sendi i parë.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_LAST = "Kthen artikullin e fundit në list.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_RANDOM = "Kthen një send të rastësishëm në listë.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FIRST = "Fshin dhe kthen sendin e parë në listë.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END = "Fshin dhe kthen sendin në pozicionin e specifikuar në listë. #1 është sendi i fundit.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START = "Fshin dhe kthen sendin në pozicionin e specifikuar në listë. #1 është sendi i parë.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END =
+    "Fshin dhe kthen sendin në pozicionin e specifikuar në listë. #1 është sendi i fundit.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START =
+    "Fshin dhe kthen sendin në pozicionin e specifikuar në listë. #1 është sendi i parë.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_LAST = "Fshin dhe kthen sendin e fundit në listë.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_RANDOM = "Fshin dhe kthen një send të rastësishëm në listë.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FIRST = "Fshin sendin e parë në listë.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END = "Fshin sendin në pozicionin e specifikuar në listë. #1 është sendi i fundit.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START = "Fshin sendin në pozicionin e specifikuar në listë. #1 është sendi i parë.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END =
+    "Fshin sendin në pozicionin e specifikuar në listë. #1 është sendi i fundit.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START =
+    "Fshin sendin në pozicionin e specifikuar në listë. #1 është sendi i parë.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_LAST = "Fshin sendin e fundit në listë.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_RANDOM = "Kthen një send të rastësishëm në listë.";
 Blockly.Msg.LISTS_GET_SUBLIST_END_FROM_END = "tek # nga fundi";
@@ -120,7 +135,8 @@ Blockly.Msg.LISTS_GET_SUBLIST_TOOLTIP = "Krijon në kopje të pjesës së specif
 Blockly.Msg.LISTS_INDEX_OF_FIRST = "gjen ndodhjen e parë të sendit";
 Blockly.Msg.LISTS_INDEX_OF_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#Getting_Items_from_a_List";
 Blockly.Msg.LISTS_INDEX_OF_LAST = "gjen ndodhjen e fundit të sendit";
-Blockly.Msg.LISTS_INDEX_OF_TOOLTIP = "Kthen indeksin e ndodhjes së parë/fudit të sendit në listë. Kthen 0 nëse teksti nuk është gjetur.";
+Blockly.Msg.LISTS_INDEX_OF_TOOLTIP =
+    "Kthen indeksin e ndodhjes së parë/fudit të sendit në listë. Kthen 0 nëse teksti nuk është gjetur.";
 Blockly.Msg.LISTS_INLIST = "në listë";
 Blockly.Msg.LISTS_IS_EMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#is_empty";
 Blockly.Msg.LISTS_IS_EMPTY_TITLE = "%1 është e zbraztë";
@@ -129,19 +145,24 @@ Blockly.Msg.LISTS_LENGTH_TITLE = "gjatësia e %1";
 Blockly.Msg.LISTS_LENGTH_TOOLTIP = "Kthen gjatësinë e listës.";
 Blockly.Msg.LISTS_REPEAT_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#create_list_with";
 Blockly.Msg.LISTS_REPEAT_TITLE = "krijo listën me sendin %1 të përsëritur %2 herë";
-Blockly.Msg.LISTS_REPEAT_TOOLTIP = "Krijon në listë qe përmban vlerën e dhënë të përsëritur aq herë sa numri i specifikuar.";
+Blockly.Msg.LISTS_REPEAT_TOOLTIP =
+    "Krijon në listë qe përmban vlerën e dhënë të përsëritur aq herë sa numri i specifikuar.";
 Blockly.Msg.LISTS_SET_INDEX_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#in_list_..._set";
 Blockly.Msg.LISTS_SET_INDEX_INPUT_TO = "sikurse";
 Blockly.Msg.LISTS_SET_INDEX_INSERT = "fut në";
 Blockly.Msg.LISTS_SET_INDEX_SET = "vendos";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FIRST = "Fut sendin në fillim të listës.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END = "Fut sendin në pozicionin e specifikuar të listës. #1 është sendi i fundit.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START = "Fut sendin në pozicionin e specifikuar të listës. #1 është sendi i parë.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END =
+    "Fut sendin në pozicionin e specifikuar të listës. #1 është sendi i fundit.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START =
+    "Fut sendin në pozicionin e specifikuar të listës. #1 është sendi i parë.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_LAST = "Bashkangjit sendin në fund të listës.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_RANDOM = "Fut sendin rastësisht në listë.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FIRST = "Vendos sendin e parë në listë.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END = "Vendos sendin ne pozicionin e specifikuar në listë. #1 është sendi i fundit.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START = "Vendos sendin në pozicionin e specifikuar në listë. #1 është sendi i parë.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END =
+    "Vendos sendin ne pozicionin e specifikuar në listë. #1 është sendi i fundit.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START =
+    "Vendos sendin në pozicionin e specifikuar në listë. #1 është sendi i parë.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_LAST = "Vendos sendin e fundit në listë.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_RANDOM = "Vendos një send të rastësishëm në listë.";
 Blockly.Msg.LISTS_TOOLTIP = "Kthehet i saktë nëse lista është e zbraztë.";
@@ -152,13 +173,16 @@ Blockly.Msg.LOGIC_BOOLEAN_TRUE = "e saktë";
 Blockly.Msg.LOGIC_COMPARE_HELPURL = "http://en.wikipedia.org/wiki/Inequality_(mathematics)";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_EQ = "Ktheje të saktë nëse të dy hyrjet janë të barabarta me njëra-tjetrën.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GT = "Ktheje të saktë nëse hyrja e parë është më e madhe se hyrja e dytë.";
-Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GTE = "Ktheje të saktë nëse hyrja e parë është më e madhe ose e barabartë me hyrjen e dytë.";
+Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GTE =
+    "Ktheje të saktë nëse hyrja e parë është më e madhe ose e barabartë me hyrjen e dytë.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LT = "Ktheje të saktë nëse hyrja e parë është më e vogël se hyrja e dytë.";
-Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LTE = "Ktheje të saktë nëse hyrja e parë është më e vogël ose e barabartë me hyrjen e dytë.";
+Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LTE =
+    "Ktheje të saktë nëse hyrja e parë është më e vogël ose e barabartë me hyrjen e dytë.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_NEQ = "Ktheje të saktë nëse të dy hyrjet nuk janë të barabarta me njëra-tjetrën.";
 Blockly.Msg.LOGIC_NEGATE_HELPURL = "http://code.google.com/p/blockly/wiki/Not";
 Blockly.Msg.LOGIC_NEGATE_TITLE = "jo %1";
-Blockly.Msg.LOGIC_NEGATE_TOOLTIP = "Kthehet e saktë nëse hyrja është e pasaktë. Kthehet e pasaktë nëse hyrja është e saktë.";
+Blockly.Msg.LOGIC_NEGATE_TOOLTIP =
+    "Kthehet e saktë nëse hyrja është e pasaktë. Kthehet e pasaktë nëse hyrja është e saktë.";
 Blockly.Msg.LOGIC_NULL = "pavlerë";
 Blockly.Msg.LOGIC_NULL_HELPURL = "http://en.wikipedia.org/wiki/Nullable_type";
 Blockly.Msg.LOGIC_NULL_TOOLTIP = "Kthehet e pavlerë.";
@@ -171,7 +195,8 @@ Blockly.Msg.LOGIC_TERNARY_CONDITION = "test";
 Blockly.Msg.LOGIC_TERNARY_HELPURL = "http://en.wikipedia.org/wiki/%3F:";
 Blockly.Msg.LOGIC_TERNARY_IF_FALSE = "nëse e pasaktë";
 Blockly.Msg.LOGIC_TERNARY_IF_TRUE = "nëse e saktë";
-Blockly.Msg.LOGIC_TERNARY_TOOLTIP = "Kontrollo kushtin në 'test'. Nëse kushti është i saktë, kthen vlerën 'nëse e saktë'; përndryshe kthen vlerën 'nëse e pasaktë'.";
+Blockly.Msg.LOGIC_TERNARY_TOOLTIP =
+    "Kontrollo kushtin në 'test'. Nëse kushti është i saktë, kthen vlerën 'nëse e saktë'; përndryshe kthen vlerën 'nëse e pasaktë'.";
 Blockly.Msg.MATH_ADDITION_SYMBOL = "+";
 Blockly.Msg.MATH_ARITHMETIC_HELPURL = "http://sq.wikipedia.org/wiki/Aritmetika";
 Blockly.Msg.MATH_ARITHMETIC_TOOLTIP_ADD = "Kthen shumën e dy numrave.";
@@ -184,7 +209,8 @@ Blockly.Msg.MATH_CHANGE_INPUT_BY = "nga";
 Blockly.Msg.MATH_CHANGE_TITLE_CHANGE = "ndrysho";
 Blockly.Msg.MATH_CHANGE_TOOLTIP = "Shto një numër në ndryshoren '%1'.";
 Blockly.Msg.MATH_CONSTANT_HELPURL = "http://en.wikipedia.org/wiki/Mathematical_constant";
-Blockly.Msg.MATH_CONSTANT_TOOLTIP = "Kthen një nga konstantet e përbashkëta: : π (3.141…), e (2.718…), φ (1.618…), sqrt(2) (1.414…), sqrt(½) (0.707…), or ∞ (infiniti).";
+Blockly.Msg.MATH_CONSTANT_TOOLTIP =
+    "Kthen një nga konstantet e përbashkëta: : π (3.141…), e (2.718…), φ (1.618…), sqrt(2) (1.414…), sqrt(½) (0.707…), or ∞ (infiniti).";
 Blockly.Msg.MATH_CONSTRAIN_HELPURL = "http://en.wikipedia.org/wiki/Clamping_%28graphics%29";
 Blockly.Msg.MATH_CONSTRAIN_TITLE = "detyro %1 e ulët %2 e lartë %3";
 Blockly.Msg.MATH_CONSTRAIN_TOOLTIP = "Vëni një numër që të jetë në mes të kufive të specifikuara(përfshirëse).";
@@ -195,7 +221,8 @@ Blockly.Msg.MATH_IS_NEGATIVE = "është negativ";
 Blockly.Msg.MATH_IS_ODD = "është tek";
 Blockly.Msg.MATH_IS_POSITIVE = "është pozitiv";
 Blockly.Msg.MATH_IS_PRIME = "është prim";
-Blockly.Msg.MATH_IS_TOOLTIP = "Kontrollo nëse një numër është çift, tek, prim, i plotë, pozitiv, negativ, ose nëse është i pjestueshëm me një numër të caktuar. Kthehet e saktë ose e pasaktë.";
+Blockly.Msg.MATH_IS_TOOLTIP =
+    "Kontrollo nëse një numër është çift, tek, prim, i plotë, pozitiv, negativ, ose nëse është i pjestueshëm me një numër të caktuar. Kthehet e saktë ose e pasaktë.";
 Blockly.Msg.MATH_IS_WHOLE = "është i plotë";
 Blockly.Msg.MATH_MODULO_HELPURL = "http://en.wikipedia.org/wiki/Modulo_operation";
 Blockly.Msg.MATH_MODULO_TITLE = "mbetësi i %1 ÷ %2";
@@ -223,10 +250,12 @@ Blockly.Msg.MATH_ONLIST_TOOLTIP_SUM = "Kthe shumën e të gjithë numrave të li
 Blockly.Msg.MATH_POWER_SYMBOL = "^";
 Blockly.Msg.MATH_RANDOM_FLOAT_HELPURL = "http://en.wikipedia.org/wiki/Random_number_generation";
 Blockly.Msg.MATH_RANDOM_FLOAT_TITLE_RANDOM = "fraksioni i rastësishëm";
-Blockly.Msg.MATH_RANDOM_FLOAT_TOOLTIP = "Kthe fraksionin e rastësishëm në mes të 0.0 (përfshirëse) dhe 1.0 (jopërfshirëse).";
+Blockly.Msg.MATH_RANDOM_FLOAT_TOOLTIP =
+    "Kthe fraksionin e rastësishëm në mes të 0.0 (përfshirëse) dhe 1.0 (jopërfshirëse).";
 Blockly.Msg.MATH_RANDOM_INT_HELPURL = "http://en.wikipedia.org/wiki/Random_number_generation";
 Blockly.Msg.MATH_RANDOM_INT_TITLE = "numër i plotë i rastësishëm nga %1 deri në %2";
-Blockly.Msg.MATH_RANDOM_INT_TOOLTIP = "Kthe një numër të plotë të rastësishëm të dy kufijve të specifikuar, të përfshirë.";
+Blockly.Msg.MATH_RANDOM_INT_TOOLTIP =
+    "Kthe një numër të plotë të rastësishëm të dy kufijve të specifikuar, të përfshirë.";
 Blockly.Msg.MATH_ROUND_HELPURL = "http://en.wikipedia.org/wiki/Rounding";
 Blockly.Msg.MATH_ROUND_OPERATOR_ROUND = "rrumbullakësimi";
 Blockly.Msg.MATH_ROUND_OPERATOR_ROUNDDOWN = "rrumbullakësimi i ulët";
@@ -278,7 +307,8 @@ Blockly.Msg.PROCEDURES_DEFRETURN_TOOLTIP = "Krijon një funksion me një dalje."
 Blockly.Msg.PROCEDURES_DEF_DUPLICATE_WARNING = "Paralajmërim: Ky funksion ka parametra të dyfishuar.";
 Blockly.Msg.PROCEDURES_HIGHLIGHT_DEF = "Thekso definicionin e funksionit";
 Blockly.Msg.PROCEDURES_IFRETURN_TOOLTIP = "Nëse një vlerë është e saktë, atëherë kthe një vlerë të dytë.";
-Blockly.Msg.PROCEDURES_IFRETURN_WARNING = "Paralajmërim: Ky bllok mund të përdoret vetëm brenda definicionit të funksionit.";
+Blockly.Msg.PROCEDURES_IFRETURN_WARNING =
+    "Paralajmërim: Ky bllok mund të përdoret vetëm brenda definicionit të funksionit.";
 Blockly.Msg.PROCEDURES_MUTATORARG_TITLE = "Fut emrin:";
 Blockly.Msg.PROCEDURES_MUTATORARG_TOOLTIP = "Add an input to the function.";  // untranslated
 Blockly.Msg.PROCEDURES_MUTATORCONTAINER_TITLE = "Informacioni i futur";
@@ -322,7 +352,8 @@ Blockly.Msg.TEXT_INDEXOF_INPUT_INTEXT = "ne tekst";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_FIRST = "gjej rastisjen e pare te tekstit";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_LAST = "gjej rastisjen e fundit te tekstit";
 Blockly.Msg.TEXT_INDEXOF_TAIL = "";  // untranslated
-Blockly.Msg.TEXT_INDEXOF_TOOLTIP = "Pergjigjet me indeksin e pare/fundit te rastisjes se tekstit te pare ne tekstin e dyte. Pergjigjet me 0 ne qofte se teksti nuk u gjet.";
+Blockly.Msg.TEXT_INDEXOF_TOOLTIP =
+    "Pergjigjet me indeksin e pare/fundit te rastisjes se tekstit te pare ne tekstin e dyte. Pergjigjet me 0 ne qofte se teksti nuk u gjet.";
 Blockly.Msg.TEXT_ISEMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Text#Checking_for_empty_text";
 Blockly.Msg.TEXT_ISEMPTY_TITLE = "%1 eshte bosh";
 Blockly.Msg.TEXT_ISEMPTY_TOOLTIP = "Kthehet e vertete neqoftese teksti i dhene eshte bosh.";
@@ -346,7 +377,8 @@ Blockly.Msg.TEXT_TRIM_HELPURL = "https://code.google.com/p/blockly/wiki/Text#Tri
 Blockly.Msg.TEXT_TRIM_OPERATOR_BOTH = "prit hapesirat nga te dyja anet";
 Blockly.Msg.TEXT_TRIM_OPERATOR_LEFT = "prit hapesirat nga ana e majte";
 Blockly.Msg.TEXT_TRIM_OPERATOR_RIGHT = "prit hapesirat nga ana e djathte";
-Blockly.Msg.TEXT_TRIM_TOOLTIP = "Pergjigju me nje kopje te tekstit me hapesira te fshira nga njera ane ose te dyja anet.";
+Blockly.Msg.TEXT_TRIM_TOOLTIP =
+    "Pergjigju me nje kopje te tekstit me hapesira te fshira nga njera ane ose te dyja anet.";
 Blockly.Msg.VARIABLES_DEFAULT_NAME = "send";
 Blockly.Msg.VARIABLES_GET_CREATE_SET = "Krijo 'vendos %1";
 Blockly.Msg.VARIABLES_GET_HELPURL = "http://code.google.com/p/blockly/wiki/Variables#Get";

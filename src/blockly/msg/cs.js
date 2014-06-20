@@ -28,7 +28,8 @@ Blockly.Msg.COLOUR_RGB_GREEN = "zelená";
 Blockly.Msg.COLOUR_RGB_HELPURL = "http://www.december.com/html/spec/colorper.html";  // untranslated
 Blockly.Msg.COLOUR_RGB_RED = "červená";
 Blockly.Msg.COLOUR_RGB_TITLE = "barva s";
-Blockly.Msg.COLOUR_RGB_TOOLTIP = "Vytvoř barvu se zadaným množstvím červené, zelené a modré.  Všechny hodnoty musí být mezi 0 a 100.";
+Blockly.Msg.COLOUR_RGB_TOOLTIP =
+    "Vytvoř barvu se zadaným množstvím červené, zelené a modré.  Všechny hodnoty musí být mezi 0 a 100.";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#Loop_Termination_Blocks";  // untranslated
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_BREAK = "vymanit se ze smyčky";
 Blockly.Msg.CONTROLS_FLOW_STATEMENTS_OPERATOR_CONTINUE = "pokračuj dalším opakováním smyčky";
@@ -39,11 +40,13 @@ Blockly.Msg.CONTROLS_FOREACH_HELPURL = "https://code.google.com/p/blockly/wiki/L
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST = "v seznamu";
 Blockly.Msg.CONTROLS_FOREACH_INPUT_INLIST_TAIL = "";  // untranslated
 Blockly.Msg.CONTROLS_FOREACH_INPUT_ITEM = "pro každou položku";
-Blockly.Msg.CONTROLS_FOREACH_TOOLTIP = "Pro každou položku v seznamu nastavte do proměnné '%1' danou položku a proveďte nějaké operace.";
+Blockly.Msg.CONTROLS_FOREACH_TOOLTIP =
+    "Pro každou položku v seznamu nastavte do proměnné '%1' danou položku a proveďte nějaké operace.";
 Blockly.Msg.CONTROLS_FOR_HELPURL = "https://code.google.com/p/blockly/wiki/Loops#count_with";  // untranslated
 Blockly.Msg.CONTROLS_FOR_INPUT_FROM_TO_BY = "od %1 do %2 po %3";
 Blockly.Msg.CONTROLS_FOR_INPUT_WITH = "počítat s";
-Blockly.Msg.CONTROLS_FOR_TOOLTIP = "Nechá proměnnou %1 nabývat hodnot od počátečního do koncového čísla po daném přírůstku a provádí s ní příslušné bloky.";
+Blockly.Msg.CONTROLS_FOR_TOOLTIP =
+    "Nechá proměnnou %1 nabývat hodnot od počátečního do koncového čísla po daném přírůstku a provádí s ní příslušné bloky.";
 Blockly.Msg.CONTROLS_IF_ELSEIF_TOOLTIP = "Přidat podmínku do \"pokud\" bloku.";
 Blockly.Msg.CONTROLS_IF_ELSE_TOOLTIP = "Přidej konečnou podmínku zahrnující ostatní případy do bloku pokud.";
 Blockly.Msg.CONTROLS_IF_HELPURL = "http://code.google.com/p/blockly/wiki/If_Then";
@@ -52,9 +55,12 @@ Blockly.Msg.CONTROLS_IF_MSG_ELSE = "jinak";
 Blockly.Msg.CONTROLS_IF_MSG_ELSEIF = "nebo pokud";
 Blockly.Msg.CONTROLS_IF_MSG_IF = "pokud";
 Blockly.Msg.CONTROLS_IF_TOOLTIP_1 = "Je-li hodnota pravda, proveď určité příkazy.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_2 = "Je-li hodnota pravda, proveď první blok příkazů.  V opačném případě proveď druhý blok příkazů.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_3 = "Je-li první hodnota pravdivá, proveď první blok příkazů. V opačném případě, je-li pravdivá druhá hodnota, proveď druhý blok příkazů.";
-Blockly.Msg.CONTROLS_IF_TOOLTIP_4 = "Je-li první hodnota pravda, proveď první blok příkazů.  Je-li druhá hodnota pravda, proveď druhý blok příkazů.  Pokud žádná hodnota není pravda, proveď poslední blok příkazů.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_2 =
+    "Je-li hodnota pravda, proveď první blok příkazů.  V opačném případě proveď druhý blok příkazů.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_3 =
+    "Je-li první hodnota pravdivá, proveď první blok příkazů. V opačném případě, je-li pravdivá druhá hodnota, proveď druhý blok příkazů.";
+Blockly.Msg.CONTROLS_IF_TOOLTIP_4 =
+    "Je-li první hodnota pravda, proveď první blok příkazů.  Je-li druhá hodnota pravda, proveď druhý blok příkazů.  Pokud žádná hodnota není pravda, proveď poslední blok příkazů.";
 Blockly.Msg.CONTROLS_REPEAT_HELPURL = "https://cs.wikipedia.org/wiki/Cyklus_for";
 Blockly.Msg.CONTROLS_REPEAT_INPUT_DO = "udělej";
 Blockly.Msg.CONTROLS_REPEAT_TITLE = "opakovat %1 krát";
@@ -99,13 +105,17 @@ Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_FROM_START = "Vrátí položku z určen�
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_LAST = "Vrátí poslední položku v seznamu.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_RANDOM = "Vrátí náhodnou položku ze seznamu.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FIRST = "Odstraní a vrátí první položku v seznamu.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END = "Odstraní a vrátí položku z určené pozice v seznamu.  #1 je poslední položka.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START = "Odstraní a vrátí položku z určené pozice v seznamu.  #1 je první položka.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_END =
+    "Odstraní a vrátí položku z určené pozice v seznamu.  #1 je poslední položka.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_FROM_START =
+    "Odstraní a vrátí položku z určené pozice v seznamu.  #1 je první položka.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_LAST = "Odstraní a vrátí poslední položku v seznamu.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_GET_REMOVE_RANDOM = "Odstraní a vrátí náhodnou položku v seznamu.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FIRST = "Odstraní první položku v seznamu.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END = "Odstraní položku na konkrétním místu v seznamu. #1 je poslední položka.";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START = "Odebere položku na konkrétním místě v seznamu.  #1 je první položka.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END =
+    "Odstraní položku na konkrétním místu v seznamu. #1 je poslední položka.";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START =
+    "Odebere položku na konkrétním místě v seznamu.  #1 je první položka.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_LAST = "Odstraní poslední položku v seznamu.";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_RANDOM = "Odstraní náhodou položku v seznamu.";
 Blockly.Msg.LISTS_GET_SUBLIST_END_FROM_END = "do # od konce";
@@ -120,7 +130,8 @@ Blockly.Msg.LISTS_GET_SUBLIST_TOOLTIP = "Vytvoří kopii určené části seznam
 Blockly.Msg.LISTS_INDEX_OF_FIRST = "najít první výskyt položky";
 Blockly.Msg.LISTS_INDEX_OF_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#Getting_Items_from_a_List";  // untranslated
 Blockly.Msg.LISTS_INDEX_OF_LAST = "najít poslední výskyt položky";
-Blockly.Msg.LISTS_INDEX_OF_TOOLTIP = "Returns the index of the first/last occurrence of the item in the list.  Returns 0 if text is not found.";  // untranslated
+Blockly.Msg.LISTS_INDEX_OF_TOOLTIP =
+    "Returns the index of the first/last occurrence of the item in the list.  Returns 0 if text is not found.";  // untranslated
 Blockly.Msg.LISTS_INLIST = "v seznamu";
 Blockly.Msg.LISTS_IS_EMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Lists#is_empty";  // untranslated
 Blockly.Msg.LISTS_IS_EMPTY_TITLE = "%1 je prázdné";
@@ -135,13 +146,17 @@ Blockly.Msg.LISTS_SET_INDEX_INPUT_TO = "jako";
 Blockly.Msg.LISTS_SET_INDEX_INSERT = "vložit na";
 Blockly.Msg.LISTS_SET_INDEX_SET = "nastavit";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FIRST = "Vložit položku na začátek seznamu.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END = "Vloží položku na určenou pozici v seznamu.  #1 je poslední položka.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START = "Vloží položku na určenou pozici v seznamu.  #1 je první položka.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_END =
+    "Vloží položku na určenou pozici v seznamu.  #1 je poslední položka.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_FROM_START =
+    "Vloží položku na určenou pozici v seznamu.  #1 je první položka.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_LAST = "Připojí položku na konec seznamu.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_INSERT_RANDOM = "Připojí položku náhodně do seznamu.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FIRST = "Nastaví první položku v seznamu.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END = "Nastaví položku na konkrétní místo v seznamu. #1 je poslední položka.";
-Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START = "Nastaví položku na konkrétní místo v seznamu. #1 je první položka.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_END =
+    "Nastaví položku na konkrétní místo v seznamu. #1 je poslední položka.";
+Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_FROM_START =
+    "Nastaví položku na konkrétní místo v seznamu. #1 je první položka.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_LAST = "Nastaví poslední položku v seznamu.";
 Blockly.Msg.LISTS_SET_INDEX_TOOLTIP_SET_RANDOM = "Nastaví náhodnou položku v seznamu.";
 Blockly.Msg.LISTS_TOOLTIP = "Returns true if the list is empty.";  // untranslated
@@ -152,13 +167,16 @@ Blockly.Msg.LOGIC_BOOLEAN_TRUE = "pravda";
 Blockly.Msg.LOGIC_COMPARE_HELPURL = "https://cs.wikipedia.org/wiki/Nerovnost_(matematika)";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_EQ = "Vrátí hodnotu pravda, pokud se oba vstupy rovnají jeden druhému.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GT = "Navrátí hodnotu pravda, pokud první vstup je větší než druhý vstup.";
-Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GTE = "Navrátí hodnotu pravda, pokud je první vstup větší a nebo rovný druhému vstupu.";
+Blockly.Msg.LOGIC_COMPARE_TOOLTIP_GTE =
+    "Navrátí hodnotu pravda, pokud je první vstup větší a nebo rovný druhému vstupu.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LT = "Navrátí hodnotu pravda, pokud je první vstup menší než druhý vstup.";
-Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LTE = "Navrátí hodnotu pravda, pokud je první vstup menší a nebo rovný druhému vstupu.";
+Blockly.Msg.LOGIC_COMPARE_TOOLTIP_LTE =
+    "Navrátí hodnotu pravda, pokud je první vstup menší a nebo rovný druhému vstupu.";
 Blockly.Msg.LOGIC_COMPARE_TOOLTIP_NEQ = "Vrátí hodnotu pravda, pokud se oba vstupy nerovnají sobě navzájem.";
 Blockly.Msg.LOGIC_NEGATE_HELPURL = "https://code.google.com/p/blockly/wiki/Not";  // untranslated
 Blockly.Msg.LOGIC_NEGATE_TITLE = "není %1";
-Blockly.Msg.LOGIC_NEGATE_TOOLTIP = "Navrátí hodnotu pravda, pokud je vstup nepravda. Navrátí hodnotu nepravda, pokud je vstup pravda.";
+Blockly.Msg.LOGIC_NEGATE_TOOLTIP =
+    "Navrátí hodnotu pravda, pokud je vstup nepravda. Navrátí hodnotu nepravda, pokud je vstup pravda.";
 Blockly.Msg.LOGIC_NULL = "nula";
 Blockly.Msg.LOGIC_NULL_HELPURL = "https://en.wikipedia.org/wiki/Nullable_type";  // untranslated
 Blockly.Msg.LOGIC_NULL_TOOLTIP = "Vrátí nulovou hodnotu";
@@ -171,7 +189,8 @@ Blockly.Msg.LOGIC_TERNARY_CONDITION = "test";
 Blockly.Msg.LOGIC_TERNARY_HELPURL = "https://en.wikipedia.org/wiki/%3F:";  // untranslated
 Blockly.Msg.LOGIC_TERNARY_IF_FALSE = "je-li nepravda";
 Blockly.Msg.LOGIC_TERNARY_IF_TRUE = "je-li to pravda";
-Blockly.Msg.LOGIC_TERNARY_TOOLTIP = "Zkontroluje podmínku v \"testu\". Když je podmínka pravda, vrátí hodnotu \"pokud pravda\"; v opačném případě vrátí hodnotu \"pokud nepravda\".";
+Blockly.Msg.LOGIC_TERNARY_TOOLTIP =
+    "Zkontroluje podmínku v \"testu\". Když je podmínka pravda, vrátí hodnotu \"pokud pravda\"; v opačném případě vrátí hodnotu \"pokud nepravda\".";
 Blockly.Msg.MATH_ADDITION_SYMBOL = "+";  // untranslated
 Blockly.Msg.MATH_ARITHMETIC_HELPURL = "https://cs.wikipedia.org/wiki/Aritmetika";
 Blockly.Msg.MATH_ARITHMETIC_TOOLTIP_ADD = "Vrátí součet dvou čísel.";
@@ -184,7 +203,8 @@ Blockly.Msg.MATH_CHANGE_INPUT_BY = "od";
 Blockly.Msg.MATH_CHANGE_TITLE_CHANGE = "změnit";
 Blockly.Msg.MATH_CHANGE_TOOLTIP = "Přičti číslo k proměnné '%1'.";
 Blockly.Msg.MATH_CONSTANT_HELPURL = "https://en.wikipedia.org/wiki/Mathematical_constant";
-Blockly.Msg.MATH_CONSTANT_TOOLTIP = "Vraťte jednu z následujících konstant: π (3.141…), e (2.718…), φ (1.618…), sqrt(2) (1.414…), sqrt(½) (0.707…), or ∞ (infinity).";
+Blockly.Msg.MATH_CONSTANT_TOOLTIP =
+    "Vraťte jednu z následujících konstant: π (3.141…), e (2.718…), φ (1.618…), sqrt(2) (1.414…), sqrt(½) (0.707…), or ∞ (infinity).";
 Blockly.Msg.MATH_CONSTRAIN_HELPURL = "http://en.wikipedia.org/wiki/Clamping_%28graphics%29";
 Blockly.Msg.MATH_CONSTRAIN_TITLE = "omez %1 na rozmezí od %2 do %3";
 Blockly.Msg.MATH_CONSTRAIN_TOOLTIP = "Omezí číslo tak, aby bylo ve stanovených mezích (včetně).";
@@ -195,7 +215,8 @@ Blockly.Msg.MATH_IS_NEGATIVE = "je záporné";
 Blockly.Msg.MATH_IS_ODD = "je liché";
 Blockly.Msg.MATH_IS_POSITIVE = "je kladné";
 Blockly.Msg.MATH_IS_PRIME = "je prvočíslo";
-Blockly.Msg.MATH_IS_TOOLTIP = "Kontrola, zda je číslo sudé, liché, prvočíslo, celé, kladné, záporné nebo zda je dělitelné daným číslem. Vrací pravdu nebo nepravdu.";
+Blockly.Msg.MATH_IS_TOOLTIP =
+    "Kontrola, zda je číslo sudé, liché, prvočíslo, celé, kladné, záporné nebo zda je dělitelné daným číslem. Vrací pravdu nebo nepravdu.";
 Blockly.Msg.MATH_IS_WHOLE = "je celé";
 Blockly.Msg.MATH_MODULO_HELPURL = "https://cs.wikipedia.org/wiki/Modul%C3%A1rn%C3%AD_aritmetika";
 Blockly.Msg.MATH_MODULO_TITLE = "zbytek po dělení %1 ÷ %2";
@@ -221,10 +242,12 @@ Blockly.Msg.MATH_ONLIST_TOOLTIP_RANDOM = "Vrátí náhodnou položku ze seznamu.
 Blockly.Msg.MATH_ONLIST_TOOLTIP_STD_DEV = "Vrátí směrodatnou odchylku seznamu.";
 Blockly.Msg.MATH_ONLIST_TOOLTIP_SUM = "Vrátí součet všech čísel v seznamu.";
 Blockly.Msg.MATH_POWER_SYMBOL = "^";
-Blockly.Msg.MATH_RANDOM_FLOAT_HELPURL = "https://cs.wikipedia.org/wiki/Gener%C3%A1tor_n%C3%A1hodn%C3%BDch_%C4%8D%C3%ADsel";
+Blockly.Msg.MATH_RANDOM_FLOAT_HELPURL =
+    "https://cs.wikipedia.org/wiki/Gener%C3%A1tor_n%C3%A1hodn%C3%BDch_%C4%8D%C3%ADsel";
 Blockly.Msg.MATH_RANDOM_FLOAT_TITLE_RANDOM = "náhodné číslo mezi 0 (včetně) do 1";
 Blockly.Msg.MATH_RANDOM_FLOAT_TOOLTIP = "Vrátí náhodné číslo mezi 0,0 (včetně) až 1,0";
-Blockly.Msg.MATH_RANDOM_INT_HELPURL = "https://cs.wikipedia.org/wiki/Gener%C3%A1tor_n%C3%A1hodn%C3%BDch_%C4%8D%C3%ADsel";
+Blockly.Msg.MATH_RANDOM_INT_HELPURL =
+    "https://cs.wikipedia.org/wiki/Gener%C3%A1tor_n%C3%A1hodn%C3%BDch_%C4%8D%C3%ADsel";
 Blockly.Msg.MATH_RANDOM_INT_TITLE = "náhodné celé číslo od %1 do %2";
 Blockly.Msg.MATH_RANDOM_INT_TOOLTIP = "Vrací náhodné celé číslo mezi dvěma určenými mezemi, včetně mezních hodnot.";
 Blockly.Msg.MATH_ROUND_HELPURL = "https://cs.wikipedia.org/wiki/Zaokrouhlení";
@@ -322,7 +345,8 @@ Blockly.Msg.TEXT_INDEXOF_INPUT_INTEXT = "v textu";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_FIRST = "najít první výskyt textu";
 Blockly.Msg.TEXT_INDEXOF_OPERATOR_LAST = "najít poslední výskyt textu";
 Blockly.Msg.TEXT_INDEXOF_TAIL = "";  // untranslated
-Blockly.Msg.TEXT_INDEXOF_TOOLTIP = "Vrátí index prvního/posledního výskytu prvního textu v druhém textu.  Pokud text není nalezen, vrátí hodnotu 0.";
+Blockly.Msg.TEXT_INDEXOF_TOOLTIP =
+    "Vrátí index prvního/posledního výskytu prvního textu v druhém textu.  Pokud text není nalezen, vrátí hodnotu 0.";
 Blockly.Msg.TEXT_ISEMPTY_HELPURL = "https://code.google.com/p/blockly/wiki/Text#Checking_for_empty_text";  // untranslated
 Blockly.Msg.TEXT_ISEMPTY_TITLE = "%1 je prázdný";
 Blockly.Msg.TEXT_ISEMPTY_TOOLTIP = "Vrátí pravda pokud je zadaný text prázdný.";
