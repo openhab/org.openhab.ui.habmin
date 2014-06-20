@@ -7,46 +7,17 @@
                             data-dojo-type="dijit.form.Form"
                             data-dojo-attach-point="form"
                             >
-
                         <table class="form">
                             <tr>
-                                <td>Name</td>
                                 <td>
-                                    <input data-dojo-type="dijit.form.ValidationTextBox"
-                                           data-dojo-props='
-                            name: "name",
-                            required: true,
-                            maxLength: 64,
-                            trim: true,
-                            style: "width: 200px;"
-                            '
-                                            />
+                                    <div style="height:200%;width:250px;" data-dojo-attach-point="optionPane"></div>
                                 </td>
-                                <td>Period</td>
                                 <td>
-                                    <input data-dojo-type="dijit.form.ValidationTextBox"
-                                           data-dojo-props='
-                            name: "period",
-                            required: true,
-                            style: "width: 200px;"
-                            '
-                                            />
-                                </td>
-                                <td>Icon</td>
-                                <td>
-                                    <input data-dojo-type="dijit.form.ValidationTextBox"
-                                           data-dojo-props='
-                            name: "icon",
-                            required: true,
-                            style: "width: 200px;"
-                            '
-                                            />
+                                    <div style="height:200%" data-dojo-attach-point="pagePane"></div>
                                 </td>
                             </tr>
                         </table>
                     </form>
-                    <div style="height:150px" data-dojo-attach-point="itemGrid"></div>
-                    <div style="height:75px" data-dojo-attach-point="axisGrid"></div>
                 </div>
 
             </div>

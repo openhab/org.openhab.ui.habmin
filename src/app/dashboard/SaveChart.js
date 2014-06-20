@@ -8,11 +8,8 @@ define([
         "dojo/json",
         "dojo/dom-construct",
 
-        "dgrid/extensions/DijitRegistry",
-        "dgrid/OnDemandGrid",
-        "dgrid/Selection",
-        "dgrid/Keyboard",
-        "dgrid/editor",
+        "dijit/layout/StackContainer",
+        "app/dashboard/ItemConfig",
 
         "dijit/_Widget",
         "dijit/_TemplatedMixin",
@@ -23,15 +20,10 @@ define([
         "dijit/form/ValidationTextBox",
         "dijit/form/Button"
     ],
-    function (declare, lang, on, dom, Evented, Deferred, JSON, domConstruct, Registry, Grid, Selection, Keyboard, Editor, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, Dialog, Form, TextBox, Button, Tooltip) {
+    function (declare, lang, on, dom, Evented, Deferred, JSON, domConstruct, StackContainer, ItemConfig, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, Dialog, Form, TextBox, Button, Tooltip) {
 
         return declare([Dialog, Evented], {
-            READY: 0,
-            BUSY: 1,
-
-            title: "Login Dialog",
-            message: "",
-            busyLabel: "Working...",
+            title: "Save Chart",
 
 //            _setCategoriesAttr: {node: "itemGrid", type: "innerHTML" },
 
@@ -51,14 +43,12 @@ define([
                 // shortcuts
                 this.submitButton = content.submitButton;
                 this.cancelButton = content.cancelButton;
-                this.itemGrid = content.itemGrid;
-                this.axisGrid = content.axisGrid;
+                this.pagePane = content.pagePane;
             },
 
             postCreate: function () {
                 this.inherited(arguments);
 
-                this.readyState = this.READY;
                 this.okLabel = this.submitButton.get("label");
 
                 this.connect(this.submitButton, "onClick", "onSubmit");
@@ -69,33 +59,23 @@ define([
                 this.form.watch("state", lang.hitch(this, "_onValidStateChange"));
                 this._onValidStateChange();
 
+                this.stackContainer = new StackContainer({style:"height:300px;width:450px;"
+                }, this.pagePane);
 
-                var columns = [
-                    {label: 'Id', field: 'id', sortable: false},
-                    Editor({label: 'Display name', field: 'displayName'}, "text", "dblclick"),
-                    {label: 'Email', field: 'email'}//,
-//            Editor({label: 'Role', get: getRole, set: setRole, field: 'roles', editorArgs: {store: rolesStore, searchAttr: "role", style: "width:120px;"}}, FilteringSelect)
-                ];
-                var itemGrid = new Grid({
-//                    store: store,
-                    getBeforePut: false,
-                    columns: columns,
-                    selectionMode: "none"
-                }, this.itemGrid);
+                var p = new ItemConfig();
+//                this.stackContainer = new ItemConfig({style:"height:200px;width:450px;"
+//                }, this.pagePane);
+                this.stackContainer.addChild(p);
 
-                var axisGrid = new Grid({
-//                    store: store,
-                    getBeforePut: false,
-                    columns: columns,
-                    selectionMode: "none"
-                }, this.axisGrid);
-
+                this.stackContainer.startup();
+                this.stackContainer.resize();
             },
+
+//            startu
 
             onSubmit: function () {
 
             },
-
 
             _onValidStateChange: function () {
                 this.submitButton.set("disabled", !!this.form.get("state").length);
