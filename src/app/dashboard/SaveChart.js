@@ -7,6 +7,7 @@ define([
         "dojo/_base/Deferred",
         "dojo/json",
         "dojo/dom-construct",
+        "dojo/dom-style",
 
         "dijit/layout/StackContainer",
         "dijit/layout/StackController",
@@ -22,7 +23,7 @@ define([
         "dijit/form/ValidationTextBox",
         "dijit/form/Button"
     ],
-    function (declare, lang, on, dom, Evented, Deferred, JSON, domConstruct, StackContainer, StackController, ItemConfig, AxisConfig, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, Dialog, Form, TextBox, Button, Tooltip) {
+    function (declare, lang, on, dom, Evented, Deferred, JSON, domConstruct, domStyle, StackContainer, StackController, ItemConfig, AxisConfig, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, Dialog, Form, TextBox, Button, Tooltip) {
 
         return declare([Dialog, Evented], {
             title: "Save Chart",
@@ -63,19 +64,23 @@ define([
                 this._onValidStateChange();
 
                 this.stackContainer = new StackContainer({
-                    style:"height:300px;width:450px;",
+               //     style:"height:350px;width:450px;",
                     doLayout:false,
-                    isLayoutContainer: true
+                    isLayoutContainer: false
                 }, this.pagePane);
 
-                var p = new ItemConfig({title:"Item 1"});
+                var p = new ItemConfig({style: "height:250px", title:"Item 1"});
                 this.stackContainer.addChild(p);
+//                var x = p.getParent();
+//                domStyle.set(x, {"height": 250});
 
-                var p = new AxisConfig({title:"Axis 1"});
+                var p = new AxisConfig({style: "height:250px", title:"Axis 1"});
                 this.stackContainer.addChild(p);
+//                var x = p.getParent();
+//                domStyle.set(x, {"height": 250});
 
                 var controller = new StackController({
-                    style:"height:300px;width:450px;",
+                    style:"height:350px;width:450px;",
                     containerId: this.stackContainer.domNode.id
                 }, this.optionPane);
 
