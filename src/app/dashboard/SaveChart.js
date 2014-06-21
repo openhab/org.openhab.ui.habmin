@@ -9,7 +9,9 @@ define([
         "dojo/dom-construct",
 
         "dijit/layout/StackContainer",
+        "dijit/layout/StackController",
         "app/dashboard/ItemConfig",
+        "app/dashboard/AxisConfig",
 
         "dijit/_Widget",
         "dijit/_TemplatedMixin",
@@ -20,7 +22,7 @@ define([
         "dijit/form/ValidationTextBox",
         "dijit/form/Button"
     ],
-    function (declare, lang, on, dom, Evented, Deferred, JSON, domConstruct, StackContainer, ItemConfig, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, Dialog, Form, TextBox, Button, Tooltip) {
+    function (declare, lang, on, dom, Evented, Deferred, JSON, domConstruct, StackContainer, StackController, ItemConfig, AxisConfig, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, Dialog, Form, TextBox, Button, Tooltip) {
 
         return declare([Dialog, Evented], {
             title: "Save Chart",
@@ -39,11 +41,12 @@ define([
                 ));
                 contentWidget.startup();
                 var content = this.content = contentWidget;
-                this.form = content.form;
+//                this.form = content.form;
                 // shortcuts
                 this.submitButton = content.submitButton;
                 this.cancelButton = content.cancelButton;
                 this.pagePane = content.pagePane;
+                this.optionPane = content.optionPane;
             },
 
             postCreate: function () {
@@ -56,35 +59,48 @@ define([
 
                 this.watch("readyState", lang.hitch(this, "_onReadyStateChange"));
 
-                this.form.watch("state", lang.hitch(this, "_onValidStateChange"));
+//                this.form.watch("state", lang.hitch(this, "_onValidStateChange"));
                 this._onValidStateChange();
 
-                this.stackContainer = new StackContainer({style:"height:300px;width:450px;"
+                this.stackContainer = new StackContainer({
+                    style:"height:300px;width:450px;",
+                    doLayout:false,
+                    isLayoutContainer: true
                 }, this.pagePane);
 
-                var p = new ItemConfig();
-//                this.stackContainer = new ItemConfig({style:"height:200px;width:450px;"
-//                }, this.pagePane);
+                var p = new ItemConfig({title:"Item 1"});
                 this.stackContainer.addChild(p);
 
+                var p = new AxisConfig({title:"Axis 1"});
+                this.stackContainer.addChild(p);
+
+                var controller = new StackController({
+                    style:"height:300px;width:450px;",
+                    containerId: this.stackContainer.domNode.id
+                }, this.optionPane);
+
+                controller.startup();
                 this.stackContainer.startup();
                 this.stackContainer.resize();
             },
-
-//            startu
 
             onSubmit: function () {
 
             },
 
             _onValidStateChange: function () {
-                this.submitButton.set("disabled", !!this.form.get("state").length);
+//                this.submitButton.set("disabled", !!this.form.get("state").length);
             },
 
             _onReadyStateChange: function () {
                 var isBusy = this.get("readyState") == this.BUSY;
                 this.submitButton.set("label", isBusy ? this.busyLabel : this.okLabel);
                 this.submitButton.set("disabled", isBusy);
+            },
+
+            hide: function() {
+                this.destroyRecursive(false);
+
             }
         })
     });
