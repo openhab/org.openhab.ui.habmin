@@ -71,7 +71,7 @@ define([
                 this.inherited(arguments);
 
                 // Set the button names - for internationalisation
-                this.submitButton.set("label", langCommon.buttonOk);
+                this.submitButton.set("label", langCommon.buttonSave);
                 this.cancelButton.set("label", langCommon.buttonCancel);
 
                 this.connect(this.submitButton, "onClick", "onSubmit");
@@ -102,10 +102,43 @@ define([
 
             onSubmit: function () {
                 // Loop through all children and validate data
-                stackContainer
+                var children = this.stackContainer.getChildren()
 
                 // Generate the chart definition
-                var chartDef = {};
+                var chartDef = {
+                    id: 0,
+                    axis: [],
+                    items: []
+                };
+
+                array.forEach(children, lang.hitch(this, function(child) {
+                    switch(child.cfgType) {
+                        case 'general':
+                            chartDef.icon = child.cfgIcon;
+                            chartDef.name = child.cfgName;
+                            chartDef.period = child.cfgPeriod;
+                            break;
+                        case 'item':
+                            var itemCfg = {};
+                            itemCfg.item = child.cfgItem;
+                            itemCfg.label = child.cfgLabel;
+                            itemCfg.lineColor = child.cfgLineColor;
+                            itemCfg.lineWidth = child.cfgLineWidth;
+                            itemCfg.lineStyle = child.cfgLineStyle;
+                            itemCfg.axis = child.cfgAxis;
+                            chartDef.items.push(itemCfg);
+                            break;
+                        case 'axis':
+                            var axisCfg = {};
+                            axisCfg.label = child.cfgLabel;
+                            axisCfg.format = child.cfgFormat;
+                            axisCfg.color = child.cfgColor;
+                            axisCfg.minimum = child.cfgMinimum;
+                            axisCfg.maximum = child.cfgMaximum;
+                            chartDef.axis.push(axisCfg);
+                            break;
+                    }
+                }));
 
                 // All ok? Send to openHAB
 
@@ -201,20 +234,35 @@ define([
                     this.stackContainer.addChild(child);
                 }));
 
-                // Add the axis configuration
-                child = new AxisConfig({
-                    style: childStyle,
-                    title:langSaveChart.Axis1
-                });
-                this.stackContainer.addChild(child);
-
-                child = new AxisConfig({
-                    style: childStyle,
-                    title:langSaveChart.Axis2
-                });
-                this.stackContainer.addChild(child);
-
+                array.forEach(chartDef.axis, lang.hitch(this, function (axis) {
+                    switch(parseInt(axis.axis)) {
+                        case 1:
+                            // Add the axis configuration
+                            child = new AxisConfig({
+                                style: childStyle,
+                                title:langSaveChart.Axis1,
+                                cfgLabel: axis.label,
+                                cfgColor: axis.color,
+                                cfgFormat: axis.format,
+                                cfgMaximum: axis.maximum,
+                                cfgMinimum: axis.minimum
+                            });
+                            this.stackContainer.addChild(child);
+                            break;
+                        case 2:
+                            child = new AxisConfig({
+                                style: childStyle,
+                                title:langSaveChart.Axis2,
+                                cfgLabel: axis.label,
+                                cfgColor: axis.color,
+                                cfgFormat: axis.format,
+                                cfgMaximum: axis.maximum,
+                                cfgMinimum: axis.minimum
+                            });
+                            this.stackContainer.addChild(child);
+                            break;
+                    }
+                }));
             }
-
         })
     });

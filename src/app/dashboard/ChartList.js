@@ -65,9 +65,10 @@ define([
                     this.toolbar.getChildren()[1].set("disabled", false);
 
                     var cell = this.grid.cell(evt);
+                    this.selectedChart = cell.row.data.id;
 
                     //
-                    topic.publish("/dashboard/set", "chart", cell.row.data.id);
+                    topic.publish("/dashboard/set", "chart", this.selectedChart);
                 }));
 
                 this.addChild(this.toolbar);
@@ -80,10 +81,11 @@ define([
 
                 function editChart() {
                     console.log("editChart pressed");
+
                     var x = new SaveChart();
                     x.placeAt(document.body);
                     x.startup();
-                    x.loadChart("5");
+                    x.loadChart(this.selectedChart);
                     x.show();
                 }
 

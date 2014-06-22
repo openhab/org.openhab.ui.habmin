@@ -17,29 +17,41 @@ define([
             cols: 1,
             labelWidth: "150",
 
+            cfgType: 'axis',
+            cfgLabel: "",
+            cfgFormat: "",
+            cfgColor: "",
+            cfgMinimum: "",
+            cfgMaximum: "",
+
             postCreate: function () {
                 this.inherited(arguments);
                 var childStyle = "width:98%";
 
                 this.labelEditor = new TextBox({
-                    label: langSaveChart.Label
+                    label: langSaveChart.Label,
+                    style: childStyle,
+                    value: this.cfgLabel
                 });
                 this.formatEditor = new TextBox({
-                    label: langSaveChart.Format
+                    label: langSaveChart.Format,
+                    style: childStyle,
+                    value: this.cfgFormat
                 });
                 this.colorEditor = new ColorButton({
                     label: langSaveChart.Color,
                     style: childStyle,
-                    colorValue: this.cfgLineColor
+                    colorValue: this.cfgColor
                 });
                 this.minimumEditor = new NumberSpinner({
-                    label: langSaveChart.Minimum
+                    label: langSaveChart.Minimum,
+                    style: childStyle,
+                    value: this.cfgMinimum
                 });
                 this.maximumEditor = new NumberSpinner({
-                    label: langSaveChart.Maximum
-                });
-                this.positionEditor = new Select({
-                    label: langSaveChart.Position
+                    label: langSaveChart.Maximum,
+                    style: childStyle,
+                    value: this.cfgMaximum
                 });
 
                 this.addChild(this.labelEditor);
@@ -47,7 +59,6 @@ define([
                 this.addChild(this.colorEditor);
                 this.addChild(this.minimumEditor);
                 this.addChild(this.maximumEditor);
-                this.addChild(this.positionEditor);
             }
 
         })

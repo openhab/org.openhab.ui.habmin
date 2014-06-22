@@ -18,6 +18,7 @@ define([
             cols: 1,
             labelWidth: "150",
 
+            cfgType: 'general',
             cfgPeriod: 172800,
             cfgIcon: "",
             cfgName: "",

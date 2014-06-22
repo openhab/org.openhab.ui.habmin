@@ -19,6 +19,7 @@ define([
             cols: 1,
             labelWidth: "150",
 
+            cfgType: 'item',
             cfgItem: "",
             cfgLabel: "",
             cfgAxis: 1,
@@ -33,6 +34,13 @@ define([
             postCreate: function () {
                 this.inherited(arguments);
                 var childStyle = "width:98%";
+
+                if(this.cfgLegend == null)
+                    this.cfgLegend = false;
+                else if(this.cfgLegend == "true")
+                    this.cfgLegend = true;
+                else
+                    this.cfgLegend = false;
 
                 this.itemEditor = new TextBox({
                     label: langSaveChart.Item,
@@ -87,7 +95,6 @@ define([
                 });
                 this.legendEditor = new CheckBox({
                     label: langSaveChart.DisplayLegend,
-                    style: childStyle,
                     value: this.cfgLegend
                 });
                 this.timeEditor = new NumberSpinner({
