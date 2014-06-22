@@ -10,8 +10,9 @@ define([
         "dijit/layout/BorderContainer",
         "dijit/layout/AccordionContainer",
         "dijit/layout/ContentPane",
+
         "app/dashboard/ChartList",
-        "SaveChart/ItemList",
+        "app/dashboard/ItemList",
         "app/dashboard/DashboardList"
     ],
     function (declare, lang, topic, fx, dom, domConstruct, domAttr, domClass, BorderContainer, AccordionContainer, ContentPane, ChartList, ItemList, DashList) {

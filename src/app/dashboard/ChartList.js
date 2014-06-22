@@ -3,6 +3,7 @@ define([
         "dojo/_base/lang",
         "dijit/layout/LayoutContainer",
         "dojo/request",
+        "dojo/on",
         "dgrid/Grid",
         "dgrid/extensions/DijitRegistry",
         "dgrid/Selection",
@@ -10,9 +11,10 @@ define([
         "dijit/form/Button",
         "dijit/Toolbar",
         "dojo/_base/array",
-        "dojo/topic"
+        "dojo/topic",
+        "app/dashboard/SaveChart/SaveChart"
     ],
-    function (declare, lang, Container, request, Grid, Registry, Selection, Keyboard, Button, Toolbar, array, topic) {
+    function (declare, lang, Container, request, on, Grid, Registry, Selection, Keyboard, Button, Toolbar, array, topic, SaveChart) {
         return declare(Container, {
 
             buildRendering: function () {
@@ -22,12 +24,14 @@ define([
                     {
                         label: "Delete",
                         menuRef: "delete",
-                        iconClass: "habminIconDelete"
+                        iconClass: "habminIconDelete",
+                        select: deleteChart
                     },
                     {
                         label: "Edit",
                         menuRef: "edit",
-                        iconClass: "habminIconEdit"
+                        iconClass: "habminIconEdit",
+                        select: editChart
                     }
                 ];
                 this.toolbar = new Toolbar({region: "top"});
@@ -40,6 +44,8 @@ define([
                         disabled: true,
                         iconClass: "habminButtonIcon " + def.iconClass
                     });
+
+                    on(button, "click", lang.hitch(this, def.select));
 
                     this.toolbar.addChild(button);
                 }));
@@ -70,6 +76,19 @@ define([
                 function cellRenderer(object, value, node, options) {
                     node.innerHTML =
                         "<span class='habminListIcon'><img src='/images/" + object.icon + ".png'></span>" + value;
+                }
+
+                function editChart() {
+                    console.log("editChart pressed");
+                    var x = new SaveChart();
+                    x.placeAt(document.body);
+                    x.startup();
+                    x.loadChart("5");
+                    x.show();
+                }
+
+                function deleteChart() {
+                    console.log("deleteChart pressed");
                 }
             },
             startup: function () {

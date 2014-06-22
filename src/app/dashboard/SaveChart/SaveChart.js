@@ -1,19 +1,22 @@
 define([
-        "../../../dojo/_base/declare",
+        "dojo/_base/declare",
         "dojo/_base/lang",
         "dojo/on",
+        "dojo/_base/array",
         "dojo/dom",
         "dojo/Evented",
         "dojo/_base/Deferred",
         "dojo/json",
         "dojo/dom-construct",
         "dojo/dom-style",
+        "dojo/request",
 
         "dijit/layout/StackContainer",
         "dijit/layout/StackController",
-        "GeneralConfig",
-        "ItemConfig",
-        "SaveChart/AxisConfig",
+
+        "app/dashboard/SaveChart/GeneralConfig",
+        "app/dashboard/SaveChart/ItemConfig",
+        "app/dashboard/SaveChart/AxisConfig",
 
         "dijit/_Widget",
         "dijit/_TemplatedMixin",
@@ -26,14 +29,27 @@ define([
         "dojo/i18n!app/nls/SaveChart"
 
     ],
-    function (declare, lang, on, dom, Evented, Deferred, JSON, domConstruct, domStyle, StackContainer, StackController, GeneralConfig, ItemConfig, AxisConfig, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, Dialog, Form, langCommon, langSaveChart) {
+    function (declare, lang, on, array, dom, Evented, Deferred, JSON, domConstruct, domStyle, request, StackContainer, StackController, GeneralConfig, ItemConfig, AxisConfig, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, Dialog, Form, langCommon, langSaveChart) {
 
         return declare([Dialog, Evented], {
             title: langSaveChart.WindowTitle,
 
+            defaultColors: [
+                '#2f7ed8',
+                '#0d233a',
+                '#8bbc21',
+                '#910000',
+                '#1aadce',
+                '#492970',
+                '#f28f43',
+                '#77a1e5',
+                '#c42525',
+                '#a6c96a'
+            ],
+
             constructor: function (/*Object*/ kwArgs) {
                 lang.mixin(this, kwArgs);
-                var dialogTemplate = dojo.cache('app.dashboard', 'SaveChartForm.html');
+                var dialogTemplate = dojo.cache('app.dashboard.SaveChart', 'SaveChartForm.html');
 
                 var contentWidget = new (declare(
                     [_Widget, _TemplatedMixin, _WidgetsInTemplateMixin],
@@ -67,27 +83,15 @@ define([
                 this._onValidStateChange();
 
                 this.stackContainer = new StackContainer({
-               //     style:"height:350px;width:450px;",
+                    style:"height:350px;width:410px;",
                     doLayout:false,
                     isLayoutContainer: false
                 }, this.pagePane);
 
-                var child;
-
-                child = new GeneralConfig({style: "height:250px", title:langSaveChart.General});
-                this.stackContainer.addChild(child);
-
-                child = new ItemConfig({style: "height:250px", title:"Item 1"});
-                this.stackContainer.addChild(child);
-
-                child = new AxisConfig({style: "height:250px", title:langSaveChart.Axis1});
-                this.stackContainer.addChild(child);
-
-                child = new AxisConfig({style: "height:250px", title:langSaveChart.Axis2});
-                this.stackContainer.addChild(child);
+                // Children loaded here
 
                 var controller = new StackController({
-                    style:"height:350px;width:450px;",
+                    style:"height:350px;width:290px;",
                     containerId: this.stackContainer.domNode.id
                 }, this.optionPane);
 
@@ -97,6 +101,14 @@ define([
             },
 
             onSubmit: function () {
+                // Loop through all children and validate data
+                stackContainer
+
+                // Generate the chart definition
+                var chartDef = {};
+
+                // All ok? Send to openHAB
+
 
             },
 
@@ -110,7 +122,99 @@ define([
 
             hide: function() {
                 this.destroyRecursive(false);
+            },
+
+            loadItems: function (items) {
+                items = [].concat(items);
+
+                // Create the chart definition
+                this.chartDef = {};
+                this.chartDef.items = [];
+                array.forEach(items, lang.hitch(this, function (item) {
+                    var newItem = {};
+                    newItem.item = item;
+                    this.chartDef.items.push(newItem);
+                }));
+
+                this._sanityCheck(this.chartDef);
+
+                array.forEach(items, lang.hitch(this, function (item) {
+                    this._loadItem(item, this.chartStart, this.chartStop);
+                }));
+            },
+            loadChart: function (chartRef) {
+                console.log("Loading chart: " + chartRef);
+
+                request("/services/habmin/persistence/charts/" + chartRef, {
+                    timeout: 5000,
+                    handleAs: 'json',
+                    preventCache: true,
+                    headers: {
+                        "Content-Type": 'application/json; charset=utf-8',
+                        "Accept": "application/json"
+                    }
+                }).then(
+                    lang.hitch(this, function (data) {
+                        console.log("The chart definition is:", data);
+                        data.items = [].concat(data.items);
+
+                        // Update the configuration
+                        this._updateData(data);
+                    }),
+                    lang.hitch(this, function (error) {
+                        console.log("An error occurred: " + error);
+                    })
+                );
+            },
+            _updateData: function(chartDef) {
+                var child;
+                var childStyle = "height:270px";
+
+                // Add the general configuration
+                child = new GeneralConfig({
+                    style: childStyle,
+                    title:langSaveChart.General,
+                    cfgPeriod: chartDef.period,
+                    cfgIcon: chartDef.icon,
+                    cfgName: chartDef.name,
+                    cfgTitle: ""
+                });
+                this.stackContainer.addChild(child);
+
+                // Add all the items
+                var colorRef = 0;
+                array.forEach(chartDef.items, lang.hitch(this, function (item) {
+                    if(item.lineColor == null || item.lineColor.length == 0)
+                        item.lineColor = this.defaultColors[colorRef++];
+                    child = new ItemConfig({
+                        style: childStyle,
+                        title: item.item,
+                        cfgItem: item.item,
+                        cfgLabel: item.label,
+                        cfgAxis: item.axis,
+                        cfgLineColor: item.lineColor,
+                        cfgLineWidth: item.lineWidth,
+                        cfgLineStyle: item.lineStyle
+ //                       cfgMarkerColor: item.,
+ //                       cfgMarkerStyle: ""
+                    });
+                    this.stackContainer.addChild(child);
+                }));
+
+                // Add the axis configuration
+                child = new AxisConfig({
+                    style: childStyle,
+                    title:langSaveChart.Axis1
+                });
+                this.stackContainer.addChild(child);
+
+                child = new AxisConfig({
+                    style: childStyle,
+                    title:langSaveChart.Axis2
+                });
+                this.stackContainer.addChild(child);
 
             }
+
         })
     });

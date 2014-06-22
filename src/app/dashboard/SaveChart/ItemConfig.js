@@ -1,5 +1,5 @@
 define([
-        "../../../dojo/_base/declare",
+        "dojo/_base/declare",
         "dojo/_base/lang",
 
         "dojox/layout/TableContainer",
@@ -8,10 +8,13 @@ define([
         "dijit/form/NumberSpinner",
         "dijit/form/Select",
         "dijit/form/CheckBox",
+        "dijit/ColorPalette",
+
+        "app/dashboard/SaveChart/ColorSelectButton",
 
         "dojo/i18n!app/nls/SaveChart"
     ],
-    function (declare, lang, TableContainer, TextBox, NumberSpinner, Select, CheckBox, langSaveChart) {
+    function (declare, lang, TableContainer, TextBox, NumberSpinner, Select, CheckBox, ColorPalette, ColorButton, langSaveChart) {
         return declare([TableContainer], {
             cols: 1,
             labelWidth: "150",
@@ -19,47 +22,78 @@ define([
             cfgItem: "",
             cfgLabel: "",
             cfgAxis: 1,
+            cfgType: "",
             cfgLineColor: "",
             cfgLineWidth: 1,
             cfgLineStyle: "",
             cfgMarkerColor: "",
             cfgMarkerStyle: "",
+            cfgLegend: true,
 
             postCreate: function () {
                 this.inherited(arguments);
+                var childStyle = "width:98%";
 
-                this.itemEditor = new TextBox({label: langSaveChart.Item,
-                    style: "width:100%"
+                this.itemEditor = new TextBox({
+                    label: langSaveChart.Item,
+                    style: childStyle,
+                    value: this.cfgItem
                 });
-                this.labelEditor = new TextBox({label: langSaveChart.Label,
-                    style: "width:100%"
+                this.labelEditor = new TextBox({
+                    label: langSaveChart.Label,
+                    style: childStyle,
+                    value: this.cfgLabel
                 });
-                this.typeEditor = new TextBox({label: langSaveChart.ChartType,
-                    style: "width:100%"
+                this.typeEditor = new TextBox({
+                    label: langSaveChart.ChartType,
+                    style: childStyle,
+                    value: this.cfgType
                 });
-                this.axisEditor = new NumberSpinner({label: langSaveChart.Axis,
-                    style: "width:100%"
+                this.axisEditor = new NumberSpinner({
+                    label: langSaveChart.Axis,
+                    style: childStyle,
+                    value: this.cfgAxis,
+                    required: true,
+                    constraints:{ min:1, max:2 },
+                    invalidMessage: langSaveChart.AxisInvalid
                 });
-                this.lineColorEditor = new Select({label: langSaveChart.LineColor,
-                    style: "width:100%"
+                this.lineColorEditor = new ColorButton({
+                    label: langSaveChart.LineColor,
+                    style: childStyle,
+                    colorValue: this.cfgLineColor
                 });
-                this.lineWidthEditor = new NumberSpinner({label: langSaveChart.LineWidth,
-                    style: "width:100%"
+                this.lineWidthEditor = new NumberSpinner({
+                    label: langSaveChart.LineWidth,
+                    style: childStyle,
+                    value: this.cfgLineWidth,
+                    required: true,
+                    constraints:{ min:0, max:30 },
+                    invalidMessage: langSaveChart.LineWidthInvalid
                 });
-                this.lineStyleEditor = new TextBox({label: langSaveChart.LineStyle,
-                    style: "width:100%"
+                this.lineStyleEditor = new TextBox({
+                    label: langSaveChart.LineStyle,
+                    style: childStyle,
+                    value: this.cfgLineStyle
                 });
-                this.markerColorEditor = new Select({label: langSaveChart.MarkerColor,
-                    style: "width:100%"
+                this.markerColorEditor = new ColorButton({
+                    label: langSaveChart.MarkerColor,
+                    style: childStyle,
+                    value: this.cfgMarkerColor
                 });
-                this.markerStyleEditor = new Select({label: langSaveChart.MarkerStyle,
-                    style: "width:100%"
+                this.markerStyleEditor = new Select({
+                    label: langSaveChart.MarkerStyle,
+                    style: childStyle,
+                    value: this.cfgMarkerStyle
                 });
-                this.legendEditor = new CheckBox({label: langSaveChart.DisplayLegend,
-                    style: "width:100%"
+                this.legendEditor = new CheckBox({
+                    label: langSaveChart.DisplayLegend,
+                    style: childStyle,
+                    value: this.cfgLegend
                 });
-                this.timeEditor = new NumberSpinner({label: langSaveChart.RepeatTime,
-                    style: "width:100%"
+                this.timeEditor = new NumberSpinner({
+                    label: langSaveChart.RepeatTime,
+                    style: childStyle,
+                    value: this.cfg
                 });
 
                 this.addChild(this.itemEditor);

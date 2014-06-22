@@ -1,5 +1,5 @@
 define([
-        "../../../dojo/_base/declare",
+        "dojo/_base/declare",
         "dojo/_base/lang",
         "dojo/dom",
 
@@ -25,6 +25,8 @@ define([
 
             postCreate: function () {
                 this.inherited(arguments);
+
+                var childStyle = "width:98%";
 
                 var periodMemoryStore = new Memory({
                     data: [
@@ -57,21 +59,21 @@ define([
 
                 // Create the name editor
                 this.nameEditor = new TextBox({label: langSaveChart.Name,
-                    style: "width:100%",
+                    style: childStyle,
                     value: this.cfgName
                 });
                 this.addChild(this.nameEditor);
 
                 // Create the title editor
                 this.titleEditor = new TextBox({label: langSaveChart.Title,
-                    style: "width:100%",
+                    style: childStyle,
                     value: this.cfgTitle
                 });
                 this.addChild(this.titleEditor);
 
                 // Find the icon and create the select list
                 this.iconEditor = new Select({label: langSaveChart.Icon,
-                    style: "width:100%",
+                    style: childStyle,
                     store: os
                 });
                 this.addChild(this.iconEditor);
@@ -82,7 +84,7 @@ define([
                 if(periodResult != null && periodResult.length == 1)
                     periodValue = periodResult[0].name;
                 this.periodEditor = new ComboBox({label: langSaveChart.Period,
-                    style: "width:100%",
+                    style: childStyle,
                     value: periodValue,
                     store: periodStore,
                     searchAttr: "name"

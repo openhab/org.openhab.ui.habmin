@@ -40,7 +40,10 @@ define({
         Color: "Color",
         Minimum: "Minimum",
         Maximum: "Maximum",
-        Position: "Position"
+        Position: "Position",
+
+        AxisInvalid: "Axis must be either 1 or 2",
+        LineWidthInvalid: "Line width much be a positive value"
     }
 
 //    de: true
