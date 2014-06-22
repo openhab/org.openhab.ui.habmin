@@ -1,8 +1,8 @@
 define([
-        "dojo/_base/declare",
+        "../../../dojo/_base/declare",
         "dojo/_base/lang",
         "dijit/layout/LayoutContainer",
-        "app/dashboard/SaveChart",
+        "SaveChart",
         "dojo/request",
         "dojo/store/Memory",
         "dojo/on",

@@ -1,5 +1,5 @@
 define([
-        "dojo/_base/declare",
+        "../../../dojo/_base/declare",
         "dojo/_base/lang",
         "dojo/on",
         "dojo/dom",
@@ -11,8 +11,9 @@ define([
 
         "dijit/layout/StackContainer",
         "dijit/layout/StackController",
-        "app/dashboard/ItemConfig",
-        "app/dashboard/AxisConfig",
+        "GeneralConfig",
+        "ItemConfig",
+        "SaveChart/AxisConfig",
 
         "dijit/_Widget",
         "dijit/_TemplatedMixin",
@@ -20,15 +21,15 @@ define([
 
         "dijit/Dialog",
         "dijit/form/Form",
-        "dijit/form/ValidationTextBox",
-        "dijit/form/Button"
+
+        "dojo/i18n!dijit/nls/common",
+        "dojo/i18n!app/nls/SaveChart"
+
     ],
-    function (declare, lang, on, dom, Evented, Deferred, JSON, domConstruct, domStyle, StackContainer, StackController, ItemConfig, AxisConfig, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, Dialog, Form, TextBox, Button, Tooltip) {
+    function (declare, lang, on, dom, Evented, Deferred, JSON, domConstruct, domStyle, StackContainer, StackController, GeneralConfig, ItemConfig, AxisConfig, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, Dialog, Form, langCommon, langSaveChart) {
 
         return declare([Dialog, Evented], {
-            title: "Save Chart",
-
-//            _setCategoriesAttr: {node: "itemGrid", type: "innerHTML" },
+            title: langSaveChart.WindowTitle,
 
             constructor: function (/*Object*/ kwArgs) {
                 lang.mixin(this, kwArgs);
@@ -53,7 +54,9 @@ define([
             postCreate: function () {
                 this.inherited(arguments);
 
-                this.okLabel = this.submitButton.get("label");
+                // Set the button names - for internationalisation
+                this.submitButton.set("label", langCommon.buttonOk);
+                this.cancelButton.set("label", langCommon.buttonCancel);
 
                 this.connect(this.submitButton, "onClick", "onSubmit");
                 this.connect(this.cancelButton, "onClick", "onCancel");
@@ -69,15 +72,19 @@ define([
                     isLayoutContainer: false
                 }, this.pagePane);
 
-                var p = new ItemConfig({style: "height:250px", title:"Item 1"});
-                this.stackContainer.addChild(p);
-//                var x = p.getParent();
-//                domStyle.set(x, {"height": 250});
+                var child;
 
-                var p = new AxisConfig({style: "height:250px", title:"Axis 1"});
-                this.stackContainer.addChild(p);
-//                var x = p.getParent();
-//                domStyle.set(x, {"height": 250});
+                child = new GeneralConfig({style: "height:250px", title:langSaveChart.General});
+                this.stackContainer.addChild(child);
+
+                child = new ItemConfig({style: "height:250px", title:"Item 1"});
+                this.stackContainer.addChild(child);
+
+                child = new AxisConfig({style: "height:250px", title:langSaveChart.Axis1});
+                this.stackContainer.addChild(child);
+
+                child = new AxisConfig({style: "height:250px", title:langSaveChart.Axis2});
+                this.stackContainer.addChild(child);
 
                 var controller = new StackController({
                     style:"height:350px;width:450px;",
@@ -99,8 +106,6 @@ define([
 
             _onReadyStateChange: function () {
                 var isBusy = this.get("readyState") == this.BUSY;
-                this.submitButton.set("label", isBusy ? this.busyLabel : this.okLabel);
-                this.submitButton.set("disabled", isBusy);
             },
 
             hide: function() {
