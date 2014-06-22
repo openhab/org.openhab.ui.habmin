@@ -245,8 +245,18 @@ define([
 
                 var data = new Array();
 
-                array.forEach(item.data, lang.hitch(this, function (value, i) {
+                array.forEach(item.data, lang.hitch(this, function (value, ref) {
                     var newVal = {};
+                    if(ref != 0) {
+                        if(value.time - item.data[ref - 1].time > 300000) {
+                            newVal.y = Number(item.data[ref - 1].state);
+                            newVal.x = Number(value.time - 300000);
+                            data.push(newVal);
+
+                            newVal = {};
+                        }
+                    }
+
                     newVal.y = Number(value.state);
                     newVal.x = Number(value.time);
                     data.push(newVal);
