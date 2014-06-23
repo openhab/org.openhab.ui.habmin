@@ -3,6 +3,7 @@ define([
         "dojo/_base/lang",
         "dojo/_base/array",
         "dojo/dom-class",
+        "dijit/layout/ContentPane",
         "dijit/layout/BorderContainer",
         "dijit/Toolbar",
         "dijit/form/Button",
@@ -17,7 +18,7 @@ define([
         "dojox/charting/axis2d/Default",
         "dojox/charting/plot2d/Lines"
     ],
-    function (declare, lang, array, domClass, Container, Toolbar, Button, request, sprintf, locale, Chart, Legend, Tooltip) {
+    function (declare, lang, array, domClass, ContentPane, Container, Toolbar, Button, request, sprintf, locale, Chart, Legend, Tooltip) {
         return declare(Container, {
             chartLegend: true,
             tooltips:true,
@@ -284,8 +285,10 @@ define([
                 if (this.itemsLoaded >= this.itemsTotal) {
                     console.log("Rendering chart");
                     if (this.chartLegend == true) {
-                        this.legend = new Legend({region: "bottom", chartRef: this.chart});
-                        this.addChild(this.legend);
+                        this.legend = new Legend({chartRef: this.chart});
+                        var pane = new ContentPane({region: "bottom", content: this.legend})
+                        domClass.add(pane.domNode, "habminChartLegend");
+                        this.addChild(pane);
                         this.legend.refresh();
                     }
                     this.chart.render();

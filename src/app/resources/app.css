@@ -548,9 +548,18 @@ body {
 }
 
 
+.habminChartLegend {
+    padding: 0px !important;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
 
-
-
+.habminChartLegend td {
+    padding: 0px 20px 0px 20px;
+}
 
 
 #mainMenu,
