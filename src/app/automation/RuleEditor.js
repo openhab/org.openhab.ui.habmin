@@ -14,9 +14,11 @@ define([
         "dojo/request",
 
         "app/automation/CodeEditor",
-        "app/automation/BlockEditor"
+        "app/automation/BlockEditor",
+
+        "dojo/i18n!dijit/nls/common"
     ],
-    function (declare, lang, on, array, domClass, domStyle, domConstruct, domGeometry, query, TabContainer, Toolbar, Button, request, CodeEditor, BlockEditor) {
+    function (declare, lang, on, array, domClass, domStyle, domConstruct, domGeometry, query, TabContainer, Toolbar, Button, request, CodeEditor, BlockEditor, langCommon) {
         return declare(TabContainer, {
             initialized: false,
             chartLegend: true,
@@ -45,6 +47,11 @@ define([
                     blockly: {
                         toolbox: true,
                         collapse: true,
+                        listeners: {
+                            workspacechanged: function() {
+                                console.log("Workspace changed :)");
+                            }
+                        },
                         toolboxCategories: [
                             {name: "Procedures", title: "Procedures", tooltip: "Hello there"},
                             {name: "Math", title: "Math", icon: "sum.png", tooltip: "Hello there math"}
@@ -94,23 +101,21 @@ define([
                 // available to all editor.
                 var toolDefinition = [
                     {
-                        label: "New",
-                        menuRef: "new",
-                        iconClass: "habminIconNew"//,
-//                        select: menuNew
+                        label: langCommon.buttonCancel,
+                        menuRef: "cancel",
+                        iconClass: "habminIconCancel",
+                        select: menuCancel
                     },
                     {
-                        label: "Delete",
-                        menuRef: "delete",
-                        iconClass: "habminIconDelete"//,
-//                        select: xNew
+                        label: langCommon.buttonSave,
+                        menuRef: "save",
+                        iconClass: "habminIconSave",
+                        select: menuSave
                     }
                 ];
                 this.toolbar = new Toolbar({region: "top"});
                 array.forEach(toolDefinition, lang.hitch(this, function (def) {
                     var button = new Button({
-                        // note: should always specify a label, for accessibility reasons.
-                        // Just set showLabel=false if you don't want it to be displayed normally
                         label: def.label,
                         showLabel: true,
 //                        disabled: true,
@@ -125,6 +130,35 @@ define([
                 // Add the toolbar into the tab container
                 var tabStripNode = query("div.dijitTabListWrapper", this.tablist.domNode)[0];
                 domConstruct.place(this.toolbar.domNode, tabStripNode, "first");
+
+                function menuCancel() {
+
+                }
+
+                function menuSave() {
+                    var blocks = this.blockEditor.getBlocks();
+
+                    request("/services/habmin/config/designer/" + this.ruleId, {
+                        method: this.ruleId == null ? 'POST' : 'PUT',
+                        timeout: 5000,
+                        handleAs: 'json',
+                        preventCache: true,
+                        headers: {
+                            "Content-Type": 'application/json; charset=utf-8',
+                            "Accept": "application/json"
+                        }
+                    }).then(
+                        lang.hitch(this, function (data) {
+                            console.log("The rule source response is: ", data);
+                            this.blockEditor.setBlocks(data);
+                            this.codeEditor.setCode(data.source);
+                        }),
+                        lang.hitch(this, function (error) {
+                            console.log("An error occurred with rule source response: " + error);
+                        })
+                    );
+
+                }
             },
             alignTabs: function () {
                 var tabListNode = this.tablist.domNode;
@@ -167,24 +201,7 @@ define([
                 this.codeEditor.setCode(this.newruleCode);
             },
             loadRule: function(ruleId) {
-                request("/services/habmin/config/rules/model/source/habmin-autorules", {
-                    timeout: 5000,
-                    handleAs: 'json',
-                    preventCache: true,
-                    headers: {
-                        "Content-Type": 'application/json; charset=utf-8',
-                        "Accept": "application/json"
-                    }
-                }).then(
-                    lang.hitch(this, function (data) {
-                        console.log("The (Rule Source) response is: ", data);
-                        this.codeEditor.setCode(data.source);
-                    }),
-                    lang.hitch(this, function (error) {
-                        console.log("An error occurred with rule source response: " + error);
-                    })
-                );
-
+                this.ruleId = ruleId;
                 request("/services/habmin/config/designer/" + ruleId, {
                     timeout: 5000,
                     handleAs: 'json',
@@ -195,11 +212,12 @@ define([
                     }
                 }).then(
                     lang.hitch(this, function (data) {
-                        console.log("The (Block Source) response is: ", data);
+                        console.log("The rule source response is: ", data);
                         this.blockEditor.setBlocks(data);
+                        this.codeEditor.setCode(data.source);
                     }),
                     lang.hitch(this, function (error) {
-                        console.log("An error occurred with block source response: " + error);
+                        console.log("An error occurred with rule source response: " + error);
                     })
                 );
             }
