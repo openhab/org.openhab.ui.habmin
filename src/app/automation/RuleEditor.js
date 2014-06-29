@@ -12,13 +12,18 @@ define([
         "dijit/Toolbar",
         "dijit/form/Button",
         "dojo/request",
+        "dojo/json",
+        "dojox/string/sprintf",
 
         "app/automation/CodeEditor",
         "app/automation/BlockEditor",
 
-        "dojo/i18n!dijit/nls/common"
+        "app/main/Notification",
+
+        "dojo/i18n!dijit/nls/common",
+        "dojo/i18n!app/nls/Automation"
     ],
-    function (declare, lang, on, array, domClass, domStyle, domConstruct, domGeometry, query, TabContainer, Toolbar, Button, request, CodeEditor, BlockEditor, langCommon) {
+    function (declare, lang, on, array, domClass, domStyle, domConstruct, domGeometry, query, TabContainer, Toolbar, Button, request, json, sprintf, CodeEditor, BlockEditor, Notification, langCommon, langAutomation) {
         return declare(TabContainer, {
             initialized: false,
             chartLegend: true,
@@ -48,41 +53,14 @@ define([
                         toolbox: true,
                         collapse: true,
                         listeners: {
-                            workspacechanged: function() {
-                                console.log("Workspace changed :)");
-                            }
+                            workspacechanged: lang.hitch(this, function() {
+                                console.log("Block editor updated");
+                                // Enable the toolbar
+                                this.toolbar.getChildren()[0].set("disabled", false);
+                                this.toolbar.getChildren()[1].set("disabled", false);
+                            })
                         },
-                        toolboxCategories: [
-                            {name: "Procedures", title: "Procedures", tooltip: "Hello there"},
-                            {name: "Math", title: "Math", icon: "sum.png", tooltip: "Hello there math"}
-                        ],
-                        toolboxTools: [
-                            {category: "Procedures", block: {type: "controls_if"}, name: "X"},
-                            {category: "Procedures", block: {type: 'variables_get'}},
-                            {category: "Procedures", block: {type: 'logic_operation'}},
-
-                            {category: "Procedures", block: {type: "controls_if", mutation: {name: "elseif", value: 2}}, name: "X"},
-                            {category: "Procedures", block: {type: "text"}, name: "X"}/*,
-                             {category: "Math", block: "<xml><block type='controls_if'><mutation elseif='1'></mutation></block></xml>", name: "X"},
-                             {category: "Procedures", block: "<xml><block type='controls_if'></block></xml>", name: "X"},
-                             {category: "Math", block: "<xml><block type='controls_if'></block></xml>", name: "X"},
-                             {category: "Procedures", block: "<xml><block type='math_arithmetic'></block></xml>", name: "X"},
-                             {category: "Math", block: "<xml><block type='controls_repeat_ext'></block></xml>", name: "X"},
-                             {category: "Math", block: "<xml><block type='variables_set'></block></xml>", name: "X"}*/
-                        ],
-                        trashcan: true,
-                        blocks: {"block": [
-                            {"type": "controls_if", "id": "6", "children": [
-                                {"type": "value", "name": "IF0", "block": {"type": "logic_operation", "id": "9", "mutation": [
-                                    {"name": "operators", "value": 2}
-                                ], "fields": [
-                                    {"name": "OP1", "value": "AND"},
-                                    {"name": "OP2", "value": "AND"},
-                                    {"name": "OP3", "value": "AND"}
-                                ], "inline": true}}
-                            ], "inline": false, "movable": false, "x": 0, "y": 0}
-                        ]},
-                        path: "dblockly/"
+                        trashcan: true
                     }
                 });
                 domClass.add(this.blockEditor.domNode, "habminChildNoPadding");
@@ -118,7 +96,7 @@ define([
                     var button = new Button({
                         label: def.label,
                         showLabel: true,
-//                        disabled: true,
+                        disabled: true,
                         iconClass: "habminButtonIcon " + def.iconClass
                     });
                     on(button, "click", lang.hitch(this, def.select));
@@ -136,11 +114,45 @@ define([
                 }
 
                 function menuSave() {
-                    var blocks = this.blockEditor.getBlocks();
+                    var rule = this.blockEditor.getBlocks();
+
+                    if (rule == null || rule.block == null || rule.block.length == 0) {
+                        this.notification.alert(this.notification.ERROR, langAutomation.ErrorReadingRule);
+                        return;
+                    }
+
+                    // Get the rule name
+                    if (rule.block[0].fields == null || rule.block[0].fields.length == 0) {
+                        this.notification.alert(this.notification.ERROR, langAutomation.ErrorReadingRuleName);
+                        return;
+                    }
+
+                    var ruleName;
+                    for (var v = 0; v < rule.block[0].fields.length; v++) {
+                        if (rule.block[0].fields[v].name == "NAME") {
+                            ruleName = rule.block[0].fields[v].value;
+                            break;
+                        }
+                    }
+
+                    // Check that we have a name!
+                    if (ruleName == null || ruleName == "") {
+                        this.notification.alert(this.notification.ERROR, langAutomation.ErrorReadingRuleName);
+                        return;
+                    }
+
+                    var bean = {};
+                    if(this.ruleId != null)
+                        bean.id = this.ruleId;
+                    bean.block = rule.block[0];
+                    bean.name = ruleName;
+
+                    var jsonData = json.stringify(bean);
 
                     request("/services/habmin/config/designer/" + this.ruleId, {
                         method: this.ruleId == null ? 'POST' : 'PUT',
                         timeout: 5000,
+                        data: jsonData,
                         handleAs: 'json',
                         preventCache: true,
                         headers: {
@@ -149,11 +161,18 @@ define([
                         }
                     }).then(
                         lang.hitch(this, function (data) {
+                            this.notification.alert(this.notification.SUCCESS, sprintf(langAutomation.RuleSavedOk, ruleName));
+
                             console.log("The rule source response is: ", data);
                             this.blockEditor.setBlocks(data);
                             this.codeEditor.setCode(data.source);
+
+                            // Enable the toolbar
+                            this.toolbar.getChildren()[0].set("disabled", true);
+                            this.toolbar.getChildren()[1].set("disabled", true);
                         }),
                         lang.hitch(this, function (error) {
+                            this.notification.alert(this.notification.ERROR, sprintf(langAutomation.ErrorSavingRule, ruleName));
                             console.log("An error occurred with rule source response: " + error);
                         })
                     );
@@ -167,12 +186,6 @@ define([
                 var tabListCoords = domGeometry.position(tabListNode);
                 var tabStripCoords = domGeometry.position(tabStripNode);
 
-                var tabStripLeft = (-tabStripCoords.w + tabListCoords.w) + "px";
-                console.log("Align Editor Tabs ", tabStripLeft);
-
-                domStyle.set(tabStripNode, "width", tabListCoords.w + "px");
-                domStyle.set(tabStripNode, "textAlign", "right");
-
                 // Calculate the sizes of all tabs and subtract this off the size of the toolbar
                 var tabList = query("div.dijitTab", tabListNode);
                 var tabWidth = 5;
@@ -181,10 +194,20 @@ define([
                     tabWidth += coords.w;
                 }));
                 domStyle.set(this.toolbar.domNode, "width", (tabListCoords.w - tabWidth) + "px");
+
+                var tabStripLeft = (-tabStripCoords.w + tabListCoords.w) + "px";
+                console.log("Align Editor Tabs ", tabStripLeft);
+
+                domStyle.set(tabStripNode, "left", (tabListCoords.w - tabWidth) + "px");
+                domStyle.set(tabStripNode, "width", tabWidth + "px");
+                domStyle.set(tabStripNode, "textAlign", "right");
             },
             startup: function () {
                 if (this.initialized == true)
                     return;
+
+                // Initialise the notification system
+                this.notification = Notification();
 
                 this.inherited(arguments);
                 this.resize();
@@ -218,6 +241,7 @@ define([
                     }),
                     lang.hitch(this, function (error) {
                         console.log("An error occurred with rule source response: " + error);
+
                     })
                 );
             }
