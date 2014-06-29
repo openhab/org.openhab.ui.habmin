@@ -63,7 +63,7 @@ var profile = {
             // the main application `app/main` and the `dojo/i18n` and `dojo/domReady` modules because, while they are
             // all conditional dependencies in `app/main`, we do not want to have to make extra HTTP requests for such
             // tiny files.
-            include: [ 'dojo/dojo', 'dojo/i18n', 'dojo/domReady', 'app/main', 'app/run', 'dgrowl/main', 'app/dashboard/main'],
+            include: [ 'dojo/dojo', 'dojo/i18n', 'dojo/domReady', 'app/main', 'app/run'],
 
             // By default, the build system will try to include `dojo/main` in the built `dojo/dojo` layer, which adds
             // a bunch of stuff we do not want or need. We want the initial script load to be as small and quick to
@@ -73,6 +73,9 @@ var profile = {
         },
         'dist/chart': {
             include: ['dojox/charting/Chart']
+        },
+        'dist/dash': {
+            include: ['app/main']
         }
 
 /*      ,
@@ -90,6 +93,16 @@ var profile = {
         }*/
 
     },
+    packages:[
+        {
+        name: "dgrid",
+        location: "dgrid"
+    },
+        {
+            name: "app/dashboard/main",
+            location: "app/dashboard/main"
+        }
+    ],
 
     // Providing hints to the build system allows code to be conditionally removed on a more granular level than
     // simple module dependencies can allow. This is especially useful for creating tiny mobile builds.

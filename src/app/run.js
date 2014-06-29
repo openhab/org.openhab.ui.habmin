@@ -27,7 +27,8 @@ require({
         'dgrid',
         'put-selector',
         'xstyle',
-        'app'
+        'app',
+        'app/dashboard/main'
 	],
 
     paths: {
