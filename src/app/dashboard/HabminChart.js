@@ -3,6 +3,7 @@ define([
         "dojo/_base/lang",
         "dojo/_base/array",
         "dojo/dom-class",
+        "dojo/dom-style",
         "dijit/layout/ContentPane",
         "dijit/layout/BorderContainer",
         "dijit/Toolbar",
@@ -21,7 +22,7 @@ define([
     function (declare, lang, array, domClass, ContentPane, Container, Toolbar, Button, request, sprintf, locale, Chart, Legend, Tooltip) {
         return declare(Container, {
             chartLegend: true,
-            tooltips:true,
+            tooltips: true,
 
             gutters: false,
             colors: [
@@ -139,11 +140,11 @@ define([
             _createPlots: function () {
                 // Loop through the items and create a plot for each graph type
                 array.forEach(this.chartDef.items, lang.hitch(this, function (item, ref) {
-                 //   this.chartDef.items[ref].plotName = "line1";
-                   // this.chartDef.items[ref].plotType = "Lines";
+                    //   this.chartDef.items[ref].plotName = "line1";
+                    // this.chartDef.items[ref].plotType = "Lines";
 
                     var axis = 1;
-                    if(item.axis > 0)
+                    if (item.axis > 0)
                         axis = item.axis;
 
                     switch (item.chart) {
@@ -159,7 +160,7 @@ define([
                     var plotOptions = {};
                     plotOptions.type = this.chartDef.items[ref].plotType;
                     plotOptions.hAxis = "x";
-                    plotOptions.vAxis = "y"+axis;
+                    plotOptions.vAxis = "y" + axis;
 //                    plotOptions.markers= false;
 
 //                    tension: "X"//,
@@ -167,11 +168,11 @@ define([
 //                    stroke: {width: 0}
 
                     // Only add the plot if it doesn't already exist
-                    if(this.chart.getPlot(this.chartDef.items[ref].plotName) == null) {
+                    if (this.chart.getPlot(this.chartDef.items[ref].plotName) == null) {
                         console.log("Adding plot " + this.chartDef.items[ref].plotName + ":", plotOptions)
                         this.chart.addPlot(this.chartDef.items[ref].plotName, plotOptions);
 
-                        if(this.tooltips == true) {
+                        if (this.tooltips == true) {
                             new Tooltip(this.chart, this.chartDef.items[ref].plotName, {text: this._tooltipFunction});
                         }
                     }
@@ -183,7 +184,7 @@ define([
 //                this.chart.addAxis("x");
 
                 // Now loop through and create all the axis
-                if(this.chartDef.axis == null) {
+                if (this.chartDef.axis == null) {
                     // No axis are defined - create a default
                     console.log("Adding default axis 'y1'");
                     this.chart.addAxis("y1", {vertical: true});
@@ -191,30 +192,30 @@ define([
                 else {
                     this.chartDef.axis = [].concat(this.chartDef.axis);
                     array.forEach(this.chartDef.axis, lang.hitch(this, function (axis, ref) {
-                        if(axis == null)
+                        if (axis == null)
                             return;
 
                         var verticalOptions = {vertical: true};
 
 //                        if(axis.label != null && axis.label.length > 0)
 //                            verticalOptions.labelFunc = labelVertical;
-                        if(axis.minimum != null && axis.minimum.length > 0)
+                        if (axis.minimum != null && axis.minimum.length > 0)
                             verticalOptions.min = Number(axis.minimum);
-                        if(axis.maximum != null && axis.maximum.length > 0)
+                        if (axis.maximum != null && axis.maximum.length > 0)
                             verticalOptions.max = Number(axis.maximum);
-                        if(axis.label != null && axis.label.length > 0) {
+                        if (axis.label != null && axis.label.length > 0) {
                             verticalOptions.title = axis.label;
-                            if(axis.color != null && axis.color.length > 0) {
+                            if (axis.color != null && axis.color.length > 0) {
                                 verticalOptions.titleFontColor = axis.color;
                                 verticalOptions.fontColor = axis.color
                             }
                         }
-                        if(axis.position == "right") {
+                        if (axis.position == "right") {
                             verticalOptions.leftBottom = false;
                         }
 
                         console.log("Adding axis 'y" + axis.axis + "' :", verticalOptions);
-                        this.chart.addAxis('y'+axis.axis, verticalOptions);
+                        this.chart.addAxis('y' + axis.axis, verticalOptions);
                     }));
                 }
 
@@ -224,7 +225,8 @@ define([
                 function labelfTime(o) {
                     var dt = new Date();
                     dt.setTime(Number(o));
-                    var d = dt.getHours() + ":" + dt.getMinutes() + " " + (dt.getDate() + 1) + "/" + (dt.getMonth()+1) +
+                    var d = dt.getHours() + ":" + dt.getMinutes() + " " + (dt.getDate() + 1) + "/" +
+                        (dt.getMonth() + 1) +
                         "/" + dt.getFullYear();
                     return d;
                 }
@@ -248,8 +250,8 @@ define([
 
                 array.forEach(item.data, lang.hitch(this, function (value, ref) {
                     var newVal = {};
-                    if(ref != 0) {
-                        if(value.time - item.data[ref - 1].time > 300000) {
+                    if (ref != 0) {
+                        if (value.time - item.data[ref - 1].time > 300000) {
                             newVal.y = Number(item.data[ref - 1].state);
                             newVal.x = Number(value.time - 300000);
                             data.push(newVal);
@@ -274,7 +276,7 @@ define([
                 if (itemCfg.lineColor != undefined && itemCfg.lineColor.length > 0)
                     plotOptions.stroke.color = itemCfg.lineColor;
                 console.log("Adding item " + item.name + ":", plotOptions);
-                if(itemCfg.label == null)
+                if (itemCfg.label == null)
                     this.chart.addSeries(item.name, data, plotOptions);
                 else
                     this.chart.addSeries(itemCfg.label, data, plotOptions);
@@ -288,9 +290,22 @@ define([
                         this.legend = new Legend({chartRef: this.chart});
                         var pane = new ContentPane({region: "bottom", content: this.legend})
                         domClass.add(pane.domNode, "habminChartLegend");
+
                         this.addChild(pane);
                         this.legend.refresh();
+
+                        // Hide the checkbox from the legend display
+                        array.forEach(this.legend.legends, lang.hitch(this, function (legend, i) {
+                            domStyle.set(legend.childNodes[0], "display", "none");
+
+                            //	toggle action
+                            hub.connect(legend.childNodes[2], "onclick", this, function (e) {
+                                domClass.toggle(legend.childNodes[2], "habminLegendDisabled");
+                                e.stopPropagation();
+                            });
+                        }));
                     }
+
                     this.chart.render();
                 }
             },
@@ -304,7 +319,7 @@ define([
                         config.items[ref].lineColor = this.colors[ref];
                 }));
             },
-            _tooltipFunction: function() {
+            _tooltipFunction: function () {
                 return "Tooltip here!";
             },
 
@@ -319,7 +334,7 @@ define([
                 {tick: 100800000, bound: 86400000, formatTick: "HH:mm", formatBound: "dd EEE HH:mm"}
             ],
 
-            _calculateXTicks: function() {
+            _calculateXTicks: function () {
                 // Derive x labels
                 var span = this.chartStop - this.chartStart;
 
@@ -333,13 +348,14 @@ define([
 
                 // Now find the step from the tick table
                 var step;
-                for (var i = this._timeTicks.length-1; i >= 0; i--) {
+                for (var i = this._timeTicks.length - 1; i >= 0; i--) {
                     if (x > this._timeTicks[i].tick) {
                         step = this._timeTicks[i];
                         console.log("Selected tick config ", step);
                         break;
                     }
-                };
+                }
+                ;
 
                 // TODO : Handle local time
 
@@ -351,12 +367,12 @@ define([
                 // Get the first tick
                 var start = Math.ceil((this.chartStart + 1) / step.tick) * step.tick;
                 var dt = new Date();
-                while(start < this.chartStop) {
+                while (start < this.chartStop) {
                     dt.setTime(start);
 
                     var label = {};
                     label.value = start;
-                    if(start % step.bound == 0)
+                    if (start % step.bound == 0)
                         label.text = locale.format(dt, {selector: "date", datePattern: step.formatBound});
                     else
                         label.text = locale.format(dt, {selector: "date", datePattern: step.formatTick});
