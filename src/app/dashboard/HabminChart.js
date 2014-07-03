@@ -4,6 +4,7 @@ define([
         "dojo/_base/array",
         "dojo/dom-class",
         "dojo/dom-style",
+        "dojo/_base/connect",
         "dijit/layout/ContentPane",
         "dijit/layout/BorderContainer",
         "dijit/Toolbar",
@@ -13,13 +14,13 @@ define([
         "dojo/date/locale",
 
         "dojox/charting/widget/Chart",
-        "app/dashboard/SelectableLegend",
+        "dojox/charting/widget/SelectableLegend",
         "dojox/charting/action2d/Tooltip",
         "dojox/charting/themes/PlotKit/blue",
         "dojox/charting/axis2d/Default",
         "dojox/charting/plot2d/Lines"
     ],
-    function (declare, lang, array, domClass, ContentPane, Container, Toolbar, Button, request, sprintf, locale, Chart, Legend, Tooltip) {
+    function (declare, lang, array, domClass, domStyle, hub, ContentPane, Container, Toolbar, Button, request, sprintf, locale, Chart, Legend, Tooltip) {
         return declare(Container, {
             chartLegend: true,
             tooltips: true,
