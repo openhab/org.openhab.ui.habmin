@@ -30,16 +30,16 @@ define([
             tooltips: true,
             newruleBlocks: {
                 block: [
-                {
-                    type: 'openhab_rule',
-                    deletable: false,
-                    movable: false,
-                    fields: [
-                        {name: "NAME", value: "New Rule"}//language.rule_DesignerNewRule}
-                    ]
-                }
-            ]},
-            newruleCode:'// Imports\n\n\n// Rule\nrule "New Rule"\nwhen\n\nthen\n\nend\n',
+                    {
+                        type: 'openhab_rule',
+                        deletable: false,
+                        movable: false,
+                        fields: [
+                            {name: "NAME", value: "New Rule"}//language.rule_DesignerNewRule}
+                        ]
+                    }
+                ]},
+            newruleCode: '// Imports\n\n\n// Rule\nrule "New Rule"\nwhen\n\nthen\n\nend\n',
 
             postCreate: function () {
                 domClass.add(this.domNode, "habminChildNoPadding");
@@ -53,7 +53,7 @@ define([
                         toolbox: true,
                         collapse: true,
                         listeners: {
-                            workspacechanged: lang.hitch(this, function() {
+                            workspacechanged: lang.hitch(this, function () {
                                 console.log("Block editor updated");
                                 // Enable the toolbar
                                 this.toolbar.getChildren()[0].set("disabled", false);
@@ -76,7 +76,7 @@ define([
                 this.addChild(this.codeEditor);
 
                 // Create the toolbar. This will be placed into the tab container so it's
-                // available to all editor.
+                // available to all editors.
                 var toolDefinition = [
                     {
                         label: langCommon.buttonCancel,
@@ -142,14 +142,14 @@ define([
                     }
 
                     var bean = {};
-                    if(this.ruleId != null)
+                    if (this.ruleId != null)
                         bean.id = this.ruleId;
                     bean.block = rule.block[0];
                     bean.name = ruleName;
 
                     var jsonData = json.stringify(bean);
 
-                    request("/services/habmin/config/designer/" + this.ruleId, {
+                    request("/services/habmin/config/designer/" + + (this.ruleId == null ? "" : this.ruleId), {
                         method: this.ruleId == null ? 'POST' : 'PUT',
                         timeout: 5000,
                         data: jsonData,
@@ -161,7 +161,8 @@ define([
                         }
                     }).then(
                         lang.hitch(this, function (data) {
-                            this.notification.alert(this.notification.SUCCESS, sprintf(langAutomation.RuleSavedOk, ruleName));
+                            this.notification.alert(this.notification.SUCCESS,
+                                sprintf(langAutomation.RuleSavedOk, ruleName));
 
                             console.log("The rule source response is: ", data);
                             this.blockEditor.setBlocks(data);
@@ -172,7 +173,8 @@ define([
                             this.toolbar.getChildren()[1].set("disabled", true);
                         }),
                         lang.hitch(this, function (error) {
-                            this.notification.alert(this.notification.ERROR, sprintf(langAutomation.ErrorSavingRule, ruleName));
+                            this.notification.alert(this.notification.ERROR,
+                                sprintf(langAutomation.ErrorSavingRule, ruleName));
                             console.log("An error occurred with rule source response: " + error);
                         })
                     );
@@ -223,7 +225,7 @@ define([
                 this.blockEditor.setBlocks(this.newruleBlocks);
                 this.codeEditor.setCode(this.newruleCode);
             },
-            loadRule: function(ruleId) {
+            loadRule: function (ruleId) {
                 this.ruleId = ruleId;
                 request("/services/habmin/config/designer/" + ruleId, {
                     timeout: 5000,
