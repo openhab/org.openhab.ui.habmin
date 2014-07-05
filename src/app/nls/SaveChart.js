@@ -44,7 +44,10 @@ define({
         Position: "Position",
 
         AxisInvalid: "Axis must be either 1 or 2",
-        LineWidthInvalid: "Line width much be a positive value"
+        LineWidthInvalid: "Line width much be a positive value",
+
+        ChartSavedOk: "Chart '<i>%s</i>' saved ok",
+        ErrorSavingChart: "Error saving chart '<i>%s</i>'!"
     }
 
 //    de: true

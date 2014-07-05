@@ -11,6 +11,11 @@ define([
         "dojo/dom-style",
         "dojo/request",
 
+        "dojo/json",
+        "dojox/string/sprintf",
+
+        "app/main/Notification",
+
         "dijit/layout/StackContainer",
         "dijit/layout/StackController",
 
@@ -29,7 +34,7 @@ define([
         "dojo/i18n!app/nls/SaveChart"
 
     ],
-    function (declare, lang, on, array, dom, Evented, Deferred, JSON, domConstruct, domStyle, request, StackContainer, StackController, GeneralConfig, ItemConfig, AxisConfig, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, Dialog, Form, langCommon, langSaveChart) {
+    function (declare, lang, on, array, dom, Evented, Deferred, JSON, domConstruct, domStyle, request, json, sprintf, Notification, StackContainer, StackController, GeneralConfig, ItemConfig, AxisConfig, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, Dialog, Form, langCommon, langSaveChart) {
 
         return declare([Dialog, Evented], {
             title: langSaveChart.WindowTitle,
@@ -70,6 +75,9 @@ define([
             postCreate: function () {
                 this.inherited(arguments);
 
+                // Initialise the notification system
+                this.notification = Notification();
+
                 // Set the button names - for internationalisation
                 this.submitButton.set("label", langCommon.buttonSave);
                 this.cancelButton.set("label", langCommon.buttonCancel);
@@ -106,7 +114,7 @@ define([
 
                 // Generate the chart definition
                 var chartDef = {
-                    id: 0,
+                    id: this.chartId,
                     axis: [],
                     items: []
                 };
@@ -142,8 +150,35 @@ define([
                 }));
 
                 // All ok? Send to openHAB
+                var jsonData = json.stringify(chartDef);
+
+                request("/services/habmin/persistence/charts/" + + (this.chartId == null ? "" : this.chartId), {
+                    method: this.chartId == null ? 'POST' : 'PUT',
+                    timeout: 5000,
+                    data: jsonData,
+                    handleAs: 'json',
+                    preventCache: true,
+                    headers: {
+                        "Content-Type": 'application/json; charset=utf-8',
+                        "Accept": "application/json"
+                    }
+                }).then(
+                    lang.hitch(this, function (data) {
+                        this.notification.alert(this.notification.SUCCESS,
+                            sprintf(langSaveChart.ChartSavedOk, chartDef.name));
+
+                        console.log("The rule source response is: ", data);
+                        this.blockEditor.setBlocks(data);
+                        this.codeEditor.setCode(data.source);
 
 
+                    }),
+                    lang.hitch(this, function (error) {
+                        this.notification.alert(this.notification.ERROR,
+                            sprintf(langSaveChart.ErrorSavingChart, chartDef.name));
+                        console.log("An error occurred with rule source response: " + error);
+                    })
+                );
             },
 
             _onValidStateChange: function () {
@@ -176,8 +211,11 @@ define([
                     this._loadItem(item, this.chartStart, this.chartStop);
                 }));
             },
+
             loadChart: function (chartRef) {
                 console.log("Loading chart: " + chartRef);
+
+                this.chartId = chartRef;
 
                 request("/services/habmin/persistence/charts/" + chartRef, {
                     timeout: 5000,
