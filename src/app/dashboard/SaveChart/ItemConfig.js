@@ -10,11 +10,12 @@ define([
         "dijit/form/CheckBox",
         "dijit/ColorPalette",
 
+        "app/dashboard/SaveChart/LineStyleStore",
         "app/dashboard/SaveChart/ColorSelectButton",
 
         "dojo/i18n!app/nls/SaveChart"
     ],
-    function (declare, lang, TableContainer, TextBox, NumberSpinner, Select, CheckBox, ColorPalette, ColorButton, langSaveChart) {
+    function (declare, lang, TableContainer, TextBox, NumberSpinner, Select, CheckBox, ColorPalette, LineStyleStore, ColorButton, langSaveChart) {
         return declare([TableContainer], {
             cols: 1,
             labelWidth: "150",
@@ -23,21 +24,23 @@ define([
             cfgItem: "",
             cfgLabel: "",
             cfgAxis: 1,
-            cfgType: "",
             cfgLineColor: "",
             cfgLineWidth: 1,
             cfgLineStyle: "",
             cfgMarkerColor: "",
             cfgMarkerStyle: "",
             cfgLegend: true,
+            cfgRepeatTime: 0,
 
             postCreate: function () {
                 this.inherited(arguments);
                 var childStyle = "width:98%";
 
-                if(this.cfgLegend == null)
+                var lineStore = new LineStyleStore();
+
+                if (this.cfgLegend == null)
                     this.cfgLegend = false;
-                else if(this.cfgLegend == "true")
+                else if (this.cfgLegend == "true")
                     this.cfgLegend = true;
                 else
                     this.cfgLegend = false;
@@ -62,7 +65,7 @@ define([
                     style: childStyle,
                     value: this.cfgAxis,
                     required: true,
-                    constraints:{ min:1, max:2 },
+                    constraints: { min: 1, max: 2 },
                     invalidMessage: langSaveChart.AxisInvalid
                 });
                 this.lineColorEditor = new ColorButton({
@@ -75,13 +78,14 @@ define([
                     style: childStyle,
                     value: this.cfgLineWidth,
                     required: true,
-                    constraints:{ min:0, max:30 },
+                    constraints: { min: 0, max: 30 },
                     invalidMessage: langSaveChart.LineWidthInvalid
                 });
-                this.lineStyleEditor = new TextBox({
+                this.lineStyleEditor = new Select({
                     label: langSaveChart.LineStyle,
                     style: childStyle,
-                    value: this.cfgLineStyle
+                    value: this.cfgLineStyle,
+                    store: lineStore.getStore()
                 });
                 this.markerColorEditor = new ColorButton({
                     label: langSaveChart.MarkerColor,
@@ -100,7 +104,7 @@ define([
                 this.timeEditor = new NumberSpinner({
                     label: langSaveChart.RepeatTime,
                     style: childStyle,
-                    value: this.cfg
+                    value: this.cfgRepeatTime
                 });
 
                 this.addChild(this.itemEditor);
@@ -113,6 +117,16 @@ define([
                 this.addChild(this.markerStyleEditor);
                 this.addChild(this.legendEditor);
                 this.addChild(this.timeEditor);
+            },
+            updateData: function () {
+                this.cfgLabel = this.labelEditor.getValue();
+                this.cfgAxis = this.axisEditor.getValue();
+                this.cfgLineColor = this.lineColorEditor.getValue();
+                this.cfgLineWidth = this.lineWidthEditor.getValue();
+                this.cfgLineStyle = this.lineStyleEditor.getValue();
+                this.cfgMarkerColor = this.markerColorEditor.getValue();
+                this.cfgMarkerStyle = this.markerStyleEditor.getValue();
+                this.cfgRepeatTime = this.timeEditor.getValue();
             }
         })
     });

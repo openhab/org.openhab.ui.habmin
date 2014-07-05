@@ -25,7 +25,7 @@ define([
             },
 
             getValue: function() {
-                return colorValue;
+                return this.colorValue;
             }
         })
     });

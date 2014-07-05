@@ -59,7 +59,8 @@ define([
                 this.addChild(this.colorEditor);
                 this.addChild(this.minimumEditor);
                 this.addChild(this.maximumEditor);
+            },
+            updateData: function () {
             }
-
         })
     });

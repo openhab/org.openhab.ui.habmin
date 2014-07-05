@@ -28,6 +28,7 @@ define({
 
         Item: "Item",
         Label: "Label",
+        Format: "Format",
         ChartType: "Chart type",
         Axis: "Axis",
         LineColor: "Line Color",

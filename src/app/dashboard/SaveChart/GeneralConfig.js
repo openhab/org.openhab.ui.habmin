@@ -51,8 +51,8 @@ define([
 
                 var stateStore = new Memory({
                     data: [
-                        {label:"<img width='14px' height='14px' src='app/images/compass.png'/>Egypt", name: "1", id:"AL"},
-                         {label:"<img width='14px' height='14px' src='app/images/compass.png'/>Egypt 2", name: "2", id:"A2"}
+                        {label: "<img width='14px' height='14px' src='app/images/compass.png'/>Egypt", name: "1", id: "AL"},
+                        {label: "<img width='14px' height='14px' src='app/images/compass.png'/>Egypt 2", name: "2", id: "A2"}
                     ]
                 });
 
@@ -82,7 +82,7 @@ define([
                 // Find the period in the store and create the combo box
                 var periodResult = periodMemoryStore.query({period: this.cfgPeriod});
                 var periodValue = langSaveChart.GraphPeriod2Days;
-                if(periodResult != null && periodResult.length == 1)
+                if (periodResult != null && periodResult.length == 1)
                     periodValue = periodResult[0].name;
                 this.periodEditor = new ComboBox({label: langSaveChart.Period,
                     style: childStyle,
@@ -91,6 +91,8 @@ define([
                     searchAttr: "name"
                 });
                 this.addChild(this.periodEditor);
+            },
+            updateData: function () {
             }
         })
     });

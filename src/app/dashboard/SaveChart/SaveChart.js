@@ -112,6 +112,7 @@ define([
                 };
 
                 array.forEach(children, lang.hitch(this, function(child) {
+                    child.updateData();
                     switch(child.cfgType) {
                         case 'general':
                             chartDef.icon = child.cfgIcon;
