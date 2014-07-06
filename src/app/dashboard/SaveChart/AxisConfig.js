@@ -26,7 +26,7 @@ define([
 
             cfgMajorLineColor: "#000000",
             cfgMajorLineWidth: "1",
-            cfgMajorLineStyle: "Solid",
+            cfgMajorLineStyle: "None",
             cfgMinorLineColor: "#000000",
             cfgMinorLineWidth: "1",
             cfgMinorLineStyle: "None",

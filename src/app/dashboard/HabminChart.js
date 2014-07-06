@@ -228,14 +228,17 @@ define([
                         console.log("Adding axis '" + axis.position + "' :", verticalOptions);
                         this.chart.addAxis(axis.position, verticalOptions);
 
-                        if(axis.majorStyle != null ) {
+                        if (axis.majorStyle != null) {
                             this.chart.addPlot("grid" + axis.position, { type: Grid,
                                 vAxis: axis.position,
-                                hMajorLines: true,
-                                hMinorLines: false,
+                                hMajorLines: (axis.majorStyle != null && axis.majorStyle.length != 0 &&
+                                    axis.majorStyle != "None") ? true : false,
+                                hMinorLines: (axis.minorStyle != null && axis.minorStyle.length != 0 &&
+                                    axis.minorStyle != "None") ? true : false,
                                 vMajorLines: false,
                                 vMinorLines: false,
-                                majorHLine: { style: axis.majorStyle, color: axis.majorColor, width: axis.majorWidth }
+                                majorHLine: { style: axis.majorStyle, color: axis.majorColor, width: axis.majorWidth },
+                                minorHLine: { style: axis.minorStyle, color: axis.minorColor, width: axis.minorWidth }
                             });
                         }
                     }));
@@ -256,7 +259,7 @@ define([
 
                 // If there's no repeat time, then set it to 'infinity'
                 // Otherwise turn into milliseconds
-                if(itemCfg.repeatTime == null || itemCfg.repeatTime < 1)
+                if (itemCfg.repeatTime == null || itemCfg.repeatTime < 1)
                     itemCfg.repeatTime = 9007199254740000;
                 else
                     itemCfg.repeatTime *= 1000;
@@ -324,7 +327,7 @@ define([
                         }));
                     }
 
-                    if(this.chartDef.title)
+                    if (this.chartDef.title)
                         this.chart.title = this.chartDef.title;
 
                     this.chart.fullRender();
