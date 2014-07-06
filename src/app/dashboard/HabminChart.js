@@ -15,12 +15,14 @@ define([
 
         "dojox/charting/widget/Chart",
         "dojox/charting/widget/SelectableLegend",
+        "dojox/charting/plot2d/Grid",
+        "dojox/charting/plot2d/Indicator",
         "dojox/charting/action2d/Tooltip",
         "dojox/charting/themes/PlotKit/blue",
         "dojox/charting/axis2d/Default",
         "dojox/charting/plot2d/Lines"
     ],
-    function (declare, lang, array, domClass, domStyle, hub, ContentPane, Container, Toolbar, Button, request, sprintf, locale, Chart, Legend, Tooltip) {
+    function (declare, lang, array, domClass, domStyle, hub, ContentPane, Container, Toolbar, Button, request, sprintf, locale, Chart, Legend, Grid, Indicator, Tooltip) {
         return declare(Container, {
             chartLegend: true,
             tooltips: true,
@@ -38,14 +40,13 @@ define([
                 '#c42525',
                 '#a6c96a'
             ],
+            axisPos: [],
             postCreate: function () {
                 domClass.add(this.domNode, "habminChildNoPadding");
-                this._createChart();
             },
             startup: function () {
                 this.inherited(arguments);
                 this.resize();
-                this.chart.resize();
             },
             _createChart: function () {
                 this.chartWidget = new Chart({region: "center"});
@@ -102,6 +103,7 @@ define([
                         this.chartStop = Math.round((new Date()).getTime());
                         this.chartStart = this.chartStop - (data.period * 1000);
 
+                        this._createChart();
                         this._createPlots();
 
                         array.forEach(data.items, lang.hitch(this, function (item) {
@@ -144,9 +146,8 @@ define([
                     //   this.chartDef.items[ref].plotName = "line1";
                     // this.chartDef.items[ref].plotType = "Lines";
 
-                    var axis = 1;
-                    if (item.axis > 0)
-                        axis = item.axis;
+                    if (item.axis != "right")
+                        item.axis = "left";
 
                     switch (item.chart) {
                         default:
@@ -156,12 +157,12 @@ define([
                             this.chartDef.items[ref].plotType = "Bar";
                             break;
                     }
-                    this.chartDef.items[ref].plotName = this.chartDef.items[ref].plotType + axis;
+                    this.chartDef.items[ref].plotName = this.chartDef.items[ref].plotType + item.axis;
 
                     var plotOptions = {};
                     plotOptions.type = this.chartDef.items[ref].plotType;
                     plotOptions.hAxis = "x";
-                    plotOptions.vAxis = "y" + axis;
+                    plotOptions.vAxis = item.axis;
 //                    plotOptions.markers= false;
 
 //                    tension: "X"//,
@@ -179,18 +180,44 @@ define([
                     }
                 }));
 
+            /*    this.chart.addPlot("default1", { type: Grid,
+                    vAxis: "y1",
+                    hMajorLines: true,
+                    hMinorLines: false,
+                    vMajorLines: false,
+                    vMinorLines: false,
+                    majorHLine: { color: "green", width: 3 },
+                    majorVLine: { color: "red", width: 3 }
+                });
+
+                this.chart.addPlot("default2", { type: Grid,
+                    vAxis: "y2",
+                    hMajorLines: true,
+                    hMinorLines: false,
+                    vMajorLines: false,
+                    vMinorLines: false,
+                    majorHLine: { color: "red", width: 1, style: "Dot"},
+                    majorVLine: { color: "red", width: 3 }
+                });*/
+
                 // Create the x (time) axis
                 // TODO: Add time config?
                 this.chart.addAxis("x", this._calculateXTicks());
-//                this.chart.addAxis("x");
 
                 // Now loop through and create all the axis
                 if (this.chartDef.axis == null) {
                     // No axis are defined - create a default
-                    console.log("Adding default axis 'y1'");
-                    this.chart.addAxis("y1", {vertical: true});
+                    console.log("Adding default axis 'left'");
+                    this.chart.addAxis("left", {vertical: true});
                 }
                 else {
+                    // Reset the axis position
+                    this.axisPos[1] = "left";
+                    this.axisPos[2] = "left";
+                    this.axisPos[3] = "left";
+                    this.axisPos[4] = "left";
+
+                    // Make sure the axis list is an array
                     this.chartDef.axis = [].concat(this.chartDef.axis);
                     array.forEach(this.chartDef.axis, lang.hitch(this, function (axis, ref) {
                         if (axis == null)
@@ -214,22 +241,13 @@ define([
                         if (axis.position == "right") {
                             verticalOptions.leftBottom = false;
                         }
+                        else {
+                            axis.position = "left";
+                        }
 
-                        console.log("Adding axis 'y" + axis.axis + "' :", verticalOptions);
-                        this.chart.addAxis('y' + axis.axis, verticalOptions);
+                        console.log("Adding axis '" + axis.position + "' :", verticalOptions);
+                        this.chart.addAxis(axis.position, verticalOptions);
                     }));
-                }
-
-                // TODO: This needs more work.
-                // We need to find a way to set an appropriate start for the first label (on a nice round time period)
-                // And then set the incremenet between ticks to another sensible time period
-                function labelfTime(o) {
-                    var dt = new Date();
-                    dt.setTime(Number(o));
-                    var d = dt.getHours() + ":" + dt.getMinutes() + " " + (dt.getDate() + 1) + "/" +
-                        (dt.getMonth() + 1) +
-                        "/" + dt.getFullYear();
-                    return d;
                 }
 
                 function labelVertical(o) {
@@ -237,8 +255,6 @@ define([
                 }
             },
             _addChartItem: function (item) {
-                console.log("Adding", item.name);
-
                 // Find the chart config for this item
                 var itemCfg = null;
                 array.forEach(this.chartDef.items, lang.hitch(this, function (cfg, i) {
@@ -247,14 +263,24 @@ define([
                     }
                 }));
 
+                // If there's no repeat time, then set it to 'infinity'
+                // Otherwise turn into milliseconds
+                if(itemCfg.repeatTime == null || itemCfg.repeatTime < 1)
+                    itemCfg.repeatTime = 9007199254740000;
+                else
+                    itemCfg.repeatTime *= 1000;
+
+                console.log("Adding", item.name, "- repeat is ", itemCfg.repeatTime);
+
                 var data = new Array();
 
                 array.forEach(item.data, lang.hitch(this, function (value, ref) {
                     var newVal = {};
                     if (ref != 0) {
-                        if (value.time - item.data[ref - 1].time > 300000) {
+                        // Check if we want to extend the data
+                        if (value.time - item.data[ref - 1].time > itemCfg.repeatTime) {
                             newVal.y = Number(item.data[ref - 1].state);
-                            newVal.x = Number(value.time - 300000);
+                            newVal.x = Number(value.time - itemCfg.repeatTime);
                             data.push(newVal);
 
                             newVal = {};
@@ -307,7 +333,10 @@ define([
                         }));
                     }
 
-                    this.chart.render();
+                    if(this.chartDef.title)
+                        this.chart.title = this.chartDef.title;
+
+                    this.chart.fullRender();
                 }
             },
             _sanityCheck: function (config) {
@@ -360,13 +389,14 @@ define([
 
                 // TODO : Handle local time
 
-                var labels = [];
+                // Get the first tick
+                var start = Math.ceil((this.chartStart + 1) / step.tick) * step.tick;
+
                 var config = {
                     min: start - step.tick
                 };
 
-                // Get the first tick
-                var start = Math.ceil((this.chartStart + 1) / step.tick) * step.tick;
+                var labels = [];
                 var dt = new Date();
                 while (start < this.chartStop) {
                     dt.setTime(start);

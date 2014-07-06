@@ -18,8 +18,8 @@ define({
         WindowTitle: "Save Chart",
 
         General: "General Configuration",
-        Axis1: "Axis 1 (Left)",
-        Axis2: "Axis 2 (Right)",
+        AxisLeft: "Left Axis",
+        AxisRight: "Right Axis",
 
         Name: "Name",
         Title: "Title",

@@ -93,6 +93,10 @@ define([
                 this.addChild(this.periodEditor);
             },
             updateData: function () {
+                this.cfgName = this.nameEditor.getValue();
+                this.cfgTitle = this.titleEditor.getValue();
+                this.cfgIcon = this.iconEditor.getValue();
+                this.period = this.periodEditor.getValue();
             }
         })
     });

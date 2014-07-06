@@ -126,6 +126,7 @@ define([
                             chartDef.icon = child.cfgIcon;
                             chartDef.name = child.cfgName;
                             chartDef.period = child.cfgPeriod;
+                            chartDef.title = child.cfgTitle;
                             break;
                         case 'item':
                             var itemCfg = {};
@@ -140,6 +141,7 @@ define([
                             break;
                         case 'axis':
                             var axisCfg = {};
+                            axisCfg.position = child.cfgPosition;
                             axisCfg.label = child.cfgLabel;
                             axisCfg.format = child.cfgFormat;
                             axisCfg.color = child.cfgColor;
@@ -168,16 +170,13 @@ define([
                         this.notification.alert(this.notification.SUCCESS,
                             sprintf(langSaveChart.ChartSavedOk, chartDef.name));
 
-                        console.log("The rule source response is: ", data);
-                        this.blockEditor.setBlocks(data);
-                        this.codeEditor.setCode(data.source);
-
-
+                        console.log("The chart save response is: ", data);
+                        this.destroyRecursive();
                     }),
                     lang.hitch(this, function (error) {
                         this.notification.alert(this.notification.ERROR,
                             sprintf(langSaveChart.ErrorSavingChart, chartDef.name));
-                        console.log("An error occurred with rule source response: " + error);
+                        console.log("An error occurred with chart save response: " + error);
                     })
                 );
             },
@@ -250,7 +249,7 @@ define([
                     cfgPeriod: chartDef.period,
                     cfgIcon: chartDef.icon,
                     cfgName: chartDef.name,
-                    cfgTitle: ""
+                    cfgTitle: chartDef.title
                 });
                 this.stackContainer.addChild(child);
 
@@ -269,42 +268,59 @@ define([
                         cfgAxis: item.axis,
                         cfgLineColor: item.lineColor,
                         cfgLineWidth: item.lineWidth,
-                        cfgLineStyle: item.lineStyle
+                        cfgLineStyle: item.lineStyle,
+                        cfgRepeatTime: item.repeatTime
  //                       cfgMarkerColor: item.,
  //                       cfgMarkerStyle: ""
                     });
                     this.stackContainer.addChild(child);
                 }));
 
+                // Create the axis config screens.
+                // This is done in a two stage process to ensure we can't define more than
+                // one axis to each side of the chart.
+                var leftAxis = new AxisConfig({
+                    style: childStyle,
+                    title:langSaveChart.AxisLeft,
+                    cfgPosition: "left"
+                });
+                var rightAxis = new AxisConfig({
+                    style: childStyle,
+                    title:langSaveChart.AxisRight,
+                    cfgPosition: "right"
+                });
+
                 array.forEach(chartDef.axis, lang.hitch(this, function (axis) {
-                    switch(parseInt(axis.axis)) {
-                        case 1:
+                    switch(axis.position) {
+                        default:
                             // Add the axis configuration
-                            child = new AxisConfig({
+                            leftAxis = new AxisConfig({
                                 style: childStyle,
-                                title:langSaveChart.Axis1,
+                                title:langSaveChart.AxisLeft,
+                                cfgPosition: "left",
                                 cfgLabel: axis.label,
                                 cfgColor: axis.color,
                                 cfgFormat: axis.format,
                                 cfgMaximum: axis.maximum,
                                 cfgMinimum: axis.minimum
                             });
-                            this.stackContainer.addChild(child);
                             break;
-                        case 2:
-                            child = new AxisConfig({
+                        case 'right':
+                            rightAxis = new AxisConfig({
                                 style: childStyle,
-                                title:langSaveChart.Axis2,
+                                cfgPosition: "right",
+                                title:langSaveChart.AxisRight,
                                 cfgLabel: axis.label,
                                 cfgColor: axis.color,
                                 cfgFormat: axis.format,
                                 cfgMaximum: axis.maximum,
                                 cfgMinimum: axis.minimum
                             });
-                            this.stackContainer.addChild(child);
                             break;
                     }
                 }));
+                this.stackContainer.addChild(leftAxis);
+                this.stackContainer.addChild(rightAxis);
             }
         })
     });

@@ -61,6 +61,11 @@ define([
                 this.addChild(this.maximumEditor);
             },
             updateData: function () {
+                this.cfgLabel = this.labelEditor.getValue();
+                this.cfgFormat = this.formatEditor.getValue();
+                this.cfgColor = this.colorEditor.getValue();
+                this.cfgMinimum = this.minimumEditor.getValue();
+                this.cfgMaximum = this.maximumEditor.getValue();
             }
         })
     });

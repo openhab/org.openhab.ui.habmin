@@ -10,12 +10,15 @@ define([
         "dijit/form/CheckBox",
         "dijit/ColorPalette",
 
+        "dojo/store/Memory",
+        "dojo/data/ObjectStore",
+
         "app/dashboard/SaveChart/LineStyleStore",
         "app/dashboard/SaveChart/ColorSelectButton",
 
         "dojo/i18n!app/nls/SaveChart"
     ],
-    function (declare, lang, TableContainer, TextBox, NumberSpinner, Select, CheckBox, ColorPalette, LineStyleStore, ColorButton, langSaveChart) {
+    function (declare, lang, TableContainer, TextBox, NumberSpinner, Select, CheckBox, ColorPalette, Memory, ObjectStore, LineStyleStore, ColorButton, langSaveChart) {
         return declare([TableContainer], {
             cols: 1,
             labelWidth: "150",
@@ -45,6 +48,15 @@ define([
                 else
                     this.cfgLegend = false;
 
+                var axisStore = new Memory({
+                    data: [
+                        {label: "Left", id: "left"},
+                        {label: "Right", id: "right"}
+                    ]
+                });
+
+                var axisOs = new ObjectStore({ objectStore: axisStore });
+
                 this.itemEditor = new TextBox({
                     label: langSaveChart.Item,
                     style: childStyle,
@@ -60,13 +72,12 @@ define([
                     style: childStyle,
                     value: this.cfgType
                 });
-                this.axisEditor = new NumberSpinner({
+                this.axisEditor = new Select({
                     label: langSaveChart.Axis,
                     style: childStyle,
                     value: this.cfgAxis,
                     required: true,
-                    constraints: { min: 1, max: 2 },
-                    invalidMessage: langSaveChart.AxisInvalid
+                    store: axisOs
                 });
                 this.lineColorEditor = new ColorButton({
                     label: langSaveChart.LineColor,
