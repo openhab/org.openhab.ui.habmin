@@ -135,6 +135,7 @@ define([
                             itemCfg.lineWidth = child.cfgLineWidth;
                             itemCfg.lineStyle = child.cfgLineStyle;
                             itemCfg.axis = child.cfgAxis;
+                            itemCfg.repeatTime = child.cfgRepeatTime;
                             chartDef.items.push(itemCfg);
                             break;
                         case 'axis':
@@ -258,6 +259,8 @@ define([
                 array.forEach(chartDef.items, lang.hitch(this, function (item) {
                     if(item.lineColor == null || item.lineColor.length == 0)
                         item.lineColor = this.defaultColors[colorRef++];
+                    if(item.lineStyle == null || item.lineStyle.length == 0)
+                        item.lineStyle = "Solid";
                     child = new ItemConfig({
                         style: childStyle,
                         title: item.item,
