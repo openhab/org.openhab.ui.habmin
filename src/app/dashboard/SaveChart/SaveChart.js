@@ -91,15 +91,15 @@ define([
                 this._onValidStateChange();
 
                 this.stackContainer = new StackContainer({
-                    style:"height:350px;width:410px;",
-                    doLayout:false,
+                    style: "height:350px;width:410px;",
+                    doLayout: false,
                     isLayoutContainer: false
                 }, this.pagePane);
 
                 // Children loaded here
 
                 var controller = new StackController({
-                    style:"height:350px;width:290px;",
+                    style: "height:350px;width:290px;",
                     containerId: this.stackContainer.domNode.id
                 }, this.optionPane);
 
@@ -119,9 +119,9 @@ define([
                     items: []
                 };
 
-                array.forEach(children, lang.hitch(this, function(child) {
+                array.forEach(children, lang.hitch(this, function (child) {
                     child.updateData();
-                    switch(child.cfgType) {
+                    switch (child.cfgType) {
                         case 'general':
                             chartDef.icon = child.cfgIcon;
                             chartDef.name = child.cfgName;
@@ -147,6 +147,12 @@ define([
                             axisCfg.color = child.cfgColor;
                             axisCfg.minimum = child.cfgMinimum;
                             axisCfg.maximum = child.cfgMaximum;
+                            axisCfg.majorColor = child.cfgMajorLineColor;
+                            axisCfg.majorWidth = child.cfgMajorLineWidth;
+                            axisCfg.majorStyle = child.cfgMajorLineStyle;
+                            axisCfg.minorColor = child.cfgMinorLineColor;
+                            axisCfg.minorWidth = child.cfgMinorLineWidth;
+                            axisCfg.minorStyle = child.cfgMinorLineStyle;
                             chartDef.axis.push(axisCfg);
                             break;
                     }
@@ -155,7 +161,7 @@ define([
                 // All ok? Send to openHAB
                 var jsonData = json.stringify(chartDef);
 
-                request("/services/habmin/persistence/charts/" + + (this.chartId == null ? "" : this.chartId), {
+                request("/services/habmin/persistence/charts/" + +(this.chartId == null ? "" : this.chartId), {
                     method: this.chartId == null ? 'POST' : 'PUT',
                     timeout: 5000,
                     data: jsonData,
@@ -189,7 +195,7 @@ define([
                 var isBusy = this.get("readyState") == this.BUSY;
             },
 
-            hide: function() {
+            hide: function () {
                 this.destroyRecursive(false);
             },
 
@@ -238,14 +244,14 @@ define([
                     })
                 );
             },
-            _updateData: function(chartDef) {
+            _updateData: function (chartDef) {
                 var child;
                 var childStyle = "height:270px";
 
                 // Add the general configuration
                 child = new GeneralConfig({
                     style: childStyle,
-                    title:langSaveChart.General,
+                    title: langSaveChart.General,
                     cfgPeriod: chartDef.period,
                     cfgIcon: chartDef.icon,
                     cfgName: chartDef.name,
@@ -256,9 +262,9 @@ define([
                 // Add all the items
                 var colorRef = 0;
                 array.forEach(chartDef.items, lang.hitch(this, function (item) {
-                    if(item.lineColor == null || item.lineColor.length == 0)
+                    if (item.lineColor == null || item.lineColor.length == 0)
                         item.lineColor = this.defaultColors[colorRef++];
-                    if(item.lineStyle == null || item.lineStyle.length == 0)
+                    if (item.lineStyle == null || item.lineStyle.length == 0)
                         item.lineStyle = "Solid";
                     child = new ItemConfig({
                         style: childStyle,
@@ -270,8 +276,8 @@ define([
                         cfgLineWidth: item.lineWidth,
                         cfgLineStyle: item.lineStyle,
                         cfgRepeatTime: item.repeatTime
- //                       cfgMarkerColor: item.,
- //                       cfgMarkerStyle: ""
+                        //                       cfgMarkerColor: item.,
+                        //                       cfgMarkerStyle: ""
                     });
                     this.stackContainer.addChild(child);
                 }));
@@ -281,41 +287,43 @@ define([
                 // one axis to each side of the chart.
                 var leftAxis = new AxisConfig({
                     style: childStyle,
-                    title:langSaveChart.AxisLeft,
+                    title: langSaveChart.AxisLeft,
                     cfgPosition: "left"
                 });
                 var rightAxis = new AxisConfig({
                     style: childStyle,
-                    title:langSaveChart.AxisRight,
+                    title: langSaveChart.AxisRight,
                     cfgPosition: "right"
                 });
 
                 array.forEach(chartDef.axis, lang.hitch(this, function (axis) {
-                    switch(axis.position) {
+                    var axisCfg = {
+                        style: childStyle,
+                        cfgLabel: axis.label,
+                        cfgColor: axis.color,
+                        cfgFormat: axis.format,
+                        cfgMaximum: axis.maximum,
+                        cfgMinimum: axis.minimum,
+                        cfgMajorLineColor: axis.majorColor != null ? axis.majorColor : "",
+                        cfgMajorLineWidth: axis.majorWidth != null ? axis.majorWidth : "",
+                        cfgMajorLineStyle: axis.majorStyle != null ? axis.majorStyle : "",
+                        cfgMinorLineColor: axis.minorColor != null ? axis.minorColor : "",
+                        cfgMinorLineWidth: axis.minorWidth != null ? axis.minorWidth : "",
+                        cfgMinorLineStyle: axis.minorStyle != null ? axis.minorStyle : ""
+                    };
+                    switch (axis.position) {
                         default:
+                            axisCfg.title = langSaveChart.AxisLeft;
+                            axisCfg.cfgPosition = "left";
+
                             // Add the axis configuration
-                            leftAxis = new AxisConfig({
-                                style: childStyle,
-                                title:langSaveChart.AxisLeft,
-                                cfgPosition: "left",
-                                cfgLabel: axis.label,
-                                cfgColor: axis.color,
-                                cfgFormat: axis.format,
-                                cfgMaximum: axis.maximum,
-                                cfgMinimum: axis.minimum
-                            });
+                            leftAxis = new AxisConfig(axisCfg);
                             break;
                         case 'right':
-                            rightAxis = new AxisConfig({
-                                style: childStyle,
-                                cfgPosition: "right",
-                                title:langSaveChart.AxisRight,
-                                cfgLabel: axis.label,
-                                cfgColor: axis.color,
-                                cfgFormat: axis.format,
-                                cfgMaximum: axis.maximum,
-                                cfgMinimum: axis.minimum
-                            });
+                            axisCfg.title = langSaveChart.AxisRight;
+                            axisCfg.cfgPosition = "right";
+
+                            rightAxis = new AxisConfig(axisCfg);
                             break;
                     }
                 }));

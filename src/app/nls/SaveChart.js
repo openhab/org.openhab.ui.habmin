@@ -46,6 +46,13 @@ define({
         AxisInvalid: "Axis must be either 1 or 2",
         LineWidthInvalid: "Line width much be a positive value",
 
+        MajorLineColor: "Major Tick Color",
+        MajorLineWidth: "Major Tick Width",
+        MajorLineStyle: "Major Tick Style",
+        MinorLineColor: "Minor Tick Color",
+        MinorLineWidth: "Minor Tick Width",
+        MinorLineStyle: "Minor Tick Style",
+
         ChartSavedOk: "Chart '<i>%s</i>' saved ok",
         ErrorSavingChart: "Error saving chart '<i>%s</i>'!"
     }

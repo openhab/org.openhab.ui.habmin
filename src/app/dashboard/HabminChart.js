@@ -180,26 +180,6 @@ define([
                     }
                 }));
 
-            /*    this.chart.addPlot("default1", { type: Grid,
-                    vAxis: "y1",
-                    hMajorLines: true,
-                    hMinorLines: false,
-                    vMajorLines: false,
-                    vMinorLines: false,
-                    majorHLine: { color: "green", width: 3 },
-                    majorVLine: { color: "red", width: 3 }
-                });
-
-                this.chart.addPlot("default2", { type: Grid,
-                    vAxis: "y2",
-                    hMajorLines: true,
-                    hMinorLines: false,
-                    vMajorLines: false,
-                    vMinorLines: false,
-                    majorHLine: { color: "red", width: 1, style: "Dot"},
-                    majorVLine: { color: "red", width: 3 }
-                });*/
-
                 // Create the x (time) axis
                 // TODO: Add time config?
                 this.chart.addAxis("x", this._calculateXTicks());
@@ -247,6 +227,17 @@ define([
 
                         console.log("Adding axis '" + axis.position + "' :", verticalOptions);
                         this.chart.addAxis(axis.position, verticalOptions);
+
+                        if(axis.majorStyle != null ) {
+                            this.chart.addPlot("grid" + axis.position, { type: Grid,
+                                vAxis: axis.position,
+                                hMajorLines: true,
+                                hMinorLines: false,
+                                vMajorLines: false,
+                                vMinorLines: false,
+                                majorHLine: { style: axis.majorStyle, color: axis.majorColor, width: axis.majorWidth }
+                            });
+                        }
                     }));
                 }
 
