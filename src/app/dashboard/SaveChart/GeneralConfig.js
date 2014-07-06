@@ -29,25 +29,25 @@ define([
 
                 var childStyle = "width:98%";
 
-                var periodMemoryStore = new Memory({
+                this.periodMemoryStore = new Memory({
                     data: [
-                        {period: '3600', name: langSaveChart.GraphPeriod1Hour},
-                        {period: '7200', name: langSaveChart.GraphPeriod2Hours},
-                        {period: '10800', name: langSaveChart.GraphPeriod3Hours},
-                        {period: '14400', name: langSaveChart.GraphPeriod4Hours},
-                        {period: '21600', name: langSaveChart.GraphPeriod6Hours},
-                        {period: '43200', name: langSaveChart.GraphPeriod12Hours},
-                        {period: '86400', name: langSaveChart.GraphPeriod1Day},
-                        {period: '172800', name: langSaveChart.GraphPeriod2Days},
-                        {period: '259200', name: langSaveChart.GraphPeriod3Days},
-                        {period: '345600', name: langSaveChart.GraphPeriod4Days},
-                        {period: '432000', name: langSaveChart.GraphPeriod5Days},
-                        {period: '864000', name: langSaveChart.GraphPeriod10Days},
-                        {period: '604800', name: langSaveChart.GraphPeriod1Week},
-                        {period: '1209600', name: langSaveChart.GraphPeriod2Weeks}
+                        {id: '3600', label: langSaveChart.GraphPeriod1Hour},
+                        {id: '7200', label: langSaveChart.GraphPeriod2Hours},
+                        {id: '10800', label: langSaveChart.GraphPeriod3Hours},
+                        {id: '14400', label: langSaveChart.GraphPeriod4Hours},
+                        {id: '21600', label: langSaveChart.GraphPeriod6Hours},
+                        {id: '43200', label: langSaveChart.GraphPeriod12Hours},
+                        {id: '86400', label: langSaveChart.GraphPeriod1Day},
+                        {id: '172800', label: langSaveChart.GraphPeriod2Days},
+                        {id: '259200', label: langSaveChart.GraphPeriod3Days},
+                        {id: '345600', label: langSaveChart.GraphPeriod4Days},
+                        {id: '432000', label: langSaveChart.GraphPeriod5Days},
+                        {id: '864000', label: langSaveChart.GraphPeriod10Days},
+                        {id: '604800', label: langSaveChart.GraphPeriod1Week},
+                        {id: '1209600', label: langSaveChart.GraphPeriod2Weeks}
                     ]
                 });
-                var periodStore = new ObjectStore({ objectStore: periodMemoryStore });
+                var periodStore = new ObjectStore({ objectStore: this.periodMemoryStore });
 
                 var stateStore = new Memory({
                     data: [
@@ -59,36 +59,42 @@ define([
                 var os = new ObjectStore({ objectStore: stateStore });
 
                 // Create the name editor
-                this.nameEditor = new TextBox({label: langSaveChart.Name,
+                this.nameEditor = new TextBox({
+                    label: langSaveChart.Name,
                     style: childStyle,
                     value: this.cfgName
                 });
                 this.addChild(this.nameEditor);
 
                 // Create the title editor
-                this.titleEditor = new TextBox({label: langSaveChart.Title,
+                this.titleEditor = new TextBox({
+                    label: langSaveChart.Title,
                     style: childStyle,
                     value: this.cfgTitle
                 });
                 this.addChild(this.titleEditor);
 
                 // Find the icon and create the select list
-                this.iconEditor = new Select({label: langSaveChart.Icon,
+                this.iconEditor = new Select({
+                    label: langSaveChart.Icon,
                     style: childStyle,
                     store: os
                 });
                 this.addChild(this.iconEditor);
 
                 // Find the period in the store and create the combo box
-                var periodResult = periodMemoryStore.query({period: this.cfgPeriod});
+                var periodResult = this.periodMemoryStore.query({id: this.cfgPeriod});
                 var periodValue = langSaveChart.GraphPeriod2Days;
                 if (periodResult != null && periodResult.length == 1)
-                    periodValue = periodResult[0].name;
-                this.periodEditor = new ComboBox({label: langSaveChart.Period,
+                    periodValue = periodResult[0].label;
+                this.periodEditor = new ComboBox({
+                    label: langSaveChart.Period,
                     style: childStyle,
                     value: periodValue,
                     store: periodStore,
-                    searchAttr: "name"
+                    autoComplete: true,
+                    required: true,
+                    searchAttr: "label"
                 });
                 this.addChild(this.periodEditor);
             },
@@ -96,7 +102,10 @@ define([
                 this.cfgName = this.nameEditor.getValue();
                 this.cfgTitle = this.titleEditor.getValue();
                 this.cfgIcon = this.iconEditor.getValue();
-                this.period = this.periodEditor.getValue();
+                this.cfgPeriod = this.periodEditor.get('value');
+                var periodResult = this.periodMemoryStore.query({label: this.cfgPeriod});
+                if (periodResult.length != 0)
+                    this.cfgPeriod = periodResult[0].id;
             }
         })
     });

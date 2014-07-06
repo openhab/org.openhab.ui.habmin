@@ -342,6 +342,11 @@ define([
                     if (item.lineColor == undefined || item.lineColor.length == 0)
                         config.items[ref].lineColor = this.colors[ref];
                 }));
+
+                // Sanity check the period and if it's rubish, make it 1 day
+                config.period = parseInt(config.period);
+                if(isNaN(config.period) || config.period == 0)
+                    config.period = 86400;
             },
             _tooltipFunction: function () {
                 return "Tooltip here!";
