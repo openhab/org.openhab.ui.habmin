@@ -114,10 +114,12 @@ define([
 
                 // Generate the chart definition
                 var chartDef = {
-                    id: this.chartId,
                     axis: [],
                     items: []
                 };
+
+                if(this.chartId != null && parseInt(this.chartId) > 0)
+                    chartDef.id = this.chartId;
 
                 array.forEach(children, lang.hitch(this, function (child) {
                     child.updateData();
@@ -161,7 +163,7 @@ define([
                 // All ok? Send to openHAB
                 var jsonData = json.stringify(chartDef);
 
-                request("/services/habmin/persistence/charts/" + +(this.chartId == null ? "" : this.chartId), {
+                request("/services/habmin/persistence/charts" + (this.chartId == null ? "" : "/" + this.chartId), {
                     method: this.chartId == null ? 'POST' : 'PUT',
                     timeout: 5000,
                     data: jsonData,
@@ -203,19 +205,24 @@ define([
                 items = [].concat(items);
 
                 // Create the chart definition
-                this.chartDef = {};
-                this.chartDef.items = [];
-                array.forEach(items, lang.hitch(this, function (item) {
-                    var newItem = {};
-                    newItem.item = item;
-                    this.chartDef.items.push(newItem);
-                }));
-
-                this._sanityCheck(this.chartDef);
+                var chartDef = {
+                    name: "",
+                    period: "",
+                    period: 86400,
+                    axis: [],
+                    items: []
+                };
 
                 array.forEach(items, lang.hitch(this, function (item) {
-                    this._loadItem(item, this.chartStart, this.chartStop);
+                    var itemDef = {};
+                    itemDef.item = item;
+                    itemDef.label = "";
+                    itemDef.axis = "";
+
+                    chartDef.items.push(itemDef);
                 }));
+
+                this._updateData(chartDef);
             },
 
             loadChart: function (chartRef) {

@@ -74,6 +74,7 @@ define([
                 this.chartStop = Math.round((new Date()).getTime());
                 this.chartStart = this.chartStop - (2 * 86400 * 1000);
 
+                this._createChart();
                 this._createPlots();
 
                 array.forEach(items, lang.hitch(this, function (item) {

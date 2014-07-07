@@ -82,11 +82,11 @@ define([
                 function editChart() {
                     console.log("editChart pressed");
 
-                    var x = new SaveChart();
-                    x.placeAt(document.body);
-                    x.startup();
-                    x.loadChart(this.selectedChart);
-                    x.show();
+                    var dlg = new SaveChart();
+                    dlg.placeAt(document.body);
+                    dlg.startup();
+                    dlg.loadChart(this.selectedChart);
+                    dlg.show();
                 }
 
                 function deleteChart() {

@@ -114,15 +114,22 @@ define([
 
                 function saveChart() {
                     console.log("saveChart pressed");
-                    var x = new SaveChart();
-                    x.placeAt(document.body);
-                    x.startup();
-                    x.show();
+                    var selected = this.grid.selection;
+                    var items = [];
+                    var key;
+                    for (key in selected) {
+                        if (selected.hasOwnProperty(key))
+                            items.push(key);
+                    }
+                    var dlg = new SaveChart();
+                    dlg.placeAt(document.body);
+                    dlg.startup();
+                    dlg.loadItems(items);
+                    dlg.show();
                 }
 
                 function updateChart() {
                     console.log("updateChart pressed");
-                    //
                     var selected = this.grid.selection;
                     var items = [];
                     var key;
@@ -136,6 +143,19 @@ define([
                 function cellRenderer(object, value, node, options) {
                     node.innerHTML =
                         "<span class='habminListIcon'><img src='/images/" + object.icon + ".png'></span>" + value;
+                }
+
+                function getItemList() {
+                    // Create the list of items
+                    var selected = this.grid.selection;
+                    var items = [];
+                    var key;
+                    for (key in selected) {
+                        if (selected.hasOwnProperty(key))
+                            items.push(key);
+                    }
+
+                    return items;
                 }
             },
             startup: function () {
