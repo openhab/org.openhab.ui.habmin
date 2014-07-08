@@ -7,10 +7,15 @@ define([
         "dojo/topic"
     ],
     function (declare, lang, Memory, request, array, topic) {
-        return declare(Container, {
+        var store = null;
 
-            initialise: function () {
-                request("/services/habmin/config/items", {
+        return declare(null, {
+            constructor: function (options) {
+                declare.safeMixin(this, options);
+            },
+
+            loadStore: function () {
+                return request("/services/habmin/config/items", {
                     timeout: 5000,
                     handleAs: 'json',
                     preventCache: true,
@@ -20,23 +25,18 @@ define([
                     }
                 }).then(
                     lang.hitch(this, function (data) {
-                        console.log("The item model response is: ", data);
+                        console.log("The xxxxxxxxx item model response is: ", data);
 
+                        store = new Memory({idProperty: "name", data: data.item});
                     }),
                     lang.hitch(this, function (error) {
                         console.log("An error occurred: " + error);
+
                     })
                 );
-
             },
-
             getStore: function () {
-                if (store != null)
-                    return store;
-
-                store = new Memory({data: x});
-
                 return store;
             }
         })
-});
+    });

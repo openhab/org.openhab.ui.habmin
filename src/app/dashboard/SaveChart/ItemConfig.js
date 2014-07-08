@@ -13,12 +13,14 @@ define([
         "dojo/store/Memory",
         "dojo/data/ObjectStore",
 
+        "app/common/ItemModelStore",
+
         "app/dashboard/SaveChart/LineStyleStore",
         "app/dashboard/SaveChart/ColorSelectButton",
 
         "dojo/i18n!app/nls/SaveChart"
     ],
-    function (declare, lang, TableContainer, TextBox, NumberSpinner, Select, CheckBox, ColorPalette, Memory, ObjectStore, LineStyleStore, ColorButton, langSaveChart) {
+    function (declare, lang, TableContainer, TextBox, NumberSpinner, Select, CheckBox, ColorPalette, Memory, ObjectStore, ItemModelStore, LineStyleStore, ColorButton, langSaveChart) {
         return declare([TableContainer], {
             cols: 1,
             labelWidth: "150",
@@ -57,10 +59,13 @@ define([
 
                 var axisOs = new ObjectStore({ objectStore: axisStore });
 
-                this.itemEditor = new TextBox({
+                this.itemEditor = new Select({
                     label: langSaveChart.Item,
                     style: childStyle,
-                    value: this.cfgItem
+                    value: this.cfgItem,
+                    labelAttr: "name",
+                    labelType: "text",
+                    required: true
                 });
                 this.labelEditor = new TextBox({
                     label: langSaveChart.Label,
@@ -128,6 +133,17 @@ define([
                 this.addChild(this.markerStyleEditor);
                 this.addChild(this.legendEditor);
                 this.addChild(this.timeEditor);
+
+                var itemStore = new ItemModelStore();
+
+                itemStore.loadStore().then(lang.hitch(this, function () {
+                    console.log("Inner called");
+                    console.log("Store is", itemStore.getStore());
+
+                    this.itemEditor.setStore(itemStore.getStore(), this.cfgItem, null);
+                }));
+
+                this.itemEditor.startup();
             },
             updateData: function () {
                 this.cfgLabel = this.labelEditor.getValue();
