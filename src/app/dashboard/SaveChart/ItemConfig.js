@@ -41,7 +41,7 @@ define([
                 this.inherited(arguments);
                 var childStyle = "width:98%";
 
-                var lineStore = new LineStyleStore();
+                var lineStore = LineStyleStore();
 
                 if (this.cfgLegend == null)
                     this.cfgLegend = false;
@@ -65,7 +65,8 @@ define([
                     value: this.cfgItem,
                     labelAttr: "name",
                     labelType: "text",
-                    required: true
+                    required: true,
+                    store: ItemModelStore().getStore()
                 });
                 this.labelEditor = new TextBox({
                     label: langSaveChart.Label,
@@ -134,16 +135,14 @@ define([
                 this.addChild(this.legendEditor);
                 this.addChild(this.timeEditor);
 
-                var itemStore = new ItemModelStore();
+                if(ItemModelStore().getStore() == null) {
+                    ItemModelStore().loadStore().then(lang.hitch(this, function () {
+                        console.log("Inner called");
+                        console.log("Store is", ItemModelStore().getStore());
 
-                itemStore.loadStore().then(lang.hitch(this, function () {
-                    console.log("Inner called");
-                    console.log("Store is", itemStore.getStore());
-
-                    this.itemEditor.setStore(itemStore.getStore(), this.cfgItem, null);
-                }));
-
-                this.itemEditor.startup();
+                        this.itemEditor.setStore(ItemModelStore().getStore(), this.cfgItem, null);
+                    }));
+                }
             },
             updateData: function () {
                 this.cfgLabel = this.labelEditor.getValue();

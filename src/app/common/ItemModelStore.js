@@ -35,6 +35,7 @@ define([
                     })
                 );
             },
+
             getStore: function () {
                 return store;
             }
