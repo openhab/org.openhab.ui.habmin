@@ -7,9 +7,9 @@ define([
         "dojo/topic"
     ],
     function (declare, lang, Memory, request, array, topic) {
-        var store = null;
-
         return declare(null, {
+            store: null,
+
             constructor: function (options) {
                 declare.safeMixin(this, options);
             },
@@ -27,7 +27,7 @@ define([
                     lang.hitch(this, function (data) {
                         console.log("The xxxxxxxxx item model response is: ", data);
 
-                        store = new Memory({idProperty: "name", data: data.item});
+                        this.store = new Memory({idProperty: "name", data: data.item});
                     }),
                     lang.hitch(this, function (error) {
                         console.log("An error occurred: " + error);
@@ -37,7 +37,7 @@ define([
             },
 
             getStore: function () {
-                return store;
+                return this.store;
             }
         })
     });

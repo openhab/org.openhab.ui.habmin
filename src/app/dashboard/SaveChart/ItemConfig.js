@@ -59,6 +59,8 @@ define([
 
                 var axisOs = new ObjectStore({ objectStore: axisStore });
 
+                var itemStore = new ItemModelStore();
+
                 this.itemEditor = new Select({
                     label: langSaveChart.Item,
                     style: childStyle,
@@ -66,7 +68,7 @@ define([
                     labelAttr: "name",
                     labelType: "text",
                     required: true,
-                    store: ItemModelStore().getStore()
+                    store: itemStore.getStore()
                 });
                 this.labelEditor = new TextBox({
                     label: langSaveChart.Label,
@@ -135,12 +137,12 @@ define([
                 this.addChild(this.legendEditor);
                 this.addChild(this.timeEditor);
 
-                if(ItemModelStore().getStore() == null) {
-                    ItemModelStore().loadStore().then(lang.hitch(this, function () {
+                if(itemStore.getStore() == null) {
+                    itemStore.loadStore().then(lang.hitch(this, function () {
                         console.log("Inner called");
-                        console.log("Store is", ItemModelStore().getStore());
+                        console.log("Store is", itemStore.getStore());
 
-                        this.itemEditor.setStore(ItemModelStore().getStore(), this.cfgItem, null);
+                        this.itemEditor.setStore(itemStore.getStore(), this.cfgItem, null);
                     }));
                 }
             },
