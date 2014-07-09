@@ -14,6 +14,7 @@ define([
         "dojo/json",
         "dojox/string/sprintf",
 
+        "app/common/ItemModelStore",
         "app/main/Notification",
 
         "dijit/layout/StackContainer",
@@ -32,9 +33,8 @@ define([
 
         "dojo/i18n!dijit/nls/common",
         "dojo/i18n!app/nls/SaveChart"
-
     ],
-    function (declare, lang, on, array, dom, Evented, Deferred, JSON, domConstruct, domStyle, request, json, sprintf, Notification, StackContainer, StackController, GeneralConfig, ItemConfig, AxisConfig, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, Dialog, Form, langCommon, langSaveChart) {
+    function (declare, lang, on, array, dom, Evented, Deferred, JSON, domConstruct, domStyle, request, json, sprintf, ItemModelStore, Notification, StackContainer, StackController, GeneralConfig, ItemConfig, AxisConfig, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, Dialog, Form, langCommon, langSaveChart) {
 
         return declare([Dialog, Evented], {
             title: langSaveChart.WindowTitle,
@@ -64,7 +64,6 @@ define([
                 ));
                 contentWidget.startup();
                 var content = this.content = contentWidget;
-//                this.form = content.form;
                 // shortcuts
                 this.submitButton = content.submitButton;
                 this.cancelButton = content.cancelButton;
@@ -74,9 +73,6 @@ define([
 
             postCreate: function () {
                 this.inherited(arguments);
-
-                // Initialise the notification system
-                this.notification = Notification();
 
                 // Set the button names - for internationalisation
                 this.submitButton.set("label", langCommon.buttonSave);
@@ -175,14 +171,14 @@ define([
                     }
                 }).then(
                     lang.hitch(this, function (data) {
-                        this.notification.alert(this.notification.SUCCESS,
+                        Notification().alert(Notification().SUCCESS,
                             sprintf(langSaveChart.ChartSavedOk, chartDef.name));
 
                         console.log("The chart save response is: ", data);
                         this.destroyRecursive();
                     }),
                     lang.hitch(this, function (error) {
-                        this.notification.alert(this.notification.ERROR,
+                        Notification().alert(Notification().ERROR,
                             sprintf(langSaveChart.ErrorSavingChart, chartDef.name));
                         console.log("An error occurred with chart save response: " + error);
                     })
