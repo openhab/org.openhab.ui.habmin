@@ -12,9 +12,10 @@ define([
         "dijit/Toolbar",
         "dojo/_base/array",
         "dojo/topic",
-        "app/dashboard/SaveChart/SaveChart"
+        "app/dashboard/SaveChart/SaveChart",
+        "app/common/ConfirmDialog"
     ],
-    function (declare, lang, Container, request, on, Grid, Registry, Selection, Keyboard, Button, Toolbar, array, topic, SaveChart) {
+    function (declare, lang, Container, request, on, Grid, Registry, Selection, Keyboard, Button, Toolbar, array, topic, SaveChart, ConfirmDialog) {
         return declare(Container, {
 
             buildRendering: function () {
@@ -91,6 +92,13 @@ define([
 
                 function deleteChart() {
                     console.log("deleteChart pressed");
+
+                    var dialog = new ConfirmDialog();
+                    dialog.show().then(
+                        lang.hitch(this, function (data) {
+                        })
+                    );
+
                 }
             },
             startup: function () {
