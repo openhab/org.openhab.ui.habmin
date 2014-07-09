@@ -6,6 +6,7 @@ define([
         "dojo/request",
         "dojo/store/Memory",
         "dojo/on",
+        "app/common/ItemModelStore",
         "dgrid/OnDemandGrid",
         "dgrid/extensions/DijitRegistry",
         "dgrid/Selection",
@@ -16,7 +17,7 @@ define([
         "dojo/_base/array",
         "dojo/topic"
     ],
-    function (declare, lang, Container, SaveChart, request, Store, on, Grid, Registry, Selection, Keyboard, Button, Toolbar, TextBox, array, topic) {
+    function (declare, lang, Container, SaveChart, request, Store, on, ItemModelStore, Grid, Registry, Selection, Keyboard, Button, Toolbar, TextBox, array, topic) {
         return declare(Container, {
             buildRendering: function () {
                 this.inherited(arguments);
@@ -130,14 +131,27 @@ define([
 
                 function updateChart() {
                     console.log("updateChart pressed");
-                    var selected = this.grid.selection;
-                    var items = [];
-                    var key;
-                    for (key in selected) {
-                        if (selected.hasOwnProperty(key))
-                            items.push(key);
-                    }
-                    topic.publish("/dashboard/set", "items", items);
+
+                    var x = ItemModelStore();
+                    ItemModelStore().loadStore().then(lang.hitch(this, function () {
+                        var store = x.getStore();
+
+                        var selected = this.grid.selection;
+                        var items = [];
+                        var key;
+                        for (key in selected) {
+                            var i = {};
+                            i.name = key;
+
+                            var sel = x.query({name: key});
+                            if(sel.length == 1)
+                                i.label = sel[0].label;
+
+                            if (selected.hasOwnProperty(key))
+                                items.push(i);
+                        }
+                        topic.publish("/dashboard/set", "items", items);
+                    }));
                 }
 
                 function cellRenderer(object, value, node, options) {

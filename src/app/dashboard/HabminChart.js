@@ -62,7 +62,8 @@ define([
                 this.chartDef.items = [];
                 array.forEach(items, lang.hitch(this, function (item) {
                     var newItem = {};
-                    newItem.item = item;
+                    newItem.item = item.name;
+                    newItem.label = item.label;
                     this.chartDef.items.push(newItem);
                 }));
 
@@ -78,7 +79,7 @@ define([
                 this._createPlots();
 
                 array.forEach(items, lang.hitch(this, function (item) {
-                    this._loadItem(item, this.chartStart, this.chartStop);
+                    this._loadItem(item.name, this.chartStart, this.chartStop);
                 }));
             },
             loadChart: function (chartRef) {
@@ -117,7 +118,7 @@ define([
                 );
             },
             _loadItem: function (itemRef, start, stop) {
-                console.log("Requesting " + itemRef);
+                console.log("Requesting ", itemRef);
                 var parms = {};
                 parms.starttime = start;
                 parms.endtime = stop;
@@ -257,6 +258,11 @@ define([
                         itemCfg = cfg;
                     }
                 }));
+
+                if(itemCfg == null) {
+                    console.error("Unable to find definition for ", item, this.chartDef);
+                    return;
+                }
 
                 // If there's no repeat time, then set it to 'infinity'
                 // Otherwise turn into milliseconds
