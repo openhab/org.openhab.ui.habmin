@@ -15,7 +15,6 @@ define([
         "dojox/string/sprintf",
 
         "app/common/ItemModelStore",
-        "app/main/Notification",
 
         "dijit/layout/StackContainer",
         "dijit/layout/StackController",
@@ -23,6 +22,8 @@ define([
         "app/dashboard/SaveChart/GeneralConfig",
         "app/dashboard/SaveChart/ItemConfig",
         "app/dashboard/SaveChart/AxisConfig",
+
+        "app/main/Notification",
 
         "dijit/_Widget",
         "dijit/_TemplatedMixin",
@@ -34,7 +35,7 @@ define([
         "dojo/i18n!dijit/nls/common",
         "dojo/i18n!app/nls/SaveChart"
     ],
-    function (declare, lang, on, array, dom, Evented, Deferred, JSON, domConstruct, domStyle, request, json, sprintf, ItemModelStore, Notification, StackContainer, StackController, GeneralConfig, ItemConfig, AxisConfig, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, Dialog, Form, langCommon, langSaveChart) {
+    function (declare, lang, on, array, dom, Evented, Deferred, JSON, domConstruct, domStyle, request, json, sprintf, ItemModelStore, StackContainer, StackController, GeneralConfig, ItemConfig, AxisConfig, Notification, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, Dialog, Form, langCommon, langSaveChart) {
 
         return declare([Dialog, Evented], {
             title: langSaveChart.WindowTitle,

@@ -117,13 +117,13 @@ define([
                     var rule = this.blockEditor.getBlocks();
 
                     if (rule == null || rule.block == null || rule.block.length == 0) {
-                        this.notification.alert(this.notification.ERROR, langAutomation.ErrorReadingRule);
+                        Notification().alert(Notification().ERROR, langAutomation.ErrorReadingRule);
                         return;
                     }
 
                     // Get the rule name
                     if (rule.block[0].fields == null || rule.block[0].fields.length == 0) {
-                        this.notification.alert(this.notification.ERROR, langAutomation.ErrorReadingRuleName);
+                        Notification().alert(Notification().ERROR, langAutomation.ErrorReadingRuleName);
                         return;
                     }
 
@@ -137,7 +137,7 @@ define([
 
                     // Check that we have a name!
                     if (ruleName == null || ruleName == "") {
-                        this.notification.alert(this.notification.ERROR, langAutomation.ErrorReadingRuleName);
+                        Notification().alert(Notification().ERROR, langAutomation.ErrorReadingRuleName);
                         return;
                     }
 
@@ -149,7 +149,7 @@ define([
 
                     var jsonData = json.stringify(bean);
 
-                    request("/services/habmin/config/designer/" + + (this.ruleId == null ? "" : this.ruleId), {
+                    request("/services/habmin/config/designer/" + (this.ruleId == null ? "" : this.ruleId), {
                         method: this.ruleId == null ? 'POST' : 'PUT',
                         timeout: 5000,
                         data: jsonData,
@@ -161,7 +161,7 @@ define([
                         }
                     }).then(
                         lang.hitch(this, function (data) {
-                            this.notification.alert(this.notification.SUCCESS,
+                            Notification().alert(Notification().SUCCESS,
                                 sprintf(langAutomation.RuleSavedOk, ruleName));
 
                             console.log("The rule source response is: ", data);
@@ -173,7 +173,7 @@ define([
                             this.toolbar.getChildren()[1].set("disabled", true);
                         }),
                         lang.hitch(this, function (error) {
-                            this.notification.alert(this.notification.ERROR,
+                            Notification().alert(Notification().ERROR,
                                 sprintf(langAutomation.ErrorSavingRule, ruleName));
                             console.log("An error occurred with rule source response: " + error);
                         })
@@ -207,9 +207,6 @@ define([
             startup: function () {
                 if (this.initialized == true)
                     return;
-
-                // Initialise the notification system
-                this.notification = Notification();
 
                 this.inherited(arguments);
                 this.resize();
