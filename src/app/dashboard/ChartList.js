@@ -13,9 +13,13 @@ define([
         "dojo/_base/array",
         "dojo/topic",
         "app/dashboard/SaveChart/SaveChart",
-        "app/common/ConfirmDialog"
+        "app/common/ConfirmDialog",
+
+        "dojox/string/sprintf",
+
+        "dojo/i18n!app/nls/Dashboard"
     ],
-    function (declare, lang, Container, request, on, Grid, Registry, Selection, Keyboard, Button, Toolbar, array, topic, SaveChart, ConfirmDialog) {
+    function (declare, lang, Container, request, on, Grid, Registry, Selection, Keyboard, Button, Toolbar, array, topic, SaveChart, ConfirmDialog, sprintf, langDashboard) {
         return declare(Container, {
 
             buildRendering: function () {
@@ -66,10 +70,11 @@ define([
                     this.toolbar.getChildren()[1].set("disabled", false);
 
                     var cell = this.grid.cell(evt);
-                    this.selectedChart = cell.row.data.id;
+                    this.selectedChartId = cell.row.data.id;
+                    this.selectedChartName = cell.row.data.name;
 
                     //
-                    topic.publish("/dashboard/set", "chart", this.selectedChart);
+                    topic.publish("/dashboard/set", "chart", this.selectedChartId);
                 }));
 
                 this.addChild(this.toolbar);
@@ -86,19 +91,25 @@ define([
                     var dlg = new SaveChart();
                     dlg.placeAt(document.body);
                     dlg.startup();
-                    dlg.loadChart(this.selectedChart);
+                    dlg.loadChart(this.selectedChartId);
                     dlg.show();
                 }
 
                 function deleteChart() {
                     console.log("deleteChart pressed");
 
-                    var dialog = new ConfirmDialog();
+                    var dialog = new ConfirmDialog({
+                            title: langDashboard.ConfirmDeleteTitle,
+                            text: sprintf(langDashboard.ConfirmDelete, this.selectedChartName)
+                        }
+                    );
                     dialog.show().then(
-                        lang.hitch(this, function (data) {
+                        lang.hitch(this, function () {
+
+                        }),
+                        lang.hitch(this, function () {
                         })
                     );
-
                 }
             },
             startup: function () {
