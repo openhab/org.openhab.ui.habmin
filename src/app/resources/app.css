@@ -205,6 +205,10 @@ body {
     background-image: url('../images/cross.png');
 }
 
+.habminIconOk {
+    background-image: url('../images/tick.png');
+}
+
 .habminIconEdit {
     background-image: url('../images/layer--pencil.png');
 }
@@ -231,10 +235,6 @@ body {
 
 .habminIconInclude {
     background-image: url('../images/wrench--plus.png');
-}
-
-.habminIconExclude {
-    background-image: url('../images/wrench--minus.png');
 }
 
 .habminIconExclude {

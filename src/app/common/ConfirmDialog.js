@@ -15,21 +15,12 @@ define([
         "dijit/form/Button",
 
         "dojo/i18n!dijit/nls/common"
-
-//        "dijit/Tooltip"
     ],
     function (declare, lang, on, dom, Evented, Deferred, domConstruct, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, Dialog, Button, langCommon) {
 
         return declare([Dialog, Evented], {
             title: "Login Dialog",
-            message: "",
 
-            attributeMap: lang.delegate(dijit._Widget.prototype.attributeMap, {
-                message: {
-                    node: "messageNode",
-                    type: "innerHTML"
-                }
-            }),
             constructor: function (/*Object*/ kwArgs) {
                 lang.mixin(this, kwArgs);
 
@@ -45,11 +36,11 @@ define([
                     }
                 ));
                 contentWidget.startup();
-                var content = this.content = contentWidget;
+                this.content = contentWidget;
 
                 // shortcuts
-                this.submitButton = content.submitButton;
-                this.cancelButton = content.cancelButton;
+                this.submitButton = this.content.submitButton;
+                this.cancelButton = this.content.cancelButton;
             },
 
             postCreate: function () {
@@ -63,11 +54,11 @@ define([
                 this.connect(this.cancelButton, "onClick", lang.hitch(this, this.onCancel));
             },
             onSubmit: function() {
-                this.destroyRecursive();
+                this.hide();
                 this.dfd.resolve();
             },
             onCancel: function() {
-                this.destroyRecursive();
+                this.hide();
                 this.dfd.cancel();
             },
             /**
@@ -82,6 +73,9 @@ define([
                 }
                 this.dfd = new Deferred();
                 return this.dfd;
+            },
+            hide: function(){
+                this.destroyRecursive();
             }
         })
     });
