@@ -15,11 +15,13 @@ define([
         "app/dashboard/SaveChart/SaveChart",
         "app/common/ConfirmDialog",
 
+        "app/main/Notification",
+
         "dojox/string/sprintf",
 
         "dojo/i18n!app/nls/Dashboard"
     ],
-    function (declare, lang, Container, request, on, Grid, Registry, Selection, Keyboard, Button, Toolbar, array, topic, SaveChart, ConfirmDialog, sprintf, langDashboard) {
+    function (declare, lang, Container, request, on, Grid, Registry, Selection, Keyboard, Button, Toolbar, array, topic, SaveChart, ConfirmDialog, Notification, sprintf, langDashboard) {
         return declare(Container, {
 
             buildRendering: function () {
@@ -105,7 +107,30 @@ define([
                     );
                     dialog.show().then(
                         lang.hitch(this, function () {
+                            request("/services/habmin/persistence/charts/" + this.selectedChartId, {
+                                method: 'DELETE',
+                                timeout: 5000,
+                                handleAs: 'json',
+                                preventCache: true,
+                                headers: {
+                                    "Content-Type": 'application/json; charset=utf-8',
+                                    "Accept": "application/json"
+                                }
+                            }).then(
+                                lang.hitch(this, function () {
+                                    Notification().alert(Notification().SUCCESS,
+                                        sprintf(langDashboard.ChartSavedOk, this.selectedChartName));
 
+                                    // Enable the toolbar
+                                    this.toolbar.getChildren()[0].set("disabled", true);
+                                    this.toolbar.getChildren()[1].set("disabled", true);
+                                }),
+                                lang.hitch(this, function (error) {
+                                    Notification().alert(Notification().ERROR,
+                                        sprintf(langDashboard.ErrorDeletingChart, this.selectedChartName));
+                                    console.log("An error occurred with delete response: " + error);
+                                })
+                            );
                         }),
                         lang.hitch(this, function () {
                         })
