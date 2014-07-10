@@ -99,9 +99,9 @@ define([
                 this.addChild(this.periodEditor);
             },
             updateData: function () {
-                this.cfgName = this.nameEditor.getValue();
-                this.cfgTitle = this.titleEditor.getValue();
-                this.cfgIcon = this.iconEditor.getValue();
+                this.cfgName = this.nameEditor.get("value");
+                this.cfgTitle = this.titleEditor.get("value");
+                this.cfgIcon = this.iconEditor.get("value");
                 this.cfgPeriod = this.periodEditor.get('value');
                 var periodResult = this.periodMemoryStore.query({label: this.cfgPeriod});
                 if (periodResult.length != 0)

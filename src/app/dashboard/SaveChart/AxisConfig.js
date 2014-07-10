@@ -103,7 +103,6 @@ define([
                     store: lineStore.getStore()
                 });
 
-
                 this.addChild(this.labelEditor);
                 this.addChild(this.formatEditor);
                 this.addChild(this.colorEditor);
@@ -117,17 +116,17 @@ define([
                 this.addChild(this.minorLineStyleEditor);
             },
             updateData: function () {
-                this.cfgLabel = this.labelEditor.getValue();
-                this.cfgFormat = this.formatEditor.getValue();
-                this.cfgColor = this.colorEditor.getValue();
-                this.cfgMinimum = this.minimumEditor.getValue();
-                this.cfgMaximum = this.maximumEditor.getValue();
-                this.cfgMajorLineColor = this.majorLineColorEditor.getValue();
-                this.cfgMajorLineWidth = this.majorLineWidthEditor.getValue();
-                this.cfgMajorLineStyle = this.majorLineStyleEditor.getValue();
-                this.cfgMinorLineColor = this.minorLineColorEditor.getValue();
-                this.cfgMinorLineWidth = this.minorLineWidthEditor.getValue();
-                this.cfgMinorLineStyle = this.minorLineStyleEditor.getValue();
+                this.cfgLabel = this.labelEditor.get("value");
+                this.cfgFormat = this.formatEditor.get("value");
+                this.cfgColor = this.colorEditor.get("value");
+                this.cfgMinimum = this.minimumEditor.get("value");
+                this.cfgMaximum = this.maximumEditor.get("value");
+                this.cfgMajorLineColor = this.majorLineColorEditor.get("value");
+                this.cfgMajorLineWidth = this.majorLineWidthEditor.get("value");
+                this.cfgMajorLineStyle = this.majorLineStyleEditor.get("value");
+                this.cfgMinorLineColor = this.minorLineColorEditor.get("value");
+                this.cfgMinorLineWidth = this.minorLineWidthEditor.get("value");
+                this.cfgMinorLineStyle = this.minorLineStyleEditor.get("value");
             }
         })
     });

@@ -58,7 +58,6 @@ define([
                 });
 
                 var axisOs = new ObjectStore({ objectStore: axisStore });
-
                 var itemStore = ItemModelStore();
 
                 this.itemEditor = new Select({
@@ -151,14 +150,14 @@ define([
                 }));
             },
             updateData: function () {
-                this.cfgLabel = this.labelEditor.getValue();
-                this.cfgAxis = this.axisEditor.getValue();
-                this.cfgLineColor = this.lineColorEditor.getValue();
-                this.cfgLineWidth = this.lineWidthEditor.getValue();
-                this.cfgLineStyle = this.lineStyleEditor.getValue();
-                this.cfgMarkerColor = this.markerColorEditor.getValue();
-                this.cfgMarkerStyle = this.markerStyleEditor.getValue();
-                this.cfgRepeatTime = this.timeEditor.getValue();
+                this.cfgLabel = this.labelEditor.get("value");
+                this.cfgAxis = this.axisEditor.get("value");
+                this.cfgLineColor = this.lineColorEditor.get("value");
+                this.cfgLineWidth = this.lineWidthEditor.get("value");
+                this.cfgLineStyle = this.lineStyleEditor.get("value");
+                this.cfgMarkerColor = this.markerColorEditor.get("value");
+                this.cfgMarkerStyle = this.markerStyleEditor.get("value");
+                this.cfgRepeatTime = this.timeEditor.get("value");
             }
         })
     });
