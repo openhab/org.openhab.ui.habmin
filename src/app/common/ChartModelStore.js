@@ -2,16 +2,16 @@ define([
         "dojo/_base/declare",
         "dojo/_base/lang",
         "dojo/Deferred",
-        "dojo/Evented",
+        "dojo/store/Observable",
         "dojo/store/Memory",
         "dojo/request",
         "dojo/_base/array",
         "dojo/topic"
     ],
-    function (declare, lang, Deferred, Evented, Memory, request, array, topic) {
+    function (declare, lang, Deferred, Observable, Memory, request, array, topic) {
         var store = null;
         var def = null;
-        return declare([Evented], {
+        return declare(null, {
             constructor: function (options) {
                 declare.safeMixin(this, options);
             },
@@ -56,8 +56,10 @@ define([
                     lang.hitch(this, function (data) {
                         console.log("The chart model response is: ", data);
 
-                        store = new Memory({idProperty: "name", data: data.chart});
-                        this.emit("reload", store);
+                        if(store == null)
+                            store = new Observable(new Memory({idProperty: "id", data: data.chart}));
+                        else
+                            store.setData(data.chart);
                         def.resolve();
                     }),
                     lang.hitch(this, function (error) {
@@ -91,7 +93,8 @@ define([
                 }).then(
                     lang.hitch(this, function () {
                         console.log("Delete completed ok");
-                        this._reload();
+                        store.remove(chartId);
+                        def.resolve();
                     }),
                     lang.hitch(this, function (error) {
                         def.reject();
@@ -135,8 +138,9 @@ define([
                 }).then(
                     lang.hitch(this, function (data) {
                         console.log("The chart save response is: ", data);
-                        this._reload();
-//                        this.dfd.resolve();
+                        store.put(data);
+//                        this._reload();
+                        def.resolve();
                     }),
                     lang.hitch(this, function (error) {
                         console.log("An error occurred with chart save response: " + error);
