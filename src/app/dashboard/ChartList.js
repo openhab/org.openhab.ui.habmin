@@ -4,16 +4,20 @@ define([
         "dijit/layout/LayoutContainer",
         "dojo/request",
         "dojo/on",
+
         "dgrid/Grid",
         "dgrid/extensions/DijitRegistry",
         "dgrid/Selection",
         "dgrid/Keyboard",
+
         "dijit/form/Button",
         "dijit/Toolbar",
         "dojo/_base/array",
         "dojo/topic",
         "app/dashboard/SaveChart/SaveChart",
+
         "app/common/ConfirmDialog",
+        "app/common/ChartModelStore",
 
         "app/main/Notification",
 
@@ -21,7 +25,7 @@ define([
 
         "dojo/i18n!app/nls/Dashboard"
     ],
-    function (declare, lang, Container, request, on, Grid, Registry, Selection, Keyboard, Button, Toolbar, array, topic, SaveChart, ConfirmDialog, Notification, sprintf, langDashboard) {
+    function (declare, lang, Container, request, on, Grid, Registry, Selection, Keyboard, Button, Toolbar, array, topic, SaveChart, ConfirmDialog, ChartModelStore, Notification, sprintf, langDashboard) {
         return declare(Container, {
 
             buildRendering: function () {
@@ -90,11 +94,19 @@ define([
                 function editChart() {
                     console.log("editChart pressed");
 
-                    var dlg = new SaveChart();
-                    dlg.placeAt(document.body);
-                    dlg.startup();
-                    dlg.loadChart(this.selectedChartId);
-                    dlg.show();
+                    var dialog = new SaveChart();
+                    dialog.placeAt(document.body);
+                    dialog.startup();
+                    dialog.loadChart(this.selectedChartId);
+                    dialog.show().then(
+                        lang.hitch(this, function () {
+                            console.log("Save dialog closed ok");
+                            this._loadStore(true);
+                        }),
+                        lang.hitch(this, function () {
+                            console.log("Save dialog closed error");
+                        })
+                    );
                 }
 
                 function deleteChart() {
@@ -107,30 +119,8 @@ define([
                     );
                     dialog.show().then(
                         lang.hitch(this, function () {
-                            request("/services/habmin/persistence/charts/" + this.selectedChartId, {
-                                method: 'DELETE',
-                                timeout: 5000,
-                                handleAs: 'json',
-                                preventCache: true,
-                                headers: {
-                                    "Content-Type": 'application/json; charset=utf-8',
-                                    "Accept": "application/json"
-                                }
-                            }).then(
-                                lang.hitch(this, function () {
-                                    Notification().alert(Notification().SUCCESS,
-                                        sprintf(langDashboard.ChartSavedOk, this.selectedChartName));
-
-                                    // Enable the toolbar
-                                    this.toolbar.getChildren()[0].set("disabled", true);
-                                    this.toolbar.getChildren()[1].set("disabled", true);
-                                }),
-                                lang.hitch(this, function (error) {
-                                    Notification().alert(Notification().ERROR,
-                                        sprintf(langDashboard.ErrorDeletingChart, this.selectedChartName));
-                                    console.log("An error occurred with delete response: " + error);
-                                })
-                            );
+                            ChartModelStore().delete(this.selectedChartId);
+                            return;
                         }),
                         lang.hitch(this, function () {
                         })
@@ -141,25 +131,19 @@ define([
                 this.inherited(arguments);
                 this.resize();
 
-                request("/services/habmin/persistence/charts", {
-                    timeout: 5000,
-                    handleAs: 'json',
-                    preventCache: true,
-                    headers: {
-                        "Content-Type": 'application/json; charset=utf-8',
-                        "Accept": "application/json"
-                    }
-                }).then(
-                    lang.hitch(this, function (data) {
-                        console.log("The (ChartList) response is: ", data);
-                        this.grid.renderArray(data.chart);
-                    }),
-                    lang.hitch(this, function (error) {
-                        console.log("An error occurred: " + error);
-                    })
-                );
+                this._loadStore();
+            },
+            _loadStore: function (reload) {
+                ChartModelStore().loadStore(reload).then(lang.hitch(this, function () {
+                    console.log("Inner called");
+                    console.log("Store is", ChartModelStore().getStore());
+
+                    var results = ChartModelStore().getStore().query();
+
+                    this.grid.refresh();
+                    this.grid.renderArray(results);
+                }));
             }
         })
-            ;
     })
 ;

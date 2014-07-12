@@ -24,6 +24,7 @@ define([
         "app/dashboard/SaveChart/AxisConfig",
 
         "app/main/Notification",
+        "app/common/ChartModelStore",
 
         "dijit/_Widget",
         "dijit/_TemplatedMixin",
@@ -35,7 +36,7 @@ define([
         "dojo/i18n!dijit/nls/common",
         "dojo/i18n!app/nls/SaveChart"
     ],
-    function (declare, lang, on, array, dom, Evented, Deferred, JSON, domConstruct, domStyle, request, json, sprintf, ItemModelStore, StackContainer, StackController, GeneralConfig, ItemConfig, AxisConfig, Notification, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, Dialog, Form, langCommon, langSaveChart) {
+    function (declare, lang, on, array, dom, Evented, Deferred, JSON, domConstruct, domStyle, request, json, sprintf, ItemModelStore, StackContainer, StackController, GeneralConfig, ItemConfig, AxisConfig, Notification, ChartModelStore, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, Dialog, Form, langCommon, langSaveChart) {
 
         return declare([Dialog, Evented], {
             title: langSaveChart.WindowTitle,
@@ -105,6 +106,10 @@ define([
                 this.stackContainer.resize();
             },
 
+            onCancel: function() {
+                this.dfd.cancel();
+            },
+
             onSubmit: function () {
                 // Loop through all children and validate data
                 var children = this.stackContainer.getChildren()
@@ -160,30 +165,36 @@ define([
                 // All ok? Send to openHAB
                 var jsonData = json.stringify(chartDef);
 
-                request("/services/habmin/persistence/charts" + (this.chartId == null ? "" : "/" + this.chartId), {
-                    method: this.chartId == null ? 'POST' : 'PUT',
-                    timeout: 5000,
-                    data: jsonData,
-                    handleAs: 'json',
-                    preventCache: true,
-                    headers: {
-                        "Content-Type": 'application/json; charset=utf-8',
-                        "Accept": "application/json"
-                    }
-                }).then(
-                    lang.hitch(this, function (data) {
-                        Notification().alert(Notification().SUCCESS,
-                            sprintf(langSaveChart.ChartSavedOk, chartDef.name));
-
-                        console.log("The chart save response is: ", data);
-                        this.destroyRecursive();
-                    }),
-                    lang.hitch(this, function (error) {
-                        Notification().alert(Notification().ERROR,
-                            sprintf(langSaveChart.ErrorSavingChart, chartDef.name));
-                        console.log("An error occurred with chart save response: " + error);
-                    })
-                );
+                if(this.chartId == null) {
+                    ChartModelStore().add(jsonData).then(
+                        lang.hitch(this, function () {
+                            console.log("The chart definition is saved");
+                            this.hide();
+                            Notification().alert(Notification().SUCCESS,
+                                sprintf(langSaveChart.ChartSavedOk, chartDef.name));
+                        }),
+                        lang.hitch(this, function (error) {
+                            console.log("An error occurred: " + error);
+                            Notification().alert(Notification().ERROR,
+                                sprintf(langSaveChart.ErrorSavingChart, chartDef.name));
+                        })
+                    );
+                }
+                else {
+                    ChartModelStore().update(jsonData, this.chartId).then(
+                        lang.hitch(this, function () {
+                            console.log("The chart definition is saved");
+                            this.hide();
+                            Notification().alert(Notification().SUCCESS,
+                                sprintf(langSaveChart.ChartSavedOk, chartDef.name));
+                        }),
+                        lang.hitch(this, function (error) {
+                            console.log("An error occurred: " + error);
+                            Notification().alert(Notification().ERROR,
+                                sprintf(langSaveChart.ErrorSavingChart, chartDef.name));
+                        })
+                    );
+                }
             },
 
             _onValidStateChange: function () {
@@ -192,10 +203,6 @@ define([
 
             _onReadyStateChange: function () {
                 var isBusy = this.get("readyState") == this.BUSY;
-            },
-
-            hide: function () {
-                this.destroyRecursive(false);
             },
 
             loadItems: function (items) {
@@ -333,6 +340,19 @@ define([
                 }));
                 this.stackContainer.addChild(leftAxis);
                 this.stackContainer.addChild(rightAxis);
+            },
+            /**
+             * Shows the dialog.
+             * @return {Deferred}
+             */
+            show: function () {
+                this.inherited('show', arguments);
+                this.dfd = new Deferred();
+                return this.dfd;
+            },
+
+            hide: function(){
+                this.destroyRecursive();
             }
         })
     });

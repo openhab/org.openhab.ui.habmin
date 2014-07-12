@@ -58,7 +58,6 @@ define([
                 });
 
                 var axisOs = new ObjectStore({ objectStore: axisStore });
-                var itemStore = ItemModelStore();
 
                 this.itemEditor = new Select({
                     label: langSaveChart.Item,
@@ -135,15 +134,15 @@ define([
                 this.addChild(this.legendEditor);
                 this.addChild(this.timeEditor);
 
-                itemStore.loadStore().then(lang.hitch(this, function () {
+                ItemModelStore().loadStore().then(lang.hitch(this, function () {
                     console.log("Inner called");
-                    console.log("Store is", itemStore.getStore());
+                    console.log("Store is", ItemModelStore().getStore());
 
-                    this.itemEditor.setStore(itemStore.getStore(), this.cfgItem, null);
+                    this.itemEditor.setStore(ItemModelStore().getStore(), this.cfgItem, null);
                 }));
 
                 this.itemEditor.on("change", lang.hitch(this, function() {
-                    var sel = itemStore.query({name: this.itemEditor.get("value")});
+                    var sel = ItemModelStore().query({name: this.itemEditor.get("value")});
                     console.log("New item selected:", this.itemEditor.get("value"), sel);
                     if(sel.length == 1)
                         this.labelEditor.set("value", sel[0].label);
@@ -152,10 +151,10 @@ define([
             updateData: function () {
                 this.cfgLabel = this.labelEditor.get("value");
                 this.cfgAxis = this.axisEditor.get("value");
-                this.cfgLineColor = this.lineColorEditor.get("value");
+                this.cfgLineColor = this.lineColorEditor.getValue();
                 this.cfgLineWidth = this.lineWidthEditor.get("value");
                 this.cfgLineStyle = this.lineStyleEditor.get("value");
-                this.cfgMarkerColor = this.markerColorEditor.get("value");
+                this.cfgMarkerColor = this.markerColorEditor.getValue();
                 this.cfgMarkerStyle = this.markerStyleEditor.get("value");
                 this.cfgRepeatTime = this.timeEditor.get("value");
             }

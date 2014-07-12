@@ -106,7 +106,7 @@ define([
 
                 function filterList(value) {
                     console.log("Filter changed to:", value);
-                    this.grid.set("query", { name: new RegExp(value, "i") });
+                    this.grid.set("query", { label: new RegExp(value, "i") });
                 }
 
                 function clearChart() {
@@ -122,19 +122,18 @@ define([
                         if (selected.hasOwnProperty(key))
                             items.push(key);
                     }
-                    var dlg = new SaveChart();
-                    dlg.placeAt(document.body);
-                    dlg.startup();
-                    dlg.loadItems(items);
-                    dlg.show();
+                    var dialog = new SaveChart();
+                    dialog.placeAt(document.body);
+                    dialog.startup();
+                    dialog.loadItems(items);
+                    dialog.show();
                 }
 
                 function updateChart() {
                     console.log("updateChart pressed");
 
-                    var x = ItemModelStore();
                     ItemModelStore().loadStore().then(lang.hitch(this, function () {
-                        var store = x.getStore();
+                        var store = ItemModelStore().getStore();
 
                         var selected = this.grid.selection;
                         var items = [];
@@ -143,7 +142,7 @@ define([
                             var i = {};
                             i.name = key;
 
-                            var sel = x.query({name: key});
+                            var sel = ItemModelStore().query({name: key});
                             if(sel.length == 1)
                                 i.label = sel[0].label;
 
@@ -196,6 +195,5 @@ define([
                 );
             }
         })
-            ;
     })
 ;

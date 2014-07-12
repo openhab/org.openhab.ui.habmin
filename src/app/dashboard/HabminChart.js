@@ -231,7 +231,8 @@ define([
                         this.chart.addAxis(axis.position, verticalOptions);
 
                         if (axis.majorStyle != null) {
-                            this.chart.addPlot("grid" + axis.position, { type: Grid,
+                            var gridCfg = {
+                                type: Grid,
                                 vAxis: axis.position,
                                 hMajorLines: (axis.majorStyle != null && axis.majorStyle.length != 0 &&
                                     axis.majorStyle != "None") ? true : false,
@@ -241,7 +242,10 @@ define([
                                 vMinorLines: false,
                                 majorHLine: { style: axis.majorStyle, color: axis.majorColor, width: axis.majorWidth },
                                 minorHLine: { style: axis.minorStyle, color: axis.minorColor, width: axis.minorWidth }
-                            });
+                            };
+                            console.log("Adding grid ", gridCfg);
+
+                            this.chart.addPlot("grid" + axis.position, gridCfg);
                         }
                     }));
                 }

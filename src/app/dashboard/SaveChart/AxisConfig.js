@@ -121,10 +121,10 @@ define([
                 this.cfgColor = this.colorEditor.get("value");
                 this.cfgMinimum = this.minimumEditor.get("value");
                 this.cfgMaximum = this.maximumEditor.get("value");
-                this.cfgMajorLineColor = this.majorLineColorEditor.get("value");
+                this.cfgMajorLineColor = this.majorLineColorEditor.getValue();
                 this.cfgMajorLineWidth = this.majorLineWidthEditor.get("value");
                 this.cfgMajorLineStyle = this.majorLineStyleEditor.get("value");
-                this.cfgMinorLineColor = this.minorLineColorEditor.get("value");
+                this.cfgMinorLineColor = this.minorLineColorEditor.getValue();
                 this.cfgMinorLineWidth = this.minorLineWidthEditor.get("value");
                 this.cfgMinorLineStyle = this.minorLineStyleEditor.get("value");
             }
