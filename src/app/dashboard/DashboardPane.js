@@ -25,6 +25,7 @@ define([
 
             dashboardContainer: null,
             resizeCallback: null,
+            moveCallback: null,
 
             postCreate: function () {
                 var me = this;
@@ -37,7 +38,7 @@ define([
 
                 this.moveable.onMove = function (/*Mover*/ mover, /*Object*/ leftTop) {
                     console.log("Dashboard pane MOVE ", mover, leftTop);
-                    if (me.resizeCallback != null) {
+                    if (me.moveCallback != null) {
                         leftTop = me.moveCallback(this, leftTop.l, leftTop.t);
                     }
 
@@ -75,8 +76,9 @@ define([
                 }, this.resizeHandle);
 
                 this._resizeHandle._checkConstraints = function (newW, newH) {
+                    var pos = domGeometry.getMarginBox(me.domNode);
                     if (me.resizeCallback != null) {
-                        return me.resizeCallback(this, newW, newH);
+                        return me.resizeCallback(this, pos.l, pos.t, newW, newH);
                     }
 
                     return { w: newW, h: newH }; // Object
@@ -86,11 +88,12 @@ define([
                     // summary:
                     //		called when moving the ResizeHandle ... determines
                     //		new size based on settings/position and sets styles.
-                    console.log("Dashboard pane UPDATE SIZING ", this);
+                    console.log("Dashboard pane UPDATE SIZING ", e);
 
                     if (this.activeResize) {
                         this._changeSizing(e);
                     } else {
+                        console.log("Resize - getting new coordinates");
                         var tmp = this._getNewCoords(e, 'border', this._resizeHelper.startPosition);
                         if (tmp === false) {
                             return;
@@ -120,7 +123,7 @@ define([
             destroy: function () {
                 // summary:
                 //		Destroy this FloatingPane completely
-                this._allFPs.splice(arrayUtil.indexOf(this._allFPs, this), 1);
+                this._allFPs.splice(array.indexOf(this._allFPs, this), 1);
                 if (this._resizeHandle) {
                     this._resizeHandle.destroy();
                 }

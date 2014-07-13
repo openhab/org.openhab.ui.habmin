@@ -73,14 +73,25 @@ define([
                 return{l: newL, t: newT};
             },
 
-            _containerResize: function (panel, newW, newH) {
-                console.log("_containerResize");
+            _containerResize: function (panel, left, top, newW, newH) {
+                console.log("_containerResize IN ", left, top, newW, this.gridXpx, newH, this.gridYpx);
+
+                // Snap to grid
                 newW = this._snapToGrid(newW, this.gridXpx);
+                newH = this._snapToGrid(newH, this.gridYpx);
+
+                // Limit to a minimum of 1 grid high
                 if (newW < this.gridXpx)
                     newW = this.gridXpx;
-                newH = this._snapToGrid(newH, this.gridYpx);
                 if (newH < this.gridYpx)
                     newH = this.gridYpx;
+
+                // Limit to a maximum of the full window height
+                if (newW > this.dashXpx - left)
+                    newW = this.dashXpx - left;
+                if (newH > this.dashYpx - top)
+                    newH = this.dashYpx - top;
+                console.log("_containerResize OUT ", newW, this.gridXpx, newH, this.gridYpx);
                 return{w: newW, h: newH};
             },
 
