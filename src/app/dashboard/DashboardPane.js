@@ -27,13 +27,18 @@ define([
             resizeCallback: null,
             moveCallback: null,
 
+            gridT:0,
+            gridL:0,
+            gridW:0,
+            gridH:0,
+
             postCreate: function () {
                 var me = this;
 
                 this.node = this.domNode;
                 this.inherited(arguments);
                 this.moveable = new Moveable(this.domNode, {
-                    handle: this.headerNode
+                    handle: this.domNode
                 });
 
                 this.moveable.onMove = function (/*Mover*/ mover, /*Object*/ leftTop) {
