@@ -11,9 +11,11 @@ define([
         "dijit/form/ComboBox",
         "dijit/form/Select",
 
+        "app/common/IconModelStore",
+
         "dojo/i18n!app/nls/SaveChart"
     ],
-    function (declare, lang, dom, TableContainer, Memory, ObjectStore, TextBox, ComboBox, Select, langSaveChart) {
+    function (declare, lang, dom, TableContainer, Memory, ObjectStore, TextBox, ComboBox, Select, IconModelStore, langSaveChart) {
         return declare([TableContainer], {
             cols: 1,
             labelWidth: "150",
@@ -49,15 +51,6 @@ define([
                 });
                 var periodStore = new ObjectStore({ objectStore: this.periodMemoryStore });
 
-                var stateStore = new Memory({
-                    data: [
-                        {label: "<img width='14px' height='14px' src='app/images/compass.png'/>Egypt", name: "1", id: "AL"},
-                        {label: "<img width='14px' height='14px' src='app/images/compass.png'/>Egypt 2", name: "2", id: "A2"}
-                    ]
-                });
-
-                var os = new ObjectStore({ objectStore: stateStore });
-
                 // Create the name editor
                 this.nameEditor = new TextBox({
                     label: langSaveChart.Name,
@@ -78,7 +71,9 @@ define([
                 this.iconEditor = new Select({
                     label: langSaveChart.Icon,
                     style: childStyle,
-                    store: os
+                    labelAttr: "rendered",
+                    labelType: "html",
+                    required: true
                 });
                 this.addChild(this.iconEditor);
 
@@ -97,6 +92,11 @@ define([
                     searchAttr: "label"
                 });
                 this.addChild(this.periodEditor);
+
+                IconModelStore().loadStore().then(lang.hitch(this, function () {
+                    console.log("Icon store is", IconModelStore().getStore());
+                    this.iconEditor.setStore(IconModelStore().getStore(), this.cfgIcon, null);
+                }));
             },
             updateData: function () {
                 this.cfgName = this.nameEditor.get("value");
