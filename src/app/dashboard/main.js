@@ -27,14 +27,14 @@ define([
                     splitter:true,
                     region: 'leading'
                 });
-
                 this.addChild(acc);
-                var dashboard = new ContentPane({
+
+                this.dashboard = new ContentPane({
                     title: "Main",
                     region: "center"
                 });
-                domClass.add(dashboard.domNode, "habminChildNoPadding");
-                this.addChild(dashboard);
+                domClass.add(this.dashboard.domNode, "habminChildNoPadding");
+                this.addChild(this.dashboard);
 
                 var dashList = new ContentPane({
                     title: "Dashboards",
@@ -60,37 +60,44 @@ define([
                 domClass.add(itemList.domNode, "habminAccordionChild");
                 acc.addChild(itemList);
 
-                topic.subscribe("/dashboard/set", function(type, data) {
+                topic.subscribe("/dashboard/set", lang.hitch(this, function(type, data) {
+//                    domConstruct.empty(dashboard.domNode);
+                    this.dashboard.destroyRecursive();
+
+                    this.dashboard = new ContentPane({
+                        title: "Main",
+                        region: "center"
+                    });
+                    domClass.add(this.dashboard.domNode, "habminChildNoPadding");
+                    this.addChild(this.dashboard);
+
                     switch(type) {
                         case "chart":
-                            domConstruct.empty(dashboard.domNode);
-                            require(["app/dashboard/HabminChart"], function (Chart) {
+                            require(["app/dashboard/HabminChart"], lang.hitch(this, function (Chart) {
                                 var chart = new Chart();
                                 chart.loadChart(data);
-                                chart.placeAt(dashboard);
+                                chart.placeAt(this.dashboard);
                                 chart.startup();
-                            });
+                            }));
                             break;
                         case "items":
-                            domConstruct.empty(dashboard.domNode);
-                            require(["app/dashboard/HabminChart"], function (Chart) {
+                            require(["app/dashboard/HabminChart"], lang.hitch(this, function (Chart) {
                                 var chart = new Chart();
                                 chart.loadItems(data);
-                                chart.placeAt(dashboard);
+                                chart.placeAt(this.dashboard);
                                 chart.startup();
-                            });
+                            }));
                             break;
                         case "newdash":
-                            domConstruct.empty(dashboard.domNode);
-                            require(["app/dashboard/DashboardContainer"], function (Dashboard) {
+                            require(["app/dashboard/DashboardContainer"], lang.hitch(this, function (Dashboard) {
                                 var dash = new Dashboard();
-                                dash.placeAt(dashboard);
+                                dash.placeAt(this.dashboard);
                                 dash.startup();
                                 dash.loadDashboard();
-                            });
+                            }));
                             break;
                     }
-                });
+                }));
             },
             startup: function() {
                 this.inherited(arguments);
