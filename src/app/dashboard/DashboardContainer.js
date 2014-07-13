@@ -18,7 +18,7 @@ define([
         return declare(Container, {
             gridX: 12,
             gridY: 8,
-            style:"width:100%;height:100%;",
+            style: "width:100%;height:100%;",
             childWidgets: [],
 
             buildRendering: function () {
@@ -34,11 +34,12 @@ define([
                 this._addContainer(2, 1, 2, 4, 1);
                 var chart = new Chart();
                 chart.loadChart("5");
-                chart.placeAt(x.domNode);
+//                chart.placeAt(x.domNode);
+                x.addChild(chart);
                 chart.startup();
             },
-            startup: function() {
-                if(this._started)
+            startup: function () {
+                if (this._started)
                     return;
 
                 this.inherited(arguments);
@@ -82,13 +83,13 @@ define([
                 // Remember the size!
                 newContainer.gridT = top;
                 newContainer.gridL = left;
-                newContainer.gridW =width;
-                newContainer.gridH =height;
+                newContainer.gridW = width;
+                newContainer.gridH = height;
 
                 this.childWidgets.push(newContainer);
                 return newContainer;
             },
-            _removeContainer: function(container) {
+            _removeContainer: function (container) {
 
             },
 
@@ -143,7 +144,7 @@ define([
                 this.gridYpx = contentBox.h / this.gridY;
 
                 // Loop through all children and move them
-                array.forEach(this.childWidgets, lang.hitch(this, function(child) {
+                array.forEach(this.childWidgets, lang.hitch(this, function (child) {
                     console.log("Resizing ", child.domNode, {
                         top: this.gridYpx * child.gridT,
                         left: this.gridXpx * child.gridL
@@ -154,6 +155,8 @@ define([
                         width: this.gridXpx * child.gridW + "px",
                         height: this.gridYpx * child.gridH + "px"
                     });
+                    if(child.resize != undefined)
+                        child.resize();
                 }));
             },
 

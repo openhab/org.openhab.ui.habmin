@@ -196,8 +196,6 @@ define([
                     // Reset the axis position
                     this.axisPos[1] = "left";
                     this.axisPos[2] = "left";
-                    this.axisPos[3] = "left";
-                    this.axisPos[4] = "left";
 
                     // Make sure the axis list is an array
                     this.chartDef.axis = [].concat(this.chartDef.axis);

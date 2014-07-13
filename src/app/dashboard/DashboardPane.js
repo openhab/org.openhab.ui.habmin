@@ -133,6 +133,13 @@ define([
                     this._resizeHandle.destroy();
                 }
                 this.inherited(arguments);
+            },
+
+            resize: function () {
+                this.getChildren().forEach(function(child){
+                    if(child.resize != undefined)
+                        child.resize();
+                });
             }
         });
     });
