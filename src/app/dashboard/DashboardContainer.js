@@ -1,7 +1,7 @@
 define([
         "dojo/_base/declare",
         "dojo/_base/lang",
-        "dijit/layout/BorderContainer",
+        "dijit/layout/ContentPane",
         "app/dashboard/DashboardPane",
         "app/dashboard/DashboardToolbar",
         "dojo/request",
@@ -16,6 +16,7 @@ define([
         return declare(Container, {
             gridX: 12,
             gridY: 8,
+            style:"width:100%;height:100%;",
 
             buildRendering: function () {
                 this.inherited(arguments);
