@@ -82,16 +82,11 @@ define([
                             break;
                         case "newdash":
                             domConstruct.empty(dashboard.domNode);
-                            require(["app/dashboard/DashboardContainer","app/dashboard/HabminChart"], function (Dashboard, Chart) {
+                            require(["app/dashboard/DashboardContainer"], function (Dashboard) {
                                 var dash = new Dashboard();
                                 dash.placeAt(dashboard);
                                 dash.startup();
-                                var x = dash.addContainer(1, 0, 0, 6, 2);
-                                dash.addContainer(2, 1, 2, 4, 1);
-                                var chart = new Chart();
-                                chart.loadChart("5");
-                                chart.placeAt(x.domNode);
-                                chart.startup();
+                                dash.loadDashboard();
                             });
                             break;
                     }

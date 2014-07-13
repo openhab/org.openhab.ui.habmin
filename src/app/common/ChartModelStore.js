@@ -8,7 +8,7 @@ define([
         "dojo/_base/array",
         "dojo/topic"
     ],
-    function (declare, lang, Deferred, Observable, Memory, request, array, topic) {
+    function (declare, lang, Deferred, Observable, Memory, request) {
         var store = null;
         var def = null;
         return declare(null, {
