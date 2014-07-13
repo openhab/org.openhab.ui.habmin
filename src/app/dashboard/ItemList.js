@@ -119,8 +119,15 @@ define([
                     var items = [];
                     var key;
                     for (key in selected) {
+                        var i = {};
+                        i.name = key;
+
+                        var sel = ItemModelStore().query({name: key});
+                        if(sel.length == 1)
+                            i.label = sel[0].label;
+
                         if (selected.hasOwnProperty(key))
-                            items.push(key);
+                            items.push(i);
                     }
                     var dialog = new SaveChart();
                     dialog.placeAt(document.body);

@@ -118,7 +118,7 @@ define([
             updateData: function () {
                 this.cfgLabel = this.labelEditor.get("value");
                 this.cfgFormat = this.formatEditor.get("value");
-                this.cfgColor = this.colorEditor.get("value");
+                this.cfgColor = this.colorEditor.getValue();
                 this.cfgMinimum = this.minimumEditor.get("value");
                 this.cfgMaximum = this.maximumEditor.get("value");
                 this.cfgMajorLineColor = this.majorLineColorEditor.getValue();

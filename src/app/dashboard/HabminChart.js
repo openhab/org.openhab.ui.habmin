@@ -234,10 +234,10 @@ define([
                             var gridCfg = {
                                 type: Grid,
                                 vAxis: axis.position,
-                                hMajorLines: (axis.majorStyle != null && axis.majorStyle.length != 0 &&
-                                    axis.majorStyle != "None") ? true : false,
-                                hMinorLines: (axis.minorStyle != null && axis.minorStyle.length != 0 &&
-                                    axis.minorStyle != "None") ? true : false,
+                                hMajorLines: !!(axis.majorStyle != null && axis.majorStyle.length != 0 &&
+                                    axis.majorStyle != "None"),
+                                hMinorLines: !!(axis.minorStyle != null && axis.minorStyle.length != 0 &&
+                                    axis.minorStyle != "None"),
                                 vMajorLines: false,
                                 vMinorLines: false,
                                 majorHLine: { style: axis.majorStyle, color: axis.majorColor, width: axis.majorWidth },

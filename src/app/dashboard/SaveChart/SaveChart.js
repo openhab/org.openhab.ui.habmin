@@ -219,9 +219,10 @@ define([
 
                 array.forEach(items, lang.hitch(this, function (item) {
                     var itemDef = {};
-                    itemDef.item = item;
-                    itemDef.label = "";
+                    itemDef.item = item.name;
+                    itemDef.label = item.label;
                     itemDef.axis = "";
+                    itemDef.lineWidth = 1;
 
                     chartDef.items.push(itemDef);
                 }));
