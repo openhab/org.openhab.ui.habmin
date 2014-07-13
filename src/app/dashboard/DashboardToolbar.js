@@ -55,6 +55,18 @@ define([
                         menuRef: "edit",
                         iconClass: "habminIconEdit",
                         select: yNew
+                    },
+                    {
+                        label: "Save",
+                        menuRef: "save",
+                        iconClass: "habminIconSave",
+                        select: yNew
+                    },
+                    {
+                        label: "Close",
+                        menuRef: "close",
+                        iconClass: "habminIconClose",
+                        select: closeButton
                     }
                 ];
                 this.toolbar = new Toolbar({style: "border: 1px;"});
@@ -121,6 +133,11 @@ define([
                     var ct = domGeometry.getContentBox(filterBox.domNode);
                     this.tb = domGeometry.getContentBox(this.toolbar.domNode);
                     this.resize({h: 21 + this.tb.h + ct.h, w: Math.max(this.tb.w, ct.w)});
+                }
+
+                // Close the toolbar and remove the editing functionality
+                function closeButton() {
+                    this.destroyRecursive();
                 }
             }
         })

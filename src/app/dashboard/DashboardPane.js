@@ -44,7 +44,7 @@ define([
                 this.moveable.onMove = function (/*Mover*/ mover, /*Object*/ leftTop) {
                     console.log("Dashboard pane MOVE ", mover, leftTop);
                     if (me.moveCallback != null) {
-                        leftTop = me.moveCallback(this, leftTop.l, leftTop.t);
+                        leftTop = me.moveCallback(me, leftTop.l, leftTop.t);
                     }
 
                     var c = this.constraintBox;
@@ -83,7 +83,7 @@ define([
                 this._resizeHandle._checkConstraints = function (newW, newH) {
                     var pos = domGeometry.getMarginBox(me.domNode);
                     if (me.resizeCallback != null) {
-                        return me.resizeCallback(this, pos.l, pos.t, newW, newH);
+                        return me.resizeCallback(me, pos.l, pos.t, newW, newH);
                     }
 
                     return { w: newW, h: newH }; // Object
@@ -126,9 +126,6 @@ define([
             },
 
             destroy: function () {
-                // summary:
-                //		Destroy this FloatingPane completely
-                this._allFPs.splice(array.indexOf(this._allFPs, this), 1);
                 if (this._resizeHandle) {
                     this._resizeHandle.destroy();
                 }
@@ -136,6 +133,7 @@ define([
             },
 
             resize: function () {
+                this.inherited(arguments);
                 this.getChildren().forEach(function(child){
                     if(child.resize != undefined)
                         child.resize();

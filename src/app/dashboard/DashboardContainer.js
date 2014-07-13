@@ -19,10 +19,11 @@ define([
             gridX: 12,
             gridY: 8,
             style: "width:100%;height:100%;",
-            childWidgets: [],
+            _childWidgets: [],
 
             buildRendering: function () {
                 this.inherited(arguments);
+                this._childWidgets = [];
             },
             postCreate: function () {
                 domClass.add(this.domNode, "habminChildNoPadding");
@@ -47,6 +48,16 @@ define([
                 this.resize();
 
                 this._started = true;
+            },
+            destroy: function () {
+                this.inherited(arguments);
+
+                console.log("Destroying dashboard container");
+
+                // Loop through all children and remove them
+                array.forEach(this._childWidgets, lang.hitch(this, function (child) {
+                    child.destroyRecursive();
+                }));
             },
             _snapToGrid: function (xVal, gridPattern) {
                 var xMod = xVal % gridPattern;
@@ -86,7 +97,7 @@ define([
                 newContainer.gridW = width;
                 newContainer.gridH = height;
 
-                this.childWidgets.push(newContainer);
+                this._childWidgets.push(newContainer);
                 return newContainer;
             },
             _removeContainer: function (container) {
@@ -99,8 +110,8 @@ define([
                 newT = this._snapToGrid(newT, this.gridYpx);
 
                 // Set the grid in the panel
-                panel.gridT = newL / this.gridXpx;
-                panel.gridL = newT / this.gridYpx;
+                panel.gridL = newL / this.gridXpx;
+                panel.gridT = newT / this.gridYpx;
 
                 return{l: newL, t: newT};
             },
@@ -144,19 +155,17 @@ define([
                 this.gridYpx = contentBox.h / this.gridY;
 
                 // Loop through all children and move them
-                array.forEach(this.childWidgets, lang.hitch(this, function (child) {
-                    console.log("Resizing ", child.domNode, {
-                        top: this.gridYpx * child.gridT,
-                        left: this.gridXpx * child.gridL
-                    });
-                    domStyle.set(child.domNode.id, {
-                        top: this.gridYpx * child.gridT + "px",
-                        left: this.gridXpx * child.gridL + "px",
-                        width: this.gridXpx * child.gridW + "px",
-                        height: this.gridYpx * child.gridH + "px"
-                    });
-                    if(child.resize != undefined)
-                        child.resize();
+                array.forEach(this._childWidgets, lang.hitch(this, function (child) {
+                    if(child.domNode != null) {
+                        domStyle.set(child.domNode.id, {
+                            top: this.gridYpx * child.gridT + "px",
+                            left: this.gridXpx * child.gridL + "px",
+                            width: this.gridXpx * child.gridW + "px",
+                            height: this.gridYpx * child.gridH + "px"
+                        });
+                        if (child.resize != undefined)
+                            child.resize();
+                    }
                 }));
             },
 
