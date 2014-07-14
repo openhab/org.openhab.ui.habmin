@@ -12,9 +12,10 @@ define([
         "dojo/dom-geometry",
         "dojo/dom-style",
 
-        "app/dashboard/HabminChart"
+        "app/dashboard/HabminChart",
+        "app/dashboard/CircularGauge"
     ],
-    function (declare, lang, Container, DashboardPane, DashboardToolbar, request, array, domConstruct, domClass, topic, domGeometry, domStyle, Chart) {
+    function (declare, lang, Container, DashboardPane, DashboardToolbar, request, array, domConstruct, domClass, topic, domGeometry, domStyle, Chart, CircularGauge) {
         return declare(Container, {
             gridX: 12,
             gridY: 8,
@@ -31,13 +32,21 @@ define([
                 toolbar.placeAt(this.domNode);
             },
             loadDashboard: function (dashId) {
-                var x = this._addContainer(1, 0, 0, 6, 2);
-                this._addContainer(2, 1, 2, 4, 1);
+                this._addContainer(1, 1, 2, 4, 1);
                 var chart = new Chart();
                 chart.loadChart("5");
 //                chart.placeAt(x.domNode);
+                var x = this._addContainer(2, 0, 0, 6, 2);
                 x.addChild(chart);
-                chart.startup();
+//                chart.startup();
+
+                var node1 = domConstruct.create("div", {id: "asweweqw", style: "width:100%;height:100%"});
+
+                x = this._addContainer(3, 6, 0, 4, 6);
+                var gauge = new CircularGauge({}, node1);
+                x.content = node1;
+                x.addChild(gauge);
+//                gauge.startup();
             },
             startup: function () {
                 if (this._started)
@@ -45,6 +54,10 @@ define([
 
                 this.inherited(arguments);
 
+                // Loop through all children and move them
+                array.forEach(this._childWidgets, lang.hitch(this, function (child) {
+                    child.startup();
+                }));
                 this.resize();
 
                 this._started = true;
@@ -164,7 +177,7 @@ define([
                             height: this.gridYpx * child.gridH + "px"
                         });
                         if (child.resize != undefined)
-                            child.resize();
+                            child.resize({w: this.gridXpx * child.gridW, h: this.gridYpx * child.gridH});
                     }
                 }));
             },
@@ -172,7 +185,5 @@ define([
             _enableEditing: function () {
 
             }
-
-
         })
     });
