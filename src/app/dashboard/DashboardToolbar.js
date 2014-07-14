@@ -42,31 +42,31 @@ define([
                         label: "New",
                         menuRef: "new",
                         iconClass: "habminIconNew",
-                        select: yNew
+                        select: this.newButton
                     },
                     {
                         label: "Delete",
                         menuRef: "delete",
                         iconClass: "habminIconDelete",
-                        select: deleteButton
+                        select: this.deleteButton
                     },
                     {
                         label: "Edit",
                         menuRef: "edit",
                         iconClass: "habminIconEdit",
-                        select: yNew
+                        select: this.editButton
                     },
                     {
                         label: "Save",
                         menuRef: "save",
                         iconClass: "habminIconSave",
-                        select: yNew
+                        select: this.saveButton
                     },
                     {
                         label: "Close",
                         menuRef: "close",
-                        iconClass: "habminIconClose",
-                        select: closeButton
+                        iconClass: "habminIconCancel",
+                        select: this.closeButton
                     }
                 ];
                 this.toolbar = new Toolbar({style: "border: 1px;"});
@@ -95,50 +95,56 @@ define([
                         within: true
                     });
 
-                function deleteButton() {
-                    var grid = new (declare([Grid, Selection, Keyboard]))({
-                        getBeforePut: false,
-                        columns: {label: 'Email', field: 'email'},
-                        selectionMode: "none"
-                    });
+            },
+            deleteButton: function () {
+                /*            var grid = new (declare([Grid, Selection, Keyboard]))({
+                 getBeforePut: false,
+                 columns: {label: 'Email', field: 'email'},
+                 selectionMode: "none"
+                 });
 
-                    var cp = new ContentPane({content: this.toolbar});
-                    domClass.add(cp.domNode, "habminChildNoPadding");
-                    cp.domNode.appendChild(grid.domNode);
-                    cp.startup();
-                    this.set("content", cp);
+                 var cp = new ContentPane({content: this.toolbar});
+                 domClass.add(cp.domNode, "habminChildNoPadding");
+                 cp.domNode.appendChild(grid.domNode);
+                 cp.startup();
+                 this.set("content", cp);
 
-                    // Calculate size and resize content
-                    var ct = domGeometry.getContentBox(grid.domNode);
-                    this.tb = domGeometry.getContentBox(this.toolbar.domNode);
-                    this.resize({h: 21 + this.tb.h + ct.h, w: Math.max(this.tb.w, ct.w)});
+                 // Calculate size and resize content
+                 var ct = domGeometry.getContentBox(grid.domNode);
+                 this.tb = domGeometry.getContentBox(this.toolbar.domNode);
+                 this.resize({h: 21 + this.tb.h + ct.h, w: Math.max(this.tb.w, ct.w)});
+                 */
+            },
+            /*
+             function yNew() {
+             var filterBox = new TextBox({
+             name: "filter",
+             intermediateChanges: true,
+             placeHolder: "Filter items",
+             style: "width:100%"
+             });
 
-                }
+             var cp = new ContentPane({content: this.toolbar});
+             domClass.add(cp.domNode, "habminChildNoPadding");
+             cp.domNode.appendChild(filterBox.domNode);
+             cp.startup();
+             this.set("content", cp);
 
-                function yNew() {
-                    var filterBox = new TextBox({
-                        name: "filter",
-                        intermediateChanges: true,
-                        placeHolder: "Filter items",
-                        style: "width:100%"
-                    });
+             // Calculate size and resize content
+             var ct = domGeometry.getContentBox(filterBox.domNode);
+             this.tb = domGeometry.getContentBox(this.toolbar.domNode);
+             this.resize({h: 21 + this.tb.h + ct.h, w: Math.max(this.tb.w, ct.w)});
+             }*/
 
-                    var cp = new ContentPane({content: this.toolbar});
-                    domClass.add(cp.domNode, "habminChildNoPadding");
-                    cp.domNode.appendChild(filterBox.domNode);
-                    cp.startup();
-                    this.set("content", cp);
-
-                    // Calculate size and resize content
-                    var ct = domGeometry.getContentBox(filterBox.domNode);
-                    this.tb = domGeometry.getContentBox(this.toolbar.domNode);
-                    this.resize({h: 21 + this.tb.h + ct.h, w: Math.max(this.tb.w, ct.w)});
-                }
-
-                // Close the toolbar and remove the editing functionality
-                function closeButton() {
-                    this.destroyRecursive();
-                }
+            // Close the toolbar and remove the editing functionality
+            closeButton: function () {
+//            this.destroyRecursive();
+            },
+            editButton: function () {
+            },
+            saveButton: function () {
+            },
+            newButton: function () {
             }
         })
     });
