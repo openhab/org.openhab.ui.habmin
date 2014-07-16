@@ -687,38 +687,20 @@ body {
     position: absolute;
 }
 
-
-
-
-
-
-
-
-
 .habminDashboardPane {
     background-color:#fff;
     box-sizing:border-box;
     -moz-box-sizing:border-box;
     -webkit-box-sizing:border-box;
     position: absolute;
-    border: 1px solid #dedede;
     overflow: hidden;
     padding: 0px !important;
+    margin: 1px !important;
 }
 
-/* titleNode */
-.habminDashboardPaneTitle {
-    background:#fafafa repeat-x bottom left;
-    border:1px solid #bfbfbf;
-    border-left: none;
-    border-right: none;
-    margin:10px 0px 0px 0px;
-    padding:4px 0px 2px 0px;
-    cursor: pointer;
-    white-space: nowrap;
-    position: absolute;
-    width:100%;
-    z-index: 18;
+.habminDashboardPaneEdit {
+    border: 1px solid #dedede;
+    margin: 0px !important;
 }
 
 .habminToolbarTab {

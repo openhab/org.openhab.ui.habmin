@@ -47,6 +47,8 @@ define([
                 if (enable == true) {
                     var me = this;
 
+                    domClass.add(this.domNode, "habminDashboardPaneEdit");
+
                     this.moveable = new Moveable(this.domNode, {
                         handle: this.domNode
                     });
@@ -121,6 +123,8 @@ define([
                     };
                 }
                 else {
+                    domClass.remove(this.domNode, "habminDashboardPaneEdit");
+
                     if (this._resizeHandle) {
                         this._resizeHandle.destroy();
                         this._resizeHandle = null;
