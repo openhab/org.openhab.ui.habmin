@@ -703,6 +703,17 @@ body {
     margin: 0px !important;
 }
 
+.habminDashboardPaneDelete {
+    background:url('../images/minus-button.png') no-repeat top left;
+    position:absolute;
+    left:0;
+    top:0;
+    width:16px;
+    height:16px;
+    cursor:pointer;
+    z-index: 1000;
+}
+
 .habminToolbarTab {
     position: absolute;
     left: 0px;

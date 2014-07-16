@@ -43,11 +43,15 @@ define([
 
                 this._started = true;
             },
+
             editEnable: function (enable) {
                 if (enable == true) {
                     var me = this;
 
                     domClass.add(this.domNode, "habminDashboardPaneEdit");
+
+                    this._deleteButton =
+                        domConstruct.place("<div class='habminDashboardPaneDelete'></div>", this.domNode, "last");
 
                     this.moveable = new Moveable(this.domNode, {
                         handle: this.domNode
@@ -124,6 +128,9 @@ define([
                 }
                 else {
                     domClass.remove(this.domNode, "habminDashboardPaneEdit");
+
+                    if(this._deleteButton)
+                        domConstruct.destroy(this._deleteButton);
 
                     if (this._resizeHandle) {
                         this._resizeHandle.destroy();

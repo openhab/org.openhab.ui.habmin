@@ -45,12 +45,6 @@ define([
                         select: this.newButton
                     },
                     {
-                        label: "Delete",
-                        menuRef: "delete",
-                        iconClass: "habminIconDelete",
-                        select: this.deleteButton
-                    },
-                    {
                         label: "Edit",
                         menuRef: "edit",
                         iconClass: "habminIconEdit",

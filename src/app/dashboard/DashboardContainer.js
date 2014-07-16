@@ -21,24 +21,39 @@ define([
             gridY: 8,
             style: "width:100%;height:100%;",
             _childWidgets: [],
+            _editing: false,
 
             buildRendering: function () {
                 this.inherited(arguments);
                 this._childWidgets = [];
             },
             postCreate: function () {
+                var me = this;
                 domClass.add(this.domNode, "habminChildNoPadding");
-                var toolbar = DashboardToolbar();
+                var toolbar = DashboardToolbar({
+//                    closeButton: function () {
+//                        this.destroyRecursive();
+//                    },
+
+                    editButton: function() {
+                        array.forEach(me._childWidgets, lang.hitch(this, function (child) {
+                            child.editEnable(true);
+                        }));
+                    },
+                    closeButton: function() {
+                        array.forEach(me._childWidgets, lang.hitch(this, function (child) {
+                            child.editEnable(false);
+                        }));
+                    }
+                });
                 toolbar.placeAt(this.domNode);
             },
             loadDashboard: function (dashId) {
                 this._addContainer(1, 1, 2, 4, 1);
                 var chart = new Chart();
                 chart.loadChart("5");
-//                chart.placeAt(x.domNode);
                 var x = this._addContainer(2, 0, 0, 6, 2);
                 x.addChild(chart);
-//                chart.startup();
 
                 var node1 = domConstruct.create("div", {id: "asweweqw", style: "width:100%;height:100%"});
 
@@ -46,7 +61,6 @@ define([
                 var gauge = new CircularGauge({}, node1);
                 x.content = node1;
                 x.addChild(gauge);
-//                gauge.startup();
             },
             startup: function () {
                 if (this._started)
@@ -89,20 +103,15 @@ define([
                 var h = this.gridYpx * height;
 
                 var style = "left:" + x + "px;top:" + y + "px;width:" + w + "px;height:" + h + "px;";
-//                var newContainer = new ContentPane({style: style, dockable: false, resizable: true});
                 var newContainer = new DashboardPane({
                     moveCallback: lang.hitch(this, this._containerMove),
                     resizeCallback: lang.hitch(this, this._containerResize),
                     style: style
                 });
-//                newContainer.dashboardContainer = this;
-//                newContainer.set("content", style);
+
                 domConstruct.place(newContainer.domNode, this.domNode);
                 domClass.add(newContainer.domNode, "habminDashboardContainer");
                 newContainer.startup();
-//                on(newContainer, "resize", this._containerResize);
-//                on(newContainer.headerNode, "mousedown", this._containerResize);
-//                this.connect(newContainer.headerNode,"onmousedown","bringToTop");
 
                 // Remember the size!
                 newContainer.gridT = top;
@@ -170,20 +179,16 @@ define([
                 // Loop through all children and move them
                 array.forEach(this._childWidgets, lang.hitch(this, function (child) {
                     if(child.domNode != null) {
+                        if (child.resize != undefined)
+                            child.resize({w: this.gridXpx * child.gridW, h: this.gridYpx * child.gridH});
                         domStyle.set(child.domNode.id, {
                             top: this.gridYpx * child.gridT + "px",
                             left: this.gridXpx * child.gridL + "px",
                             width: this.gridXpx * child.gridW + "px",
                             height: this.gridYpx * child.gridH + "px"
                         });
-                        if (child.resize != undefined)
-                            child.resize({w: this.gridXpx * child.gridW, h: this.gridYpx * child.gridH});
                     }
                 }));
-            },
-
-            _enableEditing: function () {
-
             }
         })
     });
