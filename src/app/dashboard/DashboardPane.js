@@ -40,6 +40,7 @@ define([
                     return;
 
                 this.inherited(arguments);
+                this.resize();
 
                 this._started = true;
             },

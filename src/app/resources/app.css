@@ -8,14 +8,11 @@
 @import '../../dojo/resources/dojo.css';
 @import '../../dijit/themes/claro/claro.css';
 @import '../../dgrid/css/skins/claro.css';
-
 @import '../../dojox/calendar/themes/claro/Calendar.css';
 @import '../../dojox/calendar/themes/claro/MonthColumnView.css';
 @import "../../dojox/layout/resources/FloatingPane.css";
 @import "../../dojox/layout/resources/ResizeHandle.css";
-
 @import '../../dgrowl/dGrowl.css';
-
 
 html, body, #mainDiv {
     width: 100%;
@@ -136,7 +133,7 @@ table {
 }
 
 .habminHeaderbar {
-    height:52px;
+    height: 52px;
     margin: 0px !important;
     padding: 0px !important;
     width: 100%;
@@ -149,7 +146,6 @@ table {
     background-image: linear-gradient(top, rgb(29, 37, 75), rgb(3, 3, 6));
 }
 
-
 body {
     font-family: Arial, Helvetica, sans-serif;
     padding: 0;
@@ -157,7 +153,7 @@ body {
     background-color: #fff;
     background-image: none;
     width: 100%;
-    height:100%;
+    height: 100%;
 
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -170,17 +166,17 @@ body {
 .habminListNoIcon {
     background-repeat: no-repeat;
     background-size: 16px 16px;
-    padding-left:21px;
+    padding-left: 21px;
 }
 
 .habminListIcon {
-    padding-left:5px;
+    padding-left: 5px;
 }
 
 .habminListIcon img {
     width: 16px;
     height: 16px;
-    float:left;
+    float: left;
 }
 
 .habminButtonIcon {
@@ -252,12 +248,11 @@ body {
     background-image: url('../images/block.png');
 }
 
-
 .habminWidget {
     width: 32px;
     height: 32px;
     padding-left: 40px;
-    vertical-align:middle;
+    vertical-align: middle;
     text-align: center;
     display: table-cell;
     background-repeat: no-repeat;
@@ -300,8 +295,6 @@ body {
     background-image: url('../images/widgetColorpicker.png');
 }
 
-
-
 .status-online,
 .status-offline,
 .status-unknown,
@@ -343,7 +336,6 @@ body {
     background-position: right 15px top 5px;
 }
 
-
 .loginMessage {
     position: absolute;
     left: 0;
@@ -354,11 +346,10 @@ body {
 #tree .field-bool {
     width: 4em;
 }
+
 #tree .field-type {
     width: 5em;
 }
-
-
 
 .habminChildNoPadding {
     padding: 0px !important;
@@ -372,11 +363,9 @@ body {
     color: #dcd2c7;
 }
 
-
 /* === Blue Badge ==*/
 .mblDomButtonErrorBadge,
-.mblDomButtonWarningBadge
-{
+.mblDomButtonWarningBadge {
     position: relative;
     width: 29px;
     height: 20px;
@@ -386,6 +375,7 @@ body {
     font-weight: bold;
     float: right;
 }
+
 .mblDomButtonErrorBadge > div {
     position: absolute;
     display: inline;
@@ -402,9 +392,11 @@ body {
     -webkit-box-shadow: 2px 3px 2px rgba(0, 0, 0, 0.5);
     box-shadow: 2px 3px 2px rgba(0, 0, 0, 0.5);
 }
+
 .mblDomButtonErrorBadge > div > div {
     display: none;
 }
+
 .mblDomButtonWarningBadge > div {
     position: absolute;
     display: inline;
@@ -421,10 +413,10 @@ body {
     -webkit-box-shadow: 2px 3px 2px rgba(0, 0, 0, 0.5);
     box-shadow: 2px 3px 2px rgba(0, 0, 0, 0.5);
 }
+
 .mblDomButtonWarningBadge > div > div {
     display: none;
 }
-
 
 #splashscreen {
     position: fixed;
@@ -439,7 +431,6 @@ body {
     margin: auto;
 }
 
-
 #content {
     overflow: hidden;
     margin: 3px 0px 0px 0px;
@@ -447,10 +438,9 @@ body {
     padding: 0px 0px 0px 0px;
 }
 
-
 .habmin .dijitContainer {
-    overflow:hidden !important;
-    height:100% !important;
+    overflow: hidden !important;
+    height: 100% !important;
 }
 
 .habmin .dijitToolbar {
@@ -463,7 +453,7 @@ body {
 .habminDevice {
     margin: 0px 5px 0px 5px;
     border: 1px solid #0c86b9;
-    padding:0px 4px 0px 4px;
+    padding: 0px 4px 0px 4px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
 }
@@ -483,7 +473,6 @@ body {
     border-bottom: 2px solid green;
 }
 
-
 .habminDeviceStatusOk {
     box-shadow: inset 0px 1px 3px 0px #1bdc15;
 }
@@ -497,8 +486,7 @@ body {
     border-radius: 5px 5px 0px 5px;
 }
 
-.habminDeviceChildSections
-{
+.habminDeviceChildSections {
     font-weight: bold;
     border-top: none !important;
     margin: 0px 5px 0px 55px;
@@ -507,8 +495,7 @@ body {
     border-radius: 0px 0px 5px 5px;
 }
 
-.habminDeviceChildTitle
-{
+.habminDeviceChildTitle {
     border: 1px solid;
     font-weight: bold;
     margin: 0px;
@@ -516,8 +503,8 @@ body {
 }
 
 .habminDeviceIcon {
-    width:32px;
-    height:32px;
+    width: 32px;
+    height: 32px;
 }
 
 .habminDeviceTitle {
@@ -526,7 +513,7 @@ body {
 
 .habminDeviceHeading {
     font-weight: bold;
-    width:25%;
+    width: 25%;
     margin-right: 10px;
 }
 
@@ -535,7 +522,7 @@ body {
 }
 
 .habminDeviceButton .dijitButtonNode {
-    width:85px;
+    width: 85px;
     padding: 2px 4px 4px 4px;
     border-radius: 5px;
     text-align: left;
@@ -554,7 +541,6 @@ body {
 .habminDeviceButtonFocused {
 }
 
-
 .habminChartLegend {
     padding: 0px !important;
     display: flex;
@@ -567,7 +553,6 @@ body {
 .habminChartLegend td {
     padding: 0px 20px 0px 20px;
 }
-
 
 #mainMenu,
 #mainMenu ul {
@@ -593,7 +578,7 @@ body {
 }
 
 #mainMenu {
-    zoom:1;
+    zoom: 1;
 }
 
 #mainMenu li {
@@ -602,7 +587,7 @@ body {
 }
 
 #mainMenu li {
-    font: bold 12px/45px "Lato","Trebuchet MS", Arial, Helvetica, sans-serif;
+    font: bold 12px/45px "Lato", "Trebuchet MS", Arial, Helvetica, sans-serif;
     display: block;
     text-align: center;
     height: 45px;
@@ -614,7 +599,7 @@ body {
     background-image: -o-linear-gradient(top, rgb(15, 111, 178), rgb(34, 65, 112));
     background-image: -ms-linear-gradient(top, rgb(15, 111, 178), rgb(34, 65, 112));
     background-image: linear-gradient(top, rgb(15, 111, 178), rgb(34, 65, 112));
-    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr='#0f6fb2', EndColorStr='#224170');
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, StartColorStr='#0f6fb2', EndColorStr='#224170');
     color: #fff;
     text-decoration: none;
     box-sizing: border-box;
@@ -622,42 +607,39 @@ body {
     -o-transition: all .2s ease-in;
     -moz-transition: all .2s ease-in;
     -webkit-transition: all .2s ease-in;
-    box-shadow: inset 0 2px 0 #0070a3,inset 0 0 10px 0 #142a4a;
+    box-shadow: inset 0 2px 0 #0070a3, inset 0 0 10px 0 #142a4a;
 }
 
 #mainMenu li:hover {
-    box-shadow: inset 0 2px 0 #0070a3,inset 0 0 40px 0 #142a4a;
+    box-shadow: inset 0 2px 0 #0070a3, inset 0 0 40px 0 #142a4a;
     text-shadow: 0 1px 3px #143157;
 }
 
 #mainMenu li:first-child {
-    border-top-left-radius:6px;
-    border-top-right-radius:0px;
-    border-bottom-right-radius:0px;
-    border-bottom-left-radius:0px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
 }
 
 #mainMenu li:last-child {
-    border-top-left-radius:0px;
-    border-top-right-radius:6px;
-    border-bottom-right-radius:0px;
-    border-bottom-left-radius:0px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
 }
 
 #mainMenu li.menuSelected {
     background-image: none;
     background-color: white;
     color: #000;
-    box-shadow: inset 0 2px 0 #0070a3,inset 0 4px 5px 0 #142a4a;
+    box-shadow: inset 0 2px 0 #0070a3, inset 0 4px 5px 0 #142a4a;
 }
 
 #mainMenu li.menuSelected:hover {
-    box-shadow: inset 0 2px 0 #0070a3,inset 0 7px 10px 0 #142a4a;
+    box-shadow: inset 0 2px 0 #0070a3, inset 0 7px 10px 0 #142a4a;
     text-shadow: none;
 }
-
-
-
 
 .habmin .dojoxFloatingPane {
     padding: 0px !important;
@@ -668,7 +650,7 @@ body {
 .habmin .dojoxFloatingPaneTitle {
     font-size: 0.9em;
     font-weight: bold;
-    line-height:1em;
+    line-height: 1em;
 }
 
 .habmin .dojoxFloatingPaneContent {
@@ -676,22 +658,18 @@ body {
     border: 1px;
 }
 
-
-
-
-
 .habminDashboardContainer {
-    box-sizing:border-box;
-    -moz-box-sizing:border-box;
-    -webkit-box-sizing:border-box;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
     position: absolute;
 }
 
 .habminDashboardPane {
-    background-color:#fff;
-    box-sizing:border-box;
-    -moz-box-sizing:border-box;
-    -webkit-box-sizing:border-box;
+    background-color: #fff;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
     position: absolute;
     overflow: hidden;
     padding: 0px !important;
@@ -699,18 +677,20 @@ body {
 }
 
 .habminDashboardPaneEdit {
-    border: 1px solid #dedede;
+    border: 1px solid #dc491d;
+    background-color: #dda9a9;
+    box-shadow: inset 0px 0px 7px 0px #dc1b15;
     margin: 0px !important;
 }
 
 .habminDashboardPaneDelete {
-    background:url('../images/minus-button.png') no-repeat top left;
-    position:absolute;
-    left:0;
-    top:0;
-    width:16px;
-    height:16px;
-    cursor:pointer;
+    background: url('../images/minus-button.png') no-repeat top left;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
     z-index: 1000;
 }
 
@@ -719,35 +699,35 @@ body {
     left: 0px;
     bottom: 0px;
     width: 100%;
-    border:1px solid #bfbfbf;
+    border: 1px solid #bfbfbf;
 }
 
 /* Icons */
 .dojoxFloatingCloseIcon {
-    background:url('../../../dijit/themes/tundra/images/tabClose.png') no-repeat center center;
-    width:16px;
-    height:16px;
-    overflow:hidden;
-    float:right;
+    background: url('../../../dijit/themes/tundra/images/tabClose.png') no-repeat center center;
+    width: 16px;
+    height: 16px;
+    overflow: hidden;
+    float: right;
 }
 
 .habminDashboardPaneResizeHandle {
-    background:url('icons/resize.png') no-repeat bottom right;
-    position:absolute;
-    right:0;
-    bottom:0;
-    width:16px;
-    height:16px;
-    cursor:nw-resize;
+    background: url('icons/resize.png') no-repeat bottom right;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 16px;
+    height: 16px;
+    cursor: nw-resize;
 }
 
 .habminDashboardPaneCloseIcon {
-    width:15px;
-    height:15px;
-    overflow:hidden;
-    float:right;
-    cursor:pointer;
-    background:url("../../../dijit/themes/soria/images/spriteRoundedIconsSmallBl.png") no-repeat -60px top;
+    width: 15px;
+    height: 15px;
+    overflow: hidden;
+    float: right;
+    cursor: pointer;
+    background: url("../../../dijit/themes/soria/images/spriteRoundedIconsSmallBl.png") no-repeat -60px top;
 }
 
 /* Modifications */
@@ -756,7 +736,7 @@ body {
     overflow: auto;
     background-color: #fff;
     height: 100%;
-    width:	100%;
+    width: 100%;
     position: absolute;
     z-index: 100;
 }

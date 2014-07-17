@@ -21,6 +21,7 @@ define([
             gridY: 8,
             style: "width:100%;height:100%;",
             _childWidgets: [],
+            _nextId: 1,
             _editing: false,
 
             buildRendering: function () {
@@ -28,25 +29,27 @@ define([
                 this._childWidgets = [];
             },
             postCreate: function () {
+            },
+            edit: function () {
                 var me = this;
                 domClass.add(this.domNode, "habminChildNoPadding");
                 var toolbar = DashboardToolbar({
-//                    closeButton: function () {
-//                        this.destroyRecursive();
-//                    },
-
-                    editButton: function() {
-                        array.forEach(me._childWidgets, lang.hitch(this, function (child) {
-                            child.editEnable(true);
-                        }));
+                    newButton: function() {
+                        var newWidget = me._addContainer(me._nextId, 1, 1, 2, 2);
+                        newWidget.editEnable(true);
                     },
                     closeButton: function() {
                         array.forEach(me._childWidgets, lang.hitch(this, function (child) {
                             child.editEnable(false);
                         }));
+                        this.destroyRecursive();
                     }
                 });
                 toolbar.placeAt(this.domNode);
+
+                array.forEach(me._childWidgets, lang.hitch(this, function (child) {
+                    child.editEnable(true);
+                }));
             },
             loadDashboard: function (dashId) {
                 this._addContainer(1, 1, 2, 4, 1);
@@ -68,7 +71,7 @@ define([
 
                 this.inherited(arguments);
 
-                // Loop through all children and move them
+                // Loop through all children and call startup
                 array.forEach(this._childWidgets, lang.hitch(this, function (child) {
                     child.startup();
                 }));

@@ -12,9 +12,12 @@ define([
         "dojo/_base/array",
         "dojo/dom-construct",
         "dojo/topic",
-        "dojo/on"
+        "dojo/on",
+
+        "dojox/string/sprintf",
+        "app/common/ConfirmDialog"
     ],
-    function (declare, lang, Container, request, Grid, Registry, Selection, Keyboard, Button, Toolbar, array, domConstruct, topic, on) {
+    function (declare, lang, Container, request, Grid, Registry, Selection, Keyboard, Button, Toolbar, array, domConstruct, topic, on, sprintf, ConfirmDialog) {
         return declare(Container, {
 
             buildRendering: function () {
@@ -25,18 +28,21 @@ define([
                         label: "New",
                         menuRef: "new",
                         iconClass: "habminIconNew",
-                        select: menuNew
+                        disabled: false,
+                        select: toolbarNew
                     },
                     {
                         label: "Delete",
                         menuRef: "delete",
                         iconClass: "habminIconDelete",
-                        select: xNew
+                        disabled: true,
+                        select: toolbarDelete
                     },
                     {
                         label: "Edit",
                         menuRef: "edit",
                         iconClass: "habminIconEdit",
+                        disabled: true,
                         select: toolbarEdit
                     }
                 ];
@@ -47,7 +53,7 @@ define([
                         // Just set showLabel=false if you don't want it to be displayed normally
                         label: def.label,
                         showLabel: true,
-//                        disabled: true,
+                        disabled: def.disabled,
                         iconClass: "habminButtonIcon " + def.iconClass
                     });
                     on(button, "click", lang.hitch(this, def.select));
@@ -70,9 +76,10 @@ define([
                     this.toolbar.getChildren()[1].set("disabled", false);
 
                     var cell = this.grid.cell(evt);
+                    this.selectedId = cell.row.data.id;
 
                     //
-                    topic.publish("/dashboard/set", "chart", cell.row.data.id);
+                    topic.publish("/dashboard/set", "chart", this.selectedId);
                 }));
 
                 this.addChild(this.toolbar);
@@ -83,20 +90,33 @@ define([
                         "<span class='habminListIcon'><img src='/images/" + object.icon + ".png'></span>" + value;
                 }
 
-                function menuNew() {
+                function toolbarNew() {
                     console.log("Dashboard NEW pressed");
                     topic.publish("/dashboard/set", "newdash");
                 }
 
-                function xNew() {
-                    console.log("menuNew pressed");
+                function toolbarDelete() {
+                    console.log("Dashboard DELETE pressed");
+/*
+                    var dialog = new ConfirmDialog({
+                            title: langDashboard.ConfirmDeleteTitle,
+                            text: sprintf(langDashboard.ConfirmDelete, this.selectedChartName)
+                        }
+                    );
+                    dialog.show().then(
+                        lang.hitch(this, function () {
+                            DashboardModelStore().delete(this.selectedChartId);
+                            return;
+                        }),
+                        lang.hitch(this, function () {
+                        })
+                    );
+*/
                 }
 
                 function toolbarEdit() {
                     console.log("Dashboard EDIT pressed");
-//                    topic.publish("/dashboard/edit", "current");
-  //                  var x = new dTool({style: "width:180px;"}, domConstruct.create('div', null, this.domNode));
-    //                x.startup();
+                    topic.publish("/dashboard/set", this.selectedId);
                 }
 
             },

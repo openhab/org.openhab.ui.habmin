@@ -19,12 +19,12 @@ define([
         return declare(BorderContainer, {
             design: 'sidebar',
             gutters: true,
-            liveSplitters:true,
+            liveSplitters: true,
 
-            postCreate: function() {
+            postCreate: function () {
                 var acc = new AccordionContainer({
                     style: "width:250px",
-                    splitter:true,
+                    splitter: true,
                     region: 'leading'
                 });
                 this.addChild(acc);
@@ -38,7 +38,7 @@ define([
 
                 var dashList = new ContentPane({
                     title: "Dashboards",
-                    iconClass:"habminButtonIcon habminIconDashboard",
+                    iconClass: "habminButtonIcon habminIconDashboard",
                     content: new DashList()
                 });
                 domClass.add(dashList.domNode, "habminAccordionChild");
@@ -46,7 +46,7 @@ define([
 
                 var chartList = new ContentPane({
                     title: "Charts",
-                    iconClass:"habminButtonIcon habminIconChart",
+                    iconClass: "habminButtonIcon habminIconChart",
                     content: new ChartList()
                 });
                 domClass.add(chartList.domNode, "habminAccordionChild");
@@ -54,13 +54,13 @@ define([
 
                 var itemList = new ContentPane({
                     title: "Items",
-                    iconClass:"habminButtonIcon habminIconItems",
+                    iconClass: "habminButtonIcon habminIconItems",
                     content: new ItemList()
                 });
                 domClass.add(itemList.domNode, "habminAccordionChild");
                 acc.addChild(itemList);
 
-                topic.subscribe("/dashboard/set", lang.hitch(this, function(type, data) {
+                topic.subscribe("/dashboard/set", lang.hitch(this, function (type, data) {
 //                    domConstruct.empty(dashboard.domNode);
                     this.dashboard.destroyRecursive();
 
@@ -71,7 +71,7 @@ define([
                     domClass.add(this.dashboard.domNode, "habminChildNoPadding");
                     this.addChild(this.dashboard);
 
-                    switch(type) {
+                    switch (type) {
                         case "chart":
                             require(["app/dashboard/HabminChart"], lang.hitch(this, function (Chart) {
                                 var chart = new Chart();
@@ -93,13 +93,21 @@ define([
                                 var dash = new Dashboard();
                                 dash.placeAt(this.dashboard);
                                 dash.startup();
+                                dash.edit();
+                            }));
+                            break;
+                        case "loaddash":
+                            require(["app/dashboard/DashboardContainer"], lang.hitch(this, function (Dashboard) {
+                                var dash = new Dashboard();
+                                dash.placeAt(this.dashboard);
                                 dash.loadDashboard();
+                                dash.startup();
                             }));
                             break;
                     }
                 }));
             },
-            startup: function() {
+            startup: function () {
                 this.inherited(arguments);
                 this.resize();
             }
