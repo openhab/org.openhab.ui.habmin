@@ -122,6 +122,8 @@ define([
                                 return;
                             }
                             this._resizeHelper.resize(tmp);
+
+                            me.resize();
                         }
                         e.preventDefault();
                     };
@@ -152,9 +154,10 @@ define([
 
             resize: function () {
                 this.inherited(arguments);
+                var s = domGeometry.getMarginBox(this.domNode);
                 this.getChildren().forEach(function (child) {
                     if (child.resize != undefined)
-                        child.resize();
+                        child.resize(s);
                 });
             }
         });
