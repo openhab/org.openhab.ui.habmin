@@ -5,6 +5,7 @@ define([
         "dojo/dom",
         "dojo/_base/connect",
         "dojo/_base/Color",
+        "dojo/dom-construct",
         "dojox/dgauges/CircularGauge",
         "dojox/dgauges/LinearScaler",
         "dojox/dgauges/CircularScale",
@@ -16,9 +17,11 @@ define([
         "dojox/dgauges/components/black/SemiCircularLinearGauge",
         "dojox/dgauges/components/black/HorizontalLinearGauge",
         "dojo/parser"],
-    function (declare, lang, ready, dom, connect, Color, CircularGauge, LinearScaler, CircularScale, CircularValueIndicator, CircularRangeIndicator, TextIndicator, utils) {
+    function (declare, lang, ready, dom, connect, Color, domConstruct, CircularGauge, LinearScaler, CircularScale, CircularValueIndicator, CircularRangeIndicator, TextIndicator, utils) {
         return declare(CircularGauge, {
             value: 20,
+            start: 10,
+            end: 75,
             font: {
                 family: "Arial",
                 style: "normal",
@@ -27,10 +30,12 @@ define([
             },
 
             constructor: function () {
+                this.inherited(arguments);
+
                 // Draw background
                 this.addElement("background", function (g) {
                     g.createPath({path: "M372.8838 205.5688 C372.9125 204.4538 372.93 194.135 372.94 185.6062 C372.4475 83.0063 289.1138 -0 186.4063 0.035 C83.7 0.0713 0.4225 83.1325 0 185.7325 C0.01 194.2175 0.0275 204.4638 0.0563 205.5763 C0.235 212.3488 5.7763 217.7462 12.5525 217.7462 L360.3888 217.7462 C367.1663 217.7462 372.71 212.3438 372.8838 205.5688"
-                    }).setFill("black");
+                    }).setFill("blue");
                 });
 
                 // Scale
@@ -54,6 +59,12 @@ define([
                             color: "white",
                             width: 1
                         });
+                    },
+                    font: {
+                        family: "Arial",
+                        style: "normal",
+                        size: "14pt",
+                        color: "white"
                     }
                 });
 
@@ -61,7 +72,8 @@ define([
 
                 // A range indicator that goes from 0 to 100
                 this.indicator = new CircularRangeIndicator({
-                    value: 100,
+                    start: this.start,
+                    value: this.end,
                     radius: 135,
                     startThickness: 50,
                     endThickness: 50,
@@ -71,13 +83,16 @@ define([
 
                 // An interactive range indicator that shows the current value
                 this.indicator = new CircularRangeIndicator({
-                    value: this.value,
+                    start: this.start,
+                    value: this.end,
                     radius: 125,
                     startThickness: 30,
                     endThickness: 30,
                     fill: "gray",
                     interactionArea: "gauge",
-                    interactionMode: "mouse"
+                    interactionMode: "mouse",
+                    animationDuration: 250
+//                    animationEaser:
                 });
                 scale.addIndicator("indicator", this.indicator);
 
@@ -96,8 +111,6 @@ define([
                     color: "gray"
                 });
                 this.addElement("indicatorText", indicatorText);
-//                this.startup();
-//                this.resize(250, 200);
             }
         })
     });
