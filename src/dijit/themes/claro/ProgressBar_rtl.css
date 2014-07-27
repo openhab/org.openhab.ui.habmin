@@ -1,8 +1,0 @@
-/* ProgressBar
- * 
- * Styling of the ProgressBar when RTL direction is specified
- */
-.claro .dijitProgressBarRtl .dijitProgressBarFull {
-  border-left-width: 1px;
-  border-right-width: 0px;
-}
