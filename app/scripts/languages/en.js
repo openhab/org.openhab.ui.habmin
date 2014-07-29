@@ -4,5 +4,6 @@ Ember.I18n.translations = {
     mainMenuSitemaps: 'Sitemaps',
     mainMenuAutomation: 'Automation',
 
-    chartItemList: 'Items'
+    chartItemList: 'Items',
+    chartNoItemsToGraph: 'No items to graph'
 };

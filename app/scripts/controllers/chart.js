@@ -3,6 +3,9 @@ HABmin.ChartController = Ember.Controller.extend({
     init: function (params) {
         var me = this;
 
+        this.items = [];
+        this.services = [];
+
         this.chart = {
             columns: [
                 ['data1', 30, 20, 50, 40, 60, 50],
@@ -23,11 +26,17 @@ HABmin.ChartController = Ember.Controller.extend({
             ]
         };
 
-        Ember.$.getJSON('http://localhost:8080/rest/sitemaps').then(
+        Ember.$.getJSON('http://localhost:8080/services/habmin/persistence/items').then(
             function (response) {
-                me.set("items", response.sitemap);
+                me.set("items", response.items);
             }
-        )
+        );
+
+        Ember.$.getJSON('http://localhost:8080/services/habmin/persistence/services').then(
+            function (response) {
+                me.set("services", response.services);
+            }
+        );
     },
 
     actions: {
