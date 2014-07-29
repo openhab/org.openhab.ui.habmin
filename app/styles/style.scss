@@ -1,6 +1,6 @@
 $icon-font-path: "../styles/fonts/";
 // Change the path to the fonts
-@import "bootstrap-sass-official/vendor/assets/stylesheets/bootstrap";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap";
 
 /* Put your CSS here */
 html, body {
@@ -12,7 +12,18 @@ html, body {
 }
 
 .habmin-scroll {
-  overflow: scroll;
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.icon_list {
+  margin-left: 25px;
+  float: left;
+}
+
+.icon_list_img img {
+  margin-left: 0px;
 }
 
 .chart-container {

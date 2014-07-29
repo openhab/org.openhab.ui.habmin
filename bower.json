@@ -5,7 +5,7 @@
     "ember": "1.5.0",
     "handlebars": "1.2.1",
     "ember-data": "1.0.0-beta.7",
-    "bootstrap-sass-official": "3.1.1",
+    "bootstrap-sass-official": "3.2.0",
     "ember-i18n": "~2.0.0",
     "cldr": "~1.0.1",
     "ember-c3": "~0.1.3"
