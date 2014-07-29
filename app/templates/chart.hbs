@@ -1,0 +1,37 @@
+<div class="col-md-4">
+    <div class="habmin-scroll">
+        <div class="panel panel-primary">
+            <div class="panel-heading clearfix">
+                <h4 class="panel-title pull-left" style="padding-top: 7.5px;">{{t chartItemList}}</h4>
+                <div class="btn-group pull-right">
+                    <div class="dropdown dropdown-menu-right">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
+                                data-toggle="dropdown">
+                            {{selectedStore}}
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                            <li role="presentation"><a role="menuitem"
+                                                       tabindex="-1" {{action "changeStore" this "rrd4j"}}>mysql</a>
+                            </li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1">rrd4j</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <ul class="list-group">
+                {{#each item in items}}
+                    <li class="list-group-item">{{item.label}}</li>
+                {{else}}
+                    No items to graph
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-8">
+    <div class="chart-container">
+        {{c3-chart data=chart}}
+    </div>
+</div>
