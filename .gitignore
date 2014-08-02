@@ -134,5 +134,6 @@ $RECYCLE.BIN/
 # Mac crap
 .DS_Store
 
-app/bower_components
-.sass-cache
+app/bower_components/
+.sass-cache/
+dist/
