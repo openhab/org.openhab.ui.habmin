@@ -273,7 +273,7 @@ module.exports = function (grunt) {
                         ]
                     }
                 ]
-            }, 
+            },
             dist: {
                 files: [
                     {
@@ -286,6 +286,28 @@ module.exports = function (grunt) {
                             '.htaccess',
                             'images/{,*/}*.{webp,gif}',
                             'styles/fonts/*'
+                        ]
+                    }
+                ]
+            },
+            openhab: {
+                files: [
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '.tmp',
+                        dest: '../openhab/distribution/openhabhome/webapps/em',
+                        src: [
+                            '**/*.*'
+                        ]
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= yeoman.app %>/bower_components',
+                        dest: '../openhab/distribution/openhabhome/webapps/em/bower_components',
+                        src: [
+                            '**/*.*'
                         ]
                     }
                 ]
@@ -352,6 +374,7 @@ module.exports = function (grunt) {
             'copy:fonts',
             'connect:livereload',
             'open',
+            'copy:openhab',
             'watch'
         ]);
     });

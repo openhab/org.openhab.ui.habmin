@@ -1,4 +1,6 @@
 Ember.I18n.translations = {
+    globalFilterPlaceholder: "filter...",
+
     mainMenuAppName: 'HABmin',
     mainMenuDashboard: 'Dashboard',
     mainMenuSitemaps: 'Sitemaps',
@@ -7,5 +9,7 @@ Ember.I18n.translations = {
     mainMenuLogout: 'Logout',
 
     chartItemList: 'Items',
-    chartNoItemsToGraph: 'No items to graph'
+    chartNoItemsToGraph: 'No items to graph',
+    chartTotalItems: "Total Items",
+    chartItemsSelected: "Items Selected"
 };

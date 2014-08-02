@@ -5,13 +5,14 @@
                 <div class="well sidebar-nav">
                     <strong>Items</strong>
                     <ul class="list-group">
-                        {{#each item in controller}}
-                            <li class="list-group-item">{{item.label}}</li>
-                        {{/each}}
+
                     </ul>
                 </div>
             </div>
         </div>
     </div>
-    {{sitemap-text-widget label="Label" labelcolor="color:#ff0000" value="20.3C"}}
+    {sitemap-text-widgetx label="Label" labelcolor="color:#ff0000" value="20.3C"}
+
+
+    {sitemap-base-widget sitemap=model}
 </div>

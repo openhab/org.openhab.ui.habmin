@@ -1,9 +1,16 @@
 HABmin.ChartRoute = Ember.Route.extend({
     model: function() {
-        return Ember.RSVP.hash({
-            items: HABmin.PersistenceItemModel.all()//,
+        return {items: [
+            Ember.Object.create({name: "1", label: "Hello 1", icon: "temperature", selected: false}),
+                Ember.Object.create({name: "2", label: "Hello 2", icon: "heating", selected: true})
+        ]
+        }
+//            return Ember.RSVP.hash({
+  //          items: [{name:"1", label:"Hello 1", icon:"temperature", selected: false},{name:"2", label:"Hello 2", icon:"heating", selected:true}]
+//            items: HABmin.PersistenceItemModel.all()//,
 //            services: this.store.find('persistence')
-        })
+
+ //       })
     }
 });
 

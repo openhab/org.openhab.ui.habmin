@@ -1,22 +1,63 @@
 HABmin.ChartController = Ember.Controller.extend({
-    init: function (params) {
+    filterText: "",
+    filterPlaceholder: Ember.I18n.t("globalFilterPlaceholder"),
+    selectedItems:["1"],
 
+    init: function (params) {
+        this._super();
     },
     actions: {
+        resetFilter: function () {
+            this.set("filterText", "");
+        },
         changeStore: function (model, select) {
             this.set("selectedStore", select);
         },
-
         clickItem: function (item) {
+            console.log("Item clicked:",item, "this is", this);
+            console.log("List is ", this.get("selectedItems"));
 
+            var list = this.get("selectedItems");
+            if(list.contains(item))
+                list.popObject(item);
+            else
+                list.pushObject(item);
         },
-
-        showChart: function() {
+        showChart: function () {
+        },
+        clearSelection: function () {
+            this.set("selectedItems", []);
         }
-    }
+    },
+    filterObserver: function() {
+        console.log("onChange update", this.filterText);
+    }.observes('filterText'),
+    iconImg: Ember.computed('icon', function () {
+        return this.get('icon') + ' ' + this.get('icon');
+    }),
+    isSelected: function(item) {
+        item = "1";
+        var sel = false;
+        var list = this.get("selectedItems");
+        if(list.contains(item))
+            sel = true;
 
+        console.log("Checking select for", item, "is", sel);
+        console.log("List is ", this.get("selectedItems"));
+
+        return sel;
+    }.property("selectedItems.@each"),
+    itemsTotal: function() {
+        console.log("Checking itemsTotal");
+        var list = this.get('model.items');
+        return list.length;
+    }.property('model.items.[]'),
+    itemsSelected: function() {
+        console.log("Checking itemsSelected");
+        var list = this.get('selectedItems');
+        return list.length;
+    }.property('selectedItems.[]')
 });
-
 
 HABmin.ChartxxxController = Ember.Controller.extend({
     selectedStore: "mysql",
@@ -52,19 +93,19 @@ HABmin.ChartxxxController = Ember.Controller.extend({
                 }
             }
         };
-/*
-        Ember.$.getJSON('http://localhost:8080/services/habmin/persistence/items').then(
-            function (response) {
-                me.set("items", response.items);
-                me.resetItemSelect();
-            }
-        );
+        /*
+         Ember.$.getJSON('http://localhost:8080/services/habmin/persistence/items').then(
+         function (response) {
+         me.set("items", response.items);
+         me.resetItemSelect();
+         }
+         );
 
-        Ember.$.getJSON('http://localhost:8080/services/habmin/persistence/services').then(
-            function (response) {
-                me.set("services", response.services);
-            }
-        );*/
+         Ember.$.getJSON('http://localhost:8080/services/habmin/persistence/services').then(
+         function (response) {
+         me.set("services", response.services);
+         }
+         );*/
     },
 
     resetItemSelect: function () {
@@ -86,10 +127,10 @@ HABmin.ChartxxxController = Ember.Controller.extend({
 
         clickItem: function (item) {
             var items = this.get("items");
-/*            items[0].selected = true;
-            this.set("items", items);
-            return;
-*/
+            /*            items[0].selected = true;
+             this.set("items", items);
+             return;
+             */
             for (var i = 0; i < items.length; i++) {
                 if (items[i].name == item.name) {
 //                    this.set("items[0].selected", true);

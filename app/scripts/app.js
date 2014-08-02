@@ -1,3 +1,10 @@
+/**
+ * HABmin Home Automation GUI for OpenHAB
+ *
+ * (c) 2014 Chris Jackson
+ *
+ */
+
 var HABmin = window.HABmin = Ember.Application.create({
     LOG_TRANSITIONS:          true,
     LOG_TRANSITIONS_INTERNAL: true

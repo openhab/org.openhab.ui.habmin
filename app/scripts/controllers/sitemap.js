@@ -1,9 +1,9 @@
-HABmin.SitemapController = Ember.ArrayController.extend({
+HABmin.SitemapController = Ember.ObjectController.extend({
+    sitemapConfig: {},
+    init: function (params) {
+        this._super();
+    },
     actions: {
-        query: function() {
-            // the current value of the text field
-            var query = this.get('search');
-            this.transitionToRoute('search', { query: query });
-        }
+
     }
 });

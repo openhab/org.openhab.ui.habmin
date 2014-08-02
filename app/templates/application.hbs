@@ -19,10 +19,11 @@
                         <span class="glyphicon glyphicon-eye-open"></span> {{t mainMenuSitemaps}}
                         <span class="caret"></span>
                     </a>
-                {{#each item in items}}
-                    <li>{{#link-to 'sitemap.view' item.name}}{{item.label}}{{/link-to}}</li>
-                {{/each}}
+
                     <ul class="dropdown-menu" role="menu">
+                        {{#each model.sitemaps}}
+                            <li>{{#link-to 'sitemap.view' name}}{{label}}{{/link-to}}</li>
+                        {{/each}}
                     </ul>
                 </li>
                 <li>{{#link-to 'chart'}} {{t mainMenuAutomation}}{{/link-to}}</li>
