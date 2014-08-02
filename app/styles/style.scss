@@ -1,0 +1,68 @@
+$icon-font-path: "../styles/fonts/";
+// Change the path to the fonts
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap";
+
+/* Put your CSS here */
+.habmin-body {
+  margin-top: 60px;
+}
+
+.habmin-nav {
+  width: 150px;
+}
+
+.habmin-list {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.habmin-list-item {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.habmin-img-list {
+  width:20px;
+  height:20px;
+}
+
+.navbar > .container {
+  width:auto;
+}
+
+
+
+
+
+
+
+
+#custom-search-form {
+  margin:0;
+  margin-top: 5px;
+  padding: 0;
+}
+
+#custom-search-form .search-query {
+  padding-right: 3px;
+  padding-right: 4px \9;
+  padding-left: 8px;
+  padding-left: 4px \9;
+  padding-top: 0px;
+  padding-bottom: 1px;
+  border: 1px;
+  /* IE7-8 doesn't have border-radius, so don't indent the padding */
+
+  width:100%;
+  margin-bottom: 0;
+  -webkit-border-radius: 4px 0px 0px 4px;
+  -moz-border-radius: 4px 0px 0px 4px;
+  border-radius: 4px 0px 0px 4px;
+}
+
+#custom-search-form .search-icon {
+  float:right;
+  z-index: 3;
+  color: #808080;
+  position: absolute; right: 34px; top: 7px;
+}
