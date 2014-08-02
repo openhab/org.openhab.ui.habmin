@@ -4,7 +4,7 @@ $icon-font-path: "../styles/fonts/";
 
 /* Put your CSS here */
 .habmin-body {
-  margin: 60px 0;
+  margin-top: 60px;
 }
 
 .habmin-nav {
@@ -12,7 +12,6 @@ $icon-font-path: "../styles/fonts/";
 }
 
 .habmin-list {
-    max-height: 200px;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -25,15 +24,6 @@ $icon-font-path: "../styles/fonts/";
 .habmin-img-list {
   width:20px;
   height:20px;
-}
-
-.chart-container {
-  height: 500px;
-  width: 100%
-}
-
-.pagination-centered {
-  text-align: center;
 }
 
 .navbar > .container {
@@ -65,9 +55,9 @@ $icon-font-path: "../styles/fonts/";
 
   width:100%;
   margin-bottom: 0;
-  -webkit-border-radius: 6px 0px 0px 6px;
-  -moz-border-radius: 6px 0px 0px 6px;
-  border-radius: 6px 0px 0px 6px;
+  -webkit-border-radius: 4px 0px 0px 4px;
+  -moz-border-radius: 4px 0px 0px 4px;
+  border-radius: 4px 0px 0px 4px;
 }
 
 #custom-search-form .search-icon {
