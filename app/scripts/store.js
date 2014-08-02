@@ -1,1 +1,0 @@
-HABmin.ApplicationAdapter = DS.FixtureAdapter;
