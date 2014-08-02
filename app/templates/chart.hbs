@@ -2,17 +2,18 @@
     <div>
         <div class="panel panel-primary">
             <div class="panel-heading clearfix">
-                <h4 class="panel-title pull-left" style="padding-top: 7.5px;">{{t chartItemList}}</h4>
+                <div>
+                    <span class="glyphicon glyphicon-list"></span>{{t chartItemList}}
 
-                <div class="nav pull-right">
-                    <div>
-                        <button type="button" class="btn btn-default">
-                            <a href="#" role="menuitem" {{action "showChart" item item.name}}><span class="glyphicon glyphicon-play"></span></a>
+                    <div class="btn-group pull-right">
+                        <button type="button" class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top"
+                                title=""
+                                data-original-title="Tooltip on top">
+                            <a href="#" role="menuitem" {{action "showChart" item item.name}}><span
+                                    class="glyphicon glyphicon-play"></span></a>
                         </button>
-                    </div>
 
-                    <div class="dropdown">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
                             <span class="glyphicon glyphicon-th"></span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
@@ -20,7 +21,7 @@
                             <li><a href="#">Another action</a></li>
                             <li><a href="#">Something else here</a></li>
                             <li class="divider"></li>
-                            {{#each service in services}}
+                            {{#each service in model.services}}
                                 <li {{bind-attr class="isSelectedService:active"}}>
                                     <a href="#" role="menuitem">{{service.name}}</a>
                                 </li>
@@ -28,39 +29,41 @@
                         </ul>
                     </div>
                 </div>
-
+                            <div id="custom-search-form" class="input-group col-xs-12">
+                                <input type="text" class="search-query" placeholder="Filter">
+                                <span class="input-group-btn">
+                    <button class="btn btn-default btn-xs" type="button"><span class="glyphicon glyphicon-remove-sign"></span></button>
+</span>
+                            </div>
             </div>
-            <div class="list-group">
-                {{#each item in items}}
+            <div class="list-group habmin-list">
+                {{#each item in model.items}}
                     <a href="#"
-                       role="presentation" {{bind-attr class=":list-group-item item.selected:list-group-item-info"}} {{action "clickItem" item item.name}}><img {{bind-attr src="item.icon"}}>{{item.label}}
+                       role="presentation" {{bind-attr class=":list-group-item item.selected:list-group-item-info"}} {{action "clickItem" item item.name}}>
+                        <img class="habmin-img-list" src="/images/{{unbound item.icon}}.png">
+                        {{item.label}}
                     </a>
                 {{else}}
                     <div class="list-group-item pagination-centered">{{t chartNoItemsToGraph}}</div>
                 {{/each}}
             </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Total Count <span class="label label-info">25</span></h6>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Selected <span class="label label-success">25</span></h6>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
 
 <div class="col-md-8">
-    <div class="chart-container">
-        {{c3-chart
-        data=data
-        axis=axis
-        regions=regions
-        bar=bar
-        pie=pie
-        donut=donut
-        grid=grid
-        legend=legend
-        tooltip=tooltip
-        subchart=subchart
-        zoom=zoom
-        size=size
-        padding=padding
-        color=color
-        transition=transition
-        }}
-    </div>
+
+
+
 </div>

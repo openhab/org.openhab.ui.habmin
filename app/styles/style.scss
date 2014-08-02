@@ -3,27 +3,28 @@ $icon-font-path: "../styles/fonts/";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap";
 
 /* Put your CSS here */
-html, body {
-  margin: 30px 0;
+.habmin-body {
+  margin: 60px 0;
 }
 
 .habmin-nav {
   width: 150px;
 }
 
-.habmin-scroll {
-    max-height: 400px;
+.habmin-list {
+    max-height: 200px;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
-.icon_list {
-  margin-left: 25px;
-  float: left;
+.habmin-list-item {
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
-.icon_list_img img {
-  margin-left: 0px;
+.habmin-img-list {
+  width:20px;
+  height:20px;
 }
 
 .chart-container {
@@ -33,4 +34,45 @@ html, body {
 
 .pagination-centered {
   text-align: center;
+}
+
+.navbar > .container {
+  width:auto;
+}
+
+
+
+
+
+
+
+
+#custom-search-form {
+  margin:0;
+  margin-top: 5px;
+  padding: 0;
+}
+
+#custom-search-form .search-query {
+  padding-right: 3px;
+  padding-right: 4px \9;
+  padding-left: 8px;
+  padding-left: 4px \9;
+  padding-top: 0px;
+  padding-bottom: 1px;
+  border: 1px;
+  /* IE7-8 doesn't have border-radius, so don't indent the padding */
+
+  width:100%;
+  margin-bottom: 0;
+  -webkit-border-radius: 6px 0px 0px 6px;
+  -moz-border-radius: 6px 0px 0px 6px;
+  border-radius: 6px 0px 0px 6px;
+}
+
+#custom-search-form .search-icon {
+  float:right;
+  z-index: 3;
+  color: #808080;
+  position: absolute; right: 34px; top: 7px;
 }

@@ -1,9 +1,29 @@
 HABmin.ChartController = Ember.Controller.extend({
+    init: function (params) {
+
+    },
+    actions: {
+        changeStore: function (model, select) {
+            this.set("selectedStore", select);
+        },
+
+        clickItem: function (item) {
+
+        },
+
+        showChart: function() {
+        }
+    }
+
+});
+
+
+HABmin.ChartxxxController = Ember.Controller.extend({
     selectedStore: "mysql",
     init: function (params) {
         var me = this;
 
-        this.items = [];
+        this.items = HABmin.ChartItemsModel.model;
         this.services = [];
 
         this.regions = [];
@@ -32,7 +52,7 @@ HABmin.ChartController = Ember.Controller.extend({
                 }
             }
         };
-
+/*
         Ember.$.getJSON('http://localhost:8080/services/habmin/persistence/items').then(
             function (response) {
                 me.set("items", response.items);
@@ -44,7 +64,7 @@ HABmin.ChartController = Ember.Controller.extend({
             function (response) {
                 me.set("services", response.services);
             }
-        );
+        );*/
     },
 
     resetItemSelect: function () {
@@ -66,18 +86,18 @@ HABmin.ChartController = Ember.Controller.extend({
 
         clickItem: function (item) {
             var items = this.get("items");
-            items[0].selected = true;
+/*            items[0].selected = true;
             this.set("items", items);
             return;
-
+*/
             for (var i = 0; i < items.length; i++) {
                 if (items[i].name == item.name) {
 //                    this.set("items[0].selected", true);
-//                    items[i].selected = !items[i].selected;
+                    items[i].selected = !items[i].selected;
                     break;
                 }
             }
-//            this.set("items", items);
+            this.set("items", items);
         },
 
         showChart: function () {
@@ -86,10 +106,13 @@ HABmin.ChartController = Ember.Controller.extend({
             this.data.columns = [];
             this.itemsTotal = 0;
             this.itemsLoaded = 0;
+            this.chartStop = Math.round((new Date()).getTime());
+            this.chartStart = this.chartStop - (this.chartPeriod * 1000);
+            this._calculateXTicks();
             for (var i = 0; i < items.length; i++) {
                 if (items[i].selected == true) {
                     this.itemsTotal++;
-                    this._loadItem(items[i].name, 0, 0);
+                    this._loadItem(items[i].name, this.chartStart, this.chartStop);
                 }
             }
         }
@@ -274,34 +297,17 @@ HABmin.ChartController = Ember.Controller.extend({
         // Get the first tick
         var start = Math.ceil((this.chartStart + 1) / step.tick) * step.tick;
 
-        var config = {
-            min: start - step.tick
-        };
-
         var labels = [];
-        var dt = new Date();
         while (start < this.chartStop) {
-            dt.setTime(start);
-
-            var label = {};
-            label.value = start;
-            if (start % step.bound == 0)
-                label.text = locale.format(dt, {selector: "date", datePattern: step.formatBound});
-            else
-                label.text = locale.format(dt, {selector: "date", datePattern: step.formatTick});
-            labels.push(label);
+            labels.push(new Date(start));
+//            if (start % step.bound == 0)
+//                data.text = dt;
             start += step.tick;
         }
 
-        config.labels = labels;
-        config.max = start;
-        config.from = this.chartStart;
-        config.to = this.chartStop;
-        config.majorTickStep = step.tick;
-        config.minorLabels = false;
+        this.axis.x.tick.values = labels;
+        console.log("Chart axis config:", this.axis);
 
-        console.log("Chart X-Axis config: ", config);
-
-        return config;
+        return labels;
     }
 });
