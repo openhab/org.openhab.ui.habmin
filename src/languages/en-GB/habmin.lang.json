@@ -5,5 +5,7 @@
     "automation" :"Automation",
 
     "chartItemList": "Items",
-    "chartNoItems": "No Items To Graph"
+    "chartNoItems": "No Items To Graph",
+    "chartTotalItems": "Total Items",
+    "chartSelectedItems":"Selected Items"
 }
