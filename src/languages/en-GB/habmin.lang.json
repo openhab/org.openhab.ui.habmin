@@ -1,0 +1,9 @@
+{
+    "login": "Login",
+    "dashboard": "Dashboard",
+    "sitemaps" :"Sitemaps",
+    "automation" :"Automation",
+
+    "chartItemList": "Items",
+    "chartNoItems": "No Items To Graph"
+}

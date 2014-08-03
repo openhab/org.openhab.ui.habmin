@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html ng-app="HABmin" ng-controller="HABminCtrl">
+<head>
+    <title ng-bind="pageTitle"></title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- compiled CSS --><% styles.forEach( function ( file ) { %>
+    <link rel="stylesheet" type="text/css" href="<%= file %>"/>
+    <% }); %>
+
+    <!-- compiled JavaScript --><% scripts.forEach( function ( file ) { %>
+    <script type="text/javascript" src="<%= file %>"></script>
+    <% }); %>
+
+    <link rel="stylesheet" type="text/css" href="assets/slate.css"/>
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-default navbar-fixed-top" container="false" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header habmin-nav">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span class="navbar-brand" i18n="common.appName"></span>
+            </div>
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a ui-sref="about">
+                            <span class="glyphicon glyphicon-dashboard"></span>
+                            <span i18n="habmin.dashboard"></span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a ui-sref="chart">
+                            <span class="glyphicon glyphicon-tasks"></span>
+                            <span i18n="habmin.automation"></span>
+                        </a>
+                    </li>
+
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-eye-open"></span>
+                            <span i18n="habmin.sitemaps"></span>
+                            <span class="caret"></span>
+                        </a>
+
+                        <ul class="dropdown-menu" role="menu">
+                            <li>1</li>
+                            <li>2</li>
+                            <li>3</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a ui-sref="about">
+                            <span class="glyphicon glyphicon-user"></span>
+                            <span i18n="habmin.login"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+</div>
+
+<div class="container habmin-body" ui-view="main"></div>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-inner">
+
+        </div>
+    </div>
+</footer>
+</body>
+</html>

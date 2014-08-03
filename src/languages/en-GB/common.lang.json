@@ -1,0 +1,10 @@
+{
+    "appName" : "HABmin",
+    "yes" : "Yes",
+    "no" : "No",
+    "cancel":"Cancel",
+    "save" : "Save",
+    "open" : "Open",
+    "close" : "Close",
+    "filter": "filter..."
+}
