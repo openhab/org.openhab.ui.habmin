@@ -14,6 +14,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-conventional-changelog');
     grunt.loadNpmTasks('grunt-bump');
+    grunt.loadNpmTasks('grunt-json-minify');
     grunt.loadNpmTasks('grunt-coffeelint');
     grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-ngmin');
@@ -157,6 +158,16 @@ module.exports = function (grunt) {
                         expand: true
                     }
                 ]
+            },
+            compile_languages: {
+                files: [
+                    {
+                        src: [ '**' ],
+                        dest: '<%= compile_dir %>/languages/',
+                        cwd: '<%= build_dir %>/languages',
+                        expand: true
+                    }
+                ]
             }
         },
 
@@ -230,6 +241,17 @@ module.exports = function (grunt) {
                     }
                 ]
             }
+        },
+
+        /**
+         * `json-min`  minifys the json language files
+         */
+        'json-minify': {
+            build:
+                {
+                    files: '<%= compile_dir %>/languages/*/**.*.json'
+                }
+
         },
 
         /**
@@ -583,7 +605,8 @@ module.exports = function (grunt) {
      * minifying your code.
      */
     grunt.registerTask('compile', [
-        'less:compile', 'copy:compile_assets', 'ngmin', 'concat:compile_js', 'uglify', 'index:compile'
+        'less:compile', 'copy:compile_assets', 'copy:compile_languages', 'json-minify', 'ngmin',
+        'concat:compile_js', 'uglify', 'index:compile'
     ]);
 
     /**
