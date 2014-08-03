@@ -149,6 +149,16 @@ module.exports = function (grunt) {
                     }
                 ]
             },
+            build_app_openhab: {
+                files: [
+                    {
+                        src: [ '**' ],
+                        dest: '../openhab/distribution/openhabhome/webapps/ng',
+                        cwd: '<%= build_dir %>',
+                        expand: true
+                    }
+                ]
+            },
             compile_assets: {
                 files: [
                     {
@@ -251,7 +261,6 @@ module.exports = function (grunt) {
                 {
                     files: '<%= compile_dir %>/languages/*/**.*.json'
                 }
-
         },
 
         /**
@@ -596,7 +605,7 @@ module.exports = function (grunt) {
     grunt.registerTask('build', [
         'clean', 'html2js', 'jshint', 'coffeelint', 'coffee', 'less:build',
         'concat:build_css', 'copy:build_app_assets', 'copy:build_app_languages', 'copy:build_vendor_assets',
-        'copy:build_appjs', 'copy:build_vendorjs', 'index:build', 'karmaconfig',
+        'copy:build_appjs', 'copy:build_vendorjs', 'index:build', 'copy:build_app_openhab', 'karmaconfig',
         'karma:continuous'
     ]);
 
