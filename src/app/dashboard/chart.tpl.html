@@ -27,13 +27,12 @@
                         <span class="glyphicon glyphicon-cog"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li class="divider"></li>
-                        <li>1</li>
-                        <li>2</li>
-                        <li>3</li>
+                        <li ng-repeat="choice in services">
+                            <a role="presentation" ng-click="selectService(choice)">
+                                <span>{{choice.name}}</span>
+                                <span ng-if="choice.selected" class="pull-right glyphicon glyphicon-check"></span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -47,7 +46,7 @@
             </div>
         </div>
         <div id="itemList" class="list-group habmin-list" ng-style="style()" resize>
-            <div ng-if="itemTotal" ng-repeat="choice in items">
+            <div ng-if="itemsTotal" ng-repeat="choice in items">
                 <a href role="presentation" class="list-group-item" ng-click="selectItem(choice)">
                     <img class="habmin-img-list" src="/images/temperature.png">
                     <span>{{choice.label}}</span>
@@ -57,20 +56,20 @@
                 </a>
             </div>
 
-            <div ng-if="!itemTotal" class="list-group-item text-center" i18n="habmin.chartNoItems"></div>
+            <div ng-if="!itemsTotal" class="list-group-item text-center" i18n="habmin.chartNoItems"></div>
         </div>
         <div class="panel-footer">
             <div class="row">
                 <div class="col-md-6">
                     <h6 class="text-center">
                         <span i18n="habmin.chartTotalItems"></span>
-                        <span class="label label-info">{{itemTotal}}</span>
+                        <span class="label label-info">{{itemsTotal}}</span>
                     </h6>
                 </div>
                 <div class="col-md-6">
                     <h6 class="text-center">
                         <span i18n="habmin.chartSelectedItems"></span>
-                        <span class="label label-success">{{itemSelected}}</span>
+                        <span class="label label-success">{{itemsSelected}}</span>
                     </h6>
                 </div>
             </div>
@@ -79,6 +78,9 @@
 </div>
 
 <div class="col-md-8">
-
-
+    <rickshaw style="height:300px;width:300px"
+            rickshaw-options="options"
+            rickshaw-features="features"
+            rickshaw-series="series" ng-style="style()" resize>
+    </rickshaw>
 </div>
