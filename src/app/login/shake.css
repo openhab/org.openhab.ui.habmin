@@ -1,0 +1,24 @@
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+    12.5% {
+        transform: translateX(-6px) rotateY(-5deg)
+    }
+    37.5% {
+        transform: translateX(5px) rotateY(4deg)
+    }
+    62.5% {
+        transform: translateX(-3px) rotateY(-2deg)
+    }
+    87.5% {
+        transform: translateX(2px) rotateY(1deg)
+    }
+    100% {
+        transform: translateX(0)
+    }
+}
+
+.shake {
+    animation: shake 400ms ease-in-out;
+}
