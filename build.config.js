@@ -64,16 +64,21 @@ module.exports = {
         js: [
             'vendor/jquery/dist/jquery.js',
             'vendor/angular/angular.js',
+            'vendor/angular-resource/angular-resource.js',
             'vendor/angular-bootstrap/ui-bootstrap-tpls.min.js',
             'vendor/placeholders/angular-placeholders-0.0.1-SNAPSHOT.min.js',
             'vendor/angular-ui-router/release/angular-ui-router.js',
             'vendor/angular-ui-utils/modules/route/route.js',
             'vendor/angular-localization/angular-localization.js',
             'vendor/angular-cookies/angular-cookies.js',
-            'vendor/lodash/dist/lodash.js',
-            'vendor/restangular/dist/restangular.js'
+            'vendor/d3/d3.min.js',
+            'vendor/rickshaw/rickshaw.min.js',
+            'vendor/angular-rickshaw/rickshaw.js',
+            'vendor/angular-sanitize/angular-sanitize.js',
+            'vendor/angular-growl-notifications/dist/growl-notifications.js'
         ],
         css: [
+            'vendor/rickshaw/rickshaw.css'
         ],
         assets: [
             'vendor/bootstrap/fonts/*'

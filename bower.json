@@ -10,7 +10,10 @@
   },
   "dependencies": {
     "bootstrap": "3.2",
-    "restangular": "~1.4.0",
-    "angular-localization": "~1.0.2"
+    "angular-localization": "~1.0.2",
+    "angular-rickshaw": "~0.3.0",
+    "d3": "3.4.11",
+    "angular-growl-notifications": "~0.7.0",
+    "angular-resource": "~1.2.21"
   }
 }
