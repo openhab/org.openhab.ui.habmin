@@ -4,11 +4,14 @@ angular.module('HABmin', [
     'ngBoilerplate.home',
     'ngBoilerplate.about',
     'HABmin.chart',
+    'HABmin.auth',
+    'HABmin.Sitemap',
     'ui.router',
     'ngLocalize',
     'ngLocalize.Config',
     'ngLocalize.Events',
-    'restangular'
+    'ngSanitize',
+    'growlNotifications'
 ])
     .value('localeConf', {
         basePath: 'languages',
@@ -31,11 +34,22 @@ angular.module('HABmin', [
         $urlRouterProvider.otherwise('/home');
     })
 
-    .run(function run(Restangular) {
-        Restangular.setBaseUrl('http://192.168.2.2:10080');
+    .run(function run() {
+//        Restangular.setBaseUrl('http://localhost:8080');
     })
 
-    .controller('HABminCtrl', function HABminCtrl($scope, $location) {
+    .controller('HABminCtrl', function HABminCtrl($scope, $location, SitemapModel, growlNotifications) {
+        $scope.notifications = growlNotifications.notifications;
+        $scope.sitemaps = null;
+        SitemapModel.query().$promise.then(
+            function(data){
+                $scope.sitemaps = data.sitemap;
+            },
+            function(reason) {
+                // handle failure
+                growlNotifications.add('Hello world ' + reason.message, 'warning', 2000);
+            }
+        );
         $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
             if (angular.isDefined(toState.data.pageTitle)) {
                 $scope.pageTitle = toState.data.pageTitle + ' | HABmin';
