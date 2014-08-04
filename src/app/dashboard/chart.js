@@ -4,7 +4,7 @@ angular.module('HABmin.chart', [
     'ui.bootstrap',
     'ngLocalize',
     'angular-rickshaw',
-    'growlNotifications',
+    'angular-growl',
     'HABmin.Persistence'
 ])
 
@@ -22,7 +22,7 @@ angular.module('HABmin.chart', [
     })
 
     .controller('DashboardChartCtrl',
-    function DashboardChartCtrl($scope, locale, PersistenceItemModel, PersistenceServiceModel, growlNotifications) {
+    function DashboardChartCtrl($scope, locale, PersistenceItemModel, PersistenceServiceModel, growl) {
         $scope.itemsTotal = 0;
         $scope.itemsSelected = 0;
         $scope.items = [];
@@ -35,7 +35,7 @@ angular.module('HABmin.chart', [
             },
             function (reason) {
                 // handle failure
-                growlNotifications.add('Hello world ' + reason.message, 'warning', 2000);
+                growl.warning('Hello world ' + reason.message);
             }
         );
 
@@ -48,7 +48,7 @@ angular.module('HABmin.chart', [
             },
             function (reason) {
                 // handle failure
-                growlNotifications.add('Hello world ' + reason.message, 'warning', 2000);
+                growl.warning('Hello world ' + reason.message);
             }
         );
 
@@ -79,27 +79,6 @@ angular.module('HABmin.chart', [
                 ]
             }
         ];
-
-        /*        var baseAccounts = Restangular.all('services/habmin/persistence/items');
-         baseAccounts.addResponseInterceptor(function(data, operation) {
-         if (operation === 'getList') {
-         var newResponse = response.body;
-         newResponse.paging = response.paging;
-         newResponse.error = response.error;
-         return newResponse;
-         }
-         return response;
-         });
-
-         // This will query /accounts and return a promise.
-         baseAccounts.getList().then(function(accounts) {
-         $scope.itemTotal = 0;
-         accounts.forEach(function(item) {
-         item.selected = false;
-         $scope.itemTotal++;
-         });
-         $scope.items = accounts;
-         });*/
 
         $scope.doChart = function (parm) {
             console.log("doChart button clicked", parm);

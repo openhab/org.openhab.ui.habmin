@@ -59,6 +59,7 @@
                             </li>
                             <li class="disabled" ng-if="!sitemaps">
                                 <a>
+                                    <span class="glyphicon glyphicon-warning-sign"></span>
                                     <span i18n="habmin.mainNoSitemaps"></span>
                                 </a>
                             </li>
@@ -90,20 +91,18 @@
 <div class="container habmin-body" ui-view="main">
 </div>
 
-<div class="growl-notifications">
-    <ul class="list-unstyled">
-        <li ng-repeat="(id, notification) in notifications">
-            <div class="alert alert-{{notification.type}}">
-                {{notification.message}}
-            </div>
-        </li>
-    </ul>
+<div growl>
 </div>
 
 <footer class="footer">
     <div class="container">
         <div class="footer-inner">
-            <small>HABmin by Chris Jackson</small>
+            <p><small class="text-center">
+                HABmin
+                <a href="http://github.com/cdjackson/HABmin/blob/v<%= version %>-release/CHANGELOG.md">
+                    v<%= version %>
+                </a>
+                by Chris Jackson</small></p>
         </div>
     </div>
 </footer>

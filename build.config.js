@@ -64,6 +64,7 @@ module.exports = {
         js: [
             'vendor/jquery/dist/jquery.js',
             'vendor/angular/angular.js',
+            'vendor/angular-animate/angular-animate.js',
             'vendor/angular-resource/angular-resource.js',
             'vendor/angular-bootstrap/ui-bootstrap-tpls.min.js',
             'vendor/placeholders/angular-placeholders-0.0.1-SNAPSHOT.min.js',
@@ -74,11 +75,11 @@ module.exports = {
             'vendor/d3/d3.min.js',
             'vendor/rickshaw/rickshaw.min.js',
             'vendor/angular-rickshaw/rickshaw.js',
-            'vendor/angular-sanitize/angular-sanitize.js',
-            'vendor/angular-growl-notifications/dist/growl-notifications.js'
+            'vendor/angular-growl-v2/build/angular-growl.js'
         ],
         css: [
-            'vendor/rickshaw/rickshaw.css'
+            'vendor/rickshaw/rickshaw.css',
+            'vendor/angular-growl-v2/build/angular-growl.css'
         ],
         assets: [
             'vendor/bootstrap/fonts/*'

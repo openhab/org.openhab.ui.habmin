@@ -7,11 +7,11 @@ angular.module('HABmin', [
     'HABmin.auth',
     'HABmin.Sitemap',
     'ui.router',
+    'ngAnimate',
     'ngLocalize',
     'ngLocalize.Config',
     'ngLocalize.Events',
-    'ngSanitize',
-    'growlNotifications'
+    'angular-growl'
 ])
     .value('localeConf', {
         basePath: 'languages',
@@ -30,16 +30,16 @@ angular.module('HABmin', [
         'en': 'en-GB'
     })
 
-    .config(function myAppConfig($stateProvider, $urlRouterProvider) {
+    .config(function myAppConfig($stateProvider, $urlRouterProvider, growlProvider) {
         $urlRouterProvider.otherwise('/home');
+        growlProvider.globalTimeToLive({success: 2000, info: 2000, warning: 5000, error: 15000});
     })
 
     .run(function run() {
 //        Restangular.setBaseUrl('http://localhost:8080');
     })
 
-    .controller('HABminCtrl', function HABminCtrl($scope, $location, SitemapModel, growlNotifications) {
-        $scope.notifications = growlNotifications.notifications;
+    .controller('HABminCtrl', function HABminCtrl($scope, $location, SitemapModel, growl) {
         $scope.sitemaps = null;
         SitemapModel.query().$promise.then(
             function(data){
@@ -47,7 +47,7 @@ angular.module('HABmin', [
             },
             function(reason) {
                 // handle failure
-                growlNotifications.add('Hello world ' + reason.message, 'warning', 2000);
+                growl.warning('Hello world ' + reason.message);
             }
         );
         $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
