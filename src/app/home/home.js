@@ -1,16 +1,11 @@
 /**
- * Each section of the site has its own module. It probably also has
- * submodules, though this boilerplate is too simple to demonstrate it. Within
- * `src/app/home`, however, could exist several additional folders representing
- * additional modules that would then be listed as dependencies of this one.
- * For example, a `note` section could have the submodules `note.create`,
- * `note.delete`, `note.edit`, etc.
+ * HABmin - Home Automation User and Administration Interface
+ * Designed for openHAB (www.openhab.com)
  *
- * Regardless, so long as dependencies are managed correctly, the build process
- * will automatically take take of the rest.
+ * This software is copywrite of Chris Jackson under the GPL license.
+ * Note that this licence may be changed at a later date.
  *
- * The dependencies block here is also where component dependencies should be
- * specified, as shown below.
+ * (c) 2014 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('ngBoilerplate.home', [
     'ui.router'
