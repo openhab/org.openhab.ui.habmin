@@ -75,11 +75,15 @@ module.exports = {
             'vendor/d3/d3.min.js',
             'vendor/rickshaw/rickshaw.min.js',
             'vendor/angular-rickshaw/rickshaw.js',
-            'vendor/angular-growl-v2/build/angular-growl.js'
+            'vendor/angular-growl-v2/build/angular-growl.js',
+            'vendor/angular-rangeslider/angular.rangeSlider.js',
+            'vendor/angular-toggle-switch/angular-toggle-switch.js'
         ],
         css: [
             'vendor/rickshaw/rickshaw.css',
-            'vendor/angular-growl-v2/build/angular-growl.css'
+            'vendor/angular-growl-v2/build/angular-growl.css',
+            'vendor/angular-rangeslider/angular.rangeSlider.css',
+            'vendor/angular-toggle-switch/angular-toggle-switch.css'
         ],
         assets: [
             'vendor/bootstrap/fonts/*'
