@@ -83,7 +83,8 @@ module.exports = {
             'vendor/rickshaw/rickshaw.css',
             'vendor/angular-growl-v2/build/angular-growl.css',
             'vendor/angular-rangeslider/angular.rangeSlider.css',
-            'vendor/angular-toggle-switch/angular-toggle-switch.css'
+            'vendor/angular-toggle-switch/angular-toggle-switch.css',
+            'vendor/angular-toggle-switch/angular-toggle-switch-bootstrap.css'
         ],
         assets: [
             'vendor/bootstrap/fonts/*'
