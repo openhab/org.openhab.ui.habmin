@@ -19,6 +19,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-ngmin');
     grunt.loadNpmTasks('grunt-html2js');
+    grunt.loadNpmTasks('grunt-contrib-htmlmin');
 
     /**
      * Load in our build configuration file.
@@ -149,6 +150,16 @@ module.exports = function (grunt) {
                     }
                 ]
             },
+            build_vendorcss: {
+                files: [
+                    {
+                        src: [ '<%= vendor_files.css %>' ],
+                        dest: '<%= build_dir %>/',
+                        cwd: '.',
+                        expand: true
+                    }
+                ]
+            },
             build_app_openhab: {
                 files: [
                     {
@@ -257,10 +268,9 @@ module.exports = function (grunt) {
          * `json-min`  minifys the json language files
          */
         'json-minify': {
-            build:
-                {
-                    files: '<%= compile_dir %>/languages/*/**.*.json'
-                }
+            build: {
+                files: '<%= compile_dir %>/languages/*/**.*.json'
+            }
         },
 
         /**
@@ -359,7 +369,17 @@ module.exports = function (grunt) {
              */
             app: {
                 options: {
-                    base: 'src/app'
+                    base: 'src/app',
+                    htmlmin: {
+                        collapseBooleanAttributes: true,
+                        collapseWhitespace: true,
+                        removeAttributeQuotes: true,
+                        removeComments: true,
+                        removeEmptyAttributes: true,
+                        removeRedundantAttributes: true,
+                        removeScriptTypeAttributes: true,
+                        removeStyleLinkTypeAttributes: true
+                    }
                 },
                 src: [ '<%= app_files.atpl %>' ],
                 dest: '<%= build_dir %>/templates-app.js'
@@ -370,7 +390,17 @@ module.exports = function (grunt) {
              */
             common: {
                 options: {
-                    base: 'src/common'
+                    base: 'src/common',
+                    htmlmin: {
+                        collapseBooleanAttributes: true,
+                        collapseWhitespace: true,
+                        removeAttributeQuotes: true,
+                        removeComments: true,
+                        removeEmptyAttributes: true,
+                        removeRedundantAttributes: true,
+                        removeScriptTypeAttributes: true,
+                        removeStyleLinkTypeAttributes: true
+                    }
                 },
                 src: [ '<%= app_files.ctpl %>' ],
                 dest: '<%= build_dir %>/templates-common.js'
@@ -604,7 +634,7 @@ module.exports = function (grunt) {
      */
     grunt.registerTask('build', [
         'clean', 'html2js', 'jshint', 'coffeelint', 'coffee', 'less:build',
-        'concat:build_css', 'copy:build_app_assets', 'copy:build_app_languages', 'copy:build_vendor_assets',
+        'copy:build_vendorcss', 'copy:build_app_assets', 'copy:build_app_languages', 'copy:build_vendor_assets',
         'copy:build_appjs', 'copy:build_vendorjs', 'index:build', 'copy:build_app_openhab', 'karmaconfig',
         'karma:continuous'
     ]);
@@ -614,7 +644,7 @@ module.exports = function (grunt) {
      * minifying your code.
      */
     grunt.registerTask('compile', [
-        'less:compile', 'copy:compile_assets', 'copy:compile_languages', 'json-minify', 'ngmin',
+        'less:compile', 'concat:build_css', 'copy:compile_assets', 'copy:compile_languages', 'json-minify', 'ngmin',
         'concat:compile_js', 'uglify', 'index:compile'
     ]);
 
