@@ -11,6 +11,8 @@
 
 @import '../../vendor/bootstrap/less/bootstrap.less';
 
+@import 'slate/bootswatch.less';
+@import 'slate/variables.less';
 
 /**
  * This is our main variables file. We must include it last so we can overwrite any variable
@@ -96,8 +98,6 @@ h2 {
   overflow-x: hidden;
 }
 
-
-
 #custom-search-form {
   margin:0;
   margin-top: 5px;
@@ -125,15 +125,73 @@ h2 {
   float:right;
   z-index: 3;
   color: #808080;
-  position: absolute; right: 34px; top: 7px;
+  position: fixed; right: 34px; top: 7px;
 }
 
 
+.sitemap-title {
+  background: @body-bg;
+  font-weight: 500;
+  line-height: 1.1;
+  font-size: 30px;
+  border-bottom: 2px solid #ddd;
+  padding-top:60px;
+  margin-bottom: 5px;
+  position: fixed; top: 0px;
+  z-index: 10;
+}
+
+.sitemap-title img {
+  height: 40px;
+}
+
+.sitemap-body {
+  margin-top: 60px;
+  z-index: 5;
+}
+
+.sitemap-row {
+  padding-left:10px;
+  padding-right:10px;
+}
+
+.sitemap-frame {
+  font-weight: 300;
+  line-height: 1.1;
+  font-size: 20px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 3px;
+  margin-bottom: 5px;
+}
+
+.sitemap-frame img {
+  height: 30px;
+  padding-right:10px;
+}
 
 
+// Override range-slider to account for theming
+.ngrs-range-slider {
+  margin: 10px 0 10px;
 
+  background: @brand-primary;
+}
 
+// Override toggle-switch to account for theming
+.switch {
+  -webkit-border-radius: @border-radius-base;
+  -moz-border-radius: @border-radius-base;
+  -ms-border-radius: @border-radius-base;
+  -o-border-radius: @border-radius-base;
+}
 
+.switch .switch-left {
+  background: @brand-success;
+}
+
+.switch .switch-right {
+  background: @brand-primary;
+}
 
 /**
  * Now that all app-wide styles have been applied, we can load the styles for

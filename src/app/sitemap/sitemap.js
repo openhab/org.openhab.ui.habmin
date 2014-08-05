@@ -15,7 +15,7 @@ angular.module('HABmin.sitemap', [
 
     .config(function config($stateProvider) {
         $stateProvider.state('sitemap', {
-            url: '/sitemap:sitemapName',
+            url: '/sitemap/:sitemapName',
             views: {
                 "main": {
                     controller: 'SitemapCtrl',
@@ -45,8 +45,9 @@ angular.module('HABmin.sitemap', [
 
                 $scope.sitemapPageTitle = pageDef.title;
 
-//                var pageTpl = '<div><toggle-switch model="switchStatus" on-label="ON" off-label="OFF"></toggle-switch></div>';
-                var pageTpl = processWidget([].concat(pageDef.widget));
+                var pageTpl = '<div class="container sitemap-title"><div class="col-md-12"><img src="../images/light_control.svg">' + pageDef.title + '</div></div>';
+                pageTpl += '<div class="sitemap-body">';
+                pageTpl += processWidget([].concat(pageDef.widget)) + "</div>";
                 console.log("Definition is", pageTpl);
                 $scope.pageTpl = $compile(pageTpl)($scope);
 
@@ -65,36 +66,41 @@ angular.module('HABmin.sitemap', [
                         value = value.trim();
                         label = label.trim();
 
-                        output += '<div class="row">';
+                        var modelName = "W"+widget.widgetId;
+
                         // Process the widget
                         switch (widget.type) {
                             case 'Frame':
-                                output += "<h4 id='" + widget.widgetId + "'><span>" + label +
-                                    "</span><span class='pull-right'>" + value + "</span></h4><hr>";
+                                output += '<div class="col-md-4"><div class="sitemap-frame" id="' + widget.widgetId + '"><span><img src="../images/light_outdoor.svg">' + label +
+                                    '</span><span class="pull-right">' + value + '</span></div>';
+
+                                if (widget.widget != null) {
+                                    output += "<div>" + processWidget([].concat(widget.widget)) + "</div>";
+                                }
+                                output += '</div>';
                                 break;
                             case 'Switch':
-                                output += '<span>' + label +
-                                    '</span><span class="pull-right"><toggle-switch knob-label="Hello" model="' +
+                                output += '<div class="row sitemap-row">';
+                                output += '<span>' + label + '</span>' +
+                                    '<span class="pull-right"><toggle-switch model="' +
                                     widget.item.name + '" on-label="ON" off-label="OFF" id="' + widget.widgetId +
                                     '"></toggle-switch></span>';
+                                output += '</div>';
                                 $scope[widget.item.name] = "On";
                                 break;
                             case 'Slider':
+                                output += '<div class="row sitemap-row">';
                                 output += '<span>' + label + '</span>' +
-                                    '<span><div range-slider id="' + widget.widgetId + '"min="0" max="100" model-max="'+ widget.item.name +'" pin-handle="min"></div></span>';
-//                                    '<span><slider id="' + widget.widgetId + '" ng-model="'+ widget.item.name +'" floor="0" ceiling="100" step="1" precision="1" stretch="1"></slider></span>';
-//                                '<slider ng-model="{expression}" floor="{float}" ceiling="{float}" step="{float}" precision="{integer}" stretch="{integer}" translate-fn="{expression}" scale-fn="{expression}" inverse-scale-fn="{expression}"></slider>';
-                                $scope[widget.item.name] = 40;
+                                    '<span><div range-slider id="' + widget.widgetId + '" min="0" max="100" show-values="false" model-max="'+ modelName + '" pin-handle="min"></div></span>';
+                                output += '</div>';
+                                $scope[modelName] = parseInt(widget.item.state, 10);
                                 break;
                             default:
+                                output += '<div class="row sitemap-row">';
                                 output += "<h6 id='" + widget.widgetId + "'><span>" + label +
                                     "</span><span class='pull-right'>" + value + "</span></h6>";
+                                output += '</div>';
                                 break;
-                        }
-                        output += '</div>';
-
-                        if (widget.widget != null) {
-                            output += "<div>" + processWidget([].concat(widget.widget)) + "</div>";
                         }
                     });
 
