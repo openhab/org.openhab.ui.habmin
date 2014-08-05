@@ -1,11 +1,13 @@
 {
-    "login": "Login",
-    "dashboard": "Dashboard",
-    "sitemaps" :"Sitemaps",
-    "automation" :"Automation",
+    "mainLogin": "Login",
+    "mainDashboard": "Dashboard",
+    "mainSitemaps": "Sitemaps",
+    "mainAutomation": "Automation",
+    "mainNoSitemaps": "No Sitemaps Available",
+    "mainNewSitemap": "Create New Sitemap",
 
     "chartItemList": "Items",
     "chartNoItems": "No Items To Graph",
     "chartTotalItems": "Total Items",
-    "chartSelectedItems":"Selected Items"
+    "chartSelectedItems": "Selected Items"
 }

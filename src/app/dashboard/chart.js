@@ -2,7 +2,7 @@
  * HABmin - Home Automation User and Administration Interface
  * Designed for openHAB (www.openhab.com)
  *
- * This software is copywrite of Chris Jackson under the GPL license.
+ * This software is copyright of Chris Jackson under the GPL license.
  * Note that this licence may be changed at a later date.
  *
  * (c) 2014 Chris Jackson (chris@cd-jackson.com)
@@ -14,7 +14,7 @@ angular.module('HABmin.chart', [
     'ngLocalize',
     'angular-rickshaw',
     'angular-growl',
-    'HABmin.Persistence'
+    'HABmin.persistenceModel'
 ])
 
     .config(function config($stateProvider) {
@@ -48,10 +48,11 @@ angular.module('HABmin.chart', [
             }
         );
 
+        // Load the list of persistence services
         PersistenceServiceModel.query().$promise.then(
             function (data) {
                 $scope.services = data.services;
-                if($scope.services.length) {
+                if ($scope.services.length) {
                     $scope.services[0].selected = true;
                 }
             },

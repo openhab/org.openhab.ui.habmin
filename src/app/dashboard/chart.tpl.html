@@ -56,7 +56,10 @@
                 </a>
             </div>
 
-            <div ng-if="!itemsTotal" class="list-group-item text-center" i18n="habmin.chartNoItems"></div>
+            <div ng-if="!itemsTotal" class="list-group-item text-center">
+                <span class="glyphicon glyphicon-warning-sign"></span>
+                <span i18n="habmin.chartNoItems"></span>
+            </div>
         </div>
         <div class="panel-footer">
             <div class="row">
