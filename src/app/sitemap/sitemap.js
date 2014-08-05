@@ -10,7 +10,8 @@
 angular.module('HABmin.sitemap', [
     'ui.router',
     'toggle-switch',
-    'ui-rangeSlider'
+    'ui-rangeSlider',
+    'ngAtmosphere'
 ])
 
     .config(function config($stateProvider) {
@@ -34,18 +35,19 @@ angular.module('HABmin.sitemap', [
             restrict: 'A',
             replace: true,
             scope: {
-                pageTpl: '@'
             },
             link: function (scope, ele, attrs) {
+                scope.element = ele;
                 ele.html(scope.pageTpl);
-//                $compile(ele.contents())(scope);
+
             },
             controller: ['$scope', function ($scope) {
                 var pageDef = sitemap_chris;
 
                 $scope.sitemapPageTitle = pageDef.title;
 
-                var pageTpl = '<div class="container sitemap-title"><div class="col-md-12"><img src="../images/light_control.svg">' + pageDef.title + '</div></div>';
+                var pageTpl = '<div class="container sitemap-title"><div class="col-md-12"><img src="../images/light_control.svg">' +
+                    pageDef.title + '</div></div>';
                 pageTpl += '<div class="sitemap-body">';
                 pageTpl += processWidget([].concat(pageDef.widget)) + "</div>";
                 console.log("Definition is", pageTpl);
@@ -66,12 +68,18 @@ angular.module('HABmin.sitemap', [
                         value = value.trim();
                         label = label.trim();
 
-                        var modelName = "W"+widget.widgetId;
+                        var modelName = "W" + widget.widgetId;
+                        var state = "";
+                        if (widget.item != null) {
+                            state = widget.item.state;
+                        }
 
                         // Process the widget
                         switch (widget.type) {
                             case 'Frame':
-                                output += '<div class="col-md-4"><div class="sitemap-frame" id="' + widget.widgetId + '"><span><img src="../images/light_outdoor.svg">' + label +
+                                output += '<div class="col-md-4"' + modelName + '>';
+                                output +=
+                                    '<div class="sitemap-frame"><span><img src="../images/light_outdoor.svg">' + label +
                                     '</span><span class="pull-right">' + value + '</span></div>';
 
                                 if (widget.widget != null) {
@@ -80,23 +88,49 @@ angular.module('HABmin.sitemap', [
                                 output += '</div>';
                                 break;
                             case 'Switch':
-                                output += '<div class="row sitemap-row">';
+                                output += '<div class="row sitemap-row"' + modelName + '>';
                                 output += '<span>' + label + '</span>' +
-                                    '<span class="pull-right"><toggle-switch model="' +
-                                    widget.item.name + '" on-label="ON" off-label="OFF" id="' + widget.widgetId +
-                                    '"></toggle-switch></span>';
+                                    '<span class="pull-right"><toggle-switch model="' + modelName +
+                                    '" on-label="ON" off-label="OFF"></toggle-switch></span>';
                                 output += '</div>';
-                                $scope[widget.item.name] = "On";
+
+                                // Handle state translation
+                                switch (widget.item.type) {
+                                    case "DimmerItem":
+                                        if (parseInt(state, 10) > 0) {
+                                            state = true;
+                                        }
+                                        else {
+                                            state = false;
+                                        }
+                                        break;
+                                    case "SwitchItem":
+                                        if (state == "ON") {
+                                            state = true;
+                                        }
+                                        else {
+                                            state = false;
+                                        }
+                                }
+
+                                if (widget.item.state == "ON") {
+                                    $scope[modelName] = state;
+                                }
+                                else {
+                                    $scope[modelName] = state;
+                                }
                                 break;
                             case 'Slider':
-                                output += '<div class="row sitemap-row">';
+                                output += '<div class="row sitemap-row"' + modelName + '>';
                                 output += '<span>' + label + '</span>' +
-                                    '<span><div range-slider id="' + widget.widgetId + '" min="0" max="100" show-values="false" model-max="'+ modelName + '" pin-handle="min"></div></span>';
+                                    '<span><div range-slider id="' + widget.widgetId +
+                                    '" min="0" max="100" show-values="false" model-max="' + modelName +
+                                    '" pin-handle="min"></div></span>';
                                 output += '</div>';
                                 $scope[modelName] = parseInt(widget.item.state, 10);
                                 break;
                             default:
-                                output += '<div class="row sitemap-row">';
+                                output += '<div class="row sitemap-row"' + modelName + '>';
                                 output += "<h6 id='" + widget.widgetId + "'><span>" + label +
                                     "</span><span class='pull-right'>" + value + "</span></h6>";
                                 output += '</div>';
@@ -106,17 +140,63 @@ angular.module('HABmin.sitemap', [
 
                     return output;
                 }
-
-//        ele.html(html);
-
-                //                $scope.getFinancialMonthInformation = function () {
-//                    $scope.financialInfo = financialInformationService.financialInfo;
-//                }
             }]
         };
     })
 
-    .controller('SitemapCtrl', function ($scope, $compile) {
+    .controller('SitemapCtrl', function ($scope, $compile, atmosphere) {
+        var socket;
+
+        var request = {
+            url: '/rest/sitemaps/chris/00',
+            contentType: 'application/json',
+//            logLevel: 'debug',
+            transport: 'polling',
+            trackMessageLength: true,
+            reconnectInterval: 5000,
+            enableXDR: true,
+            timeout: 60000
+        };
+
+        request.onOpen = function (response) {
+            console.log("Reconnect", response);
+        };
+
+        request.onClientTimeout = function (response) {
+            console.log("Reconnect", response);
+            setTimeout(function () {
+                socket = atmosphere.init(request);
+            }, request.reconnectInterval);
+        };
+
+        request.onReopen = function (response) {
+            console.log("Reconnect", response);
+        };
+
+        //For demonstration of how you can customize the fallbackTransport using the onTransportFailure function
+        request.onTransportFailure = function (errorMsg, request) {
+            console.log("Reconnect", errorMsg, request);
+        };
+
+        request.onMessage = function (response) {
+            console.log("Reconnect", response);
+        };
+
+        request.onClose = function (response) {
+            console.log("Reconnect", response);
+        };
+
+        request.onError = function (response) {
+            console.log("Reconnect", response);
+        };
+
+        request.onReconnect = function (request, response) {
+            console.log("Reconnect", request, response);
+        };
+
+        socket = atmosphere.init(request);
+
+
 //        $scope.sitemapPageTitle = "";
 
 
