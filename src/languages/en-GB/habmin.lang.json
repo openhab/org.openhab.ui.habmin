@@ -9,5 +9,7 @@
     "chartItemList": "Items",
     "chartNoItems": "No Items To Graph",
     "chartTotalItems": "Total Items",
-    "chartSelectedItems": "Selected Items"
+    "chartSelectedItems": "Selected Items",
+
+    "errorLoadingSitemaps": "Error loading the sitemap list!"
 }

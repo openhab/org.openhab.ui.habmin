@@ -17,6 +17,8 @@
     "angular-growl-v2": "~0.6.1",
     "angular-animate": "~1.2.21",
     "angular-toggle-switch": "~0.3.2",
-    "angular-rangeslider": "~0.0.7"
+    "angular-rangeslider": "~0.0.7",
+    "jquery-atmosphere": "~2.2.2",
+    "angular-atmosphere": "~0.0.3"
   }
 }

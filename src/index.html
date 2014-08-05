@@ -19,7 +19,8 @@
     <nav class="navbar navbar-default navbar-fixed-top" container="false" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header habmin-nav">
-                <button type="button" class="navbar-toggle" ng-init="menuCollapsed = true" ng-click="menuCollapsed = ! menuCollapsed">
+                <button type="button" class="navbar-toggle" ng-init="menuCollapsed = true"
+                        ng-click="menuCollapsed = ! menuCollapsed">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -96,12 +97,15 @@
 <footer class="footer">
     <div class="container">
         <div class="footer-inner">
-            <p><small class="text-center">
-                HABmin
-                <a href="http://github.com/cdjackson/HABmin/blob/v<%= version %>-release/CHANGELOG.md">
-                    v<%= version %>
-                </a>
-                by Chris Jackson</small></p>
+            <span>
+                <small class="text-center">
+                    HABmin
+                    <a href="http://github.com/cdjackson/HABmin/blob/v<%= version %>-release/CHANGELOG.md">
+                        v<%= version %>
+                    </a>
+                    by Chris Jackson
+                </small>
+            </span>
         </div>
     </div>
 </footer>
