@@ -18,6 +18,7 @@
     "angular-animate": "~1.2.21",
     "angular-toggle-switch": "~0.3.2",
     "angular-rangeslider": "~0.0.7",
-    "jquery-atmosphere": "2.0.5"
+    "jquery-atmosphere": "2.0.5",
+    "angular-dragdrop": "~1.0.7"
   }
 }
