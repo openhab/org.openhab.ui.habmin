@@ -10,8 +10,7 @@
 angular.module('HABmin.sitemap', [
     'ui.router',
     'toggle-switch',
-    'ui-rangeSlider',
-    'ngAtmosphere'
+    'ui-rangeSlider'
 ])
 
     .config(function config($stateProvider) {
@@ -38,11 +37,14 @@ angular.module('HABmin.sitemap', [
             },
             link: function (scope, ele, attrs) {
                 scope.element = ele;
-                ele.html(scope.pageTpl);
+
 
             },
             controller: ['$scope', function ($scope) {
-                var pageDef = sitemap_chris;
+                if($scope.pageDef == null || $scope.element == null) {
+                    return;
+                }
+                var pageDef = $scope.pageDef;
 
                 $scope.sitemapPageTitle = pageDef.title;
 
@@ -144,59 +146,75 @@ angular.module('HABmin.sitemap', [
         };
     })
 
-    .controller('SitemapCtrl', function ($scope, $compile, atmosphere) {
+    .controller('SitemapCtrl', function ($scope, $compile) {
         var socket;
 
         var request = {
             url: '/rest/sitemaps/chris/00',
-            contentType: 'application/json',
-//            logLevel: 'debug',
-            transport: 'polling',
-            trackMessageLength: true,
+//            contentType: 'application/json',
+            headers:{'Accept': 'application/json'},
+            disableCaching: true,
+            maxRequest : 256,
+            method: "GET",
+//            fallbackMethod: "GET",
+//            dropHeaders: false,
+            logLevel: 'debug',
+//            force_transport: 'websocket',
+//            fallbackProtocol: 'streaming',
+            transport: 'long-polling',
+//            fallbackTransport: 'polling',
+            attachHeadersAsQueryString: true,
+//            trackMessageLength: false,
             reconnectInterval: 5000,
-            enableXDR: true,
-            timeout: 60000
+//            enableXDR: true,
+            timeout: 59000//,
+//            connectTimeout: 3000,
+//            pollingInterval: 60000
         };
 
         request.onOpen = function (response) {
-            console.log("Reconnect", response);
+            console.log("onOpen", response);
         };
 
         request.onClientTimeout = function (response) {
-            console.log("Reconnect", response);
+            console.log("onClientTimeout", response);
             setTimeout(function () {
-                socket = atmosphere.init(request);
+//                socket = atmosphere.init(request);
             }, request.reconnectInterval);
         };
 
         request.onReopen = function (response) {
-            console.log("Reconnect", response);
+            console.log("onReopen", response);
         };
 
         //For demonstration of how you can customize the fallbackTransport using the onTransportFailure function
         request.onTransportFailure = function (errorMsg, request) {
-            console.log("Reconnect", errorMsg, request);
+            console.log("onTransportFailure", errorMsg, request);
         };
 
         request.onMessage = function (response) {
-            console.log("Reconnect", response);
+            console.log("onMessage", response);
         };
 
         request.onClose = function (response) {
-            console.log("Reconnect", response);
+            console.log("onClose", response);
         };
 
         request.onError = function (response) {
-            console.log("Reconnect", response);
+            console.log("onError", response);
         };
 
         request.onReconnect = function (request, response) {
             console.log("Reconnect", request, response);
         };
 
-        socket = atmosphere.init(request);
+        console.log("Socket request is:", request);
+        socket = $.atmosphere.subscribe(request);
+//        socket = atmosphere.init(request);
+        console.log("Socket response is:", socket);
 
 
+        $scope.pageDef = sitemap_chris;
 //        $scope.sitemapPageTitle = "";
 
 
