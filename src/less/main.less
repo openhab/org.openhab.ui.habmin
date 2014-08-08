@@ -3,24 +3,18 @@
  * stylesheets used throughout the application as this is the only stylesheet in
  * the Grunt configuration that is automatically processed.
  */
-
 /**
  * First, we include the Twitter Bootstrap LESS files. Only the ones used in the
  * project should be imported as the rest are just wasting space.
  */
-
 @import '../../vendor/bootstrap/less/bootstrap.less';
-
 //@import 'slate/bootswatch.less';
 @import 'slate/variables.less';
-
 /**
  * This is our main variables file. We must include it last so we can overwrite any variable
  * definitions in our imported stylesheets.
  */
-
 @import 'variables.less';
-
 
 /**
  * Typography
@@ -63,7 +57,6 @@ h2 {
   color: #666;
 }
 
-
 /**
  * Navigation
  */
@@ -73,7 +66,6 @@ h2 {
     font-size: 60%;
   }
 }
-
 
 /**
  * Footer
@@ -93,14 +85,13 @@ h2 {
   margin-top: 60px;
 }
 
-
 .habmin-list {
   overflow-y: auto;
   overflow-x: hidden;
 }
 
 #custom-search-form {
-  margin:0;
+  margin: 0;
   margin-top: 5px;
   padding: 0;
 }
@@ -115,7 +106,7 @@ h2 {
   border: 1px;
   /* IE7-8 doesn't have border-radius, so don't indent the padding */
 
-  width:100%;
+  width: 100%;
   margin-bottom: 0;
   -webkit-border-radius: 4px 0px 0px 4px;
   -moz-border-radius: 4px 0px 0px 4px;
@@ -123,10 +114,12 @@ h2 {
 }
 
 #custom-search-form .search-icon {
-  float:right;
+  float: right;
   z-index: 3;
   color: #808080;
-  position: fixed; right: 34px; top: 7px;
+  position: fixed;
+  right: 34px;
+  top: 7px;
 }
 
 .sitemap-title {
@@ -135,10 +128,25 @@ h2 {
   line-height: 1.1;
   font-size: 30px;
   border-bottom: 2px solid #ddd;
-  padding-top:55px;
+  padding-left: 0px;
+  padding-top: 55px;
   margin-bottom: 15px;
-  position: fixed; top: 0px;
+  position: fixed;
+  top: 0px;
   z-index: 10;
+}
+
+.sitemap-parent {
+  padding-right: 40px;
+  vertical-align: text-top;
+}
+
+.back {
+  background-image: url("../../images/control_arrow_upward.svg");
+  background-size: 20px 20px;
+  background-repeat: no-repeat;
+  background-position: left;
+  cursor: pointer;
 }
 
 .sitemap-title img {
@@ -151,8 +159,8 @@ h2 {
 }
 
 .sitemap-row {
-  padding-left:10px;
-  padding-right:10px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .sitemap-frame {
@@ -166,9 +174,8 @@ h2 {
 
 .sitemap-frame img {
   height: 30px;
-  padding-right:10px;
+  padding-right: 10px;
 }
-
 
 // Override range-slider to account for theming
 .ngrs-range-slider {
