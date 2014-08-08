@@ -2,7 +2,7 @@
  * HABmin - Home Automation User and Administration Interface
  * Designed for openHAB (www.openhab.com)
  *
- * This software is copywrite of Chris Jackson under the GPL license.
+ * This software is copyright of Chris Jackson under the GPL license.
  * Note that this licence may be changed at a later date.
  *
  * (c) 2014 Chris Jackson (chris@cd-jackson.com)
@@ -12,10 +12,12 @@ angular.module('HABmin', [
     'templates-common',
     'ngBoilerplate.home',
     'ngBoilerplate.about',
-    'HABmin.chart',
     'HABmin.auth',
-    'HABmin.Sitemap',
+    'HABmin.chart',
+    'HABmin.sitemap',
+    'HABmin.sitemapModel',
     'ui.router',
+    'ui.bootstrap',
     'ngAnimate',
     'ngLocalize',
     'ngLocalize.Config',
@@ -50,9 +52,9 @@ angular.module('HABmin', [
 
     .controller('HABminCtrl', function HABminCtrl($scope, $location, SitemapModel, growl) {
         $scope.sitemaps = null;
-        SitemapModel.query().$promise.then(
+        SitemapModel.getList().then(
             function(data){
-                $scope.sitemaps = data.sitemap;
+                $scope.sitemaps = data;
             },
             function(reason) {
                 // handle failure
