@@ -9,234 +9,231 @@
  */
 angular.module('HABmin.sitemap', [
     'ui.router',
+    'HABmin.sitemapModel',
     'toggle-switch',
     'ui-rangeSlider'
 ])
 
     .config(function config($stateProvider) {
         $stateProvider.state('sitemap', {
-            url: '/sitemap/:sitemapName',
+            url: '/sitemap',
+            abstract: true,
             views: {
                 "main": {
-                    controller: 'SitemapCtrl',
+//                    controller: 'SitemapCtrl',
                     templateUrl: 'sitemap/sitemap.tpl.html'
                 }
             },
-            data: { pageTitle: 'Sitemap' },
+            data: { pageTitle: 'Sitemap Main' },
             controller: function ($scope, params) {
+                console.log("Sitemap parameters:", params);
 //                $scope.title = params.getData()
+            }
+        });
+        $stateProvider.state('sitemap.view', {
+            url: '/view/:sitemapName/:sitemapPage',
+            //           views: {
+            //             "main": {
+//                    controller: 'SitemapCtrl',
+            //                   templateUrl: 'sitemap/sitemap.tpl.html'
+            //           }
+            //     },
+            data: { pageTitle: 'Sitemap View' },
+            controller: function ($scope, params) {
+                console.log("Sitemap VIEW parameters:", params);
+//                $scope.title = params.getData()
+            },
+            onEnter: function () {
+                console.log("onEnter");
+            },
+            onExit: function () {
+                console.log("onExit");
             }
         });
     })
 
-    .directive('dynamicSitemap', function ($compile) {
+    .directive('dynamicSitemap', function ($compile, SitemapModel, $stateParams) {
         return {
             restrict: 'A',
             replace: true,
             scope: {
             },
-            link: function (scope, ele, attrs) {
-                scope.element = ele;
+            controller: function ($scope, $element) {
+                console.log("Starting dynamic-sitemap", $stateParams, $element);
 
+                $scope.click = function (sitemapName, sitemapPage) {
+                    console.log("Clicked!", sitemapName, sitemapPage);
+                    setPage(sitemapName + '/' + sitemapPage);
+                };
 
-            },
-            controller: ['$scope', function ($scope) {
-                if($scope.pageDef == null || $scope.element == null) {
-                    return;
+                console.log("Starting dynamic-sitemap", $stateParams, $element);
+
+                $scope.$on('$destroy', function () {
+                    console.log("Destroy...");
+                    SitemapModel.cancelWatch();
+                });
+
+                var sitemapName = $stateParams.sitemapName;
+                var sitemapPage = $stateParams.sitemapPage;
+
+                setPage(sitemapName + '/' + sitemapPage);
+
+                function setPage(pageAddress) {
+                    SitemapModel.getPage(pageAddress).then(
+                        function (data) {
+                            console.log("OPEN Response is", data);
+                            $element.empty();
+                            $compile(processPage(data))($scope).appendTo($element);
+
+                            SitemapModel.initWatch(pageAddress, updatePage);
+                        });
                 }
-                var pageDef = $scope.pageDef;
 
-                $scope.sitemapPageTitle = pageDef.title;
+                function updatePage(pageDef) {
+                    $element.empty();
+                    $compile(processPage(pageDef))($scope).appendTo($element);
+                }
 
-                var pageTpl = '<div class="container sitemap-title"><div class="col-md-12"><img src="../images/light_control.svg">' +
-                    pageDef.title + '</div></div>';
-                pageTpl += '<div class="sitemap-body">';
-                pageTpl += processWidget([].concat(pageDef.widget)) + "</div>";
-                console.log("Definition is", pageTpl);
-                $scope.pageTpl = $compile(pageTpl)($scope);
+                function processPage(pageDef) {
+                    var pageTpl = '<div class="container sitemap-title"><div class="col-md-12">';
+                    if (pageDef.parent != null) {
+                        pageTpl += '<span ui-tooltip="Hello"ng-click="click(\'' + sitemapName + '\',\'' + pageDef.parent.id +
+                            '\')" class="sitemap-parent back">';
+                    }
+                    else {
+                        pageTpl += '<span class="sitemap-parent">';
+                    }
+                    pageTpl += '</span>';
 
-                function processWidget(widgetArray) {
-                    var output = "";
-                    widgetArray.forEach(function (widget) {
-                        // Extract the value
-                        var matches = widget.label.match(/\[(.*?)\]/g);
-                        var label = widget.label;
+                    pageTpl += '<img src="../images/light_control.svg">' +
+                        pageDef.title + '</div></div>';
+                    pageTpl += '<div class="sitemap-body">';
+                    pageTpl += processWidget([].concat(pageDef.widget)) + "</div>";
+//                    console.log("Definition is", pageTpl);
 
-                        var value = "";
-                        if (matches != null && matches.length !== 0) {
-                            value = matches[matches.length - 1].substring(1, matches[matches.length - 1].length - 1);
-                            label = label.substr(0, label.indexOf(matches[matches.length - 1]));
-                        }
-                        value = value.trim();
-                        label = label.trim();
+                    return pageTpl;
 
-                        var modelName = "W" + widget.widgetId;
-                        var state = "";
-                        if (widget.item != null) {
-                            state = widget.item.state;
+                    function processWidget(widgetArray) {
+                        if (widgetArray == null) {
+                            return "";
                         }
 
-                        // Process the widget
-                        switch (widget.type) {
-                            case 'Frame':
-                                output += '<div class="col-md-4"' + modelName + '>';
-                                output +=
-                                    '<div class="sitemap-frame"><span><img src="../images/light_outdoor.svg">' + label +
-                                    '</span><span class="pull-right">' + value + '</span></div>';
+                        var output = "";
+                        widgetArray.forEach(function (widget) {
+                            if (widget == null) {
+                                return;
+                            }
 
-                                if (widget.widget != null) {
-                                    output += "<div>" + processWidget([].concat(widget.widget)) + "</div>";
+                            console.log("Widget:", widget);
+                            // Extract the value
+                            var label = "";
+                            var value = "";
+
+                            if (widget.label != null) {
+                                var matches = widget.label.match(/\[(.*?)\]/g);
+                                label = widget.label;
+
+                                if (matches != null && matches.length !== 0) {
+                                    value = matches[matches.length - 1].substring(1,
+                                            matches[matches.length - 1].length - 1);
+                                    label = label.substr(0, label.indexOf(matches[matches.length - 1]));
                                 }
-                                output += '</div>';
-                                break;
-                            case 'Switch':
-                                output += '<div class="row sitemap-row"' + modelName + '>';
-                                output += '<span>' + label + '</span>' +
-                                    '<span class="pull-right"><toggle-switch model="' + modelName +
-                                    '" on-label="ON" off-label="OFF"></toggle-switch></span>';
-                                output += '</div>';
+                                value = value.trim();
+                                label = label.trim();
+                            }
 
-                                // Handle state translation
-                                switch (widget.item.type) {
-                                    case "DimmerItem":
-                                        if (parseInt(state, 10) > 0) {
-                                            state = true;
+                            var modelName = "W" + widget.widgetId;
+                            var state = "";
+                            if (widget.item != null) {
+                                state = widget.item.state;
+                            }
+
+                            var valueColor = "";
+                            if (widget.valuecolor) {
+                                valueColor = 'style="color:' + widget.valuecolor + '"';
+                            }
+
+                            // Process the widget
+                            switch (widget.type) {
+                                case 'Frame':
+                                    output += '<div class="col-md-4"' + modelName + '>';
+                                    output +=
+                                        '<div class="sitemap-frame"><span><img src="../images/light_outdoor.svg">' +
+                                        label +
+                                        '</span><span class="pull-right">' + value + '</span></div>';
+
+                                    if (widget.widget != null) {
+                                        output += "<div>" + processWidget([].concat(widget.widget)) + "</div>";
+                                    }
+                                    output += '</div>';
+                                    break;
+                                case 'Switch':
+                                    output += '<div class="row sitemap-row"' + modelName + '>';
+                                    output += '<span>' + label + '</span>' +
+                                        '<span class="pull-right"><toggle-switch model="' + modelName +
+                                        '" on-label="ON" off-label="OFF"></toggle-switch></span>';
+                                    output += '</div>';
+
+                                    if (widget.item) {
+                                        // Handle state translation
+                                        switch (widget.item.type) {
+                                            case "DimmerItem":
+                                                if (parseInt(state, 10) > 0) {
+                                                    state = true;
+                                                }
+                                                else {
+                                                    state = false;
+                                                }
+                                                break;
+                                            case "SwitchItem":
+                                                if (state == "ON") {
+                                                    state = true;
+                                                }
+                                                else {
+                                                    state = false;
+                                                }
+                                        }
+
+                                        if (widget.item.state == "ON") {
+                                            $scope[modelName] = state;
                                         }
                                         else {
-                                            state = false;
+                                            $scope[modelName] = state;
                                         }
-                                        break;
-                                    case "SwitchItem":
-                                        if (state == "ON") {
-                                            state = true;
-                                        }
-                                        else {
-                                            state = false;
-                                        }
-                                }
+                                    }
+                                    break;
+                                case 'Slider':
+                                    output += '<div class="row sitemap-row"' + modelName + '>';
+                                    output += '<span>' + label + '</span>' +
+                                        '<span><div range-slider id="' + widget.widgetId +
+                                        '" min="0" max="100" show-values="false" model-max="' + modelName +
+                                        '" pin-handle="min"></div></span>';
+                                    output += '</div>';
+                                    $scope[modelName] = parseInt(state, 10);
+                                    break;
+                                default:
+                                    var link = "";
+                                    if (widget.linkedPage) {
+                                        link = 'ng-click="click(\'' + sitemapName + '\',\'' + widget.linkedPage.id +
+                                            '\')"';
+                                    }
 
-                                if (widget.item.state == "ON") {
-                                    $scope[modelName] = state;
-                                }
-                                else {
-                                    $scope[modelName] = state;
-                                }
-                                break;
-                            case 'Slider':
-                                output += '<div class="row sitemap-row"' + modelName + '>';
-                                output += '<span>' + label + '</span>' +
-                                    '<span><div range-slider id="' + widget.widgetId +
-                                    '" min="0" max="100" show-values="false" model-max="' + modelName +
-                                    '" pin-handle="min"></div></span>';
-                                output += '</div>';
-                                $scope[modelName] = parseInt(widget.item.state, 10);
-                                break;
-                            default:
-                                output += '<div class="row sitemap-row"' + modelName + '>';
-                                output += "<h6 id='" + widget.widgetId + "'><span>" + label +
-                                    "</span><span class='pull-right'>" + value + "</span></h6>";
-                                output += '</div>';
-                                break;
-                        }
-                    });
+                                    output += '<div class="row sitemap-row"' + modelName + ' ' + link + '>';
+                                    output += "<h6 id='" + widget.widgetId + "'><span>" + label +
+                                        "</span><span class='pull-right' " + valueColor + ">" + value + "</span></h6>";
 
-                    return output;
+                                    output += '</div>';
+                                    break;
+                            }
+                        });
+
+                        return output;
+                    }
                 }
-            }]
+            }
         };
-    })
-
-    .controller('SitemapCtrl', function ($scope, $compile) {
-        var socket;
-
-        var request = {
-            url: '/rest/sitemaps/chris/00',
-//            contentType: 'application/json',
-            headers:{'Accept': 'application/json'},
-            disableCaching: true,
-            maxRequest : 256,
-            method: "GET",
-//            fallbackMethod: "GET",
-//            dropHeaders: false,
-            logLevel: 'debug',
-//            force_transport: 'websocket',
-//            fallbackProtocol: 'streaming',
-            transport: 'long-polling',
-//            fallbackTransport: 'polling',
-            attachHeadersAsQueryString: true,
-//            trackMessageLength: false,
-            reconnectInterval: 5000,
-//            enableXDR: true,
-            timeout: 59000//,
-//            connectTimeout: 3000,
-//            pollingInterval: 60000
-        };
-
-        request.onOpen = function (response) {
-            console.log("onOpen", response);
-        };
-
-        request.onClientTimeout = function (response) {
-            console.log("onClientTimeout", response);
-            setTimeout(function () {
-//                socket = atmosphere.init(request);
-            }, request.reconnectInterval);
-        };
-
-        request.onReopen = function (response) {
-            console.log("onReopen", response);
-        };
-
-        //For demonstration of how you can customize the fallbackTransport using the onTransportFailure function
-        request.onTransportFailure = function (errorMsg, request) {
-            console.log("onTransportFailure", errorMsg, request);
-        };
-
-        request.onMessage = function (response) {
-            console.log("onMessage", response);
-        };
-
-        request.onClose = function (response) {
-            console.log("onClose", response);
-        };
-
-        request.onError = function (response) {
-            console.log("onError", response);
-        };
-
-        request.onReconnect = function (request, response) {
-            console.log("Reconnect", request, response);
-        };
-
-        console.log("Socket request is:", request);
-        socket = $.atmosphere.subscribe(request);
-//        socket = atmosphere.init(request);
-        console.log("Socket response is:", socket);
-
-
-        $scope.pageDef = sitemap_chris;
-//        $scope.sitemapPageTitle = "";
-
-
     });
 
-
-var sitemap_chris = {"id": "01", "title": "Lights", "icon": "bedroom", "link": "http://192.168.2.2:10080/rest/sitemaps/chris/01", "parent": {"id": "chris", "title": "Chris - Main Menu", "link": "http://192.168.2.2:10080/rest/sitemaps/chris/chris", "leaf": "false"}, "leaf": "false", "widget": [
-    {"widgetId": "01_0", "type": "Frame", "label": "Lounge", "icon": "frame", "widget": [
-        {"widgetId": "01_0_0", "type": "Slider", "label": "Lounge Lights", "icon": "none", "switchSupport": "true", "sendFrequency": "0", "item": {"type": "DimmerItem", "name": "Lounge_Lights", "state": "15", "link": "http://192.168.2.2:10080/rest/items/Lounge_Lights"}},
-        {"widgetId": "01_0_0_1", "type": "Switch", "label": "Lounge Lights", "icon": "none", "item": {"type": "DimmerItem", "name": "Lounge_Lights", "state": "15", "link": "http://192.168.2.2:10080/rest/items/Lounge_Lights"}},
-        {"widgetId": "01_0_0_1_2", "type": "Slider", "label": "East Gable Lights", "icon": "none", "switchSupport": "true", "sendFrequency": "0", "item": {"type": "DimmerItem", "name": "Lounge_EastGableLights", "state": "0", "link": "http://192.168.2.2:10080/rest/items/Lounge_EastGableLights"}},
-        {"widgetId": "01_0_0_1_2_3", "type": "Slider", "label": "West Gable Lights", "icon": "none", "switchSupport": "true", "sendFrequency": "0", "item": {"type": "DimmerItem", "name": "Lounge_WestGableLights", "state": "0", "link": "http://192.168.2.2:10080/rest/items/Lounge_WestGableLights"}},
-        {"widgetId": "01_0_0_1_2_3_4", "type": "Switch", "label": "Firelight Power Switch", "icon": "temperature", "item": {"type": "SwitchItem", "name": "Lounge_Firelight_State", "state": "OFF", "link": "http://192.168.2.2:10080/rest/items/Lounge_Firelight_State"}}
-    ]},
-    {"widgetId": "01_1", "type": "Frame", "label": "Hall", "icon": "frame", "widget": [
-        {"widgetId": "01_1_0", "type": "Switch", "label": "Kitchen Lights", "icon": "light-off", "item": {"type": "SwitchItem", "name": "Kitchen_Lights", "state": "OFF", "link": "http://192.168.2.2:10080/rest/items/Kitchen_Lights"}},
-        {"widgetId": "01_1_0_1", "type": "Switch", "label": "Front Hall Lights", "icon": "light-off", "item": {"type": "SwitchItem", "name": "Hall_FrontLights", "state": "OFF", "link": "http://192.168.2.2:10080/rest/items/Hall_FrontLights"}},
-        {"widgetId": "01_1_0_1_2", "type": "Switch", "label": "Back Hall Lights", "icon": "light-off", "item": {"type": "SwitchItem", "name": "Hall_BackLights", "state": "OFF", "link": "http://192.168.2.2:10080/rest/items/Hall_BackLights"}},
-        {"widgetId": "01_1_0_1_2_3", "type": "Slider", "label": "Main Bedroom Lights", "icon": "none", "switchSupport": "false", "sendFrequency": "0", "item": {"type": "DimmerItem", "name": "Bed1_Lights", "state": "0", "link": "http://192.168.2.2:10080/rest/items/Bed1_Lights"}}
-    ]},
-    {"widgetId": "01_2", "type": "Frame", "label": "Outside", "icon": "frame", "widget": [
-        {"widgetId": "01_2_0", "type": "Switch", "label": "Outside Lights", "icon": "light-off", "item": {"type": "SwitchItem", "name": "Outside_FrontLights", "state": "OFF", "link": "http://192.168.2.2:10080/rest/items/Outside_FrontLights"}},
-        {"widgetId": "01_2_0_1", "type": "Switch", "label": "Garage Lights", "icon": "none", "item": {"type": "SwitchItem", "name": "Garage_Lights", "state": "Uninitialized", "link": "http://192.168.2.2:10080/rest/items/Garage_Lights"}}
-    ]}
-]};
+//    .controller('SitemapCtrl', function ($scope, $compile) {
+//      console.log("SITEMAP Controller", $scope);
+//    });
