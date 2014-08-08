@@ -54,9 +54,9 @@ angular.module('HABmin.sitemapModel', [
             return deferred.promise;
         };
 
-        this.watchPage = function (page, onData) {
+        this.initWatch = function (page, onData) {
             if(this.socket != null) {
-                var socket;
+                this.cancelWatch();
             }
 
             var request = {
@@ -104,7 +104,7 @@ angular.module('HABmin.sitemapModel', [
 
             request.onMessage = function (response) {
                 console.log("onMessage", response);
-                onData(response.responseBody);
+                onData(angular.fromJson(response.responseBody));
             };
 
             request.onClose = function (response) {
@@ -121,13 +121,16 @@ angular.module('HABmin.sitemapModel', [
 
             console.log("Socket request is:", request);
             this.socket = $.atmosphere.subscribe(request);
-//        socket = atmosphere.init(request);
             console.log("Socket response is:", this.socket);
-
-
-
-
         };
+
+        this.cancelWatch = function () {
+            if(this.socket != null) {
+                this.socket.close();
+                this.socket = null;
+            }
+        };
+
     });
 
 
