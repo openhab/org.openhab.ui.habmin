@@ -10,8 +10,10 @@
 angular.module('HABmin.sitemap', [
     'ui.router',
     'HABmin.sitemapModel',
+    'sitemapSliderWidget',
+    'sitemapTextWidget',
     'toggle-switch',
-    'ui-rangeSlider'
+    'ui.bootstrap.tooltip'
 ])
 
     .config(function config($stateProvider) {
@@ -39,10 +41,6 @@ angular.module('HABmin.sitemap', [
             //           }
             //     },
             data: { pageTitle: 'Sitemap View' },
-            controller: function ($scope, params) {
-                console.log("Sitemap VIEW parameters:", params);
-//                $scope.title = params.getData()
-            },
             onEnter: function () {
                 console.log("onEnter");
             },
@@ -58,11 +56,12 @@ angular.module('HABmin.sitemap', [
             replace: true,
             scope: {
             },
-            controller: function ($scope, $element) {
+            controller: function ($scope, $element, $state) {
                 console.log("Starting dynamic-sitemap", $stateParams, $element);
 
                 $scope.click = function (sitemapName, sitemapPage) {
                     console.log("Clicked!", sitemapName, sitemapPage);
+                    $state.go('sitemap.view', {sitemapName: sitemapName, sitemapPage: sitemapPage});
                     setPage(sitemapName + '/' + sitemapPage);
                 };
 
@@ -97,7 +96,9 @@ angular.module('HABmin.sitemap', [
                 function processPage(pageDef) {
                     var pageTpl = '<div class="container sitemap-title"><div class="col-md-12">';
                     if (pageDef.parent != null) {
-                        pageTpl += '<span ui-tooltip="Hello"ng-click="click(\'' + sitemapName + '\',\'' + pageDef.parent.id +
+                        pageTpl +=
+                            '<span tooltip="Hello" tooltip-trigger="mouseenter" tooltip-animation="false" ng-click="click(\'' +
+                            sitemapName + '\',\'' + pageDef.parent.id +
                             '\')" class="sitemap-parent back">';
                     }
                     else {
@@ -124,7 +125,6 @@ angular.module('HABmin.sitemap', [
                                 return;
                             }
 
-                            console.log("Widget:", widget);
                             // Extract the value
                             var label = "";
                             var value = "";
@@ -151,6 +151,17 @@ angular.module('HABmin.sitemap', [
                             var valueColor = "";
                             if (widget.valuecolor) {
                                 valueColor = 'style="color:' + widget.valuecolor + '"';
+                            }
+
+                            var link = "";
+                            if (widget.linkedPage) {
+                                link = 'ng-click="click(\'' + sitemapName + '\',\'' + widget.linkedPage.id +
+                                    '\')"';
+                            }
+
+                            var widgetClass = [];
+                            if (link !== "") {
+                                widgetClass.push("sitemap-link");
                             }
 
                             // Process the widget
@@ -194,31 +205,53 @@ angular.module('HABmin.sitemap', [
                                                 }
                                         }
 
-                                        if (widget.item.state == "ON") {
-                                            $scope[modelName] = state;
-                                        }
-                                        else {
-                                            $scope[modelName] = state;
-                                        }
+                                        $scope[modelName] = state;
                                     }
                                     break;
                                 case 'Slider':
-                                    output += '<div class="row sitemap-row"' + modelName + '>';
-                                    output += '<span>' + label + '</span>' +
-                                        '<span><div range-slider id="' + widget.widgetId +
-                                        '" min="0" max="100" show-values="false" model-max="' + modelName +
-                                        '" pin-handle="min"></div></span>';
-                                    output += '</div>';
-                                    $scope[modelName] = parseInt(state, 10);
+                                    output +=
+                                        '<div class="' + widgetClass.join(" ") +
+                                        '" id="' + modelName + '"' + link + '>' +
+                                        '<sitemap-slider' +
+                                        (label !== "" ?
+                                            (' label="' + label + '"') : "") +
+                                        (value !== "" ?
+                                            (' value="' + value + '"') : "") +
+                                        (widget.icon !== undefined ?
+                                            (' icon="' + widget.icon + '"') : "") +
+                                        (widget.labelcolor !== undefined ?
+                                            (' label-color="' + widget.labelcolor + '"') : "") +
+                                        (widget.valuecolor !== undefined ?
+                                            (' value-color="' + widget.valuecolor + '"') : "") +
+                                        (widget.sendFrequency !== undefined ?
+                                            (' send-frequency="' + widget.sendFrequency + '"') : "") +
+                                        (widget.switchSupport !== undefined ?
+                                            (' switch-support="' + widget.switchSupport + '"') : "") +
+                                        ' />' +
+                                        '</div>';
+                                    break;
+                                case 'Text':
+                                    widgetClass.push("row");
+                                    widgetClass.push("sitemap-row");
+                                    output +=
+                                        '<div class="' + widgetClass.join(" ") +
+                                        '" id="' + modelName + '"' + link + '>' +
+                                        '<sitemap-text' +
+                                        (label !== undefined ?
+                                            (' label="' + label + '"') : "") +
+                                        (value !== undefined ?
+                                            (' value="' + value + '"') : "") +
+                                        (widget.icon !== undefined ?
+                                            (' icon="' + widget.icon + '"') : "") +
+                                        (widget.labelcolor !== undefined ?
+                                            (' label-color="' + widget.labelcolor + '"') : "") +
+                                        (widget.valuecolor !== undefined ?
+                                            (' value-color="' + widget.valuecolor + '"') : "") +
+                                        ' />' +
+                                        '</div>';
                                     break;
                                 default:
-                                    var link = "";
-                                    if (widget.linkedPage) {
-                                        link = 'ng-click="click(\'' + sitemapName + '\',\'' + widget.linkedPage.id +
-                                            '\')"';
-                                    }
-
-                                    output += '<div class="row sitemap-row"' + modelName + ' ' + link + '>';
+                                    output += '<div class="row sitemap-row" ' + link + '>';
                                     output += "<h6 id='" + widget.widgetId + "'><span>" + label +
                                         "</span><span class='pull-right' " + valueColor + ">" + value + "</span></h6>";
 
