@@ -11,8 +11,8 @@ angular.module('HABmin.sitemap', [
     'ui.router',
     'HABmin.sitemapModel',
     'sitemapSliderWidget',
+    'sitemapSwitchWidget',
     'sitemapTextWidget',
-    'toggle-switch',
     'ui.bootstrap.tooltip'
 ])
 
@@ -179,33 +179,37 @@ angular.module('HABmin.sitemap', [
                                     output += '</div>';
                                     break;
                                 case 'Switch':
-                                    output += '<div class="row sitemap-row"' + modelName + '>';
-                                    output += '<span>' + label + '</span>' +
-                                        '<span class="pull-right"><toggle-switch model="' + modelName +
-                                        '" on-label="ON" off-label="OFF"></toggle-switch></span>';
-                                    output += '</div>';
+                                    widgetClass.push("row");
+                                    widgetClass.push("sitemap-row");
+                                    output +=
+                                        '<div class="' + widgetClass.join(" ") +
+                                        '" id="' + modelName + '"' + link + '>' +
+                                        '<sitemap-switch' +
+                                        (label !== undefined ?
+                                            (' label="' + label + '"') : "") +
+                                        (value !== undefined ?
+                                            (' value="' + value + '"') : "") +
+                                        (widget.icon !== undefined ?
+                                            (' icon="' + widget.icon + '"') : "") +
+                                        (widget.labelcolor !== undefined ?
+                                            (' label-color="' + widget.labelcolor + '"') : "") +
+                                        (widget.valuecolor !== undefined ?
+                                            (' value-color="' + widget.valuecolor + '"') : "") +
+                                        (widget.mappings !== undefined ?
+                                            (' mappings="' + widget.mappings + '"') : "") +
+                                        (widget.item !== undefined ?
+                                            (' item-type="' + widget.item.type + '"') : "") +
+                                        (modelName !== undefined ?
+                                            (' item-model="' + modelName + '"') : "") +
+                                        ' />' +
+                                        '</div>';
 
-                                    if (widget.item) {
-                                        // Handle state translation
-                                        switch (widget.item.type) {
-                                            case "DimmerItem":
-                                                if (parseInt(state, 10) > 0) {
-                                                    state = true;
-                                                }
-                                                else {
-                                                    state = false;
-                                                }
-                                                break;
-                                            case "SwitchItem":
-                                                if (state == "ON") {
-                                                    state = true;
-                                                }
-                                                else {
-                                                    state = false;
-                                                }
-                                        }
+                                    if(widget.item !== undefined) {
+                                        $scope[modelName] = value;
 
-                                        $scope[modelName] = state;
+                                        $scope.$watch(modelName, function (newValue, oldValue) {
+                                            console.log("Change", widget.item.name, modelName, newValue, oldValue);
+                                        });
                                     }
                                     break;
                                 case 'Slider':
@@ -227,6 +231,8 @@ angular.module('HABmin.sitemap', [
                                             (' send-frequency="' + widget.sendFrequency + '"') : "") +
                                         (widget.switchSupport !== undefined ?
                                             (' switch-support="' + widget.switchSupport + '"') : "") +
+                                        (widget.item !== undefined ?
+                                            (' item-type="' + widget.item.type + '"') : "") +
                                         ' />' +
                                         '</div>';
                                     break;
@@ -247,6 +253,8 @@ angular.module('HABmin.sitemap', [
                                             (' label-color="' + widget.labelcolor + '"') : "") +
                                         (widget.valuecolor !== undefined ?
                                             (' value-color="' + widget.valuecolor + '"') : "") +
+                                        (widget.item !== undefined ?
+                                            (' item-type="' + widget.item.type + '"') : "") +
                                         ' />' +
                                         '</div>';
                                     break;

@@ -20,6 +20,7 @@ angular.module('sitemapSliderWidget', [
                 '</span>' +
                 '<div range-slider min="0" max="100" show-values="false" pin-handle="min" model-max="sliderValue"></div>',
             scope: {
+                itemModel: "="
             },
             link: function ($scope, element, attrs, controller) {
                 if (attrs.value === undefined || attrs.value === "") {
