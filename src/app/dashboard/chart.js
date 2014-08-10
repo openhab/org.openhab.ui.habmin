@@ -12,7 +12,6 @@ angular.module('HABmin.chart', [
     'placeholders',
     'ui.bootstrap',
     'ngLocalize',
-    'angular-rickshaw',
     'angular-growl',
     'HABmin.persistenceModel'
 ])
@@ -34,13 +33,16 @@ angular.module('HABmin.chart', [
     function DashboardChartCtrl($scope, locale, PersistenceItemModel, PersistenceServiceModel, growl) {
         $scope.itemsTotal = 0;
         $scope.itemsSelected = 0;
-        $scope.items = [];
+        $scope.items = [{iconobject:"../images/light_led_stripe_rgb.svg", label: "1"}];
         $scope.services = [];
 
+        // Load the list of items
         PersistenceItemModel.query().$promise.then(
             function (data) {
                 $scope.items = data.items;
-                $scope.itemsTotal = $scope.items.length;
+                if($scope.items != null) {
+                    $scope.itemsTotal = $scope.items.length;
+                }
             },
             function (reason) {
                 // handle failure
@@ -98,7 +100,7 @@ angular.module('HABmin.chart', [
             parm.selected = !parm.selected;
 
             $scope.itemsSelected = 0;
-            $scope.items.forEach(function (item) {
+            angular.forEach($scope.items, function (item) {
                 if (item.selected === true) {
                     $scope.itemsSelected++;
                 }
@@ -108,7 +110,7 @@ angular.module('HABmin.chart', [
         $scope.clearList = function (parm) {
             console.log("clearList button clicked", parm);
             $scope.itemsSelected = 0;
-            $scope.items.forEach(function (item) {
+            angular.forEach($scope.items, function (item) {
                 item.selected = false;
             });
         };

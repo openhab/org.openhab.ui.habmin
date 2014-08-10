@@ -8,14 +8,15 @@
  * (c) 2014 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('sitemapSwitchWidget', [
+    'HABmin.iconModel',
     'toggle-switch'
 ])
-    .directive('sitemapSwitch', function () {
+    .directive('sitemapSwitch', function (ImgFactory) {
         return {
             restrict: 'E',
-            template: '<span ng-style="labelColor">{{label}}</span>' +
-                '<span class="pull-right" ng-style="valueColor">' +
-                '<toggle-switch model="value" on-label="ON" off-label="OFF"></toggle-switch></span>',
+            template: '<span class="sitemap-item-icon"><img ng-src="{{icon}}"></span><span class="sitemap-item-text"><span ng-style="labelColor">{{label}}</span>' +
+                '<span class="pull-right" ng-style="valueColor"></span></span>' +
+                '<span class="pull-right"><toggle-switch model="value" on-label="ON" off-label="OFF"></toggle-switch></span>',
             scope: {
                 itemModel: "=",
                 widget: "="
@@ -25,15 +26,14 @@ angular.module('sitemapSwitchWidget', [
                     return;
                 }
 
-                if ($scope.widget.item !== undefined) {
-                    $scope.$on('habminGUIRefresh', function (newValue, oldValue) {
-                        console.log("Update", $scope.itemModel, "received for", $scope.widget);
-                        updateWidget();
-                        $scope.$apply();
-                    });
+                $scope.$on('habminGUIRefresh', function (newValue, oldValue) {
+                    updateWidget();
+                    $scope.$apply();
+                });
 
+                if ($scope.widget.item !== undefined) {
                     $scope.$watch('value', function (newValue, oldValue) {
-                        console.log("Changed switch", $scope.widget.label, newValue, oldValue);
+ //                       console.log("Changed switch", $scope.widget.label, newValue, oldValue);
                         if (newValue != $scope.currentValue) {
                             // Keep a record of the current value so we can detect changes from the GUI
                             // and avoid changes coming from the server!
@@ -48,10 +48,11 @@ angular.module('sitemapSwitchWidget', [
 
                 function updateWidget() {
                     if ($scope.widget.item !== undefined) {
+ //                       console.log("Update", $scope.widget.item.state, "received for", $scope.widget);
                         // Handle state translation
                         switch ($scope.widget.item.type) {
                             case "DimmerItem":
-                                if (parseInt($scope.itemModel, 10) > 0) {
+                                if (parseInt($scope.widget.item.state, 10) > 0) {
                                     $scope.value = true;
                                 }
                                 else {
@@ -59,7 +60,7 @@ angular.module('sitemapSwitchWidget', [
                                 }
                                 break;
                             case "SwitchItem":
-                                if ($scope.itemModel == "ON") {
+                                if ($scope.widget.item.state == "ON") {
                                     $scope.value = true;
                                 }
                                 else {
@@ -76,6 +77,8 @@ angular.module('sitemapSwitchWidget', [
                     if ($scope.widget.valuecolor) {
                         $scope.valueColor = {color: $scope.widget.valuecolor};
                     }
+
+                    $scope.icon = ImgFactory.lookupImage($scope.widget.icon);
 
                     // Keep a record of the current value so we can detect changes from the GUI
                     // and avoid changes coming from the server!

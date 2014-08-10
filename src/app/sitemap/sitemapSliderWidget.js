@@ -8,86 +8,134 @@
  * (c) 2014 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('sitemapSliderWidget', [
+    'HABmin.iconModel',
     'ui-rangeSlider',
     'toggle-switch'
 ])
-    .directive('sitemapSlider', function () {
+    .directive('sitemapSlider', function ($interval, ImgFactory) {
         return {
             restrict: 'E',
-            template: '<span ng-style="labelColor">{{label}}</span>' + '' +
-                '<span class="pull-right" ng-style="valueColor">{{tValue}}' +
-                '<toggle-switch model="switchValue" on-label="ON" off-label="OFF"></toggle-switch>' +
-                '</span>' +
+            template: '<span class="sitemap-item-icon"><img ng-src="{{icon}}"></span><span class="sitemap-item-text"><span ng-style="labelColor">{{label}}</span>' +
+                '<span class="pull-right" ng-style="valueColor">{{value}}&nbsp</span></span>' +
+                '<span class="pull-right"><toggle-switch ng-show="showSwitch" model="switchValue" on-label="ON" off-label="OFF"></toggle-switch></span>' +
                 '<div range-slider min="0" max="100" show-values="false" pin-handle="min" model-max="sliderValue"></div>',
             scope: {
                 itemModel: "=",
-                label: "@"
+                widget: "="
             },
             link: function ($scope, element, attrs, controller) {
-                if (attrs.value === undefined || attrs.value === "") {
-                    $scope.sliderValue = 0;
-                }
-                else if(attrs.value.toUpperCase() == "OFF") {
-                    $scope.sliderValue = 0;
-                }
-                else if(attrs.value.toUpperCase() == "ON") {
-                    $scope.sliderValue = 100;
-                }
-                else {
-                    $scope.sliderValue = parseInt(attrs.value, 10);
-                    if(isNaN($scope.sliderValue)) {
-                        $scope.sliderValue = 0;
-                    }
+                if ($scope.widget === undefined) {
+                    return;
                 }
 
-                if($scope.sliderValue === 0) {
-                    $scope.switchValue = false;
-                }
-                else {
-                    $scope.switchValue = true;
-                }
-
-                $scope.tLabel = attrs.label;
-                $scope.tValue = attrs.value;
-                if (attrs.labelColor != null) {
-                    $scope.labelColor = {color: attrs.labelColor};
-                }
-                if (attrs.valueColor) {
-                    $scope.valueColor = {color: attrs.valueColor};
-                }
-
-                $scope.$watch('sliderValue', function(newValue, oldValue) {
-                    if(newValue === 0) {
-                        $scope.switchValue = false;
-                    }
-                    else {
-                        $scope.switchValue = true;
-                    }
+                $scope.$on('habminGUIRefresh', function (newValue, oldValue) {
+//                    console.log("Update", $scope.itemModel, "received for", $scope.widget);
+                    updateWidget();
+                    $scope.$apply();
                 });
 
-                $scope.$watch('switchValue', function(newValue, oldValue) {
-                    if(newValue === false) {
-                        $scope.sliderValue = 0;
+                var timer;
+                function stopTimer() {
+                    if (angular.isDefined(timer)) {
+                        $interval.cancel(timer);
+                        timer = undefined;
+                        console.log("Timer stopped");
                     }
-                    else {
-                        $scope.sliderValue = 100;
-                    }
-                });
+                }
 
-                /*
-                 $scope.on = function () {
-                 $(element).find(".btn.on").addClass("btn-primary");
-                 $(element).find(".btn.off").removeClass("btn-primary");
-                 controller.$setViewValue(true);
-                 };
-                 $scope.off = function () {
-                 $(element).find(".btn.off").addClass("btn-primary");
-                 $(element).find(".btn.on").removeClass("btn-primary");
-                 controller.$setViewValue(false);
-                 };
-                 controller.$render = function () {
-                 $scope[controller.$viewValue ? "on" : "off"]();
-                 };*/
+                if ($scope.widget.item !== undefined) {
+                    $scope.$on('$destroy', function () {
+                        // Make sure that the interval nis destroyed too
+                        $scope.stopTimer();
+                    });
+
+                    $scope.$watch('sliderValue', function (newValue, oldValue) {
+                        //console.log("SLIDER: Changed slider", $scope.widget.label, newValue, oldValue);
+                        if (newValue != $scope.currentSliderValue) {
+                            // Keep a record of the current value so we can detect changes from the GUI
+                            // and avoid changes coming from the server!
+                            $scope.currentSliderValue = newValue;
+
+                            if (!angular.isDefined(timer)) {
+                                // Send an initial update, then after this we do it from the timer!
+                                $scope.$emit('habminGUIUpdate', $scope.widget.item.name, $scope.currentSliderValue);
+                                var latestSliderValue = $scope.currentSliderValue;
+                                timer = $interval(function () {
+                                    if($scope.currentSliderValue != latestSliderValue) {
+                                        latestSliderValue = $scope.currentSliderValue;
+                                        $scope.$emit('habminGUIUpdate', $scope.widget.item.name,
+                                            $scope.currentSliderValue);
+                                    }
+                                    else {
+                                        stopTimer();
+                                    }
+                                }, 400);
+                            }
+                        }
+                    });
+
+                    $scope.$watch('switchValue', function (newValue, oldValue) {
+                        console.log("SLIDER: Changed switch", $scope.widget.label, newValue, oldValue);
+                        if (newValue != $scope.currentSwitchValue) {
+                            // Keep a record of the current value so we can detect changes from the GUI
+                            // and avoid changes coming from the server!
+                            $scope.currentSwitchValue = newValue;
+                            $scope.$emit('habminGUIUpdate', $scope.widget.item.name,
+                                    $scope.currentSwitchValue === true ? "ON" : "OFF");
+                        }
+                    });
+
+                    $scope.$watch('value', function (newValue, oldValue) {
+                    });
+                }
+
+                updateWidget();
+
+                function updateWidget() {
+                    if ($scope.widget.item !== undefined) {
+                        // Handle state translation
+                        switch ($scope.widget.item.type) {
+                            case "DimmerItem":
+                                if (parseInt($scope.widget.item.state, 10) > 0) {
+                                    $scope.switchValue = true;
+                                    $scope.sliderValue = parseInt($scope.widget.item.state, 10);
+                                }
+                                else {
+                                    $scope.switchValue = false;
+                                    $scope.sliderValue = 0;
+                                }
+                                break;
+                            case "SwitchItem":
+                                if ($scope.widget.item.state == "ON") {
+                                    $scope.switchValue = true;
+                                    $scope.sliderValue = 100;
+                                }
+                                else {
+                                    $scope.switchValue = false;
+                                    $scope.sliderValue = 0;
+                                }
+                                break;
+                        }
+                    }
+
+                    $scope.showSwitch = $scope.widget.switchSupport;
+
+                    $scope.label = $scope.widget.label;
+                    $scope.value = $scope.widget.value;
+                    if ($scope.widget.labelcolor != null) {
+                        $scope.labelColor = {color: $scope.widget.labelcolor};
+                    }
+                    if ($scope.widget.valuecolor) {
+                        $scope.valueColor = {color: $scope.widget.valuecolor};
+                    }
+
+                    $scope.icon = ImgFactory.lookupImage($scope.widget.icon);
+
+                    // Keep a record of the current value so we can detect changes from the GUI
+                    // and avoid changes coming from the server!
+                    $scope.currentSwitchValue = $scope.switchValue;
+                    $scope.currentSliderValue = $scope.sliderValue;
+                }
             }
         };
     })

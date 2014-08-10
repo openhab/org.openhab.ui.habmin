@@ -16,6 +16,16 @@
  */
 @import 'variables.less';
 
+// Body updates
+* {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 /**
  * Typography
  */
@@ -104,6 +114,7 @@ h2 {
   padding-top: 0px;
   padding-bottom: 1px;
   border: 1px;
+  color:  @brand-primary;
   /* IE7-8 doesn't have border-radius, so don't indent the padding */
 
   width: 100%;
@@ -125,20 +136,23 @@ h2 {
 .sitemap-title {
   background: @body-bg;
   font-weight: 500;
-  line-height: 1.1;
+//  line-height: 1.5;
   font-size: 24px;
   border-bottom: 2px solid #ddd;
+  height:45px;
+  padding-top: 0px;
   padding-left: 0px;
-  padding-top: 55px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   position: fixed;
-  top: 0px;
+  top: 50px;
   z-index: 10;
 }
 
 .sitemap-parent {
-  padding-right: 40px;
-  vertical-align: text-top;
+  display: inline-block;
+  height:30px;
+  width: 20px;
+  margin-right: 20px;
 }
 
 .back {
@@ -153,8 +167,10 @@ h2 {
   cursor: pointer;
 }
 
-.sitemap-title img {
-  height: 36px;
+.sitemap-title-icon {
+  display: inline;
+  min-width:36px;
+  height:40px;
 }
 
 .sitemap-body {
@@ -167,7 +183,7 @@ h2 {
   padding-right: 10px;
 }
 
-.sitemap-frame {
+.sitemap-frame-title {
   font-weight: 300;
   line-height: 1.1;
   font-size: 20px;
@@ -176,9 +192,26 @@ h2 {
   margin-bottom: 5px;
 }
 
-.sitemap-frame img {
+.sitemap-frame-title img {
   height: 30px;
   padding-right: 10px;
+}
+
+.sitemap-frame {
+  margin-left: 10px;
+  margin-right: 5px;
+  margin-bottom: 10px;
+}
+
+.sitemap-item-text {
+  vertical-align: middle;
+  font-size:16px;
+}
+
+.sitemap-item-icon img {
+  border: none;
+  height:20px;
+  min-width: 30px;
 }
 
 // Override range-slider to account for theming

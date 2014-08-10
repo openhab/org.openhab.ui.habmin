@@ -11,14 +11,15 @@
   "dependencies": {
     "bootstrap": "3.2",
     "angular-localization": "~1.0.2",
-    "angular-rickshaw": "~0.3.0",
-    "d3": "3.4.11",
+    "d3": "~3.4.11",
     "angular-resource": "~1.2.21",
     "angular-growl-v2": "~0.6.1",
     "angular-animate": "~1.2.21",
     "angular-toggle-switch": "~0.3.2",
     "angular-rangeslider": "~0.0.7",
     "jquery-atmosphere": "2.0.5",
-    "angular-dragdrop": "~1.0.7"
+    "angular-dragdrop": "~1.0.7",
+    "nvd3": "~1.1.15-beta",
+    "angularjs-nvd3-directives": "~0.0.7"
   }
 }

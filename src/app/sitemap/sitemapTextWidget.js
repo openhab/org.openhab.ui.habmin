@@ -8,12 +8,12 @@
  * (c) 2014 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('sitemapTextWidget', [
-
+    'HABmin.iconModel'
 ])
-    .directive('sitemapText', function () {
+    .directive('sitemapText', function (ImgFactory) {
         return {
             restrict: 'E',
-            template: '<div><span ng-style="labelColor">{{label}}</span><span class="pull-right" ng-style="valueColor">{{value}}</span></div>',
+            template: '<span class="sitemap-item-icon"><img ng-src="{{icon}}"><span ng-style="labelColor">{{label}}</span><span class="pull-right" ng-style="valueColor">{{value}}</span>',
             scope: {
                 itemModel: "=",
                 widget: "="
@@ -26,6 +26,9 @@ angular.module('sitemapTextWidget', [
                 if ($scope.widget.valuecolor) {
                     $scope.valueColor = {color: $scope.widget.valuecolor};
                 }
+
+                $scope.icon = ImgFactory.lookupImage($scope.widget.icon);
+
                 $scope.label = $scope.widget.label;
                 $scope.value = $scope.widget.value;
             }

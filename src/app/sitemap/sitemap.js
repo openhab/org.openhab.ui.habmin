@@ -25,7 +25,6 @@ angular.module('HABmin.sitemap', [
             abstract: true,
             views: {
                 "main": {
-//                    controller: 'SitemapCtrl',
                     templateUrl: 'sitemap/sitemap.tpl.html'
                 }
             },
@@ -60,6 +59,7 @@ angular.module('HABmin.sitemap', [
             scope: {
             },
             controller: function ($scope, $element, $state) {
+                // The following table maps widgets to directives
                 var widgetMap = {
                     Colorpicker: {
                         directive: "sitemap-text"
@@ -86,7 +86,7 @@ angular.module('HABmin.sitemap', [
                         directive: "sitemap-text"
                     },
                     Slider: {
-                        directive: "sitemap-text"
+                        directive: "sitemap-slider"
                     },
                     Switch: {
                         directive: "sitemap-switch"
@@ -101,16 +101,21 @@ angular.module('HABmin.sitemap', [
                         directive: "sitemap-text"
                     }
                 };
-                console.log("Starting dynamic-sitemap", $stateParams, $element);
 
+                // Click handler to handle page changes within the sitemap
                 $scope.click = function (sitemapName, sitemapPage) {
                     console.log("Clicked!", sitemapName, sitemapPage);
                     $state.go('sitemap.view', {sitemapName: sitemapName, sitemapPage: sitemapPage});
                     setPage(sitemapName + '/' + sitemapPage);
                 };
 
-                console.log("Starting dynamic-sitemap", $stateParams, $element);
+                // Handler to handle widget updates and send command to server
+                $scope.$on('habminGUIUpdate', function(event, item, value) {
+                    console.log("Received command for", item, value);
+                    ItemModel.sendCommand(item, value);
+                });
 
+                // Make sure that we cancel the sitemap watch when we close
                 $scope.$on('$destroy', function () {
                     console.log("Destroy...");
                     SitemapModel.cancelWatch();
@@ -120,11 +125,6 @@ angular.module('HABmin.sitemap', [
                 var sitemapPage = $stateParams.sitemapPage;
 
                 setPage(sitemapName + '/' + sitemapPage);
-
-                $scope.$on('habminGUIUpdate', function(event, item, value) {
-                    console.log("Received command for", item, value);
-                    ItemModel.sendCommand(item, value);
-                });
 
                 function setPage(pageAddress) {
                     SitemapModel.getPage(pageAddress).then(
@@ -146,7 +146,7 @@ angular.module('HABmin.sitemap', [
                     // Loop through all widgets on the page
                     // If the widget model isn't in the $scope, then we assume this is new
                     processWidgetUpdate(pageDef.widget);
-                    $scope.$apply();
+                    $scope.$digest();
                     $scope.$broadcast('habminGUIRefresh');
 
                     // TODO: How to makes things disappear???
@@ -156,7 +156,7 @@ angular.module('HABmin.sitemap', [
                             return;
                         }
 
-                        widgetArray.forEach(function (widget) {
+                        angular.forEach(widgetArray,function (widget) {
                             // Sanity check
                             if (widget == null) {
                                 return;
@@ -165,13 +165,20 @@ angular.module('HABmin.sitemap', [
                             // If this exists, just update the model
                             if ($scope['w' + widget.widgetId] !== undefined) {
                                 // Process the value to make it easier for the widgets
-                                processWidgetLabel(widget);
+                                var t = processWidgetLabel(widget.label);
+                                widget.label = t.label;
+                                widget.value = t.value;
 
                                 // We have to have a STATE update to update the GUI
                                 if (widget.item !== undefined) {
                                     $scope['m' + widget.widgetId] = widget.item.state;
                                     $scope['w' + widget.widgetId] = widget;
                                 }
+                            }
+
+                            // If it has children - process them
+                            if(widget.widget !== undefined) {
+                                processWidgetUpdate(widget.widget);
                             }
                         });
                     }
@@ -190,10 +197,13 @@ angular.module('HABmin.sitemap', [
                         pageTpl += '<span class="sitemap-parent"></span>';
                     }
 
+                    var title = processWidgetLabel(pageDef.title);
+
                     pageTpl += '<span class="sitemap-title-icon">';
                     pageTpl += '<img width="36px" src="../images/light_control.svg">';
                     pageTpl += '</span>';
-                    pageTpl += pageDef.title + '</div></div>';
+                    pageTpl += '<span>' + title.label + '</span>';
+                    pageTpl += '<span class="pull-right">' + title.value + '</span></div></div>';
                     pageTpl += '<div class="sitemap-body">';
                     pageTpl += processWidget([].concat(pageDef.widget)) + "</div>";
 //                    console.log("Definition is", pageTpl);
@@ -208,14 +218,16 @@ angular.module('HABmin.sitemap', [
                     }
 
                     var output = "";
-                    widgetArray.forEach(function (widget) {
+                    angular.forEach(widgetArray, function (widget) {
                         // Sanity check
                         if (widget == null) {
                             return;
                         }
 
                         // Process the value to make it easier for the widgets
-                        processWidgetLabel(widget);
+                        var t = processWidgetLabel(widget.label);
+                        widget.label = t.label;
+                        widget.value = t.value;
 
                         var state = "";
                         if (widget.item != null) {
@@ -272,10 +284,10 @@ angular.module('HABmin.sitemap', [
                     return output;
                 }
 
-                function processWidgetLabel(widget) {
-                    if (widget.label != null) {
-                        var matches = widget.label.match(/\[(.*?)\]/g);
-                        var label = widget.label;
+                function processWidgetLabel(title) {
+                    if (title != null) {
+                        var matches = title.match(/\[(.*?)\]/g);
+                        var label = title;
                         var value = "";
 
                         if (matches != null && matches.length !== 0) {
@@ -283,12 +295,11 @@ angular.module('HABmin.sitemap', [
                                     matches[matches.length - 1].length - 1);
                             label = label.substr(0, label.indexOf(matches[matches.length - 1]));
                         }
-                        widget.label = label.trim();
-                        widget.value = value.trim();
+
+                        return {label: label.trim(), value: value.trim()};
                     }
                     else {
-                        widget.label = "";
-                        widget.value = "";
+                        return {label: "", value: ""};
                     }
                 }
             }

@@ -6,18 +6,13 @@
                 <span i18n="habmin.chartItemList"></span>
 
                 <div class="btn-group pull-right">
-                    <button type="button" class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top"
-                            title=""
-                            data-original-title="Tooltip on top"
-                            >
+                    <button type="button" class="btn btn-default btn-xs">
                         <a href ng-click="doChart()">
                             <span class="glyphicon glyphicon-play"></span>
                         </a>
                     </button>
 
-                    <button type="button" class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top"
-                            title=""
-                            data-original-title="Tooltip on top">
+                    <button type="button" class="btn btn-default btn-xs" >
                         <a href ng-click="clearList()">
                             <span class="glyphicon glyphicon-remove-sign"></span>
                         </a>
@@ -48,10 +43,10 @@
         <div id="itemList" class="list-group habmin-list" ng-style="style()" resize>
             <div ng-if="itemsTotal" ng-repeat="choice in items">
                 <a href role="presentation" class="list-group-item" ng-click="selectItem(choice)">
-                    <img class="habmin-img-list" src="/images/temperature.png">
+                    <span width="20px"><img fill="blue" height="20" src="../images/temp_windchill.svg"></span>
                     <span>{{choice.label}}</span>
                     <span class="pull-right">
-                        <span ng-if="choice.selected" class="glyphicon glyphicon-check">  </span>
+                        <span ng-if="choice.selected" class="glyphicon glyphicon-check"></span>
                     </span>
                 </a>
             </div>
@@ -81,9 +76,4 @@
 </div>
 
 <div class="col-md-8">
-    <rickshaw style="height:300px;width:300px"
-            rickshaw-options="options"
-            rickshaw-features="features"
-            rickshaw-series="series" ng-style="style()" resize>
-    </rickshaw>
 </div>
