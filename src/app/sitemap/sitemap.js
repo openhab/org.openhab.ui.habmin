@@ -60,6 +60,47 @@ angular.module('HABmin.sitemap', [
             scope: {
             },
             controller: function ($scope, $element, $state) {
+                var widgetMap = {
+                    Colorpicker: {
+                        directive: "sitemap-text"
+                    },
+                    Chart: {
+                        directive: "sitemap-text"
+                    },
+                    Frame: {
+                        directive: "sitemap-frame"
+                    },
+                    Group: {
+                        directive: "sitemap-frame"
+                    },
+                    Image: {
+                        directive: "sitemap-text"
+                    },
+                    List: {
+                        directive: "sitemap-text"
+                    },
+                    Selection: {
+                        directive: "sitemap-selection"
+                    },
+                    Setpoint: {
+                        directive: "sitemap-text"
+                    },
+                    Slider: {
+                        directive: "sitemap-text"
+                    },
+                    Switch: {
+                        directive: "sitemap-switch"
+                    },
+                    Text: {
+                        directive: "sitemap-text"
+                    },
+                    Video: {
+                        directive: "sitemap-text"
+                    },
+                    Webview: {
+                        directive: "sitemap-text"
+                    }
+                };
                 console.log("Starting dynamic-sitemap", $stateParams, $element);
 
                 $scope.click = function (sitemapName, sitemapPage) {
@@ -131,34 +172,30 @@ angular.module('HABmin.sitemap', [
                             }
 
                             // Extract the value
-                            var label = "";
-                            var value = "";
 
+                            // Process the value to make it easier for the widgets
                             if (widget.label != null) {
                                 var matches = widget.label.match(/\[(.*?)\]/g);
-                                label = widget.label;
+                                var label = widget.label;
+                                var value = "";
 
                                 if (matches != null && matches.length !== 0) {
                                     value = matches[matches.length - 1].substring(1,
                                             matches[matches.length - 1].length - 1);
                                     label = label.substr(0, label.indexOf(matches[matches.length - 1]));
                                 }
-                                value = value.trim();
-                                label = label.trim();
+                                widget.label = label.trim();
+                                widget.value = value.trim();
+                            }
+                            else {
+                                widget.label = "";
+                                widget.value = "";
                             }
 
-                            widget.label = label;
-                            widget.value = value;
 
-                            var modelName = "W" + widget.widgetId;
                             var state = "";
                             if (widget.item != null) {
                                 state = widget.item.state;
-                            }
-
-                            var valueColor = "";
-                            if (widget.valuecolor) {
-                                valueColor = 'style="color:' + widget.valuecolor + '"';
                             }
 
                             var link = "";
@@ -167,150 +204,55 @@ angular.module('HABmin.sitemap', [
                                     '\')"';
                             }
 
+                            // Create a list of CSS classes for this widget
                             var widgetClass = [];
                             if (link !== "") {
                                 widgetClass.push("sitemap-link");
                             }
 
-                            // Process the widget
-                            switch (widget.type) {
-                                case 'Frame':
-                                    // Process children
-                                    var children = "";
-                                    if (widget.widget != null) {
-                                        children = "<div>" + processWidget([].concat(widget.widget)) + "</div>";
+                            // Make sure there's a definition for this widget type!
+                            if (widgetMap[widget.type] === undefined) {
+                                return;
+                            }
+
+                            // Process children
+                            var children = "";
+                            if (widget.widget != null) {
+                                children = "<div>" + processWidget([].concat(widget.widget)) + "</div>";
+                            }
+                            else {
+                                widgetClass.push("row");
+                                widgetClass.push("sitemap-row");
+                            }
+
+                            // Generate the directive definition
+                            output +=
+                                '<div class="' + widgetClass.join(" ") +
+                                '" id="' + modelName + '"' + link + '>' +
+                                '<' + widgetMap[widget.type].directive +
+                                ' widget="w' + widget.widgetId + '"' +
+                                ' item-model="m' + widget.widgetId + '"' +
+                                '>' +
+                                children +
+                                '</' + widgetMap[widget.type].directive + '>' +
+                                '</div>';
+
+                            // Add the model references
+                            if (widget.item !== undefined) {
+                                $scope["m" + widget.widgetId] = widget.item.state;
+                            }
+                            $scope["w" + widget.widgetId] = widget;
+
+                            // Set up the watch to check for changes from our user
+                            if (widget.item !== undefined) {
+                                $scope.$watch("m" + widget.widgetId, function (newValue, oldValue) {
+                                    console.log("Change CMD '" + widget.item.name + "'  '" + newValue + "'  '" +
+                                        oldValue + "'");
+                                    if (newValue !== oldValue) { //$scope[modelName]) {
+                                        // ItemModel.sendCmd(widget.item.name, newValue);
+                                        console.log("*********** Sending command!!!");
                                     }
-
-                                    //   widgetClass.push("row");
-                                    //    widgetClass.push("sitemap-row");
-                                    output +=
-                                        '<div class="' + widgetClass.join(" ") +
-                                        '" id="' + modelName + '"' + link + '>' +
-                                        '<sitemap-frame' +
-                                        (label !== undefined ?
-                                            (' label="' + label + '"') : "") +
-                                        (value !== undefined ?
-                                            (' value="' + value + '"') : "") +
-                                        (widget.icon !== undefined ?
-                                            (' icon="' + widget.icon + '"') : "") +
-                                        (widget.labelcolor !== undefined ?
-                                            (' label-color="' + widget.labelcolor + '"') : "") +
-                                        (widget.valuecolor !== undefined ?
-                                            (' value-color="' + widget.valuecolor + '"') : "") +
-                                        (widget.item !== undefined ?
-                                            (' item-type="' + widget.item.type + '"') : "") +
-                                        (modelName !== undefined ?
-                                            (' item-model="' + modelName + '"') : "") +
-                                        '>' +
-                                        children +
-                                        '</sitemap-frame></div>';
-
-                                    break;
-                                case 'Switch':
-                                    widgetClass.push("row");
-                                    widgetClass.push("sitemap-row");
-                                    output +=
-                                        '<div class="' + widgetClass.join(" ") +
-                                        '" id="' + modelName + '"' + link + '>' +
-                                        '<sitemap-switch' +
-                                        ' widget="w' + widget.widgetId + '"' +
-                                        ' item-model="m' + widget.widgetId + '"' +
-                                        ' />' +
-                                        '</div>';
-
-                                    if(widget.item !== undefined) {
-                                        $scope["m" + widget.widgetId] = widget.item.state;
-                                    }
-                                    $scope["w"+widget.widgetId] = widget;
-                                    if (widget.item !== undefined) {
-                                        $scope.$watch(modelName, function (newValue, oldValue) {
-                                            console.log("Change CMD '" + widget.item.name + "'  '" + newValue + "'  '" +
-                                                oldValue + "'  '" + $scope[modelName] + "'");
-                                            if (newValue != oldValue) { //$scope[modelName]) {
-                                                // ItemModel.sendCmd(widget.item.name, newValue);
-                                            }
-                                        });
-                                    }
-                                    break;
-                                case 'Selection':
-                                    widgetClass.push("row");
-                                    widgetClass.push("sitemap-row");
-                                    output +=
-                                        '<div class="' + widgetClass.join(" ") +
-                                        '" id="' + modelName + '"' + link + '>' +
-                                        '<sitemap-selection' +
-                                        (label !== "" ?
-                                            (' label="' + label + '"') : "") +
-                                        (value !== "" ?
-                                            (' value="' + value + '"') : "") +
-                                        (widget.icon !== undefined ?
-                                            (' icon="' + widget.icon + '"') : "") +
-                                        (widget.labelcolor !== undefined ?
-                                            (' label-color="' + widget.labelcolor + '"') : "") +
-                                        (widget.valuecolor !== undefined ?
-                                            (' value-color="' + widget.valuecolor + '"') : "") +
-                                        (widget.mapping !== undefined ?
-                                            (' mapping="' + widget.mapping + '"') : "") +
-                                        (widget.item !== undefined ?
-                                            (' item-type="' + widget.item.type + '"') : "") +
-                                        ' />' +
-                                        '</div>';
-                                    break;
-                                case 'Slider':
-                                    widgetClass.push("row");
-                                    widgetClass.push("sitemap-row");
-                                    output +=
-                                        '<div class="' + widgetClass.join(" ") +
-                                        '" id="' + modelName + '"' + link + '>' +
-                                        '<sitemap-slider' +
-                                        (label !== "" ?
-                                            (' label="' + label + '"') : "") +
-                                        (value !== "" ?
-                                            (' value="' + value + '"') : "") +
-                                        (widget.icon !== undefined ?
-                                            (' icon="' + widget.icon + '"') : "") +
-                                        (widget.labelcolor !== undefined ?
-                                            (' label-color="' + widget.labelcolor + '"') : "") +
-                                        (widget.valuecolor !== undefined ?
-                                            (' value-color="' + widget.valuecolor + '"') : "") +
-                                        (widget.sendFrequency !== undefined ?
-                                            (' send-frequency="' + widget.sendFrequency + '"') : "") +
-                                        (widget.switchSupport !== undefined ?
-                                            (' switch-support="' + widget.switchSupport + '"') : "") +
-                                        (widget.item !== undefined ?
-                                            (' item-type="' + widget.item.type + '"') : "") +
-                                        ' />' +
-                                        '</div>';
-                                    break;
-                                case 'Text':
-                                    widgetClass.push("row");
-                                    widgetClass.push("sitemap-row");
-                                    output +=
-                                        '<div class="' + widgetClass.join(" ") +
-                                        '" id="' + modelName + '"' + link + '>' +
-                                        '<sitemap-text' +
-                                        (label !== undefined ?
-                                            (' label="' + label + '"') : "") +
-                                        (value !== undefined ?
-                                            (' value="' + value + '"') : "") +
-                                        (widget.icon !== undefined ?
-                                            (' icon="' + widget.icon + '"') : "") +
-                                        (widget.labelcolor !== undefined ?
-                                            (' label-color="' + widget.labelcolor + '"') : "") +
-                                        (widget.valuecolor !== undefined ?
-                                            (' value-color="' + widget.valuecolor + '"') : "") +
-                                        (widget.item !== undefined ?
-                                            (' item-type="' + widget.item.type + '"') : "") +
-                                        ' />' +
-                                        '</div>';
-                                    break;
-                                default:
-                                    output += '<div class="row sitemap-row" ' + link + '>';
-                                    output += "<h6 id='" + widget.widgetId + "'><span>" + label +
-                                        "</span><span class='pull-right' " + valueColor + ">" + value + "</span></h6>";
-
-                                    output += '</div>';
-                                    break;
+                                });
                             }
                         });
 

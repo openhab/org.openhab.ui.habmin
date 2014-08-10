@@ -19,16 +19,20 @@ angular.module('sitemapFrameWidget', [
                 '<span class="pull-right" ng-style="valueColor"></span>' +
                 '</div><div class="sitemap-frame" ng-transclude></div></div>',
             scope: {
-                label: "@",
-                value: "@"
+                itemModel: "=",
+                widget: "="
             },
             link: function ($scope, element, attrs, controller) {
-                if (attrs.labelColor != null) {
-                    $scope.labelColor = {color: attrs.labelColor};
+                $scope.label = $scope.widget.label;
+                if ($scope.widget.labelcolor != null) {
+                    $scope.labelColor = {color: $scope.widget.labelcolor};
                 }
-                if (attrs.valueColor) {
-                    $scope.valueColor = {color: attrs.valueColor};
+                if ($scope.widget.valuecolor) {
+                    $scope.valueColor = {color: $scope.widget.valuecolor};
                 }
+                $scope.label = $scope.widget.label;
+                $scope.value = $scope.widget.value;
             }
         };
     });
+

@@ -14,13 +14,14 @@ angular.module('sitemapSliderWidget', [
     .directive('sitemapSlider', function () {
         return {
             restrict: 'E',
-            template: '<span ng-style="tLabelColor">{{tLabel}}</span>' + '' +
-                '<span class="pull-right" ng-style="tValueColor">{{tValue}}' +
+            template: '<span ng-style="labelColor">{{label}}</span>' + '' +
+                '<span class="pull-right" ng-style="valueColor">{{tValue}}' +
                 '<toggle-switch model="switchValue" on-label="ON" off-label="OFF"></toggle-switch>' +
                 '</span>' +
                 '<div range-slider min="0" max="100" show-values="false" pin-handle="min" model-max="sliderValue"></div>',
             scope: {
-                itemModel: "="
+                itemModel: "=",
+                label: "@"
             },
             link: function ($scope, element, attrs, controller) {
                 if (attrs.value === undefined || attrs.value === "") {
@@ -49,16 +50,10 @@ angular.module('sitemapSliderWidget', [
                 $scope.tLabel = attrs.label;
                 $scope.tValue = attrs.value;
                 if (attrs.labelColor != null) {
-                    $scope.tLabelColor = {color: attrs.labelColor};
-                }
-                else {
-                    $scope.tLabelColor = {};
+                    $scope.labelColor = {color: attrs.labelColor};
                 }
                 if (attrs.valueColor) {
-                    $scope.tValueColor = {color: attrs.valueColor};
-                }
-                else {
-                    $scope.tValueColor = {};
+                    $scope.valueColor = {color: attrs.valueColor};
                 }
 
                 $scope.$watch('sliderValue', function(newValue, oldValue) {

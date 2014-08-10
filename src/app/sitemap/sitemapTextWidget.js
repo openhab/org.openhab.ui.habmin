@@ -13,18 +13,21 @@ angular.module('sitemapTextWidget', [
     .directive('sitemapText', function () {
         return {
             restrict: 'E',
-            template: '<h6><span ng-style="tLabelColor">{{tLabel}}</span><span class="pull-right" ng-style="tValueColor">{{tValue}}</span></h6>',
+            template: '<div><span ng-style="labelColor">{{label}}</span><span class="pull-right" ng-style="valueColor">{{value}}</span></div>',
             scope: {
+                itemModel: "=",
+                widget: "="
             },
             link: function ($scope, element, attrs, controller) {
-                $scope.tLabel = attrs.label;
-                $scope.tValue = attrs.value;
-                if (attrs.labelColor != null) {
-                    $scope.tLabelColor = {color: attrs.labelColor};
+                $scope.label = $scope.widget.label;
+                if ($scope.widget.labelcolor != null) {
+                    $scope.labelColor = {color: $scope.widget.labelcolor};
                 }
-                if (attrs.valueColor) {
-                    $scope.tValueColor = {color: attrs.valueColor};
+                if ($scope.widget.valuecolor) {
+                    $scope.valueColor = {color: $scope.widget.valuecolor};
                 }
+                $scope.label = $scope.widget.label;
+                $scope.value = $scope.widget.value;
             }
         };
     });
