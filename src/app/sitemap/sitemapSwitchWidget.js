@@ -13,46 +13,50 @@ angular.module('sitemapSwitchWidget', [
     .directive('sitemapSwitch', function () {
         return {
             restrict: 'E',
-            template: '<span ng-style="tLabelColor">{{tLabel}}</span>' +
-                '<span class="pull-right" ng-style="tValueColor">' +
-                '<toggle-switch model="tValue" on-label="ON" off-label="OFF"></toggle-switch></span>',
+            template: '<span ng-style="labelColor">{{label}}</span>' +
+                '<span class="pull-right" ng-style="valueColor">' +
+                '<toggle-switch model="value" on-label="ON" off-label="OFF"></toggle-switch></span>',
             scope: {
-                itemModel: "="
+                itemModel: "=",
+                widget: "="
             },
             link: function ($scope, element, attrs, controller) {
-                if (attrs.itemType) {
+                if($scope.widget === undefined) {
+                    return;
+                }
+                if ($scope.widget.item !== undefined) {
                     // Handle state translation
-                    switch (attrs.itemType) {
+                    switch ($scope.widget.item.type) {
                         case "DimmerItem":
-                            if (parseInt(attrs.value, 10) > 0) {
-                                $scope.tValue = true;
+                            if (parseInt($scope.itemModel, 10) > 0) {
+                                $scope.value = true;
                             }
                             else {
-                                $scope.tValue = false;
+                                $scope.value = false;
                             }
                             break;
                         case "SwitchItem":
-                            if (attrs.value == "ON") {
-                                $scope.tValue = true;
+                            if ($scope.itemModel == "ON") {
+                                $scope.value = true;
                             }
                             else {
-                                $scope.tValue = false;
+                                $scope.value = false;
                             }
+                            break;
                     }
                 }
 
-                $scope.tLabel = attrs.label;
-                $scope.tValue = attrs.value;
-                if (attrs.labelColor != null) {
-                    $scope.tLabelColor = {color: attrs.labelColor};
+                $scope.label = $scope.widget.label;
+                if ($scope.widget.labelcolor != null) {
+                    $scope.labelColor = {color: $scope.widget.labelcolor};
                 }
-                if (attrs.valueColor) {
-                    $scope.tValueColor = {color: attrs.valueColor};
+                if ($scope.widget.valuecolor) {
+                    $scope.valueColor = {color: $scope.widget.valuecolor};
                 }
 
-                if (attrs.itemModel !== undefined) {
-                    $scope.$watch('tValue', function (newValue, oldValue) {
-                        console.log("Changed switch", attrs.label, newValue, oldValue);
+                if ($scope.itemModel !== undefined) {
+                    $scope.$watch('value', function (newValue, oldValue) {
+                        console.log("Changed switch", $scope.widget.label, newValue, oldValue);
                         $scope.itemModel = newValue === true ? "ON" : "OFF";
                     });
                 }

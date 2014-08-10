@@ -9,8 +9,11 @@
  */
 angular.module('HABmin.sitemap', [
     'ui.router',
+    'HABmin.itemModel',
     'HABmin.sitemapModel',
+    'sitemapFrameWidget',
     'sitemapSliderWidget',
+    'sitemapSelectionWidget',
     'sitemapSwitchWidget',
     'sitemapTextWidget',
     'ui.bootstrap.tooltip'
@@ -50,7 +53,7 @@ angular.module('HABmin.sitemap', [
         });
     })
 
-    .directive('dynamicSitemap', function ($compile, SitemapModel, $stateParams) {
+    .directive('dynamicSitemap', function ($compile, SitemapModel, $stateParams, ItemModel) {
         return {
             restrict: 'A',
             replace: true,
@@ -97,17 +100,19 @@ angular.module('HABmin.sitemap', [
                     var pageTpl = '<div class="container sitemap-title"><div class="col-md-12">';
                     if (pageDef.parent != null) {
                         pageTpl +=
-                            '<span tooltip="Hello" tooltip-trigger="mouseenter" tooltip-animation="false" ng-click="click(\'' +
+                            '<span tooltip="Back to ' + pageDef.parent.title +
+                            '" tooltip-placement="bottom" ng-click="click(\'' +
                             sitemapName + '\',\'' + pageDef.parent.id +
-                            '\')" class="sitemap-parent back">';
+                            '\')" class="sitemap-parent back"></span>';
                     }
                     else {
-                        pageTpl += '<span class="sitemap-parent">';
+                        pageTpl += '<span class="sitemap-parent"></span>';
                     }
-                    pageTpl += '</span>';
 
-                    pageTpl += '<img src="../images/light_control.svg">' +
-                        pageDef.title + '</div></div>';
+                    pageTpl += '<span class="sitemap-title-icon">';
+                    pageTpl += '<img width="36px" src="../images/light_control.svg">';
+                    pageTpl += '</span>';
+                    pageTpl += pageDef.title + '</div></div>';
                     pageTpl += '<div class="sitemap-body">';
                     pageTpl += processWidget([].concat(pageDef.widget)) + "</div>";
 //                    console.log("Definition is", pageTpl);
@@ -142,6 +147,9 @@ angular.module('HABmin.sitemap', [
                                 label = label.trim();
                             }
 
+                            widget.label = label;
+                            widget.value = value;
+
                             var modelName = "W" + widget.widgetId;
                             var state = "";
                             if (widget.item != null) {
@@ -167,24 +175,18 @@ angular.module('HABmin.sitemap', [
                             // Process the widget
                             switch (widget.type) {
                                 case 'Frame':
-                                    output += '<div class="col-md-4"' + modelName + '>';
-                                    output +=
-                                        '<div class="sitemap-frame"><span><img src="../images/light_outdoor.svg">' +
-                                        label +
-                                        '</span><span class="pull-right">' + value + '</span></div>';
-
+                                    // Process children
+                                    var children = "";
                                     if (widget.widget != null) {
-                                        output += "<div>" + processWidget([].concat(widget.widget)) + "</div>";
+                                        children = "<div>" + processWidget([].concat(widget.widget)) + "</div>";
                                     }
-                                    output += '</div>';
-                                    break;
-                                case 'Switch':
-                                    widgetClass.push("row");
-                                    widgetClass.push("sitemap-row");
+
+                                    //   widgetClass.push("row");
+                                    //    widgetClass.push("sitemap-row");
                                     output +=
                                         '<div class="' + widgetClass.join(" ") +
                                         '" id="' + modelName + '"' + link + '>' +
-                                        '<sitemap-switch' +
+                                        '<sitemap-frame' +
                                         (label !== undefined ?
                                             (' label="' + label + '"') : "") +
                                         (value !== undefined ?
@@ -195,24 +197,68 @@ angular.module('HABmin.sitemap', [
                                             (' label-color="' + widget.labelcolor + '"') : "") +
                                         (widget.valuecolor !== undefined ?
                                             (' value-color="' + widget.valuecolor + '"') : "") +
-                                        (widget.mappings !== undefined ?
-                                            (' mappings="' + widget.mappings + '"') : "") +
                                         (widget.item !== undefined ?
                                             (' item-type="' + widget.item.type + '"') : "") +
                                         (modelName !== undefined ?
                                             (' item-model="' + modelName + '"') : "") +
+                                        '>' +
+                                        children +
+                                        '</sitemap-frame></div>';
+
+                                    break;
+                                case 'Switch':
+                                    widgetClass.push("row");
+                                    widgetClass.push("sitemap-row");
+                                    output +=
+                                        '<div class="' + widgetClass.join(" ") +
+                                        '" id="' + modelName + '"' + link + '>' +
+                                        '<sitemap-switch' +
+                                        ' widget="w' + widget.widgetId + '"' +
+                                        ' item-model="m' + widget.widgetId + '"' +
                                         ' />' +
                                         '</div>';
 
                                     if(widget.item !== undefined) {
-                                        $scope[modelName] = value;
-
+                                        $scope["m" + widget.widgetId] = widget.item.state;
+                                    }
+                                    $scope["w"+widget.widgetId] = widget;
+                                    if (widget.item !== undefined) {
                                         $scope.$watch(modelName, function (newValue, oldValue) {
-                                            console.log("Change", widget.item.name, modelName, newValue, oldValue);
+                                            console.log("Change CMD '" + widget.item.name + "'  '" + newValue + "'  '" +
+                                                oldValue + "'  '" + $scope[modelName] + "'");
+                                            if (newValue != oldValue) { //$scope[modelName]) {
+                                                // ItemModel.sendCmd(widget.item.name, newValue);
+                                            }
                                         });
                                     }
                                     break;
+                                case 'Selection':
+                                    widgetClass.push("row");
+                                    widgetClass.push("sitemap-row");
+                                    output +=
+                                        '<div class="' + widgetClass.join(" ") +
+                                        '" id="' + modelName + '"' + link + '>' +
+                                        '<sitemap-selection' +
+                                        (label !== "" ?
+                                            (' label="' + label + '"') : "") +
+                                        (value !== "" ?
+                                            (' value="' + value + '"') : "") +
+                                        (widget.icon !== undefined ?
+                                            (' icon="' + widget.icon + '"') : "") +
+                                        (widget.labelcolor !== undefined ?
+                                            (' label-color="' + widget.labelcolor + '"') : "") +
+                                        (widget.valuecolor !== undefined ?
+                                            (' value-color="' + widget.valuecolor + '"') : "") +
+                                        (widget.mapping !== undefined ?
+                                            (' mapping="' + widget.mapping + '"') : "") +
+                                        (widget.item !== undefined ?
+                                            (' item-type="' + widget.item.type + '"') : "") +
+                                        ' />' +
+                                        '</div>';
+                                    break;
                                 case 'Slider':
+                                    widgetClass.push("row");
+                                    widgetClass.push("sitemap-row");
                                     output +=
                                         '<div class="' + widgetClass.join(" ") +
                                         '" id="' + modelName + '"' + link + '>' +
