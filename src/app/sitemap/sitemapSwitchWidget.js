@@ -21,44 +21,65 @@ angular.module('sitemapSwitchWidget', [
                 widget: "="
             },
             link: function ($scope, element, attrs, controller) {
-                if($scope.widget === undefined) {
+                if ($scope.widget === undefined) {
                     return;
                 }
+
                 if ($scope.widget.item !== undefined) {
-                    // Handle state translation
-                    switch ($scope.widget.item.type) {
-                        case "DimmerItem":
-                            if (parseInt($scope.itemModel, 10) > 0) {
-                                $scope.value = true;
-                            }
-                            else {
-                                $scope.value = false;
-                            }
-                            break;
-                        case "SwitchItem":
-                            if ($scope.itemModel == "ON") {
-                                $scope.value = true;
-                            }
-                            else {
-                                $scope.value = false;
-                            }
-                            break;
-                    }
-                }
+                    $scope.$on('habminGUIRefresh', function (newValue, oldValue) {
+                        console.log("Update", $scope.itemModel, "received for", $scope.widget);
+                        updateWidget();
+                        $scope.$apply();
+                    });
 
-                $scope.label = $scope.widget.label;
-                if ($scope.widget.labelcolor != null) {
-                    $scope.labelColor = {color: $scope.widget.labelcolor};
-                }
-                if ($scope.widget.valuecolor) {
-                    $scope.valueColor = {color: $scope.widget.valuecolor};
-                }
-
-                if ($scope.itemModel !== undefined) {
                     $scope.$watch('value', function (newValue, oldValue) {
                         console.log("Changed switch", $scope.widget.label, newValue, oldValue);
-                        $scope.itemModel = newValue === true ? "ON" : "OFF";
+                        if (newValue != $scope.currentValue) {
+                            // Keep a record of the current value so we can detect changes from the GUI
+                            // and avoid changes coming from the server!
+                            $scope.currentValue = newValue;
+                            $scope.$emit('habminGUIUpdate', $scope.widget.item.name,
+                                    $scope.currentValue === true ? "ON" : "OFF");
+                        }
                     });
+                }
+
+                updateWidget();
+
+                function updateWidget() {
+                    if ($scope.widget.item !== undefined) {
+                        // Handle state translation
+                        switch ($scope.widget.item.type) {
+                            case "DimmerItem":
+                                if (parseInt($scope.itemModel, 10) > 0) {
+                                    $scope.value = true;
+                                }
+                                else {
+                                    $scope.value = false;
+                                }
+                                break;
+                            case "SwitchItem":
+                                if ($scope.itemModel == "ON") {
+                                    $scope.value = true;
+                                }
+                                else {
+                                    $scope.value = false;
+                                }
+                                break;
+                        }
+                    }
+
+                    $scope.label = $scope.widget.label;
+                    if ($scope.widget.labelcolor != null) {
+                        $scope.labelColor = {color: $scope.widget.labelcolor};
+                    }
+                    if ($scope.widget.valuecolor) {
+                        $scope.valueColor = {color: $scope.widget.valuecolor};
+                    }
+
+                    // Keep a record of the current value so we can detect changes from the GUI
+                    // and avoid changes coming from the server!
+                    $scope.currentValue = $scope.value;
                 }
             }
         };

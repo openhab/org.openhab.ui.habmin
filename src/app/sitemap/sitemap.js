@@ -121,6 +121,11 @@ angular.module('HABmin.sitemap', [
 
                 setPage(sitemapName + '/' + sitemapPage);
 
+                $scope.$on('habminGUIUpdate', function(event, item, value) {
+                    console.log("Received command for", item, value);
+                    ItemModel.sendCommand(item, value);
+                });
+
                 function setPage(pageAddress) {
                     SitemapModel.getPage(pageAddress).then(
                         function (data) {
@@ -133,8 +138,43 @@ angular.module('HABmin.sitemap', [
                 }
 
                 function updatePage(pageDef) {
-                    $element.empty();
-                    $compile(processPage(pageDef))($scope).appendTo($element);
+                    // Sanity check
+                    if (pageDef === null || pageDef.widget === undefined) {
+                        return "";
+                    }
+
+                    // Loop through all widgets on the page
+                    // If the widget model isn't in the $scope, then we assume this is new
+                    processWidgetUpdate(pageDef.widget);
+                    $scope.$apply();
+                    $scope.$broadcast('habminGUIRefresh');
+
+                    // TODO: How to makes things disappear???
+                    function processWidgetUpdate(widgetArray) {
+                        // Sanity check
+                        if(widgetArray == null) {
+                            return;
+                        }
+
+                        widgetArray.forEach(function (widget) {
+                            // Sanity check
+                            if (widget == null) {
+                                return;
+                            }
+
+                            // If this exists, just update the model
+                            if ($scope['w' + widget.widgetId] !== undefined) {
+                                // Process the value to make it easier for the widgets
+                                processWidgetLabel(widget);
+
+                                // We have to have a STATE update to update the GUI
+                                if (widget.item !== undefined) {
+                                    $scope['m' + widget.widgetId] = widget.item.state;
+                                    $scope['w' + widget.widgetId] = widget;
+                                }
+                            }
+                        });
+                    }
                 }
 
                 function processPage(pageDef) {
@@ -159,110 +199,98 @@ angular.module('HABmin.sitemap', [
 //                    console.log("Definition is", pageTpl);
 
                     return pageTpl;
+                }
 
-                    function processWidget(widgetArray) {
-                        if (widgetArray == null) {
-                            return "";
+                function processWidget(widgetArray) {
+                    // Sanity check
+                    if (widgetArray == null) {
+                        return "";
+                    }
+
+                    var output = "";
+                    widgetArray.forEach(function (widget) {
+                        // Sanity check
+                        if (widget == null) {
+                            return;
                         }
 
-                        var output = "";
-                        widgetArray.forEach(function (widget) {
-                            if (widget == null) {
-                                return;
-                            }
+                        // Process the value to make it easier for the widgets
+                        processWidgetLabel(widget);
 
-                            // Extract the value
+                        var state = "";
+                        if (widget.item != null) {
+                            state = widget.item.state;
+                        }
 
-                            // Process the value to make it easier for the widgets
-                            if (widget.label != null) {
-                                var matches = widget.label.match(/\[(.*?)\]/g);
-                                var label = widget.label;
-                                var value = "";
+                        var link = "";
+                        if (widget.linkedPage) {
+                            link = 'ng-click="click(\'' + sitemapName + '\',\'' + widget.linkedPage.id +
+                                '\')"';
+                        }
 
-                                if (matches != null && matches.length !== 0) {
-                                    value = matches[matches.length - 1].substring(1,
-                                            matches[matches.length - 1].length - 1);
-                                    label = label.substr(0, label.indexOf(matches[matches.length - 1]));
-                                }
-                                widget.label = label.trim();
-                                widget.value = value.trim();
-                            }
-                            else {
-                                widget.label = "";
-                                widget.value = "";
-                            }
+                        // Create a list of CSS classes for this widget
+                        var widgetClass = [];
+                        if (link !== "") {
+                            widgetClass.push("sitemap-link");
+                        }
 
+                        // Make sure there's a definition for this widget type!
+                        if (widgetMap[widget.type] === undefined) {
+                            console.error("Undefined widget found", widget);
+                            return;
+                        }
 
-                            var state = "";
-                            if (widget.item != null) {
-                                state = widget.item.state;
-                            }
+                        // Process children
+                        var children = "";
+                        if (widget.widget != null) {
+                            children = "<div>" + processWidget([].concat(widget.widget)) + "</div>";
+                        }
+                        else {
+                            widgetClass.push("row");
+                            widgetClass.push("sitemap-row");
+                        }
 
-                            var link = "";
-                            if (widget.linkedPage) {
-                                link = 'ng-click="click(\'' + sitemapName + '\',\'' + widget.linkedPage.id +
-                                    '\')"';
-                            }
+                        // Generate the directive definition
+                        output +=
+                            '<div class="' + widgetClass.join(" ") +
+                            '" id="' + widget.widgetId + '"' + link + '>' +
+                            '<' + widgetMap[widget.type].directive +
+                            ' widget="w' + widget.widgetId + '"' +
+                            ' item-model="m' + widget.widgetId + '"' +
+                            '>' +
+                            children +
+                            '</' + widgetMap[widget.type].directive + '>' +
+                            '</div>';
 
-                            // Create a list of CSS classes for this widget
-                            var widgetClass = [];
-                            if (link !== "") {
-                                widgetClass.push("sitemap-link");
-                            }
+                        // Add the model references
+                        if (widget.item !== undefined) {
+                            $scope["m" + widget.widgetId] = widget.item.state;
+                        }
+                        $scope["w" + widget.widgetId] = widget;
+                    });
 
-                            // Make sure there's a definition for this widget type!
-                            if (widgetMap[widget.type] === undefined) {
-                                return;
-                            }
+                    return output;
+                }
 
-                            // Process children
-                            var children = "";
-                            if (widget.widget != null) {
-                                children = "<div>" + processWidget([].concat(widget.widget)) + "</div>";
-                            }
-                            else {
-                                widgetClass.push("row");
-                                widgetClass.push("sitemap-row");
-                            }
+                function processWidgetLabel(widget) {
+                    if (widget.label != null) {
+                        var matches = widget.label.match(/\[(.*?)\]/g);
+                        var label = widget.label;
+                        var value = "";
 
-                            // Generate the directive definition
-                            output +=
-                                '<div class="' + widgetClass.join(" ") +
-                                '" id="' + modelName + '"' + link + '>' +
-                                '<' + widgetMap[widget.type].directive +
-                                ' widget="w' + widget.widgetId + '"' +
-                                ' item-model="m' + widget.widgetId + '"' +
-                                '>' +
-                                children +
-                                '</' + widgetMap[widget.type].directive + '>' +
-                                '</div>';
-
-                            // Add the model references
-                            if (widget.item !== undefined) {
-                                $scope["m" + widget.widgetId] = widget.item.state;
-                            }
-                            $scope["w" + widget.widgetId] = widget;
-
-                            // Set up the watch to check for changes from our user
-                            if (widget.item !== undefined) {
-                                $scope.$watch("m" + widget.widgetId, function (newValue, oldValue) {
-                                    console.log("Change CMD '" + widget.item.name + "'  '" + newValue + "'  '" +
-                                        oldValue + "'");
-                                    if (newValue !== oldValue) { //$scope[modelName]) {
-                                        // ItemModel.sendCmd(widget.item.name, newValue);
-                                        console.log("*********** Sending command!!!");
-                                    }
-                                });
-                            }
-                        });
-
-                        return output;
+                        if (matches != null && matches.length !== 0) {
+                            value = matches[matches.length - 1].substring(1,
+                                    matches[matches.length - 1].length - 1);
+                            label = label.substr(0, label.indexOf(matches[matches.length - 1]));
+                        }
+                        widget.label = label.trim();
+                        widget.value = value.trim();
+                    }
+                    else {
+                        widget.label = "";
+                        widget.value = "";
                     }
                 }
             }
         };
     });
-
-//    .controller('SitemapCtrl', function ($scope, $compile) {
-//      console.log("SITEMAP Controller", $scope);
-//    });
