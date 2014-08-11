@@ -127,7 +127,7 @@ h2 {
 #custom-search-form .search-icon {
   float: right;
   z-index: 3;
-  color: #808080;
+  color: @input-color;
   position: fixed;
   right: 34px;
   top: 7px;
@@ -240,17 +240,23 @@ h2 {
 
 
 .nv-axislabel {
-  stroke: #fff;
+  stroke: @label-color;
+  fill: @label-color;
 }
 
 .nv-axisMaxMin {
-  stroke: #fff;
-  fill: #fff;
+  stroke: @label-color;
+  fill: @label-color;
 }
 
 .nv-axis {
-  stroke: #fff;
-  fill: #fff;
+  stroke: @label-color;
+  fill: @label-color;
+}
+
+.nv-legend-text {
+  stroke: @label-color;
+  fill: @label-color;
 }
 
 /**
