@@ -30,15 +30,25 @@
             </div>
             <div class="collapse navbar-collapse navbar-ex1-collapse" collapse="menuCollapsed">
                 <ul class="nav navbar-nav">
-                    <li>
-                        <a ui-sref="sitemap">
-                            <span class="glyphicon glyphicon-dashboard"></span>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-eye-open"></span>
                             <span i18n="habmin.mainDashboard"></span>
+                            <span class="caret"></span>
                         </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a ui-sref="chart">
+                                    <span class="glyphicon glyphicon-tasks"></span>
+                                    <span i18n="habmin.mainCharts"></span>
+                                </a>
+                            </li>
+                            <li role="presentation" class="divider"></li>
+                        </ul>
                     </li>
 
                     <li>
-                        <a ui-sref="chart">
+                        <a ui-sref="about">
                             <span class="glyphicon glyphicon-tasks"></span>
                             <span i18n="habmin.mainAutomation"></span>
                         </a>
@@ -50,7 +60,6 @@
                             <span i18n="habmin.mainSitemaps"></span>
                             <span class="caret"></span>
                         </a>
-
                         <ul class="dropdown-menu" role="menu">
                             <li ng-repeat="choice in sitemaps">
                                 <a ui-sref="sitemap.view({sitemapName:'{{choice.name}}', sitemapPage:'{{choice.name}}'})"
@@ -75,12 +84,23 @@
                     </li>
                 </ul>
 
+
                 <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href ui-sref="about">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown">
                             <span class="glyphicon glyphicon-user"></span>
                             <span i18n="habmin.mainUserPreferences"></span>
+                            <span class="caret"></span>
                         </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li role="presentation" class="divider"></li>
+                            <li role="presentation" class="divider"></li>
+                            <li>
+                                <a href ui-sref="about">
+                                    <span i18n="habmin.mainLogout"></span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li>
                         <a href ui-sref="about">

@@ -1,7 +1,9 @@
 {
     "mainLogin": "Login",
+    "mainLogout": "Logout",
     "mainUserPreferences": "User Preferences",
     "mainDashboard": "Dashboard",
+    "mainCharts": "Charts",
     "mainSitemaps": "Sitemaps",
     "mainAutomation": "Automation",
     "mainNoSitemaps": "No Sitemaps Available",
