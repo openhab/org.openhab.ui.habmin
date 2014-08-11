@@ -40,7 +40,7 @@
                 </span>
             </div>
         </div>
-        <div id="itemList" class="list-group habmin-list" ng-style="style()" resize>
+        <div id="itemList" class="list-group habmin-list" ng-style="styleList()" resize-page>
             <div ng-if="itemsTotal" ng-repeat="choice in items">
                 <a href role="presentation" class="list-group-item" ng-click="selectItem(choice)">
                     <span width="20px"><img fill="blue" height="20" src="../images/temp_windchill.svg"></span>
@@ -76,14 +76,14 @@
 </div>
 
 <div class="col-md-8">
-    <div class="panel panel-primary">
+    <div class="panel panel-primary" ng-style="styleChart()" resize-page>
         <nvd3-line-chart
                 data="exampleData"
                 showXAxis="true"
                 showYAxis="true"
                 tooltips="true"
                 interactive="true"
-                resize>
+                >
         </nvd3-line-chart>
     </div>
 </div>
