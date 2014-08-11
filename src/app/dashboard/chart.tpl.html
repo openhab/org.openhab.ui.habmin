@@ -12,7 +12,7 @@
                         </a>
                     </button>
 
-                    <button type="button" class="btn btn-default btn-xs" >
+                    <button type="button" class="btn btn-default btn-xs">
                         <a href ng-click="clearList()">
                             <span class="glyphicon glyphicon-remove-sign"></span>
                         </a>
@@ -76,4 +76,14 @@
 </div>
 
 <div class="col-md-8">
+    <div class="panel panel-primary">
+        <nvd3-line-chart
+                data="exampleData"
+                showXAxis="true"
+                showYAxis="true"
+                tooltips="true"
+                interactive="true"
+                resize>
+        </nvd3-line-chart>
+    </div>
 </div>

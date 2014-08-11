@@ -105,7 +105,7 @@ angular.module('HABmin.sitemap', [
                 // Click handler to handle page changes within the sitemap
                 $scope.click = function (sitemapName, sitemapPage) {
                     console.log("Clicked!", sitemapName, sitemapPage);
-                    $state.go('sitemap.view', {sitemapName: sitemapName, sitemapPage: sitemapPage});
+                    $state.go('sitemap.view', {sitemapName: sitemapName, sitemapPage: sitemapPage}, { reload: true });
                     setPage(sitemapName + '/' + sitemapPage);
                 };
 

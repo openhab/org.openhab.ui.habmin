@@ -53,7 +53,8 @@
 
                         <ul class="dropdown-menu" role="menu">
                             <li ng-repeat="choice in sitemaps">
-                                <a ui-sref="sitemap.view({sitemapName:'{{choice.name}}', sitemapPage:'{{choice.name}}'})">
+                                <a ui-sref="sitemap.view({sitemapName:'{{choice.name}}', sitemapPage:'{{choice.name}}'})"
+                                   ui-sref-opts="{ reload: true }">
                                     <span>{{choice.label}}</span>
                                 </a>
                             </li>

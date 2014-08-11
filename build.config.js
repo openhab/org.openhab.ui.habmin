@@ -85,7 +85,8 @@ module.exports = {
             'vendor/angular-growl-v2/build/angular-growl.css',
             'vendor/angular-rangeslider/angular-rangeslider.css',
             'vendor/angular-toggle-switch/angular-toggle-switch.css',
-            'vendor/angular-toggle-switch/angular-toggle-switch-bootstrap.css'
+            'vendor/angular-toggle-switch/angular-toggle-switch-bootstrap.css',
+            'vendor/nvd3/nv.d3.css'
         ],
         assets: [
             'vendor/bootstrap/fonts/*'
