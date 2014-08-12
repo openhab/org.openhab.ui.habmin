@@ -238,6 +238,12 @@ h2 {
   background: @brand-primary;
 }
 
+svg text {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto Regular'), local('Roboto-Regular'), url(fonts/Roboto-Regular.woff) format('woff');
+}
 
 .nv-axislabel {
   stroke: @label-color;
@@ -251,12 +257,16 @@ h2 {
 
 .nv-axis {
   stroke: @label-color;
-  fill: @label-color;
 }
 
 .nv-legend-text {
   stroke: @label-color;
   fill: @label-color;
+}
+
+.nvd3.nv-noData {
+  stroke: @brand-primary;
+  fill: @brand-primary;
 }
 
 /**
