@@ -241,7 +241,7 @@ h2 {
 svg text {
   font-family: 'Roboto';
   font-style: normal;
-  font-weight: 400;
+  font-weight: 200;
   src: local('Roboto Regular'), local('Roboto-Regular'), url(fonts/Roboto-Regular.woff) format('woff');
 }
 
@@ -259,6 +259,11 @@ svg text {
   stroke: @label-color;
 }
 
+.nvd3 .nv-axis path.domain {
+//  stroke-opacity: 0;
+  stroke: @label-color;
+}
+
 .nv-legend-text {
   stroke: @label-color;
   fill: @label-color;
@@ -267,6 +272,8 @@ svg text {
 .nvd3.nv-noData {
   stroke: @brand-primary;
   fill: @brand-primary;
+  font-family: 'Roboto';
+  font-size: @font-size-small;
 }
 
 .nvtooltip {
@@ -275,7 +282,9 @@ svg text {
 
   background-color: @tooltip-bg;
   color: @tooltip-color;
+  padding: 3px 8px;
 
+  border-color: transparent;
   border-radius: @border-radius-base;
 }
 
@@ -284,12 +293,3 @@ svg text {
   font-size: @font-size-base;
   background-color: @tooltip-bg;
 }
-
-
-/**
- * Now that all app-wide styles have been applied, we can load the styles for
- * all the submodules and components we are using.
- */
-
-@import '../app/home/home.less';
-
