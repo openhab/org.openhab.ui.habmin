@@ -60,24 +60,15 @@ angular.module('HABmin.chart', [
         // Load the list of persistence services
         PersistenceServiceModel.query().$promise.then(
             function (data) {
-                $scope.services = data.services;
-                if ($scope.services.length) {
-                    $scope.services[0].selected = true;
-                }
+                $scope.services = [].concat(data.services);
+                $scope.services[0].selected = true;
+                $scope.selectedService = $scope.services[0].name;
             },
             function (reason) {
                 // handle failure
                 growl.warning('Hello world ' + reason.message);
             }
         );
-
-//        $scope.chartData = undefined;
-
-//        console.log("Updating data:", $scope.chartData);
-
-        $scope.onFilterChange = function(p1,p2,p3) {
-            console.log("filter",p1, p2, p3);
-        };
 
         $scope.doChart = function (parm) {
             console.log("doChart button clicked", parm);
@@ -115,6 +106,18 @@ angular.module('HABmin.chart', [
             });
         };
 
+        $scope.selectService = function (sel) {
+            angular.forEach($scope.services, function(service) {
+                if(service.name == sel.name) {
+                    service.selected = true;
+                }
+                else {
+                    service.selected = false;
+                }
+            });
+
+        };
+
         $scope.filterDefaultString = locale.getString('common.filter');
 
         // This is what you will bind the filter to
@@ -137,7 +140,7 @@ angular.module('HABmin.chart', [
 
             var me = this;
 
-            PersistenceDataModel.get("rrd4j", itemRef, start, stop)
+            PersistenceDataModel.get($scope.selectedService, itemRef, start, stop)
                 .then(
                 function (response) {
                     console.log("The item definition is: ", response);
