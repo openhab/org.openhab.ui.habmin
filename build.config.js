@@ -79,7 +79,9 @@ module.exports = {
             'vendor/angular-rangeslider/angular-rangeslider.js',
             'vendor/angular-toggle-switch/angular-toggle-switch.js',
             'vendor/jquery-atmosphere/jquery.atmosphere.js',
-            'vendor/angular-atmosphere/app/scripts/services/angular-atmosphere.js'
+            'vendor/angular-atmosphere/app/scripts/services/angular-atmosphere.js',
+            'vendor/dygraph/dygraph-directive.js',
+            'vendor/dygraph/dygraph-combined.js'
         ],
         css: [
             'vendor/angular-growl-v2/build/angular-growl.css',
