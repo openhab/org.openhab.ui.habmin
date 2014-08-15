@@ -14,7 +14,8 @@ angular.module('HABmin.chart', [
     'ngLocalize',
     'angular-growl',
     'HABmin.persistenceModel',
-    'nvd3ChartDirectives'
+    'nvd3ChartDirectives',
+    'dygraphs-directive'
 ])
 
     .config(function config($stateProvider) {
@@ -35,6 +36,24 @@ angular.module('HABmin.chart', [
         var itemsLoaded = 0;
         var newChart;
         var chartDef;
+
+        var chartData;
+
+
+        $scope.graph = {
+            data: [
+                [new Date(2014, 0, 1), 10],
+                [new Date(2014, 1, 1), 20],
+                [new Date(2014, 2, 1), 50],
+                [new Date(2014, 3, 1), 70]
+            ],
+            opts: {
+                labels: ["x", "A"],
+                xValueFormatter: Dygraph.date
+            }
+
+        };
+
 
         $scope.itemsTotal = 0;
         $scope.itemsSelected = 0;
@@ -107,8 +126,8 @@ angular.module('HABmin.chart', [
         };
 
         $scope.selectService = function (sel) {
-            angular.forEach($scope.services, function(service) {
-                if(service.name == sel.name) {
+            angular.forEach($scope.services, function (service) {
+                if (service.name == sel.name) {
                     service.selected = true;
                 }
                 else {
@@ -122,11 +141,11 @@ angular.module('HABmin.chart', [
 
         // This is what you will bind the filter to
         $scope.filterText = '';
-        $scope.filterFunction = function(element) {
-            if($scope.filterText === "") {
+        $scope.filterFunction = function (element) {
+            if ($scope.filterText === "") {
                 return true;
             }
-            if(element.label == null) {
+            if (element.label == null) {
                 return false;
             }
             return element.label.toLowerCase().indexOf($scope.filterText.toLowerCase()) !== -1 ? true : false;
@@ -181,7 +200,7 @@ angular.module('HABmin.chart', [
 
             var data = {};
             data.key = itemCfg.name;
-            data.label = itemCfg.label+itemsLoaded;
+            data.label = itemCfg.label + itemsLoaded;
             var values = [];
 
             for (var cnt = 0; cnt < item.data.length; cnt++) {
@@ -193,13 +212,17 @@ angular.module('HABmin.chart', [
                     }
                 }
 
-                values.push([item.data[cnt].time, Number(item.data[cnt].state)]);
+                values.push([new Date(Number(item.data[cnt].time)), Number(item.data[cnt].state)]);
             }
             data.values = values;
 
+            $scope.graph.data = values;
+
             console.log("Updating data:", data);
 
-            newChart.push(data);
+           // combineSeries()
+
+//            newChart.push(data);
 
             /*        if (itemCfg.lineStyle != undefined && itemCfg.lineStyle.length > 0)
              plotOptions.stroke.style = itemCfg.lineStyle;
@@ -248,6 +271,65 @@ angular.module('HABmin.chart', [
 
 //            this.chart.fullRender();
             }
+        }
+
+        function combineSeries(seriesArray, newSeries) {
+            var dyDataRows = [];
+
+            var nextDataRowCols;
+            var nextDataRowX;
+
+            for (var seriesIdx = 0; seriesIdx < seriesArray.length; seriesIdx++) {
+                var seriesData = seriesArray[seriesIdx];
+
+                var newDyDataRows = [];
+
+                var nextDataRowInsertIdx = 0;
+                for (var dpIdx = 0; dpIdx < seriesData.length; dpIdx++) {
+                    var dp = seriesData[dpIdx];
+
+                    if (nextDataRowInsertIdx < dyDataRows.length) {
+                        nextDataRowCols = dyDataRows[nextDataRowInsertIdx];
+                        nextDataRowX = nextDataRowCols[0].getTime();
+                    }
+
+                    if (nextDataRowInsertIdx >= dyDataRows.length || dp.x < nextDataRowX) {
+                        newDataRowCols = [new Date(dp.x)];
+                        for (var colIdx = 0; colIdx < seriesIdx; colIdx++) {
+                            newDataRowCols.push([null]);
+                        }
+                        newDataRowCols.push([dp.y]);
+                        newDyDataRows.push(newDataRowCols);
+                    }
+                    else if (dp.x > nextDataRowX) {
+                        newDataRowCols = nextDataRowCols.slice(0);
+                        newDataRowCols.push([null]);
+                        newDyDataRows.push(newDataRowCols);
+                        nextDataRowInsertIdx++;
+                        dpIdx--;
+                    }
+                    else {//(dp.x == nextDataRowX) {
+                        newDataRowCols = nextDataRowCols.slice(0);
+                        newDataRowCols.push([dp.y]);
+                        newDyDataRows.push(newDataRowCols);
+                        nextDataRowInsertIdx++;
+                    }
+                }
+
+                //insert any remaining existing rows
+                for (var i = nextDataRowInsertIdx; i < dyDataRows.length; i++) {
+                    nextDataRowCols = dyDataRows[i];
+                    var nextDataRowDateTm = nextDataRowCols[0];
+
+                    var newDataRowCols = nextDataRowCols.slice(0);
+                    newDataRowCols.push([null]);
+                    newDyDataRows.push(newDataRowCols);
+                }
+
+                dyDataRows = newDyDataRows;
+            }
+
+            return dyDataRows;
         }
     })
 

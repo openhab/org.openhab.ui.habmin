@@ -77,18 +77,9 @@
 
 <div class="col-md-8">
     <div class="panel panel-primary" ng-style="styleChart()" resize-page>
-        <nvd3-line-chart
-                data="chartData"
-                objectequality="false"
-                forcey="[]"
-                showXAxis="true"
-                showYAxis="true"
-                tooltips="true"
-                interactive="true"
-                showLegend="true"
-                xaxisshowmaxmin="false"
-                yaxisshowmaxmin="false"
-                >
-        </nvd3-line-chart>
+        <dygraphs
+                data="graph.data"
+                opts="graph.opts">
+        </dygraphs>
     </div>
 </div>
