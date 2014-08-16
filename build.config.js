@@ -72,9 +72,6 @@ module.exports = {
             'vendor/angular-ui-utils/modules/route/route.js',
             'vendor/angular-localization/angular-localization.js',
             'vendor/angular-cookies/angular-cookies.js',
-            'vendor/d3/d3.min.js',
-            'vendor/nvd3/nv.d3.js',
-            'vendor/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js',
             'vendor/angular-growl-v2/build/angular-growl.js',
             'vendor/angular-rangeslider/angular-rangeslider.js',
             'vendor/angular-toggle-switch/angular-toggle-switch.js',
@@ -87,8 +84,7 @@ module.exports = {
             'vendor/angular-growl-v2/build/angular-growl.css',
             'vendor/angular-rangeslider/angular-rangeslider.css',
             'vendor/angular-toggle-switch/angular-toggle-switch.css',
-            'vendor/angular-toggle-switch/angular-toggle-switch-bootstrap.css',
-            'vendor/nvd3/nv.d3.css'
+            'vendor/angular-toggle-switch/angular-toggle-switch-bootstrap.css'
         ],
         assets: [
             'vendor/bootstrap/fonts/*'

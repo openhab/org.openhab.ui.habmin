@@ -14,7 +14,6 @@ angular.module('HABmin.chart', [
     'ngLocalize',
     'angular-growl',
     'HABmin.persistenceModel',
-    'nvd3ChartDirectives',
     'dygraphs-directive'
 ])
 
