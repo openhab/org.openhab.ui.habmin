@@ -2,6 +2,7 @@
     "appName" : "HABmin",
     "yes" : "Yes",
     "no" : "No",
+    "ok" : "OK",
     "cancel":"Cancel",
     "save" : "Save",
     "open" : "Open",

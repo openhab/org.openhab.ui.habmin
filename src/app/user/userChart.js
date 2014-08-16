@@ -21,7 +21,7 @@ angular.module('UserChartPrefs', [])
                 };
 
                 return $modal.open({
-                    backdrop: true,
+                    backdrop: 'static',
                     keyboard: true,
                     modalFade: true,
                     templateUrl: 'user/userChart.tpl.html',
