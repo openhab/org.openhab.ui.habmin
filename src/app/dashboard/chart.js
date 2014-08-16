@@ -42,10 +42,6 @@ angular.module('HABmin.chart', [
 
         $scope.graph = {
             data: [
-                [new Date(2014, 0, 1), 10],
-                [new Date(2014, 1, 1), 20],
-                [new Date(2014, 2, 1), 50],
-                [new Date(2014, 3, 1), 70]
             ],
             opts: {
                 labels: ["x", "A"],
@@ -117,8 +113,8 @@ angular.module('HABmin.chart', [
             });
         };
 
-        $scope.clearList = function (parm) {
-            console.log("clearList button clicked", parm);
+        $scope.clearList = function () {
+            console.log("clearList button clicked");
             $scope.itemsSelected = 0;
             angular.forEach($scope.items, function (item) {
                 item.selected = false;
@@ -273,7 +269,16 @@ angular.module('HABmin.chart', [
             }
         }
 
+
+
         function combineSeries(seriesArray, newSeries) {
+            var newArray = [];
+
+//            for(var a = 0; a < seriesArray.length, function(val) {
+  //              if()
+    //        });
+
+
             var dyDataRows = [];
 
             var nextDataRowCols;

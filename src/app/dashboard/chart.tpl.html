@@ -1,4 +1,4 @@
-<div class="col-md-4">
+<div class="col-sm-4">
     <div class="panel panel-primary">
         <div class="panel-heading clearfix">
             <div>
@@ -58,13 +58,13 @@
         </div>
         <div class="panel-footer">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-xs-6">
                     <h6 class="text-center">
                         <span i18n="habmin.chartTotalItems"></span>
                         <span class="label label-info">{{itemsTotal}}</span>
                     </h6>
                 </div>
-                <div class="col-md-6">
+                <div class="col-xs-6">
                     <h6 class="text-center">
                         <span i18n="habmin.chartSelectedItems"></span>
                         <span class="label label-success">{{itemsSelected}}</span>
@@ -75,9 +75,9 @@
     </div>
 </div>
 
-<div class="col-md-8">
+<div class="col-sm-8">
     <div class="panel panel-primary" ng-style="styleChart()" resize-page>
-        <dygraphs
+        <dygraphs ng-if="graph.data.length"
                 data="graph.data"
                 opts="graph.opts">
         </dygraphs>
