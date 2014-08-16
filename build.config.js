@@ -78,7 +78,8 @@ module.exports = {
             'vendor/jquery-atmosphere/jquery.atmosphere.js',
             'vendor/angular-atmosphere/app/scripts/services/angular-atmosphere.js',
             'vendor/dygraph/dygraph-directive.js',
-            'vendor/dygraph/dygraph-combined.js'
+            'vendor/dygraph/dygraph-combined.js',
+            'vendor/angularjs-indexedDB/src/indexeddb.js'
         ],
         css: [
             'vendor/angular-growl-v2/build/angular-growl.css',
