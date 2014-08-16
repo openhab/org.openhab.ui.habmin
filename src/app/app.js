@@ -17,6 +17,7 @@ angular.module('HABmin', [
     'HABmin.sitemap',
     'HABmin.sitemapModel',
     'UserChartPrefs',
+    'UserGeneralPrefs',
     'ui.router',
     'ui.bootstrap',
     'ngAnimate',
@@ -50,7 +51,7 @@ angular.module('HABmin', [
     .run(function run() {
     })
 
-    .controller('HABminCtrl', function HABminCtrl($scope, $location, SitemapModel, growl, UserService, UserChartPrefs) {
+    .controller('HABminCtrl', function HABminCtrl($scope, $location, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs) {
         $scope.isLoggedIn = UserService.isLoggedIn;
 
         $scope.sitemaps = null;
@@ -71,6 +72,9 @@ angular.module('HABmin', [
 
         $scope.showUserChartPrefs = function() {
             UserChartPrefs.showModal();
+        };
+        $scope.showUserGeneralPrefs= function() {
+            UserGeneralPrefs.showModal();
         };
     })
 

@@ -9,11 +9,16 @@
     "mainNoSitemaps": "No Sitemaps Available",
     "mainNewSitemap": "Create New Sitemap",
     "mainChartPreferences": "Chart Defaults",
+    "mainGeneralPreferences": "General Settings",
 
     "chartItemList": "Items",
     "chartNoItems": "No Items To Graph",
     "chartTotalItems": "Total Items",
     "chartSelectedItems": "Selected Items",
 
-    "errorLoadingSitemaps": "Error loading the sitemap list!"
+    "errorLoadingSitemaps": "Error loading the sitemap list!",
+
+    "userChartPrefTitle": "Chart Settings",
+
+    "userGeneralPrefTitle": "General Settings"
 }
