@@ -43,8 +43,8 @@ angular.module('HABmin.chart', [
             data: [
             ],
             opts: {
-                labels: ["x", "A"],
-                xValueFormatter: Dygraph.date
+//                labels: ["x"],
+                colors: ["#FF9900","#33FFFF", "#FFCC00", "#33CCCC"]
             }
 
         };
@@ -93,6 +93,8 @@ angular.module('HABmin.chart', [
             newChart = [];
             chartDef = {};
             chartDef.items = [];
+            $scope.graph.opts.labels = [locale.getString('common.time')];
+
             angular.forEach($scope.items, function (item) {
                 if (item.selected === true) {
                     chartDef.items.push(item);
@@ -193,10 +195,9 @@ angular.module('HABmin.chart', [
 
             console.log("Adding", item.name, "- repeat is ", itemCfg.repeatTime);
 
-            var data = {};
-            data.key = itemCfg.name;
-            data.label = itemCfg.label + itemsLoaded;
             var values = [];
+
+            $scope.graph.opts.labels.push(itemCfg.label);
 
             for (var cnt = 0; cnt < item.data.length; cnt++) {
                 if (cnt !== 0) {
@@ -209,11 +210,10 @@ angular.module('HABmin.chart', [
 
                 values.push([new Date(Number(item.data[cnt].time)), Number(item.data[cnt].state)]);
             }
-            data.values = values;
 
             $scope.graph.data = values;
 
-            console.log("Updating data:", data);
+            console.log("Updating data:", $scope.graph);
 
            // combineSeries()
 
@@ -239,7 +239,7 @@ angular.module('HABmin.chart', [
             if (itemsLoaded >= $scope.itemsSelected) {
                 console.log("Rendering chart", newChart);
 
-                $scope.chartData = newChart;
+//                $scope.chartData = newChart;
 
                 /*            if (this.chartLegend == true) {
                  this.legend = new Legend({chartRef: this.chart});

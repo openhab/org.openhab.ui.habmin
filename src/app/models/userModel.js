@@ -7,15 +7,24 @@
  *
  * (c) 2014 Chris Jackson (chris@cd-jackson.com)
  */
-angular.module('HABmin.auth', [])
-    .factory('Authenticate', function ($http, $rootScope, $cookieStore) {
+angular.module('HABmin.userModel', [])
+    .factory('UserService', function ($http, $rootScope, $cookieStore, $interval) {
+        var authenticated = false;
+
+        var userConfig = {};
+
+        // Log us in after 5 seconds
+        $interval(function() {
+            console.log("Timeout - we're now logged in!");
+            authenticated = true;
+        }, 5000, 1);
 
         function changeUser(user) {
         }
 
         return {
             isLoggedIn: function (user) {
-                return false;
+                return authenticated;
             },
 
             login: function (user, success, error) {
@@ -32,6 +41,9 @@ angular.module('HABmin.auth', [])
                     });
                     success();
                 }).error(error);
+            },
+            userCfg: function() {
+                return userConfig;
             }
 
 //            accessLevels: accessLevels,

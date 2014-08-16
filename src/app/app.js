@@ -12,10 +12,11 @@ angular.module('HABmin', [
     'templates-common',
     'ngBoilerplate.home',
     'ngBoilerplate.about',
-    'HABmin.auth',
+    'HABmin.userModel',
     'HABmin.chart',
     'HABmin.sitemap',
     'HABmin.sitemapModel',
+    'UserChartPrefs',
     'ui.router',
     'ui.bootstrap',
     'ngAnimate',
@@ -47,10 +48,11 @@ angular.module('HABmin', [
     })
 
     .run(function run() {
-//        Restangular.setBaseUrl('http://localhost:8080');
     })
 
-    .controller('HABminCtrl', function HABminCtrl($scope, $location, SitemapModel, growl) {
+    .controller('HABminCtrl', function HABminCtrl($scope, $location, SitemapModel, growl, UserService, UserChartPrefs) {
+        $scope.isLoggedIn = UserService.isLoggedIn;
+
         $scope.sitemaps = null;
         SitemapModel.getList().then(
             function(data){
@@ -66,6 +68,10 @@ angular.module('HABmin', [
                 $scope.pageTitle = toState.data.pageTitle + ' | HABmin';
             }
         });
+
+        $scope.showUserChartPrefs = function() {
+            UserChartPrefs.showModal();
+        };
     })
 
 ;

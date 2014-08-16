@@ -6,5 +6,6 @@
     "save" : "Save",
     "open" : "Open",
     "close" : "Close",
-    "filter": "filter..."
+    "filter": "filter...",
+    "time": "Time"
 }

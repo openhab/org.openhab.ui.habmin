@@ -15,7 +15,7 @@
 
 </head>
 <body>
-<div class="container">
+<div class="container-fluid">
     <nav class="navbar navbar-default navbar-fixed-top" container="false" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header habmin-nav">
@@ -84,26 +84,29 @@
                     </li>
                 </ul>
 
-
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
+                    <li class="dropdown" ng-if="isLoggedIn()">
                         <a class="dropdown-toggle" data-toggle="dropdown">
                             <span class="glyphicon glyphicon-user"></span>
                             <span i18n="habmin.mainUserPreferences"></span>
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
-                            <li role="presentation" class="divider"></li>
+                            <li>
+                                <a ng-click="showUserChartPrefs()">
+                                    <span i18n="habmin.mainChartPreferences"></span>
+                                </a>
+                            </li>
                             <li role="presentation" class="divider"></li>
                             <li>
-                                <a href ui-sref="about">
+                                <a ui-sref="about">
                                     <span i18n="habmin.mainLogout"></span>
                                 </a>
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <a href ui-sref="about">
+                    <li ng-if="!isLoggedIn()">
+                        <a ui-sref="about">
                             <span class="glyphicon glyphicon-user"></span>
                             <span i18n="habmin.mainLogin"></span>
                         </a>
@@ -115,7 +118,7 @@
 
 </div>
 
-<div class="container habmin-body" ui-view="main">
+<div class="container-fluid habmin-body" ui-view="main">
 </div>
 
 <div growl>
