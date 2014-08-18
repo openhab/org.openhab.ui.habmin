@@ -193,17 +193,17 @@ angular.module('HABmin.persistenceModel', [
                         cacheCnt = index[indexCnt].offset;
                         break;
                     }
-                }
+                }*/
+
+                console.log("Cache is", cache);
+                var cacheCnt = cache.length-1;
 
                 // cacheCnt now holds a pointer above the required starting point
                 for (; cacheCnt > 0; cacheCnt--) {
                     if (cache[cacheCnt].time < start) {
                         break;
                     }
-                }*/
-
-                console.log("Cache is", cache);
-                var cacheCnt = cache.length-1;
+                }
 
                 // cacheCnt now holds a pointer to the starting value (ie earlier than the start time)
                 var data = [];
@@ -216,7 +216,7 @@ angular.module('HABmin.persistenceModel', [
 
                 // Loop through the cache and grab all the data up to the stop time
                 for (; cacheCnt < cache.length; cacheCnt++) {
-                    if (cache[cacheCnt].time < stop) {
+                    if (cache[cacheCnt].time > stop) {
                         // We're done.
                         break;
                     }
