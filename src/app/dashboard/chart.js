@@ -38,13 +38,13 @@ angular.module('HABmin.chart', [
 
         var chartData;
 
-
         $scope.graph = {
             data: [
             ],
             opts: {
 //                labels: ["x"],
-                colors: ["#FF9900","#33FFFF", "#FFCC00", "#33CCCC"]
+                colors: ["#FF9900", "#33FFFF", "#FFCC00", "#33CCCC"],
+                labelsSeparateLines: true
             }
 
         };
@@ -58,9 +58,9 @@ angular.module('HABmin.chart', [
         $scope.services = [];
 
         // Load the list of items
-        PersistenceItemModel.query().$promise.then(
-            function (data) {
-                $scope.items = data.items;
+        PersistenceItemModel.get().then(
+            function (items) {
+                $scope.items = items;
                 if ($scope.items != null) {
                     $scope.itemsTotal = $scope.items.length;
                 }
@@ -84,8 +84,8 @@ angular.module('HABmin.chart', [
             }
         );
 
-        $scope.doChart = function (parm) {
-            console.log("doChart button clicked", parm);
+        $scope.doChart = function () {
+            console.log("doChart button clicked");
             var stop = Math.round((new Date()).getTime());
             var start = stop - (86400 * 1000);
 
@@ -156,11 +156,10 @@ angular.module('HABmin.chart', [
 
             var me = this;
 
-            PersistenceDataModel.get($scope.selectedService, itemRef, start, stop)
-                .then(
+            PersistenceDataModel.get($scope.selectedService, itemRef, start, stop).then(
                 function (response) {
                     console.log("The item definition is: ", response);
-                    _addChartItem(response);
+                    _addChartItem(itemRef, response);
                 }
 
 //            }),
@@ -170,17 +169,17 @@ angular.module('HABmin.chart', [
             );
         }
 
-        function _addChartItem(item) {
+        function _addChartItem(itemRef, data) {
             // Find the chart config for this item
             var itemCfg = null;
             for (var i = 0; i < chartDef.items.length; i++) {
-                if (item.name == chartDef.items[i].name) {
+                if (itemRef == chartDef.items[i].name) {
                     itemCfg = chartDef.items[i];
                 }
             }
 
             if (itemCfg == null) {
-                console.error("Unable to find definition for ", item, chartDef);
+                console.error("Unable to find definition for ", itemRef, chartDef);
                 return;
             }
 
@@ -193,29 +192,29 @@ angular.module('HABmin.chart', [
                 itemCfg.repeatTime *= 1000;
             }
 
-            console.log("Adding", item.name, "- repeat is ", itemCfg.repeatTime);
+            console.log("Adding", itemRef, "- repeat is ", itemCfg.repeatTime);
 
             var values = [];
 
             $scope.graph.opts.labels.push(itemCfg.label);
 
-            for (var cnt = 0; cnt < item.data.length; cnt++) {
+            for (var cnt = 0; cnt < data.length; cnt++) {
                 if (cnt !== 0) {
                     // Check if we want to extend the data
-                    if (item.data[cnt].time - item.data[cnt - 1].time > itemCfg.repeatTime) {
-                        values.push([Number(item.data[cnt].time - itemCfg.repeatTime),
-                            Number(item.data[cnt].data[cnt - 1].state)]);
+                    if (data[cnt].time - data[cnt - 1].time > itemCfg.repeatTime) {
+                        values.push([Number(data[cnt].time - itemCfg.repeatTime),
+                            Number(data[cnt].data[cnt - 1].state)]);
                     }
                 }
 
-                values.push([new Date(Number(item.data[cnt].time)), Number(item.data[cnt].state)]);
+                values.push([new Date(Number(data[cnt].time)), Number(data[cnt].state)]);
             }
 
             $scope.graph.data = values;
 
             console.log("Updating data:", $scope.graph);
 
-           // combineSeries()
+            // combineSeries()
 
 //            newChart.push(data);
 
@@ -269,13 +268,12 @@ angular.module('HABmin.chart', [
         }
 
 
-
         function combineSeries(seriesArray, newSeries) {
             var newArray = [];
 
 //            for(var a = 0; a < seriesArray.length, function(val) {
-  //              if()
-    //        });
+            //              if()
+            //        });
 
 
             var dyDataRows = [];
