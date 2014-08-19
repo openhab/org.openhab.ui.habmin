@@ -136,7 +136,7 @@ angular.module('HABmin.persistenceModel', [
                     console.log("HTML GET completed in", new Date().getTime() - tStart);
                     console.log("HTML GET data is", data);
 
-                    var persistence = data.data;
+                    var persistence = [].concat(data.data);
 
                     // Response handling
                     switch (cacheState) {
