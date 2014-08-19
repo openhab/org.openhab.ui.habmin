@@ -15,6 +15,7 @@ angular.module("dygraphs-directive", [])
                     opts.file = scope.data;
                     opts.drawCallback = scope.drawCallback;
                     graph.updateOptions(opts);
+                    graph.resetZoom();
                 }, true);
 
                 scope.drawCallback = function (data) {
