@@ -38,15 +38,10 @@ angular.module('HABmin.chart', [
 
         var chartData;
 
-        $scope.graph = {
-            data: [
-            ],
-            opts: {
-//                labels: ["x"],
-                colors: ["#FF9900", "#33FFFF", "#FFCC00", "#33CCCC"],
-                labelsSeparateLines: true
-            }
-
+        var chartOptions = {
+            colors: ["#FF9900", "#33FFFF", "#FFCC00", "#33CCCC"],
+            labelsSeparateLines: true,
+            connectSeparatedPoints: true
         };
 
 
@@ -93,7 +88,9 @@ angular.module('HABmin.chart', [
             newChart = [];
             chartDef = {};
             chartDef.items = [];
-            $scope.graph.opts.labels = [locale.getString('common.time')];
+            chartData = {};
+            chartData.opts = chartOptions;
+            chartData.opts.labels = [locale.getString('common.time')];
 
             angular.forEach($scope.items, function (item) {
                 if (item.selected === true) {
@@ -131,7 +128,6 @@ angular.module('HABmin.chart', [
                     service.selected = false;
                 }
             });
-
         };
 
         $scope.filterDefaultString = locale.getString('common.filter');
@@ -194,27 +190,25 @@ angular.module('HABmin.chart', [
 
             console.log("Adding", itemRef, "- repeat is ", itemCfg.repeatTime);
 
-            var values = [];
+            chartData.opts.labels.push(itemCfg.label);
 
-            $scope.graph.opts.labels.push(itemCfg.label);
+            /*            for (var cnt = 0; cnt < data.length; cnt++) {
+             if (cnt !== 0) {
+             // Check if we want to extend the data
+             if (data[cnt].time - data[cnt - 1].time > itemCfg.repeatTime) {
+             values.push([Number(data[cnt].time - itemCfg.repeatTime),
+             Number(data[cnt].data[cnt - 1].state)]);
+             }
+             }
 
-            for (var cnt = 0; cnt < data.length; cnt++) {
-                if (cnt !== 0) {
-                    // Check if we want to extend the data
-                    if (data[cnt].time - data[cnt - 1].time > itemCfg.repeatTime) {
-                        values.push([Number(data[cnt].time - itemCfg.repeatTime),
-                            Number(data[cnt].data[cnt - 1].state)]);
-                    }
-                }
+             values.push([new Date(Number(data[cnt].time)), Number(data[cnt].state)]);
+             }
 
-                values.push([new Date(Number(data[cnt].time)), Number(data[cnt].state)]);
-            }
-
-            $scope.graph.data = values;
-
+             $scope.graph.data = values;
+             */
             console.log("Updating data:", $scope.graph);
 
-            // combineSeries()
+            newChart = addSeries(newChart, data);
 
 //            newChart.push(data);
 
@@ -236,9 +230,10 @@ angular.module('HABmin.chart', [
             itemsLoaded++;
             console.log("Loaded " + itemsLoaded + " of " + $scope.itemsSelected);
             if (itemsLoaded >= $scope.itemsSelected) {
-                console.log("Rendering chart", newChart);
-
-//                $scope.chartData = newChart;
+                chartData.data = newChart;
+                chartData.opts = chartOptions;
+                console.log("Rendering chart", chartData);
+                $scope.graph = chartData;
 
                 /*            if (this.chartLegend == true) {
                  this.legend = new Legend({chartRef: this.chart});
@@ -267,72 +262,83 @@ angular.module('HABmin.chart', [
             }
         }
 
+        // Sequentially step through the new data and add it to a new array along with the old data
+        // TODO: Add the data repeat for new data
+        function addSeries(curData, newData) {
+            var cntCur = 0;
+            var cntNew = 0;
+            var output = [];
+            var d;
 
-        function combineSeries(seriesArray, newSeries) {
-            var newArray = [];
-
-//            for(var a = 0; a < seriesArray.length, function(val) {
-            //              if()
-            //        });
-
-
-            var dyDataRows = [];
-
-            var nextDataRowCols;
-            var nextDataRowX;
-
-            for (var seriesIdx = 0; seriesIdx < seriesArray.length; seriesIdx++) {
-                var seriesData = seriesArray[seriesIdx];
-
-                var newDyDataRows = [];
-
-                var nextDataRowInsertIdx = 0;
-                for (var dpIdx = 0; dpIdx < seriesData.length; dpIdx++) {
-                    var dp = seriesData[dpIdx];
-
-                    if (nextDataRowInsertIdx < dyDataRows.length) {
-                        nextDataRowCols = dyDataRows[nextDataRowInsertIdx];
-                        nextDataRowX = nextDataRowCols[0].getTime();
-                    }
-
-                    if (nextDataRowInsertIdx >= dyDataRows.length || dp.x < nextDataRowX) {
-                        newDataRowCols = [new Date(dp.x)];
-                        for (var colIdx = 0; colIdx < seriesIdx; colIdx++) {
-                            newDataRowCols.push([null]);
-                        }
-                        newDataRowCols.push([dp.y]);
-                        newDyDataRows.push(newDataRowCols);
-                    }
-                    else if (dp.x > nextDataRowX) {
-                        newDataRowCols = nextDataRowCols.slice(0);
-                        newDataRowCols.push([null]);
-                        newDyDataRows.push(newDataRowCols);
-                        nextDataRowInsertIdx++;
-                        dpIdx--;
-                    }
-                    else {//(dp.x == nextDataRowX) {
-                        newDataRowCols = nextDataRowCols.slice(0);
-                        newDataRowCols.push([dp.y]);
-                        newDyDataRows.push(newDataRowCols);
-                        nextDataRowInsertIdx++;
-                    }
-                }
-
-                //insert any remaining existing rows
-                for (var i = nextDataRowInsertIdx; i < dyDataRows.length; i++) {
-                    nextDataRowCols = dyDataRows[i];
-                    var nextDataRowDateTm = nextDataRowCols[0];
-
-                    var newDataRowCols = nextDataRowCols.slice(0);
-                    newDataRowCols.push([null]);
-                    newDyDataRows.push(newDataRowCols);
-                }
-
-                dyDataRows = newDyDataRows;
+            var len = 0;
+            if (curData.length) {
+                len = curData[0].length;
             }
 
-            return dyDataRows;
+            // Process merging of the two data arrays
+            while (cntCur < curData.length && cntNew < newData.length) {
+                var curTime = curData[cntCur][0].getTime() / 1000 * 1000;
+                var newTime = newData[cntNew].time / 1000 * 1000;
+                if (curTime < newTime) {
+                    // Existing data is next up
+                    // Just copy the existing data and add a null on the end as a placeholder
+                    d = curData[cntCur];
+                    d.push(null);
+
+                    cntCur++;
+                }
+                else if (curTime === newTime) {
+                    // Data has the same time
+                    // Copy the existing data and add the new data to the end
+                    d = curData[cntCur];
+                    d.push(newData[cntNew].state);
+
+                    cntCur++;
+                    cntNew++;
+                }
+                else {
+                    // New data is next up
+                    // Set the new time, add nulls as placeholders for the existing data, then add the new data
+                    d = [];
+                    d[0] = new Date(newTime);
+                    for (var c = 1; c < len; c++) {
+                        d.push(null);
+                    }
+
+                    d.push(newData[cntNew].state);
+
+                    cntNew++;
+                }
+
+                output.push(d);
+            }
+
+            // Process remaining existing data
+            while (cntCur < curData.length) {
+                d = curData[cntCur];
+                d.push(null);
+
+                cntCur++;
+                output.push(d);
+            }
+
+            // Process remaining new data
+            while (cntNew < newData.length) {
+                d = [];
+                d[0] = new Date(Number(newData[cntNew].time) / 1000 * 1000);
+                for (var b = 1; b < len; b++) {
+                    d.push(null);
+                }
+
+                d.push(newData[cntNew].state);
+
+                cntNew++;
+                output.push(d);
+            }
+
+            return output;
         }
+
     })
 
     .directive('resizePage', function ($window) {
