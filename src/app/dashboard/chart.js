@@ -157,11 +157,6 @@ angular.module('HABmin.chart', [
                     console.log("The item definition is: ", response);
                     _addChartItem(itemRef, response);
                 }
-
-//            }),
-//            lang.hitch(this, function (error) {
-//                console.log("An error occurred: " + error);
-//            })
             );
         }
 
@@ -192,25 +187,9 @@ angular.module('HABmin.chart', [
 
             chartData.opts.labels.push(itemCfg.label);
 
-            /*            for (var cnt = 0; cnt < data.length; cnt++) {
-             if (cnt !== 0) {
-             // Check if we want to extend the data
-             if (data[cnt].time - data[cnt - 1].time > itemCfg.repeatTime) {
-             values.push([Number(data[cnt].time - itemCfg.repeatTime),
-             Number(data[cnt].data[cnt - 1].state)]);
-             }
-             }
-
-             values.push([new Date(Number(data[cnt].time)), Number(data[cnt].state)]);
-             }
-
-             $scope.graph.data = values;
-             */
             console.log("Updating data:", $scope.graph);
 
             newChart = addSeries(newChart, data);
-
-//            newChart.push(data);
 
             /*        if (itemCfg.lineStyle != undefined && itemCfg.lineStyle.length > 0)
              plotOptions.stroke.style = itemCfg.lineStyle;
@@ -230,35 +209,20 @@ angular.module('HABmin.chart', [
             itemsLoaded++;
             console.log("Loaded " + itemsLoaded + " of " + $scope.itemsSelected);
             if (itemsLoaded >= $scope.itemsSelected) {
+                if (chartDef.title) {
+                    chartOptions.title = chartDef.title;
+                }
+
+                if(chartDef.axis) {
+                    for(var c = 0; c < chartDef.axis.length; c++) {
+
+                    }
+                }
+
                 chartData.data = newChart;
                 chartData.opts = chartOptions;
                 console.log("Rendering chart", chartData);
                 $scope.graph = chartData;
-
-                /*            if (this.chartLegend == true) {
-                 this.legend = new Legend({chartRef: this.chart});
-                 var pane = new ContentPane({region: "bottom", content: this.legend})
-                 domClass.add(pane.domNode, "habminChartLegend");
-
-                 this.addChild(pane);
-                 this.legend.refresh();
-
-                 // Hide the checkbox from the legend display
-                 array.forEach(this.legend.legends, lang.hitch(this, function (legend, i) {
-                 domStyle.set(legend.childNodes[0], "display", "none");
-
-                 //	toggle action
-                 hub.connect(legend.childNodes[2], "onclick", this, function (e) {
-                 domClass.toggle(legend.childNodes[2], "habminLegendDisabled");
-                 e.stopPropagation();
-                 });
-                 }));
-                 }*/
-
-//            if (this.chartDef.title)
-//                this.chart.title = this.chartDef.title;
-
-//            this.chart.fullRender();
             }
         }
 
@@ -278,7 +242,7 @@ angular.module('HABmin.chart', [
             // Process merging of the two data arrays
             while (cntCur < curData.length && cntNew < newData.length) {
                 var curTime = curData[cntCur][0].getTime() / 1000 * 1000;
-                var newTime = newData[cntNew].time / 1000 * 1000;
+                var newTime = Number(newData[cntNew].time) / 1000 * 1000;
                 if (curTime < newTime) {
                     // Existing data is next up
                     // Just copy the existing data and add a null on the end as a placeholder
@@ -291,7 +255,7 @@ angular.module('HABmin.chart', [
                     // Data has the same time
                     // Copy the existing data and add the new data to the end
                     d = curData[cntCur];
-                    d.push(newData[cntNew].state);
+                    d.push(Number(newData[cntNew].state));
 
                     cntCur++;
                     cntNew++;
@@ -305,7 +269,7 @@ angular.module('HABmin.chart', [
                         d.push(null);
                     }
 
-                    d.push(newData[cntNew].state);
+                    d.push(Number(newData[cntNew].state));
 
                     cntNew++;
                 }
@@ -330,7 +294,7 @@ angular.module('HABmin.chart', [
                     d.push(null);
                 }
 
-                d.push(newData[cntNew].state);
+                d.push(Number(newData[cntNew].state));
 
                 cntNew++;
                 output.push(d);
@@ -338,7 +302,6 @@ angular.module('HABmin.chart', [
 
             return output;
         }
-
     })
 
     .directive('resizePage', function ($window) {
