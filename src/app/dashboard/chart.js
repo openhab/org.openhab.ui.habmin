@@ -35,6 +35,7 @@ angular.module('HABmin.chart', [
     .controller('DashboardChartCtrl',
     function DashboardChartCtrl($scope, locale, PersistenceItemModel, PersistenceServiceModel, PersistenceDataModel, ChartListModel, ChartSave, growl) {
         var itemsLoaded = 0;
+        var itemsLoading = 0;
         var newChart;
         var chartDef;
 
@@ -182,6 +183,8 @@ angular.module('HABmin.chart', [
 
         function _initChart() {
             itemsLoaded = 0;
+            itemsLoading = 0;
+
             newChart = [];
             chartDef = {};
             chartDef.items = [];
@@ -192,6 +195,9 @@ angular.module('HABmin.chart', [
             chartData.opts.y2label = undefined;
             chartData.opts.title = undefined;
             chartData.opts.labels = [locale.getString('common.time')];
+
+            chartData.opts.axes = {};
+            chartData.opts.series = {};
         }
 
         function _displayChart(id) {
@@ -203,6 +209,7 @@ angular.module('HABmin.chart', [
 
                     chartDef = chart;
                     angular.forEach(chart.items, function (item) {
+                        itemsLoading++;
                         _loadItem(item.item, start, stop);
                     });
                 },
@@ -221,6 +228,7 @@ angular.module('HABmin.chart', [
 
             angular.forEach($scope.items, function (item) {
                 if (item.selected === true) {
+                    itemsLoading++;
                     var i = {};
                     i.item = item.name;
                     chartDef.items.push(i);
@@ -270,9 +278,17 @@ angular.module('HABmin.chart', [
 
             console.log("Adding", itemRef, "- repeat is ", itemCfg.repeatTime);
 
-            chartData.opts.labels.push(itemCfg.label);
-//            chartData.opts.series[itemCfg.name] = {};
-//            chartData.opts.series[itemCfg.name].label = itemCfg.label;
+            chartData.opts.labels.push(itemCfg.item);
+            chartData.opts.series[itemCfg.item] = {};
+            chartData.opts.series[itemCfg.item].label = itemCfg.label;
+
+            if(itemCfg.axis == "left") {
+//                chartData.opts.series[itemCfg.item].axis = 'y';
+            }
+            else if(itemCfg.axis == "right") {
+//            else if(itemCfg.lineWidth == "6") {
+                chartData.opts.series[itemCfg.item].axis = 'y2';
+            }
 
             console.log("Updating data:", $scope.graph);
 
@@ -292,10 +308,10 @@ angular.module('HABmin.chart', [
              */
 
 
-            // If everything is loaded, create the legend and render
+            // If everything is loaded, render the chart
             itemsLoaded++;
-            console.log("Loaded " + itemsLoaded + " of " + $scope.itemsSelected);
-            if (itemsLoaded >= $scope.itemsSelected) {
+            console.log("Loaded " + itemsLoaded + " of " + itemsLoading);
+            if (itemsLoaded >= itemsLoading) {
                 if (chartDef.title) {
                     chartOptions.title = chartDef.title;
                 }
@@ -304,14 +320,19 @@ angular.module('HABmin.chart', [
                     angular.forEach(chartDef.axis, function(axis) {
                         var style = "";
                         if(axis.color != null && axis.color.length > 0) {
-                            style = "style='color:" + axis.color + "'";
+                            style = " style='color:" + axis.color + ";'";
                         }
+                        var label = "<span" + style + ">" + axis.label + "</span>";
                         switch(axis.position) {
                             case 'left':
-                                chartData.opts.ylabel = "<span>" + axis.label + "</span>";
+                                chartData.opts.ylabel = label;
+                                chartData.opts.axes.y = {};
+                                chartData.opts.axes.y.drawGrid = true;
                                 break;
                             case 'right':
-                                chartData.opts.y2label = "<span>" + axis.label + "</span>";
+                                chartData.opts.y2label = label;
+                                chartData.opts.axes.y2 = {};
+                                chartData.opts.axes.y2.drawGrid = true;
                                 break;
                         }
                     });
@@ -421,16 +442,35 @@ angular.module('HABmin.chart', [
 
             // Process remaining new data
             while (cntNew < newData.length) {
+                newTime = Math.round(Number(newData[cntNew].time) / 1000) * 1000;
+
+                // Stop time going backwards - may happen due to rounding
+                if(newTime < lastTime) {
+                    newTime = lastTime;
+                }
+
+                // Check if we need to repeat the data
+                if(newTime > lastTime + repeatTime) {
+                    // Repeat needed
+                    d = [];
+                    d[0] = new Date(newTime - repeatTime);
+                    for (var a = 1; a < len; a++) {
+                        d.push(null);
+                    }
+                    d.push(Number(newData[cntNew-1].state));
+                    output.push(d);
+                }
+
                 d = [];
-                d[0] = new Date(Number(newData[cntNew].time) / 1000 * 1000);
+                d[0] = new Date(newTime);
                 for (var b = 1; b < len; b++) {
                     d.push(null);
                 }
-
                 d.push(Number(newData[cntNew].state));
-
-                cntNew++;
                 output.push(d);
+
+                lastTime = newTime;
+                cntNew++;
             }
 
             return output;
