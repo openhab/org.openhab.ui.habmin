@@ -207,6 +207,7 @@ angular.module('HABmin.chart', [
                     var start = stop - (chart.period * 1000);
                     _initChart();
 
+                    chart.items = [].concat(chart.items);
                     chartDef = chart;
                     angular.forEach(chart.items, function (item) {
                         itemsLoading++;
