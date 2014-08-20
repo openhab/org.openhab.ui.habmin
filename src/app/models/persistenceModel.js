@@ -103,8 +103,8 @@ angular.module('HABmin.persistenceModel', [
                 cacheState = CACHE_IGNORE;
             }
             else {
-                console.log("Cache update",start,stop);
-                console.log("Cache update",cacheStart,cacheStop);
+                console.log("Cache update", start, stop);
+                console.log("Cache update", cacheStart, cacheStop);
 
                 cacheState = CACHE_UPDATE;
 
@@ -121,8 +121,7 @@ angular.module('HABmin.persistenceModel', [
                 }
             }
 
-            console.log("Request start",start, requestStart, "stop", stop, requestStop);
-
+            console.log("Request start", start, requestStart, "stop", stop, requestStop);
             console.log("HTML GET start at", new Date().getTime() - tStart);
 
             $http.get(this.url + service + "/" + item,
@@ -149,7 +148,7 @@ angular.module('HABmin.persistenceModel', [
                             var cache = angular.fromJson(localStorage.getItem(storeName + '.cache'));
 
                             var newData;
-                            if(persistence[0].time < cacheStart) {
+                            if (persistence[0].time < cacheStart) {
                                 // New data needs to be pre-pended to cache
                                 newData = persistence.concat(cache);
                             }
@@ -160,14 +159,14 @@ angular.module('HABmin.persistenceModel', [
 
                             localStorage.setItem(storeName + '.cache', angular.toJson(newData));
                             localStorage.setItem(storeName + '.start', newData[0].time);
-                            localStorage.setItem(storeName + '.stop', newData[newData.length-1].time);
+                            localStorage.setItem(storeName + '.stop', newData[newData.length - 1].time);
                             persistence = getCache(newData, start, stop);
                             break;
                         case CACHE_WRITE:
                             console.log("CACHE_WRITE");
                             localStorage.setItem(storeName + '.cache', angular.toJson(persistence));
                             localStorage.setItem(storeName + '.start', persistence[0].time);
-                            localStorage.setItem(storeName + '.stop', persistence[persistence.length-1].time);
+                            localStorage.setItem(storeName + '.stop', persistence[persistence.length - 1].time);
                             break;
                     }
 
@@ -185,18 +184,18 @@ angular.module('HABmin.persistenceModel', [
                 // The index provides the array index for each 6 hour period to speed up access
 //                var index = localStorage.getItem(storeName + '.index');
 //                var cache = localStorage.getItem(storeName + '.cache');
-/*
-                // Find the starting point in the cache using the index
-                var cacheCnt = cache.length;
-                for (var indexCnt = 0; indexCnt < index.length; indexCnt++) {
-                    if (index[indexCnt].time > start) {
-                        cacheCnt = index[indexCnt].offset;
-                        break;
-                    }
-                }*/
+                /*
+                 // Find the starting point in the cache using the index
+                 var cacheCnt = cache.length;
+                 for (var indexCnt = 0; indexCnt < index.length; indexCnt++) {
+                 if (index[indexCnt].time > start) {
+                 cacheCnt = index[indexCnt].offset;
+                 break;
+                 }
+                 }*/
 
                 console.log("Cache is", cache);
-                var cacheCnt = cache.length-1;
+                var cacheCnt = cache.length - 1;
 
                 // cacheCnt now holds a pointer above the required starting point
                 for (; cacheCnt > 0; cacheCnt--) {

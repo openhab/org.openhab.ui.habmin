@@ -91,6 +91,7 @@ angular.module('HABmin.chart', [
             chartData = {};
             chartData.opts = chartOptions;
             chartData.opts.labels = [locale.getString('common.time')];
+//            chartData.opts.series = [];
 
             angular.forEach($scope.items, function (item) {
                 if (item.selected === true) {
@@ -186,10 +187,12 @@ angular.module('HABmin.chart', [
             console.log("Adding", itemRef, "- repeat is ", itemCfg.repeatTime);
 
             chartData.opts.labels.push(itemCfg.label);
+//            chartData.opts.series[itemCfg.name] = {};
+//            chartData.opts.series[itemCfg.name].label = itemCfg.label;
 
             console.log("Updating data:", $scope.graph);
 
-            newChart = addSeries(newChart, data);
+            newChart = addSeries(newChart, data, itemCfg.repeatTime);
 
             /*        if (itemCfg.lineStyle != undefined && itemCfg.lineStyle.length > 0)
              plotOptions.stroke.style = itemCfg.lineStyle;
@@ -215,7 +218,7 @@ angular.module('HABmin.chart', [
 
                 if(chartDef.axis) {
                     for(var c = 0; c < chartDef.axis.length; c++) {
-
+                        chartData.opts.ylabel = "<span style='color:red';>Hello</span>";
                     }
                 }
 
@@ -227,8 +230,7 @@ angular.module('HABmin.chart', [
         }
 
         // Sequentially step through the new data and add it to a new array along with the old data
-        // TODO: Add the data repeat for new data
-        function addSeries(curData, newData) {
+        function addSeries(curData, newData, repeatTime) {
             var cntCur = 0;
             var cntNew = 0;
             var output = [];
@@ -239,10 +241,46 @@ angular.module('HABmin.chart', [
                 len = curData[0].length;
             }
 
+            // Record the starting time/value of the new series
+            var lastTime = Math.round(Number(newData[0].time) / 1000) * 1000;
+            var newState = Number(newData[0].state);
+
+            var curTime;
+            if(curData.length !== 0) {
+                curTime = curData[cntCur][0].getTime();
+            }
+            var newTime = 0;
+
             // Process merging of the two data arrays
             while (cntCur < curData.length && cntNew < newData.length) {
-                var curTime = curData[cntCur][0].getTime() / 1000 * 1000;
-                var newTime = Number(newData[cntNew].time) / 1000 * 1000;
+                curTime = curData[cntCur][0].getTime();
+
+                // newTime is set to 0 when we add new data to indicate that we need to get the next value
+                if(newTime === 0) {
+                    // Round the time down to the closest second
+                    newTime = Math.round(Number(newData[cntNew].time) / 1000) * 1000;
+
+                    // Stop time going backwards - may happen due to rounding
+                    if(newTime < lastTime) {
+                        newTime = lastTime;
+                    }
+
+                    // Check if we need to repeat the data
+                    if(newTime > lastTime + repeatTime) {
+                        // Repeat needed - leave the data alone and reset the time
+                        newTime = newTime - repeatTime;
+                    }
+                    else {
+                        // No repeat - use new data and time
+                        newState = Number(newData[cntNew].state);
+
+                        // Increment to the next value
+                        cntNew++;
+                    }
+                    lastTime = newTime;
+                }
+
+                // Add the data in order
                 if (curTime < newTime) {
                     // Existing data is next up
                     // Just copy the existing data and add a null on the end as a placeholder
@@ -255,10 +293,10 @@ angular.module('HABmin.chart', [
                     // Data has the same time
                     // Copy the existing data and add the new data to the end
                     d = curData[cntCur];
-                    d.push(Number(newData[cntNew].state));
+                    d.push(newState);
 
                     cntCur++;
-                    cntNew++;
+                    newTime = 0;
                 }
                 else {
                     // New data is next up
@@ -269,9 +307,8 @@ angular.module('HABmin.chart', [
                         d.push(null);
                     }
 
-                    d.push(Number(newData[cntNew].state));
-
-                    cntNew++;
+                    d.push(newState);
+                    newTime = 0;
                 }
 
                 output.push(d);

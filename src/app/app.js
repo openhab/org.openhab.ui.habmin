@@ -51,15 +51,16 @@ angular.module('HABmin', [
     .run(function run() {
     })
 
-    .controller('HABminCtrl', function HABminCtrl($scope, $location, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs) {
+    .controller('HABminCtrl',
+    function HABminCtrl($scope, $location, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs) {
         $scope.isLoggedIn = UserService.isLoggedIn;
 
         $scope.sitemaps = null;
         SitemapModel.getList().then(
-            function(data){
+            function (data) {
                 $scope.sitemaps = data;
             },
-            function(reason) {
+            function (reason) {
                 // handle failure
                 growl.warning('Hello world ' + reason.message);
             }
@@ -70,10 +71,10 @@ angular.module('HABmin', [
             }
         });
 
-        $scope.showUserChartPrefs = function() {
+        $scope.showUserChartPrefs = function () {
             UserChartPrefs.showModal();
         };
-        $scope.showUserGeneralPrefs= function() {
+        $scope.showUserGeneralPrefs = function () {
             UserGeneralPrefs.showModal();
         };
     })
