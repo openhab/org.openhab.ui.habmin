@@ -1,24 +1,46 @@
 <div class="col-sm-4">
-    <div class="panel panel-primary">
+    <div class="panel panel-default">
         <div class="panel-heading clearfix">
             <div>
-                <span class="glyphicon glyphicon-list"></span>
-                <span i18n="habmin.chartItemList"></span>
+                <!-- Split button to select items or chart mode -->
+                <div class="btn-group">
+                    <button type="button btn-sm" class="btn btn-default">{{selectName}}</button>
+                    <button type="button btn-sm" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <span class="caret"></span>
+                        <span class="sr-only">Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a ng-click="setType(true)">
+                            <span class="glyphicon glyphicon-stats"></span>
+                            <span i18n="habmin.chartChartList"></span>
+                            <span class="pull-right">
+                                <span ng-if="selectCharts" class="glyphicon glyphicon-check"></span>
+                            </span>
+                        </a></li>
+                        <li><a ng-click="setType(false)">
+                            <span class="glyphicon glyphicon-list"></span>
+                            <span i18n="habmin.chartItemList"></span>
+                            <span class="pull-right">
+                                <span ng-if="!selectCharts" class="glyphicon glyphicon-check"></span>
+                            </span>
+                        </a></li>
+                    </ul>
+                </div>
 
                 <div class="btn-group pull-right">
-                    <button type="button" class="btn btn-default btn-xs">
+                    <button type="button btn-sm" class="btn btn-default" ng-if="!selectCharts">
                         <a href ng-click="doChart()">
                             <span class="glyphicon glyphicon-play"></span>
                         </a>
                     </button>
 
-                    <button type="button" class="btn btn-default btn-xs">
+                    <button type="button btn-sm" class="btn btn-default" ng-if="!selectCharts">
                         <a href ng-click="clearList()">
                             <span class="glyphicon glyphicon-remove-sign"></span>
                         </a>
                     </button>
 
-                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                    <button type="button btn-sm" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                         <span class="glyphicon glyphicon-cog"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
@@ -28,11 +50,19 @@
                                 <span ng-if="choice.selected" class="pull-right glyphicon glyphicon-check"></span>
                             </a>
                         </li>
+                        <li role="presentation" class="divider"></li>
+                        <li ng-if="!selectCharts"><a ng-click="saveChart()">
+                            <span i18n="habmin.chartSaveChart"></span>
+                        </a></li>
+                        <li ng-if="selectCharts"><a ng-click="editChart()">
+                            <span i18n="habmin.chartEditChart"></span>
+                        </a></li>
                     </ul>
                 </div>
             </div>
-            <div id="custom-search-form" class="input-group col-xs-12">
-                <input type="text" class="search-query" placeholder={{filterDefaultString}} ng-model="filterText" ng-model-options="{debounce: 1000}">
+            <div id="custom-search-form" class="input-group col-xs-12" ng-if="!selectCharts">
+                <input type="text" class="search-query" placeholder={{filterDefaultString}} ng-model="filterText"
+                       ng-model-options="{debounce: 1000}">
                 <span class="input-group-btn">
                     <button class="btn btn-default btn-xs" type="button" ng-click="filterText=''">
                         <span class="glyphicon glyphicon-minus-sign"></span>
@@ -40,9 +70,10 @@
                 </span>
             </div>
         </div>
-        <div id="itemList" class="list-group habmin-list" ng-style="styleList()" resize-page>
+        <div id="itemList" class="list-group habmin-list" ng-style="styleItemList()" ng-if="!selectCharts" resize-page>
             <div ng-if="itemsTotal" ng-repeat="choice in items | filter:filterFunction">
-                <a href role="presentation" ng-hide="choice.filter" class="list-group-item" ng-click="selectItem(choice)">
+                <a href role="presentation" ng-hide="choice.filter" class="list-group-item"
+                   ng-click="selectItem(choice)">
                     <span width="20px"><img fill="blue" height="20" src="../images/temp_windchill.svg"></span>
                     <span>{{choice.label}}</span>
                     <span class="pull-right">
@@ -56,7 +87,24 @@
                 <span i18n="habmin.chartNoItems"></span>
             </div>
         </div>
-        <div class="panel-footer">
+        <div id="chartList" class="list-group habmin-list" ng-style="styleChartList()" ng-if="selectCharts" resize-page>
+            <div ng-if="chartsTotal" ng-repeat="choice in charts">
+                <a href role="presentation" ng-hide="choice.filter" class="list-group-item"
+                   ng-click="selectChart(choice)">
+                    <span width="20px"><img fill="blue" height="20" src="../images/temp_windchill.svg"></span>
+                    <span>{{choice.name}}</span>
+                    <span class="pull-right">
+                        <span ng-if="choice.selected" class="glyphicon glyphicon-check"></span>
+                    </span>
+                </a>
+            </div>
+
+            <div ng-if="!chartsTotal" class="list-group-item text-center">
+                <span class="glyphicon glyphicon-warning-sign"></span>
+                <span i18n="habmin.chartNoCharts"></span>
+            </div>
+        </div>
+        <div class="panel-footer" ng-if="!selectCharts">
             <div class="row">
                 <div class="col-xs-6">
                     <h6 class="text-center">
@@ -78,8 +126,8 @@
 <div class="col-sm-8">
     <div class="panel panel-primary" ng-style="styleChart()" resize-page>
         <dygraphs ng-if="graph.data.length"
-                data="graph.data"
-                opts="graph.opts">
+                  data="graph.data"
+                  opts="graph.opts">
         </dygraphs>
     </div>
 </div>

@@ -12,9 +12,22 @@
     "mainGeneralPreferences": "General Settings",
 
     "chartItemList": "Items",
-    "chartNoItems": "No Items To Graph",
+    "chartChartList": "Charts",
+    "chartNoItems": "No Items To Chart",
+    "chartNoCharts": "No Charts Defined",
     "chartTotalItems": "Total Items",
     "chartSelectedItems": "Selected Items",
+    "chartSaveChart": "Save Chart",
+    "chartEditChart": "Edit Chart",
+
+    "chartSaveChartTitle": "Save Chart",
+    "chartSaveGeneral": "General Settings",
+    "chartSaveLeftAxis": "Left Axis Settings",
+    "chartSaveRightAxis": "Right Axis Settings",
+
+    "chartSaveName": "Chart Name",
+    "chartSaveTitle": "Chart Title",
+    "chartSavePeriod": "Default Period",
 
     "errorLoadingSitemaps": "Error loading the sitemap list!",
 

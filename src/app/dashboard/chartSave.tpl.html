@@ -1,0 +1,35 @@
+<div class="modal-header">
+    <h3 class="modal-title" i18n="habmin.chartSaveChartTitle"></h3>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-xs-6">
+            <ul class="nav nav-pills nav-stacked">
+                <li ng-class="{active:showTab==1}"><a ng-click="showTab=1">
+                    <span i18n="habmin.chartSaveGeneral"></span>
+                    <span ng-if="showTab==1" class="pull-right glyphicon glyphicon-arrow-right"></span>
+                </a></li>
+                <li ng-class="{active:showTab==2}"><a ng-click="showTab=2">
+                    <span i18n="habmin.chartSaveLeftAxis"></span>
+                    <span ng-if="showTab==2" class="pull-right glyphicon glyphicon-arrow-right"></span>
+                </a></li>
+                <li ng-class="{active:showTab==3}"><a ng-click="showTab=2">
+                    <span i18n="habmin.chartSaveRightAxis"></span>
+                    <span ng-if="showTab==3" class="pull-right glyphicon glyphicon-arrow-right"></span>
+                </a></li>
+                <li ng-class="{active:showTab==4}"><a>Profile</a></li>
+                <li ng-class="{active:showTab==5}"><a>Messages</a></li>
+            </ul>
+        </div>
+
+        <div class="col-xs-6">
+            <chart-save-general ng-if="showTab==1"></chart-save-general>
+            <chart-save-item ng-if="showTab==2"></chart-save-item>
+
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()" i18n="common.save"></button>
+    <button class="btn btn-warning" ng-click="cancel()" i18n="common.cancel"></button>
+</div>

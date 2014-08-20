@@ -14,6 +14,8 @@ angular.module('HABmin.chart', [
     'ngLocalize',
     'angular-growl',
     'HABmin.persistenceModel',
+    'HABmin.chartModel',
+    'HABmin.chartSave',
     'dygraphs-directive'
 ])
 
@@ -31,7 +33,7 @@ angular.module('HABmin.chart', [
     })
 
     .controller('DashboardChartCtrl',
-    function DashboardChartCtrl($scope, locale, PersistenceItemModel, PersistenceServiceModel, PersistenceDataModel, growl) {
+    function DashboardChartCtrl($scope, locale, PersistenceItemModel, PersistenceServiceModel, PersistenceDataModel, ChartListModel, ChartSave, growl) {
         var itemsLoaded = 0;
         var newChart;
         var chartDef;
@@ -44,12 +46,15 @@ angular.module('HABmin.chart', [
             connectSeparatedPoints: true
         };
 
+        $scope.selectCharts = true;
+        $scope.selectName = locale.getString('habmin.chartChartList');
+
+        $scope.chartsTotal = 0;
+        $scope.charts = [];
 
         $scope.itemsTotal = 0;
         $scope.itemsSelected = 0;
-        $scope.items = [
-            {iconobject: "../images/light_led_stripe_rgb.svg", label: "1"}
-        ];
+        $scope.items = [];
         $scope.services = [];
 
         // Load the list of items
@@ -58,6 +63,20 @@ angular.module('HABmin.chart', [
                 $scope.items = items;
                 if ($scope.items != null) {
                     $scope.itemsTotal = $scope.items.length;
+                }
+            },
+            function (reason) {
+                // handle failure
+                growl.warning('Hello world ' + reason.message);
+            }
+        );
+
+        // Load the list of charts
+        ChartListModel.getList().then(
+            function (charts) {
+                $scope.charts = charts;
+                if ($scope.charts != null) {
+                    $scope.chartsTotal = $scope.charts.length;
                 }
             },
             function (reason) {
@@ -81,24 +100,19 @@ angular.module('HABmin.chart', [
 
         $scope.doChart = function () {
             console.log("doChart button clicked");
-            var stop = Math.round((new Date()).getTime());
-            var start = stop - (86400 * 1000);
 
-            itemsLoaded = 0;
-            newChart = [];
-            chartDef = {};
-            chartDef.items = [];
-            chartData = {};
-            chartData.opts = chartOptions;
-            chartData.opts.labels = [locale.getString('common.time')];
-//            chartData.opts.series = [];
+            if($scope.selectType === false) {
+                _displayItems();
+            }
+        };
 
-            angular.forEach($scope.items, function (item) {
-                if (item.selected === true) {
-                    chartDef.items.push(item);
-                    _loadItem(item.name, start, stop);
-                }
-            });
+        $scope.saveChart = function () {
+            console.log("saveChart button clicked");
+            ChartSave.showModal();
+        };
+
+        $scope.editChart = function () {
+            console.log("editChart button clicked");
         };
 
         $scope.selectItem = function (parm) {
@@ -110,6 +124,27 @@ angular.module('HABmin.chart', [
                     $scope.itemsSelected++;
                 }
             });
+        };
+
+        $scope.selectChart = function (parm) {
+            angular.forEach($scope.charts, function (chart) {
+                chart.selected = false;
+            });
+
+            parm.selected = !parm.selected;
+
+            _displayChart(parm.id);
+        };
+
+        $scope.setType = function (selectType) {
+            if(selectType === false) {
+                $scope.selectCharts = false;
+                $scope.selectName = locale.getString('habmin.chartItemList');
+            }
+            else {
+                $scope.selectCharts = true;
+                $scope.selectName = locale.getString('habmin.chartChartList');
+            }
         };
 
         $scope.clearList = function () {
@@ -145,6 +180,55 @@ angular.module('HABmin.chart', [
             return element.label.toLowerCase().indexOf($scope.filterText.toLowerCase()) !== -1 ? true : false;
         };
 
+        function _initChart() {
+            itemsLoaded = 0;
+            newChart = [];
+            chartDef = {};
+            chartDef.items = [];
+            chartData = {};
+            chartData.opts = chartOptions;
+            chartData.opts.xlabel = undefined;
+            chartData.opts.ylabel = undefined;
+            chartData.opts.y2label = undefined;
+            chartData.opts.title = undefined;
+            chartData.opts.labels = [locale.getString('common.time')];
+        }
+
+        function _displayChart(id) {
+            ChartListModel.getChart(id).then(
+                function (chart) {
+                    var stop = Math.round((new Date()).getTime());
+                    var start = stop - (chart.period * 1000);
+                    _initChart();
+
+                    chartDef = chart;
+                    angular.forEach(chart.items, function (item) {
+                        _loadItem(item.item, start, stop);
+                    });
+                },
+                function (reason) {
+                    // handle failure
+                    growl.warning('Hello world ' + reason.message);
+                }
+            );
+        }
+
+        function _displayItems() {
+            var stop = Math.round((new Date()).getTime());
+            var start = stop - (86400 * 1000);
+
+            _initChart();
+
+            angular.forEach($scope.items, function (item) {
+                if (item.selected === true) {
+                    var i = {};
+                    i.item = item.name;
+                    chartDef.items.push(i);
+                    _loadItem(item.name, start, stop);
+                }
+            });
+        }
+
         function _loadItem(itemRef, start, stop) {
             console.log("Requesting ", itemRef);
             var parms = {};
@@ -165,7 +249,7 @@ angular.module('HABmin.chart', [
             // Find the chart config for this item
             var itemCfg = null;
             for (var i = 0; i < chartDef.items.length; i++) {
-                if (itemRef == chartDef.items[i].name) {
+                if (itemRef == chartDef.items[i].item) {
                     itemCfg = chartDef.items[i];
                 }
             }
@@ -217,9 +301,20 @@ angular.module('HABmin.chart', [
                 }
 
                 if(chartDef.axis) {
-                    for(var c = 0; c < chartDef.axis.length; c++) {
-                        chartData.opts.ylabel = "<span style='color:red';>Hello</span>";
-                    }
+                    angular.forEach(chartDef.axis, function(axis) {
+                        var style = "";
+                        if(axis.color != null && axis.color.length > 0) {
+                            style = "style='color:" + axis.color + "'";
+                        }
+                        switch(axis.position) {
+                            case 'left':
+                                chartData.opts.ylabel = "<span>" + axis.label + "</span>";
+                                break;
+                            case 'right':
+                                chartData.opts.y2label = "<span>" + axis.label + "</span>";
+                                break;
+                        }
+                    });
                 }
 
                 chartData.data = newChart;
@@ -236,6 +331,7 @@ angular.module('HABmin.chart', [
             var output = [];
             var d;
 
+            // Get the number of series currently in the array
             var len = 0;
             if (curData.length) {
                 len = curData[0].length;
@@ -351,14 +447,19 @@ angular.module('HABmin.chart', [
             };
             $scope.$watch($scope.getWindowDimensions, function (newValue, oldValue) {
                 $scope.windowHeight = newValue.h;
-                $scope.styleList = function () {
+                $scope.styleItemList = function () {
                     return {
-                        'height': (newValue.h - 210) + 'px'
+                        'height': (newValue.h - 225) + 'px'
+                    };
+                };
+                $scope.styleChartList = function () {
+                    return {
+                        'height': (newValue.h - 145) + 'px'
                     };
                 };
                 $scope.styleChart = function () {
                     return {
-                        'height': (newValue.h - 85) + 'px'
+                        'height': (newValue.h - 83) + 'px'
                     };
                 };
             }, true);
