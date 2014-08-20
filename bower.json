@@ -21,6 +21,6 @@
     "angular-dragdrop": "~1.0.7",
     "nvd3": "~1.1.15-beta",
     "angularjs-nvd3-directives": "~0.0.7",
-    "angularjs-indexedDB": "*"
+    "angular-bootstrap-colorpicker": "~3.0.8"
   }
 }
