@@ -84,6 +84,10 @@ angular.module('HABmin.persistenceModel', [
             var cacheStop = Number(localStorage.getItem(storeName + '.stop'));
 
             // Modify the request based on data in the cache
+            if(UserService.userCfg().useCache === false) {
+                console.log("Caching disabled");
+                cacheState = CACHE_IGNORE;
+            }
             if (start > cacheStart && stop < cacheStop) {
                 console.log("Data already in cache");
                 // The request is already contained in the cache

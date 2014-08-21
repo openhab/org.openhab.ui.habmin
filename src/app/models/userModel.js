@@ -11,7 +11,9 @@ angular.module('HABmin.userModel', [])
     .factory('UserService', function ($http, $rootScope, $cookieStore, $interval) {
         var authenticated = false;
 
-        var userConfig = {};
+        var userConfig = {
+            useCache: false
+        };
 
         // Log us in after 5 seconds
         $interval(function() {
