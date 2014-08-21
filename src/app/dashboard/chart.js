@@ -40,6 +40,7 @@ angular.module('HABmin.chart', [
         var chartDef;
 
         var chartData;
+        var roundingTime = 30000;
 
         var chartOptions = {
             colors: ["#FF9900", "#33FFFF", "#FFCC00", "#33CCCC"],
@@ -360,7 +361,7 @@ angular.module('HABmin.chart', [
             }
 
             // Record the starting time/value of the new series
-            var lastTime = Math.round(Number(newData[0].time) / 1000) * 1000;
+            var lastTime = Math.round(Number(newData[0].time) / roundingTime) * roundingTime;
             var newState = Number(newData[0].state);
 
             var curTime;
@@ -376,11 +377,14 @@ angular.module('HABmin.chart', [
                 // newTime is set to 0 when we add new data to indicate that we need to get the next value
                 if(newTime === 0) {
                     // Round the time down to the closest second
-                    newTime = Math.round(Number(newData[cntNew].time) / 1000) * 1000;
+                    newTime = Math.round(Number(newData[cntNew].time) / roundingTime) * roundingTime;
 
                     // Stop time going backwards - may happen due to rounding
-                    if(newTime < lastTime) {
-                        newTime = lastTime;
+                    if(newTime <= lastTime) {
+                        newTime = 0;
+                        cntNew++;
+                        continue;
+//                        newTime = lastTime;
                     }
 
                     // Check if we need to repeat the data
@@ -443,11 +447,13 @@ angular.module('HABmin.chart', [
 
             // Process remaining new data
             while (cntNew < newData.length) {
-                newTime = Math.round(Number(newData[cntNew].time) / 1000) * 1000;
+                newTime = Math.round(Number(newData[cntNew].time) / roundingTime) * roundingTime;
 
                 // Stop time going backwards - may happen due to rounding
-                if(newTime < lastTime) {
-                    newTime = lastTime;
+                if(newTime <= lastTime) {
+                    cntNew++;
+                    continue;
+                    //newTime = lastTime;
                 }
 
                 // Check if we need to repeat the data
