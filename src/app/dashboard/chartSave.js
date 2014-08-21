@@ -9,11 +9,12 @@
  */
 angular.module('HABmin.chartSave', [
     'ui.bootstrap',
-    'colorpicker.module'
+    'colorpicker.module',
+    'HABmin.chartModel'
 ])
-    .service('ChartSave', ['$modal',
-        function ($modal) {
-            this.showModal = function () {
+    .service('ChartSave',
+        function ($modal, $rootScope, ChartListModel) {
+            this.showModal = function (chartId) {
                 var controller = function ($scope, $modalInstance) {
                     $scope.ok = function (result) {
                         $modalInstance.close(result);
@@ -23,17 +24,43 @@ angular.module('HABmin.chartSave', [
                     };
                 };
 
-                return $modal.open({
-                    backdrop: 'static',
-                    keyboard: true,
-                    modalFade: true,
-                    size: 'lg',
-                    templateUrl: 'dashboard/chartSave.tpl.html',
-                    controller: controller
-                }).result;
+                ChartListModel.getChart(chartId).then(function(chart) {
+                    var scope = $rootScope.$new();
+                    scope.general = {
+                        name: chart.name,
+                        title: chart.title,
+                        icon: chart.icon,
+                        period: chart.period
+                    };
+                    if(chart.axis !== undefined) {
+                        angular.forEach([].concat(chart.axis), function(axis) {
+                            switch(axis.position) {
+                                case "left":
+                                    scope.leftaxis = {
+                                        label: axis.label
+                                    };
+                                    break;
+                                case "right":
+                                    scope.rightaxis = {
+                                        label: axis.label
+                                    };
+                                    break;
+                            }
+                        });
+                    }
+
+                    return $modal.open({
+                        backdrop: 'static',
+                        keyboard: true,
+                        modalFade: true,
+                        size: 'lg',
+                        templateUrl: 'dashboard/chartSave.tpl.html',
+                        controller: controller,
+                        scope: scope
+                    }).result;
+                });
             };
-        }]
-)
+        })
 
     .directive('chartSaveGeneral', function ($window) {
         return {
@@ -41,10 +68,11 @@ angular.module('HABmin.chartSave', [
             scope: { // Isolate scope
                 model: '='
             },
-            templateUrl: 'dashboard/chartSaveGeneral.tpl.html'
+            templateUrl: 'dashboard/chartSaveGeneral.tpl.html',
+            link: function ($scope, $element, $state) {
+            }
         };
-    }
-)
+    })
 
     .directive('chartSaveItem', function ($window) {
         return {
@@ -52,7 +80,21 @@ angular.module('HABmin.chartSave', [
             scope: { // Isolate scope
                 model: '='
             },
-            templateUrl: 'dashboard/chartSaveItem.tpl.html'
+            templateUrl: 'dashboard/chartSaveItem.tpl.html',
+            link: function ($scope, $element, $state) {
+            }
         };
-    }
-);
+    })
+
+    .directive('chartSaveAxis', function ($window) {
+        return {
+            restrict: 'E', // Use as element
+            scope: { // Isolate scope
+                model: '='
+            },
+            templateUrl: 'dashboard/chartSaveAxis.tpl.html',
+            link: function ($scope, $element, $state) {
+            }
+        };
+    })
+;

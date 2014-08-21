@@ -5,17 +5,21 @@
     <div class="row">
         <div class="col-xs-6">
             <ul class="nav nav-pills nav-stacked">
-                <li ng-class="{active:showTab==1}"><a ng-click="showTab=1">
+                <li><a ng-click="showTab=1">
+                    <span ng-class="{'glyphicon glyphicon-edit':showTab==1, 'icon-space':true}"></span>
                     <span i18n="habmin.chartSaveGeneral"></span>
-                    <span ng-if="showTab==1" class="pull-right glyphicon glyphicon-arrow-right"></span>
                 </a></li>
-                <li ng-class="{active:showTab==2}"><a ng-click="showTab=2">
+                <li><a ng-click="showTab=2">
+                    <span ng-class="{'glyphicon glyphicon-edit':showTab==2, 'icon-space':true}"></span>
                     <span i18n="habmin.chartSaveLeftAxis"></span>
-                    <span ng-if="showTab==2" class="pull-right glyphicon glyphicon-arrow-right"></span>
                 </a></li>
-                <li ng-class="{active:showTab==3}"><a ng-click="showTab=2">
+                <li><a ng-click="showTab=3">
+                    <span ng-class="{'glyphicon glyphicon-edit':showTab==3, 'icon-space':true}"></span>
                     <span i18n="habmin.chartSaveRightAxis"></span>
-                    <span ng-if="showTab==3" class="pull-right glyphicon glyphicon-arrow-right"></span>
+                </a></li>
+                <li><a ng-click="showTab=4">
+                    <span ng-class="{'glyphicon glyphicon-edit':showTab==4, 'icon-space':true}"></span>
+                    <span i18n="habmin.chartSaveRightAxis"></span>
                 </a></li>
                 <li ng-class="{active:showTab==4}"><a>Profile</a></li>
                 <li ng-class="{active:showTab==5}"><a>Messages</a></li>
@@ -23,9 +27,10 @@
         </div>
 
         <div class="col-xs-6">
-            <chart-save-general ng-if="showTab==1"></chart-save-general>
-            <chart-save-item ng-if="showTab==2"></chart-save-item>
-
+            <chart-save-general ng-if="showTab==1" model="general"></chart-save-general>
+            <chart-save-axis ng-if="showTab==2" model="leftaxis"></chart-save-axis>
+            <chart-save-axis ng-if="showTab==3" model="rightaxis"></chart-save-axis>
+            <chart-save-item ng-if="showTab==4"></chart-save-item>
         </div>
     </div>
 </div>
