@@ -110,7 +110,7 @@ angular.module('HABmin.chart', [
 
         $scope.saveChart = function () {
             console.log("saveChart button clicked");
-            ChartSave.showModal();
+            ChartSave.showModal(3);
         };
 
         $scope.editChart = function () {
@@ -183,6 +183,7 @@ angular.module('HABmin.chart', [
         };
 
         function _initChart(period) {
+            // The following sets the number of chart points to approximately 2000
             roundingTime = period / 2000;
             console.log("Setting rounding time to",roundingTime);
 
@@ -194,14 +195,18 @@ angular.module('HABmin.chart', [
             chartDef.items = [];
             chartData = {};
             chartData.opts = chartOptions;
+            chartData.opts.valueRange = null;
+            chartData.opts.axes = {};
+            chartData.opts.axes.y={};
+            chartData.opts.axes.y2={};
+            chartData.opts.axes.y.valueRange = null;
+            chartData.opts.axes.y2.valueRange = null;
+            chartData.opts.series = {};
             chartData.opts.xlabel = undefined;
             chartData.opts.ylabel = undefined;
             chartData.opts.y2label = undefined;
             chartData.opts.title = undefined;
             chartData.opts.labels = [locale.getString('common.time')];
-
-            chartData.opts.axes = {};
-            chartData.opts.series = {};
         }
 
         function _displayChart(id) {
@@ -285,7 +290,7 @@ angular.module('HABmin.chart', [
 
             chartData.opts.labels.push(itemCfg.item);
             chartData.opts.series[itemCfg.item] = {};
-            chartData.opts.series[itemCfg.item].label = itemCfg.label;
+//            chartData.opts.series[itemCfg.item].label = itemCfg.label;
 
             if(itemCfg.axis == "left") {
 //                chartData.opts.series[itemCfg.item].axis = 'y';
@@ -323,21 +328,38 @@ angular.module('HABmin.chart', [
 
                 if(chartDef.axis) {
                     angular.forEach(chartDef.axis, function(axis) {
+                        var min = null;
+                        var max = null;
                         var style = "";
                         if(axis.color != null && axis.color.length > 0) {
                             style = " style='color:" + axis.color + ";'";
                         }
                         var label = "<span" + style + ">" + axis.label + "</span>";
                         switch(axis.position) {
+                            default:
                             case 'left':
                                 chartData.opts.ylabel = label;
-                                chartData.opts.axes.y = {};
-                                chartData.opts.axes.y.drawGrid = true;
+                                if(axis.minimum !== undefined || axis.maximum !== undefined) {
+                                    if(axis.minimum !== undefined) {
+                                        min = Number(axis.minimum);
+                                    }
+                                    if(axis.maximum !== undefined) {
+                                        max = Number(axis.maximum);
+                                    }
+                                    chartData.opts.axes.y.valueRange = [min,max];
+                                }
                                 break;
                             case 'right':
                                 chartData.opts.y2label = label;
-                                chartData.opts.axes.y2 = {};
-                                chartData.opts.axes.y2.drawGrid = true;
+                                if(axis.minimum !== undefined || axis.maximum !== undefined) {
+                                    if(axis.minimum !== undefined) {
+                                        min = Number(axis.minimum);
+                                    }
+                                    if(axis.maximum !== undefined) {
+                                        max = Number(axis.maximum);
+                                    }
+                                    chartData.opts.axes.y2.valueRange = [min,max];
+                                }
                                 break;
                         }
                     });
