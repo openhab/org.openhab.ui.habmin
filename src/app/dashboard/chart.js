@@ -455,7 +455,14 @@ angular.module('HABmin.chart', [
 
             // Process remaining new data
             while (cntNew < newData.length) {
-                newTime = Math.round(Number(newData[cntNew].time) / roundingTime) * roundingTime;
+                if(newData[cntNew+1] !== undefined  && newData[cntNew+1].time > newData[cntNew].time + repeatTime) {
+                    // The next value is more than 'repeatTime' in the future. We need to record this value
+                    newTime = Math.round(Number(newData[cntNew].time) / 1000) * 1000;
+                }
+                else {
+                    // Round the time down to the closest second
+                    newTime = Math.round(Number(newData[cntNew].time) / roundingTime) * roundingTime;
+                }
 
                 // Stop time going backwards - may happen due to rounding
                 if(newTime <= lastTime) {
