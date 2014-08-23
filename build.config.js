@@ -77,16 +77,15 @@ module.exports = {
             'vendor/angular-toggle-switch/angular-toggle-switch.js',
             'vendor/jquery-atmosphere/jquery.atmosphere.js',
             'vendor/angular-atmosphere/app/scripts/services/angular-atmosphere.js',
-            'vendor/dygraph/dygraph-directive.js',
             'vendor/dygraph/dygraph-combined.js',
-            'vendor/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js'
+            'vendor/tinycolor/tinycolor.js',
+            'vendor/pick-a-color/src/js/pick-a-color.js'
         ],
         css: [
             'vendor/angular-growl-v2/build/angular-growl.css',
             'vendor/angular-rangeslider/angular-rangeslider.css',
             'vendor/angular-toggle-switch/angular-toggle-switch.css',
-            'vendor/angular-toggle-switch/angular-toggle-switch-bootstrap.css',
-            'vendor/angular-bootstrap-colorpicker/css/colorpicker.css'
+            'vendor/angular-toggle-switch/angular-toggle-switch-bootstrap.css'
         ],
         assets: [
             'vendor/bootstrap/fonts/*'
