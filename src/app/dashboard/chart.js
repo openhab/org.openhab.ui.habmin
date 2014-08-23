@@ -116,11 +116,20 @@ angular.module('HABmin.chart', [
 
         $scope.saveChart = function () {
             console.log("saveChart button clicked");
-            ChartSave.showModal(3);
+            ChartSave.showModal();
         };
 
         $scope.editChart = function () {
             console.log("editChart button clicked");
+
+            var id = null;
+            angular.forEach($scope.charts, function (chart) {
+                if(chart.selected) {
+                    id = chart.id;
+                }
+            });
+
+            ChartSave.showModal(id);
         };
 
         $scope.selectItem = function (parm) {

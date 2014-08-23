@@ -38,12 +38,17 @@ angular.module('HABmin.chartSave', [
                                 case "left":
                                     scope.leftaxis = {
                                         label: axis.label,
-                                        color: "ff3388"
+                                        color: axis.color,
+                                        minimum: Number(axis.minimum),
+                                        maximum: Number(axis.maximum)
                                     };
                                     break;
                                 case "right":
                                     scope.rightaxis = {
-                                        label: axis.label
+                                        label: axis.label,
+                                        color: axis.color,
+                                        minimum: Number(axis.minimum),
+                                        maximum: Number(axis.maximum)
                                     };
                                     break;
                             }
