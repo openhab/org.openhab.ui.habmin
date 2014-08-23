@@ -59,6 +59,9 @@ angular.module('HABmin.chart', [
         $scope.items = [];
         $scope.services = [];
 
+        // ------------------------------------------------
+        // Load model data
+
         // Load the list of items
         PersistenceItemModel.get().then(
             function (items) {
@@ -100,10 +103,13 @@ angular.module('HABmin.chart', [
             }
         );
 
+        // ------------------------------------------------
+        // Event Handlers
+
         $scope.doChart = function () {
             console.log("doChart button clicked");
 
-            if($scope.selectType === false) {
+            if($scope.selectCharts === false) {
                 _displayItems();
             }
         };
@@ -181,6 +187,9 @@ angular.module('HABmin.chart', [
             }
             return element.label.toLowerCase().indexOf($scope.filterText.toLowerCase()) !== -1 ? true : false;
         };
+
+        // ------------------------------------------------
+        // Private functions
 
         function _initChart(period) {
             // The following sets the number of chart points to approximately 2000
