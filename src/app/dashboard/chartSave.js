@@ -9,7 +9,7 @@
  */
 angular.module('HABmin.chartSave', [
     'ui.bootstrap',
-    'colorpicker.module',
+    'pickAColor',
     'HABmin.chartModel'
 ])
     .service('ChartSave',
@@ -37,7 +37,8 @@ angular.module('HABmin.chartSave', [
                             switch(axis.position) {
                                 case "left":
                                     scope.leftaxis = {
-                                        label: axis.label
+                                        label: axis.label,
+                                        color: "ff3388"
                                     };
                                     break;
                                 case "right":

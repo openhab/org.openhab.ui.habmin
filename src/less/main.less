@@ -9,7 +9,11 @@
  */
 @import '../../vendor/bootstrap/less/bootstrap.less';
 //@import 'slate/bootswatch.less';
+
+@import '../../vendor/pick-a-color/src/less/pick-a-color.less';
+
 @import 'slate/variables.less';
+
 /**
  * This is our main variables file. We must include it last so we can overwrite any variable
  * definitions in our imported stylesheets.
@@ -240,7 +244,10 @@ h2 {
 }
 
 
-
+.icon-space {
+  min-width: 20px;
+  display: inline-block;
+}
 
 //
 // DyGraphs customisation
