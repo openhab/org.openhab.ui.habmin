@@ -10,35 +10,38 @@
     <div class="form-group">
         <label for="inputAxis" class="control-label">Axis</label>
         <div>
-            <input type="email" class="form-control" id="inputAxis" placeholder="Email">
+            <select ng-model="model.period" class="form-control" id="inputAxis">
+                <option value="1" i18n="habmin.chartItemLeftAxis"></option>
+                <option value="2" i18n="habmin.chartItemRightAxis"></option>
+            </select>
         </div>
     </div>
 
     <div class="form-group">
-        <label for="inputLineColor" class="control-label">Line Color</label>
+        <label class="control-label">Line Color</label>
         <div>
-            <input type="text" value="000" name="border-color" id="inputLineColor" class="pick-a-color form-control">
+            <pick-a-color id="inputColor" ng-model="model.color"></pick-a-color>
         </div>
     </div>
 
     <div class="form-group">
         <label for="inputLineWidth" class="control-label">Line Width</label>
         <div>
-            <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+            <input type="number" class="form-control" id="inputLineWidth" placeholder="width">
         </div>
     </div>
 
     <div class="form-group">
         <label for="inputLineStyle" class="control-label">Line Style</label>
         <div>
-            <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+            <input type="password" class="form-control" id="inputLineStyle" placeholder="Password">
         </div>
     </div>
 
     <div class="form-group">
-        <label for="inputRepeat" class="control-label">Repeat Time</label>
+        <label for="inputRepeatTime" class="control-label">Repeat Time</label>
         <div>
-            <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+            <input type="number" class="form-control" id="inputRepeatTime" placeholder="repeat time">
         </div>
     </div>
 </form>
