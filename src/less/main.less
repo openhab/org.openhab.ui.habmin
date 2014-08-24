@@ -260,5 +260,17 @@ h2 {
   background-color: @tooltip-bg !important;
 }
 
+.line-selector {
+  height:@input-height-base;
+  padding: 8px 12px;
+  background-color: @input-bg;
+  stroke: @input-color;
+  border-radius: @input-border-radius;
+  border: 1px solid @input-border;
+  .box-shadow(inset 0 1px 1px rgba(0,0,0,.075));
+}
 
 
+.line-selector li {
+  stroke: white;
+}
