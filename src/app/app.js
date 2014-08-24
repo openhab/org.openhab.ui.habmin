@@ -24,7 +24,8 @@ angular.module('HABmin', [
     'ngLocalize',
     'ngLocalize.Config',
     'ngLocalize.Events',
-    'angular-growl'
+    'angular-growl',
+    'pickAColor'
 ])
     .value('localeConf', {
         basePath: 'languages',
@@ -43,9 +44,17 @@ angular.module('HABmin', [
         'en': 'en-GB'
     })
 
-    .config(function myAppConfig($stateProvider, $urlRouterProvider, growlProvider) {
+    .config(function myAppConfig($stateProvider, $urlRouterProvider, growlProvider, pickAColorProvider) {
         $urlRouterProvider.otherwise('/home');
-        growlProvider.globalTimeToLive({success: 2000, info: 2000, warning: 5000, error: 15000});
+        growlProvider.globalTimeToLive({
+            success: 2000,
+            info: 2000,
+            warning: 5000,
+            error: 15000
+        });
+        pickAColorProvider.setOptions({
+            inlineDropdown: true
+        });
     })
 
     .run(function run() {
