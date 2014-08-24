@@ -16,15 +16,6 @@ angular.module('HABmin.chartSave', [
     .service('ChartSave',
     function ($modal, $rootScope, ChartListModel) {
         this.showModal = function (chartId) {
-            var controller = function ($scope, $modalInstance) {
-                $scope.ok = function (result) {
-                    $modalInstance.close(result);
-                };
-                $scope.cancel = function (result) {
-                    $modalInstance.dismiss('cancel');
-                };
-            };
-
             ChartListModel.getChart(chartId).then(function (chart) {
                 var scope = $rootScope.$new();
                 scope.showTab = 0;
@@ -40,18 +31,19 @@ angular.module('HABmin.chartSave', [
                             case "left":
                                 scope.leftaxis = {
                                     label: axis.label,
-                                    color: axis.color,
+                                    textColor: axis.color,
                                     minimum: Number(axis.minimum),
                                     maximum: Number(axis.maximum),
-                                    linestyle: "shortdashdot"
+                                    lineStyle: axis.lineStyle
                                 };
                                 break;
                             case "right":
                                 scope.rightaxis = {
                                     label: axis.label,
-                                    color: axis.color,
+                                    textColor: axis.color,
                                     minimum: Number(axis.minimum),
-                                    maximum: Number(axis.maximum)
+                                    maximum: Number(axis.maximum),
+                                    lineStyle: axis.lineStyle
                                 };
                                 break;
                         }
@@ -63,7 +55,7 @@ angular.module('HABmin.chartSave', [
                         var itemModel = {};
 
                         // Default the axes to left
-                        if(item.axis !== undefined && item.axis.toLowerCase() === 'right') {
+                        if (item.axis !== undefined && item.axis.toLowerCase() === 'right') {
                             itemModel.axis = 'right';
                         }
                         else {
@@ -80,9 +72,97 @@ angular.module('HABmin.chartSave', [
                     });
                 }
 
-                scope.$watch("showTab", function() {
+                scope.$watch("showTab", function () {
                     console.log('hey, showTab has changed!', scope.showTab);
                 });
+
+                var controller = function ($scope, $modalInstance) {
+                    $scope.ok = function (result) {
+                        var query = {};
+
+                        query.name = scope.general.name;
+                        if(scope.general.title !== undefined) {
+                            query.title = scope.general.title;
+                        }
+                        query.icon = scope.general.icon;
+                        query.period = scope.general.period;
+
+                        query.axis = [];
+                        if (scope.leftaxis !== undefined) {
+                            var leftAxis = {};
+
+                            if (scope.leftaxis.label !== undefined) {
+                                leftAxis.label = scope.leftaxis.label;
+                            }
+                            if (scope.leftaxis.textColor !== undefined) {
+                                leftAxis.color = scope.leftaxis.textColor;
+                            }
+                            if (!isNaN(scope.leftaxis.minimum)) {
+                                leftAxis.minimum = scope.leftaxis.minimum;
+                            }
+                            if (!isNaN(scope.leftaxis.maximum)) {
+                                leftAxis.maximum = scope.leftaxis.maximum;
+                            }
+                            if (scope.leftaxis.lineStyle !== undefined) {
+                                leftAxis.lineStyle = scope.leftaxis.lineStyle;
+                            }
+
+                            query.axis.push(leftAxis);
+                        }
+                        if (scope.rightaxis !== undefined) {
+                            var rightAxis = {};
+
+                            if (scope.rightaxis.label !== undefined) {
+                                rightAxis.label = scope.rightaxis.label;
+                            }
+                            if (scope.rightaxis.textColor !== undefined) {
+                                rightAxis.color = scope.rightaxis.textColor;
+                            }
+                            if (!isNaN(scope.rightaxis.minimum)) {
+                                rightAxis.minimum = scope.rightaxis.minimum;
+                            }
+                            if (!isNaN(scope.rightaxis.maximum)) {
+                                rightAxis.maximum = scope.rightaxis.maximum;
+                            }
+                            if (scope.rightaxis.lineStyle !== undefined) {
+                                rightAxis.lineStyle = scope.rightaxis.lineStyle;
+                            }
+                            query.axis.push(rightAxis);
+                        }
+                        if (scope.items !== undefined) {
+                            query.items = [];
+                            angular.forEach([].concat(scope.items), function (item) {
+                                var newItem = {};
+
+                                newItem.item = item.item;
+                                if(item.label !== undefined) {
+                                    newItem.label = item.label;
+                                }
+                                if(item.lineColor !== undefined) {
+                                    newItem.lineColor = item.lineColor;
+                                }
+                                if(item.lineStyle !== undefined) {
+                                    newItem.lineStyle = item.lineStyle;
+                                }
+                                if(item.lineWidth !== undefined) {
+                                    newItem.lineWidth = item.lineWidth;
+                                }
+                                if(!isNaN(item.repeatTime)) {
+                                    newItem.repeatTime = item.repeatTime;
+                                }
+
+                                query.items.push(newItem);
+                            });
+                        }
+
+                        console.log("Saving query", query);
+
+                        $modalInstance.close(result);
+                    };
+                    $scope.cancel = function (result) {
+                        $modalInstance.dismiss('cancel');
+                    };
+                };
 
                 return $modal.open({
                     backdrop: 'static',
