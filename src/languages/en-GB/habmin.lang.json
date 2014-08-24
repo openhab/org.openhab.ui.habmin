@@ -25,6 +25,20 @@
     "chartSaveLeftAxis": "Left Axes Settings",
     "chartSaveRightAxis": "Right Axes Settings",
 
+    "chartSaveItemLabel": "Label",
+    "chartSaveItemAxes": "Axes",
+    "chartSaveItemLineColor": "Line Color",
+    "chartSaveItemLineWidth": "Line Width",
+    "chartSaveItemLineStyle": "Line Style",
+    "chartSaveItemRepeatTime": "Repeat Time",
+
+    "chartSaveAxesLabel": "Label",
+    "chartSaveAxesMaximum": "Maximum",
+    "chartSaveAxesMinimum": "Minimum",
+    "chartSaveAxesTextColor": "Text Color",
+    "chartSaveAxesLineColor": "Line Color",
+    "chartSaveAxesLineStyle": "Line Style",
+
     "chartItemLeftAxis": "Left Axes",
     "chartItemRightAxis": "Right Axes",
 

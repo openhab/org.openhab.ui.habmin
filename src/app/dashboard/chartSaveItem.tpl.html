@@ -1,45 +1,45 @@
 <form class="form-horizontal" role="form">
 
     <div class="form-group">
-        <label for="inputLabel" class="control-label">Label</label>
+        <label for="inputLabel" class="control-label" i18n="habmin.chartSaveItemLabel"></label>
         <div>
             <input type="text" ng-model="model.label" class="form-control" id="inputLabel" placeholder="Label">
         </div>
     </div>
 
     <div class="form-group">
-        <label for="inputAxis" class="control-label">Axis</label>
+        <label for="inputAxis" class="control-label" i18n="habmin.chartSaveItemAxes"></label>
         <div>
-            <select ng-model="model.period" class="form-control" id="inputAxis">
-                <option value="1" i18n="habmin.chartItemLeftAxis"></option>
-                <option value="2" i18n="habmin.chartItemRightAxis"></option>
+            <select ng-model="model.axis" class="form-control" id="inputAxis">
+                <option value="left" i18n="habmin.chartItemLeftAxis"></option>
+                <option value="right" i18n="habmin.chartItemRightAxis"></option>
             </select>
         </div>
     </div>
 
     <div class="form-group">
-        <label class="control-label">Line Color</label>
+        <label class="control-label" i18n="habmin.chartSaveItemLineColor"></label>
         <div>
             <pick-a-color id="inputColor" ng-model="model.lineColor"></pick-a-color>
         </div>
     </div>
 
     <div class="form-group">
-        <label for="inputLineWidth" class="control-label">Line Width</label>
+        <label for="inputLineWidth" class="control-label" i18n="habmin.chartSaveItemLineWidth"></label>
         <div>
             <input type="number" class="form-control" id="inputLineWidth" placeholder="width">
         </div>
     </div>
 
     <div class="form-group">
-        <label class="control-label">Line Style</label>
+        <label class="control-label" i18n="habmin.chartSaveItemLineStyle"></label>
         <div>
             <select-line-style id="inputLineStyle" ng-model="model.lineStyle"></select-line-style>
         </div>
     </div>
 
     <div class="form-group">
-        <label for="inputRepeatTime" class="control-label">Repeat Time</label>
+        <label for="inputRepeatTime" class="control-label" i18n="habmin.chartSaveItemRepeatTime"></label>
         <div>
             <input type="number" class="form-control" id="inputRepeatTime" placeholder="repeat time">
         </div>
