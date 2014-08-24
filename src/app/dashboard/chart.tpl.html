@@ -125,9 +125,9 @@
 
 <div class="col-sm-8">
     <div class="panel panel-primary" ng-style="styleChart()" resize-page>
-        <dygraphs ng-if="graph.data.length"
+        <ng-dygraphs ng-if="graph.data.length"
                   data="graph.data"
-                  opts="graph.opts">
-        </dygraphs>
+                  options="graph.options">
+        </ng-dygraphs>
     </div>
 </div>

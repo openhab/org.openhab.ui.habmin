@@ -20,6 +20,7 @@
     "angular-dragdrop": "~1.0.7",
     "pick-a-color": "~1.2.3",
     "angular-pick-a-color": "~0.2.0",
-    "angular-sanitize": "~1.2.23"
+    "angular-sanitize": "~1.2.23",
+    "angular-dygraphs": "*"
   }
 }

@@ -16,7 +16,7 @@ angular.module('HABmin.chart', [
     'HABmin.persistenceModel',
     'HABmin.chartModel',
     'HABmin.chartSave',
-    'dygraphs-directive'
+    'angular-dygraphs'
 ])
 
     .config(function config($stateProvider) {
@@ -212,19 +212,19 @@ angular.module('HABmin.chart', [
             chartDef = {};
             chartDef.items = [];
             chartData = {};
-            chartData.opts = chartOptions;
-            chartData.opts.valueRange = null;
-            chartData.opts.axes = {};
-            chartData.opts.axes.y={};
-            chartData.opts.axes.y2={};
-            chartData.opts.axes.y.valueRange = null;
-            chartData.opts.axes.y2.valueRange = null;
-            chartData.opts.series = {};
-            chartData.opts.xlabel = undefined;
-            chartData.opts.ylabel = undefined;
-            chartData.opts.y2label = undefined;
-            chartData.opts.title = undefined;
-            chartData.opts.labels = [locale.getString('common.time')];
+            chartData.options = chartOptions;
+            chartData.options.valueRange = null;
+            chartData.options.axes = {};
+            chartData.options.axes.y={};
+            chartData.options.axes.y2={};
+            chartData.options.axes.y.valueRange = null;
+            chartData.options.axes.y2.valueRange = null;
+            chartData.options.series = {};
+            chartData.options.xlabel = undefined;
+            chartData.options.ylabel = undefined;
+            chartData.options.y2label = undefined;
+            chartData.options.title = undefined;
+            chartData.options.labels = [locale.getString('common.time')];
         }
 
         function _displayChart(id) {
@@ -306,16 +306,16 @@ angular.module('HABmin.chart', [
 
             console.log("Adding", itemRef, "- repeat is ", itemCfg.repeatTime);
 
-            chartData.opts.labels.push(itemCfg.item);
-            chartData.opts.series[itemCfg.item] = {};
-//            chartData.opts.series[itemCfg.item].label = itemCfg.label;
+            chartData.options.labels.push(itemCfg.item);
+            chartData.options.series[itemCfg.item] = {};
+//            chartData.options.series[itemCfg.item].label = itemCfg.label;
 
             if(itemCfg.axis == "left") {
-//                chartData.opts.series[itemCfg.item].axis = 'y';
+//                chartData.options.series[itemCfg.item].axis = 'y';
             }
             else if(itemCfg.axis == "right") {
 //            else if(itemCfg.lineWidth == "6") {
-                chartData.opts.series[itemCfg.item].axis = 'y2';
+                chartData.options.series[itemCfg.item].axis = 'y2';
             }
 
             console.log("Updating data:", $scope.graph);
@@ -356,7 +356,7 @@ angular.module('HABmin.chart', [
                         switch(axis.position) {
                             default:
                             case 'left':
-                                chartData.opts.ylabel = label;
+                                chartData.options.ylabel = label;
                                 if(axis.minimum !== undefined || axis.maximum !== undefined) {
                                     if(axis.minimum !== undefined) {
                                         min = Number(axis.minimum);
@@ -364,11 +364,11 @@ angular.module('HABmin.chart', [
                                     if(axis.maximum !== undefined) {
                                         max = Number(axis.maximum);
                                     }
-                                    chartData.opts.axes.y.valueRange = [min,max];
+                                    chartData.options.axes.y.valueRange = [min,max];
                                 }
                                 break;
                             case 'right':
-                                chartData.opts.y2label = label;
+                                chartData.options.y2label = label;
                                 if(axis.minimum !== undefined || axis.maximum !== undefined) {
                                     if(axis.minimum !== undefined) {
                                         min = Number(axis.minimum);
@@ -376,7 +376,7 @@ angular.module('HABmin.chart', [
                                     if(axis.maximum !== undefined) {
                                         max = Number(axis.maximum);
                                     }
-                                    chartData.opts.axes.y2.valueRange = [min,max];
+                                    chartData.options.axes.y2.valueRange = [min,max];
                                 }
                                 break;
                         }
@@ -384,7 +384,7 @@ angular.module('HABmin.chart', [
                 }
 
                 chartData.data = newChart;
-                chartData.opts = chartOptions;
+                chartData.options = chartOptions;
                 console.log("Rendering chart", chartData);
                 $scope.graph = chartData;
             }
