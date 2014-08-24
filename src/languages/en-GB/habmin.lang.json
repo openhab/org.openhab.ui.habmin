@@ -25,6 +25,9 @@
     "chartSaveLeftAxis": "Left Axes Settings",
     "chartSaveRightAxis": "Right Axes Settings",
 
+    "chartItemLeftAxis": "Left Axes",
+    "chartItemRightAxis": "Right Axes",
+
     "chartSaveName": "Chart Name",
     "chartSaveTitle": "Chart Title",
     "chartSavePeriod": "Default Period",

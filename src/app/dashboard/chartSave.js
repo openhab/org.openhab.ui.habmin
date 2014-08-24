@@ -27,7 +27,7 @@ angular.module('HABmin.chartSave', [
 
             ChartListModel.getChart(chartId).then(function (chart) {
                 var scope = $rootScope.$new();
-                scope.showTab = 1;
+                scope.showTab = 0;
                 scope.general = {
                     name: chart.name,
                     title: chart.title,
@@ -58,10 +58,31 @@ angular.module('HABmin.chartSave', [
                     });
                 }
                 if (chart.items !== undefined) {
+                    scope.items = [];
                     angular.forEach([].concat(chart.items), function (item) {
+                        var itemModel = {};
 
+                        // Default the axes to left
+                        if(item.axis !== undefined && item.axis.toLowerCase() === 'right') {
+                            itemModel.axis = 'right';
+                        }
+                        else {
+                            itemModel.axis = 'left';
+                        }
+                        itemModel.item = item.item;
+                        itemModel.label = item.label;
+                        itemModel.lineColor = item.lineColor;
+                        itemModel.lineStyle = item.lineStyle;
+                        itemModel.lineWidth = Number(item.lineWidth);
+                        itemModel.repeatTime = Number(item.repeatTime);
+
+                        scope.items.push(itemModel);
                     });
                 }
+
+                scope.$watch("showTab", function() {
+                    console.log('hey, showTab has changed!', scope.showTab);
+                });
 
                 return $modal.open({
                     backdrop: 'static',
