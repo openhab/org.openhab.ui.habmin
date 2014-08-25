@@ -9,6 +9,7 @@
  */
 @import '../../vendor/bootstrap/less/bootstrap.less';
 //@import 'slate/bootswatch.less';
+@import '../../vendor/angular-dygraphs/src/angular-dygraphs.less';
 @import '../../vendor/pick-a-color/src/less/pick-a-color.less';
 @import 'slate/variables.less';
 /**
@@ -250,17 +251,6 @@ h2 {
   background: @brand-primary;
 }
 
-//
-// DyGraphs customisation
-.dygraph-axis-label {
-  color: @legend-color;
-  font-size: @font-size-small;
-}
-
-.dygraph-legend {
-  background-color: @tooltip-bg !important;
-}
-
 .line-selector {
   height: @input-height-base;
   padding: 8px 12px;
@@ -269,9 +259,9 @@ h2 {
   border-radius: @input-border-radius;
   border: 1px solid @input-border;
   .box-shadow(inset 0 1px 1px rgba(0, 0, 0, .075));
-}
 
-.line-selector li {
-  stroke: white;
+  li {
+    stroke: white;
+  }
 }
 
