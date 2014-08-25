@@ -11,10 +11,12 @@ angular.module('HABmin.chartSave', [
     'ui.bootstrap',
     'pickAColor',
     'HABmin.chartModel',
-    'ngSanitize'
+    'ngSanitize',
+    'angular-growl',
+    'ngLocalize'
 ])
     .service('ChartSave',
-    function ($modal, $rootScope, ChartListModel) {
+    function ($modal, $rootScope, ChartListModel, growl, locale) {
         this.showModal = function (chartId) {
             ChartListModel.getChart(chartId).then(function (chart) {
                 var scope = $rootScope.$new();
@@ -72,16 +74,15 @@ angular.module('HABmin.chartSave', [
                     });
                 }
 
-                scope.$watch("showTab", function () {
-                    console.log('hey, showTab has changed!', scope.showTab);
-                });
-
                 var controller = function ($scope, $modalInstance) {
                     $scope.ok = function (result) {
                         var query = {};
 
+                        // Make sure to set the ID
+                        query.id = chart.id;
+
                         query.name = scope.general.name;
-                        if(scope.general.title !== undefined) {
+                        if (scope.general.title !== undefined) {
                             query.title = scope.general.title;
                         }
                         query.icon = scope.general.icon;
@@ -135,19 +136,19 @@ angular.module('HABmin.chartSave', [
                                 var newItem = {};
 
                                 newItem.item = item.item;
-                                if(item.label !== undefined) {
+                                if (item.label !== undefined) {
                                     newItem.label = item.label;
                                 }
-                                if(item.lineColor !== undefined) {
+                                if (item.lineColor !== undefined) {
                                     newItem.lineColor = item.lineColor;
                                 }
-                                if(item.lineStyle !== undefined) {
+                                if (item.lineStyle !== undefined) {
                                     newItem.lineStyle = item.lineStyle;
                                 }
-                                if(item.lineWidth !== undefined) {
+                                if (item.lineWidth !== undefined) {
                                     newItem.lineWidth = item.lineWidth;
                                 }
-                                if(!isNaN(item.repeatTime)) {
+                                if (!isNaN(item.repeatTime)) {
                                     newItem.repeatTime = item.repeatTime;
                                 }
 
@@ -156,6 +157,15 @@ angular.module('HABmin.chartSave', [
                         }
 
                         console.log("Saving query", query);
+
+                        ChartListModel.putChart(query).then(
+                            function () {
+                                growl.success(locale.getString('habmin.chartSaveSuccess', query.name));
+                            },
+                            function (error) {
+                                growl.warning(locale.getString('habmin.chartSaveError', query.name, error));
+
+                            });
 
                         $modalInstance.close(result);
                     };

@@ -51,4 +51,23 @@ angular.module('HABmin.chartModel', [
 
             return deferred.promise;
         };
+
+        this.putChart = function (chart) {
+            var tStart = new Date().getTime();
+            var deferred = $q.defer();
+
+            if (chart.id !== undefined && Number(chart.id) > 0) {
+                $http.put(this.url + "/" + chart.id, chart)
+                    .success(function (data) {
+                        console.log("PUT completed in", new Date().getTime() - tStart);
+
+                        deferred.resolve(data);
+                    })
+                    .error(function (data, status) {
+                        deferred.reject(data);
+                    });
+            }
+
+            return deferred.promise;
+        };
     });
