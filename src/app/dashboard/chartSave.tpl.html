@@ -5,22 +5,26 @@
     <div class="row">
         <div class="col-xs-6">
             <ul class="nav nav-pills nav-stacked">
-                <li><a ng-click="showTab=0">
-                    <span ng-class="{'glyphicon glyphicon-edit':showTab==0, 'icon-space':true}"></span>
-                    <span i18n="habmin.chartSaveGeneral"></span>
-                </a></li>
-                <li><a ng-click="showTab=1">
-                    <span ng-class="{'glyphicon glyphicon-edit':showTab==1, 'icon-space':true}"></span>
+                <li ng-class="{'select':showTab==0}">
+                    <a ng-click="showTab=0">
+                        <span i18n="habmin.chartSaveGeneral"></span>
+                    </a>
+                </li>
+                <li ng-class="{'select':showTab==1}"><a ng-click="showTab=1">
                     <span i18n="habmin.chartSaveLeftAxis"></span>
-                </a></li>
-                <li><a ng-click="showTab=2">
-                    <span ng-class="{'glyphicon glyphicon-edit':showTab==2, 'icon-space':true}"></span>
-                    <span i18n="habmin.chartSaveRightAxis"></span>
-                </a></li>
-                <li ng-repeat="choice in items"><a ng-click="$parent.showTab=choice.item">
-                    <span ng-class="{'glyphicon glyphicon-edit':showTab==choice.item, 'icon-space':true}"></span>
-                    <span>{{choice.item}}</span>
-                </a></li>
+                </a>
+                </li>
+                <li ng-class="{'select':showTab==2}">
+                    <a ng-click="showTab=2">
+                        <span i18n="habmin.chartSaveRightAxis"></span>
+                    </a>
+                </li>
+                <li ng-class="{'select':showTab==choice.item}" ng-repeat="choice in items">
+                    <a ng-click="$parent.showTab=choice.item">
+                        <span></span>
+                        <span>{{choice.item}}</span>
+                    </a>
+                </li>
             </ul>
         </div>
 
@@ -28,7 +32,8 @@
             <chart-save-general ng-show="showTab==0" model="general"></chart-save-general>
             <chart-save-axis ng-show="showTab==1" model="leftaxis"></chart-save-axis>
             <chart-save-axis ng-show="showTab==2" model="rightaxis"></chart-save-axis>
-            <chart-save-item ng-repeat="choice in items" model="choice" ng-show="showTab==choice.item"></chart-save-item>
+            <chart-save-item ng-repeat="choice in items" model="choice"
+                             ng-show="showTab==choice.item"></chart-save-item>
         </div>
     </div>
 </div>

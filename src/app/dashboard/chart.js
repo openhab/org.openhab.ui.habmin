@@ -49,7 +49,6 @@ angular.module('HABmin.chart', [
         };
 
         $scope.selectCharts = true;
-        $scope.selectName = locale.getString('habmin.chartChartList');
 
         $scope.chartsTotal = 0;
         $scope.charts = [];
@@ -156,11 +155,9 @@ angular.module('HABmin.chart', [
         $scope.setType = function (selectType) {
             if(selectType === false) {
                 $scope.selectCharts = false;
-                $scope.selectName = locale.getString('habmin.chartItemList');
             }
             else {
                 $scope.selectCharts = true;
-                $scope.selectName = locale.getString('habmin.chartChartList');
             }
         };
 

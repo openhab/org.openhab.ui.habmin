@@ -4,7 +4,10 @@
             <div>
                 <!-- Split button to select items or chart mode -->
                 <div class="btn-group">
-                    <button type="button btn-sm" class="btn btn-default">{{selectName}}</button>
+                    <button type="button btn-sm" class="btn btn-default">
+                        <span i18n="habmin.chartChartList" ng-show="selectCharts"></span>
+                        <span i18n="habmin.chartItemList" ng-show="!selectCharts"></span>
+                    </button>
                     <button type="button btn-sm" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                         <span class="caret"></span>
                         <span class="sr-only">Dropdown</span>

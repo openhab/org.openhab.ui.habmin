@@ -9,11 +9,8 @@
  */
 @import '../../vendor/bootstrap/less/bootstrap.less';
 //@import 'slate/bootswatch.less';
-
 @import '../../vendor/pick-a-color/src/less/pick-a-color.less';
-
 @import 'slate/variables.less';
-
 /**
  * This is our main variables file. We must include it last so we can overwrite any variable
  * definitions in our imported stylesheets.
@@ -82,6 +79,16 @@ h2 {
   }
 }
 
+.nav-stacked {
+  li {
+    border-left: 3px transparent solid;
+  }
+
+  .select {
+    border-left: 3px @input-border-focus solid;
+  }
+}
+
 /**
  * Footer
  */
@@ -119,7 +126,7 @@ h2 {
   padding-top: 0px;
   padding-bottom: 1px;
   border: 1px;
-  color:  @brand-primary;
+  color: @brand-primary;
   /* IE7-8 doesn't have border-radius, so don't indent the padding */
 
   width: 100%;
@@ -141,10 +148,10 @@ h2 {
 .sitemap-title {
   background: @body-bg;
   font-weight: 500;
-//  line-height: 1.5;
+  //  line-height: 1.5;
   font-size: 24px;
   border-bottom: 2px solid #ddd;
-  height:45px;
+  height: 45px;
   padding-top: 0px;
   padding-left: 0px;
   margin-bottom: 10px;
@@ -155,7 +162,7 @@ h2 {
 
 .sitemap-parent {
   display: inline-block;
-  height:30px;
+  height: 30px;
   width: 20px;
   margin-right: 20px;
 }
@@ -174,8 +181,8 @@ h2 {
 
 .sitemap-title-icon {
   display: inline;
-  min-width:36px;
-  height:40px;
+  min-width: 36px;
+  height: 40px;
 }
 
 .sitemap-body {
@@ -210,12 +217,12 @@ h2 {
 
 .sitemap-item-text {
   vertical-align: middle;
-  font-size:16px;
+  font-size: 16px;
 }
 
 .sitemap-item-icon img {
   border: none;
-  height:20px;
+  height: 20px;
   min-width: 30px;
 }
 
@@ -243,12 +250,6 @@ h2 {
   background: @brand-primary;
 }
 
-
-.icon-space {
-  min-width: 20px;
-  display: inline-block;
-}
-
 //
 // DyGraphs customisation
 .dygraph-axis-label {
@@ -261,16 +262,16 @@ h2 {
 }
 
 .line-selector {
-  height:@input-height-base;
+  height: @input-height-base;
   padding: 8px 12px;
   background-color: @input-bg;
   stroke: @input-color;
   border-radius: @input-border-radius;
   border: 1px solid @input-border;
-  .box-shadow(inset 0 1px 1px rgba(0,0,0,.075));
+  .box-shadow(inset 0 1px 1px rgba(0, 0, 0, .075));
 }
-
 
 .line-selector li {
   stroke: white;
 }
+
