@@ -343,13 +343,19 @@ angular.module('HABmin.chart', [
 
                 if(chartDef.axis) {
                     angular.forEach(chartDef.axis, function(axis) {
+                        if(axis == null) {
+                            return;
+                        }
                         var min = null;
                         var max = null;
-                        var style = "";
-                        if(axis.color != null && axis.color.length > 0) {
-                            style = " style='color:" + axis.color + ";'";
+                        var label = "";
+                        if(axis.label !== undefined) {
+                            var style = "";
+                            if(axis.color != null && axis.color.length > 0) {
+                                style = " style='color:" + axis.color + ";'";
+                            }
+                            label = "<span" + style + ">" + axis.label + "</span>";
                         }
-                        var label = "<span" + style + ">" + axis.label + "</span>";
                         switch(axis.position) {
                             default:
                             case 'left':

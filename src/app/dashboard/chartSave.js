@@ -27,8 +27,13 @@ angular.module('HABmin.chartSave', [
                     icon: chart.icon,
                     period: chart.period
                 };
+                scope.leftaxis = {};
+                scope.rightaxis = {};
                 if (chart.axis !== undefined) {
                     angular.forEach([].concat(chart.axis), function (axis) {
+                        if(axis == null) {
+                            return;
+                        }
                         switch (axis.position) {
                             case "left":
                                 scope.leftaxis = {
@@ -90,13 +95,13 @@ angular.module('HABmin.chartSave', [
 
                         query.axis = [];
                         if (scope.leftaxis !== undefined) {
-                            var leftAxis = {};
+                            var leftAxis = {position: "left"};
 
                             if (scope.leftaxis.label !== undefined) {
                                 leftAxis.label = scope.leftaxis.label;
                             }
                             if (scope.leftaxis.textColor !== undefined) {
-                                leftAxis.color = scope.leftaxis.textColor;
+                                leftAxis.color = "#" + scope.leftaxis.textColor;
                             }
                             if (!isNaN(scope.leftaxis.minimum)) {
                                 leftAxis.minimum = scope.leftaxis.minimum;
@@ -111,13 +116,13 @@ angular.module('HABmin.chartSave', [
                             query.axis.push(leftAxis);
                         }
                         if (scope.rightaxis !== undefined) {
-                            var rightAxis = {};
+                            var rightAxis = {position: "right"};
 
                             if (scope.rightaxis.label !== undefined) {
                                 rightAxis.label = scope.rightaxis.label;
                             }
                             if (scope.rightaxis.textColor !== undefined) {
-                                rightAxis.color = scope.rightaxis.textColor;
+                                rightAxis.color = "#" + scope.rightaxis.textColor;
                             }
                             if (!isNaN(scope.rightaxis.minimum)) {
                                 rightAxis.minimum = scope.rightaxis.minimum;
@@ -140,7 +145,7 @@ angular.module('HABmin.chartSave', [
                                     newItem.label = item.label;
                                 }
                                 if (item.lineColor !== undefined) {
-                                    newItem.lineColor = item.lineColor;
+                                    newItem.lineColor = "#" + item.lineColor;
                                 }
                                 if (item.lineStyle !== undefined) {
                                     newItem.lineStyle = item.lineStyle;
