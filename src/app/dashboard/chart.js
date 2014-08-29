@@ -209,13 +209,12 @@ angular.module('HABmin.chart', [
             chartDef = {};
             chartDef.items = [];
             chartData = {};
+            chartData.legend = {};
+            chartData.legend.series = {};
             chartData.options = chartOptions;
+            chartData.options.animatedZooms = true;
             chartData.options.valueRange = null;
             chartData.options.axes = {};
-            chartData.options.axes.y={};
-            chartData.options.axes.y2={};
-            chartData.options.axes.y.valueRange = null;
-            chartData.options.axes.y2.valueRange = null;
             chartData.options.series = {};
             chartData.options.xlabel = undefined;
             chartData.options.ylabel = undefined;
@@ -305,7 +304,10 @@ angular.module('HABmin.chart', [
 
             chartData.options.labels.push(itemCfg.item);
             chartData.options.series[itemCfg.item] = {};
-//            chartData.options.series[itemCfg.item].label = itemCfg.label;
+
+            chartData.legend.series[itemCfg.item] = {};
+            chartData.legend.series[itemCfg.item].label = itemCfg.label;
+            chartData.legend.series[itemCfg.item].format = 1;
 
             if(itemCfg.axis == "left") {
 //                chartData.options.series[itemCfg.item].axis = 'y';
@@ -367,6 +369,9 @@ angular.module('HABmin.chart', [
                                     if(axis.maximum !== undefined) {
                                         max = Number(axis.maximum);
                                     }
+                                    chartData.options.axes.y={};
+                                    chartData.options.axes.y.format = 1;
+                                    chartData.options.axes.y.valueRange = null;
                                     chartData.options.axes.y.valueRange = [min,max];
                                 }
                                 break;
@@ -379,6 +384,9 @@ angular.module('HABmin.chart', [
                                     if(axis.maximum !== undefined) {
                                         max = Number(axis.maximum);
                                     }
+                                    chartData.options.axes.y2={};
+                                    chartData.options.axes.y2.format = 1;
+                                    chartData.options.axes.y2.valueRange = null;
                                     chartData.options.axes.y2.valueRange = [min,max];
                                 }
                                 break;
