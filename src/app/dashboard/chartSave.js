@@ -38,6 +38,7 @@ angular.module('HABmin.chartSave', [
                             case "left":
                                 scope.leftaxis = {
                                     label: axis.label,
+                                    format: axis.format,
                                     textColor: axis.color,
                                     minimum: Number(axis.minimum),
                                     maximum: Number(axis.maximum),
@@ -47,6 +48,7 @@ angular.module('HABmin.chartSave', [
                             case "right":
                                 scope.rightaxis = {
                                     label: axis.label,
+                                    format: axis.format,
                                     textColor: axis.color,
                                     minimum: Number(axis.minimum),
                                     maximum: Number(axis.maximum),
@@ -70,6 +72,7 @@ angular.module('HABmin.chartSave', [
                         }
                         itemModel.item = item.item;
                         itemModel.label = item.label;
+                        itemModel.format = item.format;
                         itemModel.lineColor = item.lineColor;
                         itemModel.lineStyle = item.lineStyle;
                         itemModel.lineWidth = Number(item.lineWidth);
@@ -103,6 +106,9 @@ angular.module('HABmin.chartSave', [
                             if (scope.leftaxis.textColor !== undefined) {
                                 leftAxis.color = "#" + scope.leftaxis.textColor;
                             }
+                            if (!isNaN(scope.leftaxis.format)) {
+                                leftAxis.format = scope.leftaxis.format;
+                            }
                             if (!isNaN(scope.leftaxis.minimum)) {
                                 leftAxis.minimum = scope.leftaxis.minimum;
                             }
@@ -123,6 +129,9 @@ angular.module('HABmin.chartSave', [
                             }
                             if (scope.rightaxis.textColor !== undefined) {
                                 rightAxis.color = "#" + scope.rightaxis.textColor;
+                            }
+                            if (!isNaN(scope.rightaxis.format)) {
+                                rightAxis.format = scope.rightaxis.format;
                             }
                             if (!isNaN(scope.rightaxis.minimum)) {
                                 rightAxis.minimum = scope.rightaxis.minimum;

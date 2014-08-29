@@ -27,12 +27,14 @@
 
     "chartSaveItemLabel": "Label",
     "chartSaveItemAxes": "Axes",
+    "chartSaveItemDecimals": "Decimal Places",
     "chartSaveItemLineColor": "Line Color",
     "chartSaveItemLineWidth": "Line Width",
     "chartSaveItemLineStyle": "Line Style",
     "chartSaveItemRepeatTime": "Repeat Time",
 
     "chartSaveAxesLabel": "Label",
+    "chartSaveAxesDecimals": "Decimal Places",
     "chartSaveAxesMaximum": "Maximum",
     "chartSaveAxesMinimum": "Minimum",
     "chartSaveAxesTextColor": "Text Color",

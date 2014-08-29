@@ -8,6 +8,13 @@
     </div>
 
     <div class="form-group">
+        <label for="inputDecimalPlaces" class="control-label" i18n="habmin.chartSaveItemDecimals"></label>
+        <div>
+            <input type="number" class="form-control" id="inputDecimalPlaces" ng-model="model.format" placeholder="format">
+        </div>
+    </div>
+
+    <div class="form-group">
         <label for="inputAxis" class="control-label" i18n="habmin.chartSaveItemAxes"></label>
         <div>
             <select ng-model="model.axis" class="form-control" id="inputAxis">
@@ -27,7 +34,7 @@
     <div class="form-group">
         <label for="inputLineWidth" class="control-label" i18n="habmin.chartSaveItemLineWidth"></label>
         <div>
-            <input type="number" class="form-control" id="inputLineWidth" placeholder="width">
+            <input type="number" class="form-control" id="inputLineWidth" ng-model="model.lineWidth" placeholder="width">
         </div>
     </div>
 
