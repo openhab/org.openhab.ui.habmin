@@ -255,6 +255,7 @@ angular.module('HABmin.chart', [
                     itemsLoading++;
                     var i = {};
                     i.item = item.name;
+                    i.label = item.label;
                     chartDef.items.push(i);
                     _loadItem(item.name, start, stop);
                 }
