@@ -7,13 +7,13 @@
  *
  * (c) 2014 Chris Jackson (chris@cd-jackson.com)
  */
-angular.module('HABmin.chartModel', [
+angular.module('HABmin.ruleModel', [
     'HABmin.userModel'
 ])
 
-    .service('ChartListModel', function ($http, $q) {
-        this.url = '/services/habmin/persistence/charts';
-        this.chartList = [];
+    .service('RuleModel', function ($http, $q) {
+        this.url = '/services/habmin/config/designer';
+        this.ruleList = [];
         this.getList = function () {
             var tStart = new Date().getTime();
             var deferred = $q.defer();
@@ -24,10 +24,10 @@ angular.module('HABmin.chartModel', [
 
                     // Keep a local copy.
                     // This allows us to update the data later and keeps the GUI in sync.
-                    this.chartList = data.chart;
+                    this.ruleList = data.designs;
                     console.log("Processing completed in", new Date().getTime() - tStart);
 
-                    deferred.resolve(this.chartList);
+                    deferred.resolve(this.ruleList);
                 })
                 .error(function (data, status) {
                     deferred.reject(data);
@@ -36,7 +36,7 @@ angular.module('HABmin.chartModel', [
             return deferred.promise;
         };
 
-        this.getChart = function (id) {
+        this.getRule = function (id) {
             var tStart = new Date().getTime();
             var deferred = $q.defer();
 

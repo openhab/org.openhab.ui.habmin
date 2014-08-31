@@ -52,8 +52,6 @@
 
     "errorLoadingSitemaps": "Error loading the sitemap list!",
 
-    "userChartPrefTitle": "Chart Settings",
-    "userChartPeriod": "Chart Period",
     "period1Hour": "1 Hour",
     "period2Hours": "2 Hours",
     "period3Hours": "3 Hours",
@@ -76,6 +74,14 @@
     "period6Months": "6 Months",
     "period9Months": "9 Months",
     "period1Year": "1 Year",
+
+    "ruleRule": "Rule",
+    "ruleSource": "Source",
+    "ruleNoRules": "No Rules Available",
+
+
+    "userChartPrefTitle": "Chart Settings",
+    "userChartPeriod": "Chart Period",
     "userChartLegend": "Show Legend",
 
     "userGeneralPrefTitle": "General Settings"

@@ -15,6 +15,7 @@ angular.module('HABmin', [
     'HABmin.userModel',
     'HABmin.chart',
     'HABmin.sitemap',
+    'HABmin.rules',
     'HABmin.sitemapModel',
     'UserChartPrefs',
     'UserGeneralPrefs',
