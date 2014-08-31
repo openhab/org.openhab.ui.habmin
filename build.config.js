@@ -78,11 +78,19 @@ module.exports = {
             'vendor/angular-toggle-switch/angular-toggle-switch.js',
             'vendor/jquery-atmosphere/jquery.atmosphere.js',
             'vendor/angular-atmosphere/app/scripts/services/angular-atmosphere.js',
-            'vendor/dygraph/dygraph-combined.js',
+            'vendor/dygraphs/dygraph-combined.js',
             'vendor/angular-dygraphs/src/angular-dygraphs.js',
             'vendor/tinycolor/tinycolor.js',
             'vendor/pick-a-color/src/js/pick-a-color.js',
-            'vendor/angular-pick-a-color/src/angular-pick-a-color.js'
+            'vendor/angular-pick-a-color/src/angular-pick-a-color.js',
+            'vendor/moment/moment.js',
+            'vendor/angular-blockly/build/angular-blockly.js',
+            'vendor/angular-blockly/build/blockly_compressed.js',
+            'vendor/angular-blockly/build/blocks_compressed.js',
+            'vendor/angular-blockly/build/en.js',
+            'vendor/ace-builds/src-min-noconflict/ace.js',
+            'vendor/ace-builds/src-min-noconflict/theme-tomorrow_night_bright.js',
+            'vendor/angular-ui-ace/ui-ace.js'
         ],
         css: [
             'vendor/angular-growl-v2/build/angular-growl.css',
@@ -91,7 +99,9 @@ module.exports = {
             'vendor/angular-toggle-switch/angular-toggle-switch-bootstrap.css'
         ],
         assets: [
-            'vendor/bootstrap/fonts/*'
+            'vendor/fontawesome/fonts/*',
+            'vendor/bootstrap/fonts/*',
+            'vendor/angular-blockly/media/*'
         ]
     }
 };

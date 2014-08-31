@@ -9,6 +9,7 @@
  */
 angular.module('HABmin.chart', [
     'ui.router',
+    'placeholders',
     'ui.bootstrap',
     'ngLocalize',
     'angular-growl',
