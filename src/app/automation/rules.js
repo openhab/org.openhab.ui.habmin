@@ -61,7 +61,7 @@ angular.module('HABmin.rules', [
             RuleModel.getRule(rule.id).then(
                 function (rule) {
                     $scope.codeEditor = rule.source;
-                    $scope.blockEditor = rule.block;
+                    $scope.blockEditor = rule;
                 },
                 function (reason) {
                     // handle failure
