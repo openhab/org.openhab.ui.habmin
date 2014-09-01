@@ -34,6 +34,7 @@ angular.module('HABmin.rules', [
     function AutomationRuleCtrl($scope, locale, growl, RuleModel) {
         $scope.editSource = false;
         $scope.rulesTotal = 0;
+        $scope.isDirty = false;
 
         // ------------------------------------------------
         // Load model data
@@ -62,6 +63,7 @@ angular.module('HABmin.rules', [
                 function (rule) {
                     $scope.codeEditor = rule.source;
                     $scope.blockEditor = rule;
+                    $scope.isDirty = false;
                 },
                 function (reason) {
                     // handle failure
@@ -86,6 +88,9 @@ angular.module('HABmin.rules', [
         // ------------------------------------------------
         // Private functions
 
+        $scope.workspaceChanged = function() {
+            $scope.isDirty = true;
+        };
 
     })
 
