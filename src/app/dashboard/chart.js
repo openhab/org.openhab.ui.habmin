@@ -567,7 +567,7 @@ angular.module('HABmin.chart', [
                 };
                 $scope.styleChartList = function () {
                     return {
-                        'height': (newValue.h - 145) + 'px'
+                        'height': (newValue.h - 165) + 'px'
                     };
                 };
                 $scope.styleChart = function () {

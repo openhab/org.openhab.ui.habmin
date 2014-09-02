@@ -1,68 +1,68 @@
 <div class="col-sm-4">
     <div class="panel panel-default">
         <div class="panel-heading clearfix">
-            <div>
-                <!-- Split button to select items or chart mode -->
-                <div class="btn-group">
-                    <button type="button btn-sm" class="btn btn-default">
-                        <span i18n="habmin.chartChartList" ng-show="selectCharts"></span>
-                        <span i18n="habmin.chartItemList" ng-show="!selectCharts"></span>
-                    </button>
-                    <button type="button btn-sm" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                        <span class="caret"></span>
-                        <span class="sr-only">Dropdown</span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a ng-click="setType(true)">
-                            <span class="fa fa-pie-chart"></span>
-                            <span i18n="habmin.chartChartList"></span>
+
+            <!-- Split button to select items or chart mode -->
+            <div class="btn-group">
+                <button type="button btn-sm" class="btn btn-default">
+                    <span i18n="habmin.chartChartList" ng-show="selectCharts"></span>
+                    <span i18n="habmin.chartItemList" ng-show="!selectCharts"></span>
+                </button>
+                <button type="button btn-sm" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <span class="caret"></span>
+                    <span class="sr-only">Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a ng-click="setType(true)">
+                        <span class="fa fa-pie-chart"></span>
+                        <span i18n="habmin.chartChartList"></span>
                             <span class="pull-right">
                                 <span ng-if="selectCharts" class="fa fa-check-square-o"></span>
                             </span>
-                        </a></li>
-                        <li><a ng-click="setType(false)">
-                            <span class="fa fa-list-alt"></span>
-                            <span i18n="habmin.chartItemList"></span>
+                    </a></li>
+                    <li><a ng-click="setType(false)">
+                        <span class="fa fa-list-alt"></span>
+                        <span i18n="habmin.chartItemList"></span>
                             <span class="pull-right">
                                 <span ng-if="!selectCharts" class="fa fa-check-square-o"></span>
                             </span>
-                        </a></li>
-                    </ul>
-                </div>
-
-                <div class="btn-group pull-right">
-                    <button type="button btn-sm" class="btn btn-default" ng-if="!selectCharts">
-                        <a href ng-click="doChart()">
-                            <span class="fa fa-play"></span>
-                        </a>
-                    </button>
-
-                    <button type="button btn-sm" class="btn btn-default" ng-if="!selectCharts">
-                        <a href ng-click="clearList()">
-                            <span class="fa fa-times"></span>
-                        </a>
-                    </button>
-
-                    <button type="button btn-sm" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                        <span class="fa fa-cog"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li ng-repeat="choice in services">
-                            <a role="presentation" ng-click="selectService(choice)">
-                                <span>{{choice.name}}</span>
-                                <span ng-if="choice.selected" class="pull-right fa fa-check-square-o"></span>
-                            </a>
-                        </li>
-                        <li role="presentation" class="divider"></li>
-                        <li ng-if="!selectCharts"><a ng-click="saveChart()">
-                            <span i18n="habmin.chartSaveChart"></span>
-                        </a></li>
-                        <li ng-if="selectCharts"><a ng-click="editChart()">
-                            <span i18n="habmin.chartEditChart"></span>
-                        </a></li>
-                    </ul>
-                </div>
+                    </a></li>
+                </ul>
             </div>
+
+            <div class="btn-group pull-right">
+                <button type="button btn-sm" class="btn btn-default" ng-if="!selectCharts">
+                    <a ng-click="doChart()">
+                        <span class="fa fa-play"></span>
+                    </a>
+                </button>
+
+                <button type="button btn-sm" class="btn btn-default" ng-if="!selectCharts">
+                    <a ng-click="clearList()">
+                        <span class="fa fa-times"></span>
+                    </a>
+                </button>
+
+                <button type="button btn-sm" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <span class="fa fa-cog"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li ng-repeat="choice in services">
+                        <a role="presentation" ng-click="selectService(choice)">
+                            <span>{{choice.name}}</span>
+                            <span ng-if="choice.selected" class="pull-right fa fa-check-square-o"></span>
+                        </a>
+                    </li>
+                    <li role="presentation" class="divider"></li>
+                    <li ng-if="!selectCharts"><a ng-click="saveChart()">
+                        <span i18n="habmin.chartSaveChart"></span>
+                    </a></li>
+                    <li ng-if="selectCharts"><a ng-click="editChart()">
+                        <span i18n="habmin.chartEditChart"></span>
+                    </a></li>
+                </ul>
+            </div>
+
             <div id="custom-search-form" class="input-group col-xs-12" ng-if="!selectCharts">
                 <input type="text" class="search-query" placeholder={{filterDefaultString}} ng-model="filterText"
                        ng-model-options="{debounce: 1000}">
@@ -73,9 +73,10 @@
                 </span>
             </div>
         </div>
-        <div id="itemList" class="list-group habmin-list" ng-style="styleItemList()" ng-if="!selectCharts" resize-page>
+        <div id="itemList" class="list-group habmin-list" ng-style="styleItemList()" ng-if="!selectCharts"
+             resize-page>
             <div ng-if="itemsTotal" ng-repeat="choice in items | filter:filterFunction">
-                <a href role="presentation" ng-hide="choice.filter" class="list-group-item"
+                <a role="presentation" ng-hide="choice.filter" class="list-group-item"
                    ng-click="selectItem(choice)">
                     <span width="20px"><img fill="blue" height="20" src="../images/temp_windchill.svg"></span>
                     <span>{{choice.label}}</span>
@@ -90,9 +91,10 @@
                 <span i18n="habmin.chartNoItems"></span>
             </div>
         </div>
-        <div id="chartList" class="list-group habmin-list" ng-style="styleChartList()" ng-if="selectCharts" resize-page>
+        <div id="chartList" class="list-group habmin-list" ng-style="styleChartList()" ng-if="selectCharts"
+             resize-page>
             <div ng-if="chartsTotal" ng-repeat="choice in charts">
-                <a href role="presentation" ng-hide="choice.filter" class="list-group-item"
+                <a role="presentation" ng-hide="choice.filter" class="list-group-item"
                    ng-click="selectChart(choice)">
                     <span width="20px"><img fill="blue" height="20" src="../images/temp_windchill.svg"></span>
                     <span>{{choice.name}}</span>
@@ -107,8 +109,9 @@
                 <span i18n="habmin.chartNoCharts"></span>
             </div>
         </div>
-        <div class="panel-footer" ng-if="!selectCharts">
-            <div class="row">
+
+        <div class="panel-footer" >
+            <div class="row" ng-if="!selectCharts">
                 <div class="col-xs-6">
                     <h6 class="text-center">
                         <span i18n="habmin.chartTotalItems"></span>

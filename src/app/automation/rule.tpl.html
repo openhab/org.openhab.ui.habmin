@@ -1,31 +1,19 @@
 <div class="col-sm-4">
     <div class="panel panel-default">
-        <div class="panel-heading clearfix">
-            <div>
-                <!-- Split button to select items or chart mode -->
-                <div class="btn-group">
-
-                </div>
-
-                <div class="btn-group pull-right">
-                    <button type="button btn-sm" class="btn btn-default" ng-if="!selectCharts">
-                        <a href ng-click="doChart()">
-                            <span class="glyphicon glyphicon-play"></span>
-                        </a>
-                    </button>
-
-                    <button type="button btn-sm" class="btn btn-default" ng-if="!selectCharts">
-                        <a href ng-click="clearList()">
-                            <span class="glyphicon glyphicon-remove-sign"></span>
-                        </a>
-                    </button>
-                </div>
-            </div>
+        <div>
+            <ul class="nav nav-tabs" role="tablist">
+                <li ng-class="{'disabled':!isDirty}">
+                    <a>
+                        <span class="fa fa-trash-o"></span>
+                        <span i18n="common.delete"></span>
+                    </a>
+                </li>
+            </ul>
         </div>
-        <div id="ruleList" class="list-group habmin-list" ng-style="styleRuleList()" ng-if="!selectCharts" resize-page>
+
+        <div id="ruleList" class="list-group" ng-style="styleRuleList()" ng-if="!selectCharts" resize-page>
             <div ng-repeat="choice in rules">
-                <a href role="presentation" class="list-group-item"
-                   ng-click="selectRule(choice)">
+                <a role="presentation" class="list-group-item" ng-click="selectRule(choice)">
                     <span>{{choice.name}}</span>
                 </a>
             </div>
@@ -39,8 +27,7 @@
 </div>
 
 <div class="col-sm-8">
-
-    <div>
+    <div class="panel panel-primary" ng-style="styleEditor()" resize-page>
         <ul class="nav nav-tabs" role="tablist">
             <li ng-class="{'disabled':!isDirty}">
                 <a>
@@ -49,7 +36,7 @@
                 </a>
             </li>
             <li ng-class="{'disabled':!isDirty}">
-                <a>
+                <a ng-click="ruleCancel()">
                     <span class="fa fa-times"></span>
                     <span i18n="common.cancel"></span>
                 </a>
@@ -68,9 +55,7 @@
                 </a>
             </li>
         </ul>
-    </div>
 
-    <div class="panel panel-primary" ng-style="styleEditor()" resize-page>
         <ng-blockly ng-show="!editSource" ng-model="blockEditor" on-change="workspaceChanged">
         </ng-blockly>
 
@@ -84,5 +69,4 @@
              ng-style="styleEditor()"> Blah blah bla....
         </div>
     </div>
-
 </div>

@@ -8,5 +8,6 @@
     "open" : "Open",
     "close" : "Close",
     "filter": "filter...",
-    "time": "Time"
+    "time": "Time",
+    "delete": "Delete"
 }

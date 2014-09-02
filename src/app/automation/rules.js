@@ -36,6 +36,8 @@ angular.module('HABmin.rules', [
         $scope.rulesTotal = 0;
         $scope.isDirty = false;
 
+        var restoreRule = null;
+
         // ------------------------------------------------
         // Load model data
 
@@ -61,7 +63,9 @@ angular.module('HABmin.rules', [
 
             RuleModel.getRule(rule.id).then(
                 function (rule) {
+                    restoreRule = rule;
                     $scope.codeEditor = rule.source;
+                    $scope.blockEditor = null;
                     $scope.blockEditor = rule;
                     $scope.isDirty = false;
                 },
@@ -70,6 +74,15 @@ angular.module('HABmin.rules', [
                     growl.warning('Hello world ' + reason.message);
                 }
             );
+        };
+
+        $scope.ruleCancel = function() {
+            if(restoreRule == null) {
+                return;
+            }
+            $scope.codeEditor = restoreRule.source;
+            $scope.blockEditor = restoreRule;
+            $scope.isDirty = false;
         };
 
         $scope.showSource = function () {
