@@ -77,6 +77,7 @@
 
     "ruleRule": "Rule",
     "ruleSource": "Source",
+    "ruleValue": "Value",
     "ruleNoRules": "No Rules Available",
 
 

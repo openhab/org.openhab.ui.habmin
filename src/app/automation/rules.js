@@ -119,7 +119,7 @@ angular.module('HABmin.rules', [
                 $scope.windowHeight = newValue.h;
                 $scope.styleRuleList = function () {
                     return {
-                        'height': (newValue.h - 145) + 'px'
+                        'height': (newValue.h - 130) + 'px'
                     };
                 };
                 $scope.styleEditor = function () {
