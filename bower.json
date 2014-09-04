@@ -25,6 +25,8 @@
     "dygraphs": "~1.0.1",
     "moment": "~2.8.2",
     "angular-ui-ace": "bower",
-    "fontawesome": "~4.2.0"
+    "fontawesome": "~4.2.0",
+    "angular-knob": "*",
+    "angular-gridster": "~0.9.18"
   }
 }
