@@ -31,7 +31,7 @@ angular.module('HABmin.rules', [
     })
 
     .controller('AutomationRuleCtrl',
-    function AutomationRuleCtrl($scope, locale, growl, RuleModel) {
+    function AutomationRuleCtrl($scope, locale, growl, RuleModel, $timeout) {
         $scope.editSource = false;
         $scope.rulesTotal = 0;
         $scope.isDirty = false;
@@ -76,21 +76,23 @@ angular.module('HABmin.rules', [
             );
         };
 
-        $scope.ruleCancel = function() {
-            if(restoreRule == null) {
+        $scope.ruleCancel = function () {
+            if (restoreRule == null) {
                 return;
             }
-            $scope.codeEditor = {};
+            $scope.codeEditor = "";
             $scope.blockEditor = {};
-            $scope.$apply();
-            $scope.codeEditor = restoreRule.source;
-            $scope.blockEditor = restoreRule;
-            $scope.isDirty = false;
+
+            $timeout(function () {
+                $scope.codeEditor = restoreRule.source;
+                $scope.blockEditor = restoreRule;
+                $scope.isDirty = false;
+            });
         };
 
         $scope.showSource = function () {
             // When switching from blocks to source, compile through the server
-            if($scope.editSource === false) {
+            if ($scope.editSource === false) {
             }
 
             $scope.editSource = true;
@@ -104,7 +106,7 @@ angular.module('HABmin.rules', [
         // ------------------------------------------------
         // Private functions
 
-        $scope.workspaceChanged = function() {
+        $scope.workspaceChanged = function () {
             $scope.isDirty = true;
         };
 
