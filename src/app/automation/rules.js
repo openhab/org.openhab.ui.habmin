@@ -80,6 +80,9 @@ angular.module('HABmin.rules', [
             if(restoreRule == null) {
                 return;
             }
+            $scope.codeEditor = {};
+            $scope.blockEditor = {};
+            $scope.$apply();
             $scope.codeEditor = restoreRule.source;
             $scope.blockEditor = restoreRule;
             $scope.isDirty = false;
