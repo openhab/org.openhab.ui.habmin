@@ -90,13 +90,21 @@ module.exports = {
             'vendor/angular-blockly/build/en.js',
             'vendor/ace-builds/src-min-noconflict/ace.js',
             'vendor/ace-builds/src-min-noconflict/theme-tomorrow_night_bright.js',
-            'vendor/angular-ui-ace/ui-ace.js'
+            'vendor/angular-ui-ace/ui-ace.js',
+            'vendor/angular-gridster/src/angular-gridster.js',
+            'vendor/jquery-ui/ui/core.js',
+            'vendor/jquery-ui/ui/widget.js',
+            'vendor/jquery-ui/ui/mouse.js',
+            'vendor/jquery-ui/ui/draggable.js',
+            'vendor/jquery-ui/ui/resizable.js'
         ],
         css: [
             'vendor/angular-growl-v2/build/angular-growl.css',
             'vendor/angular-rangeslider/angular-rangeslider.css',
             'vendor/angular-toggle-switch/angular-toggle-switch.css',
-            'vendor/angular-toggle-switch/angular-toggle-switch-bootstrap.css'
+            'vendor/angular-toggle-switch/angular-toggle-switch-bootstrap.css',
+            'vendor/jquery-ui/themes/base/jquery.ui.core.css',
+            'vendor/jquery-ui/themes/base/jquery.ui.resizable.css'
         ],
         assets: [
             'vendor/fontawesome/fonts/*',
