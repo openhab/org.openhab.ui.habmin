@@ -96,17 +96,20 @@ module.exports = {
             'vendor/jquery-ui/ui/widget.js',
             'vendor/jquery-ui/ui/mouse.js',
             'vendor/jquery-ui/ui/draggable.js',
-            'vendor/jquery-ui/ui/resizable.js'
+            'vendor/jquery-ui/ui/resizable.js',
+            'vendor/angular-dialgauge/src/angular-dialgauge.js'
         ],
         css: [
             'vendor/angular-growl-v2/build/angular-growl.css',
             'vendor/angular-rangeslider/angular-rangeslider.css',
             'vendor/angular-toggle-switch/angular-toggle-switch.css',
             'vendor/angular-toggle-switch/angular-toggle-switch-bootstrap.css',
-            'vendor/jquery-ui/themes/base/jquery.ui.core.css',
-            'vendor/jquery-ui/themes/base/jquery.ui.resizable.css'
+            'vendor/jquery-ui/themes/base/core.css',
+            'vendor/jquery-ui/themes/base/resizable.css',
+            'vendor/oa-font/css/style.css'
         ],
         assets: [
+            'vendor/oa-font/fonts/*',
             'vendor/fontawesome/fonts/*',
             'vendor/bootstrap/fonts/*',
             'vendor/angular-blockly/media/*'
