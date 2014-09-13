@@ -181,16 +181,16 @@ angular.module('HABmin.chart', [
 
         $scope.filterDefaultString = locale.getString('common.filter');
 
-        // This is what you will bind the filter to
-        $scope.filterText = '';
+        // This is what we will bind the filter to
+        $scope.filter = {text: ''};
         $scope.filterFunction = function (element) {
-            if ($scope.filterText === "") {
+            if ($scope.filter.text === "") {
                 return true;
             }
             if (element.label == null) {
                 return false;
             }
-            return element.label.toLowerCase().indexOf($scope.filterText.toLowerCase()) !== -1 ? true : false;
+            return element.label.toLowerCase().indexOf($scope.filter.text.toLowerCase()) !== -1 ? true : false;
         };
 
         // ------------------------------------------------

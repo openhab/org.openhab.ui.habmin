@@ -64,10 +64,10 @@
             </div>
 
             <div id="custom-search-form" class="input-group col-xs-12" ng-if="!selectCharts">
-                <input type="text" class="search-query" placeholder={{filterDefaultString}} ng-model="filterText"
+                <input type="text" class="search-query" placeholder={{filterDefaultString}} ng-model="filter.text"
                        ng-model-options="{debounce: 1000}">
                 <span class="input-group-btn">
-                    <button class="btn btn-default btn-xs" type="button" ng-click="filterText=''">
+                    <button class="btn btn-default btn-xs" type="button" ng-click="filter.text=''">
                         <span class="fa fa-minus-circle"></span>
                     </button>
                 </span>
@@ -96,7 +96,7 @@
             <div ng-if="chartsTotal" ng-repeat="choice in charts">
                 <a role="presentation" ng-hide="choice.filter" class="list-group-item"
                    ng-click="selectChart(choice)">
-                    <span width="20px"><img fill="blue" height="20" src="../images/temp_windchill.svg"></span>
+                    <span class="icon-lg  fa-fw oa-temp_temperature_min"></span>
                     <span>{{choice.name}}</span>
                     <span class="pull-right">
                         <span ng-if="choice.selected" class="fa fa-check-square-o"></span>
