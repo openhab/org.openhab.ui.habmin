@@ -8,7 +8,8 @@
  * (c) 2014 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('HABmin.dashboard', [
-    'gridster'
+    'gridster',
+    'angular-dialgauge'
 ])
     .config(function config($stateProvider) {
         $stateProvider.state('dashboard', {
@@ -25,15 +26,14 @@ angular.module('HABmin.dashboard', [
 
     .controller('DashboardCtrl',
     function ($scope, $timeout) {
+        $scope.editMode = true;
+
         $scope.gridsterOptions = {
-            margins: [10, 40],
-            columns: 4,
+            outerMargin: false,
+            margins: [10, 10],
+            columns: 8,
             draggable: {
-                handle: 'h3'
-            },
-            resizable: {
-                enabled: true,
-                handles: 'n, e, s, w, ne, se, sw, nw'
+                handle: '.box-header'
             }
         };
 
@@ -47,34 +47,28 @@ angular.module('HABmin.dashboard', [
                         row: 0,
                         sizeY: 1,
                         sizeX: 1,
-                        name: "Widget 1"
+                        name: "Widget 1",
+                        value: 65,
+                        options: {
+                            scaleMin: 25,
+                            scaleMax: 75,
+                            borderWidth: 0,
+                            ngModel: "gauge1",
+                            barColor: "pink",
+                            barWidth: "6",
+                            units: "%",
+                            angle: 135,
+                            rotate: 180,
+                            lineCap: "round"
+                        }
                     },
                     {
                         col: 2,
                         row: 1,
                         sizeY: 1,
                         sizeX: 1,
-                        name: "Widget 2"
-                    }
-                ]
-            },
-            '2': {
-                id: '2',
-                name: 'Other',
-                widgets: [
-                    {
-                        col: 1,
-                        row: 1,
-                        sizeY: 1,
-                        sizeX: 2,
-                        name: "Other Widget 1"
-                    },
-                    {
-                        col: 1,
-                        row: 3,
-                        sizeY: 1,
-                        sizeX: 1,
-                        name: "Other Widget 2"
+                        name: "Widget 2",
+                        value:93
                     }
                 ]
             }
@@ -82,6 +76,31 @@ angular.module('HABmin.dashboard', [
 
         $scope.clear = function () {
             $scope.dashboard.widgets = [];
+        };
+
+        $scope.editStart = function () {
+            $scope.gridsterOptions.resizable = {
+                enabled: true,
+                handles: 'n, e, s, w, ne, se, sw, nw',
+                stop: function(event, uiWidget, $element) {
+                    console.log("Resize done", uiWidget, $element);
+                    console.log("Resize to", $element[0].getBoundingClientRect());
+                    console.log("Resize to", uiWidget.element[0].getBoundingClientRect());
+//                    console.log("Parent", $element[0].parent());
+                    $element.on(whichTransitionEvent(), function(){
+                        console.log("Transition event");
+                        $scope.$apply(function(){
+                            console.log("Transition event apply");
+                            $scope.$broadcast('gridster-item-resized');
+                        });
+                    });
+                }
+            };
+        };
+
+        $scope.editEnd = function () {
+            $scope.editMode = false;
+            $scope.gridsterOptions.resizable = false;
         };
 
         $scope.addWidget = function () {
@@ -100,8 +119,47 @@ angular.module('HABmin.dashboard', [
             }
         });
 
+
+
+        /* From Modernizr */
+        function whichTransitionEvent() {
+            var el = document.createElement('div');
+            var transitions = {
+                'transition': 'transitionend',
+                'OTransition': 'oTransitionEnd',
+                'MozTransition': 'transitionend',
+                'WebkitTransition': 'webkitTransitionEnd'
+            };
+            for (var t in transitions) {
+                if (el.style[t] !== undefined) {
+                    return transitions[t];
+                }
+            }
+        }
+
+
+
+
+
+
+
+        $scope.$on('gridster-resized', function(event, newSizes){
+            console.log("Grid resized", newSizes);
+//            var newWidth = sizes[0];
+ //           var newHeight = sizes[1];
+        });
+
+        $scope.$watch('dashboard.widgets', function(items){
+            console.log("Items updated", items);
+            // one of the items changed
+        }, true);
+
         // init dashboard
         $scope.selectedDashboardId = '1';
+
+        $scope.editStart();
+
+
 
     })
 
