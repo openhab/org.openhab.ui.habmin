@@ -15,6 +15,7 @@ angular.module('HABmin.chart', [
     'HABmin.persistenceModel',
     'HABmin.chartModel',
     'HABmin.chartSave',
+    'HABmin.iconModel',
     'angular-dygraphs'
 ])
 
@@ -122,7 +123,7 @@ angular.module('HABmin.chart', [
 
             var id = null;
             angular.forEach($scope.charts, function (chart) {
-                if(chart.selected) {
+                if(chart.selected == "yes") {
                     id = chart.id;
                 }
             });

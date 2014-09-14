@@ -80,7 +80,7 @@
             <div ng-if="itemsTotal" ng-repeat="choice in items | filter:filterFunction">
                 <a role="presentation" ng-hide="choice.filter" class="list-group-item"  ng-class="{'active':choice.selected}"
                    ng-click="selectItem(choice)">
-                    <span width="20px"><img fill="blue" height="20" src="../images/temp_windchill.svg"></span>
+                    <habmin-icon class="icon-lg" icon="{{choice.icon}}"></habmin-icon>
                     <span>{{choice.label}}</span>
                     <span class="pull-right">
                         <span ng-if="choice.selected" class="fa fa-check-square-o"></span>
@@ -100,7 +100,7 @@
             <div ng-if="chartsTotal" ng-repeat="choice in charts">
                 <a role="presentation" class="list-group-item" ng-class="{'active':choice.selected=='yes'}"
                    ng-click="selectChart(choice)">
-                    <span class="icon-lg fa-fw oa-temp_temperature_min"></span>
+                    <habmin-icon class="icon-lg" icon="{{choice.icon}}"></habmin-icon>
                     <span>{{choice.name}}</span>
                     <span class="pull-right">
                         <span ng-class="{'fa': true, 'fa-check-square-o': choice.selected=='yes', 'fa-spinner fa-spin': choice.selected=='loading'}"></span>

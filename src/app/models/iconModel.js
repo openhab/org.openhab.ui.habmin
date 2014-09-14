@@ -30,13 +30,26 @@ angular.module('HABmin.iconModel', [
             garagedoor: {class: ""},
             garden: {class: "oa-scene_garden"},
             heating: {class: "oa-sani_heating"},
-            kitchen: {class: ""},
-            light: {class: "fa-lightbulb-o"},
-            network: {class: ""},
-            outdoorlight: {class: ""},
-            raingauge: {class: "oa-weather_rain_gauge"},
-            slider: {class: "fa fa-sliders"},
-            socket: {class: "oa-message_socket"},
+            "kitchen": {class: ""},
+            "light": {class: "oa-light_light"},
+            "light-off": {class: "oa-light_light_dim_00"},
+            "light-on": {class: "oa-light_light_dim_100"},
+            "light-0": {class: "oa-light_light_dim_00"},
+            "light-10": {class: "oa-light_light_dim_10"},
+            "light-20": {class: "oa-light_light_dim_20"},
+            "light-30": {class: "oa-light_light_dim_30"},
+            "light-40": {class: "oa-light_light_dim_40"},
+            "light-50": {class: "oa-light_light_dim_50"},
+            "light-60": {class: "oa-light_light_dim_60"},
+            "light-70": {class: "oa-light_light_dim_70"},
+            "light-80": {class: "oa-light_light_dim_80"},
+            "light-90": {class: "oa-light_light_dim_90"},
+            "light-100": {class: "oa-light_light_dim_100"},
+            "network": {class: ""},
+            "outdoorlight": {class: ""},
+            "raingauge": {class: "oa-weather_rain_gauge"},
+            "slider": {class: "fa fa-sliders"},
+            "socket": {class: "oa-message_socket"},
             "switch": {class: ""},
             temperature: {class: "oa-temp_temperature"},
             temperature_boiler: {class: "oa-sani_boiler_temp"},
@@ -49,23 +62,22 @@ angular.module('HABmin.iconModel', [
 
         this.lookupImage = function (src) {
             if (this._lookupTable[src] === undefined) {
+                console.log("Unknown icon", src);
                 return "";
             }
-            return "../../images/" + this._lookupTable[src].icon;
+            return this._lookupTable[src].class;
         };
     })
 
-    .directive('habmin-icon', function () {
+    .directive('habminIcon', function (ImgFactory) {
         return {
-            template: '<div></div>',
-            restrict: 'A',
-            replace: true,
-            link: function postLink(scope, element, attrs) {
-                element.replaceWith(data);
+            template: '',
+            restrict: 'E',
+            link: function(scope, element, attrs, ctrl, transclude){
+                var data = "<span class='" + ImgFactory.lookupImage(attrs.icon) + "'></span>";
+                element.append(data);
             }
-        }
+        };
     });
 
 
-
-;
