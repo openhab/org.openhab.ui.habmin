@@ -143,10 +143,10 @@ angular.module('HABmin.chart', [
 
         $scope.selectChart = function (parm) {
             angular.forEach($scope.charts, function (chart) {
-                chart.selected = false;
+                chart.selected = 'no';
             });
 
-            parm.selected = !parm.selected;
+            parm.selected = 'loading';
 
             _displayChart(parm.id);
         };
@@ -339,6 +339,7 @@ angular.module('HABmin.chart', [
             itemsLoaded++;
             console.log("Loaded " + itemsLoaded + " of " + itemsLoading);
             if (itemsLoaded >= itemsLoading) {
+                // All items loaded
                 if (chartDef.title) {
                     chartOptions.title = chartDef.title;
                 }
@@ -398,6 +399,13 @@ angular.module('HABmin.chart', [
                 chartData.options = chartOptions;
                 console.log("Rendering chart", chartData);
                 $scope.graph = chartData;
+
+                // Update the loading icon
+                angular.forEach($scope.charts, function (chart) {
+                    if(chart.selected == "loading") {
+                        chart.selected = 'yes';
+                    }
+                });
             }
         }
 

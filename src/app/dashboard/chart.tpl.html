@@ -73,10 +73,12 @@
                 </span>
             </div>
         </div>
+
+        <!-- Display the list of items -->
         <div id="itemList" class="list-group habmin-list" ng-style="styleItemList()" ng-if="!selectCharts"
              resize-page>
             <div ng-if="itemsTotal" ng-repeat="choice in items | filter:filterFunction">
-                <a role="presentation" ng-hide="choice.filter" class="list-group-item"
+                <a role="presentation" ng-hide="choice.filter" class="list-group-item"  ng-class="{'active':choice.selected}"
                    ng-click="selectItem(choice)">
                     <span width="20px"><img fill="blue" height="20" src="../images/temp_windchill.svg"></span>
                     <span>{{choice.label}}</span>
@@ -91,15 +93,17 @@
                 <span i18n="habmin.chartNoItems"></span>
             </div>
         </div>
+
+        <!-- Display the list of predefined charts -->
         <div id="chartList" class="list-group habmin-list" ng-style="styleChartList()" ng-if="selectCharts"
              resize-page>
             <div ng-if="chartsTotal" ng-repeat="choice in charts">
-                <a role="presentation" ng-hide="choice.filter" class="list-group-item"
+                <a role="presentation" class="list-group-item" ng-class="{'active':choice.selected=='yes'}"
                    ng-click="selectChart(choice)">
-                    <span class="icon-lg  fa-fw oa-temp_temperature_min"></span>
+                    <span class="icon-lg fa-fw oa-temp_temperature_min"></span>
                     <span>{{choice.name}}</span>
                     <span class="pull-right">
-                        <span ng-if="choice.selected" class="fa fa-check-square-o"></span>
+                        <span ng-class="{'fa': true, 'fa-check-square-o': choice.selected=='yes', 'fa-spinner fa-spin': choice.selected=='loading'}"></span>
                     </span>
                 </a>
             </div>
@@ -110,6 +114,7 @@
             </div>
         </div>
 
+        <!-- Add a footer to the panel -->
         <div class="panel-footer" >
             <div class="row" ng-if="!selectCharts">
                 <div class="col-xs-6">
