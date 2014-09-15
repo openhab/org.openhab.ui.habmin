@@ -26,6 +26,7 @@ angular.module('HABmin.iconModel', [
             fan_level_2: {class: "oa-vent_ventilation_level_2"},
             fan_level_3: {class: "oa-vent_ventilation_level_3"},
             fire: {class: "fa fire"},
+            "frontdoor": {class:"fts_door_open"},
             garage: {class: ""},
             garagedoor: {class: ""},
             garden: {class: "oa-scene_garden"},
@@ -57,7 +58,8 @@ angular.module('HABmin.iconModel', [
             temperature_outside: {class: "oa-temp_outside"},
             temperature_min: {class: "oa-temp_temperature_min"},
             temperature_max: {class: "oa-temp_temperature_max"},
-            weather: {class: "oa-weather_cloudy"}
+            weather: {class: "oa-weather_cloudy"},
+            "wind": {class: "weather_wind"}
         };
 
         this.lookupImage = function (src) {
