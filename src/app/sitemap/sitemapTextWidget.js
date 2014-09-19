@@ -13,7 +13,9 @@ angular.module('sitemapTextWidget', [
     .directive('sitemapText', function (ImgFactory) {
         return {
             restrict: 'E',
-            template: '<span class="sitemap-item-icon"><img ng-src="{{icon}}"><span ng-style="labelColor">{{label}}</span><span class="pull-right" ng-style="valueColor">{{value}}</span>',
+            template: '<habmin-icon class="icon-lg" icon="{{icon}}"></habmin-icon>' +
+                '<span ng-style="labelColor">{{label}}</span>' +
+                '<span class="pull-right" ng-style="valueColor">{{value}}</span>',
             scope: {
                 itemModel: "=",
                 widget: "="

@@ -14,7 +14,9 @@ angular.module('sitemapSwitchWidget', [
     .directive('sitemapSwitch', function (ImgFactory) {
         return {
             restrict: 'E',
-            template: '<span class="sitemap-item-icon"><img ng-src="{{icon}}"></span><span class="sitemap-item-text"><span ng-style="labelColor">{{label}}</span>' +
+            template:
+                '<habmin-icon class="icon-lg" icon="{{icon}}"></habmin-icon>' +
+                '<span class="sitemap-item-text"><span ng-style="labelColor">{{label}}</span>' +
                 '<span class="pull-right" ng-style="valueColor"></span></span>' +
                 '<span class="pull-right"><toggle-switch model="value" on-label="ON" off-label="OFF"></toggle-switch></span>',
             scope: {
