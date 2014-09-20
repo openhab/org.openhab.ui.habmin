@@ -31,13 +31,15 @@
             </div>
 
             <div class="btn-group pull-right">
-                <button type="button btn-sm" class="btn btn-default" ng-if="!selectCharts">
+                <button type="button btn-sm" ng-if="!selectCharts"
+                        ng-class="{'btn btn-default': true, 'disabled': !itemsSelected}">
                     <a ng-click="doChart()">
                         <span class="fa fa-play"></span>
                     </a>
                 </button>
 
-                <button type="button btn-sm" class="btn btn-default" ng-if="!selectCharts">
+                <button type="button btn-sm" ng-if="!selectCharts"
+                        ng-class="{'btn btn-default': true, 'disabled': !itemsSelected}">
                     <a ng-click="clearList()">
                         <span class="fa fa-times"></span>
                     </a>
@@ -54,10 +56,10 @@
                         </a>
                     </li>
                     <li role="presentation" class="divider"></li>
-                    <li ng-if="!selectCharts"><a ng-click="saveChart()">
+                    <li ng-if="!selectCharts" ng-class="{'disabled': !itemsSelected}"><a ng-click="saveChart()">
                         <span i18n="habmin.chartSaveChart"></span>
                     </a></li>
-                    <li ng-if="selectCharts"><a ng-click="editChart()">
+                    <li ng-if="selectCharts" ng-class="{'disabled': !selectedChart}"><a ng-click="editChart()">
                         <span i18n="habmin.chartEditChart"></span>
                     </a></li>
                 </ul>
@@ -78,7 +80,8 @@
         <div id="itemList" class="list-group habmin-list" ng-style="styleItemList()" ng-if="!selectCharts"
              resize-page>
             <div ng-if="itemsTotal" ng-repeat="choice in items | filter:filterFunction">
-                <a role="presentation" ng-hide="choice.filter" class="list-group-item"  ng-class="{'active':choice.selected}"
+                <a role="presentation" ng-hide="choice.filter" class="list-group-item"
+                   ng-class="{'active':choice.selected}"
                    ng-click="selectItem(choice)">
                     <habmin-icon class="icon-lg" icon="{{choice.icon}}"></habmin-icon>
                     <span>{{choice.label}}</span>
@@ -115,7 +118,7 @@
         </div>
 
         <!-- Add a footer to the panel -->
-        <div class="panel-footer" >
+        <div class="panel-footer">
             <div class="row" ng-if="!selectCharts">
                 <div class="col-xs-6">
                     <h6 class="text-center">

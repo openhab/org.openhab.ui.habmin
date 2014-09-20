@@ -63,6 +63,7 @@ angular.module('HABmin.chart', [
         };
 
         $scope.selectCharts = true;
+        $scope.selectedChart = 0;
 
         $scope.chartsTotal = 0;
         $scope.charts = [];
@@ -129,20 +130,31 @@ angular.module('HABmin.chart', [
 
         $scope.saveChart = function () {
             console.log("saveChart button clicked");
-            ChartSave.showModal();
+            var chart = {};
+            chart.name = locale.getString('habmin.chartSaveNewName');
+            chart.period = 86400;
+            chart.items = [];
+
+            angular.forEach($scope.items, function (item) {
+                if (item.selected === true) {
+                    var newItem = {};
+                    newItem.item = item.name;
+                    newItem.label = item.label;
+                    chart.items.push(newItem);
+                }
+            });
+
+            ChartSave.saveChart(chart);
         };
 
         $scope.editChart = function () {
             console.log("editChart button clicked");
 
-            var id = null;
-            angular.forEach($scope.charts, function (chart) {
-                if (chart.selected == "yes") {
-                    id = chart.id;
-                }
-            });
+            if($scope.selectedChart === 0) {
+                return;
+            }
 
-            ChartSave.showModal(id);
+            ChartSave.editChart($scope.selectedChart);
         };
 
         $scope.selectItem = function (parm) {
@@ -163,6 +175,7 @@ angular.module('HABmin.chart', [
 
             parm.selected = 'loading';
 
+            $scope.selectedChart = parm.id;
             _displayChart(parm.id);
         };
 
@@ -213,7 +226,7 @@ angular.module('HABmin.chart', [
 
         function _initChart(period) {
             // The following sets the number of chart points to approximately 2000
-            roundingTime = period / 2000;
+            roundingTime = Math.floor(period / 2000000) * 1000;
             console.log("Setting rounding time to", roundingTime);
 
             itemsLoaded = 0;
@@ -240,7 +253,7 @@ angular.module('HABmin.chart', [
         function _displayChart(id) {
             ChartListModel.getChart(id).then(
                 function (chart) {
-                    var stop = Math.round((new Date()).getTime());
+                    var stop = Math.floor((new Date()).getTime());
                     var start = stop - (chart.period * 1000);
                     _initChart(stop - start);
 
@@ -259,7 +272,7 @@ angular.module('HABmin.chart', [
         }
 
         function _displayItems() {
-            var stop = Math.round((new Date()).getTime());
+            var stop = Math.floor((new Date()).getTime());
             var start = stop - (86400 * 1000);
 
             _initChart(stop - start);
@@ -340,7 +353,6 @@ angular.module('HABmin.chart', [
 //                chartData.options.series[itemCfg.item].axis = 'y';
             }
             else if (itemCfg.axis == "right") {
-//            else if(itemCfg.lineWidth == "6") {
                 chartData.options.series[itemCfg.item].axis = 'y2';
             }
 
@@ -451,7 +463,7 @@ angular.module('HABmin.chart', [
             }
 
             // Record the starting time/value of the new series
-            var lastTime = Math.round(Number(newData[0].time) / roundingTime) * roundingTime;
+            var lastTime = Math.floor(Number(newData[0].time) / roundingTime) * roundingTime;
             var newState = Number(newData[0].state);
 
             var curTime;
@@ -469,11 +481,11 @@ angular.module('HABmin.chart', [
                     if (newData[cntNew + 1] !== undefined &&
                         newData[cntNew + 1].time > newData[cntNew].time + repeatTime) {
                         // The next value is more than 'repeatTime' in the future. We need to record this value
-                        newTime = Math.round(Number(newData[cntNew].time) / 1000) * 1000;
+                        newTime = Math.floor(Number(newData[cntNew].time) / 1000) * 1000;
                     }
                     else {
                         // Round the time down to the closest second
-                        newTime = Math.round(Number(newData[cntNew].time) / roundingTime) * roundingTime;
+                        newTime = Math.floor(Number(newData[cntNew].time) / roundingTime) * roundingTime;
                     }
 
                     // Check if we need to repeat the data
@@ -545,11 +557,11 @@ angular.module('HABmin.chart', [
             while (cntNew < newData.length) {
                 if (newData[cntNew + 1] !== undefined && newData[cntNew + 1].time > newData[cntNew].time + repeatTime) {
                     // The next value is more than 'repeatTime' in the future. We need to record this value
-                    newTime = Math.round(Number(newData[cntNew].time) / 1000) * 1000;
+                    newTime = Math.floor(Number(newData[cntNew].time) / 1000) * 1000;
                 }
                 else {
                     // Round the time down to the closest second
-                    newTime = Math.round(Number(newData[cntNew].time) / roundingTime) * roundingTime;
+                    newTime = Math.floor(Number(newData[cntNew].time) / roundingTime) * roundingTime;
                 }
 
                 // Stop time going backwards - may happen due to rounding
