@@ -5,21 +5,21 @@
     <div class="row">
         <div class="col-xs-6">
             <ul class="nav nav-pills nav-stacked">
-                <li ng-class="{'select':showTab==0}">
+                <li ng-class="{'active':showTab==0}">
                     <a ng-click="showTab=0">
                         <span i18n="habmin.chartSaveGeneral"></span>
                     </a>
                 </li>
-                <li ng-class="{'select':showTab==1}"><a ng-click="showTab=1">
+                <li ng-class="{'active':showTab==1}"><a ng-click="showTab=1">
                     <span i18n="habmin.chartSaveLeftAxis"></span>
                 </a>
                 </li>
-                <li ng-class="{'select':showTab==2}">
+                <li ng-class="{'active':showTab==2}">
                     <a ng-click="showTab=2">
                         <span i18n="habmin.chartSaveRightAxis"></span>
                     </a>
                 </li>
-                <li ng-class="{'select':showTab==choice.item}" ng-repeat="choice in items">
+                <li ng-class="{'active':showTab==choice.item}" ng-repeat="choice in items">
                     <a ng-click="$parent.showTab=choice.item">
                         <span></span>
                         <span>{{choice.item}}</span>

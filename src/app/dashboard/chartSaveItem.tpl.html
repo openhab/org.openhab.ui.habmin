@@ -15,7 +15,7 @@
     </div>
 
     <div class="form-group">
-        <label for="inputAxis" class="control-label" i18n="habmin.chartSaveItemAxes"></label>
+            <label for="inputAxis" class="control-label" i18n="habmin.chartSaveItemAxes"></label>
         <div>
             <select ng-model="model.axis" class="form-control" id="inputAxis">
                 <option value="left" i18n="habmin.chartItemLeftAxis"></option>
@@ -35,6 +35,13 @@
         <label for="inputLineWidth" class="control-label" i18n="habmin.chartSaveItemLineWidth"></label>
         <div>
             <input type="number" class="form-control" id="inputLineWidth" ng-model="model.lineWidth" placeholder="width">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="checkbox">
+            <input type="checkbox" id="inputFill" ng-model="model.fill">
+            <label class="control-label" i18n="habmin.chartSaveItemFill"></label>
         </div>
     </div>
 

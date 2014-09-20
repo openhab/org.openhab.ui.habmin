@@ -32,6 +32,7 @@
     "chartSaveItemLineWidth": "Line Width",
     "chartSaveItemLineStyle": "Line Style",
     "chartSaveItemRepeatTime": "Repeat Time",
+    "chartSaveItemFill": "Fill Graph",
 
     "chartSaveAxesLabel": "Label",
     "chartSaveAxesDecimals": "Decimal Places",

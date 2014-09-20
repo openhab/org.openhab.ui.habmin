@@ -38,7 +38,7 @@ angular.module('HABmin.chartSave', [
                             case "left":
                                 scope.leftaxis = {
                                     label: axis.label,
-                                    format: axis.format,
+                                    format: Number(axis.format),
                                     textColor: axis.color,
                                     minimum: Number(axis.minimum),
                                     maximum: Number(axis.maximum),
@@ -48,7 +48,7 @@ angular.module('HABmin.chartSave', [
                             case "right":
                                 scope.rightaxis = {
                                     label: axis.label,
-                                    format: axis.format,
+                                    format: Number(axis.format),
                                     textColor: axis.color,
                                     minimum: Number(axis.minimum),
                                     maximum: Number(axis.maximum),
@@ -73,6 +73,7 @@ angular.module('HABmin.chartSave', [
                         itemModel.item = item.item;
                         itemModel.label = item.label;
                         itemModel.format = item.format;
+                        itemModel.fill = item.fill;
                         itemModel.lineColor = item.lineColor;
                         itemModel.lineStyle = item.lineStyle;
                         itemModel.lineWidth = Number(item.lineWidth);
@@ -167,6 +168,9 @@ angular.module('HABmin.chartSave', [
                                 }
                                 if(item.axis !== undefined) {
                                     newItem.axis = item.axis;
+                                }
+                                if(item.fill !== undefined) {
+                                    newItem.fill = item.fill;
                                 }
 
                                 query.items.push(newItem);

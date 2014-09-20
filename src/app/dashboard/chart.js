@@ -48,6 +48,20 @@ angular.module('HABmin.chart', [
             connectSeparatedPoints: true
         };
 
+        var lineStyles = {
+            solid: [5, 0],
+            shortdash: [7, 3],
+            shortdot: [3, 3],
+            shortdashdot: [7, 3, 3, 3],
+            shortdashdotdot: [7, 3, 3, 3, 3, 3],
+            dot: [3, 7],
+            dash: [10, 7],
+            longdash: [20, 7],
+            dashdot: [10, 7, 3, 7],
+            longdashdot: [20, 7, 3, 7],
+            longdashdotdot: [20, 7, 3, 7, 3, 7]
+        };
+
         $scope.selectCharts = true;
 
         $scope.chartsTotal = 0;
@@ -308,10 +322,18 @@ angular.module('HABmin.chart', [
 
             chartData.legend.series[itemCfg.item] = {};
             chartData.legend.series[itemCfg.item].label = itemCfg.label;
-            chartData.legend.series[itemCfg.item].format = 1;
+            chartData.legend.series[itemCfg.item].format = 0;
 
-            if(itemCfg.lineWidth !== undefined) {
+            if (itemCfg.format !== undefined && !isNaN(itemCfg.format)) {
+                chartData.legend.series[itemCfg.item].format = itemCfg.format;
+            }
+
+            if (itemCfg.lineWidth !== undefined) {
                 chartData.options.series[itemCfg.item].strokeWidth = itemCfg.lineWidth;
+            }
+
+            if (itemCfg.fill !== undefined) {
+                chartData.options.series[itemCfg.item].fillGraph = Boolean(itemCfg.fill);
             }
 
             if (itemCfg.axis == "left") {
@@ -332,18 +354,9 @@ angular.module('HABmin.chart', [
 
             newChart = addSeries(newChart, data, itemCfg.repeatTime);
 
-            /*        if (itemCfg.lineStyle != undefined && itemCfg.lineStyle.length > 0)
-             plotOptions.stroke.style = itemCfg.lineStyle;
-             if (itemCfg.lineWidth != undefined && itemCfg.lineWidth.length > 0)
-             plotOptions.stroke.width = itemCfg.lineWidth;
-             if (itemCfg.lineColor != undefined && itemCfg.lineColor.length > 0)
-             plotOptions.stroke.color = itemCfg.lineColor;
-             console.log("Adding item " + item.name + ":", plotOptions);
-             if (itemCfg.label == null)
-             this.chart.addSeries(item.name, data, plotOptions);
-             else
-             this.chart.addSeries(itemCfg.label, data, plotOptions);
-             */
+            if (itemCfg.lineStyle !== undefined && itemCfg.lineStyle.length > 0) {
+                chartData.options.series[itemCfg.item].strokePattern = lineStyles[itemCfg.lineStyle.toLowerCase()];
+            }
 
 
             // If everything is loaded, render the chart
@@ -378,6 +391,8 @@ angular.module('HABmin.chart', [
                             default:
                             case 'left':
                                 chartData.options.ylabel = label;
+                                chartData.options.axes.y = {};
+                                chartData.options.axes.y.format = Number(axis.format);
                                 if (axis.minimum !== undefined || axis.maximum !== undefined) {
                                     if (axis.minimum !== undefined) {
                                         min = Number(axis.minimum);
@@ -385,14 +400,14 @@ angular.module('HABmin.chart', [
                                     if (axis.maximum !== undefined) {
                                         max = Number(axis.maximum);
                                     }
-                                    chartData.options.axes.y = {};
-                                    chartData.options.axes.y.format = 1;
                                     chartData.options.axes.y.valueRange = null;
                                     chartData.options.axes.y.valueRange = [min, max];
                                 }
                                 break;
                             case 'right':
                                 chartData.options.y2label = label;
+                                chartData.options.axes.y2 = {};
+                                chartData.options.axes.y2.format = Number(axis.format);
                                 if (axis.minimum !== undefined || axis.maximum !== undefined) {
                                     if (axis.minimum !== undefined) {
                                         min = Number(axis.minimum);
@@ -400,8 +415,6 @@ angular.module('HABmin.chart', [
                                     if (axis.maximum !== undefined) {
                                         max = Number(axis.maximum);
                                     }
-                                    chartData.options.axes.y2 = {};
-                                    chartData.options.axes.y2.format = 1;
                                     chartData.options.axes.y2.valueRange = null;
                                     chartData.options.axes.y2.valueRange = [min, max];
                                 }
