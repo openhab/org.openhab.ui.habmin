@@ -157,6 +157,16 @@ angular.module('HABmin.chart', [
             ChartSave.editChart($scope.selectedChart);
         };
 
+        $scope.deleteChart = function () {
+            console.log("deleteChart button clicked");
+
+            if($scope.selectedChart === 0) {
+                return;
+            }
+
+            ChartListModel.deleteChart($scope.selectedChart);
+        };
+
         $scope.selectItem = function (parm) {
             parm.selected = !parm.selected;
 
