@@ -30,6 +30,7 @@
     "angular-ui-calendar": "~0.8.1",
     "weather-icons": "~0.0.1",
     "jquery-ui": "~1.11.1",
-    "angular-dialgauge": "~0.1.2"
+    "angular-dialgauge": "~0.1.2",
+    "tinycolor": "~1.0.0"
   }
 }
