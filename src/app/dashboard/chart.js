@@ -108,7 +108,7 @@ angular.module('HABmin.chart', [
         $scope.doChart = function () {
             console.log("doChart button clicked");
 
-            if($scope.selectCharts === false) {
+            if ($scope.selectCharts === false) {
                 _displayItems();
             }
         };
@@ -123,7 +123,7 @@ angular.module('HABmin.chart', [
 
             var id = null;
             angular.forEach($scope.charts, function (chart) {
-                if(chart.selected == "yes") {
+                if (chart.selected == "yes") {
                     id = chart.id;
                 }
             });
@@ -153,7 +153,7 @@ angular.module('HABmin.chart', [
         };
 
         $scope.setType = function (selectType) {
-            if(selectType === false) {
+            if (selectType === false) {
                 $scope.selectCharts = false;
             }
             else {
@@ -200,7 +200,7 @@ angular.module('HABmin.chart', [
         function _initChart(period) {
             // The following sets the number of chart points to approximately 2000
             roundingTime = period / 2000;
-            console.log("Setting rounding time to",roundingTime);
+            console.log("Setting rounding time to", roundingTime);
 
             itemsLoaded = 0;
             itemsLoading = 0;
@@ -310,14 +310,24 @@ angular.module('HABmin.chart', [
             chartData.legend.series[itemCfg.item].label = itemCfg.label;
             chartData.legend.series[itemCfg.item].format = 1;
 
-            if(itemCfg.axis == "left") {
+            if(itemCfg.lineWidth !== undefined) {
+                chartData.options.series[itemCfg.item].strokeWidth = itemCfg.lineWidth;
+            }
+
+            if (itemCfg.axis == "left") {
 //                chartData.options.series[itemCfg.item].axis = 'y';
             }
-            else if(itemCfg.axis == "right") {
+            else if (itemCfg.axis == "right") {
 //            else if(itemCfg.lineWidth == "6") {
                 chartData.options.series[itemCfg.item].axis = 'y2';
             }
 
+            if (itemCfg.lineColor !== undefined) {
+                var t = tinycolor(itemCfg.lineColor);
+                if (t.isValid() === true) {
+                    chartData.options.series[itemCfg.item].color = t.toHexString();
+                }
+            }
             console.log("Updating data:", $scope.graph);
 
             newChart = addSeries(newChart, data, itemCfg.repeatTime);
@@ -345,51 +355,55 @@ angular.module('HABmin.chart', [
                     chartOptions.title = chartDef.title;
                 }
 
-                if(chartDef.axis) {
-                    angular.forEach(chartDef.axis, function(axis) {
-                        if(axis == null) {
+                if (chartDef.axis) {
+                    angular.forEach(chartDef.axis, function (axis) {
+                        if (axis == null) {
                             return;
                         }
                         var min = null;
                         var max = null;
                         var label = "";
-                        if(axis.label !== undefined) {
+                        if (axis.label !== undefined) {
                             var style = "";
-                            if(axis.color != null && axis.color.length > 0) {
-                                style = " style='color:" + axis.color + ";'";
+                            if (axis.color != null && axis.color.length > 0) {
+                                // Sanatise the colours with tinycolor
+                                var t = tinycolor(axis.color);
+                                if (t.isValid() === true) {
+                                    style = " style='color:" + t.toHexString() + ";'";
+                                }
                             }
                             label = "<span" + style + ">" + axis.label + "</span>";
                         }
-                        switch(axis.position) {
+                        switch (axis.position) {
                             default:
                             case 'left':
                                 chartData.options.ylabel = label;
-                                if(axis.minimum !== undefined || axis.maximum !== undefined) {
-                                    if(axis.minimum !== undefined) {
+                                if (axis.minimum !== undefined || axis.maximum !== undefined) {
+                                    if (axis.minimum !== undefined) {
                                         min = Number(axis.minimum);
                                     }
-                                    if(axis.maximum !== undefined) {
+                                    if (axis.maximum !== undefined) {
                                         max = Number(axis.maximum);
                                     }
-                                    chartData.options.axes.y={};
+                                    chartData.options.axes.y = {};
                                     chartData.options.axes.y.format = 1;
                                     chartData.options.axes.y.valueRange = null;
-                                    chartData.options.axes.y.valueRange = [min,max];
+                                    chartData.options.axes.y.valueRange = [min, max];
                                 }
                                 break;
                             case 'right':
                                 chartData.options.y2label = label;
-                                if(axis.minimum !== undefined || axis.maximum !== undefined) {
-                                    if(axis.minimum !== undefined) {
+                                if (axis.minimum !== undefined || axis.maximum !== undefined) {
+                                    if (axis.minimum !== undefined) {
                                         min = Number(axis.minimum);
                                     }
-                                    if(axis.maximum !== undefined) {
+                                    if (axis.maximum !== undefined) {
                                         max = Number(axis.maximum);
                                     }
-                                    chartData.options.axes.y2={};
+                                    chartData.options.axes.y2 = {};
                                     chartData.options.axes.y2.format = 1;
                                     chartData.options.axes.y2.valueRange = null;
-                                    chartData.options.axes.y2.valueRange = [min,max];
+                                    chartData.options.axes.y2.valueRange = [min, max];
                                 }
                                 break;
                         }
@@ -403,7 +417,7 @@ angular.module('HABmin.chart', [
 
                 // Update the loading icon
                 angular.forEach($scope.charts, function (chart) {
-                    if(chart.selected == "loading") {
+                    if (chart.selected == "loading") {
                         chart.selected = 'yes';
                     }
                 });
@@ -428,7 +442,7 @@ angular.module('HABmin.chart', [
             var newState = Number(newData[0].state);
 
             var curTime;
-            if(curData.length !== 0) {
+            if (curData.length !== 0) {
                 curTime = curData[cntCur][0].getTime();
             }
             var newTime = 0;
@@ -438,8 +452,9 @@ angular.module('HABmin.chart', [
                 curTime = curData[cntCur][0].getTime();
 
                 // newTime is set to 0 when we add new data to indicate that we need to get the next value
-                if(newTime === 0) {
-                    if(newData[cntNew+1] !== undefined  && newData[cntNew+1].time > newData[cntNew].time + repeatTime) {
+                if (newTime === 0) {
+                    if (newData[cntNew + 1] !== undefined &&
+                        newData[cntNew + 1].time > newData[cntNew].time + repeatTime) {
                         // The next value is more than 'repeatTime' in the future. We need to record this value
                         newTime = Math.round(Number(newData[cntNew].time) / 1000) * 1000;
                     }
@@ -449,7 +464,7 @@ angular.module('HABmin.chart', [
                     }
 
                     // Check if we need to repeat the data
-                    if(newTime > lastTime + repeatTime) {
+                    if (newTime > lastTime + repeatTime) {
                         // Repeat needed - leave the data alone and reset the time
                         newTime = newTime - repeatTime;
                     }
@@ -462,7 +477,7 @@ angular.module('HABmin.chart', [
                     }
 
                     // Stop time going backwards - may happen due to rounding
-                    if(newTime <= lastTime) {
+                    if (newTime <= lastTime) {
                         newTime = 0;
                         continue;
                     }
@@ -515,7 +530,7 @@ angular.module('HABmin.chart', [
 
             // Process remaining new data
             while (cntNew < newData.length) {
-                if(newData[cntNew+1] !== undefined  && newData[cntNew+1].time > newData[cntNew].time + repeatTime) {
+                if (newData[cntNew + 1] !== undefined && newData[cntNew + 1].time > newData[cntNew].time + repeatTime) {
                     // The next value is more than 'repeatTime' in the future. We need to record this value
                     newTime = Math.round(Number(newData[cntNew].time) / 1000) * 1000;
                 }
@@ -525,21 +540,21 @@ angular.module('HABmin.chart', [
                 }
 
                 // Stop time going backwards - may happen due to rounding
-                if(newTime <= lastTime) {
+                if (newTime <= lastTime) {
                     cntNew++;
                     continue;
                     //newTime = lastTime;
                 }
 
                 // Check if we need to repeat the data
-                if(newTime > lastTime + repeatTime) {
+                if (newTime > lastTime + repeatTime) {
                     // Repeat needed
                     d = [];
                     d[0] = new Date(newTime - repeatTime);
                     for (var a = 1; a < len; a++) {
                         d.push(null);
                     }
-                    d.push(Number(newData[cntNew-1].state));
+                    d.push(Number(newData[cntNew - 1].state));
                     output.push(d);
                 }
 

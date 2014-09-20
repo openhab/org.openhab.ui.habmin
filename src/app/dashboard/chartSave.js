@@ -104,7 +104,7 @@ angular.module('HABmin.chartSave', [
                                 leftAxis.label = scope.leftaxis.label;
                             }
                             if (scope.leftaxis.textColor !== undefined) {
-                                leftAxis.color = "#" + scope.leftaxis.textColor;
+                                leftAxis.color = scope.leftaxis.textColor;
                             }
                             if (!isNaN(scope.leftaxis.format)) {
                                 leftAxis.format = scope.leftaxis.format;
@@ -128,7 +128,7 @@ angular.module('HABmin.chartSave', [
                                 rightAxis.label = scope.rightaxis.label;
                             }
                             if (scope.rightaxis.textColor !== undefined) {
-                                rightAxis.color = "#" + scope.rightaxis.textColor;
+                                rightAxis.color = scope.rightaxis.textColor;
                             }
                             if (!isNaN(scope.rightaxis.format)) {
                                 rightAxis.format = scope.rightaxis.format;
@@ -154,7 +154,7 @@ angular.module('HABmin.chartSave', [
                                     newItem.label = item.label;
                                 }
                                 if (item.lineColor !== undefined) {
-                                    newItem.lineColor = "#" + item.lineColor;
+                                    newItem.lineColor = item.lineColor;
                                 }
                                 if (item.lineStyle !== undefined) {
                                     newItem.lineStyle = item.lineStyle;
@@ -164,6 +164,9 @@ angular.module('HABmin.chartSave', [
                                 }
                                 if (!isNaN(item.repeatTime)) {
                                     newItem.repeatTime = item.repeatTime;
+                                }
+                                if(item.axis !== undefined) {
+                                    newItem.axis = item.axis;
                                 }
 
                                 query.items.push(newItem);
