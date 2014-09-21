@@ -65,6 +65,7 @@
                     <li ng-if="selectCharts" ng-class="{'disabled': !selectedChart}">
                         <a ng-confirm-click="deleteChart()"
                            data-i18n-attr="{'ngConfirmMessage': 'habmin.chartDeleteChartCheck','ngConfirmTitle': 'habmin.chartDeleteChart','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
+                           chartname="{{selectedChart.name}}"
                                 >
                             <span i18n="habmin.chartDeleteChart"></span>
                         </a>

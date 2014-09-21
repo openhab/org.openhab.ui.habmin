@@ -20,7 +20,7 @@
     "chartSaveChart": "Save Chart",
     "chartEditChart": "Edit Chart",
     "chartDeleteChart": "Delete Chart",
-    "chartDeleteChartCheck": "Are you sure you want to delete chart '{1}'?",
+    "chartDeleteChartCheck": "Are you sure you want to delete chart '{chartname}'?",
 
     "chartSaveNewName": "New Chart",
     "chartSaveChartTitle": "Save Chart",

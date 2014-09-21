@@ -66,7 +66,7 @@ angular.module('HABmin.chart', [
         $scope.graphLoaded = false;
 
         $scope.selectCharts = true;
-        $scope.selectedChart = 0;
+        $scope.selectedChart = undefined;
 
         $scope.chartsTotal = 0;
         $scope.charts = [];
@@ -153,17 +153,17 @@ angular.module('HABmin.chart', [
         $scope.editChart = function () {
             console.log("editChart button clicked");
 
-            if($scope.selectedChart === 0) {
+            if($scope.selectedChart === undefined) {
                 return;
             }
 
-            ChartSave.editChart($scope.selectedChart);
+            ChartSave.editChart($scope.selectedChart.id);
         };
 
         $scope.deleteChart = function () {
             console.log("deleteChart button clicked");
 
-            if($scope.selectedChart === 0) {
+            if($scope.selectedChart === undefined) {
                 return;
             }
 
@@ -188,7 +188,7 @@ angular.module('HABmin.chart', [
 
             parm.selected = 'loading';
 
-            $scope.selectedChart = parm.id;
+            $scope.selectedChart = parm;
             _displayChart(parm.id);
         };
 
