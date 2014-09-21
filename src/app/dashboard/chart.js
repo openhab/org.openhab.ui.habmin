@@ -16,7 +16,8 @@ angular.module('HABmin.chart', [
     'HABmin.chartModel',
     'HABmin.chartSave',
     'HABmin.iconModel',
-    'angular-dygraphs'
+    'angular-dygraphs',
+    'ngConfirmClick'
 ])
 
     .config(function config($stateProvider) {
@@ -33,7 +34,7 @@ angular.module('HABmin.chart', [
     })
 
     .controller('DashboardChartCtrl',
-    function DashboardChartCtrl($scope, locale, PersistenceItemModel, PersistenceServiceModel, PersistenceDataModel, ChartListModel, ChartSave, growl) {
+    function DashboardChartCtrl($scope, $modal, locale, PersistenceItemModel, PersistenceServiceModel, PersistenceDataModel, ChartListModel, ChartSave, growl) {
         var itemsLoaded = 0;
         var itemsLoading = 0;
         var newChart;
@@ -61,6 +62,8 @@ angular.module('HABmin.chart', [
             longdashdot: [20, 7, 3, 7],
             longdashdotdot: [20, 7, 3, 7, 3, 7]
         };
+
+        $scope.graphLoaded = false;
 
         $scope.selectCharts = true;
         $scope.selectedChart = 0;
@@ -449,6 +452,7 @@ angular.module('HABmin.chart', [
                 chartData.options = chartOptions;
                 console.log("Rendering chart", chartData);
                 $scope.graph = chartData;
+                $scope.graphLoaded = true;
 
                 // Update the loading icon
                 angular.forEach($scope.charts, function (chart) {

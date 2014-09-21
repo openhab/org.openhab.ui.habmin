@@ -9,5 +9,6 @@
     "close" : "Close",
     "filter": "filter...",
     "time": "Time",
-    "delete": "Delete"
+    "delete": "Delete",
+    "areYouSure": "Are You Sure?"
 }

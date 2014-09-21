@@ -4,11 +4,11 @@
 
             <!-- Split button to select items or chart mode -->
             <div class="btn-group">
-                <button type="button btn-sm" class="btn btn-default">
+                <button type="button" class="btn btn-default">
                     <span i18n="habmin.chartChartList" ng-show="selectCharts"></span>
                     <span i18n="habmin.chartItemList" ng-show="!selectCharts"></span>
                 </button>
-                <button type="button btn-sm" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                     <span class="caret"></span>
                     <span class="sr-only">Dropdown</span>
                 </button>
@@ -31,21 +31,21 @@
             </div>
 
             <div class="btn-group pull-right">
-                <button type="button btn-sm" ng-if="!selectCharts"
+                <button type="button" ng-if="!selectCharts"
                         ng-class="{'btn btn-default': true, 'disabled': !itemsSelected}">
                     <a ng-click="doChart()">
                         <span class="fa fa-play"></span>
                     </a>
                 </button>
 
-                <button type="button btn-sm" ng-if="!selectCharts"
+                <button type="button" ng-if="!selectCharts"
                         ng-class="{'btn btn-default': true, 'disabled': !itemsSelected}">
                     <a ng-click="clearList()">
                         <span class="fa fa-times"></span>
                     </a>
                 </button>
 
-                <button type="button btn-sm" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                     <span class="fa fa-cog"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
@@ -62,9 +62,13 @@
                     <li ng-if="selectCharts" ng-class="{'disabled': !selectedChart}"><a ng-click="editChart()">
                         <span i18n="habmin.chartEditChart"></span>
                     </a></li>
-                    <li ng-if="selectCharts" ng-class="{'disabled': !selectedChart}"><a ng-click="deleteChart()">
-                        <span i18n="habmin.chartDeleteChart"></span>
-                    </a></li>
+                    <li ng-if="selectCharts" ng-class="{'disabled': !selectedChart}">
+                        <a ng-confirm-click="deleteChart()"
+                           data-i18n-attr="{'ngConfirmMessage': 'habmin.chartDeleteChartCheck','ngConfirmTitle': 'habmin.chartDeleteChart','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
+                                >
+                            <span i18n="habmin.chartDeleteChart"></span>
+                        </a>
+                    </li>
                 </ul>
             </div>
 
@@ -152,5 +156,16 @@
 </div>
 
 <div class="chart-menu">
-    <span class="fa fa-minus-circle"></span>
+    <div class="btn-group-vertical">
+        <button type="button" ng-class="{'btn btn-default btn-sm': true, 'disabled': !graphLoaded}">
+            <a ng-click="doChart()">
+                <span class="fa fa-expand"></span>
+            </a>
+        </button>
+        <button type="button" ng-class="{'btn btn-default  btn-sm': true, 'disabled': !graphLoaded}">
+            <a ng-click="doChart()">
+                <span class="fa fa-calendar"></span>
+            </a>
+        </button>
+    </div>
 </div>
