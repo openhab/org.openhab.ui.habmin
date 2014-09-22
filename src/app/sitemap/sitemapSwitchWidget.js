@@ -15,8 +15,8 @@ angular.module('sitemapSwitchWidget', [
         return {
             restrict: 'E',
             template:
-                '<habmin-icon class="icon-lg" icon="{{icon}}"></habmin-icon>' +
-                '<span class="sitemap-item-text"><span ng-style="labelColor">{{label}}</span>' +
+                '<habmin-icon class="icon-lg" icon="{{widget.icon}}"></habmin-icon>' +
+                '<span class="sitemap-item-text"><span ng-style="labelColor">{{widget.label}}</span>' +
                 '<span class="pull-right" ng-style="valueColor"></span></span>' +
                 '<span class="pull-right"><toggle-switch model="value" on-label="ON" off-label="OFF"></toggle-switch></span>',
             scope: {
@@ -72,15 +72,12 @@ angular.module('sitemapSwitchWidget', [
                         }
                     }
 
-                    $scope.label = $scope.widget.label;
                     if ($scope.widget.labelcolor != null) {
                         $scope.labelColor = {color: $scope.widget.labelcolor};
                     }
                     if ($scope.widget.valuecolor) {
                         $scope.valueColor = {color: $scope.widget.valuecolor};
                     }
-
-                    $scope.icon = ImgFactory.lookupImage($scope.widget.icon);
 
                     // Keep a record of the current value so we can detect changes from the GUI
                     // and avoid changes coming from the server!

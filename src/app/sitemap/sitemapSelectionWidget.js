@@ -13,7 +13,7 @@ angular.module('sitemapSelectionWidget', [
     .directive('sitemapSelection', function () {
         return {
             restrict: 'E',
-            template: '<div><span ng-style="labelColor">{{label}}</span><span class="pull-right" ng-style="valueColor">' +
+            template: '<div><span ng-style="labelColor">{{widget.label}}</span><span class="pull-right" ng-style="valueColor">' +
                 '<div class="btn-group">' +
                     '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">' +
                     'Action <span class="caret"></span>' +

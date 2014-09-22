@@ -15,8 +15,9 @@ angular.module('sitemapSliderWidget', [
     .directive('sitemapSlider', function ($interval, ImgFactory) {
         return {
             restrict: 'E',
-            template: '<span class="sitemap-item-icon"><img ng-src="{{icon}}"></span><span class="sitemap-item-text"><span ng-style="labelColor">{{label}}</span>' +
-                '<span class="pull-right" ng-style="valueColor">{{value}}&nbsp</span></span>' +
+            template: '<habmin-icon class="icon-lg" icon="{{widget.icon}}"></habmin-icon>' +
+                '<span class="sitemap-item-text"><span ng-style="labelColor">{{widget.label}}</span>' +
+                '<span class="pull-right" ng-style="valueColor">{{widget.value}}&nbsp</span></span>' +
                 '<span class="pull-right"><toggle-switch ng-show="showSwitch" model="switchValue" on-label="ON" off-label="OFF"></toggle-switch></span>' +
                 '<div range-slider min="0" max="100" show-values="false" pin-handle="min" model-max="sliderValue"></div>',
             scope: {
@@ -120,16 +121,12 @@ angular.module('sitemapSliderWidget', [
 
                     $scope.showSwitch = $scope.widget.switchSupport;
 
-                    $scope.label = $scope.widget.label;
-                    $scope.value = $scope.widget.value;
                     if ($scope.widget.labelcolor != null) {
                         $scope.labelColor = {color: $scope.widget.labelcolor};
                     }
                     if ($scope.widget.valuecolor) {
                         $scope.valueColor = {color: $scope.widget.valuecolor};
                     }
-
-                    $scope.icon = ImgFactory.lookupImage($scope.widget.icon);
 
                     // Keep a record of the current value so we can detect changes from the GUI
                     // and avoid changes coming from the server!

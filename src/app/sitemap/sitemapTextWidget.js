@@ -13,26 +13,20 @@ angular.module('sitemapTextWidget', [
     .directive('sitemapText', function (ImgFactory) {
         return {
             restrict: 'E',
-            template: '<habmin-icon class="icon-lg" icon="{{icon}}"></habmin-icon>' +
-                '<span ng-style="labelColor">{{label}}</span>' +
-                '<span class="pull-right" ng-style="valueColor">{{value}}</span>',
+            template: '<habmin-icon class="icon-lg" icon="{{widget.icon}}"></habmin-icon>' +
+                '<span ng-style="labelColor">{{widget.label}}</span>' +
+                '<span class="pull-right" ng-style="valueColor">{{widget.value}}</span>',
             scope: {
                 itemModel: "=",
                 widget: "="
             },
             link: function ($scope, element, attrs, controller) {
-                $scope.label = $scope.widget.label;
                 if ($scope.widget.labelcolor != null) {
                     $scope.labelColor = {color: $scope.widget.labelcolor};
                 }
                 if ($scope.widget.valuecolor) {
                     $scope.valueColor = {color: $scope.widget.valuecolor};
                 }
-
-                $scope.icon = ImgFactory.lookupImage($scope.widget.icon);
-
-                $scope.label = $scope.widget.label;
-                $scope.value = $scope.widget.value;
             }
         };
     });
