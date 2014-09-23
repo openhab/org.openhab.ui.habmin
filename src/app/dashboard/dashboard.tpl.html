@@ -1,0 +1,27 @@
+<div ng-if="editMode" class="page-header">
+    <a class="pull-right btn btn-primary" ng-click="editEnd()"><i class="glyphicon glyphicon-plus"></i> End Edit</a>
+    <a class="pull-right btn btn-primary" ng-click="addWidget()"><i class="glyphicon glyphicon-plus"></i> Add Widget</a>
+    <a class="pull-right btn btn-warning" ng-click="clear()"><i class="glyphicon glyphicon-trash"></i> Clear</a>
+</div>
+<div gridster="gridsterOptions">
+    <ul>
+        <li gridster-item="widget" ng-repeat="widget in dashboard.widgets">
+            <div ng-class="{'box':true, 'box-edit':editMode}" ng-controller="CustomWidgetCtrl">
+                <div ng-if="editMode" class="box-header">
+                    <div class="box-header-btns pull-right">
+                        <a title="settings" ng-click="openSettings(widget)"><span class="fa fa-cog"></span></a>
+                        <a title="Remove widget" ng-click="remove(widget)"><span class="fa fa-trash"></span></a>
+                    </div>
+                </div>
+
+                <div class="box-content">
+                    <div style="height:145px;">
+                    <ng-dial-gauge
+                          ng-model="widget.value" options="widget.options">
+                        </ng-dial-gauge>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>

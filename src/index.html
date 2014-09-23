@@ -30,6 +30,7 @@
             </div>
             <div class="collapse navbar-collapse navbar-ex1-collapse" collapse="menuCollapsed">
                 <ul class="nav navbar-nav">
+                    <!-- DASHBOARD menu -->
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown">
                             <span class="fa fa-tachometer"></span>
@@ -53,13 +54,30 @@
                         </ul>
                     </li>
 
-                    <li>
-                        <a ui-sref="rules">
-                            <span class="fa fa-cogs"></span>
+                    <!-- AUTOMATION menu -->
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="fa fa-tachometer"></span>
                             <span i18n="habmin.mainAutomation"></span>
+                            <span class="caret"></span>
                         </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a ui-sref="rules">
+                                    <span class="fa fa-cogs"></span>
+                                    <span i18n="habmin.mainRules"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a ui-sref="scheduler">
+                                    <span class="fa fa-clock-o"></span>
+                                    <span i18n="habmin.mainScheduler"></span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
 
+                    <!-- SITEMAP menu -->
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown">
                             <span class="fa fa-sitemap"></span>
