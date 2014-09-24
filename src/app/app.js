@@ -18,6 +18,7 @@ angular.module('HABmin', [
     'HABmin.rules',
     'HABmin.sitemapModel',
     'HABmin.dashboard',
+    'HABmin.scheduler',
     'UserChartPrefs',
     'UserGeneralPrefs',
     'ui.router',

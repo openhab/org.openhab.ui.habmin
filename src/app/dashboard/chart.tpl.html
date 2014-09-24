@@ -1,6 +1,6 @@
 <div class="col-sm-4">
     <div class="panel panel-default">
-        <div class="panel-heading clearfix">
+        <div class="panel-heading">
 
             <!-- Split button to select items or chart mode -->
             <div class="btn-group">
@@ -88,8 +88,8 @@
         <div id="itemList" class="list-group habmin-list" ng-style="styleItemList()" ng-if="!selectCharts"
              resize-page>
             <div ng-if="itemsTotal" ng-repeat="choice in items | filter:filterFunction">
-                <a role="presentation" ng-hide="choice.filter" class="list-group-item"
-                   ng-class="{'active':choice.selected}"
+                <a role="presentation" ng-hide="choice.filter"
+                   ng-class="{'list-group-item': true, 'active':choice.selected}"
                    ng-click="selectItem(choice)">
                     <habmin-icon class="icon-lg" icon="{{choice.icon}}"></habmin-icon>
                     <span>{{choice.label}}</span>

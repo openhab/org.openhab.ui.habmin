@@ -27,10 +27,14 @@
     "angular-ui-ace": "bower",
     "fontawesome": "~4.2.0",
     "angular-gridster": "~0.9.18",
-    "angular-ui-calendar": "~0.8.1",
+    "angular-ui-calendar": "latest",
     "weather-icons": "~0.0.1",
     "jquery-ui": "~1.11.1",
     "angular-dialgauge": "~0.1.2",
     "tinycolor": "~1.0.0"
+  },
+  "resolutions": {
+    "moment": "~2.8.2",
+    "jquery-ui": "1.11.1"
   }
 }

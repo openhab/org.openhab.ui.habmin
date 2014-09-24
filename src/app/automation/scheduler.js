@@ -28,7 +28,7 @@ angular.module('HABmin.scheduler', [
     })
 
     .controller('AutomationSchedulerCtrl',
-    function AutomationSchedulerCtrl($scope, locale, growl, RuleModel, $timeout) {
+    function AutomationSchedulerCtrl($scope, locale, growl, RuleModel, $timeout, $window) {
         var date = new Date();
         var d = date.getDate();
         var m = date.getMonth();
@@ -120,16 +120,20 @@ angular.module('HABmin.scheduler', [
         $scope.renderCalender = function (calendar) {
             calendar.fullCalendar('render');
         };
+
+        var w = angular.element($window);
+
         /* config object */
         $scope.uiConfig = {
             calendar: {
-                height: 450,
+                height: w.height() - 95,
                 editable: true,
                 header: {
                     left: 'agendaDay,agendaWeek,month',
                     center: 'title',
                     right: 'today prev,next'
                 },
+                eventLimit: true,
                 eventClick: $scope.alertOnEventClick,
                 eventDrop: $scope.alertOnDrop,
                 eventResize: $scope.alertOnResize
@@ -164,20 +168,14 @@ angular.module('HABmin.scheduler', [
                 };
             };
             $scope.$watch($scope.getWindowDimensions, function (newValue, oldValue) {
+                if($scope.calendar !== undefined) {
+                    $scope.calendar.fullCalendar('option', 'height', newValue.h - 95);
+                }
+
                 $scope.windowHeight = newValue.h;
-                $scope.styleItemList = function () {
+                $scope.styleList = function () {
                     return {
-                        'height': (newValue.h - 225) + 'px'
-                    };
-                };
-                $scope.styleChartList = function () {
-                    return {
-                        'height': (newValue.h - 165) + 'px'
-                    };
-                };
-                $scope.styleChart = function () {
-                    return {
-                        'height': (newValue.h - 83) + 'px'
+                        'height': (newValue.h - 140) + 'px'
                     };
                 };
             }, true);

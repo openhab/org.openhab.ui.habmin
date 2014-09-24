@@ -97,7 +97,10 @@ module.exports = {
             'vendor/jquery-ui/ui/mouse.js',
             'vendor/jquery-ui/ui/draggable.js',
             'vendor/jquery-ui/ui/resizable.js',
-            'vendor/angular-dialgauge/src/angular-dialgauge.js'
+            'vendor/angular-dialgauge/src/angular-dialgauge.js',
+            'vendor/angular-ui-calendar/src/calendar.js',
+            'vendor/fullcalendar/fullcalendar.js',
+            'vendor/fullcalendar/gcal.js'
         ],
         css: [
             'vendor/angular-growl-v2/build/angular-growl.css',
@@ -106,7 +109,8 @@ module.exports = {
             'vendor/angular-toggle-switch/angular-toggle-switch-bootstrap.css',
             'vendor/jquery-ui/themes/base/core.css',
             'vendor/jquery-ui/themes/base/resizable.css',
-            'vendor/oa-font/css/style.css'
+            'vendor/oa-font/css/style.css',
+            'vendor/fullcalendar/fullcalendar.css'
         ],
         assets: [
             'vendor/oa-font/fonts/*',

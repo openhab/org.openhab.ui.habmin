@@ -1,3 +1,30 @@
-<div class="col-sm-12">
-    <div ui-calendar="uiConfig.calendar" class="span8 calendar" ng-model="eventSources" resize-page></div>
+<div class="col-sm-4">
+    <div class="panel panel-default">
+        <!-- Header -->
+        <div class="panel-heading">
+            <div class="btn-group">
+                <button type="button" class="btn btn-default">
+                    <span class="fa fa-folder-o"></span>
+                    <span i18n="common.new"></span>
+                </button>
+                <button type="button" class="btn btn-default disabled">
+                    <span class="fa fa-trash-o"></span>
+                    <span i18n="common.delete"></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Body -->
+        <div id="chartList" class="list-group habmin-list" ng-style="styleList()" resize-page>
+        </div>
+
+        <!-- Footer -->
+
+    </div>
+</div>
+
+<div class="col-sm-8">
+    <div class="panel panel-primary" style="" resize-page>
+        <div ui-calendar="uiConfig.calendar" ng-model="eventSources" calendar="calendar" resize-page></div>
+    </div>
 </div>

@@ -4,6 +4,8 @@
     "mainUserPreferences": "User Preferences",
     "mainDashboard": "Dashboard",
     "mainCharts": "Charts",
+    "mainRules": "Rules",
+    "mainScheduler": "Scheduler",
     "mainSitemaps": "Sitemaps",
     "mainAutomation": "Automation",
     "mainNoSitemaps": "No Sitemaps Available",
@@ -83,7 +85,6 @@
     "ruleSource": "Source",
     "ruleValue": "Value",
     "ruleNoRules": "No Rules Available",
-
 
     "userChartPrefTitle": "Chart Settings",
     "userChartPeriod": "Chart Period",
