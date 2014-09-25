@@ -73,14 +73,12 @@
                 </ul>
             </div>
 
-            <div id="custom-search-form" class="input-group col-xs-12" ng-if="!selectCharts">
-                <input type="text" class="search-query" placeholder={{filterDefaultString}} ng-model="filter.text"
+            <!-- FILTER BOX -->
+            <div id="custom-search-form" class="input-group input-group-sm" ng-if="!selectCharts">
+                <span class="input-group-addon"><span class=" fa fa-filter"></span></span>
+                <input type="text" class="form-control" placeholder={{filterDefaultString}} ng-model="filter.text"
                        ng-model-options="{debounce: 1000}">
-                <span class="input-group-btn">
-                    <button class="btn btn-default btn-xs" type="button" ng-click="filter.text=''">
-                        <span class="fa fa-minus-circle"></span>
-                    </button>
-                </span>
+                <span class="input-group-addon"><span class="fa fa-minus-circle"></span></span>
             </div>
         </div>
 

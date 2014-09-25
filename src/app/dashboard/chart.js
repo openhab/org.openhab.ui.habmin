@@ -625,7 +625,7 @@ angular.module('HABmin.chart', [
                 $scope.windowHeight = newValue.h;
                 $scope.styleItemList = function () {
                     return {
-                        'height': (newValue.h - 225) + 'px'
+                        'height': (newValue.h - 232) + 'px'
                     };
                 };
                 $scope.styleChartList = function () {
