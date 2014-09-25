@@ -106,8 +106,26 @@
                             </li>
                         </ul>
                     </li>
+
+                    <!-- CONFIGURATION menu -->
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="fa fa-wrench"></span>
+                            <span i18n="habmin.mainConfiguration"></span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a ui-sref="rules">
+                                    <span class="fa fa-wifi"></span>
+                                    <span i181n="habmin.mainZWave">ZWave Binding</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
 
+                <!-- USER menu -->
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown" ng-if="isLoggedIn()">
                         <a class="dropdown-toggle" data-toggle="dropdown">
