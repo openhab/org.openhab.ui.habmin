@@ -1,14 +1,10 @@
 <div class="col-sm-4">
     <div class="panel panel-default">
-        <div>
-            <ul class="nav nav-tabs" role="tablist">
-                <li ng-class="{'disabled':!isDirty}">
-                    <a>
-                        <span class="fa fa-trash-o"></span>
-                        <span i18n="common.delete"></span>
-                    </a>
-                </li>
-            </ul>
+        <div class="panel-heading">
+            <button type="button" ng-class="{'btn btn-default':true, 'disabled':!isDirty}">
+                <span class="fa fa-trash-o"></span>
+                <span i18n="common.delete"></span>
+            </button>
         </div>
 
         <div id="ruleList" class="list-group" ng-style="styleRuleList()" ng-if="!selectCharts" resize-page>
@@ -27,34 +23,29 @@
 </div>
 
 <div class="col-sm-8">
-    <div class="panel panel-primary" ng-style="styleEditor()" resize-page>
-        <ul class="nav nav-tabs" role="tablist">
-            <li ng-class="{'disabled':!isDirty}">
-                <a>
-                    <span class="fa fa-floppy-o"></span>
-                    <span i18n="common.save"></span>
-                </a>
-            </li>
-            <li ng-class="{'disabled':!isDirty}">
-                <a ng-click="ruleCancel()">
-                    <span class="fa fa-times"></span>
-                    <span i18n="common.cancel"></span>
-                </a>
-            </li>
+    <div class="panel panel-default" ng-style="styleEditor()" resize-page>
+        <div class="panel-heading">
+            <button type="button" ng-class="{'btn btn-default':true, 'disabled':!isDirty}">
+                <span class="fa fa-floppy-o"></span>
+                <span i18n="common.save"></span>
+            </button>
+            <button type="button" ng-class="{'btn btn-default':true, 'disabled':!isDirty}">
+                <span class="fa fa-times"></span>
+                <span i18n="common.cancel"></span>
+            </button>
 
-            <li ng-class="{'active':editSource==true, 'pull-right':true}">
-                <a ng-click="showSource()">
+            <div class="pull-right">
+                <button ng-class="{'btn btn-default':true, 'active':editSource==true}" ng-click="showSource()">
                     <span class="fa fa-code"></span>
                     <span i18n="habmin.ruleSource"></span>
-                </a>
-            </li>
-            <li ng-class="{'active':editSource==false, 'pull-right':true}">
-                <a ng-click="showRule()">
+                </button>
+
+                <button ng-class="{'btn btn-default':true, 'active':editSource==true}" ng-click="showRule()">
                     <span class="fa fa-puzzle-piece"></span>
                     <span i18n="habmin.ruleRule"></span>
-                </a>
-            </li>
-        </ul>
+                </button>
+            </div>
+        </div>
 
         <ng-blockly ng-show="!editSource" ng-model="blockEditor" on-change="workspaceChanged">
         </ng-blockly>
