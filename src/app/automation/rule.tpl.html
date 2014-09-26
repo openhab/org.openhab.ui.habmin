@@ -35,14 +35,13 @@
             </button>
 
             <div class="pull-right">
+                <button ng-class="{'btn btn-default':true, 'active':editSource==false}" ng-click="showRule()">
+                    <span class="fa fa-puzzle-piece"></span>
+                    <span i18n="habmin.ruleRule"></span>
+                </button>
                 <button ng-class="{'btn btn-default':true, 'active':editSource==true}" ng-click="showSource()">
                     <span class="fa fa-code"></span>
                     <span i18n="habmin.ruleSource"></span>
-                </button>
-
-                <button ng-class="{'btn btn-default':true, 'active':editSource==true}" ng-click="showRule()">
-                    <span class="fa fa-puzzle-piece"></span>
-                    <span i18n="habmin.ruleRule"></span>
                 </button>
             </div>
         </div>
