@@ -19,7 +19,9 @@ angular.module('HABmin.iconModel', [
             "chart": {class: "oa-time_graph"},
             "climate": {class: "oa-temp_control"},
             "colorwheel": {class: ""},
+            "desktop-computer": {class: "oa-it_pc"},
             "dishwasher": {class: "oa-scene_dishwasher"},
+            "door-open": {class: "oa-fts_door_open"},
             "energy": {class: "oa-measure_power"},
             "fan_control": {class: "oa-vent_ventilation_control"},
             "fan_level_0": {class: "oa-vent_ventilation_level_0"},
@@ -27,13 +29,14 @@ angular.module('HABmin.iconModel', [
             "fan_level_2": {class: "oa-vent_ventilation_level_2"},
             "fan_level_3": {class: "oa-vent_ventilation_level_3"},
             "fire": {class: "fa fire"},
-            "frontdoor": {class:"oa-fts_door_open"},
+            "frontdoor": {class: "oa-fts_door_open"},
             "garage": {class: "oa-fts_garage"},
             "garagedoor": {class: "oa-fts_garage_door_100"},
             "garden": {class: "oa-scene_garden"},
             "heating": {class: "oa-sani_heating"},
             "kitchen": {class: ""},
             "light": {class: "oa-light_light"},
+            "light-control": {class: "oa-light_control"},
             "light-off": {class: "oa-light_light_dim_00"},
             "light-on": {class: "oa-light_light_dim_100"},
             "light-0": {class: "oa-light_light_dim_00"},
@@ -50,9 +53,10 @@ angular.module('HABmin.iconModel', [
             "network": {class: "oa-it_router"},
             "outdoorlight": {class: ""},
             "raingauge": {class: "oa-weather_rain_gauge"},
+            "remote-control": {class: "oa-it_remote"},
             "slider": {class: "fa fa-sliders"},
             "socket": {class: "oa-message_socket"},
-            "switch": {class: ""},
+            "switch": {class: "oa-message_socket_on_off"},
             "temperature": {class: "oa-temp_temperature"},
             "temperature_boiler": {class: "oa-sani_boiler_temp"},
             "temperature_inside": {class: "oa-temp_inside"},
@@ -60,6 +64,7 @@ angular.module('HABmin.iconModel', [
             "temperature_min": {class: "oa-temp_temperature_min"},
             "temperature_max": {class: "oa-temp_temperature_max"},
             "weather": {class: "oa-weather_cloudy"},
+            "wifi": {class: "oa-it_wifi"},
             "wind": {class: "oa-weather_wind"},
             "zwave": {class: "oa-weather_wind"}
         };
@@ -77,9 +82,15 @@ angular.module('HABmin.iconModel', [
         return {
             template: '',
             restrict: 'E',
-            link: function(scope, element, attrs, ctrl, transclude){
+            link: function (scope, element, attrs, ctrl, transclude) {
                 var data = "<span class='" + ImgFactory.lookupImage(attrs.icon) + "'></span>";
                 element.append(data);
+
+                var el = element;
+                attrs.$observe('icon', function (val) {
+                    var data = "<span class='" + ImgFactory.lookupImage(val) + "'></span>";
+                    el.append(data);
+                });
             }
         };
     });
