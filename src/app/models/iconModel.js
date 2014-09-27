@@ -16,6 +16,7 @@ angular.module('HABmin.iconModel', [
             "baramoter": {class: "oa-weather_barometric_pressure"},
             "bath": {class: "oa-scene_bath"},
             "bedroom": {class: ""},
+            "bluetooth": {class: ""},
             "chart": {class: "oa-time_graph"},
             "climate": {class: "oa-temp_control"},
             "colorwheel": {class: ""},
@@ -66,7 +67,7 @@ angular.module('HABmin.iconModel', [
             "weather": {class: "oa-weather_cloudy"},
             "wifi": {class: "oa-it_wifi"},
             "wind": {class: "oa-weather_wind"},
-            "zwave": {class: "oa-weather_wind"}
+            "zwave": {class: "oa-it_wireless_dcf77"}
         };
 
         this.lookupImage = function (src) {
@@ -89,7 +90,8 @@ angular.module('HABmin.iconModel', [
                 var el = element;
                 attrs.$observe('icon', function (val) {
                     var data = "<span class='" + ImgFactory.lookupImage(val) + "'></span>";
-                    el.append(data);
+                    var newEl = el.find('span');
+                    newEl.replaceWith(data);
                 });
             }
         };

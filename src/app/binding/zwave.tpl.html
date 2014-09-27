@@ -2,10 +2,38 @@
     <div class="panel panel-default">
         <!-- Header -->
         <div class="panel-heading">
-            <button type="button" ng-class="{'btn btn-default':true, 'disabled':!isDirty}">
-                <span class="fa fa-trash-o"></span>
-                <span i18n="common.delete"></span>
-            </button>
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <span class="fa fa-cog"></span>
+                    <span i18n="zwave.zwaveNetworkTools"></span>
+                    <span class="caret"></span>
+                    <span class="sr-only">Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a ng-click="networkHeal()">
+                        <span class="fa fa-fw fa-ambulance"></span>
+                        <span i18n="zwave.zwaveNetworkHeal"></span>
+                    </a></li>
+                    <li role="presentation" class="divider"></li>
+                    <li><a ng-click="networkInclude()">
+                        <span class="fa fa-fw fa-sign-in"></span>
+                        <span i18n="zwave.zwaveNetworkInclude"></span>
+                    </a></li>
+                    <li><a ng-click="networkExclude()">
+                        <span class="fa fa-fw fa-sign-out"></span>
+                        <span i18n="zwave.zwaveNetworkExclude"></span>
+                    </a></li>
+                    <li role="presentation" class="divider"></li>
+                    <li><a ng-click="networkSoftReset()">
+                        <span class="fa fa-fw fa-power-off"></span>
+                        <span i18n="zwave.zwaveNetworkReset"></span>
+                    </a></li>
+                    <li><a ng-click="networkReplicate()">
+                        <span class="fa fa-fw fa-copy fa-fw"></span>
+                        <span i18n="zwave.zwaveNetworkReplicate"></span>
+                    </a></li>
+                </ul>
+            </div>
         </div>
 
         <!-- Body -->

@@ -40,14 +40,14 @@
                         <ul class="dropdown-menu" role="menu">
                             <li>
                                 <a ui-sref="chart">
-                                    <span class="fa fa-area-chart"></span>
+                                    <span class="fa fa-fw fa-area-chart"></span>
                                     <span i18n="habmin.mainCharts"></span>
                                 </a>
                             </li>
                             <li role="presentation" class="divider"></li>
                             <li>
                                 <a ui-sref="dashboard">
-                                    <span class="oa-control_building_2_s_kg"></span>
+                                    <span class="fw fa-fw oa-control_building_2_s_kg"></span>
                                     <span i18n="habmin.mainDashboard"></span>
                                 </a>
                             </li>
@@ -64,13 +64,13 @@
                         <ul class="dropdown-menu" role="menu">
                             <li>
                                 <a ui-sref="rules">
-                                    <span class="fa fa-puzzle-piece"></span>
+                                    <span class="fa fa-fw fa-puzzle-piece"></span>
                                     <span i18n="habmin.mainRules"></span>
                                 </a>
                             </li>
                             <li>
                                 <a ui-sref="scheduler">
-                                    <span class="fa fa-clock-o"></span>
+                                    <span class="fa fa-fw fa-clock-o"></span>
                                     <span i18n="habmin.mainScheduler"></span>
                                 </a>
                             </li>
@@ -100,7 +100,7 @@
                             <li role="presentation" class="divider"></li>
                             <li>
                                 <a ui-sref="sitemap.view">
-                                    <span class="glyphicon glyphicon-plus"></span>
+                                    <span class="fa fa-fw fa-plus"></span>
                                     <span i18n="habmin.mainNewSitemap"></span>
                                 </a>
                             </li>
@@ -110,21 +110,21 @@
                     <!-- CONFIGURATION menu -->
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="fa fa-wrench"></span>
+                            <span class="fa fa-fw fa-wrench"></span>
                             <span i18n="habmin.mainConfiguration"></span>
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
                             <li>
                                 <a ui-sref="rules">
-                                    <span class="fa fa-wifi"></span>
+                                    <span class="fa fa-fw fa-wifi"></span>
                                     <span i181n="habmin.mainZWave">Items</span>
                                 </a>
                             </li>
                             <li role="presentation" class="divider"></li>
                             <li ng-repeat="choice in bindings" ng-class="{'disabled': choice.disabled}">
                                 <a ui-sref="binding/zwave" ui-sref="choice.link">
-                                    <habmin-icon icon="{{choice.icon}}"></habmin-icon>
+                                    <habmin-icon class="" icon="{{choice.icon}}"></habmin-icon>
                                     <span>{{choice.name}}</span>
                                 </a>
                             </li>
@@ -136,27 +136,27 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown" ng-if="isLoggedIn()">
                         <a class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="fa fa-user"></span>
+                            <span class="fa fa-fw fa-user"></span>
                             <span i18n="habmin.mainUserPreferences"></span>
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
                             <li>
                                 <a ng-click="showUserGeneralPrefs()">
-                                    <span class="fa fa-cog"></span>
+                                    <span class="fa fa-fw fa-cog"></span>
                                     <span i18n="habmin.mainGeneralPreferences"></span>
                                 </a>
                             </li>
                             <li>
                                 <a ng-click="showUserChartPrefs()">
-                                    <span class="fa fa-pie-chart"></span>
+                                    <span class="fa fa-fw fa-pie-chart"></span>
                                     <span i18n="habmin.mainChartPreferences"></span>
                                 </a>
                             </li>
                             <li role="presentation" class="divider"></li>
                             <li>
                                 <a ui-sref="about">
-                                    <span class="fa fa-sign-out"></span>
+                                    <span class="fa fa-fw fa-sign-out"></span>
                                     <span i18n="habmin.mainLogout"></span>
                                 </a>
                             </li>
@@ -164,7 +164,7 @@
                     </li>
                     <li ng-if="!isLoggedIn()">
                         <a ui-sref="about">
-                            <span class="fa fa-user"></span>
+                            <span class="fa fa-fw fa-user"></span>
                             <span i18n="habmin.mainLogin"></span>
                         </a>
                     </li>

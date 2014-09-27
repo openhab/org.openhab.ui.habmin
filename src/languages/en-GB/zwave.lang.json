@@ -6,6 +6,12 @@
     "zwaveHealIdle": "Heal is idle",
     "zwaveHealFailed": "Last heal failed {1}",
     "zwaveHealWaiting": "Heal is waiting to run",
-    "zwaveHealRunning": "Heal is running. Current state {1} {2}"
+    "zwaveHealRunning": "Heal is running. Current state {1} {2}",
+    "zwaveNetworkTools": "Network Tools",
+    "zwaveNetworkInclude": "Add device to network",
+    "zwaveNetworkExclude": "Remove device from network",
+    "zwaveNetworkReset": "Soft reset the controller",
+    "zwaveNetworkHeal": "Heal the network",
+    "zwaveNetworkReplicate": "Replicate network from primary"
 
 }

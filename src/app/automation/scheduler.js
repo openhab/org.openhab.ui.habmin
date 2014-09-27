@@ -28,7 +28,7 @@ angular.module('HABmin.scheduler', [
     })
 
     .controller('AutomationSchedulerCtrl',
-    function AutomationSchedulerCtrl($scope, locale, growl, RuleModel, $timeout, $window) {
+    function AutomationSchedulerCtrl($scope, $sce, locale, growl, RuleModel, $timeout, $window) {
         var date = new Date();
         var d = date.getDate();
         var m = date.getMonth();
@@ -112,13 +112,17 @@ angular.module('HABmin.scheduler', [
         $scope.remove = function (index) {
             $scope.events.splice(index, 1);
         };
-        /* Change View */
-        $scope.changeView = function (view, calendar) {
-            calendar.fullCalendar('changeView', view);
+
+        // Change View
+        $scope.changeView = function (view) {
+            $scope.calendar.fullCalendar('changeView', view);
+            var x = $scope.calendar.fullCalendar('getView');
+            $scope.title = $sce.trustAsHtml(x.title);
         };
-        /* Change View */
-        $scope.renderCalender = function (calendar) {
-            calendar.fullCalendar('render');
+
+        // Step to date
+        $scope.stepDate = function (set) {
+            $scope.calendar.fullCalendar(set);
         };
 
         var w = angular.element($window);
@@ -126,19 +130,17 @@ angular.module('HABmin.scheduler', [
         /* config object */
         $scope.uiConfig = {
             calendar: {
-                height: w.height() - 95,
+                height: w.height() - 152,
                 editable: true,
-                header: {
-                    left: 'agendaDay,agendaWeek,month',
-                    center: 'title',
-                    right: 'today prev,next'
-                },
+                header: false,
+                defaultView: 'agendaWeek',
                 eventLimit: true,
                 eventClick: $scope.alertOnEventClick,
                 eventDrop: $scope.alertOnDrop,
                 eventResize: $scope.alertOnResize
             }
         };
+//        $scope.title = $scope.calendar.fullCalendar('getView');
 
         $scope.changeLang = function () {
             if ($scope.changeTo === 'Hungarian') {
@@ -169,13 +171,13 @@ angular.module('HABmin.scheduler', [
             };
             $scope.$watch($scope.getWindowDimensions, function (newValue, oldValue) {
                 if($scope.calendar !== undefined) {
-                    $scope.calendar.fullCalendar('option', 'height', newValue.h - 95);
+                    $scope.calendar.fullCalendar('option', 'height', newValue.h - 152);
                 }
 
                 $scope.windowHeight = newValue.h;
                 $scope.styleList = function () {
                     return {
-                        'height': (newValue.h - 140) + 'px'
+                        'height': (newValue.h - 141) + 'px'
                     };
                 };
             }, true);

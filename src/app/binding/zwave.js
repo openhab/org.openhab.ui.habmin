@@ -102,7 +102,7 @@ angular.module('Binding.zwave', [
                     t = locale.getString("zwave.zwaveHealWaiting");
                     break;
                 case "FAILED":
-                    t = locale.getString("zwave.zwaveHealFailed", t);
+                    t = locale.getString("zwave.zwaveHealFailed", node.healFailStage, t);
                     break;
                 case "DONE":
                     t = locale.getString("zwave.zwaveHealDone", t);
@@ -141,13 +141,15 @@ angular.module('Binding.zwave', [
                             }
                             else if (heal[0] === "DONE") {
                                 device.healState = "OK";
+                                device.healTime = heal[2];
                             }
                             else if (heal[0] === "WAITING") {
                                 device.healState = "WAIT";
                             }
                             else if (!heal[0].indexOf("FAILED")) {
                                 device.healState = "ERROR";
-                                device.healTime = heal[2];
+                                device.healFailStage = heal[2];
+                                device.healTime = heal[4];
                             }
                             else {
                                 device.healState = "RUN";
