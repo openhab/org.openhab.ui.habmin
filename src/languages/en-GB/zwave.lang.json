@@ -1,6 +1,11 @@
 {
     "zwaveErrorLoadingDevices": "Network error loading zwave device list.",
     "zwaveUnknownDevice": "Unknown device",
-    "zwaveLastSeen": "Last seen"
+    "zwaveLastSeen": "Last seen {1}",
+    "zwaveHealDone": "Last heal was successful {1}",
+    "zwaveHealIdle": "Heal is idle",
+    "zwaveHealFailed": "Last heal failed {1}",
+    "zwaveHealWaiting": "Heal is waiting to run",
+    "zwaveHealRunning": "Heal is running. Current state {1} {2}"
 
 }

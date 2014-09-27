@@ -75,12 +75,44 @@ angular.module('Binding.zwave', [
             var t = moment(node.lastUpdate);
             // If moment can parse it, then we return the time since
             // otherwise just show what the server gave us!
-            if(t.isValid) {
-                return locale.getString("zwave.zwaveLastSeen") + " " + timeAgo.inWords(t - moment());
+            if (t.isValid()) {
+                return locale.getString("zwave.zwaveLastSeen", timeAgo.inWords(t - moment()));
             }
             else {
                 return node.lastUpdate;
             }
+        };
+
+        $scope.stateHeal = function (node) {
+            // If moment can parse it, then we return the time since
+            // otherwise just show what the server gave us!
+            var t = moment(node.healTime);
+            if (node.healTime !== undefined && t.isValid()) {
+                t = timeAgo.inWords(t - moment());
+            }
+            else {
+                t = "@" + node.lastUpdate;
+            }
+
+            switch(node.healStage) {
+                case "IDLE":
+                    t = locale.getString("zwave.zwaveHealIdle");
+                    break;
+                case "WAITING":
+                    t = locale.getString("zwave.zwaveHealWaiting");
+                    break;
+                case "FAILED":
+                    t = locale.getString("zwave.zwaveHealFailed", t);
+                    break;
+                case "DONE":
+                    t = locale.getString("zwave.zwaveHealDone", t);
+                    break;
+                default:
+                    t = locale.getString("zwave.zwaveHealRunning", node.healStage, t);
+                    break;
+            }
+
+            return t;
         };
 
         function updateStatus(id) {
@@ -101,7 +133,9 @@ angular.module('Binding.zwave', [
                     // Loop through all status attributes and pull out the stuff we care about!
                     angular.forEach(data.records, function (status) {
                         if (status.name === "LastHeal") {
+                            device.healTime = undefined;
                             var heal = status.value.split(" ");
+                            device.healStage = heal[0];
                             if (heal[0] === "IDLE") {
                                 device.healState = "OK";
                             }
@@ -113,9 +147,11 @@ angular.module('Binding.zwave', [
                             }
                             else if (!heal[0].indexOf("FAILED")) {
                                 device.healState = "ERROR";
+                                device.healTime = heal[2];
                             }
                             else {
                                 device.healState = "RUN";
+                                device.healTime = heal[2];
                             }
                         }
                         if (status.name === "LastUpdated") {

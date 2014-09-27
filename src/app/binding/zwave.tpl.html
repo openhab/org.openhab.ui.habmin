@@ -20,9 +20,12 @@
                             <span ng-class="{'text-success': choice.state =='OK','text-danger': choice.state =='ERROR','text-warning': choice.state =='WARNING','text-muted': choice.state =='INITIALIZING'}">
                                 <span class="fa fa-rss"></span>
                             </span>
+                        </span>
+                        <span popover="{{stateHeal(choice)}}" popover-trigger="mouseenter" popover-placement="left"
+                              popover-append-to-body="true">
+                            <span ng-class="{'text-success': choice.healState =='RUN','text-danger': choice.healState =='ERROR','text-warning': choice.healState =='WAIT','text-muted': choice.healState =='OK'}">
+                                <span class="fa fa-ambulance"></span>
                             </span>
-                        <span ng-class="{'text-success': choice.healState =='RUN','text-danger': choice.healState =='ERROR','text-warning': choice.healState =='WAIT','text-muted': choice.healState =='OK'}">
-                            <span class="fa fa-ambulance"></span>
                         </span>
                     </span>
                     <br>
