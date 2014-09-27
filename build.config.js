@@ -100,7 +100,8 @@ module.exports = {
             'vendor/angular-dialgauge/src/angular-dialgauge.js',
             'vendor/angular-ui-calendar/src/calendar.js',
             'vendor/fullcalendar/fullcalendar.js',
-            'vendor/fullcalendar/gcal.js'
+            'vendor/fullcalendar/gcal.js',
+            'vendor/angular-timeago/src/timeAgo.js'
         ],
         css: [
             'vendor/angular-growl-v2/build/angular-growl.css',
