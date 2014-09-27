@@ -91,5 +91,7 @@
     "userChartPeriod": "Chart Period",
     "userChartLegend": "Show Legend",
 
-    "userGeneralPrefTitle": "General Settings"
+    "userGeneralPrefTitle": "General Settings",
+
+    "ruleNoDevices": "No Devices"
 }
