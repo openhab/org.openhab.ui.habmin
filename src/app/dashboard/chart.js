@@ -29,7 +29,12 @@ angular.module('HABmin.chart', [
                     templateUrl: 'dashboard/chart.tpl.html'
                 }
             },
-            data: { pageTitle: 'Charting' }
+            data: { pageTitle: 'Charting' },
+            resolve: {
+                localisations: function(locale) {
+                    return locale.ready('habmin');
+                }
+            }
         });
     })
 
