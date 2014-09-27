@@ -1,0 +1,36 @@
+<div class="col-sm-4">
+    <div class="panel panel-default">
+        <!-- Header -->
+        <div class="panel-heading">
+            <button type="button" ng-class="{'btn btn-default':true, 'disabled':!isDirty}">
+                <span class="fa fa-trash-o"></span>
+                <span i18n="common.delete"></span>
+            </button>
+        </div>
+
+        <!-- Body -->
+        <div class="list-group habmin-list" ng-style="styleList()" resize-page>
+            <div ng-repeat="choice in devices">
+                <a role="presentation" class="list-group-item" ng-click="selectRule(choice)">
+                    <habmin-icon class="icon-lg" icon="zwave"></habmin-icon>
+                    <span>{{choice.label}}</span>
+                    <span class="pull-right">
+                        <span ng-class="{'text-success': choice.state =='OK','text-danger': choice.state =='ERROR','text-warning': choice.state =='INITIALIZING'}">
+                            <span class="fa fa-rss" tooltip="{{stateOnline(choice)}}"></span>
+                        </span>
+                        <span class="text-muted">
+                            <span class="fa fa-ambulance"></span>
+                        </span>
+                    </span>
+                    <br>
+                    <span class="small">{{choice.type}}</span>
+                </a>
+            </div>
+        </div>
+        <div class="panel-footer">
+        </div>
+    </div>
+</div>
+
+<div class="col-sm-8">
+</div>

@@ -7,33 +7,43 @@
  *
  * (c) 2014 Chris Jackson (chris@cd-jackson.com)
  */
-angular.module('HABmin.ruleModel', [
+angular.module('HABmin.bindingModel', [
     'HABmin.userModel'
 ])
 
-    .service('RuleModel', function ($http, $q) {
-        this.url = '/services/habmin/config/designer';
-        this.ruleList = [];
-        this.getList = function () {
-            var tStart = new Date().getTime();
-            var deferred = $q.defer();
+    .service('BindingModel', function ($http, $q) {
+        this.url = '/services/habmin/config/bindings';
+        this.bindingList = [];
+        this.bindingCfg = {
+                zwave: {
+                    link: 'binding/zwave',
+                    icon: 'zwave'
+                }
+            },
+            this.getList = function () {
+                var tStart = new Date().getTime();
+                var deferred = $q.defer();
 
-            $http.get(this.url)
-                .success(function (data) {
-                    console.log("Fetch completed in", new Date().getTime() - tStart);
+                $http.get(this.url)
+                    .success(function (data) {
+                        console.log("Fetch completed in", new Date().getTime() - tStart);
 
-                    // Keep a local copy.
-                    // This allows us to update the data later and keeps the GUI in sync.
-                    this.ruleList = data.designs;
-                    console.log("Processing completed in", new Date().getTime() - tStart);
+                        // Keep a local copy.
+                        // This allows us to update the data later and keeps the GUI in sync.
+                        this.bindingList = data.binding;
+                        console.log("Processing completed in", new Date().getTime() - tStart);
 
-                    deferred.resolve(this.ruleList);
-                })
-                .error(function (data, status) {
-                    deferred.reject(data);
-                });
+                        deferred.resolve(this.bindingList);
+                    })
+                    .error(function (data, status) {
+                        deferred.reject(data);
+                    });
 
-            return deferred.promise;
+                return deferred.promise;
+            };
+
+        this.getBinding = function (binding) {
+            return this.bindingCfg[binding];
         };
 
         this.getRule = function (id) {
@@ -65,8 +75,8 @@ angular.module('HABmin.ruleModel', [
                         console.log("PUT completed in", new Date().getTime() - tStart);
 
                         // Update the name in the cache. This will update the GUI if needed.
-                        angular.forEach(this.chartList, function(c) {
-                            if(c.id === chart.id) {
+                        angular.forEach(this.chartList, function (c) {
+                            if (c.id === chart.id) {
                                 c.name = chart.name;
                             }
                         });

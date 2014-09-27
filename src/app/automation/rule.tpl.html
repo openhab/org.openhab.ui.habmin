@@ -1,5 +1,6 @@
 <div class="col-sm-4">
     <div class="panel panel-default">
+        <!-- Header -->
         <div class="panel-heading">
             <button type="button" ng-class="{'btn btn-default':true, 'disabled':!isDirty}">
                 <span class="fa fa-trash-o"></span>
@@ -7,7 +8,8 @@
             </button>
         </div>
 
-        <div id="ruleList" class="list-group" ng-style="styleRuleList()" ng-if="!selectCharts" resize-page>
+        <!-- Body -->
+        <div class="list-group" ng-style="styleRuleList()" ng-if="!selectCharts" resize-page>
             <div ng-repeat="choice in rules">
                 <a role="presentation" class="list-group-item" ng-click="selectRule(choice)">
                     <span>{{choice.name}}</span>
@@ -56,7 +58,7 @@
               mode: 'openhabrules',
               firstLineNumber: 5
              }"
-             ng-style="styleEditor()"> Blah blah bla....
+             ng-style="styleEditor()">
         </div>
     </div>
 </div>

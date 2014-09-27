@@ -14,8 +14,10 @@ angular.module('sitemapFrameWidget', [
         return {
             restrict: 'E',
             transclude: true,
-            template: '<div class="col-md-4"><div class="sitemap-frame-title">' +
-                '<span ng-style="labelColor">{{label}}</span>' +
+            template: '<div class="col-md-4">' +
+                '<div class="sitemap-frame-title">' +
+                '<habmin-icon class="icon-lg" icon="{{widget.icon}}"></habmin-icon>' +
+                '<span ng-style="labelColor">{{widget.label}}</span>' +
                 '<span class="pull-right" ng-style="valueColor"></span>' +
                 '</div><div class="sitemap-frame" ng-transclude></div></div>',
             scope: {
@@ -23,15 +25,12 @@ angular.module('sitemapFrameWidget', [
                 widget: "="
             },
             link: function ($scope, element, attrs, controller) {
-                $scope.label = $scope.widget.label;
                 if ($scope.widget.labelcolor != null) {
                     $scope.labelColor = {color: $scope.widget.labelcolor};
                 }
                 if ($scope.widget.valuecolor) {
                     $scope.valueColor = {color: $scope.widget.valuecolor};
                 }
-                $scope.label = $scope.widget.label;
-                $scope.value = $scope.widget.value;
             }
         };
     });

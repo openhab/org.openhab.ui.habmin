@@ -60,7 +60,8 @@ angular.module('HABmin.iconModel', [
             "temperature_min": {class: "oa-temp_temperature_min"},
             "temperature_max": {class: "oa-temp_temperature_max"},
             "weather": {class: "oa-weather_cloudy"},
-            "wind": {class: "oa-weather_wind"}
+            "wind": {class: "oa-weather_wind"},
+            "zwave": {class: "oa-weather_wind"}
         };
 
         this.lookupImage = function (src) {
