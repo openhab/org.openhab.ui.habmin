@@ -31,8 +31,9 @@ angular.module('HABmin.chart', [
             },
             data: { pageTitle: 'Charting' },
             resolve: {
+                // Make sure the localisation files are resolved before the controller runs
                 localisations: function(locale) {
-                    return locale.ready('habmin');
+                    return locale.ready('common');
                 }
             }
         });
