@@ -12,7 +12,8 @@ angular.module('Binding.zwave', [
     'ui.bootstrap',
     'ngLocalize',
     'HABmin.userModel',
-    'angular-growl'
+    'angular-growl',
+    'yaru22.angular-timeago'
 ])
 
     .config(function config($stateProvider) {
@@ -35,7 +36,7 @@ angular.module('Binding.zwave', [
     })
 
     .controller('ZwaveBindingCtrl',
-    function ZwaveBindingCtrl($scope, locale, growl, $timeout, $window, $http) {
+    function ZwaveBindingCtrl($scope, locale, growl, $timeout, $window, $http, timeAgo) {
         var url = '/services/habmin/zwave/';
         $scope.devices = [];
 
@@ -71,7 +72,15 @@ angular.module('Binding.zwave', [
             });
 
         $scope.stateOnline = function (node) {
-            return node.lastUpdate;
+            var t = moment(node.lastUpdate);
+            // If moment can parse it, then we return the time since
+            // otherwise just show what the server gave us!
+            if(t.isValid) {
+                return locale.getString("zwave.zwaveLastSeen") + " " + timeAgo.inWords(t - moment());
+            }
+            else {
+                return node.lastUpdate;
+            }
         };
 
         function updateStatus(id) {
@@ -148,7 +157,7 @@ angular.module('Binding.zwave', [
                                 case "POWER_SWITCH_BINARY":
                                     device.icon = "switch";
                                     break;
-                                case "POWER_SWITCH_MULITLEVEL":
+                                case "POWER_SWITCH_MULTILEVEL":
                                     device.icon = "light-control";
                                     break;
                                 case "ROUTING_SENSOR_BINARY":

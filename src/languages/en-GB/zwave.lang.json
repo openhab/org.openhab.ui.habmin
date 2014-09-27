@@ -1,5 +1,6 @@
 {
     "zwaveErrorLoadingDevices": "Network error loading zwave device list.",
-    "zwaveUnknownDevice": "Unknown device"
+    "zwaveUnknownDevice": "Unknown device",
+    "zwaveLastSeen": "Last seen"
 
 }
