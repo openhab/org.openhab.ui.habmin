@@ -40,6 +40,8 @@ angular.module('Binding.zwave', [
         var url = '/services/habmin/zwave/';
         $scope.devices = [];
 
+        // Get the list of nodes. Then for each node, get the static state (/info)
+        // and the dynamic status (/status)
         $http.get(url + 'nodes/')
             .success(function (data) {
                 $scope.devices = {};
@@ -115,6 +117,16 @@ angular.module('Binding.zwave', [
             t = locale.getString("zwave." + state, [t, node.healStage, node.healFailStage]);
 
             return t;
+        };
+
+        $scope.zwaveAction = function(domain, action) {
+            $http.put(url + 'action/' + domain, action)
+                .success(function (data) {
+                    growl.success(locale.getString('zwave.zwaveActionOk'));
+                })
+                .error(function (data, status) {
+                    growl.warning(locale.getString('zwave.zwaveActionError'));
+                });
         };
 
         function updateStatus(id) {
@@ -215,9 +227,7 @@ angular.module('Binding.zwave', [
                 })
                 .error(function (data, status) {
                 });
-
         }
-
     })
 
 

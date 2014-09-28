@@ -13,6 +13,8 @@
     "zwaveNetworkExclude": "Remove device from network",
     "zwaveNetworkReset": "Soft reset the controller",
     "zwaveNetworkHeal": "Heal the network",
-    "zwaveNetworkReplicate": "Replicate network from primary"
+    "zwaveNetworkReplicate": "Replicate network from primary",
+    "zwaveActionOk": "Action request sent to server",
+    "zwaveActionError": "Error sending action request to server"
 
 }

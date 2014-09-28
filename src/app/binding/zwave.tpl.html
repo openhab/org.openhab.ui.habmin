@@ -10,16 +10,16 @@
                     <span class="sr-only">Dropdown</span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a ng-click="networkHeal()">
+                    <li><a ng-click="zwaveAction('binding/network', 'Heal')">
                         <span class="fa fa-fw fa-ambulance"></span>
                         <span i18n="zwave.zwaveNetworkHeal"></span>
                     </a></li>
                     <li role="presentation" class="divider"></li>
-                    <li><a ng-click="networkInclude()">
+                    <li><a ng-click="zwaveAction('binding/network', 'Include')">
                         <span class="fa fa-fw fa-sign-in"></span>
                         <span i18n="zwave.zwaveNetworkInclude"></span>
                     </a></li>
-                    <li><a ng-click="networkExclude()">
+                    <li><a ng-click="zwaveAction('binding/network', 'Exclude')">
                         <span class="fa fa-fw fa-sign-out"></span>
                         <span i18n="zwave.zwaveNetworkExclude"></span>
                     </a></li>
