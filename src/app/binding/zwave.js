@@ -36,42 +36,10 @@ angular.module('Binding.zwave', [
     })
 
     .controller('ZwaveBindingCtrl',
-    function ZwaveBindingCtrl($scope, locale, growl, $timeout, $window, $http, timeAgo) {
+    function ZwaveBindingCtrl($scope, locale, growl, $timeout, $window, $http, timeAgo, $interval) {
         var url = '/services/habmin/zwave/';
-        $scope.devices = [];
+        $scope.devices = {};
 
-        // Get the list of nodes. Then for each node, get the static state (/info)
-        // and the dynamic status (/status)
-        $http.get(url + 'nodes/')
-            .success(function (data) {
-                $scope.devices = {};
-
-                angular.forEach(data.records, function (device) {
-                    var newDevice = {};
-                    newDevice.domain = device.domain;
-                    newDevice.label = device.label;
-                    newDevice.type = device.value;
-                    newDevice.lifeState = 0;
-                    newDevice.healState = 0;
-                    newDevice.state = device.state;
-                    newDevice.healState = "OK";
-                    newDevice.lastUpdate = "";
-
-                    if (newDevice.type === undefined) {
-                        newDevice.type = locale.getString("zwave.zwaveUnknownDevice");
-                    }
-
-                    var domain = newDevice.domain.split('/');
-                    newDevice.device = domain[1];
-                    $scope.devices[domain[1]] = newDevice;
-
-                    updateStatus(device.domain);
-                    updateInfo(device.domain);
-                });
-            })
-            .error(function (data, status) {
-                growl.warning(locale.getString('zwave.zwaveErrorLoadingDevices'));
-            });
 
         $scope.stateOnline = function (node) {
             // If moment can parse it, then we return the time since
@@ -126,6 +94,51 @@ angular.module('Binding.zwave', [
                 })
                 .error(function (data, status) {
                     growl.warning(locale.getString('zwave.zwaveActionError'));
+                });
+        };
+
+        $scope.updateNodes = function() {
+            // Get the list of nodes. Then for each node, get the static state (/info)
+            // and the dynamic status (/status)
+            $http.get(url + 'nodes/')
+                .success(function (data) {
+                    // Loop through all devices and add any new ones
+                    // TODO: Remove anything that's no longer in the list?????
+                    angular.forEach(data.records, function (device) {
+                        var domain = device.domain.split('/');
+                        var node = {};
+
+                        // If the device isn't known, then create a new entry
+                        if($scope.devices[domain[1]] === undefined) {
+                            node.device = domain[1];
+                            node.domain = device.domain;
+                            node.lifeState = 0;
+                            node.healState = 0;
+                            node.healState = "OK";
+                            node.lastUpdate = "";
+                            $scope.devices[domain[1]] = node;
+
+                            // Only request the static info if this is a new device
+                            updateInfo(node.domain);
+                        }
+                        else {
+                            node = $scope.devices[domain[1]];
+                        }
+
+                        node.label = device.label;
+                        node.type = device.value;
+                        node.state = device.state;
+
+                        if (node.type === undefined) {
+                            node.type = locale.getString("zwave.zwaveUnknownDevice");
+                        }
+
+                        // Update the dynamic info
+                        updateStatus(node.domain);
+                    });
+                })
+                .error(function (data, status) {
+                    growl.warning(locale.getString('zwave.zwaveErrorLoadingDevices'));
                 });
         };
 
@@ -255,6 +268,19 @@ angular.module('Binding.zwave', [
                 .error(function (data, status) {
                 });
         }
+
+        // Kickstart the system and get all the nodes...
+        $scope.updateNodes();
+
+        // Create a poll timer to update the data every 5 seconds
+        var pollTimer = $interval(function() {
+            $scope.updateNodes();
+        }, 5000);
+
+        $scope.$on('$destroy', function() {
+            // Make sure that the pollTimer is destroyed too
+            $interval.cancel(pollTimer);
+        });
     })
 
 
