@@ -84,12 +84,16 @@ angular.module('HABmin.iconModel', [
             template: '',
             restrict: 'E',
             link: function (scope, element, attrs, ctrl, transclude) {
-                var data = "<span class='" + ImgFactory.lookupImage(attrs.icon) + "'></span>";
+                var css = attrs.class;
+                if(css !== undefined && css.length !== 0) {
+                    css += ' ';
+                }
+                var data = "<span class='" + css + ImgFactory.lookupImage(attrs.icon) + "'></span>";
                 element.append(data);
 
                 var el = element;
                 attrs.$observe('icon', function (val) {
-                    var data = "<span class='" + ImgFactory.lookupImage(val) + "'></span>";
+                    var data = "<span class='" + css + ImgFactory.lookupImage(val) + "'></span>";
                     var newEl = el.find('span');
                     newEl.replaceWith(data);
                 });
