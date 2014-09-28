@@ -47,7 +47,7 @@
                             <li role="presentation" class="divider"></li>
                             <li>
                                 <a ui-sref="dashboard">
-                                    <span class="fw fa-fw oa-control_building_2_s_kg"></span>
+                                    <span class="fa fa-fw fa-cubes"></span>
                                     <span i18n="habmin.mainDashboard"></span>
                                 </a>
                             </li>
@@ -88,6 +88,7 @@
                             <li ng-repeat="choice in sitemaps">
                                 <a ui-sref="sitemap.view({sitemapName:'{{choice.name}}', sitemapPage:'{{choice.name}}'})"
                                    ui-sref-opts="{ reload: true }">
+                                    <habmin-icon class="fa-fw" icon="{{choice.icon}}"></habmin-icon>
                                     <span>{{choice.label}}</span>
                                 </a>
                             </li>
@@ -110,7 +111,7 @@
                     <!-- CONFIGURATION menu -->
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="fa fa-fw fa-wrench"></span>
+                            <span class="fa fa-wrench"></span>
                             <span i18n="habmin.mainConfiguration"></span>
                             <span class="caret"></span>
                         </a>
@@ -124,7 +125,7 @@
                             <li role="presentation" class="divider"></li>
                             <li ng-repeat="choice in bindings" ng-class="{'disabled': choice.disabled}">
                                 <a ui-sref="binding/zwave" ui-sref="choice.link">
-                                    <habmin-icon class="" icon="{{choice.icon}}"></habmin-icon>
+                                    <habmin-icon class="fa-fw" icon="{{choice.icon}}"></habmin-icon>
                                     <span>{{choice.name}}</span>
                                 </a>
                             </li>

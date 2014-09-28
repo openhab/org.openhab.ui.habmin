@@ -43,13 +43,13 @@
                     <habmin-icon class="icon-lg" icon="{{choice.icon}}"></habmin-icon>
                     <span>{{choice.label}}</span>
                     <span class="pull-right">
-                        <span popover="{{stateOnline(choice)}}" popover-trigger="mouseenter" popover-placement="left"
+                        <span popover="{{stateOnline(choice)}}" popover-trigger="mouseenter" popover-placement="top"
                               popover-append-to-body="true">
                             <span ng-class="{'text-success': choice.state =='OK','text-danger': choice.state =='ERROR','text-warning': choice.state =='WARNING','text-muted': choice.state =='INITIALIZING'}">
                                 <span class="fa fa-rss"></span>
                             </span>
                         </span>
-                        <span popover="{{stateHeal(choice)}}" popover-trigger="mouseenter" popover-placement="left"
+                        <span popover="{{stateHeal(choice)}}" popover-trigger="mouseenter" popover-placement="top"
                               popover-append-to-body="true">
                             <span ng-class="{'text-success': choice.healState =='RUN','text-danger': choice.healState =='ERROR','text-warning': choice.healState =='WAIT','text-muted': choice.healState =='OK'}">
                                 <span class="fa fa-ambulance"></span>

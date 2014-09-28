@@ -72,14 +72,14 @@ angular.module('Binding.zwave', [
             });
 
         $scope.stateOnline = function (node) {
-            var t = moment(node.lastUpdate);
             // If moment can parse it, then we return the time since
             // otherwise just show what the server gave us!
+            var t = moment(node.lastUpdate);
             if (t.isValid()) {
                 return locale.getString("zwave.zwaveLastSeen", timeAgo.inWords(t - moment()));
             }
             else {
-                return node.lastUpdate;
+                return locale.getString("zwave.zwaveLastSeen", node.lastUpdate);
             }
         };
 
@@ -91,26 +91,28 @@ angular.module('Binding.zwave', [
                 t = timeAgo.inWords(t - moment());
             }
             else {
-                t = "@" + node.lastUpdate;
+                t = "@" + node.healTime;
             }
 
+            var state = "zwaveHealUnknown";
             switch(node.healStage) {
                 case "IDLE":
-                    t = locale.getString("zwave.zwaveHealIdle");
+                    state = "zwaveHealIdle";
                     break;
                 case "WAITING":
-                    t = locale.getString("zwave.zwaveHealWaiting");
+                    state = "zwaveHealWaiting";
                     break;
                 case "FAILED":
-                    t = locale.getString("zwave.zwaveHealFailed", node.healFailStage, t);
+                    state = "zwaveHealFailed";
                     break;
                 case "DONE":
-                    t = locale.getString("zwave.zwaveHealDone", t);
+                    state = "zwaveHealDone";
                     break;
                 default:
-                    t = locale.getString("zwave.zwaveHealRunning", node.healStage, t);
+                    state = "zwaveHealRunning";
                     break;
             }
+            t = locale.getString("zwave." + state, [t, node.healStage, node.healFailStage]);
 
             return t;
         };
