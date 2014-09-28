@@ -14,11 +14,13 @@
     "zwaveNetworkReset": "Soft reset the controller",
     "zwaveNetworkHeal": "Heal the network",
     "zwaveNetworkReplicate": "Replicate network from primary",
-    "zwaveActionOk": "Action request sent to server",
+    "zwaveActionOk": "Action request successfully sent to server",
     "zwaveActionError": "Error sending action request to server",
     "zwaveMainsPower": "Device is mains powered.",
     "zwaveBatteryPower": "Device is battery powered.",
     "zwaveBatteryPowerLevel": "Device is battery powered. Battery level is {1}.",
-    "zwaveUnknownPower": "Device power source is unknown."
+    "zwaveUnknownPower": "Device power source is unknown.",
+    "zwaveSoftResetConfirmTitle": "Confirm Soft Reset",
+    "zwaveSoftResetConfirmMessage": "This will reset the controller. It won't change the network, and is generally safe however on some ZWave-PLUS controllers it may cause the stick to lock up."
 
 }

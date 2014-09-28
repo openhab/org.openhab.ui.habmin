@@ -24,7 +24,9 @@
                         <span i18n="zwave.zwaveNetworkExclude"></span>
                     </a></li>
                     <li role="presentation" class="divider"></li>
-                    <li><a ng-click="zwaveAction('binding/network', 'SoftReset')">
+                    <li><a ng-confirm-click="zwaveAction('binding/network', 'SoftReset')"
+                           data-i18n-attr="{'ngConfirmMessage': 'zwave.zwaveSoftResetConfirmMessage','ngConfirmTitle': 'zwave.zwaveSoftResetConfirmTitle','ngConfirmNoBtn': 'common.cancel', 'ngConfirmYesBtn': 'common.ok'}"
+                            >
                         <span class="fa fa-fw fa-power-off"></span>
                         <span i18n="zwave.zwaveNetworkReset"></span>
                     </a></li>
