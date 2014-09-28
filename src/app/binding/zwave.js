@@ -221,7 +221,7 @@ angular.module('Binding.zwave', [
     })
 
 
-    .directive('resizePage', function ($window) {
+    .directive('resizePage1', function ($window) {
         return function ($scope, element) {
             var w = angular.element($window);
             $scope.getWindowDimensions = function () {
@@ -233,7 +233,7 @@ angular.module('Binding.zwave', [
                 $scope.windowHeight = newValue.h;
                 $scope.styleList = function () {
                     return {
-                        'height': (newValue.h - 141) + 'px'
+                        'height': (newValue.h - 161) + 'px'
                     };
                 };
             }, true);
