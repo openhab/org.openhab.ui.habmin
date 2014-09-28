@@ -202,21 +202,26 @@ angular.module('Binding.zwave', [
                                 case "Mains":
                                     device.batteryIcon = "oa-battery-charge";
                                     device.batteryLevel = 100;
+                                    device.powerInfo = locale.getString("zwave.zwaveMainsPower");
                                     break;
                                 case "Battery":
-                                    var val = Number(power[1]) / 20 * 20;
-                                    if(isNaN(val)) {
+                                    var level = parseInt(power[1], 10);
+                                    if(isNaN(level)) {
                                         device.batteryIcon = "oa-battery-empty";
                                         device.batteryLevel = -1;
+                                        device.powerInfo = locale.getString("zwave.zwaveBatteryPower");
                                     }
                                     else {
-                                        device.batteryIcon = "oa-battery-" + val;
-                                        device.batteryLevel = val;
+                                        var icon = Math.floor(level / 20) * 20;
+                                        device.batteryIcon = "oa-battery-" + icon;
+                                        device.batteryLevel = level;
+                                        device.powerInfo = locale.getString("zwave.zwaveBatteryPowerLevel", level);
                                     }
                                     break;
                                 default:
                                     device.batteryIcon = "oa-battery-empty";
                                     device.batteryLevel = -1;
+                                    device.powerInfo = locale.getString("zwave.zwaveUnknownPower");
                                     break;
                             }
                         }

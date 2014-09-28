@@ -59,8 +59,11 @@
                     <br>
                     <span class="small">{{choice.type}}</span>
                     <span class="pull-right">
-                        <span ng-class="{'text-success': choice.batteryLevel>='40','text-danger': choice.batteryLevel=='0','text-warning': choice.batteryLevel =='20','text-muted': choice.batteryLevel =='-1'}">
-                            <span ng-class="choice.batteryIcon"></span>
+                        <span popover="{{choice.powerInfo}}" popover-trigger="mouseenter" popover-placement="top"
+                              popover-append-to-body="true" popover-popup-delay="500">
+                            <span ng-class="{'text-success': choice.batteryLevel>='40','text-danger': choice.batteryLevel=='0','text-warning': choice.batteryLevel =='20','text-muted': choice.batteryLevel =='-1'}">
+                                <span ng-class="choice.batteryIcon"></span>
+                            </span>
                         </span>
                     </span>
                 </a>
