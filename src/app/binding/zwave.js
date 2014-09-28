@@ -197,6 +197,28 @@ angular.module('Binding.zwave', [
                     // Loop through all info attributes and pull out the stuff we care about!
                     angular.forEach(data.records, function (status) {
                         if (status.name === "Power") {
+                            var power = status.value.split(' ');
+                            switch(power[0]) {
+                                case "Mains":
+                                    device.batteryIcon = "oa-battery-charge";
+                                    device.batteryLevel = 100;
+                                    break;
+                                case "Battery":
+                                    var val = Number(power[1]) / 20 * 20;
+                                    if(isNaN(val)) {
+                                        device.batteryIcon = "oa-battery-empty";
+                                        device.batteryLevel = -1;
+                                    }
+                                    else {
+                                        device.batteryIcon = "oa-battery-" + val;
+                                        device.batteryLevel = val;
+                                    }
+                                    break;
+                                default:
+                                    device.batteryIcon = "oa-battery-empty";
+                                    device.batteryLevel = -1;
+                                    break;
+                            }
                         }
                         if (status.name === "SpecificClass") {
                             switch (status.value) {
