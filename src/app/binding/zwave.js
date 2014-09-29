@@ -102,8 +102,11 @@ angular.module('Binding.zwave', [
             // and the dynamic status (/status)
             $http.get(url + 'nodes/')
                 .success(function (data) {
+                    // This function creates a new list each time through
+                    // I'm not sure this is the best way, but it seems the easiest
+                    // way to ensure that any deleted nodes get removed.
+                    var newList = {};
                     // Loop through all devices and add any new ones
-                    // TODO: Remove anything that's no longer in the list?????
                     angular.forEach(data.records, function (device) {
                         var domain = device.domain.split('/');
                         var node = {};
@@ -133,9 +136,13 @@ angular.module('Binding.zwave', [
                             node.type = locale.getString("zwave.zwaveUnknownDevice");
                         }
 
+                        newList[domain[1]] = node;
+
                         // Update the dynamic info
                         updateStatus(node.domain);
                     });
+
+                    $scope.devices = newList;
                 })
                 .error(function (data, status) {
                     growl.warning(locale.getString('zwave.zwaveErrorLoadingDevices'));
