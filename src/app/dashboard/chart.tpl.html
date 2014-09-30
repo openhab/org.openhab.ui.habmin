@@ -54,12 +54,16 @@
                         </a>
                     </li>
                     <li role="presentation" class="divider"></li>
-                    <li ng-if="!selectCharts" ng-class="{'disabled': !itemsSelected}"><a ng-click="saveChart()">
-                        <span i18n="habmin.chartSaveChart"></span>
-                    </a></li>
-                    <li ng-if="selectCharts" ng-class="{'disabled': !selectedChart}"><a ng-click="editChart()">
-                        <span i18n="habmin.chartEditChart"></span>
-                    </a></li>
+                    <li ng-if="!selectCharts" ng-class="{'disabled': !itemsSelected}">
+                        <a ng-click="saveChart()">
+                            <span i18n="habmin.chartSaveChart"></span>
+                        </a>
+                    </li>
+                    <li ng-if="selectCharts" ng-class="{'disabled': !selectedChart}">
+                        <a ng-click="editChart()">
+                            <span i18n="habmin.chartEditChart"></span>
+                        </a>
+                    </li>
                     <li ng-if="selectCharts" ng-class="{'disabled': !selectedChart}">
                         <a ng-confirm-click="deleteChart()"
                            data-i18n-attr="{'ngConfirmMessage': 'habmin.chartDeleteChartCheck','ngConfirmTitle': 'habmin.chartDeleteChart','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
