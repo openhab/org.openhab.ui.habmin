@@ -11,5 +11,6 @@
     "time": "Time",
     "new": "New",
     "delete": "Delete",
-    "areYouSure": "Are You Sure?"
+    "areYouSure": "Are You Sure?",
+    "loading": "loading..."
 }

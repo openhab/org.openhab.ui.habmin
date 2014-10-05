@@ -74,10 +74,10 @@ angular.module('HABmin.chart', [
         $scope.selectCharts = true;
         $scope.selectedChart = undefined;
 
-        $scope.chartsTotal = 0;
+        $scope.chartsTotal = -1;
         $scope.charts = [];
 
-        $scope.itemsTotal = 0;
+        $scope.itemsTotal = -1;
         $scope.itemsSelected = 0;
         $scope.items = [];
         $scope.services = [];
@@ -110,6 +110,7 @@ angular.module('HABmin.chart', [
             function (reason) {
                 // handle failure
                 growl.warning('Hello world ' + reason.message);
+                $scope.chartsTotal = 0;
             }
         );
 

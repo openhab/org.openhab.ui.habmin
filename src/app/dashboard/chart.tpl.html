@@ -87,7 +87,7 @@
         <!-- Display the list of items -->
         <div id="itemList" class="list-group habmin-list" ng-style="styleItemList()" ng-if="!selectCharts"
              resize-page>
-            <div ng-if="itemsTotal" ng-repeat="choice in items | filter:filterFunction">
+            <div ng-if="itemsTotal>0" ng-repeat="choice in items | filter:filterFunction">
                 <a role="presentation" ng-hide="choice.filter"
                    ng-class="{'list-group-item': true, 'active':choice.selected}"
                    ng-click="selectItem(choice)">
@@ -99,7 +99,12 @@
                 </a>
             </div>
 
-            <div ng-if="!itemsTotal" class="list-group-item text-center">
+            <!-- Cover options for loading, and no items -->
+            <div ng-if="itemsTotal==-1" class="list-group-item text-center">
+                <span class="fa fa-spin fa-refresh"></span>
+                <span i18n="common.loading"></span>
+            </div>
+            <div ng-if="itemsTotal==0" class="list-group-item text-center">
                 <span class="fa fa-exclamation-triangle"></span>
                 <span i18n="habmin.chartNoItems"></span>
             </div>
@@ -108,7 +113,7 @@
         <!-- Display the list of predefined charts -->
         <div id="chartList" class="list-group habmin-list" ng-style="styleChartList()" ng-if="selectCharts"
              resize-page>
-            <div ng-if="chartsTotal" ng-repeat="choice in charts">
+            <div ng-if="chartsTotal>0" ng-repeat="choice in charts">
                 <a role="presentation" class="list-group-item" ng-class="{'active':choice.selected=='yes'}"
                    ng-click="selectChart(choice)">
                     <habmin-icon class="icon-lg" icon="{{choice.icon}}"></habmin-icon>
@@ -119,7 +124,12 @@
                 </a>
             </div>
 
-            <div ng-if="!chartsTotal" class="list-group-item text-center">
+            <!-- Cover options for loading, and no charts -->
+            <div ng-if="chartsTotal==-1" class="list-group-item text-center">
+                <span class="fa fa-spin fa-refresh"></span>
+                <span i18n="common.loading"></span>
+            </div>
+            <div ng-if="chartsTotal==0" class="list-group-item text-center">
                 <span class="fa fa-exclamation-triangle"></span>
                 <span i18n="habmin.chartNoCharts"></span>
             </div>
