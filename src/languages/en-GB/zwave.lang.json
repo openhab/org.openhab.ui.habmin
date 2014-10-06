@@ -27,6 +27,7 @@
     "zwaveConfiguration": "Configuration Parameters",
     "zwaveAssociations": "Association Groups",
     "zwaveWakeup": "Wakeup Configuration",
-    "zwaveInformation": "Device Information"
+    "zwaveInformation": "Device Information",
+    "zwaveNoDevices": "No Devices"
 
 }

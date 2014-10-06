@@ -39,7 +39,7 @@ angular.module('Binding.zwave', [
     function ZwaveBindingCtrl($scope, locale, growl, $timeout, $window, $http, timeAgo, $interval) {
         var url = '/services/habmin/zwave/';
         $scope.devices = {};
-
+        $scope.deviceCnt = -1;
 
         $scope.stateOnline = function (node) {
             // If moment can parse it, then we return the time since
@@ -106,10 +106,13 @@ angular.module('Binding.zwave', [
                     // I'm not sure this is the best way, but it seems the easiest
                     // way to ensure that any deleted nodes get removed.
                     var newList = {};
+                    var count = 0;
+
                     // Loop through all devices and add any new ones
                     angular.forEach(data.records, function (device) {
                         var domain = device.domain.split('/');
                         var node = {};
+                        count++;
 
                         // If the device isn't known, then create a new entry
                         if($scope.devices[domain[1]] === undefined) {
@@ -143,9 +146,12 @@ angular.module('Binding.zwave', [
                     });
 
                     $scope.devices = newList;
+                    $scope.deviceCnt = count;
                 })
                 .error(function (data, status) {
                     growl.warning(locale.getString('zwave.zwaveErrorLoadingDevices'));
+                    $scope.devices = {};
+                    $scope.deviceCnt = 0;
                 });
         };
 
