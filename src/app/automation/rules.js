@@ -33,7 +33,7 @@ angular.module('HABmin.rules', [
     .controller('AutomationRuleCtrl',
     function AutomationRuleCtrl($scope, locale, growl, RuleModel, $timeout) {
         $scope.editSource = false;
-        $scope.rulesTotal = 0;
+        $scope.rulesTotal = -1;
         $scope.isDirty = false;
 
         var restoreRule = null;
@@ -45,6 +45,7 @@ angular.module('HABmin.rules', [
         RuleModel.getList().then(
             function (rules) {
                 $scope.rules = rules;
+                $scope.rulesTotal = 0;
                 if ($scope.rules != null) {
                     $scope.rulesTotal = $scope.rules.length;
                 }
@@ -52,6 +53,7 @@ angular.module('HABmin.rules', [
             function (reason) {
                 // handle failure
                 growl.warning('Hello world ' + reason.message);
+                $scope.rulesTotal = 0;
             }
         );
 
