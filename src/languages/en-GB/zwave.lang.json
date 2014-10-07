@@ -1,5 +1,5 @@
 {
-    "zwaveErrorLoadingDevices": "Network error loading zwave device list.",
+    "zwaveErrorLoadingDevices": "Network error loading ZWave device list.",
     "zwaveUnknownDevice": "Unknown device",
     "zwaveLastSeen": "Last seen {1}",
     "zwaveHealUnknown": "Heal stage is unknown ({2})",
@@ -28,6 +28,6 @@
     "zwaveAssociations": "Association Groups",
     "zwaveWakeup": "Wakeup Configuration",
     "zwaveInformation": "Device Information",
-    "zwaveNoDevices": "No Devices"
+    "zwaveNoDevices": "No Devices Found"
 
 }
