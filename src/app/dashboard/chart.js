@@ -95,7 +95,7 @@ angular.module('HABmin.chart', [
             },
             function (reason) {
                 // handle failure
-                growl.warning('Hello world ' + reason.message);
+                growl.warning(locale.getString('habmin.chartErrorGettingItems'));
             }
         );
 
@@ -109,7 +109,7 @@ angular.module('HABmin.chart', [
             },
             function (reason) {
                 // handle failure
-                growl.warning('Hello world ' + reason.message);
+                growl.warning(locale.getString('habmin.chartErrorGettingCharts'));
                 $scope.chartsTotal = 0;
             }
         );
@@ -123,7 +123,7 @@ angular.module('HABmin.chart', [
             },
             function (reason) {
                 // handle failure
-                growl.warning('Hello world ' + reason.message);
+                growl.warning(locale.getString('habmin.chartErrorGettingServices'));
             }
         );
 
@@ -286,7 +286,7 @@ angular.module('HABmin.chart', [
                 },
                 function (reason) {
                     // handle failure
-                    growl.warning('Hello world ' + reason.message);
+                    growl.warning(locale.getString('habmin.chartErrorLoadingDef'));
                 }
             );
         }

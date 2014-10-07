@@ -24,6 +24,10 @@
     "chartEditChart": "Edit Chart",
     "chartDeleteChart": "Delete Chart",
     "chartDeleteChartCheck": "Are you sure you want to delete chart '{chartname}'?",
+    "chartErrorLoadingDef": "Error loading chart!",
+    "chartErrorGettingServices": "Error getting persistence services!",
+    "chartErrorGettingCharts": "Error getting list of charts!",
+    "chartErrorGettingItems": "Error getting list of items!",
 
     "chartSaveNewName": "New Chart",
     "chartSaveChartTitle": "Save Chart",
