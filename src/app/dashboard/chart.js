@@ -285,8 +285,16 @@ angular.module('HABmin.chart', [
                     });
                 },
                 function (reason) {
-                    // handle failure
+                    // Handle failure
                     growl.warning(locale.getString('habmin.chartErrorLoadingDef'));
+
+                    // Update the loading icon
+                    // Effectively we're setting this back to no chart loaded.
+                    angular.forEach($scope.charts, function (chart) {
+                        if (chart.selected == "loading") {
+                            chart.selected = 'no';
+                        }
+                    });
                 }
             );
         }
@@ -321,6 +329,10 @@ angular.module('HABmin.chart', [
                 function (response) {
                     console.log("The item definition is: ", response);
                     _addChartItem(itemRef, response);
+                },
+                function (reason) {
+                    // Handle failure
+                    growl.warning(locale.getString('habmin.chartErrorLoadingItem', itemRef));
                 }
             );
         }

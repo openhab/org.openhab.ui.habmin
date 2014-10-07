@@ -28,6 +28,7 @@
     "chartErrorGettingServices": "Error getting persistence services!",
     "chartErrorGettingCharts": "Error getting list of charts!",
     "chartErrorGettingItems": "Error getting list of items!",
+    "chartErrorLoadingItem": "Error loading data for item '<i>{1}</i>'!",
 
     "chartSaveNewName": "New Chart",
     "chartSaveChartTitle": "Save Chart",
