@@ -13,6 +13,8 @@
     "mainConfiguration": "Configuration",
     "mainChartPreferences": "Chart Defaults",
     "mainGeneralPreferences": "General Settings",
+    "mainErrorLoadingSitemaps": "Error loading sitemap list!",
+    "mainErrorGettingBindings": "Error getting list of bindings!",
 
     "chartItemList": "Items",
     "chartChartList": "Charts",

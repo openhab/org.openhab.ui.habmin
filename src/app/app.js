@@ -76,8 +76,8 @@ angular.module('HABmin', [
                 $scope.sitemaps = data;
             },
             function (reason) {
-                // handle failure
-                growl.warning('Hello world ' + reason.message);
+                // Handle failure
+                growl.warning(locale.getString('habmin.mainErrorLoadingSitemaps'));
             }
         );
 
@@ -107,8 +107,8 @@ angular.module('HABmin', [
                 $scope.bindings = bindings;
             },
             function (reason) {
-                // handle failure
-                growl.warning('Hello world ' + reason.message);
+                // Handle failure
+                growl.warning(locale.getString("habmin.mainErrorGettingBindings"));
             }
         );
 
