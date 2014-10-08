@@ -40,6 +40,11 @@ angular.module('Binding.zwave', [
         var url = '/services/habmin/zwave/';
         $scope.devices = {};
         $scope.deviceCnt = -1;
+        $scope.devEdit = {};
+        $scope.devSel = "";
+
+        // Avoid error messages on every poll!
+        $scope.loadError = false;
 
         $scope.stateOnline = function (node) {
             // If moment can parse it, then we return the time since
@@ -51,6 +56,13 @@ angular.module('Binding.zwave', [
             else {
                 return locale.getString("zwave.zwaveLastSeen", node.lastUpdate);
             }
+        };
+
+        $scope.selectDevice = function (node) {
+            $scope.devEdit = {};
+            $scope.devEdit.device = node.device;
+            $scope.devEdit.label = node.label;
+            updateConfig(node.device);
         };
 
         $scope.stateHeal = function (node) {
@@ -65,7 +77,7 @@ angular.module('Binding.zwave', [
             }
 
             var state = "zwaveHealUnknown";
-            switch(node.healStage) {
+            switch (node.healStage) {
                 case "IDLE":
                     state = "zwaveHealIdle";
                     break;
@@ -87,7 +99,7 @@ angular.module('Binding.zwave', [
             return t;
         };
 
-        $scope.zwaveAction = function(domain, action) {
+        $scope.zwaveAction = function (domain, action) {
             $http.put(url + 'action/' + domain, action)
                 .success(function (data) {
                     growl.success(locale.getString('zwave.zwaveActionOk'));
@@ -97,7 +109,7 @@ angular.module('Binding.zwave', [
                 });
         };
 
-        $scope.updateNodes = function() {
+        $scope.updateNodes = function () {
             // Get the list of nodes. Then for each node, get the static state (/info)
             // and the dynamic status (/status)
             $http.get(url + 'nodes/')
@@ -115,7 +127,7 @@ angular.module('Binding.zwave', [
                         count++;
 
                         // If the device isn't known, then create a new entry
-                        if($scope.devices[domain[1]] === undefined) {
+                        if ($scope.devices[domain[1]] === undefined) {
                             node.device = domain[1];
                             node.domain = device.domain;
                             node.lifeState = 0;
@@ -147,9 +159,13 @@ angular.module('Binding.zwave', [
 
                     $scope.devices = newList;
                     $scope.deviceCnt = count;
+                    $scope.loadError = false;
                 })
                 .error(function (data, status) {
-                    growl.warning(locale.getString('zwave.zwaveErrorLoadingDevices'));
+                    if ($scope.loadError === false) {
+                        growl.warning(locale.getString('zwave.zwaveErrorLoadingDevices'));
+                        $scope.loadError = true;
+                    }
                     $scope.devices = {};
                     $scope.deviceCnt = 0;
                 });
@@ -224,7 +240,7 @@ angular.module('Binding.zwave', [
                     angular.forEach(data.records, function (status) {
                         if (status.name === "Power") {
                             var power = status.value.split(' ');
-                            switch(power[0]) {
+                            switch (power[0]) {
                                 case "Mains":
                                     device.batteryIcon = "oa-battery-charge";
                                     device.batteryLevel = 100;
@@ -232,7 +248,7 @@ angular.module('Binding.zwave', [
                                     break;
                                 case "Battery":
                                     var level = parseInt(power[1], 10);
-                                    if(isNaN(level)) {
+                                    if (isNaN(level)) {
                                         device.batteryIcon = "oa-battery-empty";
                                         device.batteryLevel = -1;
                                         device.powerInfo = locale.getString("zwave.zwaveBatteryPower");
@@ -282,15 +298,30 @@ angular.module('Binding.zwave', [
                 });
         }
 
+        function updateConfig(id) {
+            $http.get(url + "nodes/" + id + '/parameters/')
+                .success(function (data) {
+                    if(data.records === undefined || data.records.length === 0) {
+                        $scope.devEdit.configuration = undefined;
+                    }
+                    else {
+                        $scope.devEdit.configuration = data.records;
+                    }
+                })
+                .error(function (data, status) {
+                    $scope.devEdit.configuration = undefined;
+                });
+        }
+
         // Kickstart the system and get all the nodes...
         $scope.updateNodes();
 
         // Create a poll timer to update the data every 5 seconds
-        var pollTimer = $interval(function() {
+        var pollTimer = $interval(function () {
             $scope.updateNodes();
         }, 5000);
 
-        $scope.$on('$destroy', function() {
+        $scope.$on('$destroy', function () {
             // Make sure that the pollTimer is destroyed too
             $interval.cancel(pollTimer);
         });

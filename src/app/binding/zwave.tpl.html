@@ -1,3 +1,4 @@
+<!-- Device List -->
 <div class="col-sm-4">
     <div class="panel panel-default">
         <!-- Header -->
@@ -41,7 +42,7 @@
         <!-- Body -->
         <div class="list-group habmin-list" ng-style="styleList()" resize-page1>
             <div ng-repeat="choice in devices">
-                <a role="presentation" class="list-group-item" ng-click="selectRule(choice)">
+                <a role="presentation" ng-class="{'list-group-item':true, 'active': choice.device==devEdit.device}" ng-click="selectDevice(choice)">
                     <habmin-icon class="icon-lg" icon="{{choice.icon}}"></habmin-icon>
                     <span>{{choice.label}}</span>
                     <span class="pull-right">
@@ -89,6 +90,7 @@
     </div>
 </div>
 
+<!-- Device Configuration -->
 <div class="col-sm-8">
     <div class="panel panel-default">
         <!-- Header -->
@@ -109,17 +111,21 @@
                     </li>
                 </ul>
             </div>
+            <div class="pull-right">
+                {{devEdit.label}}
+            </div>
         </div>
 
         <!-- Body -->
         <div class="list-group habmin-list" ng-style="styleList()">
-            <div>
-                <a role="presentation" class="list-group-item" ng-click="isCollapsed = !isCollapsed">
+            <!--  -->
+            <div ng-show="devEdit.configuration">
+                <a role="presentation" class="list-group-item" ng-click="cfgCollapsed = !cfgCollapsed">
                     <span class="fa fa-fw fa-wrench"></span>
                     <span i18n="zwave.zwaveConfiguration"></span>
                 </a>
             </div>
-            <div collapse="isCollapsed">
+            <div  ng-show="devEdit.configuration" collapse="!cfgCollapsed">
                 <form class="panel-form form-horizontal" role="form">
                     <div class="form-group">
                         <label for="inputName" class="col-sm-4 control-label" i18n="habmin.chartSaveName"></label>
@@ -137,7 +143,8 @@
 
                     <div class="form-group">
                         <label for="inputPeriod" class="col-sm-4 control-label" i18n="habmin.chartSavePeriod"></label>
-                        <div class="col-sm-8">
+                        <div popover="Testing!!!" popover-trigger="mouseenter" popover-placement="left"
+                             popover-append-to-body="true" popover-popup-delay="500" class="col-sm-8">
                             <select ng-model="model.period" class="form-control" id="inputPeriod">
                                 <option value="3600" i18n="habmin.period1Hour"></option>
                                 <option value="7200" i18n="habmin.period2Hours"></option>
