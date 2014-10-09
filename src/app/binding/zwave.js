@@ -50,12 +50,11 @@ angular.module('Binding.zwave', [
             // If moment can parse it, then we return the time since
             // otherwise just show what the server gave us!
             var t = moment(node.lastUpdate);
+            var lastTime = node.lastUpdate;
             if (t.isValid()) {
-                return locale.getString("zwave.zwaveLastSeen", timeAgo.inWords(t - moment()));
+                lastTime = timeAgo.inWords(t - moment());
             }
-            else {
-                return locale.getString("zwave.zwaveLastSeen", node.lastUpdate);
-            }
+            return locale.getString("zwave.zwaveStage", [locale.getString("zwave.zwaveStage" + node.nodeStage), lastTime]);
         };
 
         $scope.selectDevice = function (node) {
@@ -212,8 +211,12 @@ angular.module('Binding.zwave', [
                                 device.healTime = heal[2];
                             }
                         }
-                        if (status.name === "LastUpdated") {
+                        else if (status.name === "LastUpdated") {
                             device.lastUpdate = status.value;
+                        }
+                        else if (status.name === "NodeStage") {
+                            var stage = status.value.split(" ");
+                            device.nodeStage = stage[0];
                         }
                     });
                 })
