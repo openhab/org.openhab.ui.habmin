@@ -125,7 +125,7 @@
                     <span i18n="zwave.zwaveConfiguration"></span>
                 </a>
             </div>
-            <div  ng-show="devEdit.configuration" collapse="!cfgCollapsed">
+            <div ng-show="devEdit.configuration" collapse="!cfgCollapsed">
                 <form class="panel-form form-horizontal" role="form">
                     <div class="form-group">
                         <label for="inputName" class="col-sm-4 control-label" i18n="habmin.chartSaveName"></label>
@@ -155,12 +155,18 @@
                 </form>
             </div>
 
-            <div>
-                <a role="presentation" class="list-group-item" ng-click="selectRule(choice)">
+            <div ng-show="devEdit.configuration">
+                <a role="presentation" class="list-group-item" ng-click="assCollapsed = !assCollapsed">
                     <span class="fa fa-fw fa-link"></span>
                     <span i18n="zwave.zwaveAssociations"></span>
                 </a>
             </div>
+            <div ng-show="devEdit.configuration" collapse="!assCollapsed">
+                <binding-config template="{{devEdit.configuration}}" ng-model="formData">
+
+                </binding-config>
+            </div>
+
             <div>
                 <a role="presentation" class="list-group-item" ng-click="selectRule(choice)">
                     <span class="fa fa-fw fa-info"></span>

@@ -13,6 +13,7 @@ angular.module('Binding.zwave', [
     'ngLocalize',
     'HABmin.userModel',
     'angular-growl',
+    'Binding.config',
     'yaru22.angular-timeago'
 ])
 
