@@ -1,4 +1,5 @@
 {
+    "zwaveNodeNumber": "Node {1}",
     "zwaveErrorLoadingDevices": "Network error loading ZWave device list.",
     "zwaveUnknownDevice": "Unknown device",
     "zwaveNetworkTools": "Network Tools",
@@ -23,8 +24,8 @@
     "zwaveInformation": "Device Information",
     "zwaveNoDevices": "No Devices Found",
     "zwaveStatusHealFailures": "Heal has failed previously.",
-    "zwaveStatusRetries": "Device has a high retry rate of {1}%.",
-    "zwaveStage": "Device is {1} and was last seen {2}.{3}",
+    "zwaveStatusRetries": "This device has a high retry rate of {1}%.",
+    "zwaveStage": "The device is {1} and was last seen {2}.{3}",
     "zwaveStageundefined": "unknown",
     "zwaveStageEMPTYNODE": "initialising",
     "zwaveStagePROTOINFO": "getting protocol information",
