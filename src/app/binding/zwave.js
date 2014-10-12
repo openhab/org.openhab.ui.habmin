@@ -55,7 +55,14 @@ angular.module('Binding.zwave', [
             if (t.isValid()) {
                 lastTime = timeAgo.inWords(t - moment());
             }
-            return locale.getString("zwave.zwaveStage", [locale.getString("zwave.zwaveStage" + node.nodeStage), lastTime]);
+
+            var status = "";
+            if(node.retryRate > 3) {
+                status += " " + locale.getString("zwave.zwaveStatusRetries", node.retryRate);
+            }
+
+            return locale.getString("zwave.zwaveStage",
+                [locale.getString("zwave.zwaveStage" + node.nodeStage), lastTime, status]);
         };
 
         $scope.selectDevice = function (node) {
@@ -167,7 +174,7 @@ angular.module('Binding.zwave', [
                     $scope.loadError = false;
 
                     // If the currently editing device is no longer available, clear the device editor
-                    if(stillEditing === false) {
+                    if (stillEditing === false) {
                         $scope.devEdit = {};
                     }
                 })
@@ -221,6 +228,17 @@ angular.module('Binding.zwave', [
                             else {
                                 device.healState = "RUN";
                                 device.healTime = heal[2];
+                            }
+                        }
+                        else if (status.name === "Packets") {
+                            var packets = status.value.split(" ");
+                            var retry = parseInt(packets[0], 10);
+                            var total = parseInt(packets[2], 10);
+                            if (isNaN(retry) || isNaN(total) || total === 0) {
+                                device.retryRate = 0;
+                            }
+                            else {
+                                device.retryRate = Math.floor(retry / total * 100);
                             }
                         }
                         else if (status.name === "LastUpdated") {
@@ -316,7 +334,7 @@ angular.module('Binding.zwave', [
         function updateConfig(id) {
             $http.get(url + "nodes/" + id + '/parameters/')
                 .success(function (data) {
-                    if(data.records === undefined || data.records.length === 0) {
+                    if (data.records === undefined || data.records.length === 0) {
                         $scope.devEdit.configuration = undefined;
                     }
                     else {
