@@ -120,11 +120,16 @@ angular.module('Binding.zwave', [
                     var newList = {};
                     var count = 0;
 
+                    var stillEditing = false;
+
                     // Loop through all devices and add any new ones
                     angular.forEach(data.records, function (device) {
                         var domain = device.domain.split('/');
                         var node = {};
                         count++;
+
+                        // If this is the currently edited device, then mark it as still available
+                        stillEditing = true;
 
                         // If the device isn't known, then create a new entry
                         if ($scope.devices[domain[1]] === undefined) {
@@ -160,6 +165,11 @@ angular.module('Binding.zwave', [
                     $scope.devices = newList;
                     $scope.deviceCnt = count;
                     $scope.loadError = false;
+
+                    // If the currently editing device is no longer available, clear the device editor
+                    if(stillEditing === false) {
+                        $scope.devEdit = {};
+                    }
                 })
                 .error(function (data, status) {
                     if ($scope.loadError === false) {
@@ -168,6 +178,7 @@ angular.module('Binding.zwave', [
                     }
                     $scope.devices = {};
                     $scope.deviceCnt = 0;
+                    $scope.devEdit = {};
                 });
         };
 
