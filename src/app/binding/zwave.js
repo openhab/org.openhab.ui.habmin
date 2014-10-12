@@ -44,8 +44,18 @@ angular.module('Binding.zwave', [
         $scope.devEdit = {};
         $scope.devSel = "";
 
+        $scope.panelDisplayed = "";
         // Avoid error messages on every poll!
         $scope.loadError = false;
+
+        $scope.showPanel = function (panel) {
+            if($scope.panelDisplayed == panel) {
+                $scope.panelDisplayed = "";
+            }
+            else {
+                $scope.panelDisplayed = panel;
+            }
+        };
 
         $scope.stateOnline = function (node) {
             // If moment can parse it, then we return the time since
