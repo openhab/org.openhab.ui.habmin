@@ -42,16 +42,14 @@ angular.module('Binding.config', [
                         newChild = angular.element('<label></label>');
                         angular.element(newChild).html(field.label);
                         newChild.attr('for', field.name);
-                        newChild.attr('class', 'col-sm-4 control-label');
+                        newChild.attr('class', 'control-label');
                         newElement.append(newChild);
 
                         newChild = angular.element('<div></div>');
                         if(field.pending === true) {
-                            newChild.attr('class', 'col-sm-8 has-warning has-feedback');
+                            newChild.attr('class', 'has-warning has-feedback');
                         }
-                        else {
-                            newChild.attr('class', 'col-sm-8');
-                        }
+                        newChild.attr('class', 'has-feedback');
 
                         switch(field.type) {
                             case "BYTE":
@@ -66,6 +64,14 @@ angular.module('Binding.config', [
                                 newInput = angular.element('<select></select>');
                                 newInput.attr('id', field.name);
                                 newInput.attr('class', 'form-control');
+                                if(field.value === undefined) {
+                                    newOption = angular.element('<option></option>');
+                                    newOption.attr('value', "");
+                                    newOption.attr('selected');
+                                    newOption.attr('disabled');
+                                    newOption.attr('hidden');
+                                    newInput.append(newOption);
+                                }
                                 angular.forEach(field.valuelist.entry, function(value){
                                     newOption = angular.element('<option></option>');
                                     newOption.attr('value', value.key);
@@ -77,16 +83,25 @@ angular.module('Binding.config', [
                                 });
                                 break;
                             default:
-                                newInput = null;
+                                newInput = angular.element('<input>');
+                                newInput.attr('id', field.name);
+                                newInput.attr('type', 'text');
+                                newInput.attr('class', 'form-control');
+                                newInput.attr('value', field.value);
                                 break;
                         }
                         if(newInput !== null) {
-                            newChild.append(newInput);
-                            if(field.pending === true) {
-                                newInput = angular.element('<span></span>');
-                                newInput.attr('class', 'fa fa-question-circle form-control-feedback');
-                                newChild.append(newInput);
+                            if(field.readonly == "true") {
+                                newInput.attr('readonly', 'true');
                             }
+
+                            // Add a feedback box.
+                            // We'll use this for pending attributes
+                            newChild.append(newInput);
+                            newInput = angular.element('<span></span>');
+                            newInput.attr('class', 'fa form-control-feedback');
+//                            newInput.attr('class', 'fa fa-question-circle form-control-feedback');
+                            newChild.append(newInput);
 
                             newElement.append(newChild);
                         }
@@ -94,25 +109,26 @@ angular.module('Binding.config', [
                     };
 
                     $scope.$watch("template", function (template) {
-                        var jsonTemplate = angular.fromJson(template);
+                        element.empty();
 
+                        var jsonTemplate = angular.fromJson(template);
                         angular.forEach(jsonTemplate, buildFields, element);
 
                         newElement = angular.element("<form></form>");
                         newElement.attr('class', "panel-form form-horizontal");
                         newElement.attr('role', "form");
-
                         newElement.attr('model', attrs.ngModel);
                         newElement.removeAttr('ng-model');
+
                         angular.forEach(element[0].classList, function (clsName) {
                             newElement[0].classList.add(clsName);
                         });
                         newElement.addClass('dynamic-form');
                         newElement.append(element.contents());
 
-                        //  Compile and update DOM
-                        $compile(newElement)($scope);
-                        element.replaceWith(newElement);
+                        // Compile and update DOM
+                        element.empty();
+                        $compile(newElement)($scope).appendTo(element);
                     });
                 }
             }
