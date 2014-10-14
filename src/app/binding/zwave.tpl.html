@@ -42,7 +42,8 @@
         <!-- Body -->
         <div class="list-group habmin-list" ng-style="styleList()" resize-page1>
             <div ng-repeat="choice in devices">
-                <a role="presentation" ng-class="{'list-group-item':true, 'active': choice.device==devEdit.device}" ng-click="selectDevice(choice)">
+                <a role="presentation" ng-class="{'list-group-item':true, 'active': choice.device==devEdit.device}"
+                   ng-click="selectDevice(choice)">
                     <habmin-icon class="icon-lg" icon="{{choice.icon}}"></habmin-icon>
                     <span>{{choice.label}}</span>
                     <span class="pull-right">
@@ -96,7 +97,9 @@
         <!-- Header -->
         <div class="panel-heading">
             <div class="btn-group">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <button type="button" ng-class="{'disabled': !devEdit.label}"
+                        class="btn btn-default dropdown-toggle"
+                        data-toggle="dropdown">
                     <span class="fa fa-cog"></span>
                     <span i18n="zwave.zwaveDeviceTools"></span>
                     <span class="caret"></span>
@@ -109,16 +112,37 @@
                             <span i18n="zwave.zwaveDeviceHeal"></span>
                         </a>
                     </li>
+                    <li>
+                        <a ng-click="zwaveAction('binding/network', 'Heal')">
+                            <span class="fa fa-fw fa-trash-o"></span>
+                            <span i18n="zwave.zwaveDeviceKill"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a ng-click="zwaveAction('binding/network', 'Heal')">
+                            <span class="fa fa-fw fa-refresh"></span>
+                            <span i18n="zwave.zwaveDeviceRefresh"></span>
+                        </a>
+                    </li>
                 </ul>
+                <button type="button" ng-class="{'btn btn-default':true, 'disabled':!isDirty}">
+                    <span class="fa fa-floppy-o"></span>
+                    <span i18n="common.save"></span>
+                </button>
+                <button type="button" ng-class="{'btn btn-default':true, 'disabled':!isDirty}">
+                    <span class="fa fa-times"></span>
+                    <span i18n="common.cancel"></span>
+                </button>
             </div>
-            <div class="pull-right">
-                {{devEdit.label}}
+            <div ng-hide="!devEdit.label" class="btn-group pull-right">
+                <div class="text-right">{{devEdit.label}}</div>
+                <div class="text-right small">{{devEdit.label}}, {{devEdit.type}}</div>
             </div>
         </div>
 
         <!-- Body -->
         <div class="list-group habmin-list" ng-style="styleList()">
-            <!--  -->
+            <!-- CONFIGURATION -->
             <div ng-show="devEdit.configuration">
                 <a role="presentation" class="list-group-item" ng-click="showPanel('CONFIG')">
                     <span class="fa fa-fw fa-wrench"></span>
@@ -126,37 +150,85 @@
                 </a>
             </div>
             <div ng-show="devEdit.configuration" collapse="panelDisplayed!='CONFIG'">
-                <binding-config template="{{devEdit.configuration}}" ng-model="formData">
+                <binding-config template="{{devEdit.configuration}}">
                 </binding-config>
             </div>
 
+            <!-- ASSOCIATIONS -->
             <div ng-show="devEdit.associations">
                 <a role="presentation" class="list-group-item" ng-click="showPanel('ASSOC')">
                     <span class="fa fa-fw fa-link"></span>
                     <span i18n="zwave.zwaveAssociations"></span>
                 </a>
             </div>
-                <binding-config template="{{devEdit.configuration}}" ng-model="formData">
-
             <div ng-show="devEdit.associations" collapse="panelDisplayed!='ASSOC'">
+                <binding-config template="{{devEdit.associations}}">
                 </binding-config>
             </div>
 
-            <div>
+            <!-- WAKEUP -->
+            <div ng-show="devEdit.wakeup">
                 <a role="presentation" class="list-group-item" ng-click="showPanel('WAKE')">
                     <span class="fa fa-fw fa-moon-o"></span>
                     <span i18n="zwave.zwaveWakeup"></span>
                 </a>
-                <div ng-show1="devEdit.associations" collapse="panelDisplayed!='WAKE'">
-                </div>
             </div>
-            <div>
+            <div ng-show="devEdit.wakeup" collapse="panelDisplayed!='WAKE'">
+                <binding-config template="{{devEdit.wakeup}}">
+                </binding-config>
+            </div>
+
+            <!-- INFORMATION -->
+            <div ng-show="devEdit.information">
                 <a role="presentation" class="list-group-item" ng-click="showPanel('INFO')">
                     <span class="fa fa-fw fa-info"></span>
                     <span i18n="zwave.zwaveInformation"></span>
                 </a>
-                <div ng-show1="devEdit.associations" collapse="panelDisplayed!='INFO'">
-                </div>
+            </div>
+            <div ng-show="devEdit.information" collapse="panelDisplayed!='INFO'">
+                <binding-config template="{{devEdit.information}}" ng-model="formData">
+                </binding-config>
+            </div>
+
+            <!-- TEST!!!!!!!!!!!!!!!!!!!! -->
+            <div>
+                <a role="presentation" class="list-group-item" ng-click="showPanel('TEST')">
+                    <span class="fa fa-fw fa-paw"></span>
+                    <span>TESTING AREA</span>
+                </a>
+            </div>
+            <div collapse="panelDisplayed!='TEST'">
+
+                <form class="panel-form form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="control-label" i18n="habmin.chartSaveAxesLabel"></label>
+
+                        <div>
+                            <multiselect style="width: 100%"
+                                         class="input-xlarge"
+                                         multiple="true"
+                                         ng-model="selectedCar"
+                                         search="true"
+                                         options="c.name for c in cars"
+                                         change="selected()">
+                            </multiselect>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" i18n="habmin.chartSaveAxesLabel"></label>
+
+                        <div>
+                            <multiselect style="width: 100%"
+                                         class="input-xlarge"
+                                         multiple="false"
+                                         ng-model="selectedCar"
+                                         search="true"
+                                         options="c.name for c in cars"
+                                         change="selected()">
+                            </multiselect>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
 

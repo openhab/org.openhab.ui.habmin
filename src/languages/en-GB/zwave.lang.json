@@ -64,6 +64,8 @@
     "zwaveHealGETNEIGHBORS": "getting neighbours",
     "zwaveHealSAVE": "saving data",
     "zwaveHealDONE": "done",
-    "zwaveHealFAILED": "failed"
+    "zwaveHealFAILED": "failed",
+    "zwaveDeviceKill": "Delete failed node",
+    "zwaveDeviceRefresh": "Refresh device configuration"
 
 }
