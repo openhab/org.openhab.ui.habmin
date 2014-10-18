@@ -14,7 +14,8 @@ angular.module('Binding.zwave', [
     'HABmin.userModel',
     'angular-growl',
     'Binding.config',
-    'yaru22.angular-timeago'
+    'yaru22.angular-timeago',
+    'ui.multiselect'
 ])
 
     .config(function config($stateProvider) {
@@ -42,9 +43,14 @@ angular.module('Binding.zwave', [
         $scope.devices = {};
         $scope.deviceCnt = -1;
         $scope.devEdit = {};
-        $scope.devSel = "";
-
         $scope.panelDisplayed = "";
+
+        $scope.cars = [
+            {id: 1, name: 'Audi'},
+            {id: 2, name: 'BMW'},
+            {id: 1, name: 'Honda'}
+        ];
+        $scope.selectedCar = [];
         // Avoid error messages on every poll!
         $scope.loadError = false;
 
@@ -79,7 +85,15 @@ angular.module('Binding.zwave', [
             $scope.devEdit = {};
             $scope.devEdit.device = node.device;
             $scope.devEdit.label = node.label;
+            $scope.devEdit.type = node.type;
+
+            // Close the panels
+            $scope.panelDisplayed = "";
+
+            // Update information
             updateConfig(node.device);
+            updateAssociations(node.device);
+            updateInfo(node.device);
         };
 
         $scope.stateHeal = function (node) {
@@ -159,7 +173,7 @@ angular.module('Binding.zwave', [
                             $scope.devices[domain[1]] = node;
 
                             // Only request the static info if this is a new device
-                            updateInfo(node.domain);
+                            updateInfo(node.device);
                         }
                         else {
                             node = $scope.devices[domain[1]];
@@ -176,7 +190,7 @@ angular.module('Binding.zwave', [
                         newList[domain[1]] = node;
 
                         // Update the dynamic info
-                        updateStatus(node.domain);
+                        updateStatus(node.device);
                     });
 
                     $scope.devices = newList;
@@ -200,7 +214,7 @@ angular.module('Binding.zwave', [
         };
 
         function updateStatus(id) {
-            $http.get(url + id + 'status/')
+            $http.get(url + "nodes/" + id + '/status/')
                 .success(function (data) {
                     if (data.records === undefined) {
                         return;
@@ -265,7 +279,7 @@ angular.module('Binding.zwave', [
         }
 
         function updateInfo(id) {
-            $http.get(url + id + 'info/')
+            $http.get(url + "nodes/" + id + '/info/')
                 .success(function (data) {
                     if (data.records === undefined) {
                         return;
@@ -273,6 +287,11 @@ angular.module('Binding.zwave', [
                     if (data.records[0] === undefined) {
                         return;
                     }
+
+                    if($scope.devEdit.device == id) {
+                        $scope.devEdit.information = data.records;
+                    }
+
                     var domain = data.records[0].domain.split('/');
                     var device = $scope.devices[domain[1]];
                     if (device === null) {
@@ -338,6 +357,7 @@ angular.module('Binding.zwave', [
                     });
                 })
                 .error(function (data, status) {
+                    $scope.devEdit.information = undefined;
                 });
         }
 
@@ -353,6 +373,21 @@ angular.module('Binding.zwave', [
                 })
                 .error(function (data, status) {
                     $scope.devEdit.configuration = undefined;
+                });
+        }
+
+        function updateAssociations(id) {
+            $http.get(url + "nodes/" + id + '/associations/')
+                .success(function (data) {
+                    if (data.records === undefined || data.records.length === 0) {
+                        $scope.devEdit.associations = undefined;
+                    }
+                    else {
+                        $scope.devEdit.associations = data.records;
+                    }
+                })
+                .error(function (data, status) {
+                    $scope.devEdit.associations = undefined;
                 });
         }
 
