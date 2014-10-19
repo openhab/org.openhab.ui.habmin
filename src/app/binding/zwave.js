@@ -516,7 +516,7 @@ angular.module('Binding.zwave', [
                     newNode.level = 0;
                 }
                 else {
-                    newNode.level = 5;
+                    newNode.level = -1;
                 }
 //                newNode.level = getMinimumHops(device.device, root);
 //                if(newNode.level == null || newNode.level > 4) {
@@ -618,6 +618,21 @@ angular.module('Binding.zwave', [
                     }
                 });
             }
+
+            var maxLevel = 0;
+            angular.forEach(nodes, function (node) {
+                if(node.level > maxLevel) {
+                    maxLevel = node.level;
+                }
+            });
+
+            maxLevel += 1;
+            angular.forEach(nodes, function (node) {
+                if(node.level == -1) {
+                    node.level = maxLevel;
+                }
+            });
+
 
             console.log("Setting network options");
             $scope.networkOptions = {
