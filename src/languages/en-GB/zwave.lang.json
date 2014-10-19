@@ -31,7 +31,7 @@
     "zwaveStagePROTOINFO": "getting protocol information",
     "zwaveStagePING": "being pinged",
     "zwaveStageWAKEUP": "waiting for wakeup",
-    "zwaveStageDETAILS": "",
+    "zwaveStageDETAILS": "getting node details",
     "zwaveStageMANSPEC01": "getting manufacturer information",
     "zwaveStageMANSPEC02": "getting manufacturer information",
     "zwaveStageVERSION": "getting version information",
