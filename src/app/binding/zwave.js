@@ -432,75 +432,7 @@ angular.module('Binding.zwave', [
             $interval.cancel(pollTimer);
         });
 
-        var itts = 0;
-
-        function getMinimumHops(root, device, hops) {
-            itts++;
-            if (hops === undefined) {
-                hops = 0;
-            }
-            if (hops >= 5) {
-                return null;
-            }
-
-//            console.log(itts,hops,root, device);
-
-            if (root == device) {
-                return hops;
-            }
-
-            // Get this device
-            var d = $scope.devices[root];
-            if (d === undefined) {
-                return null;
-            }
-            var neighbors = d.neighbors;
-            var hopsFromHere = null;
-            // Loop through all the devices neighbours looking for 'root'
-            /*           angular.forEach(neighbors, function (neighbor) {
-             if(root == neighbor.name) {
-             hopsFromHere = 1;
-             }
-             });
-             if(hopsFromHere !== null) {
-             return hops + hopsFromHere;
-             }*/
-
-            angular.forEach(neighbors, function (neighbor) {
-                var cnt = getMinimumHops(neighbor.name, device, hops + 1);
-                if (cnt !== null && (hopsFromHere === null || cnt < hopsFromHere)) {
-                    hopsFromHere = cnt;
-                }
-            });
-
-            if (hopsFromHere == null) {
-                return null;
-            }
-            console.log("Returning", hops + hopsFromHere);
-            return hops + hopsFromHere;
-        }
-
-        function getHops(root, device, hops) {
-
-            // Get this device
-            var d = $scope.devices[root];
-            if (d === undefined) {
-                return null;
-            }
-            var neighbors = d.neighbors;
-            var hopsFromHere = null;
-            angular.forEach(neighbors, function (neighbor) {
-                var cnt = getMinimumHops(neighbor.name, device, hops + 1);
-                if (cnt !== null && (hopsFromHere === null || cnt < hopsFromHere)) {
-                    hopsFromHere = cnt;
-                }
-            });
-
-        }
-
         function createNetworkMap(root) {
-//            getMinimumHops("node10", "node33");
-
             var nodes = [];
             var edges = [];
             angular.forEach($scope.devices, function (device) {
@@ -518,11 +450,6 @@ angular.module('Binding.zwave', [
                 else {
                     newNode.level = -1;
                 }
-//                newNode.level = getMinimumHops(device.device, root);
-//                if(newNode.level == null || newNode.level > 4) {
-//                    newNode.level= 5;
-//                }
-                console.log("Number of hops from", root, "to", device.device, "is", newNode.level);
 
                 newNode.borderWidth = 2;    // TODO: put this in general options?
                 newNode.color = {};
@@ -633,7 +560,6 @@ angular.module('Binding.zwave', [
                 }
             });
 
-
             console.log("Setting network options");
             $scope.networkOptions = {
                 hierarchicalLayout: {
@@ -642,7 +568,7 @@ angular.module('Binding.zwave', [
                     direction: "UD"
                 },
                 width: '100%',
-                height: '250px',
+                height: '100%',
                 edges: {
                     color: '#ffffff',
                     width: 5
@@ -652,7 +578,6 @@ angular.module('Binding.zwave', [
             console.log("Setting network data", angular.toJson({nodes: nodes, edges: edges}));
             $scope.networkNodes = {nodes: nodes, edges: edges};
             console.log("Setting network options DONE");
-//            return {nodes: nodes, edges: edges};
         }
     })
 
