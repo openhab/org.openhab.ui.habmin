@@ -141,7 +141,14 @@
         </div>
 
         <!-- Body -->
-        <div class="list-group habmin-list" ng-style="styleList()">
+        <div ng-style="styleList()">
+            <vis ng-transclude>
+                <vis-network data="networkNodes" options="networkOptions" events="networkEvents"></vis-network>
+            </vis>
+        </div>
+
+
+        <div ng-show="false" class="list-group habmin-list" ng-style="styleList()">
             <!-- CONFIGURATION -->
             <div ng-show="devEdit.configuration">
                 <a role="presentation" class="list-group-item" ng-click="showPanel('CONFIG')">

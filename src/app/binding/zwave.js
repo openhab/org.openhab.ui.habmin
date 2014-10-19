@@ -15,7 +15,8 @@ angular.module('Binding.zwave', [
     'angular-growl',
     'Binding.config',
     'yaru22.angular-timeago',
-    'ui.multiselect'
+    'ui.multiselect',
+    'ngVis'
 ])
 
     .config(function config($stateProvider) {
@@ -55,7 +56,7 @@ angular.module('Binding.zwave', [
         $scope.loadError = false;
 
         $scope.showPanel = function (panel) {
-            if($scope.panelDisplayed == panel) {
+            if ($scope.panelDisplayed == panel) {
                 $scope.panelDisplayed = "";
             }
             else {
@@ -73,7 +74,7 @@ angular.module('Binding.zwave', [
             }
 
             var status = "";
-            if(node.retryRate > 3) {
+            if (node.retryRate > 3) {
                 status += " " + locale.getString("zwave.zwaveStatusRetries", node.retryRate);
             }
 
@@ -94,6 +95,8 @@ angular.module('Binding.zwave', [
             updateConfig(node.device);
             updateAssociations(node.device);
             updateInfo(node.device);
+
+            createNetworkMap(node.device);
         };
 
         $scope.stateHeal = function (node) {
@@ -174,6 +177,7 @@ angular.module('Binding.zwave', [
 
                             // Only request the static info if this is a new device
                             updateInfo(node.device);
+                            updateNeighbors(node.device);
                         }
                         else {
                             node = $scope.devices[domain[1]];
@@ -268,6 +272,10 @@ angular.module('Binding.zwave', [
                         else if (status.name === "LastUpdated") {
                             device.lastUpdate = status.value;
                         }
+                        else if (status.name === "Dead") {
+                            var dead = status.value.split(" ");
+                            device.dead = dead[0];
+                        }
                         else if (status.name === "NodeStage") {
                             var stage = status.value.split(" ");
                             device.nodeStage = stage[0];
@@ -288,7 +296,7 @@ angular.module('Binding.zwave', [
                         return;
                     }
 
-                    if($scope.devEdit.device == id) {
+                    if ($scope.devEdit.device == id) {
                         $scope.devEdit.information = data.records;
                     }
 
@@ -302,6 +310,7 @@ angular.module('Binding.zwave', [
                     angular.forEach(data.records, function (status) {
                         if (status.name === "Power") {
                             var power = status.value.split(' ');
+                            device.power = power[0];
                             switch (power[0]) {
                                 case "Mains":
                                     device.batteryIcon = "oa-battery-charge";
@@ -391,6 +400,25 @@ angular.module('Binding.zwave', [
                 });
         }
 
+        function updateNeighbors(id) {
+            $http.get(url + "nodes/" + id + '/neighbors/')
+                .success(function (data) {
+                    if (data.records === undefined || data.records.length === 0) {
+                        return;
+                    }
+                    var domain = data.records[0].domain.split('/');
+                    var device = $scope.devices[domain[1]];
+                    if (device === null) {
+                        return;
+                    }
+                    else {
+                        device.neighbors = data.records;
+                    }
+                })
+                .error(function (data, status) {
+                });
+        }
+
         // Kickstart the system and get all the nodes...
         $scope.updateNodes();
 
@@ -403,6 +431,214 @@ angular.module('Binding.zwave', [
             // Make sure that the pollTimer is destroyed too
             $interval.cancel(pollTimer);
         });
+
+        var itts = 0;
+
+        function getMinimumHops(root, device, hops) {
+            itts++;
+            if (hops === undefined) {
+                hops = 0;
+            }
+            if (hops >= 5) {
+                return null;
+            }
+
+//            console.log(itts,hops,root, device);
+
+            if (root == device) {
+                return hops;
+            }
+
+            // Get this device
+            var d = $scope.devices[root];
+            if (d === undefined) {
+                return null;
+            }
+            var neighbors = d.neighbors;
+            var hopsFromHere = null;
+            // Loop through all the devices neighbours looking for 'root'
+            /*           angular.forEach(neighbors, function (neighbor) {
+             if(root == neighbor.name) {
+             hopsFromHere = 1;
+             }
+             });
+             if(hopsFromHere !== null) {
+             return hops + hopsFromHere;
+             }*/
+
+            angular.forEach(neighbors, function (neighbor) {
+                var cnt = getMinimumHops(neighbor.name, device, hops + 1);
+                if (cnt !== null && (hopsFromHere === null || cnt < hopsFromHere)) {
+                    hopsFromHere = cnt;
+                }
+            });
+
+            if (hopsFromHere == null) {
+                return null;
+            }
+            console.log("Returning", hops + hopsFromHere);
+            return hops + hopsFromHere;
+        }
+
+        function getHops(root, device, hops) {
+
+            // Get this device
+            var d = $scope.devices[root];
+            if (d === undefined) {
+                return null;
+            }
+            var neighbors = d.neighbors;
+            var hopsFromHere = null;
+            angular.forEach(neighbors, function (neighbor) {
+                var cnt = getMinimumHops(neighbor.name, device, hops + 1);
+                if (cnt !== null && (hopsFromHere === null || cnt < hopsFromHere)) {
+                    hopsFromHere = cnt;
+                }
+            });
+
+        }
+
+        function createNetworkMap(root) {
+//            getMinimumHops("node10", "node33");
+
+            var nodes = [];
+            var edges = [];
+            angular.forEach($scope.devices, function (device) {
+                console.log("Processing", device.device);
+                if (device.neighbors === undefined) {
+                    console.log("No neighbors for ", device.device);
+                }
+                // Add the node
+                var newNode = {};
+                newNode.id = device.device;
+                newNode.label = device.label;
+                if (root === device.device) {
+                    newNode.level = 0;
+                }
+                else {
+                    newNode.level = 5;
+                }
+//                newNode.level = getMinimumHops(device.device, root);
+//                if(newNode.level == null || newNode.level > 4) {
+//                    newNode.level= 5;
+//                }
+                console.log("Number of hops from", root, "to", device.device, "is", newNode.level);
+
+                newNode.borderWidth = 2;    // TODO: put this in general options?
+                newNode.color = {};
+
+                if (device.power == "Battery") {
+                    newNode.color.background = "grey";
+                }
+                switch (device.state) {
+                    case "OK":
+                        newNode.color.border = "green";
+                        break;
+                    case "WARNING":
+                        newNode.color.border = "orange";
+                        break;
+                    case "ERROR":
+                        newNode.color.border = "red";
+                        break;
+                }
+
+                nodes.push(newNode);
+
+                // Add all the neighbour routes
+                angular.forEach(device.neighbors, function (neighbor) {
+                    // Check if the route exists and mark it as bidirectional
+                    var found = false;
+                    angular.forEach(edges, function (edge) {
+                        if (edge.from == neighbor.name && edge.to == device.device) {
+                            edge.color = "green";
+                            edge.style = "line";
+                            edge.width = 3;
+
+                            found = true;
+                        }
+                    });
+                    if(found === false) {
+                        var newEdge = {};
+                        newEdge.from = device.device;
+                        newEdge.to = neighbor.name;
+                        newEdge.color = "red";
+                        newEdge.style = "arrow";
+                        newEdge.width = 1;
+                        edges.push(newEdge);
+                    }
+                });
+            });
+
+            var doneNodes = [];
+            doneNodes.push(root);
+
+            // Add all the neighbors from the root
+            var rootDevice = $scope.devices[root];
+            if (rootDevice === undefined) {
+                return;
+            }
+            // Check the root devices neighbors
+            angular.forEach(rootDevice.neighbors, function (neighbor) {
+                setNodeLevel(neighbor.name, 1);
+            });
+
+            for (var level = 1; level < 5; level++) {
+                checkNodeLevel(level);
+            }
+
+            function checkNodeLevel(level) {
+                angular.forEach(nodes, function (node) {
+                    if (node.level !== level) {
+                        return;
+                    }
+
+                    // Get this device
+                    var device = $scope.devices[node.id];
+                    if (device === undefined) {
+                        return;
+                    }
+                    // Check this devices neighbors
+                    var neighbors = device.neighbors;
+                    angular.forEach(neighbors, function (neighbor) {
+                        // Is this node already set?
+                        if (doneNodes.indexOf(neighbor.name) != -1) {
+                            return;
+                        }
+
+                        setNodeLevel(neighbor.name, level + 1);
+                    });
+                });
+            }
+
+            function setNodeLevel(nodeId, level) {
+                angular.forEach(nodes, function (node) {
+                    if (node.id == nodeId) {
+                        node.level = level;
+                        doneNodes.push(nodeId);
+                    }
+                });
+            }
+
+            console.log("Setting network options");
+            $scope.networkOptions = {
+                hierarchicalLayout: {
+                    enabled: true,
+                    layout: "direction",
+                    direction: "UD"
+                },
+                width: '100%',
+                height: '250px',
+                edges: {
+                    color: '#ffffff',
+                    width: 5
+                },
+                dragNodes: false
+            };
+            console.log("Setting network data", angular.toJson({nodes: nodes, edges: edges}));
+            $scope.networkNodes = {nodes: nodes, edges: edges};
+            console.log("Setting network options DONE");
+//            return {nodes: nodes, edges: edges};
+        }
     })
 
 
@@ -429,3 +665,6 @@ angular.module('Binding.zwave', [
         };
     })
 ;
+
+
+

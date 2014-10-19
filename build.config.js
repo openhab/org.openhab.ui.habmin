@@ -101,7 +101,8 @@ module.exports = {
             'vendor/angular-ui-calendar/src/calendar.js',
             'vendor/fullcalendar/fullcalendar.js',
             'vendor/fullcalendar/gcal.js',
-            'vendor/angular-timeago/src/timeAgo.js'
+            'vendor/angular-timeago/src/timeAgo.js',
+            'vendor/vis/dist/vis.js'
         ],
         css: [
             'vendor/angular-growl-v2/build/angular-growl.css',
@@ -111,7 +112,8 @@ module.exports = {
             'vendor/jquery-ui/themes/base/core.css',
             'vendor/jquery-ui/themes/base/resizable.css',
             'vendor/oa-font/css/style.css',
-            'vendor/fullcalendar/fullcalendar.css'
+            'vendor/fullcalendar/fullcalendar.css',
+            'vendor/vis/dist/vis.css'
         ],
         assets: [
             'vendor/oa-font/fonts/*',
