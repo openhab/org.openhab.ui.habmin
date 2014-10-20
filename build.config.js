@@ -64,7 +64,7 @@ module.exports = {
         js: [
             'vendor/jquery/dist/jquery.js',
             'vendor/angular/angular.js',
-            'vendor/angular-http-auth/http-auth-interceptor.js',
+            'vendor/angular-http-auth/src/http-auth-interceptor.js',
             'vendor/angular-animate/angular-animate.js',
             'vendor/angular-resource/angular-resource.js',
             'vendor/angular-sanitize/angular-sanitize.js',
