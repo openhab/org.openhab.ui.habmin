@@ -107,6 +107,19 @@
                 </button>
                 <ul class="dropdown-menu" role="menu">
                     <li>
+                        <a ng-click="setView('CONFIG')">
+                            <span class="fa fa-fw fa-wrench"></span>
+                            <span i18n="zwave.zwaveDeviceConfiguration"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a ng-click="setView('NETWORK')">
+                            <span class="fa fa-fw fa-sitemap"></span>
+                            <span i18n="zwave.zwaveDeviceNetworkDiagram"></span>
+                        </a>
+                    </li>
+                    <li role="presentation" class="divider"></li>
+                    <li>
                         <a ng-click="zwaveAction('binding/network', 'Heal')">
                             <span class="fa fa-fw fa-ambulance"></span>
                             <span i18n="zwave.zwaveDeviceHeal"></span>
@@ -141,14 +154,7 @@
         </div>
 
         <!-- Body -->
-        <div ng-style="styleList()">
-            <vis ng-transclude>
-                <vis-network data="networkNodes" options="networkOptions" events="networkEvents"></vis-network>
-            </vis>
-        </div>
-
-
-        <div ng-show="false" class="list-group habmin-list" ng-style="styleList()">
+        <div ng-show="deviceDisplay=='CONFIG'" class="list-group habmin-list" ng-style="styleList()">
             <!-- CONFIGURATION -->
             <div ng-show="devEdit.configuration">
                 <a role="presentation" class="list-group-item" ng-click="showPanel('CONFIG')">
@@ -237,6 +243,11 @@
                     </div>
                 </form>
             </div>
+        </div>
+        <div ng-show="deviceDisplay=='NETWORK'" ng-style="styleList()">
+            <vis ng-transclude>
+                <vis-network data="networkNodes" options="networkOptions" events="networkEvents"></vis-network>
+            </vis>
         </div>
 
         <!-- Footer -->

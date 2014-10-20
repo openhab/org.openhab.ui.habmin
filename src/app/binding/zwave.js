@@ -45,6 +45,22 @@ angular.module('Binding.zwave', [
         $scope.deviceCnt = -1;
         $scope.devEdit = {};
         $scope.panelDisplayed = "";
+        $scope.deviceDisplay = "CONFIG";
+
+        $scope.networkOptions = {
+            hierarchicalLayout: {
+                enabled: true,
+                layout: "direction",
+                direction: "UD"
+            },
+            width: '100%',
+            height: '100%',
+            edges: {
+                color: '#ffffff',
+                width: 5
+            },
+            dragNodes: false
+        };
 
         $scope.cars = [
             {id: 1, name: 'Audi'},
@@ -91,12 +107,21 @@ angular.module('Binding.zwave', [
             // Close the panels
             $scope.panelDisplayed = "";
 
+            // Set the display to the config panel
+            $scope.setView("CONFIG");
+
             // Update information
             updateConfig(node.device);
             updateAssociations(node.device);
             updateInfo(node.device);
+        };
 
-            createNetworkMap(node.device);
+        $scope.setView = function (view) {
+            $scope.deviceDisplay = view;
+
+            if (view === "NETWORK") {
+                createNetworkMap($scope.devEdit.device);
+            }
         };
 
         $scope.stateHeal = function (node) {
@@ -433,9 +458,54 @@ angular.module('Binding.zwave', [
         });
 
         function createNetworkMap(root) {
-            var nodes = [];
+            // We use 'doneNodes' to keep track of what nodes we've added
+            var doneNodes = [root];
+
+            // First, add all the routes
             var edges = [];
             angular.forEach($scope.devices, function (device) {
+                if (device.neighbors !== undefined && doneNodes.indexOf(device.device) == -1) {
+                    doneNodes.push(device.device);
+                }
+
+                // Add all the neighbour routes
+                angular.forEach(device.neighbors, function (neighbor) {
+                    // Check if the route exists and mark it as bidirectional
+                    var found = false;
+                    angular.forEach(edges, function (edge) {
+                        if (edge.from == neighbor.name && edge.to == device.device) {
+                            edge.color = "green";
+                            edge.style = "line";
+                            edge.width = 3;
+
+                            found = true;
+                        }
+                    });
+                    if (found === false) {
+                        var newEdge = {};
+                        newEdge.from = device.device;
+                        newEdge.to = neighbor.name;
+                        newEdge.color = "red";
+                        newEdge.style = "arrow";
+                        newEdge.width = 1;
+                        edges.push(newEdge);
+
+                        // Remember this node!
+                        if (doneNodes.indexOf(neighbor.name) == -1) {
+                            doneNodes.push(neighbor.name);
+                        }
+                    }
+                });
+            });
+
+            // Now, add all the nodes that have routes
+            var nodes = [];
+            angular.forEach($scope.devices, function (device) {
+                // Only add nodes that have routes
+                if (doneNodes.indexOf(device.device) == -1) {
+                    return;
+                }
+
                 console.log("Processing", device.device);
                 if (device.neighbors === undefined) {
                     console.log("No neighbors for ", device.device);
@@ -470,41 +540,16 @@ angular.module('Binding.zwave', [
                 }
 
                 nodes.push(newNode);
-
-                // Add all the neighbour routes
-                angular.forEach(device.neighbors, function (neighbor) {
-                    // Check if the route exists and mark it as bidirectional
-                    var found = false;
-                    angular.forEach(edges, function (edge) {
-                        if (edge.from == neighbor.name && edge.to == device.device) {
-                            edge.color = "green";
-                            edge.style = "line";
-                            edge.width = 3;
-
-                            found = true;
-                        }
-                    });
-                    if(found === false) {
-                        var newEdge = {};
-                        newEdge.from = device.device;
-                        newEdge.to = neighbor.name;
-                        newEdge.color = "red";
-                        newEdge.style = "arrow";
-                        newEdge.width = 1;
-                        edges.push(newEdge);
-                    }
-                });
             });
-
-            var doneNodes = [];
-            doneNodes.push(root);
 
             // Add all the neighbors from the root
             var rootDevice = $scope.devices[root];
             if (rootDevice === undefined) {
                 return;
             }
+
             // Check the root devices neighbors
+            doneNodes = [root];
             angular.forEach(rootDevice.neighbors, function (neighbor) {
                 setNodeLevel(neighbor.name, 1);
             });
@@ -548,39 +593,24 @@ angular.module('Binding.zwave', [
 
             var maxLevel = 0;
             angular.forEach(nodes, function (node) {
-                if(node.level > maxLevel) {
+                if (node.level > maxLevel) {
                     maxLevel = node.level;
                 }
             });
 
             maxLevel += 1;
             angular.forEach(nodes, function (node) {
-                if(node.level == -1) {
+                if (node.level == -1) {
                     node.level = maxLevel;
                 }
             });
 
             console.log("Setting network options");
-            $scope.networkOptions = {
-                hierarchicalLayout: {
-                    enabled: true,
-                    layout: "direction",
-                    direction: "UD"
-                },
-                width: '100%',
-                height: '100%',
-                edges: {
-                    color: '#ffffff',
-                    width: 5
-                },
-                dragNodes: false
-            };
             console.log("Setting network data", angular.toJson({nodes: nodes, edges: edges}));
             $scope.networkNodes = {nodes: nodes, edges: edges};
             console.log("Setting network options DONE");
         }
     })
-
 
     .directive('resizePage1', function ($window) {
         return function ($scope, element) {

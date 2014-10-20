@@ -66,6 +66,8 @@
     "zwaveHealDONE": "done",
     "zwaveHealFAILED": "failed",
     "zwaveDeviceKill": "Delete failed node",
-    "zwaveDeviceRefresh": "Refresh device configuration"
+    "zwaveDeviceRefresh": "Refresh device configuration",
+    "zwaveDeviceConfiguration": "Device Configuration",
+    "zwaveDeviceNetworkDiagram": "Network Route Diagram"
 
 }

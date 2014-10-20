@@ -97,6 +97,11 @@ angular.module('Binding.config', [
 
                         newInput.attr('ng-model', 'models.' + field.name);
 
+                        if(attrs.bindingChange !== undefined) {
+                            newInput.attr('ng-change', attrs.bindingChange);
+                        }
+//                        newInput.attr('ng-change', 'changeHandler(x)');
+
                         // Add a feedback box.
                         // We'll use this for pending attributes
                         newChild.append(newInput);
