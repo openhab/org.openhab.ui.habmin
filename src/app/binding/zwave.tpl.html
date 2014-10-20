@@ -125,14 +125,14 @@
                             <span i18n="zwave.zwaveDeviceHeal"></span>
                         </a>
                     </li>
-                    <li>
+                    <li ng-class="{'disabled':true}">
                         <a ng-click="zwaveAction('binding/network', 'Heal')">
                             <span class="fa fa-fw fa-trash-o"></span>
                             <span i18n="zwave.zwaveDeviceKill"></span>
                         </a>
                     </li>
                     <li>
-                        <a ng-click="zwaveAction('binding/network', 'Heal')">
+                        <a ng-click="zwaveAction('nodes/'+devEdit.device+'/parameters/', 'Refresh');zwaveAction('nodes/'+devEdit.device+'/associations/', 'Refresh')">
                             <span class="fa fa-fw fa-refresh"></span>
                             <span i18n="zwave.zwaveDeviceRefresh"></span>
                         </a>
