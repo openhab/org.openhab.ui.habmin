@@ -39,6 +39,7 @@ angular.module('HABmin.userModel', [
         else {
             console.log("Removing saved authentication data!");
             // Timeout - remove the password etc.
+            localStorage.removeItem('Auth-user');
             localStorage.removeItem('Auth-pass');
             localStorage.removeItem('Auth-time');
 
@@ -61,12 +62,9 @@ angular.module('HABmin.userModel', [
             },
 
             login: function (user, success, error) {
-                $http.post('/login', user).success(function (user) {
-                    changeUser(user);
-                    success(user);
-                }).error(error);
             },
             logout: function (success, error) {
+                $http.defaults.headers.common['Authorization'] = '';
                 authenticated = false;
                 userConfig = {};
 
@@ -111,6 +109,13 @@ angular.module('HABmin.userModel', [
     })
 
     .controller('LoginController', function ($scope, $http, authService, $base64) {
+        $scope.user = localStorage.getItem('Auth-pass');
+        $scope.period = localStorage.getItem('Auth-period');
+
+        if($scope.period == null) {
+            $scope.period = 3600;
+        }
+
         $scope.submit = function() {
             var pass = $base64.encode( $scope.user + ':' + $scope.password);
             console.log($scope.password, $scope.user, pass);
@@ -118,15 +123,13 @@ angular.module('HABmin.userModel', [
 
             localStorage.setItem('Auth-user', $scope.user);
             localStorage.setItem('Auth-pass', pass);
+            localStorage.setItem('Auth-time', $scope.period * 1000 + new Date().getTime());
+            localStorage.setItem('Auth-period', $scope.period);
 
             authService.loginConfirmed(null, function(config) {
                 config.headers['Authorization'] = 'Basic ' + pass;
                 return config;
             });
-
-//            $http.post('auth/login').success(function() {
-             //   authService.loginConfirmed();
-  //          });
         };
     })
 ;
