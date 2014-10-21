@@ -12,19 +12,12 @@ angular.module('HABmin.userModel', [
     'base64'
 ])
     .factory('UserService', function ($http, $rootScope, $cookieStore, $interval) {
+        var authenticated = false;
+
         // Install handlers to catch authorisation failures
-        $rootScope.$on('event:auth-loginRequired', function () {
-            console.log("Login required");
-
-
-//            $http.defaults.headers.common['Authorization'] = 'Basic Y2hyaXM6aGVsbG8=';
-//            authService.loginConfirmed(null, function(config) {
-            //              $http.defaults.headers.common['Authorization'] = 'Basic Y2hyaXM6aGVsbG8=';
-//                return config;
-            //        });
-        });
         $rootScope.$on('event:auth-loginConfirmed', function () {
             console.log("Login complete");
+            authenticated = true;
         });
 
         // On startup, check the local storage to see if we've got saved info here
@@ -33,21 +26,19 @@ angular.module('HABmin.userModel', [
 
         if(storedTime > new Date().getTime()) {
             console.log("Using saved authentication data!");
-            $http.defaults.headers.common['Authorization'] = 'Basic Y2hyaXM6aGVsbG8=';
+            $http.defaults.headers.common['Authorization'] = 'Basic ' + storedPass;
 
+            authenticated = true;
         }
         else {
             console.log("Removing saved authentication data!");
             // Timeout - remove the password etc.
-            localStorage.removeItem('Auth-user');
             localStorage.removeItem('Auth-pass');
             localStorage.removeItem('Auth-time');
 
             // Reset the authentication header
             $http.defaults.headers.common['Authorization'] = '';
         }
-
-        var authenticated = false;
 
         var userConfig = {
             useCache: false
@@ -67,6 +58,9 @@ angular.module('HABmin.userModel', [
                 $http.defaults.headers.common['Authorization'] = '';
                 authenticated = false;
                 userConfig = {};
+
+                localStorage.removeItem('Auth-pass');
+                localStorage.removeItem('Auth-time');
 
 //                $http.post('/logout').success(function () {
 //                    changeUser({
@@ -109,7 +103,7 @@ angular.module('HABmin.userModel', [
     })
 
     .controller('LoginController', function ($scope, $http, authService, $base64) {
-        $scope.user = localStorage.getItem('Auth-pass');
+        $scope.user = localStorage.getItem('Auth-user');
         $scope.period = localStorage.getItem('Auth-period');
 
         if($scope.period == null) {
