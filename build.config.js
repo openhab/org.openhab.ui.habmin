@@ -103,7 +103,8 @@ module.exports = {
             'vendor/fullcalendar/fullcalendar.js',
             'vendor/fullcalendar/gcal.js',
             'vendor/angular-timeago/src/timeAgo.js',
-            'vendor/vis/dist/vis.js'
+            'vendor/vis/dist/vis.js',
+            'vendor/angular-base64/angular-base64.js'
         ],
         css: [
             'vendor/angular-growl-v2/build/angular-growl.css',

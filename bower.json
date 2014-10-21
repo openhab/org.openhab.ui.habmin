@@ -34,7 +34,8 @@
     "tinycolor": "~1.0.0",
     "angular-timeago": "~0.1.2",
     "vis": "~3.5.0",
-    "angular-http-auth": "~1.2.1"
+    "angular-http-auth": "~1.2.1",
+    "angular-base64": "~2.0.2"
   },
   "resolutions": {
     "moment": "~2.8.2",
