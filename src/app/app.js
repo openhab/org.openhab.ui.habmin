@@ -10,6 +10,7 @@
 angular.module('HABmin', [
     'templates-app',
     'templates-common',
+    'http-auth-interceptor',
     'ngBoilerplate.home',
     'ngBoilerplate.about',
     'HABmin.userModel',
@@ -69,6 +70,10 @@ angular.module('HABmin', [
     function HABminCtrl($scope, $location, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel) {
         $scope.isLoggedIn = UserService.isLoggedIn;
 
+        $scope.logout = function() {
+            UserService.logout();
+        };
+
         // Load models used in the nav bar
         $scope.sitemaps = null;
         SitemapModel.getList().then(
@@ -84,16 +89,16 @@ angular.module('HABmin', [
         BindingModel.getList().then(
             function (data) {
                 var bindings = [];
-                angular.forEach(data, function(binding) {
+                angular.forEach(data, function (binding) {
                     // Only show bindings that have defined names
-                    if(binding.name === undefined) {
+                    if (binding.name === undefined) {
                         return;
                     }
                     var info = BindingModel.getBinding(binding.pid);
                     var newBinding = {};
                     newBinding.name = binding.name;
 
-                    if(info === undefined) {
+                    if (info === undefined) {
                         newBinding.disabled = true;
                     }
                     else {
@@ -111,7 +116,6 @@ angular.module('HABmin', [
                 growl.warning(locale.getString("habmin.mainErrorGettingBindings"));
             }
         );
-
 
         $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
             if (angular.isDefined(toState.data.pageTitle)) {
