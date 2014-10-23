@@ -82,6 +82,10 @@ angular.module('HABmin.sitemapModel', [
 //            pollingInterval: 60000
             };
 
+            if($http.defaults.headers.common['Authorization'] !== undefined) {
+                request.headers['Authorization'] = $http.defaults.headers.common['Authorization'];
+            }
+
             request.onOpen = function (response) {
                 console.log("onOpen", response);
             };
