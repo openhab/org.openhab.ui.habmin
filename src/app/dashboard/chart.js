@@ -16,7 +16,7 @@ angular.module('HABmin.chart', [
     'HABmin.chartModel',
     'HABmin.chartSave',
     'HABmin.iconModel',
-    'angular-dygraphs',
+    'ngVis',
     'ngConfirmClick'
 ])
 
@@ -32,7 +32,7 @@ angular.module('HABmin.chart', [
             data: { pageTitle: 'Charting' },
             resolve: {
                 // Make sure the localisation files are resolved before the controller runs
-                localisations: function(locale) {
+                localisations: function (locale) {
                     return locale.ready('common');
                 }
             }
@@ -160,7 +160,7 @@ angular.module('HABmin.chart', [
         $scope.editChart = function () {
             console.log("editChart button clicked");
 
-            if($scope.selectedChart === undefined) {
+            if ($scope.selectedChart === undefined) {
                 return;
             }
 
@@ -170,7 +170,7 @@ angular.module('HABmin.chart', [
         $scope.deleteChart = function () {
             console.log("deleteChart button clicked");
 
-            if($scope.selectedChart === undefined) {
+            if ($scope.selectedChart === undefined) {
                 return;
             }
 
@@ -470,7 +470,7 @@ angular.module('HABmin.chart', [
                 chartData.data = newChart;
                 chartData.options = chartOptions;
                 console.log("Rendering chart", chartData);
-                $scope.graph = chartData;
+                $scope.graphData = newChart;
                 $scope.graphLoaded = true;
 
                 // Update the loading icon
@@ -484,111 +484,19 @@ angular.module('HABmin.chart', [
 
         // Sequentially step through the new data and add it to a new array along with the old data
         function addSeries(curData, newData, repeatTime) {
-            var cntCur = 0;
             var cntNew = 0;
-            var output = [];
             var d;
-
-            // Get the number of series currently in the array
-            var len = 0;
-            if (curData.length) {
-                len = curData[0].length;
-            }
 
             // Record the starting time/value of the new series
             var lastTime = Math.floor(Number(newData[0].time) / roundingTime) * roundingTime;
             var newState = Number(newData[0].state);
 
             var curTime;
-            if (curData.length !== 0) {
-                curTime = curData[cntCur][0].getTime();
-            }
-            var newTime = 0;
-
+            var newTime;
             // Process merging of the two data arrays
-            while (cntCur < curData.length && cntNew < newData.length) {
-                curTime = curData[cntCur][0].getTime();
-
-                // newTime is set to 0 when we add new data to indicate that we need to get the next value
-                if (newTime === 0) {
-                    if (newData[cntNew + 1] !== undefined &&
-                        newData[cntNew + 1].time > newData[cntNew].time + repeatTime) {
-                        // The next value is more than 'repeatTime' in the future. We need to record this value
-                        newTime = Math.floor(Number(newData[cntNew].time) / 1000) * 1000;
-                    }
-                    else {
-                        // Round the time down to the closest second
-                        newTime = Math.floor(Number(newData[cntNew].time) / roundingTime) * roundingTime;
-                    }
-
-                    // Check if we need to repeat the data
-                    if (newTime > lastTime + repeatTime) {
-                        // Repeat needed - leave the data alone and reset the time
-                        newTime = newTime - repeatTime;
-                    }
-                    else {
-                        // No repeat - use new data and time
-                        newState = Number(newData[cntNew].state);
-
-                        // Increment to the next value
-                        cntNew++;
-                    }
-
-                    // Stop time going backwards - may happen due to rounding
-                    if (newTime <= lastTime) {
-                        newTime = 0;
-                        continue;
-                    }
-
-                    lastTime = newTime;
-                }
-
-                // Add the data in order
-                if (curTime < newTime) {
-                    // Existing data is next up
-                    // Just copy the existing data and add a null on the end as a placeholder
-                    d = curData[cntCur];
-                    d.push(null);
-
-                    cntCur++;
-                }
-                else if (curTime === newTime) {
-                    // Data has the same time
-                    // Copy the existing data and add the new data to the end
-                    d = curData[cntCur];
-                    d.push(newState);
-
-                    cntCur++;
-                    newTime = 0;
-                }
-                else {
-                    // New data is next up
-                    // Set the new time, add nulls as placeholders for the existing data, then add the new data
-                    d = [];
-                    d[0] = new Date(newTime);
-                    for (var c = 1; c < len; c++) {
-                        d.push(null);
-                    }
-
-                    d.push(newState);
-                    newTime = 0;
-                }
-
-                output.push(d);
-            }
-
-            // Process remaining existing data
-            while (cntCur < curData.length) {
-                d = curData[cntCur];
-                d.push(null);
-
-                cntCur++;
-                output.push(d);
-            }
-
-            // Process remaining new data
-            while (cntNew < newData.length) {
-                if (newData[cntNew + 1] !== undefined && newData[cntNew + 1].time > newData[cntNew].time + repeatTime) {
+            while (cntCur < newData.length) {
+                if (newData[cntNew + 1] !== undefined &&
+                    newData[cntNew + 1].time > newData[cntNew].time + repeatTime) {
                     // The next value is more than 'repeatTime' in the future. We need to record this value
                     newTime = Math.floor(Number(newData[cntNew].time) / 1000) * 1000;
                 }
@@ -597,38 +505,22 @@ angular.module('HABmin.chart', [
                     newTime = Math.floor(Number(newData[cntNew].time) / roundingTime) * roundingTime;
                 }
 
-                // Stop time going backwards - may happen due to rounding
-                if (newTime <= lastTime) {
-                    cntNew++;
-                    continue;
-                    //newTime = lastTime;
-                }
-
                 // Check if we need to repeat the data
                 if (newTime > lastTime + repeatTime) {
                     // Repeat needed
-                    d = [];
-                    d[0] = new Date(newTime - repeatTime);
-                    for (var a = 1; a < len; a++) {
-                        d.push(null);
-                    }
-                    d.push(Number(newData[cntNew - 1].state));
-                    output.push(d);
+                    curData.push({x: newTime - repeatTime, y: newData[cntNew].state, group: 0});
                 }
-
-                d = [];
-                d[0] = new Date(newTime);
-                for (var b = 1; b < len; b++) {
-                    d.push(null);
+                else {
+                    // No repeat - use new data and time
+                    newState = Number(newData[cntNew].state);
                 }
-                d.push(Number(newData[cntNew].state));
-                output.push(d);
 
                 lastTime = newTime;
-                cntNew++;
+
+                curData.push({x: newTime, y: newData[cntNew].state, group: 0});
             }
 
-            return output;
+            return curData;
         }
     })
 
