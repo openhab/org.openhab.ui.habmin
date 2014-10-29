@@ -358,17 +358,20 @@ ngVis.directive('graph2d', function () {
             var graph = new vis.Graph2d(element[0]);
 
             scope.$watch('data', function () {
-                graph.clear({options: true});
+                graph.clear({items: true, groups: true, options: true});
+
+                if(scope.data === undefined) {
+                    return;
+                }
 
                 if (scope.data.single) {
                     graph.clear({groups: true});
-                    graph.setItems(scope.data.load);
+                    graph.setItems(scope.data);
                 } else {
-                    graph.setGroups(scope.data.load.groups);
-                    graph.setItems(scope.data.load.items);
+                    graph.setOptions(scope.options);
+                    graph.setGroups(scope.data.groups);
+                    graph.setItems(scope.data.items);
                 }
-
-                graph.fit();
             });
 
             scope.$watchCollection('options', function (options) {

@@ -49,6 +49,9 @@ angular.module('HABmin.chart', [
         var chartData;
         var roundingTime = 1000;
 
+        var groups;
+        var groupCnt;
+
         var chartOptions = {
             colors: ["#FF9900", "#33FFFF", "#FFCC00", "#33CCCC"],
             labelsSeparateLines: true,
@@ -67,6 +70,38 @@ angular.module('HABmin.chart', [
             dashdot: [10, 7, 3, 7],
             longdashdot: [20, 7, 3, 7],
             longdashdotdot: [20, 7, 3, 7, 3, 7]
+        };
+
+        var visoptions = {
+//            align: 'center', // left | right (String)
+//            autoResize: true, // false (Boolean)
+//            editable: true,
+//            selectable: true,
+            // start: null,
+            // end: null,
+            height: '100%',
+            width: '100%',
+            // margin: {
+            //   axis: 20,
+            //   item: 10
+            // },
+            // min: null,
+            // max: null,
+            // maxHeight: null,
+//            orientation: 'bottom',
+//            padding: 5,
+//            legend: {left:{position:"bottom-left"}},
+            dataAxis: {
+                icons:true
+            },
+//            showCurrentTime: true,
+ //           showCustomTime: true,
+            showMajorLabels: true,
+            showMinorLabels: true
+            // type: 'box', // dot | point
+            // zoomMin: 1000,
+            // zoomMax: 1000 * 60 * 60 * 24 * 30 * 12 * 10,
+            // groupOrder: 'content'
         };
 
         $scope.graphLoaded = false;
@@ -253,21 +288,9 @@ angular.module('HABmin.chart', [
             itemsLoading = 0;
 
             newChart = [];
-            chartDef = {};
-            chartDef.items = [];
-            chartData = {};
-            chartData.legend = {};
-            chartData.legend.series = {};
-            chartData.options = chartOptions;
-            chartData.options.animatedZooms = true;
-            chartData.options.valueRange = null;
-            chartData.options.axes = {};
-            chartData.options.series = {};
-            chartData.options.xlabel = undefined;
-            chartData.options.ylabel = undefined;
-            chartData.options.y2label = undefined;
-            chartData.options.title = undefined;
-            chartData.options.labels = [locale.getString('common.time')];
+
+            groups = new vis.DataSet();
+            groupCnt = 0;
         }
 
         function _displayChart(id) {
@@ -362,46 +385,64 @@ angular.module('HABmin.chart', [
 
             console.log("Adding", itemRef, "- repeat is ", itemCfg.repeatTime);
 
-            chartData.options.labels.push(itemCfg.item);
-            chartData.options.series[itemCfg.item] = {};
+ //           chartData.options.labels.push(itemCfg.item);
+   //         chartData.options.series[itemCfg.item] = {};
 
-            chartData.legend.series[itemCfg.item] = {};
-            chartData.legend.series[itemCfg.item].label = itemCfg.label;
-            chartData.legend.series[itemCfg.item].format = 0;
+//            chartData.legend.series[itemCfg.item] = {};
+  //          chartData.legend.series[itemCfg.item].label = itemCfg.label;
+    //        chartData.legend.series[itemCfg.item].format = 0;
 
             if (itemCfg.format !== undefined && !isNaN(itemCfg.format)) {
-                chartData.legend.series[itemCfg.item].format = itemCfg.format;
+    //            chartData.legend.series[itemCfg.item].format = itemCfg.format;
             }
 
             if (itemCfg.lineWidth !== undefined) {
-                chartData.options.series[itemCfg.item].strokeWidth = itemCfg.lineWidth;
+  //              chartData.options.series[itemCfg.item].strokeWidth = itemCfg.lineWidth;
             }
 
             if (itemCfg.fill !== undefined) {
-                chartData.options.series[itemCfg.item].fillGraph = Boolean(itemCfg.fill);
+    //            chartData.options.series[itemCfg.item].fillGraph = Boolean(itemCfg.fill);
             }
 
             if (itemCfg.axis == "left") {
 //                chartData.options.series[itemCfg.item].axis = 'y';
             }
             else if (itemCfg.axis == "right") {
-                chartData.options.series[itemCfg.item].axis = 'y2';
+ //               chartData.options.series[itemCfg.item].axis = 'y2';
             }
 
             if (itemCfg.lineColor !== undefined) {
                 var t = tinycolor(itemCfg.lineColor);
                 if (t.isValid() === true) {
-                    chartData.options.series[itemCfg.item].color = t.toHexString();
+   //                 chartData.options.series[itemCfg.item].color = t.toHexString();
                 }
             }
             console.log("Updating data:", $scope.graph);
 
-            newChart = addSeries(newChart, data, itemCfg.repeatTime);
+
+
+            groups.add( {
+                id: groupCnt,
+                content: itemCfg.label,
+//                    className: 'customStyle1',
+                options: {
+                    yAxisOrientation: itemCfg.axis,
+                    drawPoints: false,
+            //{
+              //          style: 'square' // square, circle
+                //    },
+                    shaded: {
+                        orientation: 'bottom' // top, bottom
+                    }
+                }
+            });
+
+            newChart = addSeries(newChart, data, itemCfg.repeatTime, groupCnt);
+            groupCnt++;
 
             if (itemCfg.lineStyle !== undefined && itemCfg.lineStyle.length > 0) {
-                chartData.options.series[itemCfg.item].strokePattern = lineStyles[itemCfg.lineStyle.toLowerCase()];
+ //               chartData.options.series[itemCfg.item].strokePattern = lineStyles[itemCfg.lineStyle.toLowerCase()];
             }
-
 
             // If everything is loaded, render the chart
             itemsLoaded++;
@@ -409,7 +450,7 @@ angular.module('HABmin.chart', [
             if (itemsLoaded >= itemsLoading) {
                 // All items loaded
                 if (chartDef.title) {
-                    chartOptions.title = chartDef.title;
+  //                  chartOptions.title = chartDef.title;
                 }
 
                 if (chartDef.axis) {
@@ -434,9 +475,9 @@ angular.module('HABmin.chart', [
                         switch (axis.position) {
                             default:
                             case 'left':
-                                chartData.options.ylabel = label;
-                                chartData.options.axes.y = {};
-                                chartData.options.axes.y.format = Number(axis.format);
+  //                              chartData.options.ylabel = label;
+    //                            chartData.options.axes.y = {};
+      //                          chartData.options.axes.y.format = Number(axis.format);
                                 if (axis.minimum !== undefined || axis.maximum !== undefined) {
                                     if (axis.minimum !== undefined) {
                                         min = Number(axis.minimum);
@@ -444,14 +485,14 @@ angular.module('HABmin.chart', [
                                     if (axis.maximum !== undefined) {
                                         max = Number(axis.maximum);
                                     }
-                                    chartData.options.axes.y.valueRange = null;
-                                    chartData.options.axes.y.valueRange = [min, max];
+          //                          chartData.options.axes.y.valueRange = null;
+        //                            chartData.options.axes.y.valueRange = [min, max];
                                 }
                                 break;
                             case 'right':
-                                chartData.options.y2label = label;
-                                chartData.options.axes.y2 = {};
-                                chartData.options.axes.y2.format = Number(axis.format);
+  //                              chartData.options.y2label = label;
+    //                            chartData.options.axes.y2 = {};
+      //                          chartData.options.axes.y2.format = Number(axis.format);
                                 if (axis.minimum !== undefined || axis.maximum !== undefined) {
                                     if (axis.minimum !== undefined) {
                                         min = Number(axis.minimum);
@@ -459,18 +500,31 @@ angular.module('HABmin.chart', [
                                     if (axis.maximum !== undefined) {
                                         max = Number(axis.maximum);
                                     }
-                                    chartData.options.axes.y2.valueRange = null;
-                                    chartData.options.axes.y2.valueRange = [min, max];
+   //                                 chartData.options.axes.y2.valueRange = null;
+     //                               chartData.options.axes.y2.valueRange = [min, max];
                                 }
                                 break;
                         }
                     });
                 }
 
-                chartData.data = newChart;
-                chartData.options = chartOptions;
+       //         chartData.data = newChart;
+         //       chartData.options = chartOptions;
                 console.log("Rendering chart", chartData);
-                $scope.graphData = newChart;
+
+                console.log(angular.toJson(newChart));
+                console.log(angular.toJson(groups));
+
+                var items = new vis.DataSet();
+                items.add(newChart);
+
+//                console.log(angular.toJson(groups));
+
+                $scope.graphData = {
+                    items: items,
+                    groups: groups
+                    };
+                $scope.graphOptions = visoptions;
                 $scope.graphLoaded = true;
 
                 // Update the loading icon
@@ -483,8 +537,7 @@ angular.module('HABmin.chart', [
         }
 
         // Sequentially step through the new data and add it to a new array along with the old data
-        function addSeries(curData, newData, repeatTime) {
-            var cntNew = 0;
+        function addSeries(curData, newData, repeatTime, group) {
             var d;
 
             // Record the starting time/value of the new series
@@ -494,7 +547,7 @@ angular.module('HABmin.chart', [
             var curTime;
             var newTime;
             // Process merging of the two data arrays
-            while (cntCur < newData.length) {
+            for (var cntNew = 0; cntNew < newData.length; cntNew++) {
                 if (newData[cntNew + 1] !== undefined &&
                     newData[cntNew + 1].time > newData[cntNew].time + repeatTime) {
                     // The next value is more than 'repeatTime' in the future. We need to record this value
@@ -508,7 +561,7 @@ angular.module('HABmin.chart', [
                 // Check if we need to repeat the data
                 if (newTime > lastTime + repeatTime) {
                     // Repeat needed
-                    curData.push({x: newTime - repeatTime, y: newData[cntNew].state, group: 0});
+                    curData.push({x: newTime - repeatTime, y: newData[cntNew].state, group: group});
                 }
                 else {
                     // No repeat - use new data and time
@@ -517,7 +570,7 @@ angular.module('HABmin.chart', [
 
                 lastTime = newTime;
 
-                curData.push({x: newTime, y: newData[cntNew].state, group: 0});
+                curData.push({x: newTime, y: Number(newData[cntNew].state), group: group});
             }
 
             return curData;
