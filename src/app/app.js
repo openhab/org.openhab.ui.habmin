@@ -70,7 +70,7 @@ angular.module('HABmin', [
     function HABminCtrl($scope, $location, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel) {
         $scope.isLoggedIn = UserService.isLoggedIn;
 
-        $scope.logout = function() {
+        $scope.logout = function () {
             UserService.logout();
         };
 

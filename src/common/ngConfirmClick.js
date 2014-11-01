@@ -41,11 +41,11 @@ angular.module('ngConfirmClick', [
                         keyboard: true,
                         modalFade: true,
                         template: '<div class="modal-header"><h3 class="modal-title">{{titleMsg}}</h3></div>' +
-                            '<div class="modal-body">{{message}}</div>' +
-                            '<div class="modal-footer">' +
-                            '<button class="btn btn-primary" ng-click="ok()">{{yesMsg}}</button>' +
-                            '<button class="btn btn-warning" ng-click="cancel()">{{noMsg}}</button>' +
-                            '</div>',
+                        '<div class="modal-body">{{message}}</div>' +
+                        '<div class="modal-footer">' +
+                        '<button class="btn btn-primary" ng-click="ok()">{{yesMsg}}</button>' +
+                        '<button class="btn btn-warning" ng-click="cancel()">{{noMsg}}</button>' +
+                        '</div>',
                         controller: controller
                     }).result;
                 });
