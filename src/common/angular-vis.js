@@ -251,12 +251,12 @@ ngVis.directive('timeNavigation', function () {
                         });
                     }
                     else {
-          /*              vis.timeline.setOptions({
+                        vis.timeline.setOptions({
                             min: null,
                             max: null
                         });
 
-                        vis.timeline.fit();*/
+                        vis.timeline.fit();
                     }
 
                     start = 0;
@@ -300,12 +300,14 @@ ngVis.directive('timeNavigation', function () {
                 };
 
                 scope.zoomScope = function (percentage) {
-                    var range = scope.timeline.getWindow(),
-                        interval = range.end - range.start;
+                    var range = scope.timeline.getWindow();
+                    var interval = range.end - range.start;
+                    var start = range.start.valueOf() - interval * percentage;
+                    var end = range.end.valueOf() + interval * percentage;
 
                     scope.timeline.setWindow({
-                        start: range.start.valueOf() - interval * percentage,
-                        end: range.end.valueOf() + interval * percentage
+                        start: start,
+                        end: end
                     });
                 };
             }, 0);

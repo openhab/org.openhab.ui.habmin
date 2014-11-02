@@ -66,37 +66,18 @@ angular.module('HABmin.chart', [
             longdashdotdot: [20, 7, 3, 7, 3, 7]
         };
 
-        var visoptions = {
-//            align: 'center', // left | right (String)
-//            autoResize: true, // false (Boolean)
-//            editable: true,
-//            selectable: true,
-            // start: null,
-            // end: null,
+        var chartOptions = {
             height: '100%',
             width: '100%',
-            // margin: {
-            //   axis: 20,
-            //   item: 10
-            // },
-            // min: null,
-            // max: null,
-            // maxHeight: null,
-//            orientation: 'bottom',
-//            padding: 5,
-//            legend: {left:{position:"bottom-left"}},
             dataAxis: {
                 icons:true,
                 showMajorLabels: true,
                 showMinorLabels: false
             },
             showCurrentTime: false,
- //           showCustomTime: true,
-            // type: 'box', // dot | point
             zoomMin: 60000
-            // zoomMax: 1000 * 60 * 60 * 24 * 30 * 12 * 10,
-            // groupOrder: 'content'
         };
+
 
         $scope.graphLoaded = false;
 
@@ -283,6 +264,10 @@ angular.module('HABmin.chart', [
 
             newChart = [];
 
+            chartOptions.dataAxis.title = {};
+            chartOptions.dataAxis.title.left = {};
+            chartOptions.dataAxis.title.right = {};
+
             groups = new vis.DataSet();
             groupCnt = 0;
         }
@@ -390,54 +375,44 @@ angular.module('HABmin.chart', [
     //            chartData.legend.series[itemCfg.item].format = itemCfg.format;
             }
 
-            if (itemCfg.lineWidth !== undefined) {
-  //              chartData.options.series[itemCfg.item].strokeWidth = itemCfg.lineWidth;
-            }
-
-            if (itemCfg.fill !== undefined) {
-    //            chartData.options.series[itemCfg.item].fillGraph = Boolean(itemCfg.fill);
-            }
-
-            if (itemCfg.axis == "left") {
-//                chartData.options.series[itemCfg.item].axis = 'y';
-            }
-            else if (itemCfg.axis == "right") {
- //               chartData.options.series[itemCfg.item].axis = 'y2';
-            }
-
+            var style = "";
             if (itemCfg.lineColor !== undefined) {
                 var t = tinycolor(itemCfg.lineColor);
                 if (t.isValid() === true) {
-   //                 chartData.options.series[itemCfg.item].color = t.toHexString();
+                    style += "stroke:"+t.toHexString()+";";
                 }
             }
-            console.log("Updating data:", $scope.graph);
+            if (itemCfg.lineWidth !== undefined) {
+                style += "stroke-width:"+itemCfg.lineWidth+";";
+            }
 
+            if (itemCfg.lineStyle !== undefined && itemCfg.lineStyle.length > 0) {
+                style += "stroke-dasharray:" + lineStyles[itemCfg.lineStyle.toLowerCase()].join(' ')+ ";";
+            }
 
+            var shaded;
+            if (itemCfg.fill !== undefined) {
+                if(Boolean(itemCfg.fill) === true) {
+                    shaded = {orientation:"bottom"};
+                }
+            }
 
             groups.add( {
                 id: groupCnt,
                 content: itemCfg.label,
-                style: 'stroke-width:6px;',
-//                    className: 'customStyle1',
+                style: style,
                 options: {
                     yAxisOrientation: itemCfg.axis,
                     drawPoints: false,
             //{
               //          style: 'square' // square, circle
                 //    },
-                    shaded: {
-                        orientation: 'bottom' // top, bottom
-                    }
+                    shaded: shaded
                 }
             });
 
             newChart = addSeries(newChart, data, itemCfg.repeatTime, groupCnt);
             groupCnt++;
-
-            if (itemCfg.lineStyle !== undefined && itemCfg.lineStyle.length > 0) {
- //               chartData.options.series[itemCfg.item].strokePattern = lineStyles[itemCfg.lineStyle.toLowerCase()];
-            }
 
             // If everything is loaded, render the chart
             itemsLoaded++;
@@ -455,22 +430,23 @@ angular.module('HABmin.chart', [
                         }
                         var min = null;
                         var max = null;
-                        var label = "";
+                        var label = {};
                         if (axis.label !== undefined) {
                             var style = "";
                             if (axis.color != null && axis.color.length > 0) {
                                 // Sanatise the colours with tinycolor
                                 var t = tinycolor(axis.color);
                                 if (t.isValid() === true) {
-                                    style = " style='color:" + t.toHexString() + ";'";
+                                    label.style = "color:" + t.toHexString() + ";";
                                 }
                             }
-                            label = "<span" + style + ">" + axis.label + "</span>";
+                            label.text = axis.label;
                         }
+                        chartOptions.dataAxis.title[axis.position] = label;
+
                         switch (axis.position) {
                             default:
                             case 'left':
-  //                              chartData.options.ylabel = label;
     //                            chartData.options.axes.y = {};
       //                          chartData.options.axes.y.format = Number(axis.format);
                                 if (axis.minimum !== undefined || axis.maximum !== undefined) {
@@ -485,7 +461,6 @@ angular.module('HABmin.chart', [
                                 }
                                 break;
                             case 'right':
-  //                              chartData.options.y2label = label;
     //                            chartData.options.axes.y2 = {};
       //                          chartData.options.axes.y2.format = Number(axis.format);
                                 if (axis.minimum !== undefined || axis.maximum !== undefined) {
@@ -515,9 +490,9 @@ angular.module('HABmin.chart', [
                     items: items,
                     groups: groups
                     };
-                visoptions.min = $scope.startTime;
-                visoptions.max = $scope.stopTime;
-                $scope.graphOptions = visoptions;
+                chartOptions.min = $scope.startTime;
+                chartOptions.max = $scope.stopTime;
+                $scope.graphOptions = chartOptions;
                 $scope.graphLoaded = true;
 
                 // Update the loading icon

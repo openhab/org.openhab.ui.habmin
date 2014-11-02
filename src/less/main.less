@@ -15,7 +15,6 @@
 @import '../../vendor/angular-dygraphs/src/angular-dygraphs.less';
 @import '../../vendor/pick-a-color/src/less/pick-a-color.less';
 @import '../../vendor/angular-gridster/src/angular-gridster.less';
-
 /**
  * This is our main variables file. We must include it last so we can overwrite any variable
  * definitions in our imported stylesheets.
@@ -94,13 +93,12 @@ h2 {
   }
 }
 
-.fillspace
-{
-    position: absolute;
-    width: 100%;
-    left: 0;
-    text-align: center;
-    margin: auto;
+.fillspace {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  text-align: center;
+  margin: auto;
 }
 
 .habmin-body {
@@ -245,24 +243,21 @@ h2 {
   }
 }
 
-
-
-
-
-
-
 .gridster .gridster-item {
 }
 
 .controls {
   margin-bottom: 20px;
 }
+
 .page-header {
   margin-top: 20px;
 }
+
 ul {
   list-style: none;
 }
+
 .box {
   height: 100%;
   width: 100%;
@@ -279,7 +274,7 @@ ul {
   height: 40px;
   cursor: move;
   position: absolute;
-  left:5px;
+  left: 5px;
   top: 5px;
   right: 5px;
   z-index: @zindex-dropdown;
@@ -302,34 +297,29 @@ ul {
 
 .box-content {
   position: absolute;
-  left:0px;
+  left: 0px;
   top: 0px;
-  right:0px;
+  right: 0px;
   bottom: 0px;
-//  background-color: yellow;
+  //  background-color: yellow;
 }
+
 .gridster {
 }
 
-
-
-
-
 .dialgauge-unit {
-  font-size:14px;
-  font-weight:100;
+  font-size: 14px;
+  font-weight: 100;
   fill: grey;
   stroke: grey;
 }
 
 .dialgauge-value {
-  font-size:20px;
-  font-weight:200;
+  font-size: 20px;
+  font-weight: 200;
   fill: white;
   stroke: white;
 }
-
-
 
 .icon-lg {
   display: inline-block;
@@ -339,9 +329,9 @@ ul {
 }
 
 .chart-menu {
-  position:fixed;
-  right:0px;
-  top:60px;
+  position: fixed;
+  right: 0px;
+  top: 60px;
   padding: 5px 0px 5px 2px;
   background-color: @navbar-default-bg;
   border: 1px 0px 1px 1px @btn-default-border solid;
@@ -352,10 +342,9 @@ ul {
   -o-border-radius: @border-radius-base 0px 0px @border-radius-base;
 }
 
-
 // Customisation of the FullCalendar plugin
 .fc {
-  padding:5px;
+  padding: 5px;
 }
 
 .fc-header-title h2 {
@@ -364,30 +353,32 @@ ul {
 }
 
 .fc-today {
-  background: blue !important;//#fcf8e3;
+  background: blue !important; //#fcf8e3;
 }
-
 
 multiselect {
-  display:block;
+  display: block;
 }
+
 multiselect .btn {
   width: 100%;
 }
+
 multiselect .dropdown-menu {
   max-height: 300px;
   overflow-y: auto;
 }
+
 multiselect .dropdown-menu {
   width: 100%;
   box-sizing: border-box;
   padding: 2px;
 }
+
 multiselect .dropdown-menu > li > a {
   padding: 3px 10px;
-  cursor:pointer;
+  cursor: pointer;
 }
-
 
 .login-form {
   padding-top: 50px;
@@ -411,6 +402,7 @@ multiselect .dropdown-menu > li > a {
 
 .vis.timeline .legend {
   background-color: @panel-default-heading-bg;
+  opacity: 0.8;
   border-color: @panel-default-border;
   box-shadow: lighten(@panel-default-border, 3%);
 }
@@ -419,3 +411,54 @@ multiselect .dropdown-menu > li > a {
   fill: @panel-default-border;
 }
 
+.vis.timeline .dataaxis .yAxis.major {
+  font-size: @font-size-base;
+  color: @link-color;
+}
+
+.vis.timeline .dataaxis .yAxis.minor {
+  font-size: @font-size-small;
+  color: @text-color;
+}
+
+.vis.timeline .timeaxis .text.major {
+  color: @link-color;
+}
+
+.vis.timeline .timeaxis .text.minor {
+  font-size: @font-size-small;
+  color: @text-color;
+}
+
+.vis.timeline .dataaxis .yAxis.title.left {
+  color: @text-color;
+}
+
+.vis.timeline .dataaxis .yAxis.title.right {
+  color: @text-color;
+}
+
+
+.calendar-stack {
+  position: relative;
+  display: inline-block;
+  width: (13em / 14);
+  height: 1em;
+
+  .icon-calendar-empty,
+  .calendar-day {
+    position: absolute;
+  }
+
+  .calendar-day {
+    top: (12em / 8);
+    left: (1em / 8);
+    width: (11em / 8);
+    height: (6em / 8);
+    font-family: sans-serif;
+    font-size: (8em / 14);
+    font-weight: 700;
+    line-height: (8em / 14);
+    text-align: center;
+  }
+}

@@ -160,16 +160,16 @@
         <div class="panel panel-default" ng-style="styleChartPanel()" resize-page>
             <div class="panel-heading" style="padding:3px;" time-navigation>
                 <div class="btn-group btn-group-sm">
-                    <button type="button" class="btn btn-default" ng-click="stepScope(false)">
+                    <button type="button" class="btn btn-default" ng-click="stepScope(-1)">
                         <span class="fa fa-arrow-left"></span>
                     </button>
-                    <button type="button" class="btn btn-default" ng-click="stepScope(true)">
+                    <button type="button" class="btn btn-default" ng-click="stepScope(1)">
                         <span class="fa fa-arrow-right"></span>
                     </button>
-                    <button type="button" class="btn btn-default" ng-click="zoomScope(10)">
+                    <button type="button" class="btn btn-default" ng-click="zoomScope(0.10)">
                         <span class="fa fa-search-minus"></span>
                     </button>
-                    <button type="button" class="btn btn-default" ng-click="zoomScope(-10)">
+                    <button type="button" class="btn btn-default" ng-click="zoomScope(-0.10)">
                         <span class="fa fa-search-plus"></span>
                     </button>
                 </div>
@@ -199,7 +199,7 @@
                     </button>
                 </div>
 
-                <div ng-show="graphLoaded" class="pull-right" time-board format-month="MMM">
+                <div ng-show="graphLoaded" class="pull-right" time-board format-month="MMM" format-day="ddd">
                     <h6>{{info.first}}</h6>
                 </div>
             </div>
