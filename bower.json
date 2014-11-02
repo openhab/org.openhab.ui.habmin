@@ -21,8 +21,6 @@
     "pick-a-color": "~1.2.3",
     "angular-pick-a-color": "~0.2.0",
     "angular-sanitize": "~1.2.23",
-    "angular-dygraphs": "0.1.3",
-    "dygraphs": "~1.0.1",
     "moment": "~2.8.2",
     "angular-ui-ace": "bower",
     "fontawesome": "~4.2.0",

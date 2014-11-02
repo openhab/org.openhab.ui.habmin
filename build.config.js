@@ -79,8 +79,6 @@ module.exports = {
             'vendor/angular-toggle-switch/angular-toggle-switch.js',
             'vendor/jquery-atmosphere/jquery.atmosphere.js',
             'vendor/angular-atmosphere/app/scripts/services/angular-atmosphere.js',
-            'vendor/dygraphs/dygraph-combined.js',
-            'vendor/angular-dygraphs/src/angular-dygraphs.js',
             'vendor/tinycolor/tinycolor.js',
             'vendor/pick-a-color/src/js/pick-a-color.js',
             'vendor/angular-pick-a-color/src/angular-pick-a-color.js',
