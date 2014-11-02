@@ -1,4 +1,3 @@
-
 var ngVis = angular.module('ngVis', []);
 
 ngVis.factory('visDataSet', function () {
@@ -92,18 +91,26 @@ ngVis.directive('timeBoard', function () {
         restrict: 'EA',
         require: '^vis',
         link: function (scope, element, attr, vis) {
+            // Allow setting of the day/month formats using attributes
+            var nameFormat = {
+                day: "dddd",
+                month: "MMMM"
+            };
+            nameFormat.day = attr.formatDay || "dddd";
+            nameFormat.month = attr.formatMonth || "MMMM";
+
             var range = {
                 apart: function (date) {
                     return {
                         year: moment(date).get('year'),
                         month: {
                             number: moment(date).get('month'),
-                            name: moment(date).format('MMMM')
+                            name: moment(date).format(nameFormat.month)
                         },
                         week: moment(date).format('w'),
                         day: {
                             number: moment(date).get('date'),
-                            name: moment(date).format('dddd')
+                            name: moment(date).format(nameFormat.day)
                         },
                         hour: moment(date).format('HH'),
                         minute: moment(date).format('mm'),
@@ -127,14 +134,16 @@ ngVis.directive('timeBoard', function () {
 
                     if (p.s.year == p.e.year) {
                         info = {
-                            first: p.s.day.name + ' ' + p.s.day.number + '-' + p.s.month.name + '  -  ' + p.e.day.name + ' ' + p.e.day.number + '-' + p.e.month.name,
+                            first: p.s.day.name + ' ' + p.s.day.number + ' ' + p.s.month.name + '  -  ' + p.e.day.name +
+                            ' ' + p.e.day.number + ' ' + p.e.month.name,
                             second: p.s.year,
                             third: ''
                         };
 
                         if (p.s.month.number == p.e.month.number) {
                             info = {
-                                first: p.s.day.name + ' ' + p.s.day.number + '  -  ' + p.e.day.name + ' ' + p.e.day.number,
+                                first: p.s.day.name + ' ' + p.s.day.number + '  -  ' + p.e.day.name + ' ' +
+                                p.e.day.number,
                                 second: p.s.month.name + ' ' + p.s.year,
                                 third: 'Month number: ' + Number(p.s.month.number + 1)
                             };
@@ -165,15 +174,19 @@ ngVis.directive('timeBoard', function () {
 
                                 if (p.s.hour == p.e.hour) {
                                     info = {
-                                        first: p.s.hour + ':' + p.s.minute + ':' + p.s.second + '  -  ' + p.e.hour + ':' + p.e.minute + ':' + p.e.second,
-                                        second: p.s.day.name + ' ' + p.s.day.number + ' ' + p.s.month.name + ' ' + p.s.year,
+                                        first: p.s.hour + ':' + p.s.minute + ':' + p.s.second + '  -  ' + p.e.hour +
+                                        ':' + p.e.minute + ':' + p.e.second,
+                                        second: p.s.day.name + ' ' + p.s.day.number + ' ' + p.s.month.name + ' ' +
+                                        p.s.year,
                                         third: 'Week number: ' + p.s.week
                                     };
 
                                     if (p.s.minute == p.e.minute) {
                                         info = {
-                                            first: p.s.hour + ':' + p.s.minute + ':' + p.s.second + '.' + p.s.milli + '  -  ' + p.e.hour + ':' + p.e.minute + ':' + p.e.second + '.' + p.e.milli,
-                                            second: p.s.day.name + ' ' + p.s.day.number + ' ' + p.s.month.name + ' ' + p.s.year,
+                                            first: p.s.hour + ':' + p.s.minute + ':' + p.s.second + '.' + p.s.milli +
+                                            '  -  ' + p.e.hour + ':' + p.e.minute + ':' + p.e.second + '.' + p.e.milli,
+                                            second: p.s.day.name + ' ' + p.s.day.number + ' ' + p.s.month.name + ' ' +
+                                            p.s.year,
                                             third: 'Week number: ' + p.s.week
                                         };
                                     }
@@ -183,7 +196,8 @@ ngVis.directive('timeBoard', function () {
                     }
                     else {
                         info = {
-                            first: p.s.day.name + ' ' + p.s.day.number + '-' + p.s.month.name + ', ' + p.s.year + '  -  ' + p.e.day.name + ' ' + p.e.day.number + '-' + p.e.month.name + ', ' + p.e.year,
+                            first: p.s.day.name + ' ' + p.s.day.number + '-' + p.s.month.name + ', ' + p.s.year +
+                            '  -  ' + p.e.day.name + ' ' + p.e.day.number + '-' + p.e.month.name + ', ' + p.e.year,
                             second: '',
                             third: 'Years: ' + p.s.year + ' - ' + p.e.year
                         };
@@ -237,12 +251,12 @@ ngVis.directive('timeNavigation', function () {
                         });
                     }
                     else {
-                        vis.timeline.setOptions({
+          /*              vis.timeline.setOptions({
                             min: null,
                             max: null
                         });
 
-                        vis.timeline.fit();
+                        vis.timeline.fit();*/
                     }
 
                     start = 0;
@@ -333,7 +347,8 @@ ngVis.directive('timeLine', function () {
 
             scope.$watch('events', function (events) {
                 angular.forEach(events, function (callback, event) {
-                    if (['rangechange', 'rangechanged', 'select', 'timechange', 'timechanged'].indexOf(String(event)) >= 0) {
+                    if (['rangechange', 'rangechanged', 'select', 'timechange', 'timechanged'].indexOf(String(event)) >=
+                        0) {
                         timeline.on(event, callback);
                     }
                 });
@@ -357,12 +372,22 @@ ngVis.directive('graph2d', function () {
         link: function (scope, element, attr, visCtrl) {
             var graph = new vis.Graph2d(element[0]);
 
-            scope.$watch('data', function () {
-                graph.clear({items: true, groups: true, options: true});
+            scope.graphLoaded = false;
 
-                if(scope.data === undefined) {
+            scope.$watch('data', function () {
+                if (scope.data === undefined) {
                     return;
                 }
+
+                if(graph !== undefined) {
+                    graph.destroy();
+                }
+                graph = new vis.Graph2d(element[0]);
+                visCtrl.setTimeline(graph);
+
+                graph.clear({items: true, groups: true, options: true});
+
+                scope.graphLoaded = true;
 
                 if (scope.data.single) {
                     graph.clear({groups: true});
@@ -381,7 +406,8 @@ ngVis.directive('graph2d', function () {
 
             scope.$watch('events', function (events) {
                 angular.forEach(events, function (callback, event) {
-                    if (['rangechange', 'rangechanged', 'select', 'timechange', 'timechanged'].indexOf(String(event)) >= 0) {
+                    if (['rangechange', 'rangechanged', 'select', 'timechange', 'timechanged'].indexOf(String(event)) >=
+                        0) {
                         graph.on(event, callback);
                     }
                 });
@@ -392,6 +418,9 @@ ngVis.directive('graph2d', function () {
     };
 });
 
+/**
+ * Directive for network chart.
+ */
 ngVis.directive('visNetwork', function () {
     return {
         restrict: 'EA',
@@ -415,7 +444,7 @@ ngVis.directive('visNetwork', function () {
 
             scope.$watch('events', function (events) {
                 angular.forEach(events, function (callback, event) {
-                    if (['select','click','hoverNode'].indexOf(String(event)) >= 0) {
+                    if (['select', 'click', 'hoverNode'].indexOf(String(event)) >= 0) {
                         network.on(event, callback);
                     }
                 });

@@ -52,12 +52,6 @@ angular.module('HABmin.chart', [
         var groups;
         var groupCnt;
 
-        var chartOptions = {
-            colors: ["#FF9900", "#33FFFF", "#FFCC00", "#33CCCC"],
-            labelsSeparateLines: true,
-            connectSeparatedPoints: true
-        };
-
         var lineStyles = {
             solid: [5, 0],
             shortdash: [7, 3],
@@ -92,14 +86,14 @@ angular.module('HABmin.chart', [
 //            padding: 5,
 //            legend: {left:{position:"bottom-left"}},
             dataAxis: {
-                icons:true
+                icons:true,
+                showMajorLabels: true,
+                showMinorLabels: false
             },
-//            showCurrentTime: true,
+            showCurrentTime: false,
  //           showCustomTime: true,
-            showMajorLabels: true,
-            showMinorLabels: true
             // type: 'box', // dot | point
-            // zoomMin: 1000,
+            zoomMin: 60000
             // zoomMax: 1000 * 60 * 60 * 24 * 30 * 12 * 10,
             // groupOrder: 'content'
         };
@@ -296,15 +290,15 @@ angular.module('HABmin.chart', [
         function _displayChart(id) {
             ChartListModel.getChart(id).then(
                 function (chart) {
-                    var stop = Math.floor((new Date()).getTime());
-                    var start = stop - (chart.period * 1000);
-                    _initChart(stop - start);
+                    $scope.stopTime = Math.floor((new Date()).getTime());
+                    $scope.startTime = $scope.stopTime - (chart.period * 1000);
+                    _initChart($scope.stopTime - $scope.startTime);
 
                     chart.items = [].concat(chart.items);
                     chartDef = chart;
                     angular.forEach(chart.items, function (item) {
                         itemsLoading++;
-                        _loadItem(item.item, start, stop);
+                        _loadItem(item.item, $scope.startTime, $scope.stopTime);
                     });
                 },
                 function (reason) {
@@ -323,10 +317,10 @@ angular.module('HABmin.chart', [
         }
 
         function _displayItems() {
-            var stop = Math.floor((new Date()).getTime());
-            var start = stop - (86400 * 1000);
+            $scope.stopTime = Math.floor((new Date()).getTime());
+            $scope.startTime = $scope.stopTime - (86400 * 1000);
 
-            _initChart(stop - start);
+            _initChart($scope.stopTime - $scope.startTime);
 
             angular.forEach($scope.items, function (item) {
                 if (item.selected === true) {
@@ -424,6 +418,7 @@ angular.module('HABmin.chart', [
             groups.add( {
                 id: groupCnt,
                 content: itemCfg.label,
+                style: 'stroke-width:6px;',
 //                    className: 'customStyle1',
                 options: {
                     yAxisOrientation: itemCfg.axis,
@@ -508,8 +503,6 @@ angular.module('HABmin.chart', [
                     });
                 }
 
-       //         chartData.data = newChart;
-         //       chartData.options = chartOptions;
                 console.log("Rendering chart", chartData);
 
                 console.log(angular.toJson(newChart));
@@ -518,12 +511,12 @@ angular.module('HABmin.chart', [
                 var items = new vis.DataSet();
                 items.add(newChart);
 
-//                console.log(angular.toJson(groups));
-
                 $scope.graphData = {
                     items: items,
                     groups: groups
                     };
+                visoptions.min = $scope.startTime;
+                visoptions.max = $scope.stopTime;
                 $scope.graphOptions = visoptions;
                 $scope.graphLoaded = true;
 
@@ -542,7 +535,6 @@ angular.module('HABmin.chart', [
 
             // Record the starting time/value of the new series
             var lastTime = Math.floor(Number(newData[0].time) / roundingTime) * roundingTime;
-            var newState = Number(newData[0].state);
 
             var curTime;
             var newTime;
@@ -561,11 +553,7 @@ angular.module('HABmin.chart', [
                 // Check if we need to repeat the data
                 if (newTime > lastTime + repeatTime) {
                     // Repeat needed
-                    curData.push({x: newTime - repeatTime, y: newData[cntNew].state, group: group});
-                }
-                else {
-                    // No repeat - use new data and time
-                    newState = Number(newData[cntNew].state);
+                    curData.push({x: newTime - repeatTime, y: Number(newData[cntNew].state), group: group});
                 }
 
                 lastTime = newTime;
@@ -597,9 +585,14 @@ angular.module('HABmin.chart', [
                         'height': (newValue.h - 165) + 'px'
                     };
                 };
+                $scope.styleChartPanel = function () {
+                    return {
+                        'height': (newValue.h - 93) + 'px'
+                    };
+                };
                 $scope.styleChart = function () {
                     return {
-                        'height': (newValue.h - 83) + 'px'
+                        'height': (newValue.h - 132) + 'px'
                     };
                 };
             }, true);
