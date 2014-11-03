@@ -1,6 +1,8 @@
+
 var ngVis = angular.module('ngVis', []);
 
 ngVis.factory('visDataSet', function () {
+    'use strict';
     return function (data) {
         var processed;
         var items = new vis.DataSet({
@@ -65,6 +67,7 @@ ngVis.factory('visDataSet', function () {
 });
 
 ngVis.directive('vis', function () {
+    'use strict';
     return {
         restrict: 'EA',
         transclude: true,
@@ -86,7 +89,54 @@ ngVis.directive('vis', function () {
     };
 });
 
+ngVis.directive('timeLine', function () {
+    'use strict';
+    return {
+        restrict: 'EA',
+        require: '^vis',
+        transclude: false,
+        scope: {
+            data: '=',
+            options: '=',
+            events: '='
+        },
+        link: function (scope, element, attr, visCtrl) {
+            var timeline = new vis.Timeline(element[0]);
+
+            scope.$watch('data', function () {
+                timeline.clear({options: true});
+
+                if (scope.data.single) {
+                    timeline.clear({groups: true});
+                    timeline.setItems(scope.data.load);
+                } else {
+                    timeline.setGroups(scope.data.load.groups);
+                    timeline.setItems(scope.data.load.items);
+                }
+
+                timeline.fit();
+            });
+
+            scope.$watchCollection('options', function (options) {
+                timeline.clear({options: true});
+                timeline.setOptions(options);
+            });
+
+            scope.$watch('events', function (events) {
+                angular.forEach(events, function (callback, event) {
+                    if (['rangechange', 'rangechanged', 'select', 'timechange', 'timechanged'].indexOf(String(event)) >= 0) {
+                        timeline.on(event, callback);
+                    }
+                });
+            });
+
+            visCtrl.setTimeline(timeline);
+        }
+    };
+});
+
 ngVis.directive('timeBoard', function () {
+    'use strict';
     return {
         restrict: 'EA',
         require: '^vis',
@@ -134,16 +184,14 @@ ngVis.directive('timeBoard', function () {
 
                     if (p.s.year == p.e.year) {
                         info = {
-                            first: p.s.day.name + ' ' + p.s.day.number + ' ' + p.s.month.name + '  -  ' + p.e.day.name +
-                            ' ' + p.e.day.number + ' ' + p.e.month.name,
+                            first: p.s.day.name + ' ' + p.s.day.number + '-' + p.s.month.name + '  -  ' + p.e.day.name + ' ' + p.e.day.number + '-' + p.e.month.name,
                             second: p.s.year,
                             third: ''
                         };
 
                         if (p.s.month.number == p.e.month.number) {
                             info = {
-                                first: p.s.day.name + ' ' + p.s.day.number + '  -  ' + p.e.day.name + ' ' +
-                                p.e.day.number,
+                                first: p.s.day.name + ' ' + p.s.day.number + '  -  ' + p.e.day.name + ' ' + p.e.day.number,
                                 second: p.s.month.name + ' ' + p.s.year,
                                 third: 'Month number: ' + Number(p.s.month.number + 1)
                             };
@@ -174,19 +222,15 @@ ngVis.directive('timeBoard', function () {
 
                                 if (p.s.hour == p.e.hour) {
                                     info = {
-                                        first: p.s.hour + ':' + p.s.minute + ':' + p.s.second + '  -  ' + p.e.hour +
-                                        ':' + p.e.minute + ':' + p.e.second,
-                                        second: p.s.day.name + ' ' + p.s.day.number + ' ' + p.s.month.name + ' ' +
-                                        p.s.year,
+                                        first: p.s.hour + ':' + p.s.minute + ':' + p.s.second + '  -  ' + p.e.hour + ':' + p.e.minute + ':' + p.e.second,
+                                        second: p.s.day.name + ' ' + p.s.day.number + ' ' + p.s.month.name + ' ' + p.s.year,
                                         third: 'Week number: ' + p.s.week
                                     };
 
                                     if (p.s.minute == p.e.minute) {
                                         info = {
-                                            first: p.s.hour + ':' + p.s.minute + ':' + p.s.second + '.' + p.s.milli +
-                                            '  -  ' + p.e.hour + ':' + p.e.minute + ':' + p.e.second + '.' + p.e.milli,
-                                            second: p.s.day.name + ' ' + p.s.day.number + ' ' + p.s.month.name + ' ' +
-                                            p.s.year,
+                                            first: p.s.hour + ':' + p.s.minute + ':' + p.s.second + '.' + p.s.milli + '  -  ' + p.e.hour + ':' + p.e.minute + ':' + p.e.second + '.' + p.e.milli,
+                                            second: p.s.day.name + ' ' + p.s.day.number + ' ' + p.s.month.name + ' ' + p.s.year,
                                             third: 'Week number: ' + p.s.week
                                         };
                                     }
@@ -196,8 +240,7 @@ ngVis.directive('timeBoard', function () {
                     }
                     else {
                         info = {
-                            first: p.s.day.name + ' ' + p.s.day.number + '-' + p.s.month.name + ', ' + p.s.year +
-                            '  -  ' + p.e.day.name + ' ' + p.e.day.number + '-' + p.e.month.name + ', ' + p.e.year,
+                            first: p.s.day.name + ' ' + p.s.day.number + '-' + p.s.month.name + ', ' + p.s.year + '  -  ' + p.e.day.name + ' ' + p.e.day.number + '-' + p.e.month.name + ', ' + p.e.year,
                             second: '',
                             third: 'Years: ' + p.s.year + ' - ' + p.e.year
                         };
@@ -218,13 +261,49 @@ ngVis.directive('timeBoard', function () {
     };
 });
 
-ngVis.directive('timeNavigation', function () {
+ngVis.directive('timeNavigation', function ($interval, $timeout) {
+    'use strict';
     return {
         restrict: 'EA',
         require: '^vis',
+        scope: {
+            loadData: '&'
+        },
         link: function (scope, element, attr, vis) {
-            setTimeout(function () {
+            var timer = null;
+
+            scope.$on("$destroy", function( event ) {
+                $interval.cancel(timer);
+            });
+
+//            $timeout(function () {
                 var start = 0;
+
+                // Initialise the auto refresh variables
+                scope.refreshPeriod = '0';
+
+                /**
+                 * Set a refresh timer.
+                 * The
+                 * @param period
+                 */
+                scope.setRefresh = function (period) {
+                    var d = period.split('.');
+                    var duration = moment.duration(Number(d[0]), d[1]);
+
+                    // If the timer is running - cancel it!
+                    if(timer != null) {
+                        $interval.cancel(timer);
+                    }
+
+                    // Now create the timer
+                    if(duration.asMilliseconds() !== 0) {
+                        $interval(function () {
+                            console.log("Refresh timer");
+                            scope.loadData();
+                        }, 2000); //duration.asMilliseconds());
+                    }
+                };
 
                 scope.setScope = function (period) {
                     scope.view = {
@@ -232,31 +311,55 @@ ngVis.directive('timeNavigation', function () {
                         week: false,
                         month: false,
                         year: false,
+                        lastday: false,
+                        lastweek: false,
+                        lastmonth: false,
+                        lastyear: false,
+
                         custom: false
                     };
 
-                    scope.view[period] = true;
-
-                    if (period != 'custom') {
-                        vis.timeline.setWindow(
-                            moment().startOf(period),
-                            moment().endOf(period)
-                        );
-
-                        vis.timeline.setOptions({
-                            min: moment().startOf(period).valueOf(),
-                            start: moment().startOf(period).valueOf(),
-                            max: moment().endOf(period).valueOf(),
-                            end: moment().endOf(period).valueOf()
-                        });
+                    // Sanity check
+                    if(scope.view[period] === undefined) {
+                        period = 'custom';
                     }
-                    else {
+                    scope.view[period] = true;
+                    if(vis.timeline === undefined) {
+                        return;
+                    }
+
+                    if (period == 'custom') {
                         vis.timeline.setOptions({
                             min: null,
                             max: null
                         });
 
                         vis.timeline.fit();
+                    }
+                    else {
+                        var periodStart, periodEnd;
+                        if(period.indexOf('last') === 0) {
+                            // These options are seen as the last day, or last week
+                            // Starting from NOW.
+                            period = period.substr(4);
+
+                            periodStart = moment().subtract(1, period);
+                            periodEnd = moment().valueOf();
+                        }
+                        else {
+                            // These options are 'this week', or 'this month' etc
+                            // Starting from the beginning of the week/month etc.
+                            periodStart = moment().startOf(period).valueOf();
+                            periodEnd = moment().endOf(period).valueOf();
+                        }
+
+                        vis.timeline.setWindow(periodStart, periodEnd);
+                        vis.timeline.setOptions({
+                            min: periodStart,
+                            start: periodStart,
+                            max: periodEnd,
+                            end: periodEnd
+                        });
                     }
 
                     start = 0;
@@ -300,22 +403,24 @@ ngVis.directive('timeNavigation', function () {
                 };
 
                 scope.zoomScope = function (percentage) {
-                    var range = scope.timeline.getWindow();
-                    var interval = range.end - range.start;
-                    var start = range.start.valueOf() - interval * percentage;
-                    var end = range.end.valueOf() + interval * percentage;
+                    var range = scope.timeline.getWindow(),
+                        interval = range.end - range.start;
 
                     scope.timeline.setWindow({
-                        start: start,
-                        end: end
+                        start: range.start.valueOf() - interval * percentage,
+                        end: range.end.valueOf() + interval * percentage
                     });
                 };
-            }, 0);
+//            });
         }
     };
 });
 
-ngVis.directive('timeLine', function () {
+/**
+ * Directive for network chart.
+ */
+ngVis.directive('network', function () {
+    'use strict';
     return {
         restrict: 'EA',
         require: '^vis',
@@ -326,42 +431,33 @@ ngVis.directive('timeLine', function () {
             events: '='
         },
         link: function (scope, element, attr, visCtrl) {
-            var timeline = new vis.Timeline(element[0]);
+            var network = new vis.Network(element[0], scope.data, scope.options);
 
             scope.$watch('data', function () {
-                timeline.clear({options: true});
-
-                if (scope.data.single) {
-                    timeline.clear({groups: true});
-                    timeline.setItems(scope.data.load);
-                } else {
-                    timeline.setGroups(scope.data.load.groups);
-                    timeline.setItems(scope.data.load.items);
-                }
-
-                timeline.fit();
+                network.setData(scope.data);
             });
 
             scope.$watchCollection('options', function (options) {
-                timeline.clear({options: true});
-                timeline.setOptions(options);
+                network.setOptions(options);
             });
 
             scope.$watch('events', function (events) {
                 angular.forEach(events, function (callback, event) {
-                    if (['rangechange', 'rangechanged', 'select', 'timechange', 'timechanged'].indexOf(String(event)) >=
-                        0) {
-                        timeline.on(event, callback);
+                    if (['select', 'click', 'hoverNode'].indexOf(String(event)) >= 0) {
+                        network.on(event, callback);
                     }
                 });
             });
-
-            visCtrl.setTimeline(timeline);
         }
     };
 });
 
+/**
+ * Directive for graph2d.
+ * Uses the 'setTimeline' method in vis directive to allow support for timeboard and navigation
+ */
 ngVis.directive('graph2d', function () {
+    'use strict';
     return {
         restrict: 'EA',
         require: '^vis',
@@ -374,6 +470,7 @@ ngVis.directive('graph2d', function () {
         link: function (scope, element, attr, visCtrl) {
             var graph = new vis.Graph2d(element[0]);
 
+            // Record if we have a chart loaded. Allows ng-hide="graphLoaded" to be used
             scope.graphLoaded = false;
 
             scope.$watch('data', function () {
@@ -381,6 +478,8 @@ ngVis.directive('graph2d', function () {
                     return;
                 }
 
+                // There are currently some bugs in the vis library
+                // Changing data sets causes the lib to hang, so we recreate the graph (for now)
                 if(graph !== undefined) {
                     graph.destroy();
                 }
@@ -419,39 +518,3 @@ ngVis.directive('graph2d', function () {
         }
     };
 });
-
-/**
- * Directive for network chart.
- */
-ngVis.directive('visNetwork', function () {
-    return {
-        restrict: 'EA',
-        require: '^vis',
-        transclude: false,
-        scope: {
-            data: '=',
-            options: '=',
-            events: '='
-        },
-        link: function (scope, element, attr, visCtrl) {
-            var network = new vis.Network(element[0], scope.data, scope.options);
-
-            scope.$watch('data', function () {
-                network.setData(scope.data);
-            });
-
-            scope.$watchCollection('options', function (options) {
-                network.setOptions(options);
-            });
-
-            scope.$watch('events', function (events) {
-                angular.forEach(events, function (callback, event) {
-                    if (['select', 'click', 'hoverNode'].indexOf(String(event)) >= 0) {
-                        network.on(event, callback);
-                    }
-                });
-            });
-        }
-    };
-});
-
