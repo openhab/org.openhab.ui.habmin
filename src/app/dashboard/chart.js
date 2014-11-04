@@ -10,6 +10,7 @@
 angular.module('HABmin.chart', [
     'ui.router',
     'ui.bootstrap',
+    'ui.bootstrap.datetimepicker',
     'ngLocalize',
     'angular-growl',
     'HABmin.persistenceModel',
@@ -29,7 +30,7 @@ angular.module('HABmin.chart', [
                     templateUrl: 'dashboard/chart.tpl.html'
                 }
             },
-            data: { pageTitle: 'Charting' },
+            data: {pageTitle: 'Charting'},
             resolve: {
                 // Make sure the localisation files are resolved before the controller runs
                 localisations: function (locale) {
@@ -40,7 +41,7 @@ angular.module('HABmin.chart', [
     })
 
     .controller('DashboardChartCtrl',
-    function DashboardChartCtrl($scope, $modal, locale, PersistenceItemModel, PersistenceServiceModel, PersistenceDataModel, ChartListModel, ChartSave, growl) {
+    function DashboardChartCtrl($scope, $modal, locale, PersistenceItemModel, PersistenceServiceModel, PersistenceDataModel, ChartListModel, ChartSave, growl, $interval, $timeout) {
         var itemsLoaded = 0;
         var itemsLoading = 0;
         var newChart;
@@ -70,7 +71,7 @@ angular.module('HABmin.chart', [
             height: '100%',
             width: '100%',
             dataAxis: {
-                icons:true,
+                icons: true,
                 showMajorLabels: true,
                 showMinorLabels: false
             },
@@ -251,8 +252,126 @@ angular.module('HABmin.chart', [
             return element.label.toLowerCase().indexOf($scope.filter.text.toLowerCase()) !== -1 ? true : false;
         };
 
-        // ------------------------------------------------
-        // Private functions
+        // Initialise the auto refresh variables
+        var refreshTimer = null;
+        $scope.$on("$destroy", function (event) {
+            console.log("Destroy timer");
+            $interval.cancel(refreshTimer);
+        });
+        $scope.refreshPeriod = '0';
+        $scope.setRefresh = function (period) {
+            var d = period.split('.');
+            var duration = moment.duration(Number(d[0]), d[1]);
+
+            // If the timer is running - cancel it!
+            if (refreshTimer != null) {
+                console.log("Cancel timer");
+                $interval.cancel(refreshTimer);
+                refreshTimer = null;
+            }
+
+            // Now create the timer
+            if (duration.asMilliseconds() !== 0) {
+                // Remember the period
+                $scope.refreshPeriod = period;
+
+                refreshTimer = $interval(function () {
+                    console.log("Refresh timer");
+
+
+                }, 2000); //duration.asMilliseconds());
+            }
+            else {
+                $scope.refreshPeriod = "0";
+            }
+        };
+
+        $scope.$on('rangechange', function (event, period) {
+            function splitDate(date) {
+                return {
+                    year: moment(date).get('year'),
+                    month: {
+                        number: moment(date).get('month'),
+                        name: moment(date).format('MMM')
+                    },
+                    week: moment(date).format('w'),
+                    day: {
+                        number: moment(date).get('date'),
+                        name: moment(date).format('ddd')
+                    },
+                    hour: moment(date).format('HH'),
+                    minute: moment(date).format('mm'),
+                    second: moment(date).format('ss')
+                };
+            }
+
+            var p = {
+                s: splitDate(period.start),
+                e: splitDate(period.end)
+            };
+
+            if (p.s.year == p.e.year) {
+                $scope.info = {
+                    first: p.s.day.name + ' ' + p.s.day.number + '-' + p.s.month.name + '  -  ' + p.e.day.name + ' ' +
+                    p.e.day.number + '-' + p.e.month.name,
+                    second: p.s.year
+                };
+
+                if (p.s.month.number == p.e.month.number) {
+                    $scope.info = {
+                        first: p.s.day.name + ' ' + p.s.day.number + '  -  ' + p.e.day.name + ' ' + p.e.day.number,
+                        second: p.s.month.name + ' ' + p.s.year
+                    };
+
+                    if (p.s.day.number == p.e.day.number) {
+                        if (p.e.hour == 23 &&
+                            p.e.minute == 59 &&
+                            p.e.second == 59 &&
+                            p.e.milli == 999) {
+                            p.e.hour = 24;
+                            p.e.minute = '00';
+                            p.e.second = '00';
+                        }
+
+                        $scope.info = {
+                            first: p.s.hour + ':' + p.s.minute + '  -  ' + p.e.hour + ':' + p.e.minute,
+                            second: p.s.day.name + ' ' + p.s.day.number + ' ' + p.s.month.name + ' ' + p.s.year
+                        };
+
+                        if (p.s.hour == p.e.hour) {
+                            $scope.info = {
+                                first: p.s.hour + ':' + p.s.minute + ':' + p.s.second + '  -  ' + p.e.hour + ':' +
+                                p.e.minute + ':' + p.e.second,
+                                second: p.s.day.name + ' ' + p.s.day.number + ' ' + p.s.month.name + ' ' + p.s.year
+                            };
+
+                            if (p.s.minute == p.e.minute) {
+                                $scope.info = {
+                                    first: p.s.hour + ':' + p.s.minute + ':' + p.s.second + '  -  ' +
+                                    p.e.hour + ':' + p.e.minute + ':' + p.e.second,
+                                    second: p.s.day.name + ' ' + p.s.day.number + ' ' + p.s.month.name + ' ' + p.s.year
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+            else {
+                $scope.info = {
+                    first: p.s.day.name + ' ' + p.s.day.number + '-' + p.s.month.name + ', ' + p.s.year + '  -  ' +
+                    p.e.day.name + ' ' + p.e.day.number + '-' + p.e.month.name + ', ' + p.e.year,
+                    second: ''
+                };
+            }
+        });
+
+        $scope.$on('rangechanged', function (event, range) {
+            console.log("Now in chart", event, range);
+        });
+
+
+// ------------------------------------------------
+// Private functions
 
         function _initChart(period) {
             // The following sets the number of chart points to approximately 2000
@@ -364,49 +483,49 @@ angular.module('HABmin.chart', [
 
             console.log("Adding", itemRef, "- repeat is ", itemCfg.repeatTime);
 
- //           chartData.options.labels.push(itemCfg.item);
-   //         chartData.options.series[itemCfg.item] = {};
+            //           chartData.options.labels.push(itemCfg.item);
+            //         chartData.options.series[itemCfg.item] = {};
 
 //            chartData.legend.series[itemCfg.item] = {};
-  //          chartData.legend.series[itemCfg.item].label = itemCfg.label;
-    //        chartData.legend.series[itemCfg.item].format = 0;
+            //          chartData.legend.series[itemCfg.item].label = itemCfg.label;
+            //        chartData.legend.series[itemCfg.item].format = 0;
 
             if (itemCfg.format !== undefined && !isNaN(itemCfg.format)) {
-    //            chartData.legend.series[itemCfg.item].format = itemCfg.format;
+                //            chartData.legend.series[itemCfg.item].format = itemCfg.format;
             }
 
             var style = "";
             if (itemCfg.lineColor !== undefined) {
                 var t = tinycolor(itemCfg.lineColor);
                 if (t.isValid() === true) {
-                    style += "stroke:"+t.toHexString()+";";
+                    style += "stroke:" + t.toHexString() + ";";
                 }
             }
             if (itemCfg.lineWidth !== undefined) {
-                style += "stroke-width:"+itemCfg.lineWidth+";";
+                style += "stroke-width:" + itemCfg.lineWidth + ";";
             }
 
             if (itemCfg.lineStyle !== undefined && itemCfg.lineStyle.length > 0) {
-                style += "stroke-dasharray:" + lineStyles[itemCfg.lineStyle.toLowerCase()].join(' ')+ ";";
+                style += "stroke-dasharray:" + lineStyles[itemCfg.lineStyle.toLowerCase()].join(' ') + ";";
             }
 
             var shaded;
             if (itemCfg.fill !== undefined) {
-                if(Boolean(itemCfg.fill) === true) {
-                    shaded = {orientation:"bottom"};
+                if (Boolean(itemCfg.fill) === true) {
+                    shaded = {orientation: "bottom"};
                 }
             }
 
-            groups.add( {
+            groups.add({
                 id: groupCnt,
                 content: itemCfg.label,
                 style: style,
                 options: {
                     yAxisOrientation: itemCfg.axis,
                     drawPoints: false,
-            //{
-              //          style: 'square' // square, circle
-                //    },
+                    //{
+                    //          style: 'square' // square, circle
+                    //    },
                     shaded: shaded
                 }
             });
@@ -420,7 +539,7 @@ angular.module('HABmin.chart', [
             if (itemsLoaded >= itemsLoading) {
                 // All items loaded
                 if (chartDef.title) {
-  //                  chartOptions.title = chartDef.title;
+                    //                  chartOptions.title = chartDef.title;
                 }
 
                 if (chartDef.axis) {
@@ -447,8 +566,8 @@ angular.module('HABmin.chart', [
                         switch (axis.position) {
                             default:
                             case 'left':
-    //                            chartData.options.axes.y = {};
-      //                          chartData.options.axes.y.format = Number(axis.format);
+                                //                            chartData.options.axes.y = {};
+                                //                          chartData.options.axes.y.format = Number(axis.format);
                                 if (axis.minimum !== undefined || axis.maximum !== undefined) {
                                     if (axis.minimum !== undefined) {
                                         min = Number(axis.minimum);
@@ -456,13 +575,13 @@ angular.module('HABmin.chart', [
                                     if (axis.maximum !== undefined) {
                                         max = Number(axis.maximum);
                                     }
-          //                          chartData.options.axes.y.valueRange = null;
-        //                            chartData.options.axes.y.valueRange = [min, max];
+                                    //                          chartData.options.axes.y.valueRange = null;
+                                    //                            chartData.options.axes.y.valueRange = [min, max];
                                 }
                                 break;
                             case 'right':
-    //                            chartData.options.axes.y2 = {};
-      //                          chartData.options.axes.y2.format = Number(axis.format);
+                                //                            chartData.options.axes.y2 = {};
+                                //                          chartData.options.axes.y2.format = Number(axis.format);
                                 if (axis.minimum !== undefined || axis.maximum !== undefined) {
                                     if (axis.minimum !== undefined) {
                                         min = Number(axis.minimum);
@@ -470,8 +589,8 @@ angular.module('HABmin.chart', [
                                     if (axis.maximum !== undefined) {
                                         max = Number(axis.maximum);
                                     }
-   //                                 chartData.options.axes.y2.valueRange = null;
-     //                               chartData.options.axes.y2.valueRange = [min, max];
+                                    //                                 chartData.options.axes.y2.valueRange = null;
+                                    //                               chartData.options.axes.y2.valueRange = [min, max];
                                 }
                                 break;
                         }
@@ -489,7 +608,7 @@ angular.module('HABmin.chart', [
                 $scope.graphData = {
                     items: items,
                     groups: groups
-                    };
+                };
                 chartOptions.min = $scope.startTime;
                 chartOptions.max = $scope.stopTime;
                 $scope.graphOptions = chartOptions;
@@ -504,7 +623,7 @@ angular.module('HABmin.chart', [
             }
         }
 
-        // Sequentially step through the new data and add it to a new array along with the old data
+// Sequentially step through the new data and add it to a new array along with the old data
         function addSeries(curData, newData, repeatTime, group) {
             var d;
 
@@ -540,7 +659,8 @@ angular.module('HABmin.chart', [
         }
     })
 
-    .directive('resizePage', function ($window) {
+    .
+    directive('resizePage', function ($window) {
         return function ($scope, element) {
             var w = angular.element($window);
             $scope.getWindowDimensions = function () {

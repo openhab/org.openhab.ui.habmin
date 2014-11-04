@@ -266,44 +266,9 @@ ngVis.directive('timeNavigation', function ($interval, $timeout) {
     return {
         restrict: 'EA',
         require: '^vis',
-        scope: {
-            loadData: '&'
-        },
         link: function (scope, element, attr, vis) {
-            var timer = null;
-
-            scope.$on("$destroy", function( event ) {
-                $interval.cancel(timer);
-            });
-
-//            $timeout(function () {
+            $timeout(function () {
                 var start = 0;
-
-                // Initialise the auto refresh variables
-                scope.refreshPeriod = '0';
-
-                /**
-                 * Set a refresh timer.
-                 * The
-                 * @param period
-                 */
-                scope.setRefresh = function (period) {
-                    var d = period.split('.');
-                    var duration = moment.duration(Number(d[0]), d[1]);
-
-                    // If the timer is running - cancel it!
-                    if(timer != null) {
-                        $interval.cancel(timer);
-                    }
-
-                    // Now create the timer
-                    if(duration.asMilliseconds() !== 0) {
-                        $interval(function () {
-                            console.log("Refresh timer");
-                            scope.loadData();
-                        }, 2000); //duration.asMilliseconds());
-                    }
-                };
 
                 scope.setScope = function (period) {
                     scope.view = {
@@ -411,7 +376,7 @@ ngVis.directive('timeNavigation', function ($interval, $timeout) {
                         end: range.end.valueOf() + interval * percentage
                     });
                 };
-//            });
+            });
         }
     };
 });
@@ -486,6 +451,13 @@ ngVis.directive('graph2d', function () {
                 graph = new vis.Graph2d(element[0]);
                 visCtrl.setTimeline(graph);
 
+                // Attach an event handler and emit the event onto the scope
+                angular.forEach(graphEvents, function (eventName) {
+                    graph.on(eventName, function(event) {
+                        scope.$emit(eventName, event);
+                    });
+                });
+
                 graph.clear({items: true, groups: true, options: true});
 
                 scope.graphLoaded = true;
@@ -505,14 +477,14 @@ ngVis.directive('graph2d', function () {
                 graph.setOptions(options);
             });
 
-            scope.$watch('events', function (events) {
-                angular.forEach(events, function (callback, event) {
-                    if (['rangechange', 'rangechanged', 'select', 'timechange', 'timechanged'].indexOf(String(event)) >=
-                        0) {
-                        graph.on(event, callback);
-                    }
-                });
-            });
+
+            var graphEvents = [
+                'rangechange',
+                'rangechanged',
+                'timechange',
+                'timechanged'
+            ];
+
 
             visCtrl.setTimeline(graph);
         }
