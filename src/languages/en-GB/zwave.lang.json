@@ -68,6 +68,7 @@
     "zwaveDeviceKill": "Delete failed node",
     "zwaveDeviceRefresh": "Refresh device configuration",
     "zwaveDeviceConfiguration": "Device Configuration",
-    "zwaveDeviceNetworkDiagram": "Network Route Diagram"
+    "zwaveDeviceNetworkDiagram": "Network Route Diagram",
+    "zwaveNeverReceived": "never"
 
 }
