@@ -400,6 +400,7 @@ angular.module('HABmin.chart', [
 
                     chart.items = [].concat(chart.items);
                     chartDef = chart;
+                    var cnt = 0;
                     angular.forEach(chart.items, function (item) {
                         itemsLoading++;
                         _loadItem(item.item, $scope.startTime, $scope.stopTime);
@@ -464,6 +465,7 @@ angular.module('HABmin.chart', [
             for (var i = 0; i < chartDef.items.length; i++) {
                 if (itemRef == chartDef.items[i].item) {
                     itemCfg = chartDef.items[i];
+                    break;
                 }
             }
 
@@ -509,7 +511,7 @@ angular.module('HABmin.chart', [
                 style += "stroke-dasharray:" + lineStyles[itemCfg.lineStyle.toLowerCase()].join(' ') + ";";
             }
 
-            var shaded;
+            var shaded = {enabled: false};
             if (itemCfg.fill !== undefined) {
                 if (Boolean(itemCfg.fill) === true) {
                     shaded = {orientation: "bottom"};
@@ -517,7 +519,7 @@ angular.module('HABmin.chart', [
             }
 
             groups.add({
-                id: groupCnt,
+                id: itemRef,
                 content: itemCfg.label,
                 style: style,
                 options: {
@@ -530,8 +532,7 @@ angular.module('HABmin.chart', [
                 }
             });
 
-            newChart = addSeries(newChart, data, itemCfg.repeatTime, groupCnt);
-            groupCnt++;
+            newChart = addSeries(newChart, data, itemCfg.repeatTime, itemRef);
 
             // If everything is loaded, render the chart
             itemsLoaded++;
@@ -659,8 +660,7 @@ angular.module('HABmin.chart', [
         }
     })
 
-    .
-    directive('resizePage', function ($window) {
+    .directive('resizePage', function ($window) {
         return function ($scope, element) {
             var w = angular.element($window);
             $scope.getWindowDimensions = function () {

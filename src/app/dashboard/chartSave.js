@@ -81,10 +81,13 @@ angular.module('HABmin.chartSave', [
                     itemModel.label = item.label;
                     itemModel.format = item.format;
                     itemModel.fill = item.fill;
+                    itemModel.fillColor = item.fillColor;
                     itemModel.lineColor = item.lineColor;
                     itemModel.lineStyle = item.lineStyle;
                     itemModel.lineWidth = Number(item.lineWidth);
                     itemModel.repeatTime = Number(item.repeatTime);
+                    itemModel.points = Number(item.points);
+                    itemModel.pointsSize = Number(item.pointsSize);
 
                     scope.items.push(itemModel);
                 });
@@ -178,6 +181,15 @@ angular.module('HABmin.chartSave', [
                             }
                             if (item.fill !== undefined) {
                                 newItem.fill = item.fill;
+                            }
+                            if (item.fillColor !== undefined) {
+                                newItem.fillColor = item.fillColor;
+                            }
+                            if (item.points !== undefined) {
+                                newItem.points = item.points;
+                            }
+                            if (item.pointsSize !== undefined) {
+                                newItem.pointsSize = item.pointsSize;
                             }
 
                             query.items.push(newItem);

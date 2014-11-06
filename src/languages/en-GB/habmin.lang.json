@@ -44,8 +44,19 @@
     "chartSaveItemLineColor": "Line Color",
     "chartSaveItemLineWidth": "Line Width",
     "chartSaveItemLineStyle": "Line Style",
+    "chartSaveItemFill": "Fill Orientation",
+    "chartSaveItemFillColor": "Fill Color",
     "chartSaveItemRepeatTime": "Repeat Time",
-    "chartSaveItemFill": "Fill Graph",
+    "chartSaveItemPointType": "Points Type",
+    "chartSaveItemPointSize": "Points Size",
+
+    "chartItemFillNone": "No Fill",
+    "chartItemFillTop": "Top",
+    "chartItemFillBottom": "Bottom",
+
+    "chartItemPointsNone": "No Points",
+    "chartItemPointsCircle": "Circle",
+    "chartItemPointsSquare": "Square",
 
     "chartSaveAxesLabel": "Label",
     "chartSaveAxesDecimals": "Decimal Places",
