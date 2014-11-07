@@ -47,7 +47,8 @@ angular.module('HABmin.chart', [
         var newChart;
         var chartDef;
 
-        var chartData;
+        var graph2d;
+
         var roundingTime = 1000;
 
         var dataItems;
@@ -76,6 +77,7 @@ angular.module('HABmin.chart', [
                 showMinorLabels: false
             },
             showCurrentTime: false,
+            legend: true,
             zoomMin: 60000
         };
 
@@ -239,6 +241,7 @@ angular.module('HABmin.chart', [
 
         $scope.onLoaded = function (graphRef) {
             console.log("graph loaded callback", graphRef);
+            graph2d = graphRef;
         };
 
 
@@ -254,6 +257,41 @@ angular.module('HABmin.chart', [
                 return false;
             }
             return element.label.toLowerCase().indexOf($scope.filter.text.toLowerCase()) !== -1 ? true : false;
+        };
+
+        $scope.setWindow = function (window) {
+            $scope.graphWindow = window;
+
+            var periodStart = moment().subtract(1, window);
+            var periodEnd = moment().valueOf();
+
+            if (graph2d === undefined) {
+                return;
+            }
+
+            graph2d.setOptions({max: moment().valueOf()});
+            graph2d.setWindow(periodStart, periodEnd);
+        };
+
+        $scope.stepWindow = function (direction) {
+            var percentage = (direction > 0) ? 0.2 : -0.2;
+            var range = graph2d.getWindow();
+            var interval = range.end - range.start;
+
+            graph2d.setWindow({
+                start: range.start.valueOf() - interval * percentage,
+                end: range.end.valueOf() - interval * percentage
+            });
+        };
+
+        $scope.zoomWindow = function (percentage) {
+            var range = graph2d.getWindow();
+            var interval = range.end - range.start;
+
+            graph2d.setWindow({
+                start: range.start.valueOf() - interval * percentage,
+                end: range.end.valueOf() + interval * percentage
+            });
         };
 
         // Initialise the auto refresh variables
@@ -320,12 +358,12 @@ angular.module('HABmin.chart', [
             };
 
             if (p.s.year == p.e.year) {
-                $scope.graphWindow =
+                $scope.graphTimeline =
                     p.s.day.name + ' ' + p.s.day.number + '-' + p.s.month.name + '  -  ' +
                     p.e.day.name + ' ' + p.e.day.number + '-' + p.e.month.name + ' ' + p.s.year;
 
                 if (p.s.month.number == p.e.month.number) {
-                    $scope.graphWindow =
+                    $scope.graphTimeline =
                         p.s.day.name + ' ' + p.s.day.number + '  -  ' +
                         p.e.day.name + ' ' + p.e.day.number + ' ' +
                         p.s.month.name + ' ' + p.s.year;
@@ -336,23 +374,22 @@ angular.module('HABmin.chart', [
                             p.e.minute = '00';
                             p.e.second = '00';
                         }
-                        
-                        $scope.graphWindow =
+
+                        $scope.graphTimeline =
                             p.s.hour + ':' + p.s.minute + '  -  ' +
                             p.e.hour + ':' + p.e.minute + ' ' +
                             p.s.day.name + ' ' + p.s.day.number + ' ' + p.s.month.name + ' ' + p.s.year;
-
                     }
                 }
             }
             else {
-                $scope.graphWindow =
+                $scope.graphTimeline =
                     p.s.day.name + ' ' + p.s.day.number + '-' + p.s.month.name + ', ' + p.s.year + '  -  ' +
                     p.e.day.name + ' ' + p.e.day.number + '-' + p.e.month.name + ', ' + p.e.year;
             }
 
             // Call apply since this is updated in an event and angular may not know about the change!
-            $scope.$apply();
+            $timeout($scope.$apply(), 0);
         };
 
         $scope.graphEvents = {
@@ -577,8 +614,6 @@ angular.module('HABmin.chart', [
                     });
                 }
 
-                console.log("Rendering chart", chartData);
-
 //                console.log(angular.toJson(newChart));
 //                console.log(angular.toJson(groups));
 
@@ -588,8 +623,7 @@ angular.module('HABmin.chart', [
                     items: dataItems,
                     groups: dataGroups
                 };
-                chartOptions.min = $scope.startTime;
-                chartOptions.max = $scope.stopTime;
+                chartOptions.max = moment().valueOf();
                 $scope.graphOptions = chartOptions;
                 $scope.graphLoaded = true;
 
