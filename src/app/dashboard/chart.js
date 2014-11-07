@@ -41,7 +41,7 @@ angular.module('HABmin.chart', [
     })
 
     .controller('DashboardChartCtrl',
-    function DashboardChartCtrl($scope, $modal, locale, PersistenceItemModel, PersistenceServiceModel, PersistenceDataModel, ChartListModel, ChartSave, growl, $interval, $timeout) {
+    function DashboardChartCtrl($scope, $modal, locale, PersistenceItemModel, PersistenceServiceModel, PersistenceDataModel, ChartListModel, ChartSave, growl, VisDataSet, $interval, $timeout) {
         var itemsLoaded = 0;
         var itemsLoading = 0;
         var newChart;
@@ -50,8 +50,8 @@ angular.module('HABmin.chart', [
         var chartData;
         var roundingTime = 1000;
 
-        var groups;
-        var groupCnt;
+        var dataItems;
+        var dataGroups;
 
         var lineStyles = {
             solid: [5, 0],
@@ -78,7 +78,6 @@ angular.module('HABmin.chart', [
             showCurrentTime: false,
             zoomMin: 60000
         };
-
 
         $scope.graphLoaded = false;
 
@@ -238,6 +237,11 @@ angular.module('HABmin.chart', [
             });
         };
 
+        $scope.onLoaded = function (graphRef) {
+            console.log("graph loaded callback", graphRef);
+        };
+
+
         $scope.filterDefaultString = locale.getString('common.filter');
 
         // This is what we will bind the filter to
@@ -270,14 +274,19 @@ angular.module('HABmin.chart', [
                 refreshTimer = null;
             }
 
+            var count = 100;
             // Now create the timer
             if (duration.asMilliseconds() !== 0) {
                 // Remember the period
                 $scope.refreshPeriod = period;
 
                 refreshTimer = $interval(function () {
-                    console.log("Refresh timer");
+                    console.log("Refresh timer", count);
 
+                    var now = vis.moment();
+
+                    count += 10;
+                    dataItems.add({x: now, y: count, group: 'Outside_RainGauge_Counter'});
 
                 }, 2000); //duration.asMilliseconds());
             }
@@ -286,7 +295,7 @@ angular.module('HABmin.chart', [
             }
         };
 
-        $scope.$on('rangechange', function (event, period) {
+        $scope.onRangeChange = function (period) {
             function splitDate(date) {
                 return {
                     year: moment(date).get('year'),
@@ -311,64 +320,45 @@ angular.module('HABmin.chart', [
             };
 
             if (p.s.year == p.e.year) {
-                $scope.info = {
-                    first: p.s.day.name + ' ' + p.s.day.number + '-' + p.s.month.name + '  -  ' + p.e.day.name + ' ' +
-                    p.e.day.number + '-' + p.e.month.name,
-                    second: p.s.year
-                };
+                $scope.graphWindow =
+                    p.s.day.name + ' ' + p.s.day.number + '-' + p.s.month.name + '  -  ' +
+                    p.e.day.name + ' ' + p.e.day.number + '-' + p.e.month.name + ' ' + p.s.year;
 
                 if (p.s.month.number == p.e.month.number) {
-                    $scope.info = {
-                        first: p.s.day.name + ' ' + p.s.day.number + '  -  ' + p.e.day.name + ' ' + p.e.day.number,
-                        second: p.s.month.name + ' ' + p.s.year
-                    };
+                    $scope.graphWindow =
+                        p.s.day.name + ' ' + p.s.day.number + '  -  ' +
+                        p.e.day.name + ' ' + p.e.day.number + ' ' +
+                        p.s.month.name + ' ' + p.s.year;
 
                     if (p.s.day.number == p.e.day.number) {
-                        if (p.e.hour == 23 &&
-                            p.e.minute == 59 &&
-                            p.e.second == 59 &&
-                            p.e.milli == 999) {
+                        if (p.e.hour == 23 && p.e.minute == 59 && p.e.second == 59) {
                             p.e.hour = 24;
                             p.e.minute = '00';
                             p.e.second = '00';
                         }
+                        
+                        $scope.graphWindow =
+                            p.s.hour + ':' + p.s.minute + '  -  ' +
+                            p.e.hour + ':' + p.e.minute + ' ' +
+                            p.s.day.name + ' ' + p.s.day.number + ' ' + p.s.month.name + ' ' + p.s.year;
 
-                        $scope.info = {
-                            first: p.s.hour + ':' + p.s.minute + '  -  ' + p.e.hour + ':' + p.e.minute,
-                            second: p.s.day.name + ' ' + p.s.day.number + ' ' + p.s.month.name + ' ' + p.s.year
-                        };
-
-                        if (p.s.hour == p.e.hour) {
-                            $scope.info = {
-                                first: p.s.hour + ':' + p.s.minute + ':' + p.s.second + '  -  ' + p.e.hour + ':' +
-                                p.e.minute + ':' + p.e.second,
-                                second: p.s.day.name + ' ' + p.s.day.number + ' ' + p.s.month.name + ' ' + p.s.year
-                            };
-
-                            if (p.s.minute == p.e.minute) {
-                                $scope.info = {
-                                    first: p.s.hour + ':' + p.s.minute + ':' + p.s.second + '  -  ' +
-                                    p.e.hour + ':' + p.e.minute + ':' + p.e.second,
-                                    second: p.s.day.name + ' ' + p.s.day.number + ' ' + p.s.month.name + ' ' + p.s.year
-                                };
-                            }
-                        }
                     }
                 }
             }
             else {
-                $scope.info = {
-                    first: p.s.day.name + ' ' + p.s.day.number + '-' + p.s.month.name + ', ' + p.s.year + '  -  ' +
-                    p.e.day.name + ' ' + p.e.day.number + '-' + p.e.month.name + ', ' + p.e.year,
-                    second: ''
-                };
+                $scope.graphWindow =
+                    p.s.day.name + ' ' + p.s.day.number + '-' + p.s.month.name + ', ' + p.s.year + '  -  ' +
+                    p.e.day.name + ' ' + p.e.day.number + '-' + p.e.month.name + ', ' + p.e.year;
             }
-        });
 
-        $scope.$on('rangechanged', function (event, range) {
-            console.log("Now in chart", event, range);
-        });
+            // Call apply since this is updated in an event and angular may not know about the change!
+            $scope.$apply();
+        };
 
+        $scope.graphEvents = {
+            rangechange: $scope.onRangeChange,
+            onload: $scope.onLoaded
+        };
 
 // ------------------------------------------------
 // Private functions
@@ -387,8 +377,8 @@ angular.module('HABmin.chart', [
             chartOptions.dataAxis.title.left = {};
             chartOptions.dataAxis.title.right = {};
 
-            groups = new vis.DataSet();
-            groupCnt = 0;
+            dataGroups = new VisDataSet();
+            dataItems = new VisDataSet();
         }
 
         function _displayChart(id) {
@@ -485,17 +475,6 @@ angular.module('HABmin.chart', [
 
             console.log("Adding", itemRef, "- repeat is ", itemCfg.repeatTime);
 
-            //           chartData.options.labels.push(itemCfg.item);
-            //         chartData.options.series[itemCfg.item] = {};
-
-//            chartData.legend.series[itemCfg.item] = {};
-            //          chartData.legend.series[itemCfg.item].label = itemCfg.label;
-            //        chartData.legend.series[itemCfg.item].format = 0;
-
-            if (itemCfg.format !== undefined && !isNaN(itemCfg.format)) {
-                //            chartData.legend.series[itemCfg.item].format = itemCfg.format;
-            }
-
             var style = "";
             if (itemCfg.lineColor !== undefined) {
                 var t = tinycolor(itemCfg.lineColor);
@@ -518,7 +497,7 @@ angular.module('HABmin.chart', [
                 }
             }
 
-            groups.add({
+            dataGroups.add({
                 id: itemRef,
                 content: itemCfg.label,
                 style: style,
@@ -600,15 +579,14 @@ angular.module('HABmin.chart', [
 
                 console.log("Rendering chart", chartData);
 
-                console.log(angular.toJson(newChart));
-                console.log(angular.toJson(groups));
+//                console.log(angular.toJson(newChart));
+//                console.log(angular.toJson(groups));
 
-                var items = new vis.DataSet();
-                items.add(newChart);
+                dataItems.add(newChart);
 
                 $scope.graphData = {
-                    items: items,
-                    groups: groups
+                    items: dataItems,
+                    groups: dataGroups
                 };
                 chartOptions.min = $scope.startTime;
                 chartOptions.max = $scope.stopTime;
