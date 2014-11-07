@@ -116,6 +116,7 @@
     "ruleSource": "Source",
     "ruleValue": "Value",
     "ruleNoRules": "No Rules Available",
+    "ruleNewRuleTitle": "New Rule",
 
     "userChartPrefTitle": "Chart Settings",
     "userChartPeriod": "Chart Period",

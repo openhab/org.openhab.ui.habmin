@@ -26,7 +26,13 @@ angular.module('HABmin.rules', [
                     templateUrl: 'automation/rule.tpl.html'
                 }
             },
-            data: { pageTitle: 'Rules' }
+            data: { pageTitle: 'Rules' },
+            resolve: {
+                // Make sure the localisation files are resolved before the controller runs
+                localisations: function (locale) {
+                    return locale.ready('habmin');
+                }
+            }
         });
     })
 
@@ -67,7 +73,6 @@ angular.module('HABmin.rules', [
                 function (rule) {
                     restoreRule = rule;
                     $scope.codeEditor = rule.source;
-                    $scope.blockEditor = null;
                     $scope.blockEditor = rule;
                     $scope.isDirty = false;
                 },
@@ -76,6 +81,28 @@ angular.module('HABmin.rules', [
                     growl.warning('Hello world ' + reason.message);
                 }
             );
+        };
+
+        $scope.newRule = function (rule) {
+            restoreRule = rule;
+            $scope.codeEditor = "";
+            $scope.blockEditor = {
+                    block: [
+                        {
+                            type: 'openhab_rule',
+                            deletable: false,
+                            movable: false,
+                            fields: [
+                                {name: "NAME", value: locale.getString('habmin.ruleNewRuleTitle')}
+                            ]
+                        }
+                    ]
+                
+            };
+            $scope.isDirty = false;
+        };
+
+        $scope.deleteRule = function (rule) {
         };
 
         $scope.ruleCancel = function () {
@@ -131,7 +158,7 @@ angular.module('HABmin.rules', [
                 };
                 $scope.styleEditor = function () {
                     return {
-                        'height': (newValue.h - 137) + 'px'
+                        'height': (newValue.h - 117) + 'px'
                     };
                 };
             }, true);
