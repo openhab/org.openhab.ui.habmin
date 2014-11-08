@@ -64,8 +64,8 @@ module.exports = {
         js: [
             'vendor/jquery/dist/jquery.js',
             'vendor/angular/angular.js',
-            'vendor/angular-http-auth/src/http-auth-interceptor.js',
             'vendor/angular-animate/angular-animate.js',
+            'vendor/angular-http-auth/src/http-auth-interceptor.js',
             'vendor/angular-resource/angular-resource.js',
             'vendor/angular-sanitize/angular-sanitize.js',
             'vendor/angular-bootstrap/ui-bootstrap-tpls.js',
@@ -102,7 +102,8 @@ module.exports = {
             'vendor/fullcalendar/gcal.js',
             'vendor/angular-timeago/src/timeAgo.js',
             'vendor/vis/dist/vis.js',
-            'vendor/angular-base64/angular-base64.js'
+            'vendor/angular-base64/angular-base64.js',
+            'vendor/angular-bootstrap-datetimepicker/src/js/datetimepicker.js'
         ],
         css: [
             'vendor/angular-growl-v2/build/angular-growl.css',
@@ -113,7 +114,8 @@ module.exports = {
             'vendor/jquery-ui/themes/base/resizable.css',
             'vendor/oa-font/css/style.css',
             'vendor/fullcalendar/fullcalendar.css',
-            'vendor/vis/dist/vis.css'
+            'vendor/vis/dist/vis.css',
+            'vendor/angular-bootstrap-datetimepicker/src/css/datetimepicker.css'
         ],
         assets: [
             'vendor/oa-font/fonts/*',
