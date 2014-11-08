@@ -41,7 +41,7 @@ angular.module('HABmin.rules', [
         $scope.editSource = false;
         $scope.rulesTotal = -1;
         $scope.isDirty = false;
-        $scope.selectedRule = 0;
+        $scope.selectedRule = null;
 
         var restoreRule = null;
 
@@ -69,7 +69,7 @@ angular.module('HABmin.rules', [
 
         $scope.selectRule = function (rule) {
             $scope.editSource = false;
-            $scope.selectedRule = rule.id;
+            $scope.selectedRule = rule;
 
             RuleModel.getRule(rule.id).then(
                 function (rule) {
@@ -80,7 +80,7 @@ angular.module('HABmin.rules', [
                 },
                 function (reason) {
                     // handle failure
-                    growl.warning('Hello world ' + reason.message);
+                    growl.warning(locale.getString('habmin.ruleErrorLoadingRule', [rule.name, reason]));
                 }
             );
         };
@@ -101,10 +101,13 @@ angular.module('HABmin.rules', [
 
             };
             $scope.isDirty = false;
-            $scope.selectedRule = 0;
+            $scope.selectedRule = null;
         };
 
         $scope.saveRule = function (rule) {
+            RuleModel.putRule(rule).then(function() {
+                $scope.isDirty = false;
+            });
         };
 
         $scope.cancelRule = function (rule) {
@@ -121,7 +124,8 @@ angular.module('HABmin.rules', [
             });
         };
 
-        $scope.deleteRule = function (rule) {
+        $scope.deleteRule = function () {
+            RuleModel.deleteRule($scope.selectedRule.id);
         };
 
         $scope.showSource = function () {

@@ -6,7 +6,10 @@
                 <span class="fa fa-plus"></span>
                 <span i18n="common.new"></span>
             </button>
-            <button type="button" ng-click="deleteRule()" ng-class="{'btn btn-default':true, 'disabled':!selectedRule}">
+            <button type="button" ng-confirm-click="deleteRule()"
+                    ng-class="{'btn btn-default':true, 'disabled':!selectedRule}"
+                    data-i18n-attr="{'ngConfirmMessage': 'habmin.ruleDeleteRuleCheck','ngConfirmTitle': 'habmin.chartDeleteChart','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
+                    rulename={{selectedRule.name}}">
                 <span class="fa fa-trash-o"></span>
                 <span i18n="common.delete"></span>
             </button>
@@ -15,7 +18,8 @@
         <!-- Body -->
         <div class="list-group" ng-style="styleRuleList()" ng-if="!selectCharts" resize-page>
             <div ng-repeat="choice in rules">
-                <a role="presentation" ng-class="{'list-group-item':true, 'active':choice.id==selectedRule}" ng-click="selectRule(choice)">
+                <a role="presentation" ng-class="{'list-group-item':true, 'active':choice.id==selectedRule.id}"
+                   ng-click="selectRule(choice)">
                     <span>{{choice.name}}</span>
                 </a>
             </div>
@@ -42,7 +46,8 @@
                 <span class="fa fa-floppy-o"></span>
                 <span i18n="common.save"></span>
             </button>
-            <button type="button" ng-class="{'btn btn-sm btn-default':true, 'disabled':!isDirty}" ng-click="cancelRule()">
+            <button type="button" ng-class="{'btn btn-sm btn-default':true, 'disabled':!isDirty}"
+                    ng-click="cancelRule()">
                 <span class="fa fa-times"></span>
                 <span i18n="common.cancel"></span>
             </button>
