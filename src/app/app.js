@@ -25,7 +25,6 @@ angular.module('HABmin', [
     'UserGeneralPrefs',
     'ui.router',
     'ui.bootstrap',
-    'ngAnimate',
     'ngLocalize',
     'ngLocalize.Config',
     'ngLocalize.Events',

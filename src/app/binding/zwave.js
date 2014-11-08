@@ -83,10 +83,13 @@ angular.module('Binding.zwave', [
         $scope.stateOnline = function (node) {
             // If moment can parse it, then we return the time since
             // otherwise just show what the server gave us!
-            var t = moment(node.lastUpdate);
-            var lastTime = node.lastUpdate;
+            var t = moment(node.lastReceived);
+            var lastTime = node.lastReceived;
             if (t.isValid()) {
                 lastTime = timeAgo.inWords(t - moment());
+            }
+            else if(node.lastReceived == "NEVER") {
+                lastTime = locale.getString("zwave.zwaveNeverReceived", node.retryRate);
             }
 
             var status = "";
@@ -197,7 +200,7 @@ angular.module('Binding.zwave', [
                             node.lifeState = 0;
                             node.healState = 0;
                             node.healState = "OK";
-                            node.lastUpdate = "";
+                            node.lastReceived = "";
                             $scope.devices[domain[1]] = node;
 
                             // Only request the static info if this is a new device
@@ -294,8 +297,11 @@ angular.module('Binding.zwave', [
                                 device.retryRate = Math.floor(retry / total * 100);
                             }
                         }
-                        else if (status.name === "LastUpdated") {
-                            device.lastUpdate = status.value;
+                        else if (status.name === "LastReceived") {
+                            device.lastReceived = status.value;
+                        }
+                        else if (status.name === "LastSent") {
+                            device.lastSent = status.value;
                         }
                         else if (status.name === "Dead") {
                             var dead = status.value.split(" ");
