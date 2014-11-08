@@ -55,23 +55,23 @@ angular.module('HABmin.ruleModel', [
             return deferred.promise;
         };
 
-        this.putChart = function (chart) {
+        this.putRule = function (rule) {
             var tStart = new Date().getTime();
             var deferred = $q.defer();
 
-            if (chart.id !== undefined && Number(chart.id) > 0) {
-                $http.put(this.url + "/" + chart.id, chart)
+            if (rule.id !== undefined && Number(rule.id) > 0) {
+                $http.put(this.url + "/" + rule.id, rule)
                     .success(function (data) {
                         console.log("PUT completed in", new Date().getTime() - tStart);
 
                         // Update the name in the cache. This will update the GUI if needed.
-                        angular.forEach(this.chartList, function(c) {
-                            if(c.id === chart.id) {
-                                c.name = chart.name;
+                        angular.forEach(this.ruleList, function (r) {
+                            if (r.id === rule.id) {
+                                r.name = rule.name;
                             }
                         });
 
-                        deferred.resolve(data);
+                        deferred.resolve(this.ruleList);
                     })
                     .error(function (data, status) {
                         deferred.reject(data);
@@ -79,6 +79,35 @@ angular.module('HABmin.ruleModel', [
             }
 
             return deferred.promise;
+        };
+
+        this.deleteRule = function (id) {
+            var tStart = new Date().getTime();
+            var deferred = $q.defer();
+
+            if (id !== undefined && Number(id) > 0) {
+                $http['delete'](this.url + "/" + id)
+                    .success(function (data) {
+                        console.log("DELETE completed in", new Date().getTime() - tStart);
+
+                        var ref = 0;
+
+                        // Update the name in the cache. This will update the GUI if needed.
+                        angular.forEach(this.ruleList, function (r, key) {
+                            if (r.id === id) {
+                                ref = key;
+                            }
+                        });
+
+                        if (ref !== 0) {
+                            this.ruleList = this.ruleList.splice(ref, 1);
+                        }
+                        deferred.resolve(data);
+                    })
+                    .error(function (data, status) {
+                        deferred.reject(data);
+                    });
+            }
         };
     })
 ;
