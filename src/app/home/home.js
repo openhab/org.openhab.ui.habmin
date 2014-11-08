@@ -7,7 +7,7 @@
  *
  * (c) 2014 Chris Jackson (chris@cd-jackson.com)
  */
-angular.module('ngBoilerplate.home', [
+angular.module('HABmin.home', [
     'ui.router'
 ])
 

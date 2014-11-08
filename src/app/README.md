@@ -1,94 +1,85 @@
-# The `src/app` Directory
+Updates
+-------
+* 30-04-2014: Initial graphical rule designer ready for testing (see the [rules branch](https://github.com/cdjackson/HABmin/tree/rules) for code, or [the overview here](https://github.com/cdjackson/HABmin/wiki/Rule-Designer:-Overview))
+* 18-04-2014: Add ability to view _HABmin_ charts wihin openHAB sitemap.
+* 22-03-2014: Add a 'data pending' indicator in zwave to show when a configuration has not been confirmed.
+* 02-02-2014: Updated item editing to extend toolbar across all tabs. Added a filter option to filter listed items.
+* 20-01-2014: Added ability to save and restore charts. This allows considerable customisation of the graphs.
 
-## Overview
 
-```
-src/
-  |- app/
-  |  |- home/
-  |  |- about/
-  |  |- app.js
-  |  |- app.spec.js
-```
+Overview
+--------
+_HABmin_ is a web administration console for openHAB. It aims to provide a complete interface to administer openHAB, including the following features -:
+* General configuration (openHAB.cfg)
+* Configure bindings
+* Configure items
+* Configure mapping
+* Configure sitemaps
+* Configure ZWave network
+* Configure rules and notifications
+* Query and graph data from persistence stores
+* View OSGi binding status
+* View log files
 
-The `src/app` directory contains all code specific to this application. Apart
-from `app.js` and its accompanying tests (discussed below), this directory is
-filled with subdirectories corresponding to high-level sections of the
-application, often corresponding to top-level routes. Each directory can have as
-many subdirectories as it needs, and the build system will understand what to
-do. For example, a top-level route might be "products", which would be a folder
-within the `src/app` directory that conceptually corresponds to the top-level
-route `/products`, though this is in no way enforced. Products may then have
-subdirectories for "create", "view", "search", etc. The "view" submodule may
-then define a route of `/products/:id`, ad infinitum.
+The interface is a modern browser based system providing point and click, and drag and drop input. As features are added, the wiki is being updated - please take a look. The interface supports multiple languages - please help with translations.
 
-As `ngBoilerplate` is quite minimal, take a look at the two provided submodules
-to gain a better understanding of how these are used as well as to get a
-glimpse of how powerful this simple construct can be.
 
-## `app.js`
+![Item Config Screen](https://raw.github.com/wiki/cdjackson/HABmin/habmin_itemconfig.png)
 
-This is our main app configuration file. It kickstarts the whole process by
-requiring all the modules from `src/app` that we need. We must load these now to
-ensure the routes are loaded. If as in our "products" example there are
-subroutes, we only require the top-level module, and allow the submodules to
-require their own submodules.
+_HABmin_ interfaces to OpenHAB through a RESTful style interface - this is implemented as a separate bundle to the openHAB REST interfaces that support the standard user interface.
 
-As a matter of course, we also require the template modules that are generated
-during the build.
+![Sitemap Config Screen](https://raw.github.com/wiki/cdjackson/HABmin/habmin_sitemap.png)
 
-However, the modules from `src/common` should be required by the app
-submodules that need them to ensure proper dependency handling. These are
-app-wide dependencies that are required to assemble your app.
+In addition to the REST interface, it is possible to define files that describe the configurable features of OpenHAB. These files describe the configuration required for a binding or an item and are used within openHAB and exposed through the _HABmin_ REST interface. The files are defined in XML format and are not directly accessed by _HABmin_.
 
-```js
-angular.module( 'ngBoilerplate', [
-  'templates-app',
-  'templates-common',
-  'ngBoilerplate.home',
-  'ngBoilerplate.about'
-  'ui.router',
-  'ui.route'
-])
-```
 
-With app modules broken down in this way, all routing is performed by the
-submodules we include, as that is where our app's functionality is really
-defined.  So all we need to do in `app.js` is specify a default route to follow,
-which route of course is defined in a submodule. In this case, our `home` module
-is where we want to start, which has a defined route for `/home` in
-`src/app/home/home.js`.
+![Graph Screen](https://raw.github.com/wiki/cdjackson/HABmin/habmin_graph.png)
 
-```js
-.config( function myAppConfig ( $stateProvider, $urlRouterProvider ) {
-  $urlRouterProvider.otherwise( '/home' );
-})
-```
+While _HABmin_ is a supporting project to OpenHAB,  providing access to openHAB's features, since the existing REST interface does not support most of the functionality required by _HABmin_, _HABmin_ may drive this part of openHAB to some extent. It is also expected that as functionality is added to openHAB, _HABmin_ will need to have its backend modified to reflect the final interfaces implemented in openHAB.
 
-Use the main applications run method to execute any code after services
-have been instantiated.
+![Binding Config Screen](https://raw.github.com/wiki/cdjackson/HABmin/habmin_bindingconfig.png)
 
-```js
-.run( function run () {
-})
-```
 
-And then we define our main application controller. This is a good place for logic
-not specific to the template or route, such as menu logic or page title wiring.
+###Status
+The project is just getting started. Currently implemented are the following -:
+* Graphing of data from the persistence store including saving and restoring charts.
+* Item editor
+* Sitemap editor
+* General binding configuration (ie binding configuration in the openhab.cfg file)
+* OSGI bundle status viewer
+* Rule editor with syntax highlighting
+* Item rule library (initial test phase)
+* ZWave configuration interface (note: work in progress still)
 
-```js
-.controller( 'AppCtrl', function AppCtrl ( $scope, $location ) {
-  $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
-    if ( angular.isDefined( toState.data.pageTitle ) ) {
-      $scope.pageTitle = toState.data.pageTitle + ' | ngBoilerplate' ;
-    }
-  });
-})
-```
+Additionally, lot of the initial user interface has been boilerplated.
 
-### Testing
+Technology
+----------
+_HABmin_ is an open source project. It makes use of a number of libraries under GPL license. The following major libraries are used -:
+* ExtJS from Sencha
+* Highcharts from Highsoft
+* moment.js for time management
+* JIT for some special charts
 
-One of the design philosophies of `ngBoilerplate` is that tests should exist
-alongside the code they test and that the build system should be smart enough to
-know the difference and react accordingly. As such, the unit test for `app.js`
-is `app.spec.js`, though it is quite minimal.
+![Bundles Screen](https://raw.github.com/wiki/cdjackson/HABmin/habmin_systembundles.png)
+
+Installation
+------------
+Note that _HABmin_ requires version 1.4 or above of openHAB.
+You can either use the compiled release version, or the source version. It's also possible to use a combination of the two if you know what you're doing - be careful though since the compiled version does merge some files to speed things up.
+
+The release version is a compiled, minified version which increases the loading speed, and reduces the space used on the disk (useful if you're running on an embedded system like the Pi).
+To install, simply unzip from the openHAB main directory. This will put the _HABmin_ files in the webapps directory, and the plugins in the adons directory.
+
+Alternatively, installing the source code version is done as follows -:
+* Download the project zip file from GitHub and unzip files in the directory webapps/habmin (you will need to create this directory - note that the directory name must be **lower case**).
+* Place the org.openhab.io.habmin*.jar file into the addons directory (this is stored in the addons directory in the repository).
+* Place the org.openhab.binding.zwave*.jar into the addons directory (this is stored in the addons directory in the repository). Note that this bundle is currently required for _HABmin_ to start, but if you don't have zwave then it won't actually run if it's not configured. In the longer term this dependency will be removed.
+
+Either way, you will probably need to restart openHAB for the new interfaces to take affect.
+
+You can then start _HABmin_ at the address [http://localhost:8080/habmin/index.html](http://localhost:8080/habmin/index.html) (assuming openHAB is running on your local computer using the default port - if this is not the case, you will need to adjust the address accordingly).
+
+Contributing
+------------
+If you wish to help with this project, please feel free to clone the repository and work on some features. I would like to maintain a top level TODO/Issues list which lists the main features that require work. Please feel free to add to this list, or discuss implementation issues within the issue. If you are going to work on a feature please make it known so we can avoid duplication.
