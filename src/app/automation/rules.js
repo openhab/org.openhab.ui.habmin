@@ -41,6 +41,7 @@ angular.module('HABmin.rules', [
         $scope.editSource = false;
         $scope.rulesTotal = -1;
         $scope.isDirty = false;
+        $scope.selectedRule = 0;
 
         var restoreRule = null;
 
@@ -68,6 +69,7 @@ angular.module('HABmin.rules', [
 
         $scope.selectRule = function (rule) {
             $scope.editSource = false;
+            $scope.selectedRule = rule.id;
 
             RuleModel.getRule(rule.id).then(
                 function (rule) {
@@ -83,8 +85,7 @@ angular.module('HABmin.rules', [
             );
         };
 
-        $scope.newRule = function (rule) {
-            restoreRule = rule;
+        $scope.newRule = function () {
             $scope.codeEditor = "";
             $scope.blockEditor = {
                     block: [
@@ -97,15 +98,16 @@ angular.module('HABmin.rules', [
                             ]
                         }
                     ]
-                
+
             };
             $scope.isDirty = false;
+            $scope.selectedRule = 0;
         };
 
-        $scope.deleteRule = function (rule) {
+        $scope.saveRule = function (rule) {
         };
 
-        $scope.ruleCancel = function () {
+        $scope.cancelRule = function (rule) {
             if (restoreRule == null) {
                 return;
             }
@@ -117,6 +119,9 @@ angular.module('HABmin.rules', [
                 $scope.blockEditor = restoreRule;
                 $scope.isDirty = false;
             });
+        };
+
+        $scope.deleteRule = function (rule) {
         };
 
         $scope.showSource = function () {

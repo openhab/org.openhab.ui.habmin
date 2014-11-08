@@ -129,7 +129,7 @@ Blockly.Blocks['openhab_persistence_get'] = {
     customChangeHandler: function (option) {
         this.setValue(option);
         // Rebuild the block's optional inputs.
-        if(option == 'TIME') {
+        if (option == 'TIME') {
             this.sourceBlock_.appendDummyInput("TIME")
                 .setAlign(Blockly.ALIGN_RIGHT)
                 .appendField("minus")
@@ -207,8 +207,8 @@ Blockly.Blocks['openhab_itemcmd'] = {
         this.setColour(290);
         this.interpolateMsg(
             // TODO: Combine these messages instead of using concatenation.
-                "Command Item" + ' %1 ' +
-                "to" + ' %2',
+            "Command Item" + ' %1 ' +
+            "to" + ' %2',
             ['ITEM', new Blockly.FieldVariable("command")],
             ['VALUE', null, Blockly.ALIGN_RIGHT],
             Blockly.ALIGN_RIGHT);
@@ -331,8 +331,8 @@ Blockly.Blocks['openhab_itemset'] = {
         this.setColour(290);
         this.interpolateMsg(
             // TODO: Combine these messages instead of using concatenation.
-                "Set Item" + ' %1 ' +
-                "to" + ' %2',
+            "Set Item" + ' %1 ' +
+            "to" + ' %2',
             ['ITEM', new Blockly.FieldVariable("Item")],
             ['VALUE', null, Blockly.ALIGN_RIGHT],
             Blockly.ALIGN_RIGHT);
@@ -485,8 +485,8 @@ Blockly.Blocks['openhab_constantset'] = {
         this.setColour(45);
         this.interpolateMsg(
             // TODO: Combine these messages instead of using concatenation.
-                "Define Constant" + ' %1 ' +
-                "as" + ' %2',
+            "Define Constant" + ' %1 ' +
+            "as" + ' %2',
             ['CONSTANT', new Blockly.FieldVariable("Constant")],
             ['VALUE', null, Blockly.ALIGN_RIGHT],
             Blockly.ALIGN_RIGHT);
@@ -517,4 +517,29 @@ Blockly.Blocks['openhab_constantset'] = {
         }
     },
     customContextMenu: Blockly.Blocks['openhab_constantget'].customContextMenu
+};
+
+Blockly.Blocks['openhab_time'] = {
+    init: function () {
+        this.setHelpUrl("Help");
+        this.setColour(210);
+        this.setOutput(true, 'Boolean');
+        this.appendDummyInput()
+            .appendField("Time of day is");
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldDropdown([
+                ["before", "BEFORE"],
+                ["equal", "EQUAL"],
+                ["after", "AFTER"]
+            ]), "COMPARE")
+            .appendField(new Blockly.FieldTextInput('0',
+                Blockly.FieldTextInput.numberValidator), 'NUM')
+            .appendField(":")
+            .appendField(new Blockly.FieldTextInput('0',
+                Blockly.FieldTextInput.numberValidator), 'NUM')
+            .appendField(":")
+            .appendField(new Blockly.FieldTextInput('0',
+                Blockly.FieldTextInput.numberValidator), 'NUM');
+        this.setTooltip("Tooltip");
+    }
 };
