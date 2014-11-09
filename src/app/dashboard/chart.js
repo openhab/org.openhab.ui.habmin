@@ -394,7 +394,7 @@ angular.module('HABmin.chart', [
             else {
                 $scope.graphWindow = 'custom';
             }
-            
+
             if (p.s.year == p.e.year) {
                 $scope.graphTimeline =
                     p.s.day.name + ' ' + p.s.day.number + '-' + p.s.month.name + '  -  ' +
@@ -467,7 +467,6 @@ angular.module('HABmin.chart', [
 
                     chart.items = [].concat(chart.items);
                     chartDef = chart;
-                    var cnt = 0;
                     angular.forEach(chart.items, function (item) {
                         itemsLoading++;
                         _loadItem(item.item, $scope.startTime, $scope.stopTime);
@@ -491,7 +490,6 @@ angular.module('HABmin.chart', [
         function _displayItems() {
             $scope.stopTime = Math.floor((new Date()).getTime());
             $scope.startTime = $scope.stopTime - (86400 * 1000);
-
             _initChart($scope.stopTime - $scope.startTime);
 
             chartDef = {items:[]};
@@ -501,6 +499,7 @@ angular.module('HABmin.chart', [
                     var i = {};
                     i.item = item.name;
                     i.label = item.label;
+                    i.axis = "left";
                     chartDef.items.push(i);
                     _loadItem(item.name, $scope.startTime, $scope.stopTime);
                 }
@@ -509,10 +508,7 @@ angular.module('HABmin.chart', [
 
         function _loadItem(itemRef, start, stop) {
             console.log("Requesting ", itemRef);
-            var parms = {};
-            parms.starttime = start;
-            parms.endtime = stop;
-
+            var parms = {starttime: start, endtime: stop};
             var me = this;
 
             PersistenceDataModel.get($scope.selectedService, itemRef, start, stop).then(
