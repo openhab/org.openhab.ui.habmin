@@ -102,10 +102,7 @@ angular.module('Binding.zwave', [
         };
 
         $scope.selectDevice = function (node) {
-            $scope.devEdit = {};
-            $scope.devEdit.device = node.device;
-            $scope.devEdit.label = node.label;
-            $scope.devEdit.type = node.type;
+            $scope.devEdit = node;
 
             // Close the panels
             $scope.panelDisplayed = "";

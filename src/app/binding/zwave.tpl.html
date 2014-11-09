@@ -125,8 +125,8 @@
                             <span i18n="zwave.zwaveDeviceHeal"></span>
                         </a>
                     </li>
-                    <li ng-class="{'disabled':true}">
-                        <a ng-click="zwaveAction('binding/network', 'Heal')">
+                    <li ng-class="{'disabled':devEdit.nodeStage!='FAILED'}">
+                        <a ng-click="zwaveAction('binding/network', 'Delete')">
                             <span class="fa fa-fw fa-trash-o"></span>
                             <span i18n="zwave.zwaveDeviceKill"></span>
                         </a>
