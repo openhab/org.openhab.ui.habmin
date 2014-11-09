@@ -120,13 +120,15 @@
                     </li>
                     <li role="presentation" class="divider"></li>
                     <li>
-                        <a ng-click="zwaveAction('binding/network', 'Heal')">
+                        <a ng-click="zwaveAction('nodes/'+devEdit.device+'/', 'Heal')">
                             <span class="fa fa-fw fa-ambulance"></span>
                             <span i18n="zwave.zwaveDeviceHeal"></span>
                         </a>
                     </li>
                     <li ng-class="{'disabled':devEdit.nodeStage!='FAILED'}">
-                        <a ng-click="zwaveAction('binding/network', 'Delete')">
+                        <a ng-confirm-click="zwaveAction('nodes/'+devEdit.device+'/', 'Delete')"
+                           data-i18n-attr="{'ngConfirmMessage': 'zwave.zwaveRemoveFailedText','ngConfirmTitle': 'zwave.zwaveRemoveFailedTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
+                           nodenumber="{{devEdit.id}}">
                             <span class="fa fa-fw fa-trash-o"></span>
                             <span i18n="zwave.zwaveDeviceKill"></span>
                         </a>

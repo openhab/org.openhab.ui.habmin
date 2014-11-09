@@ -69,6 +69,8 @@
     "zwaveDeviceRefresh": "Refresh device configuration",
     "zwaveDeviceConfiguration": "Device Configuration",
     "zwaveDeviceNetworkDiagram": "Network Route Diagram",
-    "zwaveNeverReceived": "never"
+    "zwaveNeverReceived": "never",
 
+    "zwaveRemoveFailedTitle": "Delete Failed Node",
+    "zwaveRemoveFailedText": "Are you sure you wish to delete node '{nodenumber}' from the network?"
 }
