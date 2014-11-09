@@ -67,8 +67,7 @@
                     <li ng-if="selectCharts" ng-class="{'disabled': !selectedChart}">
                         <a ng-confirm-click="deleteChart()"
                            data-i18n-attr="{'ngConfirmMessage': 'habmin.chartDeleteChartCheck','ngConfirmTitle': 'habmin.chartDeleteChart','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
-                           chartname="{{selectedChart.name}}"
-                                >
+                           chartname="{{selectedChart.name}}">
                             <span i18n="habmin.chartDeleteChart"></span>
                         </a>
                     </li>
@@ -160,10 +159,13 @@
         <div class="panel-heading" style="padding:3px;" time-navigation>
             <div class="btn-group btn-group-sm">
                 <button type="button" class="btn btn-default" ng-disabled="!graphLoaded" ng-click="stepWindow(-1)">
-                    <span class="fa fa-arrow-left"></span>
+                    <span class="fa fa-backward"></span>
                 </button>
                 <button type="button" class="btn btn-default" ng-disabled="!graphLoaded" ng-click="stepWindow(1)">
-                    <span class="fa fa-arrow-right"></span>
+                    <span class="fa fa-forward"></span>
+                </button>
+                <button type="button" class="btn btn-default" ng-disabled="!graphLoaded" ng-click="setNow()">
+                    <span class="fa fa-fast-forward"></span>
                 </button>
                 <button type="button" class="btn btn-default" ng-disabled="!graphLoaded" ng-click="zoomWindow(0.10)">
                     <span class="fa fa-search-minus"></span>

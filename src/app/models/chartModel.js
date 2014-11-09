@@ -84,13 +84,6 @@ angular.module('HABmin.chartModel', [
                     .success(function (data) {
                         console.log("POST completed in", new Date().getTime() - tStart);
 
-                        // Add the name in the cache. This will update the GUI if needed.
-                        /*                        angular.forEach(this.chartList, function(c) {
-                         if(c.id === chart.id) {
-                         c.name = chart.name;
-                         }
-                         });*/
-
                         this.chartList.push(chart);
 
                         deferred.resolve(data);
@@ -98,7 +91,6 @@ angular.module('HABmin.chartModel', [
                     .error(function (data, status) {
                         deferred.reject(data);
                     });
-
             }
 
             return deferred.promise;

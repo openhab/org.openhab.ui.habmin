@@ -136,7 +136,7 @@ ngVis.directive('visGraph2d', function () {
                 // Create the graph2d object
                 graph = new vis.Graph2d(element[0]);
 
-                // Attach an event handler and emit the event onto the scope
+                // Attach an event handler if defined
                 angular.forEach(scope.events, function (callback, event) {
                     if (graphEvents.indexOf(String(event)) >= 0) {
                         graph.on(event, callback);

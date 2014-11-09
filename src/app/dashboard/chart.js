@@ -260,8 +260,6 @@ angular.module('HABmin.chart', [
         };
 
         $scope.setWindow = function (window) {
-            $scope.graphWindow = window;
-
             var periodStart = moment().subtract(1, window);
             var periodEnd = moment().valueOf();
 
@@ -273,10 +271,27 @@ angular.module('HABmin.chart', [
             graph2d.setWindow(periodStart, periodEnd);
         };
 
+        $scope.setNow = function (direction) {
+            var range = graph2d.getWindow();
+            var interval = range.end - range.start;
+            var now = moment().valueOf();
+
+            if (graph2d === undefined) {
+                return;
+            }
+
+            graph2d.setOptions({max: now});
+            graph2d.setWindow(now - interval, now);
+        };
+
         $scope.stepWindow = function (direction) {
             var percentage = (direction > 0) ? 0.2 : -0.2;
             var range = graph2d.getWindow();
             var interval = range.end - range.start;
+
+            if (graph2d === undefined) {
+                return;
+            }
 
             graph2d.setWindow({
                 start: range.start.valueOf() - interval * percentage,
@@ -287,6 +302,10 @@ angular.module('HABmin.chart', [
         $scope.zoomWindow = function (percentage) {
             var range = graph2d.getWindow();
             var interval = range.end - range.start;
+
+            if (graph2d === undefined) {
+                return;
+            }
 
             graph2d.setWindow({
                 start: range.start.valueOf() - interval * percentage,
@@ -357,6 +376,25 @@ angular.module('HABmin.chart', [
                 e: splitDate(period.end)
             };
 
+            // Set the window for so the appropriate buttons are highlighted
+            // We give some leeway to the interval -:
+            // A day, +/- 1 minutes
+            // A week, +/- 1 hour
+            // A month is between 28 and 32 days
+            var interval = period.end - period.start;
+            if(interval > 86340000 && interval < 86460000) {
+                $scope.graphWindow = 'day';
+            }
+            else if(interval > 601200000 && interval < 608400000) {
+                $scope.graphWindow = 'week';
+            }
+            else if(interval > 2419200000 && interval < 2764800000) {
+                $scope.graphWindow = 'month';
+            }
+            else {
+                $scope.graphWindow = 'custom';
+            }
+            
             if (p.s.year == p.e.year) {
                 $scope.graphTimeline =
                     p.s.day.name + ' ' + p.s.day.number + '-' + p.s.month.name + '  -  ' +
@@ -389,7 +427,9 @@ angular.module('HABmin.chart', [
             }
 
             // Call apply since this is updated in an event and angular may not know about the change!
-            $timeout($scope.$apply(), 0);
+            if(!$scope.$$phase) {
+                $timeout(function(){$scope.$apply();}, 0);
+            }
         };
 
         $scope.graphEvents = {
@@ -454,6 +494,7 @@ angular.module('HABmin.chart', [
 
             _initChart($scope.stopTime - $scope.startTime);
 
+            chartDef = {items:[]};
             angular.forEach($scope.items, function (item) {
                 if (item.selected === true) {
                     itemsLoading++;
@@ -461,7 +502,7 @@ angular.module('HABmin.chart', [
                     i.item = item.name;
                     i.label = item.label;
                     chartDef.items.push(i);
-                    _loadItem(item.name, start, stop);
+                    _loadItem(item.name, $scope.startTime, $scope.stopTime);
                 }
             });
         }
@@ -614,10 +655,10 @@ angular.module('HABmin.chart', [
                     });
                 }
 
-//                console.log(angular.toJson(newChart));
-//                console.log(angular.toJson(groups));
-
                 dataItems.add(newChart);
+
+                console.log(angular.toJson(dataItems));
+                console.log(angular.toJson(dataGroups));
 
                 $scope.graphData = {
                     items: dataItems,
