@@ -529,17 +529,17 @@ Blockly.Blocks['openhab_time'] = {
         this.appendDummyInput()
             .appendField(new Blockly.FieldDropdown([
                 ["before", "BEFORE"],
-                ["equal", "EQUAL"],
+                ["equal to", "EQUAL"],
                 ["after", "AFTER"]
             ]), "COMPARE")
             .appendField(new Blockly.FieldTextInput('0',
-                Blockly.FieldTextInput.numberValidator), 'NUM')
+                Blockly.FieldTextInput.numberValidator), 'HOUR')
             .appendField(":")
             .appendField(new Blockly.FieldTextInput('0',
-                Blockly.FieldTextInput.numberValidator), 'NUM')
+                Blockly.FieldTextInput.numberValidator), 'MIN')
             .appendField(":")
             .appendField(new Blockly.FieldTextInput('0',
-                Blockly.FieldTextInput.numberValidator), 'NUM');
+                Blockly.FieldTextInput.numberValidator), 'SEC');
         this.setTooltip("Tooltip");
     }
 };
