@@ -101,6 +101,7 @@ angular.module('HABmin', [
                         {type: "openhab_constantset"},
                         {type: "openhab_state_onoff"},
                         {type: "openhab_state_openclosed"},
+                        {type: "openhab_time"},
                         {type: "text"}
                     ]
                 }

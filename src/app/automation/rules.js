@@ -26,7 +26,7 @@ angular.module('HABmin.rules', [
                     templateUrl: 'automation/rule.tpl.html'
                 }
             },
-            data: { pageTitle: 'Rules' },
+            data: {pageTitle: 'Rules'},
             resolve: {
                 // Make sure the localisation files are resolved before the controller runs
                 localisations: function (locale) {
@@ -37,7 +37,61 @@ angular.module('HABmin.rules', [
     })
 
     .controller('AutomationRuleCtrl',
-    function AutomationRuleCtrl($scope, locale, growl, RuleModel, $timeout) {
+    function AutomationRuleCtrl($scope, locale, growl, RuleModel, Blockly, $timeout) {
+        var newDesign = [
+            {
+                type: 'openhab_rule',
+                deletable: false,
+                movable: false,
+                fields: [
+                    {name: "NAME", value: locale.getString('habmin.ruleNewRuleTitle')}
+                ]
+            }
+        ];
+        var toolbox = [
+            {
+                name: "Logic",
+                blocks: [
+                    {type: "logic_compare"},
+                    {type: "logic_operation"},
+                    {type: "logic_negate"},
+                    {type: "controls_if"},
+                    {type: "openhab_iftimer"},
+                    {type: "logic_boolean"}
+                ]
+            },
+            {
+                name: "Math",
+                blocks: [
+                    {type: "math_number"},
+                    {type: "math_arithmetic"},
+                    {type: "math_round"},
+                    {type: "math_constrain"},
+                    {type: "math_constant"},
+                    {type: "math_trig"},
+                    {type: "math_number_property"},
+                    {type: "math_change"}
+                ]
+            },
+            {
+                name: "Items",
+                blocks: [
+                    {type: "openhab_itemset"},
+                    {type: "openhab_itemget"},
+                    {type: "openhab_itemcmd"},
+                    {type: "openhab_persistence_get"},
+                    {type: "variables_set"},
+                    {type: "variables_get"},
+                    {type: "openhab_constantget"},
+                    {type: "openhab_constantset"},
+                    {type: "openhab_state_onoff"},
+                    {type: "openhab_state_openclosed"},
+                    {type: "openhab_time"},
+                    {type: "text"}
+                ]
+            }
+        ];
+
         $scope.editSource = false;
         $scope.rulesTotal = -1;
         $scope.isDirty = false;
@@ -71,11 +125,19 @@ angular.module('HABmin.rules', [
             $scope.editSource = false;
             $scope.selectedRule = rule;
 
+            Blockly.onChange(function () {
+                $scope.isDirty = true;
+            });
+
             RuleModel.getRule(rule.id).then(
                 function (rule) {
                     restoreRule = rule;
+                    if (rule.block === undefined || rule.block === null) {
+                        rule.block = newDesign;
+                    }
                     $scope.codeEditor = rule.source;
-                    $scope.blockEditor = rule;
+                    Blockly.setWorkspace({block: rule.block});
+//                    $scope.blockEditor = {block: rule.block};
                     $scope.isDirty = false;
                 },
                 function (reason) {
@@ -87,45 +149,51 @@ angular.module('HABmin.rules', [
 
         $scope.newRule = function () {
             $scope.codeEditor = "";
-            $scope.blockEditor = {
-                    block: [
-                        {
-                            type: 'openhab_rule',
-                            deletable: false,
-                            movable: false,
-                            fields: [
-                                {name: "NAME", value: locale.getString('habmin.ruleNewRuleTitle')}
-                            ]
-                        }
-                    ]
-
-            };
+            Blockly.setWorkspace({block: newDesign});
             $scope.isDirty = false;
             $scope.selectedRule = null;
         };
 
-        $scope.saveRule = function (rule) {
-            RuleModel.putRule(rule).then(function() {
+        $scope.saveRule = function () {
+            var rule = {};
+            // Read the blocks. If it's not defined, then set to a new rule
+            if (Blockly.getWorkspace() != null) {
+                rule.block = Blockly.getWorkspace().block[0];
+            }
+            else {
+                rule.block = newDesign;
+            }
+            if ($scope.selectedRule !== null) {
+                rule.id = $scope.selectedRule.id;
+            }
+
+            rule.name = "";
+            if (rule.block.type === "openhab_rule") {
+                rule.name = rule.block.fields[0].value;
+            }
+
+            RuleModel.putRule(rule).then(function (result) {
+                $scope.selectedRule = result;
                 $scope.isDirty = false;
             });
         };
 
-        $scope.cancelRule = function (rule) {
+        $scope.cancelRule = function () {
             if (restoreRule == null) {
                 return;
             }
-            $scope.codeEditor = "";
-            $scope.blockEditor = {};
-
-            $timeout(function () {
-                $scope.codeEditor = restoreRule.source;
-                $scope.blockEditor = restoreRule;
-                $scope.isDirty = false;
-            });
+            $scope.codeEditor = restoreRule.source;
+            Blockly.setWorkspace(restoreRule);
+            $scope.isDirty = false;
         };
 
         $scope.deleteRule = function () {
-            RuleModel.deleteRule($scope.selectedRule.id);
+            RuleModel.deleteRule($scope.selectedRule.id).then(function () {
+                $scope.selectedRule = null;
+                $scope.blockEditor = [];
+                $scope.codeEditor = "";
+                $scope.isDirty = false;
+            });
         };
 
         $scope.showSource = function () {
@@ -144,9 +212,6 @@ angular.module('HABmin.rules', [
         // ------------------------------------------------
         // Private functions
 
-        $scope.workspaceChanged = function () {
-            $scope.isDirty = true;
-        };
 
     })
 
@@ -177,5 +242,50 @@ angular.module('HABmin.rules', [
             });
         };
     })
-
 ;
+
+
+/*
+
+ renameVariableCallback = function (prompt, value, callback) {
+ $scope.dlg = {};
+ $scope.dlg.title = prompt;
+ $scope.dlg.value = value;
+
+ var controller = function ($modalInstance) {
+ $scope.dlg.ok = function () {
+ callback($scope.dlg.value);
+ $modalInstance.close();
+ };
+ $scope.dlg.cancel = function () {
+ $modalInstance.dismiss();
+ };
+ };
+
+ $modal.open({
+ backdrop: 'static',
+ keyboard: true,
+ scope: $scope,
+ modalFade: true,
+ template: '<div class="modal-header">' +
+ '<h3 class="modal-title">{{dlg.title}}</h3>' +
+ '</div>' +
+ '<div class="modal-body">' +
+ '<form class="form-horizontal" role="form">' +
+ '<div class="form-group">' +
+ '<label for="inputOption" class="col-sm-3 control-label" i18n="habmin.ruleValue"></label>' +
+ '<div class="col-sm-9">' +
+ '<input type="text" class="form-control" ng-model="dlg.value">' +
+ '</div>' +
+ '</div>' +
+ '</div>' +
+ '</form>' +
+ '</div>' +
+ '<div class="modal-footer">' +
+ '<button class="btn btn-primary" ng-click="dlg.ok()" i18n="common.save"></button>' +
+ '<button class="btn btn-warning" ng-click="dlg.cancel()" i18n="common.cancel"></button>' +
+ '</div>',
+ controller: controller
+ });
+ };
+ */

@@ -77,6 +77,19 @@ angular.module('HABmin.ruleModel', [
                         deferred.reject(data);
                     });
             }
+            else {
+                $http.post(this.url + "/", rule)
+                    .success(function (data) {
+                        console.log("POST completed in", new Date().getTime() - tStart);
+
+                        this.ruleList.push(data);
+
+                        deferred.resolve(data);
+                    })
+                    .error(function (data, status) {
+                        deferred.reject(data);
+                    });
+            }
 
             return deferred.promise;
         };
@@ -108,6 +121,11 @@ angular.module('HABmin.ruleModel', [
                         deferred.reject(data);
                     });
             }
+            else {
+                deferred.reject(data);
+            }
+
+            return deferred.promise;
         };
     })
 ;
