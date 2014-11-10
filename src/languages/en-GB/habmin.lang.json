@@ -118,7 +118,10 @@
     "ruleNoRules": "No Rules Available",
     "ruleNewRuleTitle": "New Rule",
     "ruleErrorLoadingRule": "Error loading chart <i>{1}</i>:<BR><b><i>{2}</i></b>.",
+    "ruleDeleteRuleTitle": "Delete Rule",
     "ruleDeleteRuleCheck": "Are you sure you want to delete rule '{rulename}'?",
+    "ruleUnsavedChangesTitle": "Warning: Unsaved Changes",
+    "ruleUnsavedChangesCheck": "There are unsaved changed in rule'{rulename}'. Are you sure you wish to continue - if you click <b>Yes</b> your changes will be lost!",
 
     "userChartPrefTitle": "Chart Settings",
     "userChartPeriod": "Chart Period",

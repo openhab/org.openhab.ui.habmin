@@ -10,12 +10,20 @@
 angular.module('ngConfirmClick', [
     'ui.bootstrap'
 ])
-    .directive('ngConfirmClick', function ($window, $modal, $rootScope, $timeout) {
+    .directive('ngConfirmClick', function ($window, $modal, $rootScope, $timeout, $parse) {
         return {
             restrict: 'A',
 
             link: function (scope, element, attrs) {
                 element.bind('click', function () {
+                    if(!$parse(attrs.ngConfirmIf)(scope)) {
+                        $timeout(function () {
+                            scope.$apply(attrs.ngConfirmClick);
+                        });
+
+                        return;
+                    }
+
                     var newScope = $rootScope.$new();
                     newScope.message = attrs.ngConfirmMessage || "Are you sure?";
                     newScope.titleMsg = attrs.ngConfirmTitle || "Confirm";
