@@ -3,7 +3,7 @@
         <!-- Header -->
         <div class="panel-heading">
             <button type="button" class="btn btn-default"
-                    ng-confirm-click="newRule()" ng-confirm-if="$parent.isDirty"
+                    ng-confirm-click="newRule()" ng-confirm-if="isDirty"
                     data-i18n-attr="{'ngConfirmMessage': 'habmin.ruleUnsavedChangesCheck','ngConfirmTitle': 'habmin.ruleUnsavedChangesTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
                     rulename={{selectedRule.name}}">
                 <span class="fa fa-plus"></span>

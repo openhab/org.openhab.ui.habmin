@@ -127,6 +127,7 @@ angular.module('HABmin.rules', [
 
             Blockly.onChange(function () {
                 $scope.isDirty = true;
+                $scope.$apply();
             });
 
             RuleModel.getRule(rule.id).then(
@@ -137,7 +138,6 @@ angular.module('HABmin.rules', [
                     }
                     $scope.codeEditor = rule.source;
                     Blockly.setWorkspace({block: rule.block});
-//                    $scope.blockEditor = {block: rule.block};
                     $scope.isDirty = false;
                 },
                 function (reason) {
@@ -190,7 +190,7 @@ angular.module('HABmin.rules', [
         $scope.deleteRule = function () {
             RuleModel.deleteRule($scope.selectedRule.id).then(function () {
                 $scope.selectedRule = null;
-                $scope.blockEditor = [];
+                Blockly.clearWorkspace();
                 $scope.codeEditor = "";
                 $scope.isDirty = false;
             });

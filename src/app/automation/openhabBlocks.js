@@ -190,24 +190,17 @@ Blockly.Blocks['openhab_iftimer'] = {
         this.setNextStatement(true);
         // Assign 'this' to a variable for use in the tooltip closure below.
         var thisBlock = this;
-        this.setTooltip(function () {
-            var op = thisBlock.getFieldValue('MODE');
-            var TOOLTIPS = {
-                WHILE: "While tooltip",
-                UNTIL: "Until tooltip"
-            };
-            return TOOLTIPS[op];
-        });
+        this.setTooltip("Timer help");
     }
 };
 
 Blockly.Blocks['openhab_itemcmd'] = {
     init: function () {
-        this.setHelpUrl("bla");
+        this.setHelpUrl("Help");
         this.setColour(290);
         this.interpolateMsg(
             // TODO: Combine these messages instead of using concatenation.
-            "Command Item" + ' %1 ' +
+            "Set Item" + ' %1 ' +
             "to" + ' %2',
             ['ITEM', new Blockly.FieldVariable("command")],
             ['VALUE', null, Blockly.ALIGN_RIGHT],
@@ -247,7 +240,7 @@ Blockly.Blocks['openhab_itemget'] = {
         this.setHelpUrl("BLAH");
         this.setColour(290);
         this.appendDummyInput()
-            .appendField("Get Item")
+            .appendField("Item State")
             .appendField(new Blockly.FieldVariable(
                 "Item"), 'ITEM');
         this.setOutput(true);
@@ -519,13 +512,12 @@ Blockly.Blocks['openhab_constantset'] = {
     customContextMenu: Blockly.Blocks['openhab_constantget'].customContextMenu
 };
 
-Blockly.Blocks['openhab_time'] = {
+Blockly.Blocks['openhab_iftime'] = {
     init: function () {
         this.setHelpUrl("Help");
         this.setColour(210);
-        this.setOutput(true, 'Boolean');
         this.appendDummyInput()
-            .appendField("Time of day is");
+            .appendField("If time of day is");
         this.appendDummyInput()
             .appendField(new Blockly.FieldDropdown([
                 ["before", "BEFORE"],
@@ -540,6 +532,10 @@ Blockly.Blocks['openhab_time'] = {
             .appendField(":")
             .appendField(new Blockly.FieldTextInput('0',
                 Blockly.FieldTextInput.numberValidator), 'SEC');
+        this.appendStatementInput('DO0')
+            .appendField("Do");
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
         this.setTooltip("Tooltip");
     }
 };
