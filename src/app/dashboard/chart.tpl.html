@@ -158,24 +158,24 @@
     <div class="panel panel-default" ng-style="styleChartPanel()" resize-page>
         <div class="panel-heading" style="padding:3px;" time-navigation>
             <div class="btn-group btn-group-sm">
-                <button type="button" class="btn btn-default" ng-disabled="!graphLoaded" ng-click="stepWindow(-1)">
+                <button type="button" class="btn btn-default" ng-disabled="!graphLoaded||calendarOpen" ng-click="stepWindow(-1)">
                     <span class="fa fa-backward"></span>
                 </button>
-                <button type="button" class="btn btn-default" ng-disabled="!graphLoaded" ng-click="stepWindow(1)">
+                <button type="button" class="btn btn-default" ng-disabled="!graphLoaded||calendarOpen" ng-click="stepWindow(1)">
                     <span class="fa fa-forward"></span>
                 </button>
-                <button type="button" class="btn btn-default" ng-disabled="!graphLoaded" ng-click="setNow()">
+                <button type="button" class="btn btn-default" ng-disabled="!graphLoaded||calendarOpen" ng-click="setNow()">
                     <span class="fa fa-fast-forward"></span>
                 </button>
-                <button type="button" class="btn btn-default" ng-disabled="!graphLoaded" ng-click="zoomWindow(0.10)">
+                <button type="button" class="btn btn-default" ng-disabled="!graphLoaded||calendarOpen" ng-click="zoomWindow(0.10)">
                     <span class="fa fa-search-minus"></span>
                 </button>
-                <button type="button" class="btn btn-default" ng-disabled="!graphLoaded" ng-click="zoomWindow(-0.10)">
+                <button type="button" class="btn btn-default" ng-disabled="!graphLoaded||calendarOpen" ng-click="zoomWindow(-0.10)">
                     <span class="fa fa-search-plus"></span>
                 </button>
             </div>
             <div ng-class="{'btn-group btn-group-sm': true, 'open': calendarOpen}">
-                <button type="button" class="btn btn-default" ng-disabled="!graphLoaded"
+                <button type="button" class="btn btn-default" ng-disabled="!graphLoaded||calendarOpen"
                         ng-class="{active:graphWindow=='day'}" ng-click="setWindow('day')">
                         <span class="calendar-stack">
                             <span class="fa fa-calendar-o"></span>
@@ -183,7 +183,7 @@
                         </span>
                     <span>Day</span>
                 </button>
-                <button type="button" class="btn btn-default" ng-disabled="!graphLoaded"
+                <button type="button" class="btn btn-default" ng-disabled="!graphLoaded||calendarOpen"
                         ng-class="{active:graphWindow=='week'}" ng-click="setWindow('week')">
                         <span class="calendar-stack">
                             <span class="fa fa-calendar-o"></span>
@@ -191,7 +191,7 @@
                         </span>
                     <span>Week</span>
                 </button>
-                <button type="button" class="btn btn-default" ng-disabled="!graphLoaded"
+                <button type="button" class="btn btn-default" ng-disabled="!graphLoaded||calendarOpen"
                         ng-class="{active:graphWindow=='month'}" ng-click="setWindow('month')">
                         <span class="calendar-stack">
                             <span class="fa fa-calendar-o"></span>
@@ -222,11 +222,15 @@
                             </td>
                         </tr>
                     </table>
+                    <div class="modal-footer">
+                    <button class="btn btn-sm btn-primary" ng-click="ok();calendarOpen=false;">OK</button>
+                    <button class="btn btn-sm btn-warning" ng-click="cancel();calendarOpen=false;">Cancel</button>
+                    </div>
                 </div>
             </div>
             <div class="btn-group btn-group-sm">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                        ng-disabled="!graphLoaded">
+                        ng-disabled="!graphLoaded||calendarOpen">
                     <span class="fa fa-retweet"></span>
                     <span>Auto Update</span>
                     <span class="caret"></span>
