@@ -10,7 +10,7 @@
 angular.module('HABmin.chart', [
     'ui.router',
     'ui.bootstrap',
-    'ui.bootstrap.datetimepicker',
+    'ui.bootstrap.datepicker',
     'ngLocalize',
     'angular-growl',
     'HABmin.persistenceModel',
@@ -261,27 +261,27 @@ angular.module('HABmin.chart', [
 
         $scope.setWindow = function (window) {
             var periodStart = moment().subtract(1, window);
-            var periodEnd = moment().valueOf();
+            $scope.timeNow = moment().valueOf();
 
             if (graph2d === undefined) {
                 return;
             }
 
-            graph2d.setOptions({max: moment().valueOf()});
-            graph2d.setWindow(periodStart, periodEnd);
+            graph2d.setOptions({max: $scope.timeNow});
+            graph2d.setWindow(periodStart, $scope.timeNow);
         };
 
         $scope.setNow = function (direction) {
             var range = graph2d.getWindow();
             var interval = range.end - range.start;
-            var now = moment().valueOf();
+            $scope.timeNow = moment().valueOf();
 
             if (graph2d === undefined) {
                 return;
             }
 
-            graph2d.setOptions({max: now});
-            graph2d.setWindow(now - interval, now);
+            graph2d.setOptions({max: $scope.timeNow});
+            graph2d.setWindow($scope.timeNow - interval, $scope.timeNow);
         };
 
         $scope.stepWindow = function (direction) {
@@ -651,6 +651,8 @@ angular.module('HABmin.chart', [
                     });
                 }
 
+                $scope.timeNow = moment().valueOf();
+
                 dataItems.add(newChart);
 
                 console.log(angular.toJson(dataItems));
@@ -660,7 +662,7 @@ angular.module('HABmin.chart', [
                     items: dataItems,
                     groups: dataGroups
                 };
-                chartOptions.max = moment().valueOf();
+                chartOptions.max = $scope.timeNow;
                 $scope.graphOptions = chartOptions;
                 $scope.graphLoaded = true;
 

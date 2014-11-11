@@ -174,7 +174,7 @@
                     <span class="fa fa-search-plus"></span>
                 </button>
             </div>
-            <div class="btn-group btn-group-sm">
+            <div ng-class="{'btn-group btn-group-sm': true, 'open': calendarOpen}">
                 <button type="button" class="btn btn-default" ng-disabled="!graphLoaded"
                         ng-class="{active:graphWindow=='day'}" ng-click="setWindow('day')">
                         <span class="calendar-stack">
@@ -199,13 +199,29 @@
                         </span>
                     <span>Month</span>
                 </button>
-                <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="!graphLoaded"
-                        data-toggle="dropdown">
+                <button type="button" class="btn btn-default dropdown" ng-disabled="!graphLoaded"
+                        ng-init="calendarOpen=false" ng-click="calendarOpen=!calendarOpen">
                     <span class="fa fa-clock-o"></span>&nbsp;Custom
                 </button>
-                <div class='dropdown-menu'>
-                    <datetimepicker data-ng-model="data.date"></datetimepicker>
-                    <datetimepicker data-ng-model="data.date"></datetimepicker>
+                <div class="dropdown-menu">
+                    <table>
+                        <tr>
+                            <td align="center" style="border-right: 1px solid; padding-left: 3px; padding-right: 3px;">
+                                <span>Start Date</span>
+                            </td>
+                            <td align="center" style="border-left: 1px solid; padding-left: 3px; padding-right: 3px;">
+                                <span>End Date</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border-right: 1px solid; padding-right: 3px;">
+                                <datepicker ng-model="dt" max-date="timeNow" max-mode="day" show-weeks="true"></datepicker>
+                            </td>
+                            <td style="border-left: 1px solid; padding-left: 3px;">
+                                <datepicker ng-model="dt" max-date="timeNow" max-mode="day" show-weeks="true"></datepicker>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
             <div class="btn-group btn-group-sm">
