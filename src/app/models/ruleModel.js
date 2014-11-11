@@ -14,6 +14,7 @@ angular.module('HABmin.ruleModel', [
     .service('RuleModel', function ($http, $q) {
         this.url = '/services/habmin/config/designer';
         this.ruleList = [];
+
         this.getList = function () {
             var tStart = new Date().getTime();
             var deferred = $q.defer();
@@ -71,7 +72,7 @@ angular.module('HABmin.ruleModel', [
                             }
                         });
 
-                        deferred.resolve(this.ruleList);
+                        deferred.resolve(data);
                     })
                     .error(function (data, status) {
                         deferred.reject(data);
@@ -113,7 +114,7 @@ angular.module('HABmin.ruleModel', [
                         });
 
                         if (ref !== 0) {
-                            this.ruleList = this.ruleList.splice(ref, 1);
+                            this.ruleList.splice(ref, 1);
                         }
                         deferred.resolve(data);
                     })

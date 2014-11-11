@@ -115,7 +115,7 @@ angular.module('HABmin.chartModel', [
                         });
 
                         if(ref !== 0) {
-                            this.chartList = this.chartList.splice(ref, 1);
+                            this.chartList.splice(ref, 1);
                         }
                         deferred.resolve(data);
                     })
