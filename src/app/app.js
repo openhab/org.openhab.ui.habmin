@@ -71,6 +71,7 @@ angular.module('HABmin', [
                         {type: "logic_operation"},
                         {type: "logic_negate"},
                         {type: "controls_if"},
+                        {type: "openhab_time"},
                         {type: "openhab_iftimer"},
                         {type: "logic_boolean"}
                     ]
@@ -101,7 +102,6 @@ angular.module('HABmin', [
                         {type: "openhab_constantset"},
                         {type: "openhab_state_onoff"},
                         {type: "openhab_state_openclosed"},
-                        {type: "openhab_time"},
                         {type: "text"}
                     ]
                 }

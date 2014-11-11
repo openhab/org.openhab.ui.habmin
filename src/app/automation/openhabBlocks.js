@@ -512,30 +512,22 @@ Blockly.Blocks['openhab_constantset'] = {
     customContextMenu: Blockly.Blocks['openhab_constantget'].customContextMenu
 };
 
-Blockly.Blocks['openhab_iftime'] = {
+Blockly.Blocks['openhab_time'] = {
     init: function () {
         this.setHelpUrl("Help");
         this.setColour(210);
+        this.setOutput(true, 'Boolean');
         this.appendDummyInput()
-            .appendField("If time of day is");
-        this.appendDummyInput()
+            .appendField("Time of day is")
             .appendField(new Blockly.FieldDropdown([
                 ["before", "BEFORE"],
-                ["equal to", "EQUAL"],
                 ["after", "AFTER"]
             ]), "COMPARE")
             .appendField(new Blockly.FieldTextInput('0',
                 Blockly.FieldTextInput.numberValidator), 'HOUR')
             .appendField(":")
             .appendField(new Blockly.FieldTextInput('0',
-                Blockly.FieldTextInput.numberValidator), 'MIN')
-            .appendField(":")
-            .appendField(new Blockly.FieldTextInput('0',
-                Blockly.FieldTextInput.numberValidator), 'SEC');
-        this.appendStatementInput('DO0')
-            .appendField("Do");
-        this.setPreviousStatement(true);
-        this.setNextStatement(true);
+                Blockly.FieldTextInput.numberValidator), 'MIN');
         this.setTooltip("Tooltip");
     }
 };
