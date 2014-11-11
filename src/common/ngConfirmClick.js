@@ -16,7 +16,7 @@ angular.module('ngConfirmClick', [
 
             link: function (scope, element, attrs) {
                 element.bind('click', function () {
-                    if(!$parse(attrs.ngConfirmIf)(scope)) {
+                    if(attrs.ngConfirmIf !== undefined && !$parse(attrs.ngConfirmIf)(scope)) {
                         $timeout(function () {
                             scope.$apply(attrs.ngConfirmClick);
                         });
