@@ -48,49 +48,6 @@ angular.module('HABmin.rules', [
                 ]
             }
         ];
-        var toolbox = [
-            {
-                name: "Logic",
-                blocks: [
-                    {type: "logic_compare"},
-                    {type: "logic_operation"},
-                    {type: "logic_negate"},
-                    {type: "controls_if"},
-                    {type: "openhab_iftimer"},
-                    {type: "logic_boolean"}
-                ]
-            },
-            {
-                name: "Math",
-                blocks: [
-                    {type: "math_number"},
-                    {type: "math_arithmetic"},
-                    {type: "math_round"},
-                    {type: "math_constrain"},
-                    {type: "math_constant"},
-                    {type: "math_trig"},
-                    {type: "math_number_property"},
-                    {type: "math_change"}
-                ]
-            },
-            {
-                name: "Items",
-                blocks: [
-                    {type: "openhab_itemset"},
-                    {type: "openhab_itemget"},
-                    {type: "openhab_itemcmd"},
-                    {type: "openhab_persistence_get"},
-                    {type: "variables_set"},
-                    {type: "variables_get"},
-                    {type: "openhab_constantget"},
-                    {type: "openhab_constantset"},
-                    {type: "openhab_state_onoff"},
-                    {type: "openhab_state_openclosed"},
-                    {type: "openhab_time"},
-                    {type: "text"}
-                ]
-            }
-        ];
 
         $scope.editSource = false;
         $scope.rulesTotal = -1;
@@ -189,9 +146,10 @@ angular.module('HABmin.rules', [
 
         $scope.deleteRule = function () {
             RuleModel.deleteRule($scope.selectedRule.id).then(function () {
-                $scope.selectedRule = null;
                 Blockly.clearWorkspace();
                 $scope.codeEditor = "";
+                $scope.selectedRule = null;
+                restoreRule = null;
                 $scope.isDirty = false;
             });
         };
