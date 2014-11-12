@@ -242,6 +242,7 @@ angular.module('HABmin.chart', [
         $scope.onLoaded = function (graphRef) {
             console.log("graph loaded callback", graphRef);
             graph2d = graphRef;
+            graph2d.setWindow($scope.startTime, $scope.stopTime);
         };
 
 
@@ -666,8 +667,8 @@ angular.module('HABmin.chart', [
 
                 dataItems.add(newChart);
 
-                console.log(angular.toJson(dataItems));
-                console.log(angular.toJson(dataGroups));
+//                console.log(angular.toJson(dataItems));
+//                console.log(angular.toJson(dataGroups));
 
                 $scope.graphData = {
                     items: dataItems,
