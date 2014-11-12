@@ -203,21 +203,21 @@
                         ng-init="calendarOpen=false" ng-click="calendarOpen=!calendarOpen">
                     <span class="fa fa-clock-o"></span>&nbsp;Custom
                 </button>
-                <div class="dropdown-menu">
+                <div class="dropdown-menu dropdown_dialog">
                     <table>
                         <tr>
-                            <td align="center" style="border-right: 1px solid; padding-left: 3px; padding-right: 3px;">
+                            <td align="center" style="padding-right: 3px;">
                                 <span>Start Date</span>
                             </td>
-                            <td align="center" style="border-left: 1px solid; padding-left: 3px; padding-right: 3px;">
+                            <td align="center" style="padding-left: 3px;">
                                 <span>End Date</span>
                             </td>
                         </tr>
                         <tr>
-                            <td style="border-right: 1px solid; padding-right: 3px;">
+                            <td style="padding-right: 3px;">
                                 <datepicker ng-model="dt" max-date="timeNow" max-mode="day" show-weeks="true"></datepicker>
                             </td>
-                            <td style="border-left: 1px solid; padding-left: 3px;">
+                            <td style="padding-left: 3px;">
                                 <datepicker ng-model="dt" max-date="timeNow" max-mode="day" show-weeks="true"></datepicker>
                             </td>
                         </tr>
