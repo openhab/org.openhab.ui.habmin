@@ -215,16 +215,16 @@
                         </tr>
                         <tr>
                             <td style="padding-right: 3px;">
-                                <datepicker ng-model="dt" max-date="timeNow" max-mode="day" show-weeks="true"></datepicker>
+                                <datepicker ng-model="startTime" max-date="stopTime" max-mode="day" show-weeks="true"></datepicker>
                             </td>
                             <td style="padding-left: 3px;">
-                                <datepicker ng-model="dt" max-date="timeNow" max-mode="day" show-weeks="true"></datepicker>
+                                <datepicker ng-model="stopTime" min-date="startTime" max-date="timeNow" max-mode="day" show-weeks="true"></datepicker>
                             </td>
                         </tr>
                     </table>
                     <div class="modal-footer">
-                    <button class="btn btn-sm btn-primary" ng-click="ok();calendarOpen=false;">OK</button>
-                    <button class="btn btn-sm btn-warning" ng-click="cancel();calendarOpen=false;">Cancel</button>
+                    <button class="btn btn-sm btn-primary" ng-click="setDateRange();calendarOpen=false;">OK</button>
+                    <button class="btn btn-sm btn-warning" ng-click="calendarOpen=false;">Cancel</button>
                     </div>
                 </div>
             </div>

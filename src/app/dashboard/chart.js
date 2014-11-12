@@ -313,6 +313,17 @@ angular.module('HABmin.chart', [
             });
         };
 
+        $scope.setDateRange = function () {
+            $scope.timeNow = moment().valueOf();
+
+            if (graph2d === undefined) {
+                return;
+            }
+
+            graph2d.setOptions({max: $scope.timeNow});
+            graph2d.setWindow($scope.startTime, $scope.stopTime);
+        };
+
         // Initialise the auto refresh variables
         var refreshTimer = null;
         $scope.$on("$destroy", function (event) {
