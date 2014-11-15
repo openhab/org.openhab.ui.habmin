@@ -1,8 +1,10 @@
+<!-- Chart and Item Lists -->
 <div class="col-sm-4">
     <div class="panel panel-default">
+        <!-- Header -->
         <div class="panel-heading">
             <!-- Button to select items or chart mode -->
-            <div class="btn-group">
+            <div class="btn-group dropdown">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                     <span i18n="habmin.chartChartList" ng-show="selectCharts"></span>
                     <span i18n="habmin.chartItemList" ng-show="!selectCharts"></span>
@@ -27,51 +29,52 @@
                 </ul>
             </div>
 
-            <div class="btn-group pull-right">
-                <button type="button" ng-if="!selectCharts"
-                        ng-class="{'btn btn-default': true, 'disabled': !itemsSelected}">
-                    <a ng-click="doChart()">
-                        <span class="fa fa-play"></span>
-                    </a>
-                </button>
+            <div class="pull-right">
+                <div class="btn-group dropdown">
+                    <button type="button" ng-if="!selectCharts"
+                            ng-class="{'btn btn-default': true, 'disabled': !itemsSelected}">
+                        <a ng-click="doChart()">
+                            <span class="fa fa-play"></span>
+                        </a>
+                    </button>
+                    <button type="button" ng-if="!selectCharts"
+                            ng-class="{'btn btn-default': true, 'disabled': !itemsSelected}">
+                        <a ng-click="clearList()">
+                            <span class="fa fa-times"></span>
+                        </a>
+                    </button>
 
-                <button type="button" ng-if="!selectCharts"
-                        ng-class="{'btn btn-default': true, 'disabled': !itemsSelected}">
-                    <a ng-click="clearList()">
-                        <span class="fa fa-times"></span>
-                    </a>
-                </button>
-
-                <!-- Tools menu -->
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    <span class="fa fa-cog"></span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li ng-repeat="choice in services">
-                        <a role="presentation" ng-click="selectService(choice)">
-                            <span>{{choice.name}}</span>
-                            <span ng-if="choice.selected" class="pull-right fa fa-check-square-o"></span>
-                        </a>
-                    </li>
-                    <li role="presentation" class="divider"></li>
-                    <li ng-if="!selectCharts" ng-class="{'disabled': !itemsSelected}">
-                        <a ng-click="saveChart()">
-                            <span i18n="habmin.chartSaveChart"></span>
-                        </a>
-                    </li>
-                    <li ng-if="selectCharts" ng-class="{'disabled': !selectedChart}">
-                        <a ng-click="editChart()">
-                            <span i18n="habmin.chartEditChart"></span>
-                        </a>
-                    </li>
-                    <li ng-if="selectCharts" ng-class="{'disabled': !selectedChart}">
-                        <a ng-confirm-click="deleteChart()"
-                           data-i18n-attr="{'ngConfirmMessage': 'habmin.chartDeleteChartCheck','ngConfirmTitle': 'habmin.chartDeleteChart','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
-                           chartname="{{selectedChart.name}}">
-                            <span i18n="habmin.chartDeleteChart"></span>
-                        </a>
-                    </li>
-                </ul>
+                    <!-- Tools menu -->
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <span class="fa fa-cog"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li ng-repeat="choice in services">
+                            <a role="presentation" ng-click="selectService(choice)">
+                                <span>{{choice.name}}</span>
+                                <span ng-if="choice.selected" class="pull-right fa fa-check-square-o"></span>
+                            </a>
+                        </li>
+                        <li role="presentation" class="divider"></li>
+                        <li ng-if="!selectCharts" ng-class="{'disabled': !itemsSelected}">
+                            <a ng-click="saveChart()">
+                                <span i18n="habmin.chartSaveChart"></span>
+                            </a>
+                        </li>
+                        <li ng-if="selectCharts" ng-class="{'disabled': !selectedChart}">
+                            <a ng-click="editChart()">
+                                <span i18n="habmin.chartEditChart"></span>
+                            </a>
+                        </li>
+                        <li ng-if="selectCharts" ng-class="{'disabled': !selectedChart}">
+                            <a ng-confirm-click="deleteChart()"
+                               data-i18n-attr="{'ngConfirmMessage': 'habmin.chartDeleteChartCheck','ngConfirmTitle': 'habmin.chartDeleteChart','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
+                               chartname="{{selectedChart.name}}">
+                                <span i18n="habmin.chartDeleteChart"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
 
             <!-- FILTER BOX -->
@@ -158,23 +161,28 @@
     <div class="panel panel-default" ng-style="styleChartPanel()" resize-page>
         <div class="panel-heading" style="padding:3px;" time-navigation>
             <div class="btn-group btn-group-sm">
-                <button type="button" class="btn btn-default" ng-disabled="!graphLoaded||calendarOpen" ng-click="stepWindow(-1)">
+                <button type="button" class="btn btn-default" ng-disabled="!graphLoaded||calendarOpen"
+                        ng-click="stepWindow(-1)">
                     <span class="fa fa-backward"></span>
                 </button>
-                <button type="button" class="btn btn-default" ng-disabled="!graphLoaded||calendarOpen" ng-click="stepWindow(1)">
+                <button type="button" class="btn btn-default" ng-disabled="!graphLoaded||calendarOpen"
+                        ng-click="stepWindow(1)">
                     <span class="fa fa-forward"></span>
                 </button>
-                <button type="button" class="btn btn-default" ng-disabled="!graphLoaded||calendarOpen" ng-click="setNow()">
+                <button type="button" class="btn btn-default" ng-disabled="!graphLoaded||calendarOpen"
+                        ng-click="setNow()">
                     <span class="fa fa-fast-forward"></span>
                 </button>
-                <button type="button" class="btn btn-default" ng-disabled="!graphLoaded||calendarOpen" ng-click="zoomWindow(0.10)">
+                <button type="button" class="btn btn-default" ng-disabled="!graphLoaded||calendarOpen"
+                        ng-click="zoomWindow(0.10)">
                     <span class="fa fa-search-minus"></span>
                 </button>
-                <button type="button" class="btn btn-default" ng-disabled="!graphLoaded||calendarOpen" ng-click="zoomWindow(-0.10)">
+                <button type="button" class="btn btn-default" ng-disabled="!graphLoaded||calendarOpen"
+                        ng-click="zoomWindow(-0.10)">
                     <span class="fa fa-search-plus"></span>
                 </button>
             </div>
-            <div ng-class="{'btn-group btn-group-sm': true, 'open': calendarOpen}">
+            <div ng-class="{'btn-group btn-group-sm dropdown': true, 'open': calendarOpen}">
                 <button type="button" class="btn btn-default" ng-disabled="!graphLoaded||calendarOpen"
                         ng-class="{active:graphWindow=='day'}" ng-click="setWindow('day')">
                         <span class="calendar-stack">
@@ -228,7 +236,8 @@
                     </div>
                 </div>
             </div>
-            <div class="btn-group btn-group-sm">
+
+            <div class="btn-group btn-group-sm dropdown">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
                         ng-disabled="!graphLoaded||calendarOpen">
                     <span class="fa fa-retweet"></span>
