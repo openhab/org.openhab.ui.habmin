@@ -29,18 +29,17 @@
     "zwaveStageundefined": "unknown",
     "zwaveStageEMPTYNODE": "initialising",
     "zwaveStagePROTOINFO": "getting protocol information",
+    "zwaveStageWAIT": "waiting",
     "zwaveStagePING": "being pinged",
-    "zwaveStageWAKEUP": "waiting for wakeup",
     "zwaveStageDETAILS": "getting node details",
-    "zwaveStageMANSPEC01": "getting manufacturer information",
-    "zwaveStageMANSPEC02": "getting manufacturer information",
+    "zwaveStageMANUFACTURER": "getting manufacturer information",
     "zwaveStageVERSION": "getting version information",
-    "zwaveStageINSTANCES_ENDPOINTS": "getting endpoints",
+    "zwaveStageAPP_VERSION": "getting application version information",
+    "zwaveStageENDPOINTS": "getting endpoint information",
     "zwaveStageSTATIC_VALUES": "getting static values",
-    "zwaveStageASSOCIATIONS": "updating associations",
+    "zwaveStageDYNAMIC_VALUES": "getting dynamic values",
     "zwaveStageNEIGHBORS": "updating neighbours",
     "zwaveStageSESSION": "session",
-    "zwaveStageDYNAMIC": "getting dynamic data",
     "zwaveStageCONFIG": "getting configuration parameters",
     "zwaveStageDONE": "operating",
     "zwaveStageINIT": "initialising",
@@ -72,5 +71,7 @@
     "zwaveNeverReceived": "never",
 
     "zwaveRemoveFailedTitle": "Delete Failed Node",
-    "zwaveRemoveFailedText": "Are you sure you wish to delete node '{nodenumber}' from the network?"
+    "zwaveRemoveFailedText": "Are you sure you wish to delete node '{nodenumber}' from the network?",
+
+    "zwaveUnknown": "Unknown"
 }

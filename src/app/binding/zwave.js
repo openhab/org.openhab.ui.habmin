@@ -305,8 +305,12 @@ angular.module('Binding.zwave', [
                             device.dead = dead[0];
                         }
                         else if (status.name === "NodeStage") {
+                            // If the stage has changed, then update the info.
                             var stage = status.value.split(" ");
-                            device.nodeStage = stage[0];
+                            if(device.nodeState != stage[0]) {
+                                device.nodeStage = stage[0];
+                                updateInfo(id);
+                            }
                         }
                     });
                 })
@@ -340,12 +344,12 @@ angular.module('Binding.zwave', [
                             var power = status.value.split(' ');
                             device.power = power[0];
                             switch (power[0]) {
-                                case "Mains":
+                                case "MAINS":
                                     device.batteryIcon = "oa-battery-charge";
                                     device.batteryLevel = 100;
                                     device.powerInfo = locale.getString("zwave.zwaveMainsPower");
                                     break;
-                                case "Battery":
+                                case "BATTERY":
                                     var level = parseInt(power[1], 10);
                                     if (isNaN(level)) {
                                         device.batteryIcon = "oa-battery-empty";
@@ -390,6 +394,15 @@ angular.module('Binding.zwave', [
                                     device.icon = "wifi";
                                     break;
                             }
+                        }
+                        if(status.name === "ManufacturerID" && status.value === "UNKNOWN") {
+                            status.value = locale.getString("zwave.zwaveUnknown");
+                        }
+                        if(status.name === "DeviceID" && status.value === "UNKNOWN") {
+                            status.value = locale.getString("zwave.zwaveUnknown");
+                        }
+                        if(status.name === "DeviceType" && status.value === "UNKNOWN") {
+                            status.value = locale.getString("zwave.zwaveUnknown");
                         }
                     });
                 })
