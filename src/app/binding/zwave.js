@@ -214,6 +214,10 @@ angular.module('Binding.zwave', [
 
                         if (node.type === undefined) {
                             node.type = locale.getString("zwave.zwaveUnknownDevice");
+                            node.typeUnknown = true;
+                        }
+                        else {
+                            node.typeUnknown = false;
                         }
 
                         newList[domain[1]] = node;

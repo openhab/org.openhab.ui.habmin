@@ -62,7 +62,7 @@
                         </span>
                     </span>
                     <br>
-                    <span class="small">{{choice.type}}</span>
+                    <span ng-class="{'small': true, 'text-warning': choice.typeUnknown}">{{choice.type}}</span>
                     <span class="pull-right">
                         <span popover="{{choice.powerInfo}}" popover-trigger="mouseenter" popover-placement="top"
                               popover-append-to-body="true" popover-popup-delay="500">
