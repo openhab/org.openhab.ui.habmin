@@ -32,7 +32,8 @@
     "angular-timeago": "~0.1.2",
     "vis": "~3.5.0",
     "angular-http-auth": "~1.2.1",
-    "angular-base64": "~2.0.2"
+    "angular-base64": "~2.0.2",
+    "angular-bootstrap-select": "~0.0.5"
   },
   "resolutions": {
     "moment": "~2.8.2",

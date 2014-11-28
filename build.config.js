@@ -103,7 +103,8 @@ module.exports = {
             'vendor/angular-timeago/src/timeAgo.js',
             'vendor/vis/dist/vis.js',
             'vendor/angular-base64/angular-base64.js',
-            'vendor/angular-bootstrap-datetimepicker/src/js/datetimepicker.js'
+            'vendor/angular-bootstrap-datetimepicker/src/js/datetimepicker.js',
+            'vendor/bootstrap-select/dist/js/bootstrap-select.js'
         ],
         css: [
             'vendor/angular-growl-v2/build/angular-growl.css',
@@ -115,7 +116,8 @@ module.exports = {
             'vendor/oa-font/css/style.css',
             'vendor/fullcalendar/fullcalendar.css',
             'vendor/vis/dist/vis.css',
-            'vendor/angular-bootstrap-datetimepicker/src/css/datetimepicker.css'
+            'vendor/angular-bootstrap-datetimepicker/src/css/datetimepicker.css',
+            'vendor/bootstrap-select/dist/css/bootstrap-select.min.css'
         ],
         assets: [
             'vendor/oa-font/fonts/*',
