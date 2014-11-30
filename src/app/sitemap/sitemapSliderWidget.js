@@ -9,7 +9,7 @@
  */
 angular.module('sitemapSliderWidget', [
     'HABmin.iconModel',
-    'ui-rangeSlider',
+//    'ui-rangeSlider',
     'toggle-switch'
 ])
     .directive('sitemapSlider', function ($interval, ImgFactory) {
