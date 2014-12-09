@@ -30,7 +30,8 @@ angular.module('HABmin', [
     'angular-growl',
     'pickAColor',
     'angular-blockly',
-    'Binding.zwave'
+    'Binding.zwave',
+    'angular-bootstrap-select'
 ])
     .value('localeConf', {
         basePath: 'languages',
