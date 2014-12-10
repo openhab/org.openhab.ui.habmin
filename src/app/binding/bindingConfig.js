@@ -14,6 +14,7 @@
  * @example <dynamic-form template-url="form-template.js" ng-model="formData"></dynamic-form>
  */
 angular.module('Binding.config', [
+    'angular-bootstrap-select'
 ])
     .directive('bindingConfig',
     function ($q, $parse, $compile, $document, $timeout) {
@@ -62,6 +63,7 @@ angular.module('Binding.config', [
                         case "LIST":
                             newInput = angular.element('<select></select>');
                             newInput.attr('id', field.name);
+                            newInput.attr('selectpicker', "");
                             newInput.attr('class', 'form-control');
                             if (field.value === undefined) {
                                 newOption = angular.element('<option></option>');

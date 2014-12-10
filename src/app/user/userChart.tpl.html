@@ -8,7 +8,11 @@
             <label for="inputDefaultPeriod" class="col-sm-3 control-label" i18n="habmin.userChartPeriod"></label>
 
             <div class="col-sm-9">
-                <select selectpicker class="form-control" id="inputDefaultPeriod" ng-options="choice.value as choice.label for choice in periodOptions" toggle-dropdown>
+                <select class="form-control" id="inputDefaultPeriod" ng-option="c.value as c.label for c in periodOptions"
+                        selectpicker toggle-dropdown live-search="false">
+                    <option value="-1">hello</option>
+                    <option value="3600" i18n="habmin.period1Hour"></option>
+                    <option value="1">hello 2</option>
                 </select>
             </div>
         </div>
@@ -19,6 +23,8 @@
             <div class="col-sm-9">
                 <input type="checkbox">
             </div>
+            {{test}}
+            {{periodOptions}}
         </div>
     </form>
 

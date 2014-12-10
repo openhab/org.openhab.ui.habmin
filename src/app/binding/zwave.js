@@ -362,7 +362,12 @@ angular.module('Binding.zwave', [
                                     }
                                     else {
                                         var icon = Math.floor(level / 20) * 20;
-                                        device.batteryIcon = "oa-battery-" + icon;
+                                        if(icon === 0) {
+                                            device.batteryIcon = "oa-battery-empty";
+                                        }
+                                        else {
+                                            device.batteryIcon = "oa-battery-" + icon;
+                                        }
                                         device.batteryLevel = level;
                                         device.powerInfo = locale.getString("zwave.zwaveBatteryPowerLevel", level);
                                     }
