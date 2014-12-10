@@ -151,16 +151,6 @@
                 </button>
             </div>
 
-            <select class="form-control" id="inputDefaultPeriod"
-                    ng-model="selected"
-                    ng-option="c.value as c.label for c in periodOptions"
-                    selectpicker="xx" toggle-dropdown live-search="false">
-                <option value="-1">hello</option>
-                <option value="3600" i18n="habmin.period1Hour"></option>
-                <option value="1">hello 2</option>
-            </select>
-
-
             <div ng-hide="!devEdit.label" class="btn-group pull-right">
                 <div class="text-right">{{devEdit.label}}</div>
                 <div class="text-right small"><span>{{devEdit.label}}</span>&nbsp;<span class="hidden-xs">{{devEdit.type}}</span></div>
@@ -227,33 +217,43 @@
             <div collapse="panelDisplayed!='TEST'">
 
                 <form class="panel-form form-horizontal" role="form">
-                    <div class="form-group">
-                        <label class="control-label" i18n="habmin.chartSaveAxesLabel"></label>
 
-                        <div>
-                            <multiselect style="width: 100%"
-                                         class="input-xlarge"
-                                         multiple="true"
-                                         ng-model="selectedCar"
-                                         search="true"
-                                         options="c.name for c in cars"
-                                         change="selected()">
-                            </multiselect>
-                        </div>
+                    <div class="form-group">
+                        <label class="control-label">
+                            <span i18n="habmin.chartSaveAxesLabel"></span>
+                            <span class="label label-warning">pending...</span>
+                        </label>
+                        <select selectpicker class="form-control" multiple max-options="3"
+                                title="select..."
+                                >
+                            <optgroup label="Node 1: Lounge">
+                                <option value="1">BLAH 1</option>
+                                <option value="2">BLAH 2</option>
+                            </optgroup>
+                            <optgroup label="Node 2: Bedroom">
+                                <option value="1">BLAH 1</option>
+                                <option value="2">BLAH 2</option>
+                            </optgroup>
+                        </select>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label" i18n="habmin.chartSaveAxesLabel"></label>
 
-                        <div>
-                            <multiselect style="width: 100%"
-                                         class="input-xlarge"
-                                         multiple="false"
-                                         ng-model="selectedCar"
-                                         search="true"
-                                         options="c.name for c in cars"
-                                         change="selected()">
-                            </multiselect>
-                        </div>
+                    <div class="form-group">
+                        <label class="control-label">
+                            <span i18n="habmin.chartSaveAxesLabel"></span>
+                            <span class="label label-warning" ng-hide="true">pending...</span>
+                        </label>
+                        <select selectpicker class="form-control" multiple max-options="3"
+                                title="select..."
+                                >
+                            <optgroup label="Node 1: Lounge">
+                                <option value="1">BLAH 1</option>
+                                <option value="2">BLAH 2</option>
+                            </optgroup>
+                            <optgroup label="Node 2: Bedroom">
+                                <option value="1">BLAH 1</option>
+                                <option value="2">BLAH 2</option>
+                            </optgroup>
+                        </select>
                     </div>
                 </form>
             </div>
