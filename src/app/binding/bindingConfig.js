@@ -24,9 +24,8 @@ angular.module('Binding.config', [
                 template: "@"
             },
             link: function ($scope, element, attrs) {
-                //  Basic initialization
+                // Basic initialization
                 var newElement = null,
-                    newLabel = null,
                     newChild = null,
                     newInput = null,
                     newOption = null;
@@ -35,28 +34,19 @@ angular.module('Binding.config', [
                     newElement = angular.element('<div></div>');
                     newElement.attr('class', 'form-group');
 
-                    newLabel = angular.element('<label></label>');
-                    newLabel.attr('for', field.name);
-                    newLabel.attr('class', 'control-label');
-
-                    newChild = angular.element('<span></span>');
-                    angular.element(newChild).html(field.label);
-                    newLabel.append(newChild);
-
-                    newChild = angular.element('<span></span>');
-                    newChild.attr('class', 'pull-right label label-warning');
-//                    newChild.attr('ng-hide', 'false');
-                    angular.element(newChild).html("pending...");
-                    newLabel.append(newChild);
-
+                    newChild = angular.element('<label></label>');
                     newChild.attr('for', field.name);
-                    newElement.append(newLabel);
+                    newChild.attr('class', 'control-label');
+                    angular.element(newChild).html(field.label);
+                    newElement.append(newChild);
+
+                    newChild = angular.element('<span></span>');
+                    newChild.attr('class', 'pull-right label label-warning status_pending');
+                    newChild.attr('ng-show', 'models.' + field.name + '_pending==true');
+                    angular.element(newChild).html("update pending...");
+                    newElement.append(newChild);
 
                     newChild = angular.element('<div></div>');
-//                    if (field.pending === true) {
-//                        newChild.attr('class', 'has-warning');
-//                    }
-//                    newChild.attr('class', 'has-feedback');
 
                     switch (field.type) {
                         case "BYTE":
@@ -119,12 +109,6 @@ angular.module('Binding.config', [
                         // Add a feedback box.
                         // We'll use this for pending attributes
                         newChild.append(newInput);
-
-//                        newInput = angular.element('<span></span>');
-  //                      newInput.attr('class', 'fa form-control-feedback');
-    //                    newInput.attr('class', 'fa fa-question-circle form-control-feedback');
-      //                  newChild.append(newInput);
-
                         newElement.append(newChild);
                     }
                     this.append(newElement);
