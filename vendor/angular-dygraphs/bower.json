@@ -1,0 +1,28 @@
+{
+  "name": "angular-dygraphs",
+  "version": "0.1.0",
+  "homepage": "https://github.com/cdjackson/angular-dygraphs",
+  "authors": [
+    "Chris Jackson <chris@cd-jackson.com>"
+  ],
+  "description": "AngularJS directive for dygraphs",
+  "main": "src/angular-dygraphs.js",
+  "keywords": [
+    "angularjs",
+    "dygraphs"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "dygraphs": "~1.0.1",
+    "angular-sanitize": "~1.2.23",
+    "jquery": "~2.1.1",
+    "moment": "~2.8.2"
+  }
+}

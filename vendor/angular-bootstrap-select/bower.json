@@ -1,0 +1,27 @@
+{
+  "name": "angular-bootstrap-select",
+  "version": "0.0.5",
+  "main": "./build/angular-bootstrap-select.js",
+  "description": "Directive to wrap bootstrap-select",
+  "author": "https://github.com/joaoneto/angular-bootstrap-select/graphs/contributors",
+  "homepage": "http://joaoneto.github.io/angular-bootstrap-select/",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "components",
+    "test*",
+    "demo*",
+    "Gruntfile.js",
+    "package.json",
+    "CHANGELOG.md"
+  ],
+  "dependencies": {
+    "angular": "<=1.2.26 >=1.2",
+    "bootstrap-select": "1.5.4"
+  },
+  "devDependencies": {
+    "angular-mocks": "<=1.2.26 >=1.2"
+  }
+}
