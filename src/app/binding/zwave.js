@@ -342,7 +342,7 @@ angular.module('Binding.zwave', [
                         return;
                     }
 
-                    // Loop through all info attributes and pull out the stuff we care about!
+                    // Loop through all info attributes and pull out the stuff we want to display
                     angular.forEach(data.records, function (status) {
                         if (status.name === "Power") {
                             var power = status.value.split(' ');
@@ -421,7 +421,7 @@ angular.module('Binding.zwave', [
         }
 
         function updateConfig(id) {
-            $http.get(url + "nodes/" + id + '/parameters/')
+            $http.get(url + 'nodes/' + id + '/parameters/')
                 .success(function (data) {
                     if (data.records === undefined || data.records.length === 0) {
                         $scope.devEdit.configuration = undefined;
@@ -436,14 +436,16 @@ angular.module('Binding.zwave', [
         }
 
         function updateAssociations(id) {
-            $http.get(url + "nodes/" + id + '/associations/')
+            $http.get(url + 'nodes/' + id + '/associations/')
                 .success(function (data) {
                     if (data.records === undefined || data.records.length === 0) {
                         $scope.devEdit.associations = undefined;
                     }
                     else {
                         console.log("Association groups", data);
-//                        $scope.devEdit.associations = data.records;
+                        angular.forEach(data.records, function (record) {
+                            updateAssociationGroup(record.domain);
+                        });
                     }
                 })
                 .error(function (data, status) {
@@ -451,14 +453,14 @@ angular.module('Binding.zwave', [
                 });
         }
 
-        function updateAssociationGroup(id, group) {
-            $http.get(url + "nodes/" + id + '/associations/' + group + '/')
+        function updateAssociationGroup(domain) {
+            $http.get(url + domain)
                 .success(function (data) {
                     if (data.records === undefined || data.records.length === 0) {
 //                        $scope.devEdit.associations = undefined;
                     }
                     else {
-                        console.log("Association group", group, data);
+                        console.log("Association group", domain, data);
 //                        $scope.devEdit.associations = data.records;
                     }
                 })
@@ -468,7 +470,7 @@ angular.module('Binding.zwave', [
         }
 
         function updateNeighbors(id) {
-            $http.get(url + "nodes/" + id + '/neighbors/')
+            $http.get(url + 'nodes/' + id + '/neighbors/')
                 .success(function (data) {
                     if (data.records === undefined || data.records.length === 0) {
                         return;

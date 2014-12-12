@@ -120,6 +120,10 @@ angular.module('Binding.config', [
 
                 $scope.$watch("template", function (template) {
                     element.empty();
+                    if(template == null || template.length === 0) {
+                        return;
+                    }
+                    console.log("New template:", template);
 
                     $scope.models = {};
                     try {
