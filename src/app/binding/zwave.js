@@ -442,7 +442,24 @@ angular.module('Binding.zwave', [
                         $scope.devEdit.associations = undefined;
                     }
                     else {
-                        $scope.devEdit.associations = data.records;
+                        console.log("Association groups", data);
+//                        $scope.devEdit.associations = data.records;
+                    }
+                })
+                .error(function (data, status) {
+                    $scope.devEdit.associations = undefined;
+                });
+        }
+
+        function updateAssociationGroup(id, group) {
+            $http.get(url + "nodes/" + id + '/associations/' + group + '/')
+                .success(function (data) {
+                    if (data.records === undefined || data.records.length === 0) {
+//                        $scope.devEdit.associations = undefined;
+                    }
+                    else {
+                        console.log("Association group", group, data);
+//                        $scope.devEdit.associations = data.records;
                     }
                 })
                 .error(function (data, status) {
