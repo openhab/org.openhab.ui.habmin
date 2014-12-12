@@ -59,6 +59,24 @@ angular.module('yaru22.angular-timeago', [
         years: '%d years',
         numbers: []
       },
+      'de_DE': {
+        prefixAgo: 'vor',
+        prefixFromNow: null,
+        suffixAgo: null,
+        suffixFromNow: 'from now',
+        seconds: 'weniger als einer Minute',
+        minute: 'ca. einer Minute',
+        minutes: '%d Minuten',
+        hour: 'ca. einer Stunde',
+        hours: 'ca. %d Stunden',
+        day: 'einem Tag',
+        days: '%d Tagen',
+        month: 'ca. einem Monat',
+        months: '%d Monaten',
+        year: 'ca. einem Jahr',
+        years: '%d Jahren',
+        numbers: []
+      },
       'he_IL': {
         prefixAgo: null,
         prefixFromNow: null,
@@ -76,7 +94,7 @@ angular.module('yaru22.angular-timeago', [
         year: 'כשנה',
         years: '%d שנים',
         numbers: []
-      },
+      }
     }
   };
 
@@ -121,7 +139,11 @@ angular.module('yaru22.angular-timeago', [
         substitute($l.years, Math.round(years));
 
     var separator = $l.wordSeparator === undefined ?  ' ' : $l.wordSeparator;
-    return [prefix, words, suffix].join(separator).trim();
+    if(lang === 'he_IL'){
+      return [prefix, suffix, words].join(separator).trim();
+    } else {
+      return [prefix, words, suffix].join(separator).trim();
+    }
   };
 
   service.parse = function (iso8601) {
