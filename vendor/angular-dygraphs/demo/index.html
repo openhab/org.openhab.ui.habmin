@@ -1,0 +1,76 @@
+<!doctype html>
+<html ng-app="demoApp">
+<head>
+    <title>dygraphs demo</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dygraph/1.0.1/dygraph-combined.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular-sanitize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="../src/angular-dygraphs.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="demo.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+</head>
+<body ng-controller="DemoCtrl">
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <h3>dygraphs - AngularJS Directive</h3>
+
+            <p>This directive adds functionality to the dygraphs library by adding an interactive legend below the graph,
+                and a popover tooltip that follows the mouse.</p>
+            <p>To remove a series from the chart, click on the label.</p>
+            <p>It also resizes the chart to the size of its parent.</p>
+            <p>A LESS style sheet is provided that allows use with Bootstrap themes.</p>
+        </div>
+        <div class="col-md-8">
+            <ng-dygraphs style="height:450px;"
+                         data="graph.data"
+                         options="graph.options"
+                         legend="graph.legend"
+                    >
+            </ng-dygraphs>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var demoApp = angular.module('demoApp', [
+        "angular-dygraphs"
+    ]);
+
+    demoApp.controller('DemoCtrl', function ($scope) {
+        $scope.graph = {
+            data: [
+            ],
+            options: {
+                labels: ["x", "A", "B"]
+            },
+            legend: {
+                series: {
+                    A: {
+                        label: "Series A"
+                    },
+                    B: {
+                        label: "Series B",
+                        format: 3
+                    }
+                }
+            }
+        };
+
+        var base_time = Date.parse("2008/07/01");
+        var num = 24 * 0.25 * 365;
+        for (var i = 0; i < num; i++) {
+            $scope.graph.data.push([ new Date(base_time + i * 3600 * 1000),
+                        i + 50 * (i % 60),        // line
+                        i * (num - i) * 4.0 / num  // parabola
+            ]);
+        }
+
+    });
+</script>
+</body>
+</html>

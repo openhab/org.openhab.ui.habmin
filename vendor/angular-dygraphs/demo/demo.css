@@ -1,0 +1,71 @@
+.ng-dygraphs .legend {
+    width: auto;
+    margin: 3px 8px;
+    padding: 2px 5px;
+    border: 1px #000000 solid;
+    border-radius: 5px;
+}
+.ng-dygraphs .legend .series-container {
+    text-align: center;
+}
+.ng-dygraphs .legend .series-container .series {
+    padding: 0px 8px;
+    display: inline-block;
+}
+.ng-dygraphs .legend .series-container .series a {
+    text-decoration: none;
+    color: #000000;
+}
+.ng-dygraphs .legend .series-container .series a:hover {
+    color: #000000;
+    cursor: pointer;
+}
+.ng-dygraphs .dypopover {
+    position: fixed;
+    display: none;
+    background: #808080;
+    border: 1px solid #808080;
+    border-radius: 5px;
+    opacity: .80;
+    padding: 2px;
+}
+.ng-dygraphs .dypopover th {
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 1px solid #ffffff;
+    white-space: nowrap;
+}
+.ng-dygraphs .dypopover td {
+    white-space: nowrap;
+    padding: 2px 5px;
+}
+.ng-dygraphs .left .dypopover:after,
+.ng-dygraphs .left .dypopover:before {
+    right: 100%;
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+.ng-dygraphs .left .dypopover:after {
+    border-color: rgba(0, 0, 0, 0);
+    border-right-color: #808080;
+    border-width: 10px;
+    margin-top: -10px;
+}
+.ng-dygraphs .left .dypopover:before {
+    border-color: rgba(0, 0, 0, 0);
+    border-right-color: #808080;
+    border-width: 11px;
+    margin-top: -11px;
+}
+.dygraph-axis-label {
+    color: #000000;
+    font-size: 12px;
+}
+.dygraph-legend {
+    background-color: #ffffff !important;
+}
