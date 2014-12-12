@@ -1,17 +1,11 @@
 /**
- * DynamicForms - Build Forms in AngularJS From Nothing But JSON
- * @version v0.0.2 - 2014-04-29
- * @link http://bitbucket.org/danhunsaker/angular-dynamic-forms
- * @license MIT, http://opensource.org/licenses/MIT
- */
-
-/**
- * Dynamically build an HTML form using a JSON object as a template.
+ * HABmin - Home Automation User and Administration Interface
+ * Designed for openHAB (www.openhab.com)
  *
- * @param {Object} [template] - The form template itself, as an object.
- * @param {string} [templateUrl] - The URL to retrieve the form template from; template overrides.
- * @param {mixed} ngModel - An object in the current scope where the form data should be stored.
- * @example <dynamic-form template-url="form-template.js" ng-model="formData"></dynamic-form>
+ * This software is copyright of Chris Jackson under the GPL license.
+ * Note that this licence may be changed at a later date.
+ *
+ * (c) 2014 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('Binding.config', [
     'angular-bootstrap-select'
@@ -21,7 +15,9 @@ angular.module('Binding.config', [
         return {
             restrict: 'E', // supports using directive as element only
             scope: {
-                template: "@"
+                template: "@",
+                bindingChange: "="//,
+//                models: "&"
             },
             link: function ($scope, element, attrs) {
                 // Basic initialization
@@ -40,9 +36,15 @@ angular.module('Binding.config', [
                     angular.element(newChild).html(field.label);
                     newElement.append(newChild);
 
+/*                    newChild = angular.element('<span></span>');
+                    newChild.attr('class', 'pull-right label label-warning status_pending');
+//                    newChild.attr('ng-show', 'models.' + field.name + '_pending==true');
+                    angular.element(newChild).html("");
+                    newElement.append(newChild);*/
+
                     newChild = angular.element('<span></span>');
                     newChild.attr('class', 'pull-right label label-warning status_pending');
-                    newChild.attr('ng-show', 'models.' + field.name + '_pending==true');
+//                    newChild.attr('ng-show', 'models.' + field.name + '_pending==true');
                     angular.element(newChild).html("update pending...");
                     newElement.append(newChild);
 
@@ -102,9 +104,9 @@ angular.module('Binding.config', [
                         newInput.attr('ng-model', 'models.' + field.name);
 
                         if(attrs.bindingChange !== undefined) {
-                            newInput.attr('ng-change', attrs.bindingChange);
+//                            newInput.attr('ng-change', attrs.bindingChange);
                         }
-//                        newInput.attr('ng-change', 'changeHandler(x)');
+                        newInput.attr('ng-change', 'changeHandler("'+ field.domain + '")');
 
                         // Add a feedback box.
                         // We'll use this for pending attributes
@@ -114,8 +116,11 @@ angular.module('Binding.config', [
                     this.append(newElement);
                 };
 
-                $scope.changeHandler = function (id, aa, bb) {
-                    console.log("changeHandler", id, aa, bb);
+                $scope.changeHandler = function (domain) {
+                    console.log("changeHandler", domain);
+                    if($scope.bindingChange !== undefined) {
+                        $scope.bindingChange(domain);
+                    }
                 };
 
                 $scope.$watch("template", function (template) {

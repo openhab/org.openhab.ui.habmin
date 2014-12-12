@@ -113,6 +113,7 @@ angular.module('Binding.zwave', [
             updateConfig(node.device);
             updateAssociations(node.device);
             updateInfo(node.device);
+            updateWakeup(node.device);
         };
 
         $scope.setView = function (view) {
@@ -165,6 +166,21 @@ angular.module('Binding.zwave', [
                 .error(function (data, status) {
                     growl.warning(locale.getString('zwave.zwaveActionError'));
                 });
+        };
+
+        $scope.changeNotification = function (domain) {
+            console.log("Notification:", domain);
+            $scope.isDirty = true;
+        };
+
+        $scope.deviceSave = function () {
+
+        };
+
+        $scope.deviceCancel = function () {
+            console.log("Cancel");
+            $scope.isDirty = false;
+            $scope.devEdit.configuration = null;
         };
 
         $scope.updateNodes = function () {
@@ -441,9 +457,10 @@ angular.module('Binding.zwave', [
                         $scope.devEdit.associations = undefined;
                     }
                     else {
+                        $scope.devEdit.associations = data.records;
                         console.log("Association groups", data);
                         angular.forEach(data.records, function (record) {
-                            updateAssociationGroup(record.domain);
+                            updateAssociationGroup(record);
                         });
                     }
                 })
@@ -452,14 +469,31 @@ angular.module('Binding.zwave', [
                 });
         }
 
-        function updateAssociationGroup(domain) {
-            $http.get(url + domain)
+        function updateWakeup(id) {
+            $http.get(url + 'nodes/' + id + '/wakeup/')
+                .success(function (data) {
+                    if (data.records === undefined || data.records.length === 0) {
+                        $scope.devEdit.wakeup = undefined;
+                    }
+                    else {
+                        $scope.devEdit.wakeup = data.records;
+                        console.log("Wakeup", data);
+                    }
+                })
+                .error(function (data, status) {
+                    $scope.devEdit.wakeup = undefined;
+                });
+        }
+
+        function updateAssociationGroup(association) {
+            $http.get(url + association.domain)
                 .success(function (data) {
                     if (data.records === undefined || data.records.length === 0) {
 //                        $scope.devEdit.associations = undefined;
                     }
                     else {
-                        console.log("Association group", domain, data);
+                        console.log("Association group", association.domain, data);
+                        association.associations = data.records;
 //                        $scope.devEdit.associations = data.records;
                     }
                 })
