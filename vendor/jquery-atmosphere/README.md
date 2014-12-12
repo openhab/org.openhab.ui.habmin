@@ -1,2 +1,0 @@
-Atmosphere jQuery client
-========================
