@@ -1,0 +1,11 @@
+<widget id="com.cd-jackson.habmin" version="0.0.1">
+    <name>HABmin</name>
+    <description>
+        HABmin user interface for openHAB home automation system
+    </description>
+    <author email="chris@cd-jackson.com">
+        Chris Jackson
+    </author>
+    <content src="bin/index.html"/>
+    <access origin="*"/>
+</widget>
