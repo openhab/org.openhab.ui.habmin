@@ -6,6 +6,6 @@
     <author email="chris@cd-jackson.com">
         Chris Jackson
     </author>
-    <content src="bin/index.html"/>
+    <content src="build/index.html"/>
     <access origin="*"/>
 </widget>
