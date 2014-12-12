@@ -15,7 +15,6 @@ angular.module('Binding.zwave', [
     'angular-growl',
     'Binding.config',
     'yaru22.angular-timeago',
-    'ui.multiselect',
     'ngVis'
 ])
 
