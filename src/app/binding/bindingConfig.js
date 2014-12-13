@@ -36,16 +36,21 @@ angular.module('Binding.config', [
                     angular.element(newChild).html(field.label);
                     newElement.append(newChild);
 
-/*                    newChild = angular.element('<span></span>');
-                    newChild.attr('class', 'pull-right label label-warning status_pending');
-//                    newChild.attr('ng-show', 'models.' + field.name + '_pending==true');
-                    angular.element(newChild).html("");
-                    newElement.append(newChild);*/
+                    newChild = angular.element('<span></span>');
+                    newChild.attr('class', 'pull-right label label-success status_pending');
+                    newChild.attr('ng-show', 'models.' + field.name + '_dirty==true');
+                    angular.element(newChild).html("updated");
+                    newElement.append(newChild);
+
+                    newChild = angular.element('<span></span>');
+                    newChild.attr('class', 'pull-right');
+                    angular.element(newChild).html("&nbsp;");
+                    newElement.append(newChild);
 
                     newChild = angular.element('<span></span>');
                     newChild.attr('class', 'pull-right label label-warning status_pending');
-//                    newChild.attr('ng-show', 'models.' + field.name + '_pending==true');
-                    angular.element(newChild).html("update pending...");
+                    newChild.attr('ng-show', 'models.' + field.name + '_pending==true');
+                    angular.element(newChild).html("update pending");
                     newElement.append(newChild);
 
                     newChild = angular.element('<div></div>');
@@ -106,7 +111,7 @@ angular.module('Binding.config', [
                         if(attrs.bindingChange !== undefined) {
 //                            newInput.attr('ng-change', attrs.bindingChange);
                         }
-                        newInput.attr('ng-change', 'changeHandler("'+ field.domain + '")');
+                        newInput.attr('ng-change', 'changeHandler("' + field.name + '","' + field.domain + '")');
 
                         // Add a feedback box.
                         // We'll use this for pending attributes
@@ -116,8 +121,31 @@ angular.module('Binding.config', [
                     this.append(newElement);
                 };
 
-                $scope.changeHandler = function (domain) {
-                    console.log("changeHandler", domain);
+                function getElement(domain) {
+                    var found = null;
+                    angular.forEach($scope.jsonTemplate, function(element) {
+                        if(element.domain == domain) {
+                            found = element;
+                        }
+                    });
+
+                    return found;
+                }
+
+                $scope.changeHandler = function (name, domain) {
+                    console.log("changeHandler", name, domain);
+                    var el = getElement(domain);
+                    if(el == null) {
+                        console.log("Element not found:", domain);
+                        return;
+                    }
+
+                    if($scope.models[name] === el.value) {
+                        $scope.models[name + '_dirty'] = false;
+                    } else {
+                        $scope.models[name + '_dirty'] = true;
+                    }
+
                     if($scope.bindingChange !== undefined) {
                         $scope.bindingChange(domain);
                     }
@@ -132,9 +160,9 @@ angular.module('Binding.config', [
 
                     $scope.models = {};
                     try {
-                        var jsonTemplate = [].concat(angular.fromJson(template));
-                        console.log("Update template", jsonTemplate);
-                        angular.forEach(jsonTemplate, buildFields, element);
+                        $scope.jsonTemplate = [].concat(angular.fromJson(template));
+                        console.log("Update template", $scope.jsonTemplate);
+                        angular.forEach($scope.jsonTemplate, buildFields, element);
                     }
                     catch (err) {
                         console.log("Error parsing JSON", template, err);
