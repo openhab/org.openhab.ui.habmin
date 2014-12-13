@@ -61,12 +61,6 @@ angular.module('Binding.zwave', [
             dragNodes: false
         };
 
-        $scope.cars = [
-            {id: 1, name: 'Audi'},
-            {id: 2, name: 'BMW'},
-            {id: 1, name: 'Honda'}
-        ];
-        $scope.selectedCar = [];
         // Avoid error messages on every poll!
         $scope.loadError = false;
 
@@ -105,6 +99,14 @@ angular.module('Binding.zwave', [
 
             // Close the panels
             $scope.panelDisplayed = "";
+
+            // Clean me!
+            $scope.isDirty = false;
+
+            $scope.infoData = {};
+            $scope.configData = {};
+            $scope.wakeupData = {};
+            $scope.xData = {};
 
             // Set the display to the config panel
             $scope.setView("CONFIG");
@@ -180,7 +182,13 @@ angular.module('Binding.zwave', [
         $scope.deviceCancel = function () {
             console.log("Cancel");
             $scope.isDirty = false;
-            $scope.devEdit.configuration = null;
+
+            angular.forEach($scope.configData, function (el) {
+                if(el.dirty) {
+                    el.value = el.org;
+                    el.dirty = false;
+                }
+            });
         };
 
         $scope.updateNodes = function () {
@@ -418,6 +426,9 @@ angular.module('Binding.zwave', [
                                     device.icon = "wifi";
                                     break;
                             }
+                        }
+                        if(status.name === "NodeID") {
+                            device.nodeID = parseInt(status.value, 10);
                         }
                         if(status.name === "ManufacturerID" && status.value === "UNKNOWN") {
                             status.value = locale.getString("zwave.zwaveUnknown");

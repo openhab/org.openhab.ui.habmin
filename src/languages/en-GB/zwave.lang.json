@@ -1,5 +1,5 @@
 {
-    "zwaveNodeNumber": "Node {1}",
+    "zwaveNode": "Node",
     "zwaveErrorLoadingDevices": "Network error loading ZWave device list.",
     "zwaveUnknownDevice": "Unknown device",
     "zwaveNetworkTools": "Network Tools",
