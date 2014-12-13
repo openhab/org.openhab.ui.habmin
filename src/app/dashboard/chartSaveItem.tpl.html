@@ -1,0 +1,90 @@
+<form class="form-horizontal" role="form">
+
+    <div class="form-group">
+        <label for="inputLabel" class="control-label" i18n="habmin.chartSaveItemLabel"></label>
+        <div>
+            <input type="text" ng-model="model.label" class="form-control" id="inputLabel" placeholder="Label">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="inputDecimalPlaces" class="control-label" i18n="habmin.chartSaveItemDecimals"></label>
+        <div>
+            <input type="number" class="form-control" id="inputDecimalPlaces" ng-model="model.format" placeholder="format">
+        </div>
+    </div>
+
+    <div class="form-group">
+            <label for="inputAxis" class="control-label" i18n="habmin.chartSaveItemAxes"></label>
+        <div>
+            <select ng-model="model.axis" class="form-control" id="inputAxis">
+                <option value="left" i18n="habmin.chartItemLeftAxis"></option>
+                <option value="right" i18n="habmin.chartItemRightAxis"></option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label" i18n="habmin.chartSaveItemLineColor"></label>
+        <div>
+            <pick-a-color id="inputColor" ng-model="model.lineColor"></pick-a-color>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="inputLineWidth" class="control-label" i18n="habmin.chartSaveItemLineWidth"></label>
+        <div>
+            <input type="number" class="form-control" id="inputLineWidth" ng-model="model.lineWidth" placeholder="width">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label" i18n="habmin.chartSaveItemLineStyle"></label>
+        <div>
+            <select-line-style id="inputLineStyle" ng-model="model.lineStyle"></select-line-style>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="inputFill" class="control-label" i18n="habmin.chartSaveItemFill"></label>
+        <div>
+            <select ng-model="model.axis" class="form-control" id="inputFill">
+                <option value="none" i18n="habmin.chartItemFillNone"></option>
+                <option value="top" i18n="habmin.chartItemFillTop"></option>
+                <option value="bottom" i18n="habmin.chartItemFillBottom"></option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label" i18n="habmin.chartSaveItemFillColor"></label>
+        <div>
+            <pick-a-color id="fillColor" ng-model="model.fillColor"></pick-a-color>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="inputPoints" class="control-label" i18n="habmin.chartSaveItemPointType"></label>
+        <div>
+            <select ng-model="model.axis" class="form-control" id="inputPoints">
+                <option value="none" i18n="habmin.chartItemPointsNone"></option>
+                <option value="circle" i18n="habmin.chartItemPointsCircle"></option>
+                <option value="square" i18n="habmin.chartItemPointsSquare"></option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="inputPointSize" class="control-label" i18n="habmin.chartSaveItemPointSize"></label>
+        <div>
+            <input type="number" class="form-control" id="inputPointSize" ng-model="model.pointsSize" placeholder="size">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="inputRepeatTime" class="control-label" i18n="habmin.chartSaveItemRepeatTime"></label>
+        <div>
+            <input type="number" class="form-control" id="inputRepeatTime" placeholder="repeat time">
+        </div>
+    </div>
+</form>

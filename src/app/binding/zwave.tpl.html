@@ -1,0 +1,274 @@
+<!-- Device List -->
+<div class="col-sm-4">
+    <div class="panel panel-default">
+        <!-- Header -->
+        <div class="panel-heading">
+            <!-- Network tools dropdown -->
+            <div class="btn-group dropdown">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <span class="fa fa-cog"></span>
+                    <span i18n="zwave.zwaveNetworkTools"></span>
+                    <span class="caret"></span>
+                    <span class="sr-only">Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a ng-click="zwaveAction('binding/network', 'Heal')">
+                        <span class="fa fa-fw fa-ambulance"></span>
+                        <span i18n="zwave.zwaveNetworkHeal"></span>
+                    </a></li>
+                    <li role="presentation" class="divider"></li>
+                    <li><a ng-click="zwaveAction('binding/network', 'Include')">
+                        <span class="fa fa-fw fa-sign-in"></span>
+                        <span i18n="zwave.zwaveNetworkInclude"></span>
+                    </a></li>
+                    <li><a ng-click="zwaveAction('binding/network', 'Exclude')">
+                        <span class="fa fa-fw fa-sign-out"></span>
+                        <span i18n="zwave.zwaveNetworkExclude"></span>
+                    </a></li>
+                    <li role="presentation" class="divider"></li>
+                    <li><a ng-confirm-click="zwaveAction('binding/network', 'SoftReset')"
+                           data-i18n-attr="{'ngConfirmMessage': 'zwave.zwaveSoftResetConfirmMessage','ngConfirmTitle': 'zwave.zwaveSoftResetConfirmTitle','ngConfirmNoBtn': 'common.cancel', 'ngConfirmYesBtn': 'common.ok'}"
+                            >
+                        <span class="fa fa-fw fa-power-off"></span>
+                        <span i18n="zwave.zwaveNetworkReset"></span>
+                    </a></li>
+                    <li><a ng-click="networkReplicate()">
+                        <span class="fa fa-fw fa-copy fa-fw"></span>
+                        <span i18n="zwave.zwaveNetworkReplicate"></span>
+                    </a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Body -->
+        <div class="list-group habmin-list" ng-style="styleList()" resize-page1>
+            <div ng-repeat="choice in devices">
+                <a role="presentation" ng-class="{'list-group-item':true, 'active': choice.device==devEdit.device}"
+                   ng-click="selectDevice(choice)">
+                    <habmin-icon class="icon-lg" icon="{{choice.icon}}"></habmin-icon>
+                    <span>{{choice.label}}</span>
+                    <span class="pull-right">
+                        <span popover="{{stateHeal(choice)}}" popover-trigger="mouseenter" popover-placement="top"
+                              popover-append-to-body="true" popover-popup-delay="500">
+                            <span ng-class="{'text-success': choice.healState=='RUN','text-danger': choice.healState =='ERROR','text-warning': choice.healState =='WAIT','text-muted': choice.healState =='OK'}">
+                                <span class="fa fa-ambulance"></span>
+                            </span>
+                        </span>
+                        <span popover="{{stateOnline(choice)}}" popover-trigger="mouseenter" popover-placement="top"
+                              popover-append-to-body="true" popover-popup-delay="500">
+                            <span ng-class="{'text-success': choice.state=='OK','text-danger': choice.state=='ERROR','text-warning': choice.state =='WARNING','text-muted': choice.state =='INITIALIZING'}">
+                                <span class="fa fa-rss"></span>
+                            </span>
+                        </span>
+                    </span>
+                    <br>
+                    <span ng-class="{'small': true, 'text-warning': choice.typeUnknown}">{{choice.type}}</span>
+                    <span class="pull-right">
+                        <span popover="{{choice.powerInfo}}" popover-trigger="mouseenter" popover-placement="top"
+                              popover-append-to-body="true" popover-popup-delay="500">
+                            <span ng-class="{'text-success': choice.batteryLevel>='40','text-danger': choice.batteryLevel=='0','text-warning': choice.batteryLevel =='20','text-muted': choice.batteryLevel =='-1'}">
+                                <span ng-class="choice.batteryIcon"></span>
+                            </span>
+                        </span>
+                    </span>
+                </a>
+            </div>
+
+            <!-- Cover options for loading, and no devices -->
+            <div ng-if="deviceCnt==-1" class="list-group-item text-center">
+                <span class="fa fa-spin fa-refresh"></span>
+                <span i18n="common.loading"></span>
+            </div>
+            <div ng-if="deviceCnt==0" class="list-group-item text-center">
+                <span class="fa fa-exclamation-triangle"></span>
+                <span i18n="zwave.zwaveNoDevices"></span>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="panel-footer panel-footer-small">
+        </div>
+    </div>
+</div>
+
+<!-- Device Configuration -->
+<div class="col-sm-8">
+    <div class="panel panel-default">
+        <!-- Header -->
+        <div class="panel-heading">
+            <div class="btn-group dropdown">
+                <button type="button" ng-class="{'disabled': !devEdit.label}"
+                        class="btn btn-default dropdown-toggle"
+                        data-toggle="dropdown">
+                    <span class="fa fa-cog"></span>
+                    <span i18n="zwave.zwaveDeviceTools"></span>
+                    <span class="caret"></span>
+                    <span class="sr-only">Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li>
+                        <a ng-click="setView('CONFIG')">
+                            <span class="fa fa-fw fa-wrench"></span>
+                            <span i18n="zwave.zwaveDeviceConfiguration"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a ng-click="setView('NETWORK')">
+                            <span class="fa fa-fw fa-sitemap"></span>
+                            <span i18n="zwave.zwaveDeviceNetworkDiagram"></span>
+                        </a>
+                    </li>
+                    <li role="presentation" class="divider"></li>
+                    <li>
+                        <a ng-click="zwaveAction('nodes/'+devEdit.device+'/', 'Heal')">
+                            <span class="fa fa-fw fa-ambulance"></span>
+                            <span i18n="zwave.zwaveDeviceHeal"></span>
+                        </a>
+                    </li>
+                    <li ng-class="{'disabled':devEdit.nodeStage!='FAILED'}">
+                        <a ng-confirm-click="zwaveAction('nodes/'+devEdit.device+'/', 'Delete')"
+                           data-i18n-attr="{'ngConfirmMessage': 'zwave.zwaveRemoveFailedText','ngConfirmTitle': 'zwave.zwaveRemoveFailedTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
+                           nodenumber="{{devEdit.id}}">
+                            <span class="fa fa-fw fa-trash-o"></span>
+                            <span i18n="zwave.zwaveDeviceKill"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a ng-click="zwaveAction('nodes/'+devEdit.device+'/parameters/', 'Refresh');zwaveAction('nodes/'+devEdit.device+'/associations/', 'Refresh')">
+                            <span class="fa fa-fw fa-refresh"></span>
+                            <span i18n="zwave.zwaveDeviceRefresh"></span>
+                        </a>
+                    </li>
+                </ul>
+                <button ng-show="deviceDisplay=='CONFIG'" type="button" ng-click="deviceSave()" ng-class="{'btn btn-default':true, 'disabled':!isDirty}">
+                    <span class="fa fa-floppy-o"></span>
+                    <span class="hidden-xs" i18n="common.save"></span>
+                </button>
+                <button ng-show="deviceDisplay=='CONFIG'" type="button" ng-click="deviceCancel()" ng-class="{'btn btn-default':true, 'disabled':!isDirty}">
+                    <span class="fa fa-times"></span>
+                    <span class="hidden-xs" i18n="common.cancel"></span>
+                </button>
+            </div>
+
+            <div ng-hide="!devEdit.label" class="btn-group pull-right">
+                <div class="text-right">{{devEdit.label}}</div>
+                <div class="text-right small"><span>{{devEdit.label}}</span>&nbsp;<span class="hidden-xs">{{devEdit.type}}</span></div>
+            </div>
+        </div>
+
+        <!-- Body -->
+        <div ng-show="deviceDisplay=='CONFIG'" class="list-group habmin-list" ng-style="styleList()">
+            <!-- CONFIGURATION -->
+            <div ng-show="devEdit.configuration">
+                <a role="presentation" class="list-group-item" ng-click="showPanel('CONFIG')">
+                    <span class="fa fa-fw fa-wrench"></span>
+                    <span i18n="zwave.zwaveConfiguration"></span>
+                </a>
+            </div>
+            <div ng-show="devEdit.configuration" collapse="panelDisplayed!='CONFIG'">
+                <binding-config template="{{devEdit.configuration}}" binding-change="changeNotification">
+                </binding-config>
+            </div>
+
+            <!-- ASSOCIATIONS -->
+            <div ng-show="devEdit.associations">
+                <a role="presentation" class="list-group-item" ng-click="showPanel('ASSOC')">
+                    <span class="fa fa-fw fa-link"></span>
+                    <span i18n="zwave.zwaveAssociations"></span>
+                </a>
+            </div>
+            <div ng-show="devEdit.associations" collapse="panelDisplayed!='ASSOC'">
+                <div ng-repeat="choice in devEdit.associations">
+                    {{choice.label}}
+                    <binding-config template="{{choice.associations}}">
+                    </binding-config>
+                </div>
+            </div>
+
+            <!-- WAKEUP -->
+            <div ng-show="devEdit.wakeup">
+                <a role="presentation" class="list-group-item" ng-click="showPanel('WAKE')">
+                    <span class="fa fa-fw fa-moon-o"></span>
+                    <span i18n="zwave.zwaveWakeup"></span>
+                </a>
+            </div>
+            <div ng-show="devEdit.wakeup" collapse="panelDisplayed!='WAKE'">
+                <binding-config template="{{devEdit.wakeup}}">
+                </binding-config>
+            </div>
+
+            <!-- INFORMATION -->
+            <div ng-show="devEdit.information">
+                <a role="presentation" class="list-group-item" ng-click="showPanel('INFO')">
+                    <span class="fa fa-fw fa-info"></span>
+                    <span i18n="zwave.zwaveInformation"></span>
+                </a>
+            </div>
+            <div ng-show="devEdit.information" collapse="panelDisplayed!='INFO'">
+                <binding-config template="{{devEdit.information}}" ng-model="formData">
+                </binding-config>
+            </div>
+
+            <!-- TEST!!!!!!!!!!!!!!!!!!!! -->
+            <div>
+                <a role="presentation" class="list-group-item" ng-click="showPanel('TEST')">
+                    <span class="fa fa-fw fa-paw"></span>
+                    <span>TESTING AREA</span>
+                </a>
+            </div>
+            <div collapse="panelDisplayed!='TEST'">
+
+                <form class="panel-form form-horizontal" role="form">
+
+                    <div class="form-group">
+                        <label class="control-label">
+                            <span i18n="habmin.chartSaveAxesLabel"></span>
+                            <span class="label label-warning">pending...</span>
+                        </label>
+                        <select selectpicker class="form-control" multiple max-options="3"
+                                title="select..."
+                                >
+                            <optgroup label="Node 1: Lounge">
+                                <option value="1">BLAH 1</option>
+                                <option value="2">BLAH 2</option>
+                            </optgroup>
+                            <optgroup label="Node 2: Bedroom">
+                                <option value="1">BLAH 1</option>
+                                <option value="2">BLAH 2</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">
+                            <span i18n="habmin.chartSaveAxesLabel"></span>
+                        </label>
+                        <span style="margin-top:9px;" class="pull-right label label-warning">update pending...</span>
+
+
+                        <select selectpicker class="form-control" multiple max-options="3"
+                                title="select..."
+                                >
+                            <optgroup label="Node 1: Lounge">
+                                <option value="1">BLAH 1</option>
+                                <option value="2">BLAH 2</option>
+                            </optgroup>
+                            <optgroup label="Node 2: Bedroom">
+                                <option value="1">BLAH 1</option>
+                                <option value="2">BLAH 2</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div ng-show="deviceDisplay=='NETWORK'" ng-style="styleList()">
+            <vis-network data="networkNodes" options="networkOptions" events="networkEvents"></vis-network>
+        </div>
+
+        <!-- Footer -->
+        <div class="panel-footer panel-footer-small">
+        </div>
+    </div>
+</div>

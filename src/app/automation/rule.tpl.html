@@ -1,0 +1,85 @@
+<div class="col-sm-4">
+    <div class="panel panel-default">
+        <!-- Header -->
+        <div class="panel-heading">
+            <button type="button" class="btn btn-default"
+                    ng-confirm-click="newRule()" ng-confirm-if="isDirty"
+                    data-i18n-attr="{'ngConfirmMessage': 'habmin.ruleUnsavedChangesCheck','ngConfirmTitle': 'habmin.ruleUnsavedChangesTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
+                    rulename={{selectedRule.name}}">
+                <span class="fa fa-plus"></span>
+                <span i18n="common.new"></span>
+            </button>
+            <button type="button" ng-confirm-click="deleteRule()"
+                    ng-class="{'btn btn-default':true, 'disabled':!selectedRule}"
+                    data-i18n-attr="{'ngConfirmMessage': 'habmin.ruleDeleteRuleCheck','ngConfirmTitle': 'habmin.ruleDeleteRuleTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
+                    rulename={{selectedRule.name}}">
+                <span class="fa fa-trash-o"></span>
+                <span i18n="common.delete"></span>
+            </button>
+        </div>
+
+        <!-- Body -->
+        <div class="list-group" ng-style="styleRuleList()" ng-if="!selectCharts" resize-page>
+            <div ng-repeat="choice in rules">
+                <a role="presentation" ng-class="{'list-group-item':true, 'active':choice.id==selectedRule.id}"
+                   ng-confirm-click="selectRule(choice)" ng-confirm-if="$parent.isDirty"
+                   data-i18n-attr="{'ngConfirmMessage': 'habmin.ruleUnsavedChangesCheck','ngConfirmTitle': 'habmin.ruleUnsavedChangesTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
+                   rulename={{selectedRule.name}}">
+                    <span>{{choice.name}}</span>
+                </a>
+            </div>
+
+            <!-- Cover options for loading, and no rules -->
+            <div ng-if="rulesTotal==-1" class="list-group-item text-center">
+                <span class="fa fa-spin fa-refresh"></span>
+                <span i18n="common.loading"></span>
+            </div>
+            <div ng-if="rulesTotal==0" class="list-group-item text-center">
+                <span class="fa fa-exclamation-triangle"></span>
+                <span i18n="habmin.ruleNoRules"></span>
+            </div>
+        </div>
+        <div class="panel-footer panel-footer-small">
+        </div>
+    </div>
+</div>
+
+<div class="col-sm-8">
+    <div class="panel panel-default" ng-style="styleEditor()" resize-page>
+        <div class="panel-heading" style="padding:3px;">
+            <button type="button" ng-class="{'btn btn-sm btn-default':true, 'disabled':!isDirty}" ng-click="saveRule()">
+                <span class="fa fa-floppy-o"></span>
+                <span i18n="common.save"></span>
+            </button>
+            <button type="button" ng-class="{'btn btn-sm btn-default':true, 'disabled':!isDirty}"
+                    ng-click="cancelRule()">
+                <span class="fa fa-times"></span>
+                <span i18n="common.cancel"></span>
+            </button>
+
+            <div class="pull-right">
+                <button ng-class="{'btn btn-sm btn-default':true, 'active':editSource==false}" ng-click="showRule()">
+                    <span class="fa fa-puzzle-piece"></span>
+                    <span i18n="habmin.ruleRule"></span>
+                </button>
+                <button ng-class="{'btn btn-sm btn-default':true, 'active':editSource==true}" ng-click="showSource()">
+                    <span class="fa fa-code"></span>
+                    <span i18n="habmin.ruleSource"></span>
+                </button>
+            </div>
+        </div>
+
+        <ng-blockly ng-show="!editSource">
+        </ng-blockly>
+
+        <div ng-show="editSource" ng-model="codeEditor" ui-ace="{
+              useWrapMode : true,
+              showGutter: true,
+              theme:'tomorrow_night_bright',
+              mode: 'openhabrules',
+              firstLineNumber: 5
+             }"
+             ng-style="styleEditor()">
+        </div>
+    </div>
+</div>

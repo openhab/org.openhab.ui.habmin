@@ -1,0 +1,29 @@
+{
+	"name": "angular-gridster",
+	"version": "0.9.19",
+	"main": "src/angular-gridster.js",
+	"dependencies": {
+		"angular": ">= 1.2.0",
+		"jquery": "*",
+		"jquery-ui": "*",
+		"javascript-detect-element-resize": "sdecima/javascript-detect-element-resize#~0.5.1"
+	},
+	"devDependencies": {
+		"angular-mocks": ">= 1.2.0",
+		"angular-animate": ">= 1.2.0",
+		"jquery-simulate": "*"
+	},
+	"ignore": [
+		"test",
+		".bowerrc",
+		".editorconfig",
+		".gitattributes",
+		".gitignore",
+		".jshintrc",
+		".travis.yml",
+		"Gruntfile.js",
+		"karma.conf.js",
+		"ptor.conf.js",
+		"package.json"
+	]
+}

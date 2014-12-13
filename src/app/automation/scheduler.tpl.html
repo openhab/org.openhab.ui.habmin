@@ -1,0 +1,65 @@
+<div class="col-sm-4">
+    <div class="panel panel-default">
+        <!-- Header -->
+        <div class="panel-heading">
+            <button type="button" class="btn btn-default">
+                <span class="fa fa-folder-o"></span>
+                <span i18n="common.new"></span>
+            </button>
+            <button type="button" class="btn btn-default disabled">
+                <span class="fa fa-trash-o"></span>
+                <span i18n="common.delete"></span>
+            </button>
+        </div>
+
+        <!-- Body -->
+        <div class="list-group habmin-list" ng-style="styleList()" resize-page>
+        </div>
+
+        <!-- Footer -->
+
+    </div>
+</div>
+
+<div class="col-sm-8">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <button type="button" class="btn btn-default" ng-click="stepDate('today')">
+                <span i18n1="common.new">today</span>
+            </button>
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-default" ng-click="stepDate('prev')">
+                    <span class="fa fa-angle-left"></span>
+                </button>
+                <button type="button" class="btn btn-default" ng-click="stepDate('next')">
+                    <span class="fa fa-angle-right"></span>
+                </button>
+            </div>
+
+            <!--            <div style="width:100%" class="h4 fillspace" ng-bind-html="title"></div> -->
+
+            <div class="pull-right btn-group">
+                <button type="button" class="btn btn-default">
+                    <span class="fa fa-list"></span>
+                    <span i18n1="common.new">List</span>
+                </button>
+                <button type="button" class="btn btn-default" ng-click="changeView('agendaDay')">
+                    <span class="fa fa-calendar-o"></span>
+                    <span i18n1="common.new">Day</span>
+                </button>
+                <button type="button" class="btn btn-default" ng-click="changeView('agendaWeek')">
+                    <span class="fa fa-calendar-o"></span>
+                    <span i18n1="common.delete">Week</span>
+                </button>
+                <!--            <button type="button" class="btn btn-default" ng-click="changeView('month')">
+                                    <span class="fa fa-calendar-o"></span>
+                                    <span i18n1="common.delete">Month</span>
+                                </button> -->
+            </div>
+        </div>
+        <div ui-calendar="uiConfig.calendar" ng-model="eventSources" calendar="calendar" resize-page>
+
+        </div>
+    </div>
+</div>
