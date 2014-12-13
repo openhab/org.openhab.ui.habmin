@@ -1,16 +1,16 @@
 {
   "author": "Chris Jackson",
-  "name": "HABmin",
+  "name": "HABmin2",
   "version": "0.0.2",
-  "homepage": "https://github.com/cdjackson/HABmin",
+  "homepage": "https://github.com/cdjackson/HABmin2",
   "licenses": {
     "type": "GPL",
-    "url": "https://raw.github.com/cdjackson/HABmin/master/LICENSE"
+    "url": "https://raw.github.com/cdjackson/HABmin2/master/LICENSE"
   },
-  "bugs": "https://github.com/cdjackson/HABmin/issues",
+  "bugs": "https://github.com/cdjackson/HABmin2/issues",
   "repository": {
     "type": "git",
-    "url": "git@github.com:cdjackson/HABmin.git"
+    "url": "git@github.com:cdjackson/HABmin2.git"
   },
   "dependencies": {},
   "devDependencies": {
