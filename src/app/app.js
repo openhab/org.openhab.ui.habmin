@@ -31,8 +31,7 @@ angular.module('HABmin', [
     'pickAColor',
     'angular-blockly',
     'Binding.zwave',
-    'ui.select',
-    'ngCookies'
+    'angular-bootstrap-select'
 ])
     .value('localeConf', {
         basePath: 'languages',
@@ -51,7 +50,7 @@ angular.module('HABmin', [
         'en': 'en-GB'
     })
 
-    .config(function myAppConfig($stateProvider, $urlRouterProvider, growlProvider, pickAColorProvider, ngBlocklyProvider, uiSelectConfig) {
+    .config(function myAppConfig($stateProvider, $urlRouterProvider, growlProvider, pickAColorProvider, ngBlocklyProvider) {
         $urlRouterProvider.otherwise('/home');
         growlProvider.globalTimeToLive({
             success: 2000,
@@ -62,7 +61,6 @@ angular.module('HABmin', [
         pickAColorProvider.setOptions({
             inlineDropdown: true
         });
-        uiSelectConfig.theme = 'bootstrap';
         ngBlocklyProvider.setOptions({
             path: "assets/",
             trashcan: true,

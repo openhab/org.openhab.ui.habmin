@@ -141,15 +141,16 @@
                         </a>
                     </li>
                 </ul>
-                <button ng-show="deviceDisplay=='CONFIG'" type="button" ng-class="{'btn btn-default':true, 'disabled':!isDirty}">
+                <button ng-show="deviceDisplay=='CONFIG'" type="button" ng-click="deviceSave()" ng-class="{'btn btn-default':true, 'disabled':!isDirty}">
                     <span class="fa fa-floppy-o"></span>
                     <span class="hidden-xs" i18n="common.save"></span>
                 </button>
-                <button ng-show="deviceDisplay=='CONFIG'" type="button" ng-class="{'btn btn-default':true, 'disabled':!isDirty}">
+                <button ng-show="deviceDisplay=='CONFIG'" type="button" ng-click="deviceCancel()" ng-class="{'btn btn-default':true, 'disabled':!isDirty}">
                     <span class="fa fa-times"></span>
                     <span class="hidden-xs" i18n="common.cancel"></span>
                 </button>
             </div>
+
             <div ng-hide="!devEdit.label" class="btn-group pull-right">
                 <div class="text-right">{{devEdit.label}}</div>
                 <div class="text-right small"><span>{{devEdit.label}}</span>&nbsp;<span class="hidden-xs">{{devEdit.type}}</span></div>
@@ -166,7 +167,7 @@
                 </a>
             </div>
             <div ng-show="devEdit.configuration" collapse="panelDisplayed!='CONFIG'">
-                <binding-config template="{{devEdit.configuration}}" binding-change="isDirty=true">
+                <binding-config template="{{devEdit.configuration}}" binding-change="changeNotification">
                 </binding-config>
             </div>
 
@@ -178,8 +179,11 @@
                 </a>
             </div>
             <div ng-show="devEdit.associations" collapse="panelDisplayed!='ASSOC'">
-                <binding-config template="{{devEdit.associations}}">
-                </binding-config>
+                <div ng-repeat="choice in devEdit.associations">
+                    {{choice.label}}
+                    <binding-config template="{{choice.associations}}">
+                    </binding-config>
+                </div>
             </div>
 
             <!-- WAKEUP -->
@@ -216,33 +220,45 @@
             <div collapse="panelDisplayed!='TEST'">
 
                 <form class="panel-form form-horizontal" role="form">
-                    <div class="form-group">
-                        <label class="control-label" i18n="habmin.chartSaveAxesLabel"></label>
 
-                        <div>
-                            <multiselect style="width: 100%"
-                                         class="input-xlarge"
-                                         multiple="true"
-                                         ng-model="selectedCar"
-                                         search="true"
-                                         options="c.name for c in cars"
-                                         change="selected()">
-                            </multiselect>
-                        </div>
+                    <div class="form-group">
+                        <label class="control-label">
+                            <span i18n="habmin.chartSaveAxesLabel"></span>
+                            <span class="label label-warning">pending...</span>
+                        </label>
+                        <select selectpicker class="form-control" multiple max-options="3"
+                                title="select..."
+                                >
+                            <optgroup label="Node 1: Lounge">
+                                <option value="1">BLAH 1</option>
+                                <option value="2">BLAH 2</option>
+                            </optgroup>
+                            <optgroup label="Node 2: Bedroom">
+                                <option value="1">BLAH 1</option>
+                                <option value="2">BLAH 2</option>
+                            </optgroup>
+                        </select>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label" i18n="habmin.chartSaveAxesLabel"></label>
 
-                        <div>
-                            <multiselect style="width: 100%"
-                                         class="input-xlarge"
-                                         multiple="false"
-                                         ng-model="selectedCar"
-                                         search="true"
-                                         options="c.name for c in cars"
-                                         change="selected()">
-                            </multiselect>
-                        </div>
+                    <div class="form-group">
+                        <label class="control-label">
+                            <span i18n="habmin.chartSaveAxesLabel"></span>
+                        </label>
+                        <span style="margin-top:9px;" class="pull-right label label-warning">update pending...</span>
+
+
+                        <select selectpicker class="form-control" multiple max-options="3"
+                                title="select..."
+                                >
+                            <optgroup label="Node 1: Lounge">
+                                <option value="1">BLAH 1</option>
+                                <option value="2">BLAH 2</option>
+                            </optgroup>
+                            <optgroup label="Node 2: Bedroom">
+                                <option value="1">BLAH 1</option>
+                                <option value="2">BLAH 2</option>
+                            </optgroup>
+                        </select>
                     </div>
                 </form>
             </div>

@@ -1,0 +1,351 @@
+<!doctype html>
+<html ng-app="myApp">
+<head>
+
+	<title>Angular rangeSlider LEGACY Demo</title>
+
+	<!-- Bootstrap CSS from CDN -->
+	<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+
+	<!-- Angular rangeSlider CSS -->
+	<link href="../angular.rangeSlider.css" rel="stylesheet">
+
+</head>
+<body style="padding-bottom: 50px;">
+	<div class="container" ng-controller="DemoController">
+		<h1>Angular rangeSlider LEGACY Demo</h1>
+
+		<p>Some basic demos to get you going.</p>
+
+		<p><strong>Note:</strong> As this is demonstrating legacy support all two-way property bindings (i.e. '=') must be defined on the directive, for example <code>disabled</code> is no longer an optional attribute.</p>
+
+		<hr />
+
+		<div class="row">
+			<div class="span12">
+				<h3>A simple example</h3>
+				<h4>The model</h4>
+				<pre>
+$scope.demo1 = {
+    min: 20,
+    max: 80
+};</pre>
+			</div>			
+
+			<div class="span5">
+				<h4>Default slider</h4>
+
+				<div range-slider min="0" max="100" model-min="demo1.min" model-max="demo1.max" disabled="false"></div>
+				
+			</div>
+			<div class="span2"></div>
+			<div class="span5">
+				<h4>Vertical slider</h4>
+
+				<div range-slider orientation="vertical" min="0" max="100" model-min="demo1.min" model-max="demo1.max" disabled="false"></div>
+				
+			</div>
+			<div class="span5">
+<pre>&lt;div range-slider min="0" max="100" model-min="demo1.min" model-max="demo1.max" disabled="false"&gt;&lt;/div&gt;</pre>
+			</div>
+			<div class="span2"></div>
+			<div class="span5">
+<pre>&lt;div range-slider orientation="vertical" min="0" max="100" model-min="demo1.min" model-max="demo1.max" disabled="false"&gt;&lt;/div&gt;</pre>
+			</div>
+			<div class="span12">
+				<p>And here are the values in our model being updated: <strong>Min</strong> <input type="text" class="input-small" ng-model="demo1.min"> <strong>Max</strong> <input type="text" class="input-small" ng-model="demo1.max"></p>
+			</div>
+
+		</div>
+
+		<hr />
+
+		<div class="row">
+			<div class="span12">
+				<h3>A less simple example</h3>
+				<h4>The model</h4>
+				<pre>
+$scope.demo2 = {
+    range: {
+        min: 0,
+        max: 10050
+    },
+    minPrice: 1000,
+    maxPrice: 4000
+};</pre>
+			</div>			
+
+			<div class="span5">
+				<h4>The slider</h4>
+				
+				<div range-slider min="demo2.range.min" max="demo2.range.max" model-min="demo2.minPrice" model-max="demo2.maxPrice" filter="currency" filter-options="GBP &pound;" step="100" disabled="false"></div>
+				
+			</div>
+			<div class="span2"></div>
+			<div class="span5">
+				<h4>The HTML</h4>
+				<p>Here we are using the <code>filter</code>, <code>filter-options</code> and <code>step</code> options.</p>
+				<pre>&lt;div range-slider min="demo2.range.min" max="demo2.range.max" model-min="demo2.minPrice" model-max="demo2.maxPrice" filter="currency" filter-options="GBP &pound;" step="100" disabled="false"&gt;&lt;/div&gt;</pre>
+
+			</div>
+			
+
+		</div>
+		
+		<hr />
+
+		<div class="row">
+			<div class="span12">
+				<h3>Disabling the slider</h3>
+				<h4>The model</h4>
+				<pre>
+$scope.demo3 = {
+    rangeMin: 10,
+    rangeMax: 1500,
+    min: 80,
+    max: 1000,
+    disabled: false
+};</pre>
+			</div>			
+
+			<div class="span12">
+				<h4>The slider</h4>
+
+				<div range-slider min="demo3.rangeMin" max="demo3.rangeMax" model-min="demo3.min" model-max="demo3.max" disabled="demo3.disabled"></div>
+				
+				<button class="btn" ng-click="toggleDemo3()">Toggle Disabled State</button>
+			</div>
+
+		</div>
+
+		<hr />
+
+		<div class="row">
+			<div class="span12">
+				<h3>Vertical alignment</h3>
+				<h4>The model</h4>
+				<pre>
+$scope.demo4 = {
+    min: 300,
+    max: 800
+};</pre>
+			</div>			
+
+			<div class="span5">
+				<h4>Left-aligned</h4>
+				<div class="well">
+					<div range-slider orientation="vertical left" min="0" max="1000" model-min="demo4.min" model-max="demo4.max" disabled="false"></div>
+				</div>
+			</div>
+			
+			<div class="span5 pull-right">
+				<h4>Right-aligned</h4>
+				<div class="well">
+					<div range-slider orientation="vertical right" min="0" max="1000" model-min="demo4.min" model-max="demo4.max" disabled="false"></div>
+				</div>
+			</div>
+
+			<div class="span5">
+				<h4>The HTML</h4>
+
+				<pre>&lt;div range-slider orientation="vertical left" min="0" max="1000" model-min="demo4.min" model-max="demo4.max" disabled="false"&gt;&lt;/div&gt;</pre>
+			</div>
+			
+			<div class="span5 pull-right">
+				<h4>The HTML</h4>
+
+				<pre>&lt;div range-slider orientation="vertical right" min="0" max="1000" model-min="demo4.min" model-max="demo4.max" disabled="false"&gt;&lt;/div&gt;</pre>
+			</div>
+
+		</div>
+		
+		<hr />
+
+		<div class="row">
+			<div class="span12">
+				<h3>Hide the values</h3>
+				<h4>The model</h4>
+				<pre>
+$scope.demo5 = {
+    min: 80,
+    max: 1000
+};</pre>
+			</div>			
+
+			<div class="span12">
+				<h4>The slider</h4>
+				<p>You can hide the slider values if you wish to display the values elsewhere.</p>
+				<p>Maybe you'd prefer to show the values in sentence form... Your current minimum value is <strong>{{demo5.min}}</strong> and your current maximum value is <strong>{{demo5.max}}</strong>.</p>
+				<div range-slider min="0" max="10000" model-min="demo5.min" model-max="demo5.max" show-values="false" disabled="false"></div>
+			</div>
+			<div class="span12">
+				<pre>&lt;div range-slider min="0" max="10000" model-min="demo5.min" model-max="demo5.max" show-values="false" disabled="false"&gt;&lt;/div&gt;</pre>
+			</div>
+		</div>
+
+		<hr />
+
+		<div class="row">
+			<div class="span12">
+				<h3>Handle Pinning</h3>
+				<h4>The model</h4>
+				<pre>
+$scope.demo6 = {
+    valueA: 5000,
+    valueB: 3000
+};</pre>
+			</div>			
+
+			<div class="span12">
+				<h4>The sliders</h4>
+				<p>You many 'pin' (and hide) either the minimum or maximum handle to prevent it from being modified, effectivly converting the slider into a single-value slider.</p>
+				<p>The value of the first slider is: <strong>{{demo6.valueA}}</strong>; the second slider is <strong>{{demo6.valueB}}</strong>.</p>
+				<div range-slider min="0" max="10000" model-min="0" model-max="demo6.valueA" pin-handle="min" disabled="false"></div>
+				<div range-slider min="0" max="10000" model-min="demo6.valueB" model-max="10000" pin-handle="max" disabled="false"></div>
+			</div>
+			<div class="span12">
+				<pre>&lt;div range-slider min="0" max="10000" model-min="0" model-max="demo6.valueA" pin-handle="min" disabled="false"&gt;&lt;/div&gt;</pre>
+				<pre>&lt;div range-slider min="0" max="10000" model-min="demo6.valueB" model-max="10000" pin-handle="max" disabled="false"&gt;&lt;/div&gt;</pre>
+			</div>
+		</div>
+
+		<hr />
+
+		<div class="row">
+			<div class="span12">
+				<h3>Prevent the handles from being equal</h3>
+				<h4>The model</h4>
+				<pre>
+$scope.demo7 = {
+    range: {
+        min: 0,
+        max: 10050
+    },
+    minPrice: 1000,
+    maxPrice: 4000
+};</pre>
+			</div>			
+
+			<div class="span5">
+				<h4>The slider</h4>
+				
+				<p>You can prevent the two values from being equal by using the <code>prevent-equal-min-max="true"</code> attribute. The <code>step</code> value is used to maintain a gap between the values, so if the <code>step</code> is set to <code>100</code> the minimum difference will be 100. If no <code>step</code> value is provided a minimum difference of <code>1</code> will be used.</p>
+
+				<div range-slider min="demo7.range.min" max="demo7.range.max" model-min="demo7.minPrice" model-max="demo7.maxPrice" step="100" prevent-equal-min-max="true" disabled="false"></div>
+				
+			</div>
+			<div class="span2"></div>
+			<div class="span5">
+				<h4>The HTML</h4>
+				<p>Here we are using the <code>step</code> and <code>prevent-equal-min-max</code> options.</p>
+				<pre>&lt;div range-slider min="demo2.range.min" max="demo2.range.max" model-min="demo2.minPrice" model-max="demo2.maxPrice" step="100" prevent-equal-min-max="true" disabled="false"&gt;&lt;/div&gt;</pre>
+
+			</div>
+			
+
+		</div>
+
+		<hr />
+
+		<div class="row">
+			<div class="span12">
+				<h3>Move values with handles</h3>
+				<h4>The model</h4>
+				<pre>
+$scope.demo8 = {
+    max: 5000,
+    min: 3000
+};</pre>
+			</div>			
+
+			<div class="span12">
+				<h4>The slider</h4>
+				<p>You can make the values move with the handles as they slide by setting attach-handle-values equal to true.</p>
+				<div range-slider min="0" max="10000" model-min="demo8.min" model-max="demo8.max" attach-handle-values="true" disabled="false"></div>
+			</div>
+			<div class="span12">
+				<h4>The HTML</h4>
+				<pre>&lt;div range-slider min="0" max="10000" model-min="demo8.min" model-max="demo8.max" attach-handle-values="true" disabled="false"&gt;&lt;/div&gt;</pre>
+			</div>
+		</div>
+
+	</div>
+
+	<!-- we need jQuery -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script>
+	<!-- and Angular, of course -->
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.js"></script>
+	<!-- and out directive code -->
+	<script src="../angular.rangeSlider.js"></script>
+	<!-- a basic app and controller -->
+	<script>
+		// basic angular app setup
+		var app = angular.module('myApp', ['ui-rangeSlider']);
+
+		app.controller('DemoController',
+        	function DemoController($scope) {
+
+        		// just some values for the sliders
+        		$scope.demo1 = {
+        			min: 20,
+        			max: 80
+        		};
+
+        		$scope.demo2 = {
+					range: {
+						min: 0,
+						max: 10050
+					},
+					minPrice: 1000,
+					maxPrice: 4000
+				};
+
+				$scope.demo3 = {
+				    rangeMin: 10,
+				    rangeMax: 1500,
+				    min: 80,
+				    max: 1000,
+				    disabled: false
+				};
+
+				// function for the button to disable / enable slider 3
+				$scope.toggleDemo3 = function () {
+					// toggle true / false
+					$scope.demo3.disabled = !$scope.demo3.disabled;
+				};
+
+				$scope.demo4 = {
+				    min: 300,
+				    max: 800
+				};
+
+				$scope.demo5 = {
+				    min: 2000,
+				    max: 8000
+				};
+
+				$scope.demo6 = {
+				    valueA: 5000,
+				    valueB: 3000
+				};
+
+        		$scope.demo7 = {
+					range: {
+						min: 0,
+						max: 10050
+					},
+					minPrice: 1000,
+					maxPrice: 4000
+				};
+
+        		$scope.demo8 = {
+					min: 3000,
+					max: 5000
+				};
+
+        	}
+        );
+
+	</script>
+</body>
+</html>

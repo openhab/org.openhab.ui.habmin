@@ -104,7 +104,8 @@ module.exports = {
             'vendor/vis/dist/vis.js',
             'vendor/angular-base64/angular-base64.js',
             'vendor/angular-bootstrap-datetimepicker/src/js/datetimepicker.js',
-            'vendor/angular-ui-select/dist/select.js'
+            'vendor/bootstrap-select/bootstrap-select.js',
+            'vendor/angular-bootstrap-select/build/angular-bootstrap-select.js'
         ],
         css: [
             'vendor/angular-growl-v2/build/angular-growl.css',
@@ -117,7 +118,7 @@ module.exports = {
             'vendor/fullcalendar/fullcalendar.css',
             'vendor/vis/dist/vis.css',
             'vendor/angular-bootstrap-datetimepicker/src/css/datetimepicker.css',
-            'vendor/angular-ui-select/dist/select.css'
+            'vendor/bootstrap-select/bootstrap-select.css'
         ],
         assets: [
             'vendor/oa-font/fonts/*',

@@ -1,0 +1,8 @@
+{
+  "name": "tinycolor",
+  "repository": "bgrins/TinyColor",
+  "version": "1.0.0",
+  "main": "tinycolor.js",
+  "scripts": ["tinycolor.js"],
+  "license": "MIT"
+}

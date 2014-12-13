@@ -5,24 +5,28 @@
     <form class="form-horizontal" role="form">
 
         <div class="form-group">
-            <label class="col-sm-3 control-label" i18n="habmin.userChartPeriod"></label>
+            <label for="inputDefaultPeriod" class="col-sm-3 control-label" i18n="habmin.userChartPeriod"></label>
 
             <div class="col-sm-9">
-                <ui-select placeholder="Select" ng-model="period" search-enabled="true">
-                    <ui-select-match>{{$select.selected.label}}</ui-select-match>
-                    <ui-select-choices repeat="options as value in periodOptions">
-                        <div ng-bind-html="value.label"></div>
-                    </ui-select-choices>
-                </ui-select>
+                <select class="form-control" id="inputDefaultPeriod"
+                        ng-model="selected"
+                        ng-option="c.value as c.label for c in periodOptions"
+                        selectpicker="xx" toggle-dropdown live-search="false">
+                    <option value="-1">hello</option>
+                    <option value="3600" i18n="habmin.period1Hour"></option>
+                    <option value="1">hello 2</option>
+                </select>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-sm-3 control-label" i18n="habmin.userChartLegend"></label>
+            <label for="inputDefaultPeriod" class="col-sm-3 control-label" i18n="habmin.userChartLegend"></label>
 
             <div class="col-sm-9">
                 <input type="checkbox">
             </div>
+            {{test}}
+            {{periodOptions}}
         </div>
     </form>
 

@@ -1,0 +1,362 @@
+/*------------------------------------*\
+    SETTINGS
+\*------------------------------------*/
+
+// handle dimensions
+$ngrs-handleWidth: 18px;
+$ngrs-handleHeight: 18px;
+
+// thickness of the join line
+$ngrs-joinWeight: 8px;
+
+// padding between the border and the handles
+$ngrs-padding: 4px;
+
+// define the height of the slider when in vertical mode
+$ngrs-verticalHeight: 300px;
+
+// prefix
+$ngrs-prefix: 'ngrs-';
+
+/*------------------------------------*\
+    THE CSS
+\*------------------------------------*/
+
+.#{$ngrs-prefix}range-slider {
+
+	// RESETS
+	&, * {
+		display: block;
+		cursor: default;
+
+		@include box-sizing(border-box);
+		@include user-select(none);
+	}
+
+	position: relative;
+	margin: 10px 0 30px; // allow enough bottom margin to contain values
+	padding: $ngrs-padding;
+
+	border: 1px solid #ccc;
+	background: #fff;
+
+	@include border-radius(4px);
+	@include box-shadow(inset 0 1px 1px rgba(0, 0, 0, 0.075));
+	@include transition(border linear .2s, box-shadow linear .2s);
+
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+
+  /*------------------------------------*\
+      RUNNER
+  \*------------------------------------*/
+
+	.#{$ngrs-prefix}runner {
+		position: relative;
+		margin: 0 $ngrs-handleWidth / 2;
+		height: $ngrs-handleHeight;
+	}
+
+  /*------------------------------------*\
+      JOIN (connects the two handles)
+  \*------------------------------------*/
+
+	.#{$ngrs-prefix}join {
+		position: absolute;
+		z-index: 1;
+		top: 50%;
+		left: 0;
+		right: 100%;
+		height: $ngrs-joinWeight;
+		margin: (-$ngrs-joinWeight / 2) 0 0 0;
+
+		@include border-radius($ngrs-joinWeight / 2);
+		background-color: #2f96b4;
+		@include background-image(linear-gradient(#5bc0de, #2f96b4)); // primary: #08c, #04c | alternative: #5bc0de, #2f96b4
+	}
+
+  /*------------------------------------*\
+      HANDLE
+  \*------------------------------------*/
+
+	.#{$ngrs-prefix}handle {
+		position: absolute;
+		z-index: 2;
+		height: 100%;
+		width: $ngrs-handleWidth;
+		margin: 0 0 0 (-$ngrs-handleWidth / 2);
+		background: #efefef;
+		border: 1px solid #ccc;
+		@include border-radius(3px);
+
+    /*------------------------------------*\
+        HANDLE ICON
+    \*------------------------------------*/
+
+		i {
+			display: block;
+			width: 100%;
+			height: 100%;
+			background: no-repeat -9999px -9999px;
+			cursor: pointer;
+		}
+
+		&.#{$ngrs-prefix}over {
+			i {
+				background-position: 50% 50%;
+			}
+		}
+
+		&.#{$ngrs-prefix}down {
+			@include box-shadow(0 0 $ngrs-padding rgba(0, 0, 0, 0.2));
+		}
+
+	}
+
+  /*------------------------------------*\
+      HANDLE SPECIFICS
+  \*------------------------------------*/
+
+	.#{$ngrs-prefix}handle-min {
+		i {
+			// represents a left arrow
+			background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAFNJREFUeNpiYMAEXEDsA+OwoEnKALETEHOgK2AEYhMgNkQ3DqSAB6pLAot1DExIJmAFzED8C4hvQdnIppyFKYCBp0D8CohloVafxWUqN7I3AQIMAKw6B24pOi8lAAAAAElFTkSuQmCC');
+		}
+	}
+
+	.#{$ngrs-prefix}handle-max {
+		i {
+			// represents a right arrow
+			background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAFdJREFUeNpiYEAAHyDmYkADzEhsByBWA+K3QPwJmwJjIGYBYlUgZgLi59gUwIAkEEsD8VMmBtyAkQFqJDZwAYjPAPE/dAU/gHg/ED/GpgvkTW50QYAAAwADfwrM5sqplgAAAABJRU5ErkJggg==');
+		}
+	}
+
+  /*------------------------------------*\
+      VALUE LABELS
+  \*------------------------------------*/
+
+	.#{$ngrs-prefix}value {
+		position: absolute;
+		top: 100%;
+		left: 0;
+		padding: 5px 0 0 0;
+		font-size: 12px;
+		color: #999;
+
+		&.#{$ngrs-prefix}value-max {
+			left: auto;
+			right: 0;
+			text-align: right;
+		}
+	}
+
+	&.#{$ngrs-prefix}handle-min-down .#{$ngrs-prefix}value-min,
+	&.#{$ngrs-prefix}handle-max-down .#{$ngrs-prefix}value-max {
+		color: #333;
+	}
+
+  /*------------------------------------*\
+      ATTACHED VALUE RUNNER
+  \*------------------------------------*/
+	.#{$ngrs-prefix}attached-handles {
+			margin: 0 9px;
+			position: relative;
+
+    /*------------------------------------*\
+        ATTACHED VALUE RUNNER LABELS
+    \*------------------------------------*/
+		.#{$ngrs-prefix}value-max {
+			text-align: left;
+		}
+		.#{$ngrs-prefix}value > div {
+			margin: 0 0 0 -50%;
+		}
+	}
+
+  /*------------------------------------*\
+      VERTICAL SLIDER
+  \*------------------------------------*/
+
+	&.#{$ngrs-prefix}vertical {
+		width: $ngrs-handleWidth + ($ngrs-padding * 2) + 2; // additional 2 is for the border
+		margin: 10px auto;
+
+    /*------------------------------------*\
+        RUNNER
+    \*------------------------------------*/
+
+		.#{$ngrs-prefix}runner {
+			margin: $ngrs-handleHeight / 2 0;
+			height: $ngrs-verticalHeight;
+			width: $ngrs-handleWidth;
+		}
+
+    /*------------------------------------*\
+        ATTACHED VALUE RUNNER
+    \*------------------------------------*/
+		.#{$ngrs-prefix}value-runner {
+			&.#{$ngrs-prefix}attached-handles {
+				padding: $ngrs-padding;
+				position: absolute;
+				top: 0;
+				margin: $ngrs-handleHeight / 2 0;
+				height: $ngrs-verticalHeight;
+				left: 100%;
+			}
+		}
+
+    /*------------------------------------*\
+        JOIN
+    \*------------------------------------*/
+
+		.#{$ngrs-prefix}join {
+			width: $ngrs-joinWeight;
+			height: auto;
+			top: 0;
+			bottom: 100%;
+			left: 50%;
+			right: auto;
+			margin: 0 0 0 (-$ngrs-joinWeight / 2);
+		}
+
+    /*------------------------------------*\
+        HANDLE
+    \*------------------------------------*/
+
+		.#{$ngrs-prefix}handle {
+			width: 100%;
+			height: $ngrs-handleHeight;
+			margin: (-$ngrs-handleHeight / 2) 0 0 0;
+		}
+
+    /*------------------------------------*\
+        HANDLE SPECIFICS
+    \*------------------------------------*/
+
+		.#{$ngrs-prefix}handle-min {
+			i {
+				// represents an up arrow
+				background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAFFJREFUeNpiYEAFPFAMB0xIbEYgdoJiRpggM5ICUyBWhZoA0vgMWYEsENsg6ZQE4ldA/AmkkguIHZGNhQKQGBfIBHcgFmTABCxALMJAMQAIMAAcNgVQJ7t7JQAAAABJRU5ErkJggg==');
+			}
+		}
+
+		.#{$ngrs-prefix}handle-max {
+			i {
+				// represents a down arrow
+				background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAFZJREFUeNpiYKAUMAKxDxBL4ZB/xgQk9gHxDyySILF9zEDiNxC/A2JVNAW7gfgtM5TzCYhZgFgCyr8IxNdADGZk+4BYGoi/APEBIP6PzVE8UAwHAAEGAArIDvzRFIA6AAAAAElFTkSuQmCC');
+			}
+		}
+
+    /*------------------------------------*\
+        VALUE LABELS
+    \*------------------------------------*/
+
+		.#{$ngrs-prefix}value {
+			top: 0;
+			left: 100%;
+			padding: 0 0 0 5px;
+
+			&.#{$ngrs-prefix}value-max {
+				top: auto;
+				bottom: 0;
+				right: auto;
+				text-align: left;
+			}
+		}
+
+		.#{$ngrs-prefix}attached-handles {
+			.#{$ngrs-prefix}value-max, .#{$ngrs-prefix}value-min {
+				margin: -50% 0 0;
+			}
+		}
+
+    /*------------------------------------*\
+        VERTICAL LEFT SLIDER
+    \*------------------------------------*/
+
+		&.#{$ngrs-prefix}left {
+			margin: 10px 0;
+		}
+
+    /*------------------------------------*\
+        VERTICAL RIGHT SLIDER
+    \*------------------------------------*/
+
+		&.#{$ngrs-prefix}right {
+			margin: 10px 0 10px auto;
+
+      /*------------------------------------*\
+          ATTACHED VALUE RUNNER
+      \*------------------------------------*/
+			.#{$ngrs-prefix}attached-handles {
+				left: 0%;
+			}
+
+      /*------------------------------------*\
+          VALUE LABELS
+      \*------------------------------------*/
+
+			.#{$ngrs-prefix}value {
+				left: auto;
+				right: 100%;
+				padding: 0 5px 0 0;
+				text-align: right;
+
+				&.#{$ngrs-prefix}value-max {
+					text-align: right;
+				}
+			}
+
+		}
+	}
+
+  /*------------------------------------*\
+      FOCUS STATE
+  \*------------------------------------*/
+
+	&.#{$ngrs-prefix}focus {
+		border-color: rgba(82, 168, 236, 0.8);
+		@include box-shadow(inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(82,168,236,0.6));
+	}
+
+  /*------------------------------------*\
+      DISABLED STATE
+  \*------------------------------------*/
+
+	&.#{$ngrs-prefix}disabled {
+
+		&, &.#{$ngrs-prefix}focus {
+			// make sure the focus state is not used
+			border-color: #ddd;
+			@include box-shadow(none);
+		}
+
+		.#{$ngrs-prefix}handle {
+			background: #fff;
+			border-color: #ddd;
+
+			i {
+				background: none !important;
+				cursor: default;
+			}
+		}
+
+		.#{$ngrs-prefix}join {
+			background: #ddd;
+		}
+
+		.#{$ngrs-prefix}value {
+			color: #ddd;
+		}
+
+	}
+
+}
+
+/*------------------------------------*\
+    TOUCH STATE
+\*------------------------------------*/
+
+body.#{$ngrs-prefix}touching {
+	// prevents the user from panning or zooming while they are using the slider
+	-ms-touch-action: none;
+}
