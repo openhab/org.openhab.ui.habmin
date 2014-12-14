@@ -13,6 +13,12 @@ ngVis.factory('VisDataSet', function () {
             return response;
         };
 
+        this.update = function(data, senderId) {
+            var response = dataSet.update(data, senderId);
+
+            return response;
+        };
+
         this.getDataSet = function() {
             return dataSet;
         };

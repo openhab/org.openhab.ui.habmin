@@ -175,15 +175,71 @@ angular.module('Binding.zwave', [
             $scope.isDirty = true;
         };
 
-        $scope.deviceSave = function () {
+        function saveDomain(domain, value) {
+            console.log("Saving domain:", domain, value);
+            $http.put(url + "set/" + domain, value)
+                .success(function (data) {
+                })
+                .error(function (data, status) {
+                    growl.success(locale.getString('zwave.zwaveActionError'));
+                });
+        }
 
+        $scope.deviceSave = function () {
+            // TODO: This needs some rationalisation...
+            angular.forEach($scope.deviceData, function (el) {
+                if(el.dirty) {
+                    saveDomain(el.domain, el.value);
+                    el.dirty = false;
+                    el.pending = true;
+                }
+            });
+            angular.forEach($scope.infoData, function (el) {
+                if(el.dirty) {
+                    saveDomain(el.domain, el.value);
+                    el.dirty = false;
+                    el.pending = true;
+                }
+            });
+            angular.forEach($scope.configData, function (el) {
+                if(el.dirty) {
+                    saveDomain(el.domain, el.value);
+                    el.dirty = false;
+                    el.pending = true;
+                }
+            });
+            angular.forEach($scope.wakeupData, function (el) {
+                if(el.dirty) {
+                    saveDomain(el.domain, el.value);
+                    el.dirty = false;
+                    el.pending = true;
+                }
+            });
         };
 
         $scope.deviceCancel = function () {
             console.log("Cancel");
             $scope.isDirty = false;
 
+            angular.forEach($scope.deviceData, function (el) {
+                if(el.dirty) {
+                    el.value = el.org;
+                    el.dirty = false;
+                }
+            });
+            angular.forEach($scope.infoData, function (el) {
+                if(el.dirty) {
+                    el.value = el.org;
+                    el.dirty = false;
+                }
+            });
             angular.forEach($scope.configData, function (el) {
+                if(el.dirty) {
+                    el.value = el.org;
+                    el.dirty = false;
+                }
+            });
+            angular.forEach($scope.wakeupData, function (el) {
                 if(el.dirty) {
                     el.value = el.org;
                     el.dirty = false;
@@ -346,6 +402,35 @@ angular.module('Binding.zwave', [
         }
 
         function updateInfo(id) {
+            // Currently, we need to get some information from the root node
+            // Change this for openHAB2!!!
+            $http.get(url + "nodes/" + id + '/')
+                .success(function (data) {
+                    if (data.records === undefined) {
+                        return;
+                    }
+                    if (data.records[0] === undefined) {
+                        return;
+                    }
+                    if ($scope.devEdit.device == id) {
+                        $scope.devEdit.deviceInfo = [];
+                        $scope.devEdit.deviceInfo[0] = data.records[0];
+                        $scope.devEdit.deviceInfo[1] = data.records[1];
+
+                        if($scope.deviceData !== undefined) {
+                            if ($scope.deviceData["Name"] !== undefined) {
+                                $scope.deviceData["Name"].pending = false;
+                            }
+                            if ($scope.deviceData["Location"] !== undefined) {
+                                $scope.deviceData["Location"].pending = false;
+                            }
+                        }
+                    }
+                })
+                .error(function (data, status) {
+                    $scope.devEdit.information = undefined;
+                });
+
             $http.get(url + "nodes/" + id + '/info/')
                 .success(function (data) {
                     if (data.records === undefined) {

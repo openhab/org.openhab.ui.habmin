@@ -167,6 +167,9 @@
                 </a>
             </div>
             <div ng-show="devEdit.information" collapse="panelDisplayed!='INFO'">
+                <binding-config template="{{devEdit.deviceInfo}}"
+                                binding-change="changeNotification" binding-data="deviceData">
+                </binding-config>
                 <binding-config template="{{devEdit.information}}"
                                 binding-change="changeNotification" binding-data="infoData">
                 </binding-config>

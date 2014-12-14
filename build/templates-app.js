@@ -316,12 +316,28 @@ angular.module("binding/zwave.tpl.html", []).run(["$templateCache", function($te
     "\n" +
     "            <div ng-hide=\"!devEdit.label\" class=\"btn-group pull-right\">\n" +
     "                <div class=\"text-right\">{{devEdit.label}}</div>\n" +
-    "                <div class=\"text-right small\"><span>{{devEdit.label}}</span>&nbsp;<span class=\"hidden-xs\">{{devEdit.type}}</span></div>\n" +
+    "                <div class=\"text-right small\"><span i18n=\"zwave.zwaveNode\"></span>&nbsp;<span>{{devEdit.nodeID}}</span>:&nbsp;<span class=\"hidden-xs\">{{devEdit.type}}</span></div>\n" +
     "            </div>\n" +
     "        </div>\n" +
     "\n" +
     "        <!-- Body -->\n" +
     "        <div ng-show=\"deviceDisplay=='CONFIG'\" class=\"list-group habmin-list\" ng-style=\"styleList()\">\n" +
+    "            <!-- INFORMATION -->\n" +
+    "            <div ng-show=\"devEdit.information\">\n" +
+    "                <a role=\"presentation\" class=\"list-group-item\" ng-click=\"showPanel('INFO')\">\n" +
+    "                    <span class=\"fa fa-fw fa-info\"></span>\n" +
+    "                    <span i18n=\"zwave.zwaveInformation\"></span>\n" +
+    "                </a>\n" +
+    "            </div>\n" +
+    "            <div ng-show=\"devEdit.information\" collapse=\"panelDisplayed!='INFO'\">\n" +
+    "                <binding-config template=\"{{devEdit.deviceInfo}}\"\n" +
+    "                                binding-change=\"changeNotification\" binding-data=\"deviceData\">\n" +
+    "                </binding-config>\n" +
+    "                <binding-config template=\"{{devEdit.information}}\"\n" +
+    "                                binding-change=\"changeNotification\" binding-data=\"infoData\">\n" +
+    "                </binding-config>\n" +
+    "            </div>\n" +
+    "\n" +
     "            <!-- CONFIGURATION -->\n" +
     "            <div ng-show=\"devEdit.configuration\">\n" +
     "                <a role=\"presentation\" class=\"list-group-item\" ng-click=\"showPanel('CONFIG')\">\n" +
@@ -330,7 +346,8 @@ angular.module("binding/zwave.tpl.html", []).run(["$templateCache", function($te
     "                </a>\n" +
     "            </div>\n" +
     "            <div ng-show=\"devEdit.configuration\" collapse=\"panelDisplayed!='CONFIG'\">\n" +
-    "                <binding-config template=\"{{devEdit.configuration}}\" binding-change=\"changeNotification\">\n" +
+    "                <binding-config template=\"{{devEdit.configuration}}\"\n" +
+    "                                binding-change=\"changeNotification\" binding-data=\"configData\">\n" +
     "                </binding-config>\n" +
     "            </div>\n" +
     "\n" +
@@ -344,7 +361,8 @@ angular.module("binding/zwave.tpl.html", []).run(["$templateCache", function($te
     "            <div ng-show=\"devEdit.associations\" collapse=\"panelDisplayed!='ASSOC'\">\n" +
     "                <div ng-repeat=\"choice in devEdit.associations\">\n" +
     "                    {{choice.label}}\n" +
-    "                    <binding-config template=\"{{choice.associations}}\">\n" +
+    "                    <binding-config template=\"{{choice.associations}}\"\n" +
+    "                                    binding-change=\"changeNotification\" binding-data=\"xData\">\n" +
     "                    </binding-config>\n" +
     "                </div>\n" +
     "            </div>\n" +
@@ -357,75 +375,13 @@ angular.module("binding/zwave.tpl.html", []).run(["$templateCache", function($te
     "                </a>\n" +
     "            </div>\n" +
     "            <div ng-show=\"devEdit.wakeup\" collapse=\"panelDisplayed!='WAKE'\">\n" +
-    "                <binding-config template=\"{{devEdit.wakeup}}\">\n" +
+    "                <binding-config template=\"{{devEdit.wakeup}}\"\n" +
+    "                                binding-change=\"changeNotification\" binding-data=\"wakeupData\">>\n" +
     "                </binding-config>\n" +
-    "            </div>\n" +
-    "\n" +
-    "            <!-- INFORMATION -->\n" +
-    "            <div ng-show=\"devEdit.information\">\n" +
-    "                <a role=\"presentation\" class=\"list-group-item\" ng-click=\"showPanel('INFO')\">\n" +
-    "                    <span class=\"fa fa-fw fa-info\"></span>\n" +
-    "                    <span i18n=\"zwave.zwaveInformation\"></span>\n" +
-    "                </a>\n" +
-    "            </div>\n" +
-    "            <div ng-show=\"devEdit.information\" collapse=\"panelDisplayed!='INFO'\">\n" +
-    "                <binding-config template=\"{{devEdit.information}}\" ng-model=\"formData\">\n" +
-    "                </binding-config>\n" +
-    "            </div>\n" +
-    "\n" +
-    "            <!-- TEST!!!!!!!!!!!!!!!!!!!! -->\n" +
-    "            <div>\n" +
-    "                <a role=\"presentation\" class=\"list-group-item\" ng-click=\"showPanel('TEST')\">\n" +
-    "                    <span class=\"fa fa-fw fa-paw\"></span>\n" +
-    "                    <span>TESTING AREA</span>\n" +
-    "                </a>\n" +
-    "            </div>\n" +
-    "            <div collapse=\"panelDisplayed!='TEST'\">\n" +
-    "\n" +
-    "                <form class=\"panel-form form-horizontal\" role=\"form\">\n" +
-    "\n" +
-    "                    <div class=\"form-group\">\n" +
-    "                        <label class=\"control-label\">\n" +
-    "                            <span i18n=\"habmin.chartSaveAxesLabel\"></span>\n" +
-    "                            <span class=\"label label-warning\">pending...</span>\n" +
-    "                        </label>\n" +
-    "                        <select selectpicker class=\"form-control\" multiple max-options=\"3\"\n" +
-    "                                title=\"select...\"\n" +
-    "                                >\n" +
-    "                            <optgroup label=\"Node 1: Lounge\">\n" +
-    "                                <option value=\"1\">BLAH 1</option>\n" +
-    "                                <option value=\"2\">BLAH 2</option>\n" +
-    "                            </optgroup>\n" +
-    "                            <optgroup label=\"Node 2: Bedroom\">\n" +
-    "                                <option value=\"1\">BLAH 1</option>\n" +
-    "                                <option value=\"2\">BLAH 2</option>\n" +
-    "                            </optgroup>\n" +
-    "                        </select>\n" +
-    "                    </div>\n" +
-    "\n" +
-    "                    <div class=\"form-group\">\n" +
-    "                        <label class=\"control-label\">\n" +
-    "                            <span i18n=\"habmin.chartSaveAxesLabel\"></span>\n" +
-    "                        </label>\n" +
-    "                        <span style=\"margin-top:9px;\" class=\"pull-right label label-warning\">update pending...</span>\n" +
-    "\n" +
-    "\n" +
-    "                        <select selectpicker class=\"form-control\" multiple max-options=\"3\"\n" +
-    "                                title=\"select...\"\n" +
-    "                                >\n" +
-    "                            <optgroup label=\"Node 1: Lounge\">\n" +
-    "                                <option value=\"1\">BLAH 1</option>\n" +
-    "                                <option value=\"2\">BLAH 2</option>\n" +
-    "                            </optgroup>\n" +
-    "                            <optgroup label=\"Node 2: Bedroom\">\n" +
-    "                                <option value=\"1\">BLAH 1</option>\n" +
-    "                                <option value=\"2\">BLAH 2</option>\n" +
-    "                            </optgroup>\n" +
-    "                        </select>\n" +
-    "                    </div>\n" +
-    "                </form>\n" +
     "            </div>\n" +
     "        </div>\n" +
+    "\n" +
+    "        <!-- Node Network Diagram -->\n" +
     "        <div ng-show=\"deviceDisplay=='NETWORK'\" ng-style=\"styleList()\">\n" +
     "            <vis-network data=\"networkNodes\" options=\"networkOptions\" events=\"networkEvents\"></vis-network>\n" +
     "        </div>\n" +

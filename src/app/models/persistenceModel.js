@@ -140,7 +140,7 @@ angular.module('HABmin.persistenceModel', [
                     console.log("HTML GET data is", data);
 
                     var persistence = [].concat(data.data);
-
+/*
                     // Response handling
                     switch (cacheState) {
                         case CACHE_IGNORE:
@@ -173,7 +173,7 @@ angular.module('HABmin.persistenceModel', [
                             localStorage.setItem(storeName + '.stop', persistence[persistence.length - 1].time);
                             break;
                     }
-
+*/
                     console.log("Store completed in", new Date().getTime() - tStart);
 
                     deferred.resolve(persistence);

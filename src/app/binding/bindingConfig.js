@@ -105,6 +105,7 @@ angular.module('Binding.config', [
                         }
 
                         $scope.bindingData[field.name] = {
+                            domain: field.domain,
                             value: field.value,
                             org: field.value,
                             dirty: false,
@@ -145,7 +146,7 @@ angular.module('Binding.config', [
                         return;
                     }
 
-                    if($scope.bindingData[name] === el.value) {
+                    if($scope.bindingData[name].value === el.value) {
                         $scope.bindingData[name].dirty = false;
                     } else {
                         $scope.bindingData[name].dirty = true;

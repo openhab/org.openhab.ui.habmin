@@ -335,7 +335,7 @@ angular.module('HABmin.chart', [
         $scope.setRefresh = function (period) {
             var d = period.split('.');
             var duration = moment.duration(Number(d[0]), d[1]);
-
+/*
             // If the timer is running - cancel it!
             if (refreshTimer != null) {
                 console.log("Cancel timer");
@@ -361,25 +361,32 @@ angular.module('HABmin.chart', [
             }
             else {
                 $scope.refreshPeriod = "0";
-            }
+            }*/
         };
 
+        /**
+         * Callback from the chart whenever the range is updated
+         * This is called repeatedly during zooming and scrolling
+         * @param period
+         */
         $scope.onRangeChange = function (period) {
+            console.log("Range changing", period);
             function splitDate(date) {
+                var m = moment(date);
                 return {
-                    year: moment(date).get('year'),
+                    year: m.get('year'),
                     month: {
-                        number: moment(date).get('month'),
-                        name: moment(date).format('MMM')
+                        number: m.get('month'),
+                        name: m.format('MMM')
                     },
-                    week: moment(date).format('w'),
+                    week: m.format('w'),
                     day: {
-                        number: moment(date).get('date'),
-                        name: moment(date).format('ddd')
+                        number: m.get('date'),
+                        name: m.format('ddd')
                     },
-                    hour: moment(date).format('HH'),
-                    minute: moment(date).format('mm'),
-                    second: moment(date).format('ss')
+                    hour: m.format('HH'),
+                    minute: m.format('mm'),
+                    second: m.format('ss')
                 };
             }
 
@@ -444,8 +451,85 @@ angular.module('HABmin.chart', [
             }
         };
 
+        /**
+         * Callback from the chart whenever the range is updated
+         * This is called once at the end of zooming and scrolling
+         * @param period
+         */
+        $scope.onRangeChanged = function (period) {
+            console.log("Range changed", period);
+
+            // We want to add any additional data at the beginning, and/or end of the current data
+/*
+
+            $scope.stopTime = Math.floor((new Date()).getTime());
+            $scope.startTime = $scope.stopTime - (chart.period * 1000);
+
+            console.log("Requesting ", itemRef);
+            var parms = {starttime: start, endtime: stop};
+            var me = this;*/
+
+            var allowableDelta = ($scope.stopTime - $scope.startTime) / 100;
+            console.log("AllowableDelta", allowableDelta);
+
+            var startTime = moment(period.start).valueOf();
+            var stopTime = moment(period.end).valueOf();
+
+            console.log("Start", startTime, $scope.startTime, startTime - $scope.startTime);
+            console.log("Stop", stopTime, $scope.stopTime,  stopTime - $scope.stopTime);
+
+            if(startTime >= $scope.startTime - allowableDelta &&
+                stopTime <= $scope.stopTime + allowableDelta) {
+                return;
+            }
+
+            $scope.startTime = moment(period.start).valueOf();
+            $scope.stopTime = moment(period.end).valueOf();
+
+            newChart = [];
+            var cnt = chartDef.items.length;
+            angular.forEach(chartDef.items, function(item) {
+                console.log("Range changed on item",item);
+
+                PersistenceDataModel.get($scope.selectedService, item.item, $scope.startTime, $scope.stopTime).then(
+                    function (data) {
+                        console.log("The item definition is: ", data);
+                        newChart = addSeries(newChart, data, item.repeatTime, item.item);
+                        cnt--;
+
+                        if(cnt === 0) {
+                            dataItems.update(newChart);
+                        }
+                    },
+                    function (reason) {
+                        // Handle failure
+                        growl.warning(locale.getString('habmin.chartErrorLoadingItem', item.item));
+                        cnt--;
+                    }
+                );
+            });
+
+            /*
+            PersistenceDataModel.get($scope.selectedService, itemRef, start, stop).then(
+                function (response) {
+                    console.log("The item definition is: ", response);
+                    dataItems.add({x: now, y: count, group: 'Outside_RainGauge_Counter'});
+                    _addChartItem(itemRef, response);
+                },
+                function (reason) {
+                    // Handle failure
+                    growl.warning(locale.getString('habmin.chartErrorLoadingItem', itemRef));
+                }
+            );
+
+*/
+
+
+        };
+
         $scope.graphEvents = {
             rangechange: $scope.onRangeChange,
+            rangechanged: $scope.onRangeChanged,
             onload: $scope.onLoaded
         };
 
@@ -687,7 +771,7 @@ angular.module('HABmin.chart', [
             }
         }
 
-// Sequentially step through the new data and add it to a new array along with the old data
+        // Sequentially step through the new data and add it to a new array along with the old data
         function addSeries(curData, newData, repeatTime, group) {
             var d;
 
