@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html ng-controller="HABminCtrl">
+<head>
+    <title ng-bind="pageTitle"></title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- compiled CSS -->
+    <link rel="stylesheet" type="text/css" href="vendor/angular-growl-v2/build/angular-growl.css"/>
+    
+    <link rel="stylesheet" type="text/css" href="vendor/angular-toggle-switch/angular-toggle-switch.css"/>
+    
+    <link rel="stylesheet" type="text/css" href="vendor/angular-toggle-switch/angular-toggle-switch-bootstrap.css"/>
+    
+    <link rel="stylesheet" type="text/css" href="vendor/jquery-ui/themes/base/core.css"/>
+    
+    <link rel="stylesheet" type="text/css" href="vendor/jquery-ui/themes/base/resizable.css"/>
+    
+    <link rel="stylesheet" type="text/css" href="vendor/oa-font/css/style.css"/>
+    
+    <link rel="stylesheet" type="text/css" href="vendor/fullcalendar/fullcalendar.css"/>
+    
+    <link rel="stylesheet" type="text/css" href="vendor/vis/dist/vis.css"/>
+    
+    <link rel="stylesheet" type="text/css" href="vendor/bootstrap-select/bootstrap-select.css"/>
+    
+    <link rel="stylesheet" type="text/css" href="assets/HABmin2-0.0.2.css"/>
+    
+
+    <!-- compiled JavaScript -->
+    <script type="text/javascript" src="vendor/jquery/dist/jquery.js"></script>
+    
+    <script type="text/javascript" src="vendor/angular/angular.js"></script>
+    
+    <script type="text/javascript" src="vendor/angular-animate/angular-animate.js"></script>
+    
+    <script type="text/javascript" src="vendor/angular-http-auth/src/http-auth-interceptor.js"></script>
+    
+    <script type="text/javascript" src="vendor/angular-resource/angular-resource.js"></script>
+    
+    <script type="text/javascript" src="vendor/angular-sanitize/angular-sanitize.js"></script>
+    
+    <script type="text/javascript" src="vendor/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    
+    <script type="text/javascript" src="vendor/angular-ui-router/release/angular-ui-router.js"></script>
+    
+    <script type="text/javascript" src="vendor/angular-localization/angular-localization.js"></script>
+    
+    <script type="text/javascript" src="vendor/angular-cookies/angular-cookies.js"></script>
+    
+    <script type="text/javascript" src="vendor/angular-growl-v2/build/angular-growl.js"></script>
+    
+    <script type="text/javascript" src="vendor/angular-toggle-switch/angular-toggle-switch.js"></script>
+    
+    <script type="text/javascript" src="vendor/jquery-atmosphere/jquery.atmosphere.js"></script>
+    
+    <script type="text/javascript" src="vendor/tinycolor/tinycolor.js"></script>
+    
+    <script type="text/javascript" src="vendor/pick-a-color/src/js/pick-a-color.js"></script>
+    
+    <script type="text/javascript" src="vendor/angular-pick-a-color/src/angular-pick-a-color.js"></script>
+    
+    <script type="text/javascript" src="vendor/moment/moment.js"></script>
+    
+    <script type="text/javascript" src="vendor/angular-blockly/build/angular-blockly.js"></script>
+    
+    <script type="text/javascript" src="vendor/angular-blockly/build/blockly_compressed.js"></script>
+    
+    <script type="text/javascript" src="vendor/angular-blockly/build/blocks_compressed.js"></script>
+    
+    <script type="text/javascript" src="vendor/angular-blockly/build/en.js"></script>
+    
+    <script type="text/javascript" src="vendor/ace-builds/src-min-noconflict/ace.js"></script>
+    
+    <script type="text/javascript" src="vendor/ace-builds/src-min-noconflict/theme-tomorrow_night_bright.js"></script>
+    
+    <script type="text/javascript" src="vendor/angular-ui-ace/ui-ace.js"></script>
+    
+    <script type="text/javascript" src="vendor/angular-gridster/src/angular-gridster.js"></script>
+    
+    <script type="text/javascript" src="vendor/jquery-ui/ui/core.js"></script>
+    
+    <script type="text/javascript" src="vendor/jquery-ui/ui/widget.js"></script>
+    
+    <script type="text/javascript" src="vendor/jquery-ui/ui/mouse.js"></script>
+    
+    <script type="text/javascript" src="vendor/jquery-ui/ui/draggable.js"></script>
+    
+    <script type="text/javascript" src="vendor/jquery-ui/ui/resizable.js"></script>
+    
+    <script type="text/javascript" src="vendor/angular-dialgauge/src/angular-dialgauge.js"></script>
+    
+    <script type="text/javascript" src="vendor/angular-ui-calendar/src/calendar.js"></script>
+    
+    <script type="text/javascript" src="vendor/fullcalendar/fullcalendar.js"></script>
+    
+    <script type="text/javascript" src="vendor/fullcalendar/gcal.js"></script>
+    
+    <script type="text/javascript" src="vendor/angular-timeago/src/timeAgo.js"></script>
+    
+    <script type="text/javascript" src="vendor/vis/dist/vis.js"></script>
+    
+    <script type="text/javascript" src="vendor/angular-base64/angular-base64.js"></script>
+    
+    <script type="text/javascript" src="vendor/bootstrap-select/bootstrap-select.js"></script>
+    
+    <script type="text/javascript" src="vendor/angular-bootstrap-select/build/angular-bootstrap-select.js"></script>
+    
+    <script type="text/javascript" src="src/app/app.js"></script>
+    
+    <script type="text/javascript" src="src/app/automation/acemode-openhab_rules.js"></script>
+    
+    <script type="text/javascript" src="src/app/automation/openhabBlocks.js"></script>
+    
+    <script type="text/javascript" src="src/app/automation/rules.js"></script>
+    
+    <script type="text/javascript" src="src/app/automation/scheduler.js"></script>
+    
+    <script type="text/javascript" src="src/app/binding/bindingConfig.js"></script>
+    
+    <script type="text/javascript" src="src/app/binding/zwave.js"></script>
+    
+    <script type="text/javascript" src="src/app/dashboard/chart.js"></script>
+    
+    <script type="text/javascript" src="src/app/dashboard/chartSave.js"></script>
+    
+    <script type="text/javascript" src="src/app/dashboard/dashboard.js"></script>
+    
+    <script type="text/javascript" src="src/app/home/home.js"></script>
+    
+    <script type="text/javascript" src="src/app/models/bindingModel.js"></script>
+    
+    <script type="text/javascript" src="src/app/models/chartModel.js"></script>
+    
+    <script type="text/javascript" src="src/app/models/iconModel.js"></script>
+    
+    <script type="text/javascript" src="src/app/models/itemModel.js"></script>
+    
+    <script type="text/javascript" src="src/app/models/persistenceModel.js"></script>
+    
+    <script type="text/javascript" src="src/app/models/ruleModel.js"></script>
+    
+    <script type="text/javascript" src="src/app/models/sitemapModel.js"></script>
+    
+    <script type="text/javascript" src="src/app/models/userModel.js"></script>
+    
+    <script type="text/javascript" src="src/app/sitemap/sitemap.js"></script>
+    
+    <script type="text/javascript" src="src/app/sitemap/sitemapFrameWidget.js"></script>
+    
+    <script type="text/javascript" src="src/app/sitemap/sitemapSelectionWidget.js"></script>
+    
+    <script type="text/javascript" src="src/app/sitemap/sitemapSliderWidget.js"></script>
+    
+    <script type="text/javascript" src="src/app/sitemap/sitemapSwitchWidget.js"></script>
+    
+    <script type="text/javascript" src="src/app/sitemap/sitemapTextWidget.js"></script>
+    
+    <script type="text/javascript" src="src/app/user/userChart.js"></script>
+    
+    <script type="text/javascript" src="src/app/user/userGeneral.js"></script>
+    
+    <script type="text/javascript" src="src/common/angular-vis.js"></script>
+    
+    <script type="text/javascript" src="src/common/ngConfirmClick.js"></script>
+    
+    <script type="text/javascript" src="src/common/ngCron.js"></script>
+    
+    <script type="text/javascript" src="templates-common.js"></script>
+    
+    <script type="text/javascript" src="templates-app.js"></script>
+    
+
+    <script type="text/javascript">
+        console.log("PhoneGap is:", window.PhoneGap);
+
+        $(document).ready(function() {
+            // Are we running in native (PhoneGap) app or in a browser?
+            window.isphone = false;
+            if(document.URL.indexOf("http://") === -1
+                    && document.URL.indexOf("https://") === -1) {
+                window.isphone = true;
+            }
+
+            if( window.isphone ) {
+                console.log("Deferring startup to 'deviceready' event.");
+                document.addEventListener("deviceready", onDeviceReady, false);
+            } else {
+                onDeviceReady();
+            }
+        });
+
+        function onDeviceReady() {
+            console.log("Starting application.");
+
+            angular.bootstrap(document, ['HABmin']);
+        }
+    </script>
+</head>
+<body class="login-handler">
+
+<div id="login-holder" class="row login-form" style="display:none;">
+    <div id="loginbox" class="col-xs-12 col-sm-6 col-lg-4" ng-controller="LoginController">
+        <form name="form">
+            <div class="form-group" ng-class="{'has-error': form.user.$invalid && submitted}">
+                <label for="user" class="control-label">Username</label>
+
+                <div class="input-group">
+                    <span class="input-group-addon"><span class="fa fa-user"></span></span>
+                    <input
+                            type="text"
+                            class="form-control"
+                            id="user"
+                            name="user"
+                            placeholder="Username"
+                            ng-model="user"
+                            ng-model-options="{updateOn: 'blur'}"
+                            required>
+                </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': form.password.$invalid && submitted}">
+                <label for="password" class="control-label">Password</label>
+
+                <div class="input-group">
+                    <span class="input-group-addon"><span class="fa fa-lock"></span></span>
+                    <input
+                            type="password"
+                            class="form-control"
+                            id="password"
+                            name="password"
+                            placeholder="Password"
+                            ng-model="password"
+                            ng-model-options="{updateOn: 'blur'}"
+                            required>
+                </div>
+            </div>
+            <div class="form-group" ng-class="{'has-error': form.password.$invalid && submitted}">
+                <label for="inputPeriod" class="control-label" i18n="habmin.chartSavePeriod"></label>
+
+                <div class="input-group">
+                    <span class="input-group-addon"><span class="fa fa-clock-o"></span></span>
+                    <select ng-model="period" class="form-control" id="inputPeriod">
+                        <option value="3600" i18n="habmin.period1Hour"></option>
+                        <option value="7200" i18n="habmin.period2Hours"></option>
+                        <option value="10800" i18n="habmin.period3Hours"></option>
+                        <option value="14400" i18n="habmin.period4Hours"></option>
+                        <option value="21600" i18n="habmin.period6Hours"></option>
+                        <option value="32400" i18n="habmin.period9Hours"></option>
+                        <option value="43200" i18n="habmin.period12Hours"></option>
+                        <option value="86400" i18n="habmin.period1Day"></option>
+                        <option value="172800" i18n="habmin.period2Days"></option>
+                        <option value="259200" i18n="habmin.period3Days"></option>
+                        <option value="345600" i18n="habmin.period4Days"></option>
+                        <option value="432000" i18n="habmin.period5Days"></option>
+                        <option value="604800" i18n="habmin.period1Week"></option>
+                        <option value="1209600" i18n="habmin.period2Weeks"></option>
+                        <option value="1814400" i18n="habmin.period3Weeks"></option>
+                        <option value="2419200" i18n="habmin.period1Month"></option>
+                        <option value="5184000" i18n="habmin.period2Months"></option>
+                        <option value="7776000" i18n="habmin.period3Months"></option>
+                        <option value="10454400" i18n="habmin.period4Months"></option>
+                        <option value="15724800" i18n="habmin.period6Months"></option>
+                        <option value="23095800" i18n="habmin.period9Months"></option>
+                        <option value="31536000" i18n="habmin.period1Year"></option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" ng-click="submit()" class="btn btn-primary btn-block">Login</button>
+        </form>
+    </div>
+</div>
+
+<div id="content">
+    <div class="container-fluid">
+        <nav class="navbar navbar-default navbar-fixed-top" container="false" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header habmin-nav">
+                    <button type="button" class="navbar-toggle" ng-init="menuCollapsed = true"
+                            ng-click="menuCollapsed = ! menuCollapsed">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <span class="navbar-brand" i18n="common.appName"></span>
+                </div>
+                <div class="collapse navbar-collapse navbar-ex1-collapse" collapse="menuCollapsed">
+                    <ul class="nav navbar-nav">
+                        <!-- DASHBOARD menu -->
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown">
+                                <span class="fa fa-tachometer"></span>
+                                <span i18n="habmin.mainDashboard"></span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a ui-sref="chart">
+                                        <span class="fa fa-fw fa-area-chart"></span>
+                                        <span i18n="habmin.mainCharts"></span>
+                                    </a>
+                                </li>
+                                <li role="presentation" class="divider"></li>
+                                <li>
+                                    <a ui-sref="dashboard">
+                                        <span class="fa fa-fw fa-cubes"></span>
+                                        <span i18n="habmin.mainDashboard"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <!-- AUTOMATION menu -->
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown">
+                                <span class="fa fa-cogs"></span>
+                                <span i18n="habmin.mainAutomation"></span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a ui-sref="rules">
+                                        <span class="fa fa-fw fa-puzzle-piece"></span>
+                                        <span i18n="habmin.mainRules"></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a ui-sref="scheduler">
+                                        <span class="fa fa-fw fa-clock-o"></span>
+                                        <span i18n="habmin.mainScheduler"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <!-- SITEMAP menu -->
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown">
+                                <span class="fa fa-sitemap"></span>
+                                <span i18n="habmin.mainSitemaps"></span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li ng-repeat="choice in sitemaps">
+                                    <a ui-sref="sitemap.view({sitemapName:'{{choice.name}}', sitemapPage:'{{choice.name}}'})"
+                                       ui-sref-opts="{ reload: true }">
+                                        <habmin-icon class="fa-fw" icon="{{choice.icon}}"></habmin-icon>
+                                        <span>{{choice.label}}</span>
+                                    </a>
+                                </li>
+                                <li class="disabled" ng-if="!sitemaps">
+                                    <a>
+                                        <span class="fa fa-warning"></span>
+                                        <span i18n="habmin.mainNoSitemaps"></span>
+                                    </a>
+                                </li>
+                                <li role="presentation" class="divider"></li>
+                                <li>
+                                    <a ui-sref="sitemap.view">
+                                        <span class="fa fa-fw fa-plus"></span>
+                                        <span i18n="habmin.mainNewSitemap"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <!-- CONFIGURATION menu -->
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown">
+                                <span class="fa fa-wrench"></span>
+                                <span i18n="habmin.mainConfiguration"></span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a ui-sref="rules">
+                                        <span class="fa fa-fw fa-wifi"></span>
+                                        <span i181n="habmin.mainZWave">Items</span>
+                                    </a>
+                                </li>
+                                <li role="presentation" class="divider"></li>
+                                <li ng-repeat="choice in bindings" ng-class="{'disabled': choice.disabled}">
+                                    <a ui-sref="binding/zwave" ui-sref="choice.link">
+                                        <habmin-icon class="fa-fw" icon="{{choice.icon}}"></habmin-icon>
+                                        <span>{{choice.name}}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <!-- USER menu -->
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown" ng-if="isLoggedIn()">
+                            <a class="dropdown-toggle" data-toggle="dropdown">
+                                <span class="fa fa-fw fa-user"></span>
+                                <span i18n="habmin.mainUserPreferences"></span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a ng-click="showUserGeneralPrefs()">
+                                        <span class="fa fa-fw fa-cog"></span>
+                                        <span i18n="habmin.mainGeneralPreferences"></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a ng-click="showUserChartPrefs()">
+                                        <span class="fa fa-fw fa-pie-chart"></span>
+                                        <span i18n="habmin.mainChartPreferences"></span>
+                                    </a>
+                                </li>
+                                <li role="presentation" class="divider"></li>
+                                <li>
+                                    <a ng-click="logout()">
+                                        <span class="fa fa-fw fa-sign-out"></span>
+                                        <span i18n="habmin.mainLogout"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li ng-if="!isLoggedIn()">
+                            <a ui-sref="about">
+                                <span class="fa fa-fw fa-user"></span>
+                                <span i18n="habmin.mainLogin"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div class="container-fluid habmin-body" ui-view="main">
+    </div>
+
+    <div growl>
+    </div>
+</div>
+
+</body>
+</html>

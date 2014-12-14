@@ -20,6 +20,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-ngmin');
     grunt.loadNpmTasks('grunt-html2js');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
+    grunt.loadNpmTasks('grunt-phonegap');
 
     /**
      * Load in our build configuration file.
@@ -44,12 +45,12 @@ module.exports = function (grunt) {
          */
         meta: {
             banner: '/**\n' +
-                ' * <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
-                ' * <%= pkg.homepage %>\n' +
-                ' *\n' +
-                ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author %>\n' +
-                ' * Licensed <%= pkg.licenses.type %> <<%= pkg.licenses.url %>>\n' +
-                ' */\n'
+            ' * <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
+            ' * <%= pkg.homepage %>\n' +
+            ' *\n' +
+            ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author %>\n' +
+            ' * Licensed <%= pkg.licenses.type %> <<%= pkg.licenses.url %>>\n' +
+            ' */\n'
         },
 
         /**
@@ -102,7 +103,7 @@ module.exports = function (grunt) {
             build_app_assets: {
                 files: [
                     {
-                        src: [ '**' ],
+                        src: ['**'],
                         dest: '<%= build_dir %>/assets/',
                         cwd: 'src/assets',
                         expand: true
@@ -112,7 +113,7 @@ module.exports = function (grunt) {
             build_app_languages: {
                 files: [
                     {
-                        src: [ '**' ],
+                        src: ['**'],
                         dest: '<%= build_dir %>/languages/',
                         cwd: 'src/languages',
                         expand: true
@@ -122,7 +123,7 @@ module.exports = function (grunt) {
             build_vendor_assets: {
                 files: [
                     {
-                        src: [ '<%= vendor_files.assets %>' ],
+                        src: ['<%= vendor_files.assets %>'],
                         dest: '<%= build_dir %>/assets/',
                         cwd: '.',
                         expand: true,
@@ -133,7 +134,7 @@ module.exports = function (grunt) {
             build_appjs: {
                 files: [
                     {
-                        src: [ '<%= app_files.js %>' ],
+                        src: ['<%= app_files.js %>'],
                         dest: '<%= build_dir %>/',
                         cwd: '.',
                         expand: true
@@ -143,7 +144,7 @@ module.exports = function (grunt) {
             build_vendorjs: {
                 files: [
                     {
-                        src: [ '<%= vendor_files.js %>' ],
+                        src: ['<%= vendor_files.js %>'],
                         dest: '<%= build_dir %>/',
                         cwd: '.',
                         expand: true
@@ -153,7 +154,7 @@ module.exports = function (grunt) {
             build_vendorcss: {
                 files: [
                     {
-                        src: [ '<%= vendor_files.css %>' ],
+                        src: ['<%= vendor_files.css %>'],
                         dest: '<%= build_dir %>/',
                         cwd: '.',
                         expand: true
@@ -163,7 +164,7 @@ module.exports = function (grunt) {
             build_app_openhab: {
                 files: [
                     {
-                        src: [ '**' ],
+                        src: ['**'],
                         dest: '../openhab/distribution/openhabhome/webapps/ng',
                         cwd: '<%= build_dir %>',
                         expand: true
@@ -173,7 +174,7 @@ module.exports = function (grunt) {
             compile_assets: {
                 files: [
                     {
-                        src: [ '**' ],
+                        src: ['**'],
                         dest: '<%= compile_dir %>/assets',
                         cwd: '<%= build_dir %>/assets',
                         expand: true
@@ -183,7 +184,7 @@ module.exports = function (grunt) {
             compile_languages: {
                 files: [
                     {
-                        src: [ '**' ],
+                        src: ['**'],
                         dest: '<%= compile_dir %>/languages/',
                         cwd: '<%= build_dir %>/languages',
                         expand: true
@@ -241,7 +242,7 @@ module.exports = function (grunt) {
                 },
                 expand: true,
                 cwd: '.',
-                src: [ '<%= app_files.coffee %>' ],
+                src: ['<%= app_files.coffee %>'],
                 dest: '<%= build_dir %>',
                 ext: '.js'
             }
@@ -255,7 +256,7 @@ module.exports = function (grunt) {
             compile: {
                 files: [
                     {
-                        src: [ '<%= app_files.js %>' ],
+                        src: ['<%= app_files.js %>'],
                         cwd: '<%= build_dir %>',
                         dest: '<%= build_dir %>',
                         expand: true
@@ -347,12 +348,12 @@ module.exports = function (grunt) {
         coffeelint: {
             src: {
                 files: {
-                    src: [ '<%= app_files.coffee %>' ]
+                    src: ['<%= app_files.coffee %>']
                 }
             },
             test: {
                 files: {
-                    src: [ '<%= app_files.coffeeunit %>' ]
+                    src: ['<%= app_files.coffeeunit %>']
                 }
             }
         },
@@ -381,7 +382,7 @@ module.exports = function (grunt) {
                         removeStyleLinkTypeAttributes: true
                     }
                 },
-                src: [ '<%= app_files.atpl %>' ],
+                src: ['<%= app_files.atpl %>'],
                 dest: '<%= build_dir %>/templates-app.js'
             },
 
@@ -402,7 +403,7 @@ module.exports = function (grunt) {
                         removeStyleLinkTypeAttributes: true
                     }
                 },
-                src: [ '<%= app_files.ctpl %>' ],
+                src: ['<%= app_files.ctpl %>'],
                 dest: '<%= build_dir %>/templates-common.js'
             }
         },
@@ -505,7 +506,7 @@ module.exports = function (grunt) {
              */
             gruntfile: {
                 files: 'Gruntfile.js',
-                tasks: [ 'jshint:gruntfile' ],
+                tasks: ['jshint:gruntfile'],
                 options: {
                     livereload: false
                 }
@@ -519,7 +520,7 @@ module.exports = function (grunt) {
                 files: [
                     '<%= app_files.js %>'
                 ],
-                tasks: [ 'jshint:src', 'karma:unit:run', 'copy:build_appjs' ]
+                tasks: ['jshint:src', 'karma:unit:run', 'copy:build_appjs']
             },
 
             /**
@@ -530,7 +531,7 @@ module.exports = function (grunt) {
                 files: [
                     '<%= app_files.coffee %>'
                 ],
-                tasks: [ 'coffeelint:src', 'coffee:source', 'karma:unit:run', 'copy:build_appjs' ]
+                tasks: ['coffeelint:src', 'coffee:source', 'karma:unit:run', 'copy:build_appjs']
             },
 
             /**
@@ -541,7 +542,7 @@ module.exports = function (grunt) {
                 files: [
                     'src/assets/**/*'
                 ],
-                tasks: [ 'copy:build_app_assets', 'copy:build_vendor_assets' ]
+                tasks: ['copy:build_app_assets', 'copy:build_vendor_assets']
             },
 
             /**
@@ -552,15 +553,15 @@ module.exports = function (grunt) {
                 files: [
                     'languages/**/*'
                 ],
-                tasks: [ 'copy:build_app_languages' ]
+                tasks: ['copy:build_app_languages']
             },
 
             /**
              * When index.html changes, we need to compile it.
              */
             html: {
-                files: [ '<%= app_files.html %>' ],
-                tasks: [ 'index:build' ]
+                files: ['<%= app_files.html %>'],
+                tasks: ['index:build']
             },
 
             /**
@@ -571,15 +572,15 @@ module.exports = function (grunt) {
                     '<%= app_files.atpl %>',
                     '<%= app_files.ctpl %>'
                 ],
-                tasks: [ 'html2js' ]
+                tasks: ['html2js']
             },
 
             /**
              * When the CSS files change, we need to compile and minify them.
              */
             less: {
-                files: [ 'src/**/*.less' ],
-                tasks: [ 'less:build' ]
+                files: ['src/**/*.less'],
+                tasks: ['less:build']
             },
 
             /**
@@ -590,7 +591,7 @@ module.exports = function (grunt) {
                 files: [
                     '<%= app_files.jsunit %>'
                 ],
-                tasks: [ 'jshint:test', 'karma:unit:run' ],
+                tasks: ['jshint:test', 'karma:unit:run'],
                 options: {
                     livereload: false
                 }
@@ -604,10 +605,136 @@ module.exports = function (grunt) {
                 files: [
                     '<%= app_files.coffeeunit %>'
                 ],
-                tasks: [ 'coffeelint:test', 'karma:unit:run' ],
+                tasks: ['coffeelint:test', 'karma:unit:run'],
                 options: {
                     livereload: false
                 }
+            }
+        },
+
+        /**
+         * PhoneGap compiler configuration
+         */
+        phonegap: {
+            config: {
+                root: 'build',
+                config: 'phonegap/config.xml',
+                cordova: 'phonegap/.cordova',
+                html: 'index.html', // (Optional) You may change this to any other.html
+                path: 'phonegap-build',
+//                plugins: ['/local/path/to/plugin', 'http://example.com/path/to/plugin.git'],
+                platforms: ['android'],
+                maxBuffer: 200, // You may need to raise this for iOS.
+                verbose: false,
+                releases: 'releases',
+                releaseName: function () {
+                    var pkg = grunt.file.readJSON('package.json');
+                    return (pkg.name + '-' + pkg.version);
+                },
+                debuggable: false,
+
+                // Must be set for ios to work.
+                // Should return the app name.
+                name: function () {
+                    var pkg = grunt.file.readJSON('package.json');
+                    return pkg.name;
+                },
+
+                // Add a key if you plan to use the `release:android` task
+                // See http://developer.android.com/tools/publishing/app-signing.html
+                key: {
+                    store: 'release.keystore',
+                    alias: 'release',
+                    aliasPassword: function () {
+                        // Prompt, read an environment variable, or just embed as a string literal
+                        return ('');
+                    },
+                    storePassword: function () {
+                        // Prompt, read an environment variable, or just embed as a string literal
+                        return ('');
+                    }
+                },
+
+                // Set an app icon at various sizes (optional)
+                icons: {
+                    android: {
+                        ldpi: 'phonegap/images/icon-36-ldpi.png',
+                        mdpi: 'phonegap/images/icon-48-mdpi.png',
+                        hdpi: 'phonegap/images/icon-72-hdpi.png',
+                        xhdpi: 'phonegap/images/icon-96-xhdpi.png'
+                    },
+                    wp8: {
+                        app: 'icon-62-tile.png',
+                        tile: 'icon-173-tile.png'
+                    },
+                    ios: {
+                        icon29: 'icon29.png',
+                        icon29x2: 'icon29x2.png',
+                        icon40: 'icon40.png',
+                        icon40x2: 'icon40x2.png',
+                        icon57: 'icon57.png',
+                        icon57x2: 'icon57x2.png',
+                        icon60x2: 'icon60x2.png',
+                        icon72: 'icon72.png',
+                        icon72x2: 'icon72x2.png',
+                        icon76: 'icon76.png',
+                        icon76x2: 'icon76x2.png'
+                    }
+                },
+
+                // Set a splash screen at various sizes (optional)
+                // Only works for Android and IOS
+/*                screens: {
+                    android: {
+                        ldpi: 'screen-ldpi-portrait.png',
+                        // landscape version
+                        ldpiLand: 'screen-ldpi-landscape.png',
+                        mdpi: 'screen-mdpi-portrait.png',
+                        // landscape version
+                        mdpiLand: 'screen-mdpi-landscape.png',
+                        hdpi: 'screen-hdpi-portrait.png',
+                        // landscape version
+                        hdpiLand: 'screen-hdpi-landscape.png',
+                        xhdpi: 'screen-xhdpi-portrait.png',
+                        // landscape version
+                        xhdpiLand: 'www/screen-xhdpi-landscape.png'
+                    },
+                    ios: {
+                        // ipad landscape
+                        ipadLand: 'screen-ipad-landscape.png',
+                        ipadLandx2: 'screen-ipad-landscape-2x.png',
+                        // ipad portrait
+                        ipadPortrait: 'screen-ipad-portrait.png',
+                        ipadPortraitx2: 'screen-ipad-portrait-2x.png',
+                        // iphone portrait
+                        iphonePortrait: 'screen-iphone-portrait.png',
+                        iphonePortraitx2: 'screen-iphone-portrait-2x.png',
+                        iphone568hx2: 'screen-iphone-568h-2x.png'
+                    }
+                },*/
+
+                // Android-only integer version to increase with each release.
+                // See http://developer.android.com/tools/publishing/versioning.html
+                versionCode: function () {
+                    return (1);
+                },
+
+                // Android-only options that will override the defaults set by Phonegap in the
+                // generated AndroidManifest.xml
+                // See https://developer.android.com/guide/topics/manifest/uses-sdk-element.html
+                minSdkVersion: function () {
+                    return (10);
+                },
+                targetSdkVersion: function () {
+                    return (19);
+                },
+
+                // iOS7-only options that will make the status bar white and transparent
+                iosStatusBar: 'WhiteAndTransparent',
+
+                // Set an explicit Android permissions list to override the automatic plugin defaults.
+                // In most cases, you should omit this setting. See 'Android Permissions' in README.md for details.
+                permissions: ['INTERNET', 'ACCESS_COURSE_LOCATION']
             }
         }
     };
@@ -622,12 +749,12 @@ module.exports = function (grunt) {
      * before watching for changes.
      */
     grunt.renameTask('watch', 'delta');
-    grunt.registerTask('watch', [ 'build', 'karma:unit', 'delta' ]);
+    grunt.registerTask('watch', ['build', 'karma:unit', 'delta']);
 
     /**
      * The default task is to build and compile.
      */
-    grunt.registerTask('default', [ 'build', 'compile' ]);
+    grunt.registerTask('default', ['build', 'compile']);
 
     /**
      * The `build` task gets your app ready to run for development and testing.
@@ -647,6 +774,11 @@ module.exports = function (grunt) {
         'less:compile', 'concat:build_css', 'copy:compile_assets', 'copy:compile_languages', 'json-minify', 'ngmin',
         'concat:compile_js', 'uglify', 'index:compile'
     ]);
+
+    /**
+     * Phonegap compiler...
+     */
+    grunt.registerTask('phones', ['build', 'phonegap:build']);
 
     /**
      * A utility function to get all app JavaScript sources.

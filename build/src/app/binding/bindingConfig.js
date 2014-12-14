@@ -16,8 +16,8 @@ angular.module('Binding.config', [
             restrict: 'E', // supports using directive as element only
             scope: {
                 template: "@",
-                bindingChange: "="//,
-//                models: "&"
+                bindingChange: "=",
+                bindingData: "="
             },
             link: function ($scope, element, attrs) {
                 // Basic initialization
@@ -38,7 +38,7 @@ angular.module('Binding.config', [
 
                     newChild = angular.element('<span></span>');
                     newChild.attr('class', 'pull-right label label-success status_pending');
-                    newChild.attr('ng-show', 'models.' + field.name + '_dirty==true');
+                    newChild.attr('ng-show', 'bindingData.' + field.name + '.dirty==true');
                     angular.element(newChild).html("updated");
                     newElement.append(newChild);
 
@@ -49,7 +49,7 @@ angular.module('Binding.config', [
 
                     newChild = angular.element('<span></span>');
                     newChild.attr('class', 'pull-right label label-warning status_pending');
-                    newChild.attr('ng-show', 'models.' + field.name + '_pending==true');
+                    newChild.attr('ng-show', 'bindingData.' + field.name + '.pending==true');
                     angular.element(newChild).html("update pending");
                     newElement.append(newChild);
 
@@ -104,9 +104,15 @@ angular.module('Binding.config', [
                             newInput.attr('readonly', 'true');
                         }
 
-                        $scope.models[field.name] = field.value;
+                        $scope.bindingData[field.name] = {
+                            domain: field.domain,
+                            value: field.value,
+                            org: field.value,
+                            dirty: false,
+                            pending: false
+                        };
 
-                        newInput.attr('ng-model', 'models.' + field.name);
+                        newInput.attr('ng-model', 'bindingData.' + field.name + '.value');
 
                         if(attrs.bindingChange !== undefined) {
 //                            newInput.attr('ng-change', attrs.bindingChange);
@@ -140,10 +146,10 @@ angular.module('Binding.config', [
                         return;
                     }
 
-                    if($scope.models[name] === el.value) {
-                        $scope.models[name + '_dirty'] = false;
+                    if($scope.bindingData[name].value === el.value) {
+                        $scope.bindingData[name].dirty = false;
                     } else {
-                        $scope.models[name + '_dirty'] = true;
+                        $scope.bindingData[name].dirty = true;
                     }
 
                     if($scope.bindingChange !== undefined) {
@@ -158,7 +164,9 @@ angular.module('Binding.config', [
                     }
                     console.log("New template:", template);
 
-                    $scope.models = {};
+                    if($scope.bindingData === undefined) {
+                        $scope.bindingData = {};
+                    }
                     try {
                         $scope.jsonTemplate = [].concat(angular.fromJson(template));
                         console.log("Update template", $scope.jsonTemplate);
@@ -173,7 +181,7 @@ angular.module('Binding.config', [
                     newElement = angular.element("<form></form>");
                     newElement.attr('class', "panel-form form-horizontal");
                     newElement.attr('role', "form");
-                    newElement.attr('model', attrs.ngModel);
+                    newElement.attr('model', attrs.bindingData);
                     newElement.removeAttr('ng-model');
 
                     angular.forEach(element[0].classList, function (clsName) {
