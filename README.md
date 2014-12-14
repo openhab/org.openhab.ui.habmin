@@ -5,7 +5,7 @@ HABmin version2 - ultimately targeted toward openHAB2
 
 
 ![charting](https://raw.github.com/wiki/cdjackson/HABmin2/screenshots/charting-saved.png)
-![charting-editor](https://raw.github.com/wiki/cdjackson/screenshots/HABmin2/charting-edit.png)
+![charting-editor](https://raw.github.com/wiki/cdjackson/HABmin2/screenshots/charting-edit.png)
 ![rules-block](https://raw.github.com/wiki/cdjackson/HABmin2/screenshots/rules-blocks.png)
 ![rules-source](https://raw.github.com/wiki/cdjackson/HABmin2/screenshots/rules-source.png)
 ![zwave-config](https://raw.github.com/wiki/cdjackson/HABmin2/screenshots/zwave-config.png)
