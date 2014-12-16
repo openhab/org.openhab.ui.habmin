@@ -330,9 +330,6 @@ angular.module("binding/zwave.tpl.html", []).run(["$templateCache", function($te
     "                </a>\n" +
     "            </div>\n" +
     "            <div ng-show=\"devEdit.information\" collapse=\"panelDisplayed!='INFO'\">\n" +
-    "                <binding-config template=\"{{devEdit.deviceInfo}}\"\n" +
-    "                                binding-change=\"changeNotification\" binding-data=\"deviceData\">\n" +
-    "                </binding-config>\n" +
     "                <binding-config template=\"{{devEdit.information}}\"\n" +
     "                                binding-change=\"changeNotification\" binding-data=\"infoData\">\n" +
     "                </binding-config>\n" +
