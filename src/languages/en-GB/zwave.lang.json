@@ -36,7 +36,7 @@
     "zwaveStageVERSION": "getting version information",
     "zwaveStageAPP_VERSION": "getting application version information",
     "zwaveStageENDPOINTS": "getting endpoint information",
-    "zwaveStageUPDATE_DATABASE": "updating device information from database"
+    "zwaveStageUPDATE_DATABASE": "updating device information from database",
     "zwaveStageSTATIC_VALUES": "getting static values",
     "zwaveStageDYNAMIC_VALUES": "getting dynamic values",
     "zwaveStageNEIGHBORS": "updating neighbours",
@@ -45,7 +45,6 @@
     "zwaveStageASSOCIATIONS": "getting association information",
     "zwaveStageWAKEUP": "setting wakeup parameters",
     "zwaveStageDONE": "operating",
-    "zwaveStageINIT": "initialising",
     "zwaveStageDEAD": "dead",
     "zwaveStageFAILED": "failed",
     "zwaveHealUnknown": "Heal stage is unknown ({2})",

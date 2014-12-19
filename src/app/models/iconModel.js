@@ -13,6 +13,7 @@ angular.module('HABmin.iconModel', [
 ])
     .service("ImgFactory", function ($resource) {
         this._lookupTable = {
+            "alarm": {class: "oa-message_presence"},
             "baramoter": {class: "oa-weather_barometric_pressure"},
             "bath": {class: "oa-scene_bath"},
             "bedroom": {class: ""},
@@ -51,6 +52,8 @@ angular.module('HABmin.iconModel', [
             "light-80": {class: "oa-light_light_dim_80"},
             "light-90": {class: "oa-light_light_dim_90"},
             "light-100": {class: "oa-light_light_dim_100"},
+            "motionsensor": {class: "oa-message_presence"},
+            "motionsensor-disabled": {class: "oa-message_presence_disabled"},
             "network": {class: "oa-it_router"},
             "outdoorlight": {class: ""},
             "raingauge": {class: "oa-weather_rain_gauge"},
