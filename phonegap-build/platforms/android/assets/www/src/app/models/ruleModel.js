@@ -12,7 +12,7 @@ angular.module('HABmin.ruleModel', [
 ])
 
     .service('RuleModel', function ($http, $q) {
-        this.url = '/services/habmin/config/designer';
+        this.url = HABminServer + '/services/habmin/config/designer';
         this.ruleList = [];
 
         this.getList = function () {

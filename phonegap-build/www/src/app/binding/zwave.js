@@ -39,7 +39,18 @@ angular.module('Binding.zwave', [
 
     .controller('ZwaveBindingCtrl',
     function ZwaveBindingCtrl($scope, locale, growl, $timeout, $window, $http, timeAgo, $interval) {
-        var url = '/services/habmin/zwave/';
+        var url = HABminServer + '/services/habmin/zwave/';
+
+        var deviceClassIcons = {
+            "PC_CONTROLLER": "desktop-computer",
+            "PORTABLE_REMOTE_CONTROLLER": "remote-control",
+            "POWER_SWITCH_BINARY": "switch",
+            "POWER_SWITCH_MULTILEVEL": "light-control",
+            "ROUTING_SENSOR_BINARY": "door-open",
+            "SWITCH_REMOTE_MULTILEVEL": "temperature",
+            "ALARM_SENSOR_ROUTING": "alarm"
+        };
+
         $scope.devices = {};
         $scope.deviceCnt = -1;
         $scope.devEdit = {};
@@ -488,28 +499,11 @@ angular.module('Binding.zwave', [
                             }
                         }
                         if (status.name === "SpecificClass") {
-                            switch (status.value) {
-                                case "PC_CONTROLLER":
-                                    device.icon = "desktop-computer";
-                                    break;
-                                case "PORTABLE_REMOTE_CONTROLLER":
-                                    device.icon = "remote-control";
-                                    break;
-                                case "POWER_SWITCH_BINARY":
-                                    device.icon = "switch";
-                                    break;
-                                case "POWER_SWITCH_MULTILEVEL":
-                                    device.icon = "light-control";
-                                    break;
-                                case "ROUTING_SENSOR_BINARY":
-                                    device.icon = "door-open";
-                                    break;
-                                case "SWITCH_REMOTE_MULTILEVEL":
-                                    device.icon = "temperature";
-                                    break;
-                                default:
-                                    device.icon = "wifi";
-                                    break;
+                            if(deviceClassIcons[status.value] === undefined) {
+                                device.icon = "wifi";
+                            }
+                            else {
+                                device.icon = deviceClassIcons[status.value];
                             }
                         }
                         if(status.name === "NodeID") {
@@ -601,16 +595,20 @@ angular.module('Binding.zwave', [
         function updateNeighbors(id) {
             $http.get(url + 'nodes/' + id + '/neighbors/')
                 .success(function (data) {
-                    if (data.records === undefined || data.records.length === 0) {
+                    if (data.records === undefined) {
                         return;
                     }
-                    var domain = data.records[0].domain.split('/');
+                    var neighbors = [].concat(data.records);
+                    if(neighbors.length === 0) {
+                        return;
+                    }
+                    var domain = neighbors[0].domain.split('/');
                     var device = $scope.devices[domain[1]];
                     if (device === null) {
                         return;
                     }
                     else {
-                        device.neighbors = data.records;
+                        device.neighbors = neighbors;
                     }
                 })
                 .error(function (data, status) {

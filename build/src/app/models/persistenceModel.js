@@ -12,8 +12,8 @@ angular.module('HABmin.persistenceModel', [
     'HABmin.userModel'
 ])
 
-    .service('PersistenceItemModel', function ($http, $q) {
-        this.url = '/services/habmin/persistence/items';
+    .service('PersistenceItemModel', function ($http, $q, UserService) {
+        this.url = UserService.getServer() + '/services/habmin/persistence/items';
         this.get = function () {
             var tStart = new Date().getTime();
             var deferred = $q.defer();
@@ -36,7 +36,7 @@ angular.module('HABmin.persistenceModel', [
 
     })
 
-    .factory("PersistenceServiceModel", function ($resource) {
+/*    .factory("PersistenceServiceModel", function ($resource) {
         return $resource('/services/habmin/persistence/services',
             {
                 //              bookId: '@bookId'
@@ -50,10 +50,10 @@ angular.module('HABmin.persistenceModel', [
                 }
             }
         );
-    })
+    })*/
 
     .service('PersistenceDataModel', function ($http, $q, UserService) {
-        this.url = '/services/habmin/persistence/services/';
+        this.url = UserService.getServer() + '/services/habmin/persistence/services/';
         this.get = function (service, item, start, stop) {
             var deferred = $q.defer();
             var parms = {};

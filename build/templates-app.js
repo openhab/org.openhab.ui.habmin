@@ -23,7 +23,7 @@ angular.module("automation/rule.tpl.html", []).run(["$templateCache", function($
     "        </div>\n" +
     "\n" +
     "        <!-- Body -->\n" +
-    "        <div class=\"list-group\" ng-style=\"styleRuleList()\" ng-if=\"!selectCharts\" resize-page>\n" +
+    "        <div class=\"list-group habmin-list\" ng-style=\"styleRuleList()\" ng-if=\"!selectCharts\" resize-page>\n" +
     "            <div ng-repeat=\"choice in rules\">\n" +
     "                <a role=\"presentation\" ng-class=\"{'list-group-item':true, 'active':choice.id==selectedRule.id}\"\n" +
     "                   ng-confirm-click=\"selectRule(choice)\" ng-confirm-if=\"$parent.isDirty\"\n" +
@@ -330,6 +330,9 @@ angular.module("binding/zwave.tpl.html", []).run(["$templateCache", function($te
     "                </a>\n" +
     "            </div>\n" +
     "            <div ng-show=\"devEdit.information\" collapse=\"panelDisplayed!='INFO'\">\n" +
+    "                <binding-config template=\"{{devEdit.deviceInfo}}\"\n" +
+    "                                binding-change=\"changeNotification\" binding-data=\"deviceData\">\n" +
+    "                </binding-config>\n" +
     "                <binding-config template=\"{{devEdit.information}}\"\n" +
     "                                binding-change=\"changeNotification\" binding-data=\"infoData\">\n" +
     "                </binding-config>\n" +

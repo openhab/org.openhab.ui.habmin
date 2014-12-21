@@ -13,7 +13,7 @@ angular.module('HABmin.persistenceModel', [
 ])
 
     .service('PersistenceItemModel', function ($http, $q) {
-        this.url = '/services/habmin/persistence/items';
+        this.url = HABminServer + '/services/habmin/persistence/items';
         this.get = function () {
             var tStart = new Date().getTime();
             var deferred = $q.defer();
@@ -36,7 +36,7 @@ angular.module('HABmin.persistenceModel', [
 
     })
 
-    .factory("PersistenceServiceModel", function ($resource) {
+/*    .factory("PersistenceServiceModel", function ($resource) {
         return $resource('/services/habmin/persistence/services',
             {
                 //              bookId: '@bookId'
@@ -50,10 +50,10 @@ angular.module('HABmin.persistenceModel', [
                 }
             }
         );
-    })
+    })*/
 
     .service('PersistenceDataModel', function ($http, $q, UserService) {
-        this.url = '/services/habmin/persistence/services/';
+        this.url = HABminServer + '/services/habmin/persistence/services/';
         this.get = function (service, item, start, stop) {
             var deferred = $q.defer();
             var parms = {};
@@ -140,7 +140,7 @@ angular.module('HABmin.persistenceModel', [
                     console.log("HTML GET data is", data);
 
                     var persistence = [].concat(data.data);
-
+/*
                     // Response handling
                     switch (cacheState) {
                         case CACHE_IGNORE:
@@ -173,7 +173,7 @@ angular.module('HABmin.persistenceModel', [
                             localStorage.setItem(storeName + '.stop', persistence[persistence.length - 1].time);
                             break;
                     }
-
+*/
                     console.log("Store completed in", new Date().getTime() - tStart);
 
                     deferred.resolve(persistence);

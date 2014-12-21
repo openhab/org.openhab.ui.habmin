@@ -12,7 +12,7 @@ angular.module('HABmin.chartModel', [
 ])
 
     .service('ChartListModel', function ($http, $q) {
-        this.url = '/services/habmin/persistence/charts';
+        this.url = HABminServer + '/services/habmin/persistence/charts';
         this.chartList = [];
         this.getList = function () {
             var tStart = new Date().getTime();

@@ -28,8 +28,8 @@ angular.module('HABmin.sitemapModel', [
     })
 */
     .service('SitemapModel', function ($http, $q) {
+        this.url = HABminServer + '/rest/sitemaps';
         this.socket = null;
-        this.url = '/rest/sitemaps';
         this.getList = function () {
             var deferred = $q.defer();
             $http.get(this.url).success(function (data, status) {

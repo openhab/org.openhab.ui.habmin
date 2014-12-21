@@ -12,7 +12,7 @@ angular.module('HABmin.bindingModel', [
 ])
 
     .service('BindingModel', function ($http, $q) {
-        this.url = '/services/habmin/config/bindings';
+        this.url = HABminServer + '/services/habmin/config/bindings';
         this.bindingList = [];
         this.bindingCfg = {
                 zwave: {

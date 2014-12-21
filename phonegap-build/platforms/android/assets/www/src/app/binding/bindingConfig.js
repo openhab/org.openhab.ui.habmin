@@ -112,6 +112,10 @@ angular.module('Binding.config', [
                             pending: false
                         };
 
+                        if(field.state == "PENDING") {
+                            $scope.bindingData[field.name].pending = true;
+                        }
+
                         newInput.attr('ng-model', 'bindingData.' + field.name + '.value');
 
                         if(attrs.bindingChange !== undefined) {
@@ -119,8 +123,6 @@ angular.module('Binding.config', [
                         }
                         newInput.attr('ng-change', 'changeHandler("' + field.name + '","' + field.domain + '")');
 
-                        // Add a feedback box.
-                        // We'll use this for pending attributes
                         newChild.append(newInput);
                         newElement.append(newChild);
                     }

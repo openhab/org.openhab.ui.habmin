@@ -11,8 +11,9 @@ angular.module('HABmin.itemModel', [
 ])
 
     .service('ItemModel', function ($http, $q) {
+        this.url = HABminServer + '/rest/items';
+
         this.socket = null;
-        this.url = '/rest/items';
         this.sendCommand = function (item, value) {
             console.log("Sending command", item, value);
             var deferred = $q.defer();

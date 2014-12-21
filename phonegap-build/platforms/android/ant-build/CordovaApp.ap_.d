@@ -26,8 +26,8 @@
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/cordova.js \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/cordova_plugins.js \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/index.html \
-/Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/karma-unit.js \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/languages \
+/Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/phonegap.js \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/src \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/templates-app.js \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/templates-common.js \
