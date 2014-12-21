@@ -38,8 +38,8 @@ angular.module('Binding.zwave', [
     })
 
     .controller('ZwaveBindingCtrl',
-    function ZwaveBindingCtrl($scope, locale, growl, $timeout, $window, $http, timeAgo, $interval) {
-        var url = '/services/habmin/zwave/';
+    function ZwaveBindingCtrl($scope, locale, growl, $timeout, $window, $http, timeAgo, $interval, UserService) {
+        var url = UserService.getServer() + '/services/habmin/zwave/';
 
         var deviceClassIcons = {
             "PC_CONTROLLER": "desktop-computer",
@@ -595,16 +595,20 @@ angular.module('Binding.zwave', [
         function updateNeighbors(id) {
             $http.get(url + 'nodes/' + id + '/neighbors/')
                 .success(function (data) {
-                    if (data.records === undefined || data.records.length === 0) {
+                    if (data.records === undefined) {
                         return;
                     }
-                    var domain = data.records[0].domain.split('/');
+                    var neighbors = [].concat(data.records);
+                    if(neighbors.length === 0) {
+                        return;
+                    }
+                    var domain = neighbors[0].domain.split('/');
                     var device = $scope.devices[domain[1]];
                     if (device === null) {
                         return;
                     }
                     else {
-                        device.neighbors = data.records;
+                        device.neighbors = neighbors;
                     }
                 })
                 .error(function (data, status) {
