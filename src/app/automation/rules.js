@@ -70,7 +70,7 @@ angular.module('HABmin.rules', [
             },
             function (reason) {
                 // handle failure
-                growl.warning('Hello world ' + reason.message);
+                growl.warning(locale.getString('habmin.ruleErrorLoadingRuleList', [rule.name, reason]));
                 $scope.rulesTotal = 0;
             }
         );
@@ -78,14 +78,28 @@ angular.module('HABmin.rules', [
         // ------------------------------------------------
         // Event Handlers
 
+        var onChangeWrapper = null;
+        $scope.$on('$destroy', function () {
+            // Make sure that the callback is destroyed too
+//            Blockly.offChange(onChangeWrapper);
+//            onChangeWrapper = null;
+        });
+
+        function handleDirtyNotification() {
+            if (onChangeWrapper == null) {
+                onChangeWrapper = true;
+                Blockly.onChange(function () {
+                    $scope.isDirty = true;
+                    $scope.$apply();
+                });
+            }
+        }
+
         $scope.selectRule = function (rule) {
             $scope.editSource = false;
             $scope.selectedRule = rule;
 
-            Blockly.onChange(function () {
-                $scope.isDirty = true;
-                $scope.$apply();
-            });
+            handleDirtyNotification();
 
             RuleModel.getRule(rule.id).then(
                 function (rule) {
@@ -105,10 +119,12 @@ angular.module('HABmin.rules', [
         };
 
         $scope.newRule = function () {
+            handleDirtyNotification();
             $scope.codeEditor = "";
             Blockly.setWorkspace({block: newDesign});
             $scope.isDirty = false;
             $scope.selectedRule = null;
+            restoreRule = {block: newDesign};
         };
 
         $scope.saveRule = function () {
