@@ -8,11 +8,13 @@
  * (c) 2014 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('HABmin.itemModel', [
+    'HABmin.userModel'
 ])
 
-    .service('ItemModel', function ($http, $q) {
+    .service('ItemModel', function ($http, $q, UserService) {
+        this.url = UserService.getServer() + '/rest/items';
+
         this.socket = null;
-        this.url = '/rest/items';
         this.sendCommand = function (item, value) {
             console.log("Sending command", item, value);
             var deferred = $q.defer();

@@ -11,8 +11,8 @@ angular.module('HABmin.ruleModel', [
     'HABmin.userModel'
 ])
 
-    .service('RuleModel', function ($http, $q) {
-        this.url = '/services/habmin/config/designer';
+    .service('RuleModel', function ($http, $q, UserService) {
+        this.url = UserService.getServer() + '/services/habmin/config/designer';
         this.ruleList = [];
 
         this.getList = function () {

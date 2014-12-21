@@ -48,8 +48,17 @@ angular.module('HABmin.userModel', [
         }
 
         return {
-            isLoggedIn: function (user) {
+            isLoggedIn: function () {
                 return authenticated;
+            },
+
+            getServer: function () {
+                if(document.HABminOnPhone === true) {
+                    return "http://192.168.2.2:10080";
+                }
+                else {
+                    return "";
+                }
             },
 
             login: function (user, success, error) {
@@ -103,6 +112,7 @@ angular.module('HABmin.userModel', [
     })
 
     .controller('LoginController', function ($scope, $http, authService, $base64) {
+        $scope.showServer = "";
         $scope.user = localStorage.getItem('Auth-user');
         $scope.period = localStorage.getItem('Auth-period');
 

@@ -445,7 +445,21 @@ module.exports = function (grunt) {
                     '<%= html2js.app.dest %>',
                     '<%= vendor_files.css %>',
                     '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
-                ]
+                ],
+                build: 'browser'
+            },
+
+            phonegap: {
+                dir: '<%= build_dir %>',
+                src: [
+                    '<%= vendor_files.js %>',
+                    '<%= build_dir %>/src/**/*.js',
+                    '<%= html2js.common.dest %>',
+                    '<%= html2js.app.dest %>',
+                    '<%= vendor_files.css %>',
+                    '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
+                ],
+                build: 'phonegap'
             },
 
             /**
@@ -459,7 +473,8 @@ module.exports = function (grunt) {
                     '<%= concat.compile_js.dest %>',
                     '<%= vendor_files.css %>',
                     '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
-                ]
+                ],
+                build: 'browser'
             }
         },
 
@@ -760,7 +775,7 @@ module.exports = function (grunt) {
      * The `build` task gets your app ready to run for development and testing.
      */
     grunt.registerTask('build', [
-        'clean', 'html2js', 'jshint', 'coffeelint', 'coffee', 'less:build',
+        'clean', 'html2js', 'jshint', 'less:build',
         'copy:build_vendorcss', 'copy:build_app_assets', 'copy:build_app_languages', 'copy:build_vendor_assets',
         'copy:build_appjs', 'copy:build_vendorjs', 'index:build', 'copy:build_app_openhab', 'karmaconfig',
         'karma:continuous'
@@ -778,7 +793,9 @@ module.exports = function (grunt) {
     /**
      * Phonegap compiler...
      */
-    grunt.registerTask('phones', ['build', 'phonegap:build']);
+    grunt.registerTask('phones', ['clean', 'html2js', 'jshint', 'less:build',
+        'copy:build_vendorcss', 'copy:build_app_assets', 'copy:build_app_languages', 'copy:build_vendor_assets',
+        'copy:build_appjs', 'copy:build_vendorjs', 'index:phonegap', 'copy:build_app_openhab', 'phonegap:build']);
 
     /**
      * A utility function to get all app JavaScript sources.
@@ -809,17 +826,20 @@ module.exports = function (grunt) {
         var jsFiles = filterForJS(this.filesSrc).map(function (file) {
             return file.replace(dirRE, '');
         });
+        grunt.log.writeln("build:: " + this.data.build);
         var cssFiles = filterForCSS(this.filesSrc).map(function (file) {
             return file.replace(dirRE, '');
         });
 
+        var buildtype = this.data.build;
         grunt.file.copy('src/index.html', this.data.dir + '/index.html', {
             process: function (contents, path) {
                 return grunt.template.process(contents, {
                     data: {
                         scripts: jsFiles,
                         styles: cssFiles,
-                        version: grunt.config('pkg.version')
+                        version: grunt.config('pkg.version'),
+                        buildtype: buildtype
                     }
                 });
             }
