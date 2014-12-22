@@ -8,13 +8,17 @@
  * (c) 2014 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('UserGeneralPrefs', [
-    'ngLocalize'
+    'ngLocalize',
+    'HABmin.userModel'
 ])
     .service('UserGeneralPrefs',
-    function ($modal, $rootScope) {
+    function ($modal, $rootScope, UserService) {
         this.showModal = function () {
             var controller = function ($scope, $modalInstance) {
                 $scope.ok = function (result) {
+                    UserService.setTheme('paper');
+
+
                     $modalInstance.close(result);
                 };
                 $scope.cancel = function (result) {
@@ -23,7 +27,6 @@ angular.module('UserGeneralPrefs', [
             };
 
             var scope = $rootScope.$new();
-            scope.embedded = window.PhoneGap;
 
             return $modal.open({
                 backdrop: 'static',

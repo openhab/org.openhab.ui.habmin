@@ -41,7 +41,8 @@ angular.module('HABmin.userModel', [
         }
 
         var userConfig = {
-            useCache: false
+            useCache: false,
+            theme: ""
         };
 
         function changeUser(user) {
@@ -50,6 +51,15 @@ angular.module('HABmin.userModel', [
         return {
             isLoggedIn: function (user) {
                 return authenticated;
+            },
+
+            setTheme: function (theme) {
+                userConfig.theme = theme;
+                $rootScope.$broadcast('setTheme', theme);
+            },
+
+            getTheme: function () {
+                return userConfig.theme;
             },
 
             login: function (user, success, error) {
