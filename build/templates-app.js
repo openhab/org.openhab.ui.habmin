@@ -1073,16 +1073,6 @@ angular.module("user/userGeneral.tpl.html", []).run(["$templateCache", function(
     "                <input type=\"password\" class=\"form-control\" id=\"inputMobile\" placeholder=\"Phone\">\n" +
     "            </div>\n" +
     "        </div>\n" +
-    "\n" +
-    "        <div class=\"form-group\">\n" +
-    "            <div class=\"col-sm-offset-3 col-sm-10\">\n" +
-    "                <div class=\"checkbox\">\n" +
-    "                    <label>\n" +
-    "                        <input type=\"checkbox\"> Remember me\n" +
-    "                    </label>\n" +
-    "                </div>\n" +
-    "            </div>\n" +
-    "        </div>\n" +
     "    </form>\n" +
     "\n" +
     "</div>\n" +

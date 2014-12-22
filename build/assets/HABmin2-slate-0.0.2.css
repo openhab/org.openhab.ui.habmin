@@ -9172,12 +9172,6 @@ button.slate .close {
   margin: 10px 0;
   padding: 5px;
 }
-.slate .page-header {
-  margin-top: 60px;
-}
-.slate .page-header:first-child {
-  margin-top: 20px;
-}
 .slate h2 {
   margin: 20px 0;
   color: #666;
@@ -9199,7 +9193,7 @@ button.slate .close {
   margin: auto;
 }
 .slate .habmin-body {
-  margin-top: 60px;
+  margin-top: calc(60px);
 }
 .slate .habmin-list {
   overflow-y: auto;

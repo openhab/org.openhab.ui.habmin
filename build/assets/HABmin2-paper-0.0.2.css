@@ -9266,12 +9266,6 @@ button.paper .close {
   margin: 10px 0;
   padding: 5px;
 }
-.paper .page-header {
-  margin-top: 60px;
-}
-.paper .page-header:first-child {
-  margin-top: 20px;
-}
 .paper h2 {
   margin: 20px 0;
   color: #666;
@@ -9293,7 +9287,7 @@ button.paper .close {
   margin: auto;
 }
 .paper .habmin-body {
-  margin-top: 60px;
+  margin-top: calc(74px);
 }
 .paper .habmin-list {
   overflow-y: auto;

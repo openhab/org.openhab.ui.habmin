@@ -9114,12 +9114,6 @@ button.yeti .close {
   margin: 10px 0;
   padding: 5px;
 }
-.yeti .page-header {
-  margin-top: 60px;
-}
-.yeti .page-header:first-child {
-  margin-top: 20px;
-}
 .yeti h2 {
   margin: 20px 0;
   color: #666;
@@ -9141,7 +9135,7 @@ button.yeti .close {
   margin: auto;
 }
 .yeti .habmin-body {
-  margin-top: 60px;
+  margin-top: calc(55px);
 }
 .yeti .habmin-list {
   overflow-y: auto;
