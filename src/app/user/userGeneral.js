@@ -14,10 +14,13 @@ angular.module('UserGeneralPrefs', [
     .service('UserGeneralPrefs',
     function ($modal, $rootScope, UserService) {
         this.showModal = function () {
+            var scope = $rootScope.$new();
+            scope.model = {};
+            scope.model.theme = UserService.getTheme();
+
             var controller = function ($scope, $modalInstance) {
                 $scope.ok = function (result) {
-                    UserService.setTheme('paper');
-
+                    UserService.setTheme(scope.model.theme);
 
                     $modalInstance.close(result);
                 };
@@ -25,8 +28,6 @@ angular.module('UserGeneralPrefs', [
                     $modalInstance.dismiss('cancel');
                 };
             };
-
-            var scope = $rootScope.$new();
 
             return $modal.open({
                 backdrop: 'static',

@@ -117,6 +117,15 @@ angular.module('HABmin', [
     function HABminCtrl($scope, $location, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel) {
         $scope.isLoggedIn = UserService.isLoggedIn;
 
+        $scope.setTheme = function(theme) {
+            $('html').removeClass();
+            $('html').addClass(theme);
+        };
+
+        $scope.$on("setTheme", function(event, theme) {
+            $scope.setTheme(theme);
+        });
+
         $scope.logout = function () {
             UserService.logout();
         };

@@ -558,7 +558,6 @@ module.exports = function (grunt) {
 //        taskConfig.concat.build_css.src.push('<%= build_dir %>/assets/<%= pkg.name %>-' + theme + '-<%= pkg.version %>.css');
     });
 
-    grunt.log.writeln(taskConfig.concat.build_css.src);
     grunt.registerTask('themes_build', themeTasksBuild);
     grunt.registerTask('themes_compile', themeTasksCompile);
 
@@ -623,14 +622,7 @@ module.exports = function (grunt) {
      * compilation.
      */
     grunt.registerMultiTask('index', 'Process index.html template', function () {
-        this.filesSrc.forEach(function(x) {
-           grunt.log.writeln(x);
-        });
-        grunt.log.writeln(this.filesSrc);
-        grunt.log.writeln("");
-
         var dirRE = new RegExp('^(' + grunt.config('build_dir') + '|' + grunt.config('compile_dir') + ')\/', 'g');
-        grunt.log.writeln(dirRE);
 
         var jsFiles = filterForJS(this.filesSrc).map(function (file) {
             return file.replace(dirRE, '');

@@ -42,7 +42,7 @@ angular.module('HABmin.userModel', [
 
         var userConfig = {
             useCache: false,
-            theme: ""
+            theme: "slate"
         };
 
         function changeUser(user) {

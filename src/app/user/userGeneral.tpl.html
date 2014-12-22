@@ -7,12 +7,14 @@
             <label for="inputTheme" class="col-sm-3 control-label">Theme</label>
 
             <div class="col-sm-9">
-                <select class="form-control" id="inputTheme">
+                <select class="form-control" id="inputTheme" ng-model="model.theme">
                     <option value="slate">Slate</option>
                     <option value="paper">Paper</option>
+                    <option value="yeti">Yeti</option>
                 </select>
             </div>
         </div>
+
         <div class="form-group">
             <label for="inputEmail2" class="col-sm-3 control-label">Name</label>
 
