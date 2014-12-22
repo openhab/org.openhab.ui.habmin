@@ -23,9 +23,6 @@ module.exports = {
         js: [ 'src/**/*.js', '!src/**/*.spec.js', '!src/assets/**/*.js' ],
         jsunit: [ 'src/**/*.spec.js' ],
 
-        coffee: [ 'src/**/*.coffee', '!src/**/*.spec.coffee' ],
-        coffeeunit: [ 'src/**/*.spec.coffee' ],
-
         atpl: [ 'src/app/**/*.tpl.html' ],
         ctpl: [ 'src/common/**/*.tpl.html' ],
 
@@ -108,6 +105,7 @@ module.exports = {
             'vendor/angular-bootstrap-select/build/angular-bootstrap-select.js'
         ],
         css: [
+            'vendor/fontawesome/css/font-awesome.css',
             'vendor/angular-growl-v2/build/angular-growl.css',
             'vendor/angular-rangeslider/angular-rangeslider.css',
             'vendor/angular-toggle-switch/angular-toggle-switch.css',
@@ -126,5 +124,15 @@ module.exports = {
             'vendor/bootstrap/fonts/*',
             'vendor/angular-blockly/media/*'
         ]
-    }
+    },
+
+    /**
+     * The name of each theme.
+     * This needs to point to a folder under the location of the app_files.less setting
+     */
+    themes: [
+        'paper',
+        'slate',
+        'yeti'
+    ]
 };

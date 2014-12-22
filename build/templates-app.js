@@ -48,6 +48,7 @@ angular.module("automation/rule.tpl.html", []).run(["$templateCache", function($
     "    </div>\n" +
     "</div>\n" +
     "\n" +
+    "<!-- Rule Pane -->\n" +
     "<div class=\"col-sm-8\">\n" +
     "    <div class=\"panel panel-default\" ng-style=\"styleEditor()\" resize-page>\n" +
     "        <div class=\"panel-heading\" style=\"padding:3px;\">\n" +
@@ -555,10 +556,11 @@ angular.module("dashboard/chart.tpl.html", []).run(["$templateCache", function($
     "    </div>\n" +
     "</div>\n" +
     "\n" +
+    "<!-- Chart -->\n" +
     "<div class=\"col-sm-8\">\n" +
     "    <div class=\"panel panel-default\" ng-style=\"styleChartPanel()\" resize-page>\n" +
-    "        <div class=\"panel-heading\" style=\"padding:3px;\" time-navigation>\n" +
-    "            <div class=\"btn-group btn-group-sm\">\n" +
+    "        <div class=\"panel-heading\" style=\"padding:3px;\">\n" +
+    "            <div class=\"btn-group btn-group-sm\" role=\"group\">\n" +
     "                <button type=\"button\" class=\"btn btn-default\" ng-disabled=\"!graphLoaded||calendarOpen\"\n" +
     "                        ng-click=\"stepWindow(-1)\">\n" +
     "                    <span class=\"fa fa-backward\"></span>\n" +
@@ -633,72 +635,6 @@ angular.module("dashboard/chart.tpl.html", []).run(["$templateCache", function($
     "                    <button class=\"btn btn-sm btn-warning\" ng-click=\"calendarOpen=false;\">Cancel</button>\n" +
     "                    </div>\n" +
     "                </div>\n" +
-    "            </div>\n" +
-    "\n" +
-    "            <div class=\"btn-group btn-group-sm dropdown\">\n" +
-    "                <button type=\"button\" class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\"\n" +
-    "                        ng-disabled=\"!graphLoaded||calendarOpen\">\n" +
-    "                    <span class=\"fa fa-retweet\"></span>\n" +
-    "                    <span>Auto Update</span>\n" +
-    "                    <span class=\"caret\"></span>\n" +
-    "                </button>\n" +
-    "                <ul class=\"dropdown-menu\" role=\"menu\">\n" +
-    "                    <li>\n" +
-    "                        <a ng-click=\"setRefresh('0')\">\n" +
-    "                            <span ng-class=\"{'fa fa-fw': true, 'fa fa-check-square-o':refreshPeriod=='0'}\"></span>\n" +
-    "                            <span i18n=\"common.disabled\"></span>\n" +
-    "                        </a>\n" +
-    "                    </li>\n" +
-    "                    <li role=\"presentation\" class=\"divider\"></li>\n" +
-    "                    <li>\n" +
-    "                        <a ng-click=\"setRefresh('1.m')\">\n" +
-    "                            <span ng-class=\"{'fa fa-fw': true, 'fa fa-check-square-o':refreshPeriod=='1.m'}\"></span>\n" +
-    "                            <span i18n=\"habmin.period1Minute\"></span>\n" +
-    "                        </a>\n" +
-    "                    </li>\n" +
-    "                    <li>\n" +
-    "                        <a ng-click=\"setRefresh('2.m')\">\n" +
-    "                            <span ng-class=\"{'fa fa-fw': true, 'fa fa-check-square-o':refreshPeriod=='2.m'}\"></span>\n" +
-    "                            <span i18n=\"habmin.period2Minutes\"></span>\n" +
-    "                        </a>\n" +
-    "                    </li>\n" +
-    "                    <li>\n" +
-    "                        <a ng-click=\"setRefresh('5.m')\">\n" +
-    "                            <span ng-class=\"{'fa fa-fw': true, 'fa fa-check-square-o':refreshPeriod=='5.m'}\"></span>\n" +
-    "                            <span i18n=\"habmin.period5Minutes\"></span>\n" +
-    "                        </a>\n" +
-    "                    </li>\n" +
-    "                    <li>\n" +
-    "                        <a ng-click=\"setRefresh('10.m')\">\n" +
-    "                            <span ng-class=\"{'fa fa-fw': true, 'fa fa-check-square-o':refreshPeriod=='10.m'}\"></span>\n" +
-    "                            <span i18n=\"habmin.period10Minutes\"></span>\n" +
-    "                        </a>\n" +
-    "                    </li>\n" +
-    "                    <li>\n" +
-    "                        <a ng-click=\"setRefresh('15.m')\">\n" +
-    "                            <span ng-class=\"{'fa fa-fw': true, 'fa fa-check-square-o':refreshPeriod=='15.m'}\"></span>\n" +
-    "                            <span i18n=\"habmin.period15Minutes\"></span>\n" +
-    "                        </a>\n" +
-    "                    </li>\n" +
-    "                    <li>\n" +
-    "                        <a ng-click=\"setRefresh('20.m')\">\n" +
-    "                            <span ng-class=\"{'fa fa-fw': true, 'fa fa-check-square-o':refreshPeriod=='20.m'}\"></span>\n" +
-    "                            <span i18n=\"habmin.period20Minutes\"></span>\n" +
-    "                        </a>\n" +
-    "                    </li>\n" +
-    "                    <li>\n" +
-    "                        <a ng-click=\"setRefresh('30.m')\">\n" +
-    "                            <span ng-class=\"{'fa fa-fw': true, 'fa fa-check-square-o':refreshPeriod=='30.m'}\"></span>\n" +
-    "                            <span i18n=\"habmin.period30Minutes\"></span>\n" +
-    "                        </a>\n" +
-    "                    </li>\n" +
-    "                    <li>\n" +
-    "                        <a ng-click=\"setRefresh('1.h')\">\n" +
-    "                            <span ng-class=\"{'fa fa-fw': true, 'fa fa-check-square-o':refreshPeriod=='1.h'}\"></span>\n" +
-    "                            <span i18n=\"habmin.period1Hour\"></span>\n" +
-    "                        </a>\n" +
-    "                    </li>\n" +
-    "                </ul>\n" +
     "            </div>\n" +
     "\n" +
     "            <div ng-show=\"graphLoaded\" class=\"pull-right\">\n" +
@@ -838,7 +774,7 @@ angular.module("dashboard/chartSaveGeneral.tpl.html", []).run(["$templateCache",
     "    <div class=\"form-group\">\n" +
     "        <label for=\"inputPeriod\" class=\"control-label\" i18n=\"habmin.chartSavePeriod\"></label>\n" +
     "        <div>\n" +
-    "            <select selectpicker ng-model=\"model.period\" class=\"form-control\" id=\"inputPeriod\">\n" +
+    "            <select ng-model=\"model.period\" class=\"form-control\" id=\"inputPeriod\">\n" +
     "                <option value=\"3600\" i18n=\"habmin.period1Hour\"></option>\n" +
     "                <option value=\"7200\" i18n=\"habmin.period2Hours\"></option>\n" +
     "                <option value=\"10800\" i18n=\"habmin.period3Hours\"></option>\n" +
@@ -1065,10 +1001,7 @@ angular.module("user/userChart.tpl.html", []).run(["$templateCache", function($t
     "            <label for=\"inputDefaultPeriod\" class=\"col-sm-3 control-label\" i18n=\"habmin.userChartPeriod\"></label>\n" +
     "\n" +
     "            <div class=\"col-sm-9\">\n" +
-    "                <select class=\"form-control\" id=\"inputDefaultPeriod\"\n" +
-    "                        ng-model=\"selected\"\n" +
-    "                        ng-option=\"c.value as c.label for c in periodOptions\"\n" +
-    "                        selectpicker=\"xx\" toggle-dropdown live-search=\"false\">\n" +
+    "                <select class=\"form-control\" id=\"inputDefaultPeriod\">\n" +
     "                    <option value=\"-1\">hello</option>\n" +
     "                    <option value=\"3600\" i18n=\"habmin.period1Hour\"></option>\n" +
     "                    <option value=\"1\">hello 2</option>\n" +
@@ -1082,8 +1015,6 @@ angular.module("user/userChart.tpl.html", []).run(["$templateCache", function($t
     "            <div class=\"col-sm-9\">\n" +
     "                <input type=\"checkbox\">\n" +
     "            </div>\n" +
-    "            {{test}}\n" +
-    "            {{periodOptions}}\n" +
     "        </div>\n" +
     "    </form>\n" +
     "\n" +
@@ -1102,14 +1033,18 @@ angular.module("user/userGeneral.tpl.html", []).run(["$templateCache", function(
     "</div>\n" +
     "<div class=\"modal-body\">\n" +
     "    <form class=\"form-horizontal\" role=\"form\">\n" +
-    "{{embedded}}\n" +
-    "        <div ng-show=\"embedded\" class=\"form-group\">\n" +
-    "            <label for=\"inputEmail2\" class=\"col-sm-3 control-label\">Name</label>\n" +
+    "        <div class=\"form-group\">\n" +
+    "            <label for=\"inputTheme\" class=\"col-sm-3 control-label\">Theme</label>\n" +
     "\n" +
     "            <div class=\"col-sm-9\">\n" +
-    "                <input type=\"email\" class=\"form-control\" id=\"inputEmail2\" placeholder=\"Name\">\n" +
+    "                <select class=\"form-control\" id=\"inputTheme\" ng-model=\"model.theme\">\n" +
+    "                    <option value=\"slate\">Slate</option>\n" +
+    "                    <option value=\"paper\">Paper</option>\n" +
+    "                    <option value=\"yeti\">Yeti</option>\n" +
+    "                </select>\n" +
     "            </div>\n" +
     "        </div>\n" +
+    "\n" +
     "        <div class=\"form-group\">\n" +
     "            <label for=\"inputEmail2\" class=\"col-sm-3 control-label\">Name</label>\n" +
     "\n" +

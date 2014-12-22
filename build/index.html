@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html ng-controller="HABminCtrl">
+<html ng-controller="HABminCtrl" class="slate">
 <head>
     <title ng-bind="pageTitle"></title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- compiled CSS -->
+    <link rel="stylesheet" type="text/css" href="vendor/fontawesome/css/font-awesome.css"/>
+    
     <link rel="stylesheet" type="text/css" href="vendor/angular-growl-v2/build/angular-growl.css"/>
     
     <link rel="stylesheet" type="text/css" href="vendor/angular-toggle-switch/angular-toggle-switch.css"/>
@@ -24,7 +26,11 @@
     
     <link rel="stylesheet" type="text/css" href="vendor/bootstrap-select/bootstrap-select.css"/>
     
-    <link rel="stylesheet" type="text/css" href="assets/HABmin2-0.0.2.css"/>
+    <link rel="stylesheet" type="text/css" href="assets/HABmin2-paper-0.0.2.css"/>
+    
+    <link rel="stylesheet" type="text/css" href="assets/HABmin2-slate-0.0.2.css"/>
+    
+    <link rel="stylesheet" type="text/css" href="assets/HABmin2-yeti-0.0.2.css"/>
     
 
     <!-- compiled JavaScript -->
@@ -197,7 +203,7 @@
         }
     </script>
 </head>
-<body class="login-handler">
+<body>
 
 <div id="login-holder" class="row login-form" style="display:none;">
     <div id="loginbox" class="col-xs-12 col-sm-6 col-lg-4" ng-controller="LoginController">

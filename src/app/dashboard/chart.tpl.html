@@ -157,10 +157,11 @@
     </div>
 </div>
 
+<!-- Chart -->
 <div class="col-sm-8">
     <div class="panel panel-default" ng-style="styleChartPanel()" resize-page>
-        <div class="panel-heading" style="padding:3px;" time-navigation>
-            <div class="btn-group btn-group-sm">
+        <div class="panel-heading" style="padding:3px;">
+            <div class="btn-group btn-group-sm" role="group">
                 <button type="button" class="btn btn-default" ng-disabled="!graphLoaded||calendarOpen"
                         ng-click="stepWindow(-1)">
                     <span class="fa fa-backward"></span>
@@ -235,72 +236,6 @@
                     <button class="btn btn-sm btn-warning" ng-click="calendarOpen=false;">Cancel</button>
                     </div>
                 </div>
-            </div>
-
-            <div class="btn-group btn-group-sm dropdown">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                        ng-disabled="!graphLoaded||calendarOpen">
-                    <span class="fa fa-retweet"></span>
-                    <span>Auto Update</span>
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li>
-                        <a ng-click="setRefresh('0')">
-                            <span ng-class="{'fa fa-fw': true, 'fa fa-check-square-o':refreshPeriod=='0'}"></span>
-                            <span i18n="common.disabled"></span>
-                        </a>
-                    </li>
-                    <li role="presentation" class="divider"></li>
-                    <li>
-                        <a ng-click="setRefresh('1.m')">
-                            <span ng-class="{'fa fa-fw': true, 'fa fa-check-square-o':refreshPeriod=='1.m'}"></span>
-                            <span i18n="habmin.period1Minute"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a ng-click="setRefresh('2.m')">
-                            <span ng-class="{'fa fa-fw': true, 'fa fa-check-square-o':refreshPeriod=='2.m'}"></span>
-                            <span i18n="habmin.period2Minutes"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a ng-click="setRefresh('5.m')">
-                            <span ng-class="{'fa fa-fw': true, 'fa fa-check-square-o':refreshPeriod=='5.m'}"></span>
-                            <span i18n="habmin.period5Minutes"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a ng-click="setRefresh('10.m')">
-                            <span ng-class="{'fa fa-fw': true, 'fa fa-check-square-o':refreshPeriod=='10.m'}"></span>
-                            <span i18n="habmin.period10Minutes"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a ng-click="setRefresh('15.m')">
-                            <span ng-class="{'fa fa-fw': true, 'fa fa-check-square-o':refreshPeriod=='15.m'}"></span>
-                            <span i18n="habmin.period15Minutes"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a ng-click="setRefresh('20.m')">
-                            <span ng-class="{'fa fa-fw': true, 'fa fa-check-square-o':refreshPeriod=='20.m'}"></span>
-                            <span i18n="habmin.period20Minutes"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a ng-click="setRefresh('30.m')">
-                            <span ng-class="{'fa fa-fw': true, 'fa fa-check-square-o':refreshPeriod=='30.m'}"></span>
-                            <span i18n="habmin.period30Minutes"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a ng-click="setRefresh('1.h')">
-                            <span ng-class="{'fa fa-fw': true, 'fa fa-check-square-o':refreshPeriod=='1.h'}"></span>
-                            <span i18n="habmin.period1Hour"></span>
-                        </a>
-                    </li>
-                </ul>
             </div>
 
             <div ng-show="graphLoaded" class="pull-right">
