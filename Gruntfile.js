@@ -10,12 +10,10 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-coffee');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-conventional-changelog');
     grunt.loadNpmTasks('grunt-bump');
     grunt.loadNpmTasks('grunt-json-minify');
-    grunt.loadNpmTasks('grunt-coffeelint');
     grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-ngmin');
     grunt.loadNpmTasks('grunt-html2js');
@@ -160,16 +158,6 @@ module.exports = function (grunt) {
                     }
                 ]
             },
-            build_app_openhab: {
-                files: [
-                    {
-                        src: [ '**' ],
-                        dest: '../openhab/distribution/openhabhome/webapps/ng',
-                        cwd: '<%= build_dir %>',
-                        expand: true
-                    }
-                ]
-            },
             compile_assets: {
                 files: [
                     {
@@ -228,26 +216,6 @@ module.exports = function (grunt) {
         },
 
         /**
-         * `grunt coffee` compiles the CoffeeScript sources. To work well with the
-         * rest of the build, we have a separate compilation task for sources and
-         * specs so they can go to different places. For example, we need the
-         * sources to live with the rest of the copied JavaScript so we can include
-         * it in the final build, but we don't want to include our specs there.
-         */
-        coffee: {
-            source: {
-                options: {
-                    bare: true
-                },
-                expand: true,
-                cwd: '.',
-                src: [ '<%= app_files.coffee %>' ],
-                dest: '<%= build_dir %>',
-                ext: '.js'
-            }
-        },
-
-        /**
          * `ng-min` annotates the sources before minifying. That is, it allows us
          * to code without the array syntax.
          */
@@ -293,20 +261,7 @@ module.exports = function (grunt) {
          * must be imported from this file.
          */
         less: {
-            build: {
-                files: {
-                    '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css': '<%= app_files.less %>'
-                }
-            },
-            compile: {
-                files: {
-                    '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css': '<%= app_files.less %>'
-                },
-                options: {
-                    cleancss: true,
-                    compress: true
-                }
-            }
+            // Will be generated dynamically to account for themes
         },
 
         /**
@@ -337,24 +292,6 @@ module.exports = function (grunt) {
                 eqnull: true
             },
             globals: {}
-        },
-
-        /**
-         * `coffeelint` does the same as `jshint`, but for CoffeeScript.
-         * CoffeeScript is not the default in ngBoilerplate, so we're just using
-         * the defaults here.
-         */
-        coffeelint: {
-            src: {
-                files: {
-                    src: [ '<%= app_files.coffee %>' ]
-                }
-            },
-            test: {
-                files: {
-                    src: [ '<%= app_files.coffeeunit %>' ]
-                }
-            }
         },
 
         /**
@@ -428,7 +365,6 @@ module.exports = function (grunt) {
          * and JS files co-exist here but they get split apart later.
          */
         index: {
-
             /**
              * During development, we don't want to have wait for compilation,
              * concatenation, minification, etc. So to avoid these steps, we simply
@@ -443,7 +379,7 @@ module.exports = function (grunt) {
                     '<%= html2js.common.dest %>',
                     '<%= html2js.app.dest %>',
                     '<%= vendor_files.css %>',
-                    '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
+                    '<%= build_dir %>/assets/<%= pkg.name %>-*-<%= pkg.version %>.css'
                 ]
             },
 
@@ -523,17 +459,6 @@ module.exports = function (grunt) {
             },
 
             /**
-             * When our CoffeeScript source files change, we want to run lint them and
-             * run our unit tests.
-             */
-            coffeesrc: {
-                files: [
-                    '<%= app_files.coffee %>'
-                ],
-                tasks: [ 'coffeelint:src', 'coffee:source', 'karma:unit:run', 'copy:build_appjs' ]
-            },
-
-            /**
              * When assets are changed, copy them. Note that this will *not* copy new
              * files, so this is probably not very useful.
              */
@@ -594,23 +519,48 @@ module.exports = function (grunt) {
                 options: {
                     livereload: false
                 }
-            },
-
-            /**
-             * When a CoffeeScript unit test file changes, we only want to lint it and
-             * run the unit tests. We don't want to do any live reloading.
-             */
-            coffeeunit: {
-                files: [
-                    '<%= app_files.coffeeunit %>'
-                ],
-                tasks: [ 'coffeelint:test', 'karma:unit:run' ],
-                options: {
-                    livereload: false
-                }
             }
         }
     };
+
+    /**
+     * Generate the theme tasks.
+     * Maybe this isn't the best way!
+     */
+    var themeTasksBuild = [];
+    var themeTasksCompile = [];
+    taskConfig.less = {};
+    userConfig.themes.forEach(function(theme) {
+        var theme_css = '<%= build_dir %>/assets/<%= pkg.name %>-' + theme +'-<%= pkg.version %>.css';
+        taskConfig.less[theme] = {
+            files: {},
+            options: {
+                modifyVars: {
+                    HABminTheme: theme
+                }
+            }
+        };
+        taskConfig.less[theme].files[theme_css] = '<%= app_files.less %>';
+        themeTasksBuild.push('less:' + theme);
+
+        taskConfig.less[theme + '_compile'] = {
+            files: {},
+            options: {
+                modifyVars: {
+                    HABminTheme: theme
+                },
+                cleancss: true,
+                compress: true
+            }
+        };
+        taskConfig.less[theme + '_compile'].files[theme_css] = '<%= app_files.less %>';
+        themeTasksCompile.push('less:' + theme + '_compile');
+//        taskConfig.concat.build_css.src.push('<%= build_dir %>/assets/<%= pkg.name %>-' + theme + '-<%= pkg.version %>.css');
+    });
+
+    grunt.log.writeln(taskConfig.concat.build_css.src);
+    grunt.registerTask('themes_build', themeTasksBuild);
+    grunt.registerTask('themes_compile', themeTasksCompile);
 
     grunt.initConfig(grunt.util._.extend(taskConfig, userConfig));
 
@@ -633,9 +583,9 @@ module.exports = function (grunt) {
      * The `build` task gets your app ready to run for development and testing.
      */
     grunt.registerTask('build', [
-        'clean', 'html2js', 'jshint', 'coffeelint', 'coffee', 'less:build',
+        'clean', 'html2js', 'jshint', 'themes_build',
         'copy:build_vendorcss', 'copy:build_app_assets', 'copy:build_app_languages', 'copy:build_vendor_assets',
-        'copy:build_appjs', 'copy:build_vendorjs', 'index:build', 'copy:build_app_openhab', 'karmaconfig',
+        'copy:build_appjs', 'copy:build_vendorjs', 'index:build', 'karmaconfig',
         'karma:continuous'
     ]);
 
@@ -673,7 +623,15 @@ module.exports = function (grunt) {
      * compilation.
      */
     grunt.registerMultiTask('index', 'Process index.html template', function () {
+        this.filesSrc.forEach(function(x) {
+           grunt.log.writeln(x);
+        });
+        grunt.log.writeln(this.filesSrc);
+        grunt.log.writeln("");
+
         var dirRE = new RegExp('^(' + grunt.config('build_dir') + '|' + grunt.config('compile_dir') + ')\/', 'g');
+        grunt.log.writeln(dirRE);
+
         var jsFiles = filterForJS(this.filesSrc).map(function (file) {
             return file.replace(dirRE, '');
         });
@@ -712,5 +670,4 @@ module.exports = function (grunt) {
             }
         });
     });
-
 };
