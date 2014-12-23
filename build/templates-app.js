@@ -486,8 +486,7 @@ angular.module("dashboard/chart.tpl.html", []).run(["$templateCache", function($
     "        </div>\n" +
     "\n" +
     "        <!-- Display the list of items -->\n" +
-    "        <div id=\"itemList\" class=\"list-group habmin-list\" ng-style=\"styleItemList()\" ng-if=\"!selectCharts\"\n" +
-    "             resize-page>\n" +
+    "        <div id=\"itemList\" class=\"list-group habmin-list\" ng-if=\"!selectCharts\" resize-panel>\n" +
     "            <div ng-if=\"itemsTotal>0\" ng-repeat=\"choice in items | filter:filterFunction\">\n" +
     "                <a role=\"presentation\" ng-hide=\"choice.filter\"\n" +
     "                   ng-class=\"{'list-group-item': true, 'active':choice.selected}\"\n" +
@@ -512,8 +511,7 @@ angular.module("dashboard/chart.tpl.html", []).run(["$templateCache", function($
     "        </div>\n" +
     "\n" +
     "        <!-- Display the list of predefined charts -->\n" +
-    "        <div id=\"chartList\" class=\"list-group habmin-list\" ng-style=\"styleChartList()\" ng-if=\"selectCharts\"\n" +
-    "             resize-page>\n" +
+    "        <div id=\"chartList\" class=\"list-group habmin-list\" ng-if=\"selectCharts\" resize-panel>\n" +
     "            <div ng-if=\"chartsTotal>0\" ng-repeat=\"choice in charts\">\n" +
     "                <a role=\"presentation\" class=\"list-group-item\" ng-class=\"{'active':choice.selected=='yes'}\"\n" +
     "                   ng-click=\"selectChart(choice)\">\n" +
@@ -535,30 +533,12 @@ angular.module("dashboard/chart.tpl.html", []).run(["$templateCache", function($
     "                <span i18n=\"habmin.chartNoCharts\"></span>\n" +
     "            </div>\n" +
     "        </div>\n" +
-    "\n" +
-    "        <!-- Add a footer to the panel -->\n" +
-    "        <div class=\"panel-footer panel-footer-small\">\n" +
-    "            <div class=\"row\" ng-if=\"!selectCharts\">\n" +
-    "                <div class=\"col-xs-6\">\n" +
-    "                    <h6 class=\"text-center\">\n" +
-    "                        <span i18n=\"habmin.chartTotalItems\"></span>\n" +
-    "                        <span class=\"label label-info\">{{itemsTotal}}</span>\n" +
-    "                    </h6>\n" +
-    "                </div>\n" +
-    "                <div class=\"col-xs-6\">\n" +
-    "                    <h6 class=\"text-center\">\n" +
-    "                        <span i18n=\"habmin.chartSelectedItems\"></span>\n" +
-    "                        <span class=\"label label-success\">{{itemsSelected}}</span>\n" +
-    "                    </h6>\n" +
-    "                </div>\n" +
-    "            </div>\n" +
-    "        </div>\n" +
     "    </div>\n" +
     "</div>\n" +
     "\n" +
     "<!-- Chart -->\n" +
     "<div class=\"col-sm-8\">\n" +
-    "    <div class=\"panel panel-default\" ng-style=\"styleChartPanel()\" resize-page>\n" +
+    "    <div class=\"panel panel-default\">\n" +
     "        <div class=\"panel-heading\" style=\"padding:3px;\">\n" +
     "            <div class=\"btn-group btn-group-sm\" role=\"group\">\n" +
     "                <button type=\"button\" class=\"btn btn-default\" ng-disabled=\"!graphLoaded||calendarOpen\"\n" +
@@ -642,7 +622,7 @@ angular.module("dashboard/chart.tpl.html", []).run(["$templateCache", function($
     "            </div>\n" +
     "        </div>\n" +
     "\n" +
-    "        <div class=\"panel-body\" ng-style=\"styleChart()\" style=\"padding:3px;\">\n" +
+    "        <div class=\"panel-body\" style=\"padding:3px;\" resize-panel>\n" +
     "            <vis-graph2d ng-show=\"graphLoaded\" data=\"graphData\" options=\"graphOptions\"\n" +
     "                         events=\"graphEvents\"></vis-graph2d>\n" +
     "        </div>\n" +

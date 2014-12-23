@@ -87,8 +87,7 @@
         </div>
 
         <!-- Display the list of items -->
-        <div id="itemList" class="list-group habmin-list" ng-style="styleItemList()" ng-if="!selectCharts"
-             resize-page>
+        <div id="itemList" class="list-group habmin-list" ng-if="!selectCharts" resize-panel>
             <div ng-if="itemsTotal>0" ng-repeat="choice in items | filter:filterFunction">
                 <a role="presentation" ng-hide="choice.filter"
                    ng-class="{'list-group-item': true, 'active':choice.selected}"
@@ -113,8 +112,7 @@
         </div>
 
         <!-- Display the list of predefined charts -->
-        <div id="chartList" class="list-group habmin-list" ng-style="styleChartList()" ng-if="selectCharts"
-             resize-page>
+        <div id="chartList" class="list-group habmin-list" ng-if="selectCharts" resize-panel>
             <div ng-if="chartsTotal>0" ng-repeat="choice in charts">
                 <a role="presentation" class="list-group-item" ng-class="{'active':choice.selected=='yes'}"
                    ng-click="selectChart(choice)">
@@ -136,30 +134,12 @@
                 <span i18n="habmin.chartNoCharts"></span>
             </div>
         </div>
-
-        <!-- Add a footer to the panel -->
-        <div class="panel-footer panel-footer-small">
-            <div class="row" ng-if="!selectCharts">
-                <div class="col-xs-6">
-                    <h6 class="text-center">
-                        <span i18n="habmin.chartTotalItems"></span>
-                        <span class="label label-info">{{itemsTotal}}</span>
-                    </h6>
-                </div>
-                <div class="col-xs-6">
-                    <h6 class="text-center">
-                        <span i18n="habmin.chartSelectedItems"></span>
-                        <span class="label label-success">{{itemsSelected}}</span>
-                    </h6>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 
 <!-- Chart -->
 <div class="col-sm-8">
-    <div class="panel panel-default" ng-style="styleChartPanel()" resize-page>
+    <div class="panel panel-default">
         <div class="panel-heading" style="padding:3px;">
             <div class="btn-group btn-group-sm" role="group">
                 <button type="button" class="btn btn-default" ng-disabled="!graphLoaded||calendarOpen"
@@ -243,7 +223,7 @@
             </div>
         </div>
 
-        <div class="panel-body" ng-style="styleChart()" style="padding:3px;">
+        <div class="panel-body" style="padding:3px;" resize-panel>
             <vis-graph2d ng-show="graphLoaded" data="graphData" options="graphOptions"
                          events="graphEvents"></vis-graph2d>
         </div>

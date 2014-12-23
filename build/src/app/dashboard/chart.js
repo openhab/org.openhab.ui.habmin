@@ -18,7 +18,8 @@ angular.module('HABmin.chart', [
     'HABmin.chartSave',
     'HABmin.iconModel',
     'ngVis',
-    'ngConfirmClick'
+    'ngConfirmClick',
+    'ResizePanel'
 ])
 
     .config(function config($stateProvider) {
@@ -805,44 +806,6 @@ angular.module('HABmin.chart', [
 
             return curData;
         }
-    })
-
-    .directive('resizePage', function ($window) {
-        return function ($scope, element) {
-            var w = angular.element($window);
-            $scope.getWindowDimensions = function () {
-                return {
-                    'h': w.height()
-                };
-            };
-            $scope.$watch($scope.getWindowDimensions, function (newValue, oldValue) {
-                $scope.windowHeight = newValue.h;
-                $scope.styleItemList = function () {
-                    return {
-                        'height': (newValue.h - 232) + 'px'
-                    };
-                };
-                $scope.styleChartList = function () {
-                    return {
-                        'height': (newValue.h - 165) + 'px'
-                    };
-                };
-                $scope.styleChartPanel = function () {
-                    return {
-                        'height': (newValue.h - 93) + 'px'
-                    };
-                };
-                $scope.styleChart = function () {
-                    return {
-                        'height': (newValue.h - 132) + 'px'
-                    };
-                };
-            }, true);
-
-            w.bind('resize', function () {
-                $scope.$apply();
-            });
-        };
     })
 
 ;
