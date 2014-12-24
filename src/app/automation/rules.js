@@ -14,7 +14,8 @@ angular.module('HABmin.rules', [
     'ngLocalize',
     'angular-growl',
     'angular-blockly',
-    'HABmin.ruleModel'
+    'HABmin.ruleModel',
+    'ResizePanel'
 ])
 
     .config(function config($stateProvider) {
@@ -173,33 +174,6 @@ angular.module('HABmin.rules', [
 
     })
 
-    .directive('resizePage', function ($window) {
-        return function ($scope, element) {
-            var w = angular.element($window);
-            $scope.getWindowDimensions = function () {
-                return {
-                    'h': w.height()
-                };
-            };
-            $scope.$watch($scope.getWindowDimensions, function (newValue, oldValue) {
-                $scope.windowHeight = newValue.h;
-                $scope.styleRuleList = function () {
-                    return {
-                        'height': (newValue.h - 150) + 'px'
-                    };
-                };
-                $scope.styleEditor = function () {
-                    return {
-                        'height': (newValue.h - 117) + 'px'
-                    };
-                };
-            }, true);
-
-            w.bind('resize', function () {
-                $scope.$apply();
-            });
-        };
-    })
 ;
 
 

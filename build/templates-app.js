@@ -23,7 +23,7 @@ angular.module("automation/rule.tpl.html", []).run(["$templateCache", function($
     "        </div>\n" +
     "\n" +
     "        <!-- Body -->\n" +
-    "        <div class=\"list-group\" ng-style=\"styleRuleList()\" ng-if=\"!selectCharts\" resize-page>\n" +
+    "        <div class=\"list-group\" ng-if=\"!selectCharts\" resize-panel>\n" +
     "            <div ng-repeat=\"choice in rules\">\n" +
     "                <a role=\"presentation\" ng-class=\"{'list-group-item':true, 'active':choice.id==selectedRule.id}\"\n" +
     "                   ng-confirm-click=\"selectRule(choice)\" ng-confirm-if=\"$parent.isDirty\"\n" +
@@ -50,7 +50,7 @@ angular.module("automation/rule.tpl.html", []).run(["$templateCache", function($
     "\n" +
     "<!-- Rule Pane -->\n" +
     "<div class=\"col-sm-8\">\n" +
-    "    <div class=\"panel panel-default\" ng-style=\"styleEditor()\" resize-page>\n" +
+    "    <div class=\"panel panel-default\">\n" +
     "        <div class=\"panel-heading\" style=\"padding:3px;\">\n" +
     "            <button type=\"button\" ng-class=\"{'btn btn-sm btn-default':true, 'disabled':!isDirty}\" ng-click=\"saveRule()\">\n" +
     "                <span class=\"fa fa-floppy-o\"></span>\n" +
@@ -74,6 +74,7 @@ angular.module("automation/rule.tpl.html", []).run(["$templateCache", function($
     "            </div>\n" +
     "        </div>\n" +
     "\n" +
+    "        <div resize-panel>\n" +
     "        <ng-blockly ng-show=\"!editSource\">\n" +
     "        </ng-blockly>\n" +
     "\n" +
@@ -86,6 +87,7 @@ angular.module("automation/rule.tpl.html", []).run(["$templateCache", function($
     "             }\"\n" +
     "             ng-style=\"styleEditor()\">\n" +
     "        </div>\n" +
+    "            </div>\n" +
     "    </div>\n" +
     "</div>\n" +
     "");
