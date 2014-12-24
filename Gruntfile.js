@@ -390,7 +390,7 @@ module.exports = function (grunt) {
                     '<%= html2js.common.dest %>',
                     '<%= html2js.app.dest %>',
                     '<%= vendor_files.css %>',
-                    '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
+                    '<%= build_dir %>/assets/<%= pkg.name %>-*-<%= pkg.version %>.css'
                 ],
                 build: 'browser'
             },

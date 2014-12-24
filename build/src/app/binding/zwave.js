@@ -15,7 +15,8 @@ angular.module('Binding.zwave', [
     'angular-growl',
     'Binding.config',
     'yaru22.angular-timeago',
-    'ngVis'
+    'ngVis',
+    'ResizePanel'
 ])
 
     .config(function config($stateProvider) {
