@@ -30,3 +30,4 @@ install ```npm``` (node package manager) and run ```npm update``` to install all
 
 To compile for debug, run ```grunt build```
 To compile for release, run ```grunt compile```
+To compile embedded versions, run ```grunt phones```
