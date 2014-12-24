@@ -10,12 +10,10 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-coffee');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-conventional-changelog');
     grunt.loadNpmTasks('grunt-bump');
     grunt.loadNpmTasks('grunt-json-minify');
-    grunt.loadNpmTasks('grunt-coffeelint');
     grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-ngmin');
     grunt.loadNpmTasks('grunt-html2js');
@@ -229,26 +227,6 @@ module.exports = function (grunt) {
         },
 
         /**
-         * `grunt coffee` compiles the CoffeeScript sources. To work well with the
-         * rest of the build, we have a separate compilation task for sources and
-         * specs so they can go to different places. For example, we need the
-         * sources to live with the rest of the copied JavaScript so we can include
-         * it in the final build, but we don't want to include our specs there.
-         */
-        coffee: {
-            source: {
-                options: {
-                    bare: true
-                },
-                expand: true,
-                cwd: '.',
-                src: ['<%= app_files.coffee %>'],
-                dest: '<%= build_dir %>',
-                ext: '.js'
-            }
-        },
-
-        /**
          * `ng-min` annotates the sources before minifying. That is, it allows us
          * to code without the array syntax.
          */
@@ -294,20 +272,7 @@ module.exports = function (grunt) {
          * must be imported from this file.
          */
         less: {
-            build: {
-                files: {
-                    '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css': '<%= app_files.less %>'
-                }
-            },
-            compile: {
-                files: {
-                    '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css': '<%= app_files.less %>'
-                },
-                options: {
-                    cleancss: true,
-                    compress: true
-                }
-            }
+            // Will be generated dynamically to account for themes
         },
 
         /**
@@ -338,24 +303,6 @@ module.exports = function (grunt) {
                 eqnull: true
             },
             globals: {}
-        },
-
-        /**
-         * `coffeelint` does the same as `jshint`, but for CoffeeScript.
-         * CoffeeScript is not the default in ngBoilerplate, so we're just using
-         * the defaults here.
-         */
-        coffeelint: {
-            src: {
-                files: {
-                    src: ['<%= app_files.coffee %>']
-                }
-            },
-            test: {
-                files: {
-                    src: ['<%= app_files.coffeeunit %>']
-                }
-            }
         },
 
         /**
@@ -429,7 +376,6 @@ module.exports = function (grunt) {
          * and JS files co-exist here but they get split apart later.
          */
         index: {
-
             /**
              * During development, we don't want to have wait for compilation,
              * concatenation, minification, etc. So to avoid these steps, we simply
@@ -535,18 +481,7 @@ module.exports = function (grunt) {
                 files: [
                     '<%= app_files.js %>'
                 ],
-                tasks: ['jshint:src', 'karma:unit:run', 'copy:build_appjs']
-            },
-
-            /**
-             * When our CoffeeScript source files change, we want to run lint them and
-             * run our unit tests.
-             */
-            coffeesrc: {
-                files: [
-                    '<%= app_files.coffee %>'
-                ],
-                tasks: ['coffeelint:src', 'coffee:source', 'karma:unit:run', 'copy:build_appjs']
+                tasks: [ 'jshint:src', 'karma:unit:run', 'copy:build_appjs' ]
             },
 
             /**
@@ -610,149 +545,47 @@ module.exports = function (grunt) {
                 options: {
                     livereload: false
                 }
-            },
-
-            /**
-             * When a CoffeeScript unit test file changes, we only want to lint it and
-             * run the unit tests. We don't want to do any live reloading.
-             */
-            coffeeunit: {
-                files: [
-                    '<%= app_files.coffeeunit %>'
-                ],
-                tasks: ['coffeelint:test', 'karma:unit:run'],
-                options: {
-                    livereload: false
-                }
-            }
-        },
-
-        /**
-         * PhoneGap compiler configuration
-         */
-        phonegap: {
-            config: {
-                root: 'build',
-                config: 'phonegap/config.xml',
-                cordova: 'phonegap/.cordova',
-                html: 'index.html', // (Optional) You may change this to any other.html
-                path: 'phonegap-build',
-//                plugins: ['/local/path/to/plugin', 'http://example.com/path/to/plugin.git'],
-                platforms: ['android'],
-                maxBuffer: 200, // You may need to raise this for iOS.
-                verbose: false,
-                releases: 'releases',
-                releaseName: function () {
-                    var pkg = grunt.file.readJSON('package.json');
-                    return (pkg.name + '-' + pkg.version);
-                },
-                debuggable: false,
-
-                // Must be set for ios to work.
-                // Should return the app name.
-                name: function () {
-                    var pkg = grunt.file.readJSON('package.json');
-                    return pkg.name;
-                },
-
-                // Add a key if you plan to use the `release:android` task
-                // See http://developer.android.com/tools/publishing/app-signing.html
-                key: {
-                    store: 'release.keystore',
-                    alias: 'release',
-                    aliasPassword: function () {
-                        // Prompt, read an environment variable, or just embed as a string literal
-                        return ('');
-                    },
-                    storePassword: function () {
-                        // Prompt, read an environment variable, or just embed as a string literal
-                        return ('');
-                    }
-                },
-
-                // Set an app icon at various sizes (optional)
-                icons: {
-                    android: {
-                        ldpi: 'phonegap/images/icon-36-ldpi.png',
-                        mdpi: 'phonegap/images/icon-48-mdpi.png',
-                        hdpi: 'phonegap/images/icon-72-hdpi.png',
-                        xhdpi: 'phonegap/images/icon-96-xhdpi.png'
-                    },
-                    wp8: {
-                        app: 'icon-62-tile.png',
-                        tile: 'icon-173-tile.png'
-                    },
-                    ios: {
-                        icon29: 'icon29.png',
-                        icon29x2: 'icon29x2.png',
-                        icon40: 'icon40.png',
-                        icon40x2: 'icon40x2.png',
-                        icon57: 'icon57.png',
-                        icon57x2: 'icon57x2.png',
-                        icon60x2: 'icon60x2.png',
-                        icon72: 'icon72.png',
-                        icon72x2: 'icon72x2.png',
-                        icon76: 'icon76.png',
-                        icon76x2: 'icon76x2.png'
-                    }
-                },
-
-                // Set a splash screen at various sizes (optional)
-                // Only works for Android and IOS
-/*                screens: {
-                    android: {
-                        ldpi: 'screen-ldpi-portrait.png',
-                        // landscape version
-                        ldpiLand: 'screen-ldpi-landscape.png',
-                        mdpi: 'screen-mdpi-portrait.png',
-                        // landscape version
-                        mdpiLand: 'screen-mdpi-landscape.png',
-                        hdpi: 'screen-hdpi-portrait.png',
-                        // landscape version
-                        hdpiLand: 'screen-hdpi-landscape.png',
-                        xhdpi: 'screen-xhdpi-portrait.png',
-                        // landscape version
-                        xhdpiLand: 'www/screen-xhdpi-landscape.png'
-                    },
-                    ios: {
-                        // ipad landscape
-                        ipadLand: 'screen-ipad-landscape.png',
-                        ipadLandx2: 'screen-ipad-landscape-2x.png',
-                        // ipad portrait
-                        ipadPortrait: 'screen-ipad-portrait.png',
-                        ipadPortraitx2: 'screen-ipad-portrait-2x.png',
-                        // iphone portrait
-                        iphonePortrait: 'screen-iphone-portrait.png',
-                        iphonePortraitx2: 'screen-iphone-portrait-2x.png',
-                        iphone568hx2: 'screen-iphone-568h-2x.png'
-                    }
-                },*/
-
-                // Android-only integer version to increase with each release.
-                // See http://developer.android.com/tools/publishing/versioning.html
-                versionCode: function () {
-                    return (1);
-                },
-
-                // Android-only options that will override the defaults set by Phonegap in the
-                // generated AndroidManifest.xml
-                // See https://developer.android.com/guide/topics/manifest/uses-sdk-element.html
-                minSdkVersion: function () {
-                    return (10);
-                },
-                targetSdkVersion: function () {
-                    return (19);
-                },
-
-                // iOS7-only options that will make the status bar white and transparent
-                iosStatusBar: 'WhiteAndTransparent',
-
-                // Set an explicit Android permissions list to override the automatic plugin defaults.
-                // In most cases, you should omit this setting. See 'Android Permissions' in README.md for details.
-                permissions: ['INTERNET', 'ACCESS_COURSE_LOCATION']
             }
         }
     };
+
+    /**
+     * Generate the theme tasks.
+     * Maybe this isn't the best way!
+     */
+    var themeTasksBuild = [];
+    var themeTasksCompile = [];
+    taskConfig.less = {};
+    userConfig.themes.forEach(function(theme) {
+        var theme_css = '<%= build_dir %>/assets/<%= pkg.name %>-' + theme +'-<%= pkg.version %>.css';
+        taskConfig.less[theme] = {
+            files: {},
+            options: {
+                modifyVars: {
+                    HABminTheme: theme
+                }
+            }
+        };
+        taskConfig.less[theme].files[theme_css] = '<%= app_files.less %>';
+        themeTasksBuild.push('less:' + theme);
+
+        taskConfig.less[theme + '_compile'] = {
+            files: {},
+            options: {
+                modifyVars: {
+                    HABminTheme: theme
+                },
+                cleancss: true,
+                compress: true
+            }
+        };
+        taskConfig.less[theme + '_compile'].files[theme_css] = '<%= app_files.less %>';
+        themeTasksCompile.push('less:' + theme + '_compile');
+//        taskConfig.concat.build_css.src.push('<%= build_dir %>/assets/<%= pkg.name %>-' + theme + '-<%= pkg.version %>.css');
+    });
+
+    grunt.registerTask('themes_build', themeTasksBuild);
+    grunt.registerTask('themes_compile', themeTasksCompile);
 
     grunt.initConfig(grunt.util._.extend(taskConfig, userConfig));
 
@@ -764,20 +597,20 @@ module.exports = function (grunt) {
      * before watching for changes.
      */
     grunt.renameTask('watch', 'delta');
-    grunt.registerTask('watch', ['build', 'karma:unit', 'delta']);
+    grunt.registerTask('watch', [ 'build', 'karma:unit', 'delta' ]);
 
     /**
      * The default task is to build and compile.
      */
-    grunt.registerTask('default', ['build', 'compile']);
+    grunt.registerTask('default', [ 'build', 'compile' ]);
 
     /**
      * The `build` task gets your app ready to run for development and testing.
      */
     grunt.registerTask('build', [
-        'clean', 'html2js', 'jshint', 'less:build',
+        'clean', 'html2js', 'jshint', 'themes_build',
         'copy:build_vendorcss', 'copy:build_app_assets', 'copy:build_app_languages', 'copy:build_vendor_assets',
-        'copy:build_appjs', 'copy:build_vendorjs', 'index:build', 'copy:build_app_openhab', 'karmaconfig',
+        'copy:build_appjs', 'copy:build_vendorjs', 'index:build', 'karmaconfig',
         'karma:continuous'
     ]);
 
@@ -823,6 +656,7 @@ module.exports = function (grunt) {
      */
     grunt.registerMultiTask('index', 'Process index.html template', function () {
         var dirRE = new RegExp('^(' + grunt.config('build_dir') + '|' + grunt.config('compile_dir') + ')\/', 'g');
+
         var jsFiles = filterForJS(this.filesSrc).map(function (file) {
             return file.replace(dirRE, '');
         });
@@ -864,5 +698,4 @@ module.exports = function (grunt) {
             }
         });
     });
-
 };

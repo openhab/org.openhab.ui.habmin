@@ -3,14 +3,18 @@
 </div>
 <div class="modal-body">
     <form class="form-horizontal" role="form">
-{{embedded}}
-        <div ng-show="embedded" class="form-group">
-            <label for="inputEmail2" class="col-sm-3 control-label">Name</label>
+        <div class="form-group">
+            <label for="inputTheme" class="col-sm-3 control-label">Theme</label>
 
             <div class="col-sm-9">
-                <input type="email" class="form-control" id="inputEmail2" placeholder="Name">
+                <select class="form-control" id="inputTheme" ng-model="model.theme">
+                    <option value="slate">Slate</option>
+                    <option value="paper">Paper</option>
+                    <option value="yeti">Yeti</option>
+                </select>
             </div>
         </div>
+
         <div class="form-group">
             <label for="inputEmail2" class="col-sm-3 control-label">Name</label>
 
@@ -37,16 +41,6 @@
 
             <div class="col-sm-9">
                 <input type="password" class="form-control" id="inputMobile" placeholder="Phone">
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-10">
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox"> Remember me
-                    </label>
-                </div>
             </div>
         </div>
     </form>

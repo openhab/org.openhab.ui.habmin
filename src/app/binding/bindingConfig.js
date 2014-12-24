@@ -72,7 +72,7 @@ angular.module('Binding.config', [
                         case "LIST":
                             newInput = angular.element('<select></select>');
                             newInput.attr('id', field.name);
-                            newInput.attr('selectpicker', "");
+//                            newInput.attr('selectpicker', "");
                             newInput.attr('class', 'form-control');
                             if (field.value === undefined) {
                                 newOption = angular.element('<option></option>');

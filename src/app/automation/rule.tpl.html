@@ -19,7 +19,7 @@
         </div>
 
         <!-- Body -->
-        <div class="list-group habmin-list" ng-style="styleRuleList()" ng-if="!selectCharts" resize-page>
+        <div class="list-group" ng-if="!selectCharts" resize-panel>
             <div ng-repeat="choice in rules">
                 <a role="presentation" ng-class="{'list-group-item':true, 'active':choice.id==selectedRule.id}"
                    ng-confirm-click="selectRule(choice)" ng-confirm-if="$parent.isDirty"
@@ -44,8 +44,9 @@
     </div>
 </div>
 
+<!-- Rule Pane -->
 <div class="col-sm-8">
-    <div class="panel panel-default" ng-style="styleEditor()" resize-page>
+    <div class="panel panel-default">
         <div class="panel-heading" style="padding:3px;">
             <button type="button" ng-class="{'btn btn-sm btn-default':true, 'disabled':!isDirty}" ng-click="saveRule()">
                 <span class="fa fa-floppy-o"></span>
@@ -69,6 +70,7 @@
             </div>
         </div>
 
+        <div resize-panel>
         <ng-blockly ng-show="!editSource">
         </ng-blockly>
 
@@ -81,5 +83,6 @@
              }"
              ng-style="styleEditor()">
         </div>
+            </div>
     </div>
 </div>
