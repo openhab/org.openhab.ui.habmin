@@ -18,6 +18,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-ngmin');
     grunt.loadNpmTasks('grunt-html2js');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
+    grunt.loadNpmTasks('grunt-phonegap');
 
     /**
      * Load in our build configuration file.
@@ -42,12 +43,12 @@ module.exports = function (grunt) {
          */
         meta: {
             banner: '/**\n' +
-                ' * <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
-                ' * <%= pkg.homepage %>\n' +
-                ' *\n' +
-                ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author %>\n' +
-                ' * Licensed <%= pkg.licenses.type %> <<%= pkg.licenses.url %>>\n' +
-                ' */\n'
+            ' * <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
+            ' * <%= pkg.homepage %>\n' +
+            ' *\n' +
+            ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author %>\n' +
+            ' * Licensed <%= pkg.licenses.type %> <<%= pkg.licenses.url %>>\n' +
+            ' */\n'
         },
 
         /**
@@ -100,7 +101,7 @@ module.exports = function (grunt) {
             build_app_assets: {
                 files: [
                     {
-                        src: [ '**' ],
+                        src: ['**'],
                         dest: '<%= build_dir %>/assets/',
                         cwd: 'src/assets',
                         expand: true
@@ -110,7 +111,7 @@ module.exports = function (grunt) {
             build_app_languages: {
                 files: [
                     {
-                        src: [ '**' ],
+                        src: ['**'],
                         dest: '<%= build_dir %>/languages/',
                         cwd: 'src/languages',
                         expand: true
@@ -120,7 +121,7 @@ module.exports = function (grunt) {
             build_vendor_assets: {
                 files: [
                     {
-                        src: [ '<%= vendor_files.assets %>' ],
+                        src: ['<%= vendor_files.assets %>'],
                         dest: '<%= build_dir %>/assets/',
                         cwd: '.',
                         expand: true,
@@ -131,7 +132,7 @@ module.exports = function (grunt) {
             build_appjs: {
                 files: [
                     {
-                        src: [ '<%= app_files.js %>' ],
+                        src: ['<%= app_files.js %>'],
                         dest: '<%= build_dir %>/',
                         cwd: '.',
                         expand: true
@@ -141,7 +142,7 @@ module.exports = function (grunt) {
             build_vendorjs: {
                 files: [
                     {
-                        src: [ '<%= vendor_files.js %>' ],
+                        src: ['<%= vendor_files.js %>'],
                         dest: '<%= build_dir %>/',
                         cwd: '.',
                         expand: true
@@ -151,9 +152,19 @@ module.exports = function (grunt) {
             build_vendorcss: {
                 files: [
                     {
-                        src: [ '<%= vendor_files.css %>' ],
+                        src: ['<%= vendor_files.css %>'],
                         dest: '<%= build_dir %>/',
                         cwd: '.',
+                        expand: true
+                    }
+                ]
+            },
+            build_app_openhab: {
+                files: [
+                    {
+                        src: ['**'],
+                        dest: '../openhab/distribution/openhabhome/webapps/ng',
+                        cwd: '<%= build_dir %>',
                         expand: true
                     }
                 ]
@@ -161,7 +172,7 @@ module.exports = function (grunt) {
             compile_assets: {
                 files: [
                     {
-                        src: [ '**' ],
+                        src: ['**'],
                         dest: '<%= compile_dir %>/assets',
                         cwd: '<%= build_dir %>/assets',
                         expand: true
@@ -171,7 +182,7 @@ module.exports = function (grunt) {
             compile_languages: {
                 files: [
                     {
-                        src: [ '**' ],
+                        src: ['**'],
                         dest: '<%= compile_dir %>/languages/',
                         cwd: '<%= build_dir %>/languages',
                         expand: true
@@ -223,7 +234,7 @@ module.exports = function (grunt) {
             compile: {
                 files: [
                     {
-                        src: [ '<%= app_files.js %>' ],
+                        src: ['<%= app_files.js %>'],
                         cwd: '<%= build_dir %>',
                         dest: '<%= build_dir %>',
                         expand: true
@@ -318,7 +329,7 @@ module.exports = function (grunt) {
                         removeStyleLinkTypeAttributes: true
                     }
                 },
-                src: [ '<%= app_files.atpl %>' ],
+                src: ['<%= app_files.atpl %>'],
                 dest: '<%= build_dir %>/templates-app.js'
             },
 
@@ -339,7 +350,7 @@ module.exports = function (grunt) {
                         removeStyleLinkTypeAttributes: true
                     }
                 },
-                src: [ '<%= app_files.ctpl %>' ],
+                src: ['<%= app_files.ctpl %>'],
                 dest: '<%= build_dir %>/templates-common.js'
             }
         },
@@ -380,7 +391,21 @@ module.exports = function (grunt) {
                     '<%= html2js.app.dest %>',
                     '<%= vendor_files.css %>',
                     '<%= build_dir %>/assets/<%= pkg.name %>-*-<%= pkg.version %>.css'
-                ]
+                ],
+                build: 'browser'
+            },
+
+            phonegap: {
+                dir: '<%= build_dir %>',
+                src: [
+                    '<%= vendor_files.js %>',
+                    '<%= build_dir %>/src/**/*.js',
+                    '<%= html2js.common.dest %>',
+                    '<%= html2js.app.dest %>',
+                    '<%= vendor_files.css %>',
+                    '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
+                ],
+                build: 'phonegap'
             },
 
             /**
@@ -394,7 +419,8 @@ module.exports = function (grunt) {
                     '<%= concat.compile_js.dest %>',
                     '<%= vendor_files.css %>',
                     '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
-                ]
+                ],
+                build: 'browser'
             }
         },
 
@@ -441,7 +467,7 @@ module.exports = function (grunt) {
              */
             gruntfile: {
                 files: 'Gruntfile.js',
-                tasks: [ 'jshint:gruntfile' ],
+                tasks: ['jshint:gruntfile'],
                 options: {
                     livereload: false
                 }
@@ -466,7 +492,7 @@ module.exports = function (grunt) {
                 files: [
                     'src/assets/**/*'
                 ],
-                tasks: [ 'copy:build_app_assets', 'copy:build_vendor_assets' ]
+                tasks: ['copy:build_app_assets', 'copy:build_vendor_assets']
             },
 
             /**
@@ -477,15 +503,15 @@ module.exports = function (grunt) {
                 files: [
                     'languages/**/*'
                 ],
-                tasks: [ 'copy:build_app_languages' ]
+                tasks: ['copy:build_app_languages']
             },
 
             /**
              * When index.html changes, we need to compile it.
              */
             html: {
-                files: [ '<%= app_files.html %>' ],
-                tasks: [ 'index:build' ]
+                files: ['<%= app_files.html %>'],
+                tasks: ['index:build']
             },
 
             /**
@@ -496,15 +522,15 @@ module.exports = function (grunt) {
                     '<%= app_files.atpl %>',
                     '<%= app_files.ctpl %>'
                 ],
-                tasks: [ 'html2js' ]
+                tasks: ['html2js']
             },
 
             /**
              * When the CSS files change, we need to compile and minify them.
              */
             less: {
-                files: [ 'src/**/*.less' ],
-                tasks: [ 'less:build' ]
+                files: ['src/**/*.less'],
+                tasks: ['less:build']
             },
 
             /**
@@ -515,7 +541,7 @@ module.exports = function (grunt) {
                 files: [
                     '<%= app_files.jsunit %>'
                 ],
-                tasks: [ 'jshint:test', 'karma:unit:run' ],
+                tasks: ['jshint:test', 'karma:unit:run'],
                 options: {
                     livereload: false
                 }
@@ -598,6 +624,13 @@ module.exports = function (grunt) {
     ]);
 
     /**
+     * Phonegap compiler...
+     */
+    grunt.registerTask('phones', ['clean', 'html2js', 'jshint', 'less:build',
+        'copy:build_vendorcss', 'copy:build_app_assets', 'copy:build_app_languages', 'copy:build_vendor_assets',
+        'copy:build_appjs', 'copy:build_vendorjs', 'index:phonegap', 'copy:build_app_openhab', 'phonegap:build']);
+
+    /**
      * A utility function to get all app JavaScript sources.
      */
     function filterForJS(files) {
@@ -627,17 +660,20 @@ module.exports = function (grunt) {
         var jsFiles = filterForJS(this.filesSrc).map(function (file) {
             return file.replace(dirRE, '');
         });
+        grunt.log.writeln("build:: " + this.data.build);
         var cssFiles = filterForCSS(this.filesSrc).map(function (file) {
             return file.replace(dirRE, '');
         });
 
+        var buildtype = this.data.build;
         grunt.file.copy('src/index.html', this.data.dir + '/index.html', {
             process: function (contents, path) {
                 return grunt.template.process(contents, {
                     data: {
                         scripts: jsFiles,
                         styles: cssFiles,
-                        version: grunt.config('pkg.version')
+                        version: grunt.config('pkg.version'),
+                        buildtype: buildtype
                     }
                 });
             }

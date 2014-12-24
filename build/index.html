@@ -5,6 +5,8 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    
+
     <!-- compiled CSS -->
     <link rel="stylesheet" type="text/css" href="vendor/fontawesome/css/font-awesome.css"/>
     
@@ -180,29 +182,17 @@
     
 
     <script type="text/javascript">
-        console.log("PhoneGap is:", window.PhoneGap);
 
+        var HABminVersionString = "0.0.2";
+        var HABminVersionDate = "2014-12-24T18:13:37";
+
+        
+        <!-- Handle application startup within browser -->
+        document.HABminOnPhone = false;
         $(document).ready(function() {
-            // Are we running in native (PhoneGap) app or in a browser?
-            window.isphone = false;
-            if(document.URL.indexOf("http://") === -1
-                    && document.URL.indexOf("https://") === -1) {
-                window.isphone = true;
-            }
-
-            if( window.isphone ) {
-                console.log("Deferring startup to 'deviceready' event.");
-                document.addEventListener("deviceready", onDeviceReady, false);
-            } else {
-                onDeviceReady();
-            }
-        });
-
-        function onDeviceReady() {
-            console.log("Starting application.");
-
             angular.bootstrap(document, ['HABmin']);
-        }
+        });
+        
     </script>
 </head>
 <body>
@@ -210,6 +200,22 @@
 <div id="login-holder" class="row login-form" style="display:none;">
     <div id="loginbox" class="col-xs-12 col-sm-6 col-lg-4" ng-controller="LoginController">
         <form name="form">
+            <div class="form-group" ng-show="showServer" ng-class="{'has-error': form.server.$invalid && submitted}">
+                <label for="server" class="control-label">Server</label>
+
+                <div class="input-group">
+                    <span class="input-group-addon"><span class="fa fa-user"></span></span>
+                    <input
+                            type="text"
+                            class="form-control"
+                            id="server"
+                            name="server"
+                            placeholder="Server"
+                            ng-model="server"
+                            ng-model-options="{updateOn: 'blur'}"
+                            required>
+                </div>
+            </div>
             <div class="form-group" ng-class="{'has-error': form.user.$invalid && submitted}">
                 <label for="user" class="control-label">Username</label>
 

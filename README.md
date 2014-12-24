@@ -28,6 +28,10 @@ Contributing
 Clone the repository to your computer.
 install ```npm``` (node package manager) and run ```npm update``` to install all the development dependancies.
 
+For phonegap compilation, you need to install ```ant``` and the androind developpers kitss and set paths appropriately.
+
 To compile for debug, run ```grunt build```
 To compile for release, run ```grunt compile```
-To compile embedded versions, run ```grunt phones```
+
+To compile for PhoneGap releases, run ```grunt phones```
+

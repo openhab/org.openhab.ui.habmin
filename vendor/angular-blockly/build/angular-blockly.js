@@ -59,17 +59,23 @@ angular.module("angular-blockly", [])
         };
 
         this.onChange = function (callback) {
-            $(Blockly.mainWorkspace.getCanvas()).bind("blocklyWorkspaceChange", function () {
+            return $(Blockly.mainWorkspace.getCanvas()).bind("blocklyWorkspaceChange", function () {
+                console.log("Change");
                 if (me.holdoffChanges === false) {
+                    console.log("Change - notified");
                     // Send a notification
                     callback();
                 }
                 else {
                     me.holdoffChanges = false;
-                    console.log("Change, but on hold-off");
+                    console.log("Change - but on hold-off");
                 }
             })
         };
+
+        this.offChange = function (wrapper) {
+            $(Blockly.mainWorkspace.getCanvas()).unbind(wrapper);
+        }
     })
 
     .directive('ngBlockly', function ($window, $timeout, $rootScope, ngBlockly) {

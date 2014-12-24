@@ -8,6 +8,7 @@
  * (c) 2014 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('HABmin.sitemapModel', [
+    'HABmin.userModel'
 //    'ngResource'
 ])
 /*
@@ -27,13 +28,12 @@ angular.module('HABmin.sitemapModel', [
         );
     })
 */
-    .service('SitemapModel', function ($http, $q) {
+    .service('SitemapModel', function ($http, $q, UserService) {
+        this.url = UserService.getServer() + '/rest/sitemaps';
         this.socket = null;
-        this.url = '/rest/sitemaps';
         this.getList = function () {
             var deferred = $q.defer();
             $http.get(this.url).success(function (data, status) {
-                // Some extra manipulation on data if you want...
                 deferred.resolve(data.sitemap);
             }).error(function (data, status) {
                 deferred.reject(data);
