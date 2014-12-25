@@ -89,7 +89,7 @@
         <!-- Display the list of items -->
         <div id="itemList" class="list-group habmin-list" ng-if="!selectCharts" resize-panel>
             <div ng-if="itemsTotal>0" ng-repeat="choice in items | filter:filterFunction">
-                <li role="presentation" ng-hide="choice.filter"
+                <a role="presentation" ng-hide="choice.filter"
                    ng-class="{'list-group-item': true, 'active':choice.selected}"
                    ng-click="selectItem(choice)">
                     <habmin-icon class="icon-lg" icon="{{choice.icon}}"></habmin-icon>
@@ -97,7 +97,7 @@
                     <span class="pull-right">
                         <span ng-if="choice.selected" class="fa fa-check-square-o"></span>
                     </span>
-                </li>
+                </a>
             </div>
 
             <!-- Cover options for loading, and no items -->
@@ -114,14 +114,14 @@
         <!-- Display the list of predefined charts -->
         <div id="chartList" class="list-group habmin-list" ng-if="selectCharts" resize-panel>
             <div ng-if="chartsTotal>0" ng-repeat="choice in charts">
-                <li role="presentation" class="list-group-item" ng-class="{'active':choice.selected=='yes'}"
+                <a role="presentation" ng-class="{'list-group-item': true, 'active': choice.selected=='yes'}" ng-class="{'active':choice.selected=='yes'}"
                    ng-click="selectChart(choice)">
                     <habmin-icon class="icon-lg" icon="{{choice.icon}}"></habmin-icon>
                     <span>{{choice.name}}</span>
                     <span class="pull-right">
                         <span ng-class="{'fa': true, 'fa-check-square-o': choice.selected=='yes', 'fa-spinner fa-spin': choice.selected=='loading'}"></span>
                     </span>
-                </li>
+                </a>
             </div>
 
             <!-- Cover options for loading, and no charts -->

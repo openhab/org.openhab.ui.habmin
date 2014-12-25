@@ -13,10 +13,11 @@ angular.module('HABmin.chartSave', [
     'HABmin.chartModel',
     'ngSanitize',
     'angular-growl',
-    'ngLocalize'
+    'ngLocalize',
+    'HABmin.userModel'
 ])
     .service('ChartSave',
-    function ($modal, $rootScope, ChartListModel, growl, locale) {
+    function ($modal, $rootScope, ChartListModel, growl, locale, UserService) {
         this.editChart = function (chartId) {
             var me = this;
 
@@ -221,6 +222,7 @@ angular.module('HABmin.chartSave', [
                 size: 'lg',
                 templateUrl: 'dashboard/chartSave.tpl.html',
                 controller: controller,
+                windowClass: UserService.getTheme(),
                 scope: scope
             }).result;
         };

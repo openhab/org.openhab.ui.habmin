@@ -35,6 +35,7 @@ angular.module('UserGeneralPrefs', [
                 modalFade: true,
                 templateUrl: 'user/userGeneral.tpl.html',
                 controller: controller,
+                windowClass: UserService.getTheme(),
                 scope: scope
             }).result;
         };
