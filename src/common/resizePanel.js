@@ -17,15 +17,13 @@ angular.module('ResizePanel', [
                 var top = element[0].offsetTop;
                 var w = angular.element($window);
                 $scope.getWindowDimensions = function () {
-                    var pa = element.parent();
+                    var pa = element.parent('.panel');
+                    var top = pa.offset().top;
                     var h = pa[0].offsetHeight;
                     var h1 = element[0].offsetHeight;
-                    var hh = w.height();
-                    var tt = pa[0].offsetTop;
-                    var ttt = element[0].offsetTop;
                     $scope.headerSize = h - h1;
-                    var hx = hh - $scope.headerSize;
-                    var vvv = (w.height() - $scope.headerSize - 60 - 20);
+
+                    var vvv = (w.height() - $scope.headerSize - top - 20);
                     element.css('height', vvv + 'px');
                     return {
                         'h': w.height()
