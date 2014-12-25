@@ -43,7 +43,7 @@
         <!-- Body -->
         <div class="list-group habmin-list" ng-style="styleList()" resize-page1>
             <div ng-repeat="choice in devices">
-                <a role="presentation" ng-class="{'list-group-item':true, 'active': choice.device==devEdit.device}"
+                <li role="presentation" ng-class="{'list-group-item':true, 'active': choice.device==devEdit.device}"
                    ng-click="selectDevice(choice)">
                     <habmin-icon class="icon-lg" icon="{{choice.icon}}"></habmin-icon>
                     <span>{{choice.label}}</span>
@@ -71,7 +71,7 @@
                             </span>
                         </span>
                     </span>
-                </a>
+                </li>
             </div>
 
             <!-- Cover options for loading, and no devices -->
@@ -87,7 +87,7 @@
         </div>
 
         <!-- Footer -->
-        <div class="panel-footer panel-footer-small">
+        <div class="panel-footer panel-footer-none">
         </div>
     </div>
 </div>
@@ -141,15 +141,16 @@
                         </a>
                     </li>
                 </ul>
-                <button ng-show="deviceDisplay=='CONFIG'" type="button" ng-click="deviceSave()" ng-class="{'btn btn-default':true, 'disabled':!isDirty}">
-                    <span class="fa fa-floppy-o"></span>
-                    <span class="hidden-xs" i18n="common.save"></span>
-                </button>
-                <button ng-show="deviceDisplay=='CONFIG'" type="button" ng-click="deviceCancel()" ng-class="{'btn btn-default':true, 'disabled':!isDirty}">
-                    <span class="fa fa-times"></span>
-                    <span class="hidden-xs" i18n="common.cancel"></span>
-                </button>
             </div>
+
+            <button ng-show="deviceDisplay=='CONFIG'" type="button" ng-click="deviceSave()" ng-class="{'btn btn-default':true, 'disabled':!isDirty}">
+                <span class="fa fa-floppy-o"></span>
+                <span class="hidden-xs" i18n="common.save"></span>
+            </button>
+            <button ng-show="deviceDisplay=='CONFIG'" type="button" ng-click="deviceCancel()" ng-class="{'btn btn-default':true, 'disabled':!isDirty}">
+                <span class="fa fa-times"></span>
+                <span class="hidden-xs" i18n="common.cancel"></span>
+            </button>
 
             <div ng-hide="!devEdit.label" class="btn-group pull-right">
                 <div class="text-right">{{devEdit.label}}</div>
@@ -224,7 +225,7 @@
         </div>
 
         <!-- Footer -->
-        <div class="panel-footer panel-footer-small">
+        <div class="panel-footer panel-footer-none">
         </div>
     </div>
 </div>
