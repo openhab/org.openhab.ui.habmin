@@ -23,7 +23,7 @@ angular.module('ResizePanel', [
                     var h1 = element[0].offsetHeight;
                     $scope.headerSize = h - h1;
 
-                    var vvv = (w.height() - $scope.headerSize - top - 20);
+                    var vvv = (w.height() - $scope.headerSize - top - 25);
                     element.css('height', vvv + 'px');
                     return {
                         'h': w.height()
@@ -39,27 +39,6 @@ angular.module('ResizePanel', [
                     $scope.headerSize = h - h1;
                     var hx = hh - $scope.headerSize;
                     var vvv = (w.height() - $scope.headerSize - 60 - 20);
-//                    element.css('height', vvv + 'px');
-                    /*                   $scope.styleItemList = function () {
-                     return {
-                     'height': (newValue.h - $scope.headerSize) + 'px'
-                     };
-                     };
-                     $scope.styleChartList = function () {
-                     return {
-                     'height': (newValue.h - $scope.headerSize) + 'px'
-                     };
-                     };
-                     $scope.styleChartPanel = function () {
-                     return {
-                     'height': (newValue.h - $scope.headerSize) + 'px'
-                     };
-                     };
-                     $scope.styleChart = function () {
-                     return {
-                     'height': (newValue.h - $scope.headerSize) + 'px'
-                     };
-                     };*/
                 }, true);
 
                 w.bind('resize', function () {

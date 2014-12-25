@@ -71,18 +71,18 @@
         </div>
 
         <div resize-panel>
-        <ng-blockly ng-show="!editSource">
-        </ng-blockly>
+            <ng-blockly ng-show="!editSource">
+            </ng-blockly>
 
-        <div ng-show="editSource" ng-model="codeEditor" ui-ace="{
-              useWrapMode : true,
-              showGutter: true,
-              theme:'tomorrow_night_bright',
-              mode: 'openhabrules',
-              firstLineNumber: 5
-             }"
-             ng-style="styleEditor()">
-        </div>
+            <div style="height:100%" ng-show="editSource" ng-model="codeEditor" ui-ace="{
+                  useWrapMode : true,
+                  showGutter: true,
+                  theme:'tomorrow_night_bright',
+                  mode: 'openhabrules',
+                  firstLineNumber: 5
+                 }"
+                 ng-style="styleEditor()">
             </div>
+        </div>
     </div>
 </div>
