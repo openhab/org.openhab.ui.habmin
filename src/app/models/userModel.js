@@ -64,7 +64,7 @@ angular.module('HABmin.userModel', [
 
             setTheme: function (theme) {
                 userConfig.theme = theme;
-                $rootScope.$broadcast('setTheme', theme);
+                $rootScope.$broadcast('habminTheme', theme);
             },
 
             getTheme: function () {
