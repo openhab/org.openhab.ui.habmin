@@ -85,6 +85,7 @@ module.exports = {
             'vendor/angular-blockly/build/blocks_compressed.js',
             'vendor/angular-blockly/build/en.js',
             'vendor/ace-builds/src-min-noconflict/ace.js',
+            'vendor/ace-builds/src-min-noconflict/theme-tomorrow.js',
             'vendor/ace-builds/src-min-noconflict/theme-tomorrow_night_bright.js',
             'vendor/angular-ui-ace/ui-ace.js',
             'vendor/angular-gridster/src/angular-gridster.js',

@@ -9141,8 +9141,15 @@ button.yeti .close {
   overflow-y: auto;
   overflow-x: hidden;
 }
+.yeti .habmin-list .list-group .list-group-item {
+  border-bottom: 1px;
+}
 .yeti .panel-footer-small {
   padding: 5px 15px;
+}
+.yeti .panel-footer-none {
+  padding: 0px 15px;
+  border-top: 0px;
 }
 .yeti .panel-form {
   padding: 5px 40px;

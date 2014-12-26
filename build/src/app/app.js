@@ -122,7 +122,7 @@ angular.module('HABmin', [
             $('html').addClass(theme);
         };
 
-        $scope.$on("setTheme", function(event, theme) {
+        $scope.$on("habminTheme", function(event, theme) {
             $scope.setTheme(theme);
         });
 

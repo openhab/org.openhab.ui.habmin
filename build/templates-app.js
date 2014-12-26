@@ -43,7 +43,7 @@ angular.module("automation/rule.tpl.html", []).run(["$templateCache", function($
     "                <span i18n=\"habmin.ruleNoRules\"></span>\n" +
     "            </div>\n" +
     "        </div>\n" +
-    "        <div class=\"panel-footer panel-footer-small\">\n" +
+    "        <div class=\"panel-footer panel-footer-none\">\n" +
     "        </div>\n" +
     "    </div>\n" +
     "</div>\n" +
@@ -75,19 +75,12 @@ angular.module("automation/rule.tpl.html", []).run(["$templateCache", function($
     "        </div>\n" +
     "\n" +
     "        <div resize-panel>\n" +
-    "        <ng-blockly ng-show=\"!editSource\">\n" +
-    "        </ng-blockly>\n" +
+    "            <ng-blockly ng-show=\"!editSource\">\n" +
+    "            </ng-blockly>\n" +
     "\n" +
-    "        <div ng-show=\"editSource\" ng-model=\"codeEditor\" ui-ace=\"{\n" +
-    "              useWrapMode : true,\n" +
-    "              showGutter: true,\n" +
-    "              theme:'tomorrow_night_bright',\n" +
-    "              mode: 'openhabrules',\n" +
-    "              firstLineNumber: 5\n" +
-    "             }\"\n" +
-    "             ng-style=\"styleEditor()\">\n" +
-    "        </div>\n" +
+    "            <div style=\"height:100%\" ng-show=\"editSource\" ng-model=\"codeEditor\" ui-ace=\"aceOptions\">\n" +
     "            </div>\n" +
+    "        </div>\n" +
     "    </div>\n" +
     "</div>\n" +
     "");
@@ -207,7 +200,7 @@ angular.module("binding/zwave.tpl.html", []).run(["$templateCache", function($te
     "        </div>\n" +
     "\n" +
     "        <!-- Body -->\n" +
-    "        <div class=\"list-group habmin-list\" ng-style=\"styleList()\" resize-page1>\n" +
+    "        <div class=\"list-group habmin-list\" resize-panel>\n" +
     "            <div ng-repeat=\"choice in devices\">\n" +
     "                <a role=\"presentation\" ng-class=\"{'list-group-item':true, 'active': choice.device==devEdit.device}\"\n" +
     "                   ng-click=\"selectDevice(choice)\">\n" +
@@ -249,11 +242,10 @@ angular.module("binding/zwave.tpl.html", []).run(["$templateCache", function($te
     "                <span class=\"fa fa-exclamation-triangle\"></span>\n" +
     "                <span i18n=\"zwave.zwaveNoDevices\"></span>\n" +
     "            </div>\n" +
-    "\n" +
     "        </div>\n" +
     "\n" +
     "        <!-- Footer -->\n" +
-    "        <div class=\"panel-footer panel-footer-small\">\n" +
+    "        <div class=\"panel-footer panel-footer-none\">\n" +
     "        </div>\n" +
     "    </div>\n" +
     "</div>\n" +
@@ -307,15 +299,16 @@ angular.module("binding/zwave.tpl.html", []).run(["$templateCache", function($te
     "                        </a>\n" +
     "                    </li>\n" +
     "                </ul>\n" +
-    "                <button ng-show=\"deviceDisplay=='CONFIG'\" type=\"button\" ng-click=\"deviceSave()\" ng-class=\"{'btn btn-default':true, 'disabled':!isDirty}\">\n" +
-    "                    <span class=\"fa fa-floppy-o\"></span>\n" +
-    "                    <span class=\"hidden-xs\" i18n=\"common.save\"></span>\n" +
-    "                </button>\n" +
-    "                <button ng-show=\"deviceDisplay=='CONFIG'\" type=\"button\" ng-click=\"deviceCancel()\" ng-class=\"{'btn btn-default':true, 'disabled':!isDirty}\">\n" +
-    "                    <span class=\"fa fa-times\"></span>\n" +
-    "                    <span class=\"hidden-xs\" i18n=\"common.cancel\"></span>\n" +
-    "                </button>\n" +
     "            </div>\n" +
+    "\n" +
+    "            <button ng-show=\"deviceDisplay=='CONFIG'\" type=\"button\" ng-click=\"deviceSave()\" ng-class=\"{'btn btn-default':true, 'disabled':!isDirty}\">\n" +
+    "                <span class=\"fa fa-floppy-o\"></span>\n" +
+    "                <span class=\"hidden-xs\" i18n=\"common.save\"></span>\n" +
+    "            </button>\n" +
+    "            <button ng-show=\"deviceDisplay=='CONFIG'\" type=\"button\" ng-click=\"deviceCancel()\" ng-class=\"{'btn btn-default':true, 'disabled':!isDirty}\">\n" +
+    "                <span class=\"fa fa-times\"></span>\n" +
+    "                <span class=\"hidden-xs\" i18n=\"common.cancel\"></span>\n" +
+    "            </button>\n" +
     "\n" +
     "            <div ng-hide=\"!devEdit.label\" class=\"btn-group pull-right\">\n" +
     "                <div class=\"text-right\">{{devEdit.label}}</div>\n" +
@@ -324,7 +317,7 @@ angular.module("binding/zwave.tpl.html", []).run(["$templateCache", function($te
     "        </div>\n" +
     "\n" +
     "        <!-- Body -->\n" +
-    "        <div ng-show=\"deviceDisplay=='CONFIG'\" class=\"list-group habmin-list\" ng-style=\"styleList()\">\n" +
+    "        <div ng-show=\"deviceDisplay=='CONFIG'\" class=\"list-group habmin-list\" resize-panel>\n" +
     "            <!-- INFORMATION -->\n" +
     "            <div ng-show=\"devEdit.information\">\n" +
     "                <a role=\"presentation\" class=\"list-group-item\" ng-click=\"showPanel('INFO')\">\n" +
@@ -390,7 +383,7 @@ angular.module("binding/zwave.tpl.html", []).run(["$templateCache", function($te
     "        </div>\n" +
     "\n" +
     "        <!-- Footer -->\n" +
-    "        <div class=\"panel-footer panel-footer-small\">\n" +
+    "        <div class=\"panel-footer panel-footer-none\">\n" +
     "        </div>\n" +
     "    </div>\n" +
     "</div>\n" +
@@ -515,7 +508,7 @@ angular.module("dashboard/chart.tpl.html", []).run(["$templateCache", function($
     "        <!-- Display the list of predefined charts -->\n" +
     "        <div id=\"chartList\" class=\"list-group habmin-list\" ng-if=\"selectCharts\" resize-panel>\n" +
     "            <div ng-if=\"chartsTotal>0\" ng-repeat=\"choice in charts\">\n" +
-    "                <a role=\"presentation\" class=\"list-group-item\" ng-class=\"{'active':choice.selected=='yes'}\"\n" +
+    "                <a role=\"presentation\" ng-class=\"{'list-group-item': true, 'active': choice.selected=='yes'}\" ng-class=\"{'active':choice.selected=='yes'}\"\n" +
     "                   ng-click=\"selectChart(choice)\">\n" +
     "                    <habmin-icon class=\"icon-lg\" icon=\"{{choice.icon}}\"></habmin-icon>\n" +
     "                    <span>{{choice.name}}</span>\n" +
@@ -535,6 +528,9 @@ angular.module("dashboard/chart.tpl.html", []).run(["$templateCache", function($
     "                <span i18n=\"habmin.chartNoCharts\"></span>\n" +
     "            </div>\n" +
     "        </div>\n" +
+    "        <!-- Footer -->\n" +
+    "        <div class=\"panel-footer panel-footer-none\">\n" +
+    "        </div>\n" +
     "    </div>\n" +
     "</div>\n" +
     "\n" +
@@ -543,29 +539,29 @@ angular.module("dashboard/chart.tpl.html", []).run(["$templateCache", function($
     "    <div class=\"panel panel-default\">\n" +
     "        <div class=\"panel-heading\" style=\"padding:3px;\">\n" +
     "            <div class=\"btn-group btn-group-sm\" role=\"group\">\n" +
-    "                <button type=\"button\" class=\"btn btn-default\" ng-disabled=\"!graphLoaded||calendarOpen\"\n" +
+    "                <button type=\"button\" class=\"btn btn-sm btn-default\" ng-disabled=\"!graphLoaded||calendarOpen\"\n" +
     "                        ng-click=\"stepWindow(-1)\">\n" +
     "                    <span class=\"fa fa-backward\"></span>\n" +
     "                </button>\n" +
-    "                <button type=\"button\" class=\"btn btn-default\" ng-disabled=\"!graphLoaded||calendarOpen\"\n" +
+    "                <button type=\"button\" class=\"btn btn-sm btn-default\" ng-disabled=\"!graphLoaded||calendarOpen\"\n" +
     "                        ng-click=\"stepWindow(1)\">\n" +
     "                    <span class=\"fa fa-forward\"></span>\n" +
     "                </button>\n" +
-    "                <button type=\"button\" class=\"btn btn-default\" ng-disabled=\"!graphLoaded||calendarOpen\"\n" +
+    "                <button type=\"button\" class=\"btn btn-sm btn-default\" ng-disabled=\"!graphLoaded||calendarOpen\"\n" +
     "                        ng-click=\"setNow()\">\n" +
     "                    <span class=\"fa fa-fast-forward\"></span>\n" +
     "                </button>\n" +
-    "                <button type=\"button\" class=\"btn btn-default\" ng-disabled=\"!graphLoaded||calendarOpen\"\n" +
+    "                <button type=\"button\" class=\"btn btn-sm btn-default\" ng-disabled=\"!graphLoaded||calendarOpen\"\n" +
     "                        ng-click=\"zoomWindow(0.10)\">\n" +
     "                    <span class=\"fa fa-search-minus\"></span>\n" +
     "                </button>\n" +
-    "                <button type=\"button\" class=\"btn btn-default\" ng-disabled=\"!graphLoaded||calendarOpen\"\n" +
+    "                <button type=\"button\" class=\"btn btn-sm btn-default\" ng-disabled=\"!graphLoaded||calendarOpen\"\n" +
     "                        ng-click=\"zoomWindow(-0.10)\">\n" +
     "                    <span class=\"fa fa-search-plus\"></span>\n" +
     "                </button>\n" +
     "            </div>\n" +
-    "            <div ng-class=\"{'btn-group btn-group-sm dropdown': true, 'open': calendarOpen}\">\n" +
-    "                <button type=\"button\" class=\"btn btn-default\" ng-disabled=\"!graphLoaded||calendarOpen\"\n" +
+    "            <div ng-class=\"{'btn-group btn-group-sm': true, 'open': calendarOpen}\">\n" +
+    "                <button type=\"button\" class=\"btn btn-sm btn-default\" ng-disabled=\"!graphLoaded||calendarOpen\"\n" +
     "                        ng-class=\"{active:graphWindow=='day'}\" ng-click=\"setWindow('day')\">\n" +
     "                        <span class=\"calendar-stack\">\n" +
     "                            <span class=\"fa fa-calendar-o\"></span>\n" +
@@ -573,7 +569,7 @@ angular.module("dashboard/chart.tpl.html", []).run(["$templateCache", function($
     "                        </span>\n" +
     "                    <span>Day</span>\n" +
     "                </button>\n" +
-    "                <button type=\"button\" class=\"btn btn-default\" ng-disabled=\"!graphLoaded||calendarOpen\"\n" +
+    "                <button type=\"button\" class=\"btn btn-sm btn-default\" ng-disabled=\"!graphLoaded||calendarOpen\"\n" +
     "                        ng-class=\"{active:graphWindow=='week'}\" ng-click=\"setWindow('week')\">\n" +
     "                        <span class=\"calendar-stack\">\n" +
     "                            <span class=\"fa fa-calendar-o\"></span>\n" +
@@ -581,7 +577,7 @@ angular.module("dashboard/chart.tpl.html", []).run(["$templateCache", function($
     "                        </span>\n" +
     "                    <span>Week</span>\n" +
     "                </button>\n" +
-    "                <button type=\"button\" class=\"btn btn-default\" ng-disabled=\"!graphLoaded||calendarOpen\"\n" +
+    "                <button type=\"button\" class=\"btn btn-sm btn-default\" ng-disabled=\"!graphLoaded||calendarOpen\"\n" +
     "                        ng-class=\"{active:graphWindow=='month'}\" ng-click=\"setWindow('month')\">\n" +
     "                        <span class=\"calendar-stack\">\n" +
     "                            <span class=\"fa fa-calendar-o\"></span>\n" +
@@ -589,7 +585,7 @@ angular.module("dashboard/chart.tpl.html", []).run(["$templateCache", function($
     "                        </span>\n" +
     "                    <span>Month</span>\n" +
     "                </button>\n" +
-    "                <button type=\"button\" class=\"btn btn-default dropdown\" ng-disabled=\"!graphLoaded\"\n" +
+    "<!--                <button type=\"button\" class=\"btn btn-default dropdown\" ng-disabled=\"!graphLoaded\"\n" +
     "                        ng-init=\"calendarOpen=false\" ng-click=\"calendarOpen=!calendarOpen\">\n" +
     "                    <span class=\"fa fa-clock-o\"></span>&nbsp;Custom\n" +
     "                </button>\n" +
@@ -616,7 +612,7 @@ angular.module("dashboard/chart.tpl.html", []).run(["$templateCache", function($
     "                    <button class=\"btn btn-sm btn-primary\" ng-click=\"setDateRange();calendarOpen=false;\">OK</button>\n" +
     "                    <button class=\"btn btn-sm btn-warning\" ng-click=\"calendarOpen=false;\">Cancel</button>\n" +
     "                    </div>\n" +
-    "                </div>\n" +
+    "                </div> -->\n" +
     "            </div>\n" +
     "\n" +
     "            <div ng-show=\"graphLoaded\" class=\"pull-right\">\n" +

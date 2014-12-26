@@ -42,7 +42,7 @@ angular.module('HABmin.chart', [
     })
 
     .controller('DashboardChartCtrl',
-    function DashboardChartCtrl($scope, $modal, locale, PersistenceItemModel, PersistenceServiceModel, PersistenceDataModel, ChartListModel, ChartSave, growl, VisDataSet, $interval, $timeout) {
+    function DashboardChartCtrl($scope, locale, PersistenceItemModel, PersistenceServiceModel, PersistenceDataModel, ChartListModel, ChartSave, growl, VisDataSet, $interval, $timeout) {
         var itemsLoaded = 0;
         var itemsLoading = 0;
         var newChart;

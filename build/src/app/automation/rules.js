@@ -15,6 +15,7 @@ angular.module('HABmin.rules', [
     'angular-growl',
     'angular-blockly',
     'HABmin.ruleModel',
+    'HABmin.userModel',
     'ResizePanel'
 ])
 
@@ -38,7 +39,7 @@ angular.module('HABmin.rules', [
     })
 
     .controller('AutomationRuleCtrl',
-    function AutomationRuleCtrl($scope, locale, growl, RuleModel, Blockly, $timeout) {
+    function AutomationRuleCtrl($scope, locale, growl, RuleModel, UserService, Blockly, $timeout) {
         var newDesign = [
             {
                 type: 'openhab_rule',
@@ -54,6 +55,32 @@ angular.module('HABmin.rules', [
         $scope.rulesTotal = -1;
         $scope.isDirty = false;
         $scope.selectedRule = null;
+        $scope.aceOptions = {
+            useWrapMode : true,
+            showGutter: true,
+            theme:'tomorrow',
+            mode: 'openhabrules'
+        };
+
+        // Align the Ace Editor theme with the Bootstrap theme
+        function setTheme(theme) {
+            console.log("Set Ace theme");
+            switch (UserService.getTheme()) {
+                case 'slate':
+                    $scope.aceOptions.theme = 'tomorrow_night_bright';
+                    break;
+                default:
+                    $scope.aceOptions.theme = 'tomorrow';
+                    break;
+            }
+        }
+
+        $scope.$on('habminTheme', function(event, theme) {
+            console.log("habminTheme event", theme);
+            setTheme(theme);
+        });
+
+        setTheme(UserService.getTheme());
 
         var restoreRule = null;
 

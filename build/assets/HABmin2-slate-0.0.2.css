@@ -9199,8 +9199,15 @@ button.slate .close {
   overflow-y: auto;
   overflow-x: hidden;
 }
+.slate .habmin-list .list-group .list-group-item {
+  border-bottom: 1px;
+}
 .slate .panel-footer-small {
   padding: 5px 15px;
+}
+.slate .panel-footer-none {
+  padding: 0px 15px;
+  border-top: 0px;
 }
 .slate .panel-form {
   padding: 5px 40px;

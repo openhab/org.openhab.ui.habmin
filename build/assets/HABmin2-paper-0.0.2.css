@@ -9293,8 +9293,15 @@ button.paper .close {
   overflow-y: auto;
   overflow-x: hidden;
 }
+.paper .habmin-list .list-group .list-group-item {
+  border-bottom: 1px;
+}
 .paper .panel-footer-small {
   padding: 5px 15px;
+}
+.paper .panel-footer-none {
+  padding: 0px 15px;
+  border-top: 0px;
 }
 .paper .panel-form {
   padding: 5px 40px;
