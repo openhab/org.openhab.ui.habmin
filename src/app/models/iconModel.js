@@ -60,6 +60,7 @@ angular.module('HABmin.iconModel', [
             "remote-control": {class: "oa-it_remote"},
             "slider": {class: "fa fa-sliders"},
             "socket": {class: "oa-message_socket"},
+            "sun_clouds": {class: "wi-day-cloudy"},
             "switch": {class: "oa-message_socket_on_off"},
             "temperature": {class: "oa-temp_temperature"},
             "temperature_boiler": {class: "oa-sani_boiler_temp"},
