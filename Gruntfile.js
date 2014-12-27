@@ -19,6 +19,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-html2js');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
     grunt.loadNpmTasks('grunt-phonegap');
+    grunt.loadNpmTasks('grunt-bootlint');
 
     /**
      * Load in our build configuration file.
@@ -546,6 +547,14 @@ module.exports = function (grunt) {
                     livereload: false
                 }
             }
+        },
+
+        bootlint: {
+            options: {
+                stoponerror: false,
+                relaxerror: []
+            },
+            files: ['<%= app_files.atpl %>']
         }
     };
 
@@ -608,7 +617,7 @@ module.exports = function (grunt) {
      * The `build` task gets your app ready to run for development and testing.
      */
     grunt.registerTask('build', [
-        'clean', 'html2js', 'jshint', 'themes_build',
+        'clean', 'html2js', 'jshint', 'bootlint', 'themes_build',
         'copy:build_vendorcss', 'copy:build_app_assets', 'copy:build_app_languages', 'copy:build_vendor_assets',
         'copy:build_appjs', 'copy:build_vendorjs', 'index:build', 'karmaconfig',
         'karma:continuous'

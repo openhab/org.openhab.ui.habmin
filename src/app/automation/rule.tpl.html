@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <div class="col-sm-4">
     <div class="panel panel-default">
         <!-- Header -->
@@ -59,11 +60,11 @@
             </button>
 
             <div class="pull-right">
-                <button ng-class="{'btn btn-sm btn-default':true, 'active':editSource==false}" ng-click="showRule()">
+                <button type="button" ng-class="{'btn btn-sm btn-default':true, 'active':editSource==false}" ng-click="showRule()">
                     <span class="fa fa-puzzle-piece"></span>
                     <span i18n="habmin.ruleRule"></span>
                 </button>
-                <button ng-class="{'btn btn-sm btn-default':true, 'active':editSource==true}" ng-click="showSource()">
+                <button type="button" ng-class="{'btn btn-sm btn-default':true, 'active':editSource==true}" ng-click="showSource()">
                     <span class="fa fa-code"></span>
                     <span i18n="habmin.ruleSource"></span>
                 </button>
