@@ -45,6 +45,11 @@ angular.module('HABmin.userModel', [
             theme: "slate"
         };
 
+        // If we've previously saved the theme, restore the user selection
+        if(localStorage.getItem('Theme') != null) {
+            userConfig.theme = localStorage.getItem('Theme');
+        }
+
         function changeUser(user) {
         }
 
@@ -63,6 +68,9 @@ angular.module('HABmin.userModel', [
             },
 
             setTheme: function (theme) {
+                // Save the theme to local storage
+                localStorage.setItem('Theme', theme);
+
                 userConfig.theme = theme;
                 $rootScope.$broadcast('habminTheme', theme);
             },

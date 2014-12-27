@@ -126,6 +126,8 @@ angular.module('HABmin', [
             $scope.setTheme(theme);
         });
 
+        $scope.setTheme(UserService.getTheme());
+
         $scope.logout = function () {
             UserService.logout();
         };
