@@ -132,6 +132,10 @@ angular.module('HABmin', [
             UserService.logout();
         };
 
+        $scope.login = function () {
+            UserService.login();
+        };
+
         // Load models used in the nav bar
         $scope.sitemaps = null;
         SitemapModel.getList().then(
