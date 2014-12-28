@@ -20,8 +20,8 @@
 
     <script type="text/javascript">
 
-        var HABminVersionString = "<%= version %>";
-        var HABminVersionDate = "<%= grunt.template.today('yyyy-mm-dd\'T\'HH:MM:ss') %>";
+        document.HABminVersionString = "<%= version %>";
+        document.HABminVersionDate = "<%= grunt.template.today('yyyy-mm-dd\'T\'HH:MM:ss') %>";
 
         <% if(buildtype == 'phonegap') { %>
         <!-- Handle application startup for PhoneGap -->
@@ -42,9 +42,10 @@
 </head>
 <body>
 
-<div id="login-holder" class="row login-form" style="display:none;">
+<div id="login-holder" class="row login-form login-handler" style="display:none;">
     <div id="loginbox" class="col-xs-12 col-sm-6 col-lg-4" ng-controller="LoginController">
         <form name="form">
+            <!-- SERVER -->
             <div class="form-group" ng-show="showServer" ng-class="{'has-error': form.server.$invalid && submitted}">
                 <label for="server" class="control-label">Server</label>
 
@@ -61,6 +62,8 @@
                             required>
                 </div>
             </div>
+
+            <!-- USERNAME -->
             <div class="form-group" ng-class="{'has-error': form.user.$invalid && submitted}">
                 <label for="user" class="control-label">Username</label>
 
@@ -77,6 +80,8 @@
                             required>
                 </div>
             </div>
+
+            <!-- PASSWORD -->
             <div class="form-group" ng-class="{'has-error': form.password.$invalid && submitted}">
                 <label for="password" class="control-label">Password</label>
 
@@ -93,6 +98,8 @@
                             required>
                 </div>
             </div>
+
+            <!-- STAY CONNECTED PERIOD -->
             <div class="form-group" ng-class="{'has-error': form.password.$invalid && submitted}">
                 <label for="inputPeriod" class="control-label" i18n="habmin.chartSavePeriod"></label>
 
@@ -279,7 +286,7 @@
                             </ul>
                         </li>
                         <li ng-if="!isLoggedIn()">
-                            <a ui-sref="about">
+                            <a ng-click="login()">
                                 <span class="fa fa-fw fa-user"></span>
                                 <span i18n="habmin.mainLogin"></span>
                             </a>

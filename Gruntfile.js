@@ -404,7 +404,7 @@ module.exports = function (grunt) {
                     '<%= html2js.common.dest %>',
                     '<%= html2js.app.dest %>',
                     '<%= vendor_files.css %>',
-                    '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
+                    '<%= build_dir %>/assets/<%= pkg.name %>-*-<%= pkg.version %>.css'
                 ],
                 build: 'phonegap'
             },
@@ -549,6 +549,135 @@ module.exports = function (grunt) {
             }
         },
 
+        /**
+         * PhoneGap compiler configuration
+         */
+        phonegap: {
+            config: {
+                root: 'build',
+                config: 'phonegap/config.xml',
+                cordova: 'phonegap/.cordova',
+                html: 'index.html',
+                path: 'phonegap-build',
+//                plugins: ['/local/path/to/plugin', 'http://example.com/path/to/plugin.git'],
+                platforms: ['android'],
+                maxBuffer: 200, // You may need to raise this for iOS.
+                verbose: false,
+                releases: 'releases',
+                releaseName: function () {
+                    var pkg = grunt.file.readJSON('package.json');
+                    return (pkg.name + '-' + pkg.version);
+                },
+                debuggable: false,
+
+                // Must be set for ios to work.
+                // Should return the app name.
+                name: function () {
+                    var pkg = grunt.file.readJSON('package.json');
+                    return pkg.name;
+                },
+
+                // Add a key if you plan to use the `release:android` task
+                // See http://developer.android.com/tools/publishing/app-signing.html
+                key: {
+                    store: 'release.keystore',
+                    alias: 'release',
+                    aliasPassword: function () {
+                        // Prompt, read an environment variable, or just embed as a string literal
+                        return ('');
+                    },
+                    storePassword: function () {
+                        // Prompt, read an environment variable, or just embed as a string literal
+                        return ('');
+                    }
+                },
+
+                // Set an app icon at various sizes (optional)
+                icons: {
+                    android: {
+                        ldpi: 'phonegap/images/icon-36-ldpi.png',
+                        mdpi: 'phonegap/images/icon-48-mdpi.png',
+                        hdpi: 'phonegap/images/icon-72-hdpi.png',
+                        xhdpi: 'phonegap/images/icon-96-xhdpi.png'
+                    },
+                    wp8: {
+                        app: 'icon-62-tile.png',
+                        tile: 'icon-173-tile.png'
+                    },
+                    ios: {
+                        icon29: 'icon29.png',
+                        icon29x2: 'icon29x2.png',
+                        icon40: 'icon40.png',
+                        icon40x2: 'icon40x2.png',
+                        icon57: 'icon57.png',
+                        icon57x2: 'icon57x2.png',
+                        icon60x2: 'icon60x2.png',
+                        icon72: 'icon72.png',
+                        icon72x2: 'icon72x2.png',
+                        icon76: 'icon76.png',
+                        icon76x2: 'icon76x2.png'
+                    }
+                },
+
+                // Set a splash screen at various sizes (optional)
+                // Only works for Android and IOS
+                /*                screens: {
+                 android: {
+                 ldpi: 'screen-ldpi-portrait.png',
+                 // landscape version
+                 ldpiLand: 'screen-ldpi-landscape.png',
+                 mdpi: 'screen-mdpi-portrait.png',
+                 // landscape version
+                 mdpiLand: 'screen-mdpi-landscape.png',
+                 hdpi: 'screen-hdpi-portrait.png',
+                 // landscape version
+                 hdpiLand: 'screen-hdpi-landscape.png',
+                 xhdpi: 'screen-xhdpi-portrait.png',
+                 // landscape version
+                 xhdpiLand: 'www/screen-xhdpi-landscape.png'
+                 },
+                 ios: {
+                 // ipad landscape
+                 ipadLand: 'screen-ipad-landscape.png',
+                 ipadLandx2: 'screen-ipad-landscape-2x.png',
+                 // ipad portrait
+                 ipadPortrait: 'screen-ipad-portrait.png',
+                 ipadPortraitx2: 'screen-ipad-portrait-2x.png',
+                 // iphone portrait
+                 iphonePortrait: 'screen-iphone-portrait.png',
+                 iphonePortraitx2: 'screen-iphone-portrait-2x.png',
+                 iphone568hx2: 'screen-iphone-568h-2x.png'
+                 }
+                 },*/
+
+                // Android-only integer version to increase with each release.
+                // See http://developer.android.com/tools/publishing/versioning.html
+                versionCode: function () {
+                    return (1);
+                },
+
+                // Android-only options that will override the defaults set by Phonegap in the
+                // generated AndroidManifest.xml
+                // See https://developer.android.com/guide/topics/manifest/uses-sdk-element.html
+                minSdkVersion: function () {
+                    return (10);
+                },
+                targetSdkVersion: function () {
+                    return (19);
+                },
+
+                // iOS7-only options that will make the status bar white and transparent
+                iosStatusBar: 'WhiteAndTransparent',
+
+                // Set an explicit Android permissions list to override the automatic plugin defaults.
+                // In most cases, you should omit this setting. See 'Android Permissions' in README.md for details.
+                permissions: ['INTERNET', 'ACCESS_COURSE_LOCATION']
+            }
+        },
+
+        /**
+         * Check that our Bootstrap templates are ok
+         */
         bootlint: {
             options: {
                 stoponerror: false,
@@ -635,7 +764,7 @@ module.exports = function (grunt) {
     /**
      * Phonegap compiler...
      */
-    grunt.registerTask('phones', ['clean', 'html2js', 'jshint', 'less:build',
+    grunt.registerTask('phones', ['clean', 'html2js', 'jshint', 'themes_build',
         'copy:build_vendorcss', 'copy:build_app_assets', 'copy:build_app_languages', 'copy:build_vendor_assets',
         'copy:build_appjs', 'copy:build_vendorjs', 'index:phonegap', 'copy:build_app_openhab', 'phonegap:build']);
 
