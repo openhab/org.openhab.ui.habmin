@@ -47,7 +47,7 @@ angular.module('HABmin.userModel', [
 
         var server = "";
         if(document.HABminOnPhone === true) {
-            server = "http://192.168.2.2:10080";
+            server = localStorage.getItem('Server');
         }
 
         // If we've previously saved the theme, restore the user selection
@@ -65,10 +65,14 @@ angular.module('HABmin.userModel', [
 
             setServer: function (newServer) {
                 server = newServer;
+                localStorage.setItem('Server', server);
             },
 
             getServer: function () {
-                return server;
+                if(document.HABminOnPhone === true) {
+                    return server;
+                }
+                return "";
             },
 
             setTheme: function (theme) {
