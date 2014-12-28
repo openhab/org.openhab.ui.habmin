@@ -14,7 +14,9 @@ angular.module('HABmin.rules', [
     'ngLocalize',
     'angular-growl',
     'angular-blockly',
-    'HABmin.ruleModel'
+    'HABmin.ruleModel',
+    'HABmin.userModel',
+    'ResizePanel'
 ])
 
     .config(function config($stateProvider) {
@@ -37,7 +39,7 @@ angular.module('HABmin.rules', [
     })
 
     .controller('AutomationRuleCtrl',
-    function AutomationRuleCtrl($scope, locale, growl, RuleModel, Blockly, $timeout) {
+    function AutomationRuleCtrl($scope, locale, growl, RuleModel, UserService, Blockly, $timeout) {
         var newDesign = [
             {
                 type: 'openhab_rule',
@@ -53,6 +55,32 @@ angular.module('HABmin.rules', [
         $scope.rulesTotal = -1;
         $scope.isDirty = false;
         $scope.selectedRule = null;
+        $scope.aceOptions = {
+            useWrapMode : true,
+            showGutter: true,
+            theme:'tomorrow',
+            mode: 'openhabrules'
+        };
+
+        // Align the Ace Editor theme with the Bootstrap theme
+        function setTheme(theme) {
+            console.log("Set Ace theme");
+            switch (UserService.getTheme()) {
+                case 'slate':
+                    $scope.aceOptions.theme = 'tomorrow_night_bright';
+                    break;
+                default:
+                    $scope.aceOptions.theme = 'tomorrow';
+                    break;
+            }
+        }
+
+        $scope.$on('habminTheme', function(event, theme) {
+            console.log("habminTheme event", theme);
+            setTheme(theme);
+        });
+
+        setTheme(UserService.getTheme());
 
         var restoreRule = null;
 
@@ -70,7 +98,7 @@ angular.module('HABmin.rules', [
             },
             function (reason) {
                 // handle failure
-                growl.warning('Hello world ' + reason.message);
+                growl.warning(locale.getString('habmin.ruleErrorLoadingRuleList', [rule.name, reason]));
                 $scope.rulesTotal = 0;
             }
         );
@@ -78,14 +106,28 @@ angular.module('HABmin.rules', [
         // ------------------------------------------------
         // Event Handlers
 
+        var onChangeWrapper = null;
+        $scope.$on('$destroy', function () {
+            // Make sure that the callback is destroyed too
+//            Blockly.offChange(onChangeWrapper);
+//            onChangeWrapper = null;
+        });
+
+        function handleDirtyNotification() {
+            if (onChangeWrapper == null) {
+                onChangeWrapper = true;
+                Blockly.onChange(function () {
+                    $scope.isDirty = true;
+                    $scope.$apply();
+                });
+            }
+        }
+
         $scope.selectRule = function (rule) {
             $scope.editSource = false;
             $scope.selectedRule = rule;
 
-            Blockly.onChange(function () {
-                $scope.isDirty = true;
-                $scope.$apply();
-            });
+            handleDirtyNotification();
 
             RuleModel.getRule(rule.id).then(
                 function (rule) {
@@ -105,10 +147,12 @@ angular.module('HABmin.rules', [
         };
 
         $scope.newRule = function () {
+            handleDirtyNotification();
             $scope.codeEditor = "";
             Blockly.setWorkspace({block: newDesign});
             $scope.isDirty = false;
             $scope.selectedRule = null;
+            restoreRule = {block: newDesign};
         };
 
         $scope.saveRule = function () {
@@ -173,33 +217,6 @@ angular.module('HABmin.rules', [
 
     })
 
-    .directive('resizePage', function ($window) {
-        return function ($scope, element) {
-            var w = angular.element($window);
-            $scope.getWindowDimensions = function () {
-                return {
-                    'h': w.height()
-                };
-            };
-            $scope.$watch($scope.getWindowDimensions, function (newValue, oldValue) {
-                $scope.windowHeight = newValue.h;
-                $scope.styleRuleList = function () {
-                    return {
-                        'height': (newValue.h - 150) + 'px'
-                    };
-                };
-                $scope.styleEditor = function () {
-                    return {
-                        'height': (newValue.h - 117) + 'px'
-                    };
-                };
-            }, true);
-
-            w.bind('resize', function () {
-                $scope.$apply();
-            });
-        };
-    })
 ;
 
 

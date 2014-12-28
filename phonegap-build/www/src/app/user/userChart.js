@@ -9,10 +9,11 @@
  */
 angular.module('UserChartPrefs', [
     'angular-bootstrap-select',
-    'ngLocalize'
+    'ngLocalize',
+    'HABmin.userModel'
 ])
     .service('UserChartPrefs',
-    function ($modal, $rootScope, locale) {
+    function ($modal, $rootScope, locale, UserService) {
         this.showModal = function () {
             var controller = function ($scope, $modalInstance) {
                 $scope.ok = function (result) {
@@ -51,6 +52,7 @@ angular.module('UserChartPrefs', [
                 modalFade: true,
                 templateUrl: 'user/userChart.tpl.html',
                 controller: controller,
+                windowClass: UserService.getTheme(),
                 scope: scope
             }).result;
         };

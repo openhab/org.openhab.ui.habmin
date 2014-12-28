@@ -15,7 +15,8 @@ angular.module('Binding.zwave', [
     'angular-growl',
     'Binding.config',
     'yaru22.angular-timeago',
-    'ngVis'
+    'ngVis',
+    'ResizePanel'
 ])
 
     .config(function config($stateProvider) {
@@ -38,8 +39,8 @@ angular.module('Binding.zwave', [
     })
 
     .controller('ZwaveBindingCtrl',
-    function ZwaveBindingCtrl($scope, locale, growl, $timeout, $window, $http, timeAgo, $interval) {
-        var url = HABminServer + '/services/habmin/zwave/';
+    function ZwaveBindingCtrl($scope, locale, growl, $timeout, $window, $http, timeAgo, $interval, UserService) {
+        var url = UserService.getServer() + '/services/habmin/zwave/';
 
         var deviceClassIcons = {
             "PC_CONTROLLER": "desktop-computer",
@@ -97,7 +98,10 @@ angular.module('Binding.zwave', [
             }
 
             var status = "";
-            if (node.retryRate > 3) {
+            if (node.retryRate >= 10) {
+                status += " " + locale.getString("zwave.zwaveStatusNoResponse");
+            }
+            else if (node.retryRate > 5) {
                 status += " " + locale.getString("zwave.zwaveStatusRetries", node.retryRate);
             }
 
@@ -476,7 +480,7 @@ angular.module('Binding.zwave', [
                                     var level = parseInt(power[1], 10);
                                     if (isNaN(level)) {
                                         device.batteryIcon = "oa-battery-empty";
-                                        device.batteryLevel = -1;
+                                        device.batteryLevel = 'UNK';
                                         device.powerInfo = locale.getString("zwave.zwaveBatteryPower");
                                     }
                                     else {
@@ -493,7 +497,7 @@ angular.module('Binding.zwave', [
                                     break;
                                 default:
                                     device.batteryIcon = "oa-battery-empty";
-                                    device.batteryLevel = -1;
+                                    device.batteryLevel = 'UNK';
                                     device.powerInfo = locale.getString("zwave.zwaveUnknownPower");
                                     break;
                             }
@@ -783,28 +787,6 @@ angular.module('Binding.zwave', [
         }
     })
 
-    .directive('resizePage1', function ($window) {
-        return function ($scope, element) {
-            var w = angular.element($window);
-            $scope.getWindowDimensions = function () {
-                return {
-                    'h': w.height()
-                };
-            };
-            $scope.$watch($scope.getWindowDimensions, function (newValue, oldValue) {
-                $scope.windowHeight = newValue.h;
-                $scope.styleList = function () {
-                    return {
-                        'height': (newValue.h - 161) + 'px'
-                    };
-                };
-            }, true);
-
-            w.bind('resize', function () {
-                $scope.$apply();
-            });
-        };
-    })
 ;
 
 

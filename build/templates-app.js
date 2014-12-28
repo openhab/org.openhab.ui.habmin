@@ -2,6 +2,7 @@ angular.module('templates-app', ['automation/rule.tpl.html', 'automation/schedul
 
 angular.module("automation/rule.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("automation/rule.tpl.html",
+    "<!DOCTYPE html>\n" +
     "<div class=\"col-sm-4\">\n" +
     "    <div class=\"panel panel-default\">\n" +
     "        <!-- Header -->\n" +
@@ -63,11 +64,11 @@ angular.module("automation/rule.tpl.html", []).run(["$templateCache", function($
     "            </button>\n" +
     "\n" +
     "            <div class=\"pull-right\">\n" +
-    "                <button ng-class=\"{'btn btn-sm btn-default':true, 'active':editSource==false}\" ng-click=\"showRule()\">\n" +
+    "                <button type=\"button\" ng-class=\"{'btn btn-sm btn-default':true, 'active':editSource==false}\" ng-click=\"showRule()\">\n" +
     "                    <span class=\"fa fa-puzzle-piece\"></span>\n" +
     "                    <span i18n=\"habmin.ruleRule\"></span>\n" +
     "                </button>\n" +
-    "                <button ng-class=\"{'btn btn-sm btn-default':true, 'active':editSource==true}\" ng-click=\"showSource()\">\n" +
+    "                <button type=\"button\" ng-class=\"{'btn btn-sm btn-default':true, 'active':editSource==true}\" ng-click=\"showSource()\">\n" +
     "                    <span class=\"fa fa-code\"></span>\n" +
     "                    <span i18n=\"habmin.ruleSource\"></span>\n" +
     "                </button>\n" +
@@ -157,6 +158,7 @@ angular.module("automation/scheduler.tpl.html", []).run(["$templateCache", funct
 
 angular.module("binding/zwave.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("binding/zwave.tpl.html",
+    "<!DOCTYPE html>\n" +
     "<!-- Device List -->\n" +
     "<div class=\"col-sm-4\">\n" +
     "    <div class=\"panel panel-default\">\n" +
@@ -225,7 +227,7 @@ angular.module("binding/zwave.tpl.html", []).run(["$templateCache", function($te
     "                    <span class=\"pull-right\">\n" +
     "                        <span popover=\"{{choice.powerInfo}}\" popover-trigger=\"mouseenter\" popover-placement=\"top\"\n" +
     "                              popover-append-to-body=\"true\" popover-popup-delay=\"500\">\n" +
-    "                            <span ng-class=\"{'text-success': choice.batteryLevel>='40','text-danger': choice.batteryLevel=='0','text-warning': choice.batteryLevel =='20','text-muted': choice.batteryLevel =='-1'}\">\n" +
+    "                            <span ng-class=\"{'text-success': choice.batteryLevel>=40,'text-danger': choice.batteryLevel==0,'text-muted': choice.batteryLevel=='UNK','text-warning': choice.batteryLevel<40}\">\n" +
     "                                <span ng-class=\"choice.batteryIcon\"></span>\n" +
     "                            </span>\n" +
     "                        </span>\n" +
@@ -378,7 +380,7 @@ angular.module("binding/zwave.tpl.html", []).run(["$templateCache", function($te
     "        </div>\n" +
     "\n" +
     "        <!-- Node Network Diagram -->\n" +
-    "        <div ng-show=\"deviceDisplay=='NETWORK'\" ng-style=\"styleList()\">\n" +
+    "        <div ng-show=\"deviceDisplay=='NETWORK'\" resize-panel>\n" +
     "            <vis-network data=\"networkNodes\" options=\"networkOptions\" events=\"networkEvents\"></vis-network>\n" +
     "        </div>\n" +
     "\n" +
@@ -392,6 +394,7 @@ angular.module("binding/zwave.tpl.html", []).run(["$templateCache", function($te
 
 angular.module("dashboard/chart.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("dashboard/chart.tpl.html",
+    "<!DOCTYPE html>\n" +
     "<!-- Chart and Item Lists -->\n" +
     "<div class=\"col-sm-4\">\n" +
     "    <div class=\"panel panel-default\">\n" +
@@ -631,6 +634,7 @@ angular.module("dashboard/chart.tpl.html", []).run(["$templateCache", function($
 
 angular.module("dashboard/chartSave.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("dashboard/chartSave.tpl.html",
+    "<!DOCTYPE html>\n" +
     "<div class=\"modal-header\">\n" +
     "    <h3 class=\"modal-title\" i18n=\"habmin.chartSaveChartTitle\"></h3>\n" +
     "</div>\n" +
@@ -671,8 +675,8 @@ angular.module("dashboard/chartSave.tpl.html", []).run(["$templateCache", functi
     "    </div>\n" +
     "</div>\n" +
     "<div class=\"modal-footer\">\n" +
-    "    <button class=\"btn btn-primary\" ng-click=\"ok()\" i18n=\"common.save\"></button>\n" +
-    "    <button class=\"btn btn-warning\" ng-click=\"cancel()\" i18n=\"common.cancel\"></button>\n" +
+    "    <button type=\"button\" class=\"btn btn-primary\" ng-click=\"ok()\" i18n=\"common.save\"></button>\n" +
+    "    <button type=\"button\" class=\"btn btn-warning\" ng-click=\"cancel()\" i18n=\"common.cancel\"></button>\n" +
     "</div>\n" +
     "");
 }]);
@@ -917,6 +921,14 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
     "        A graphical user interface for the OpenHAB Home Automation System.\n" +
     "    </p>\n" +
     "\n" +
+    "    <p class=\"text-center\">\n" +
+    "        <small>\n" +
+    "            <p>Version: {{version}}, {{date}}</p>\n" +
+    "            <p>Phone: {{phone}}</p>\n" +
+    "            <p>Server: {{server}}</p>\n" +
+    "        </small>\n" +
+    "    </p>\n" +
+    "\n" +
     "    <div class=\"text-center\">\n" +
     "        <div class=\"btn-group\">\n" +
     "            <a href=\"https://github.com/cdjackson/HABmin/wiki\" class=\"btn btn-large btn-default\">\n" +
@@ -963,7 +975,7 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
 
 angular.module("sitemap/sitemap.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("sitemap/sitemap.tpl.html",
-    "<div><div dynamic-sitemap></div></div>\n" +
+    "<div dynamic-sitemap></div>\n" +
     "");
 }]);
 
@@ -998,8 +1010,8 @@ angular.module("user/userChart.tpl.html", []).run(["$templateCache", function($t
     "\n" +
     "</div>\n" +
     "<div class=\"modal-footer\">\n" +
-    "    <button class=\"btn btn-primary\" ng-click=\"ok()\" i18n=\"common.save\"></button>\n" +
-    "    <button class=\"btn btn-warning\" ng-click=\"cancel()\" i18n=\"common.cancel\"></button>\n" +
+    "    <button type=\"button\" class=\"btn btn-primary\" ng-click=\"ok()\" i18n=\"common.save\"></button>\n" +
+    "    <button type=\"button\" class=\"btn btn-warning\" ng-click=\"cancel()\" i18n=\"common.cancel\"></button>\n" +
     "</div>\n" +
     "");
 }]);
@@ -1055,8 +1067,8 @@ angular.module("user/userGeneral.tpl.html", []).run(["$templateCache", function(
     "\n" +
     "</div>\n" +
     "<div class=\"modal-footer\">\n" +
-    "    <button class=\"btn btn-primary\" ng-click=\"ok()\" i18n=\"common.save\"></button>\n" +
-    "    <button class=\"btn btn-warning\" ng-click=\"cancel()\" i18n=\"common.cancel\"></button>\n" +
+    "    <button type=\"button\" class=\"btn btn-primary\" ng-click=\"ok()\" i18n=\"common.save\"></button>\n" +
+    "    <button type=\"button\" class=\"btn btn-warning\" ng-click=\"cancel()\" i18n=\"common.cancel\"></button>\n" +
     "</div>\n" +
     "");
 }]);

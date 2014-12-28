@@ -11,8 +11,8 @@ angular.module('HABmin.bindingModel', [
     'HABmin.userModel'
 ])
 
-    .service('BindingModel', function ($http, $q) {
-        this.url = HABminServer + '/services/habmin/config/bindings';
+    .service('BindingModel', function ($http, $q, UserService) {
+        this.url = UserService.getServer() + '/services/habmin/config/bindings';
         this.bindingList = [];
         this.bindingCfg = {
                 zwave: {

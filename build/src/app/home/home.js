@@ -8,7 +8,8 @@
  * (c) 2014 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('HABmin.home', [
-    'ui.router'
+    'ui.router',
+    'HABmin.userModel'
 ])
 
 /**
@@ -32,7 +33,11 @@ angular.module('HABmin.home', [
 /**
  * And of course we define a controller for our route.
  */
-    .controller('HomeCtrl', function HomeController($scope) {
+    .controller('HomeCtrl', function HomeController($scope, UserService) {
+        $scope.version = document.HABminVersionString;
+        $scope.date = document.HABminVersionDate;
+        $scope.phone = document.HABminOnPhone;
+        $scope.server = UserService.getServer();
     })
 
 ;

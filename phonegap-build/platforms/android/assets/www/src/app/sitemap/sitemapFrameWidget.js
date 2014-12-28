@@ -14,7 +14,8 @@ angular.module('sitemapFrameWidget', [
         return {
             restrict: 'E',
             transclude: true,
-            template: '<div class="col-md-4">' +
+            template:
+                '<div class="col-md-4">' +
                 '<div class="sitemap-frame-title">' +
                 '<habmin-icon class="icon-lg" icon="{{widget.icon}}"></habmin-icon>' +
                 '<span ng-style="labelColor">{{widget.label}}</span>' +

@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     
+    <!-- Include PhoneGap -->
+    <script type="text/javascript" src="phonegap.js"></script>
+    
 
     <!-- compiled CSS -->
     <link rel="stylesheet" type="text/css" href="vendor/fontawesome/css/font-awesome.css"/>
@@ -185,23 +188,26 @@
 
     <script type="text/javascript">
 
-        var HABminVersionString = "0.0.2";
-        var HABminVersionDate = "2014-12-26T15:39:25";
+        document.HABminVersionString = "0.0.2";
+        document.HABminVersionDate = "2014-12-28T19:02:53";
 
         
-        <!-- Handle application startup within browser -->
-        document.HABminOnPhone = false;
+        <!-- Handle application startup for PhoneGap -->
+        document.HABminOnPhone = true;
         $(document).ready(function() {
-            angular.bootstrap(document, ['HABmin']);
+            document.addEventListener("deviceready", function onDeviceReady() {
+                angular.bootstrap(document, ['HABmin']);
+            }, false);
         });
         
     </script>
 </head>
 <body>
 
-<div id="login-holder" class="row login-form" style="display:none;">
+<div id="login-holder" class="row login-form login-handler" style="display:none;">
     <div id="loginbox" class="col-xs-12 col-sm-6 col-lg-4" ng-controller="LoginController">
         <form name="form">
+            <!-- SERVER -->
             <div class="form-group" ng-show="showServer" ng-class="{'has-error': form.server.$invalid && submitted}">
                 <label for="server" class="control-label">Server</label>
 
@@ -218,6 +224,8 @@
                             required>
                 </div>
             </div>
+
+            <!-- USERNAME -->
             <div class="form-group" ng-class="{'has-error': form.user.$invalid && submitted}">
                 <label for="user" class="control-label">Username</label>
 
@@ -234,6 +242,8 @@
                             required>
                 </div>
             </div>
+
+            <!-- PASSWORD -->
             <div class="form-group" ng-class="{'has-error': form.password.$invalid && submitted}">
                 <label for="password" class="control-label">Password</label>
 
@@ -250,6 +260,8 @@
                             required>
                 </div>
             </div>
+
+            <!-- STAY CONNECTED PERIOD -->
             <div class="form-group" ng-class="{'has-error': form.password.$invalid && submitted}">
                 <label for="inputPeriod" class="control-label" i18n="habmin.chartSavePeriod"></label>
 
@@ -436,7 +448,7 @@
                             </ul>
                         </li>
                         <li ng-if="!isLoggedIn()">
-                            <a ui-sref="about">
+                            <a ng-click="login()">
                                 <span class="fa fa-fw fa-user"></span>
                                 <span i18n="habmin.mainLogin"></span>
                             </a>

@@ -15,11 +15,18 @@ angular.module('sitemapSliderWidget', [
     .directive('sitemapSlider', function ($interval, ImgFactory) {
         return {
             restrict: 'E',
-            template: '<habmin-icon class="icon-lg" icon="{{widget.icon}}"></habmin-icon>' +
+            template:
+                '<div style="width:100%;display:inline-block;">' +
+                '<div style="display:block;">' +
+                '<habmin-icon class="icon-lg" icon="{{widget.icon}}"></habmin-icon>' +
                 '<span class="sitemap-item-text"><span ng-style="labelColor">{{widget.label}}</span>' +
-                '<span class="pull-right" ng-style="valueColor">{{widget.value}}&nbsp</span></span>' +
-                '<span class="pull-right"><toggle-switch ng-show="showSwitch" model="switchValue" on-label="ON" off-label="OFF"></toggle-switch></span>' +
-                '<div range-slider min="0" max="100" show-values="false" pin-handle="min" model-max="sliderValue"></div>',
+                '<span class="pull-right">' +
+                '<span ng-style="valueColor">{{widget.value}}&nbsp</span>' +
+                '<toggle-switch ng-show="showSwitch" model="switchValue" on-label="ON" off-label="OFF"></toggle-switch>' +
+                '</span>' +
+                '</div>' +
+                '<div range-slider min="0" max="100" show-values="false" pin-handle="min" model-max="sliderValue"></div>' +
+                '</div>',
             scope: {
                 itemModel: "=",
                 widget: "="

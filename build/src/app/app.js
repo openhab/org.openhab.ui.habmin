@@ -126,8 +126,14 @@ angular.module('HABmin', [
             $scope.setTheme(theme);
         });
 
+        $scope.setTheme(UserService.getTheme());
+
         $scope.logout = function () {
             UserService.logout();
+        };
+
+        $scope.login = function () {
+            UserService.login();
         };
 
         // Load models used in the nav bar

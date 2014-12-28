@@ -49,7 +49,9 @@
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/assets/glyphicons-halflings-regular.svg \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/assets/glyphicons-halflings-regular.ttf \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/assets/glyphicons-halflings-regular.woff \
-/Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/assets/HABmin2-0.0.2.css \
+/Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/assets/HABmin2-paper-0.0.2.css \
+/Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/assets/HABmin2-slate-0.0.2.css \
+/Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/assets/HABmin2-yeti-0.0.2.css \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/assets/handclosed.cur \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/assets/handopen.cur \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/assets/openautomation.eot \
@@ -60,6 +62,10 @@
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/assets/quote0.png \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/assets/quote1.png \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/assets/sprites.png \
+/Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/assets/weathericons-regular-webfont.eot \
+/Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/assets/weathericons-regular-webfont.svg \
+/Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/assets/weathericons-regular-webfont.ttf \
+/Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/assets/weathericons-regular-webfont.woff \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/languages/en-GB \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/languages/en-GB/common.lang.json \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/languages/en-GB/habmin.lang.json \
@@ -103,6 +109,7 @@
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/src/common/angular-vis.js \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/src/common/ngConfirmClick.js \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/src/common/ngCron.js \
+/Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/src/common/resizePanel.js \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/vendor/ace-builds \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/vendor/angular \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/vendor/angular-animate \
@@ -125,6 +132,7 @@
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/vendor/angular-ui-calendar \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/vendor/angular-ui-router \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/vendor/bootstrap-select \
+/Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/vendor/fontawesome \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/vendor/fullcalendar \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/vendor/jquery \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/vendor/jquery-atmosphere \
@@ -136,6 +144,7 @@
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/vendor/vis \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/vendor/ace-builds/src-min-noconflict \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/vendor/ace-builds/src-min-noconflict/ace.js \
+/Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/vendor/ace-builds/src-min-noconflict/theme-tomorrow.js \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/vendor/ace-builds/src-min-noconflict/theme-tomorrow_night_bright.js \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/vendor/angular/angular.js \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/vendor/angular-animate/angular-animate.js \
@@ -175,6 +184,8 @@
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/vendor/angular-ui-router/release/angular-ui-router.js \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/vendor/bootstrap-select/bootstrap-select.css \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/vendor/bootstrap-select/bootstrap-select.js \
+/Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/vendor/fontawesome/css \
+/Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/vendor/fontawesome/css/font-awesome.css \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/vendor/fullcalendar/fullcalendar.css \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/vendor/fullcalendar/fullcalendar.js \
 /Users/chris/Development/HABmin2/phonegap-build/platforms/android/assets/www/vendor/fullcalendar/gcal.js \

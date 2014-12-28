@@ -122,6 +122,7 @@ module.exports = {
         assets: [
             'vendor/oa-font/fonts/*',
             'vendor/fontawesome/fonts/*',
+            'vendor/weather-icons/font/*',
             'vendor/bootstrap/fonts/*',
             'vendor/angular-blockly/media/*'
         ]

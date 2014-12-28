@@ -41,19 +41,52 @@ angular.module('HABmin.userModel', [
         }
 
         var userConfig = {
-            useCache: false
+            useCache: false,
+            theme: "slate"
         };
+
+        var server = "";
+        if(document.HABminOnPhone === true) {
+            server = "http://192.168.2.2:10080";
+        }
+
+        // If we've previously saved the theme, restore the user selection
+        if(localStorage.getItem('Theme') != null) {
+            userConfig.theme = localStorage.getItem('Theme');
+        }
 
         function changeUser(user) {
         }
 
         return {
-            isLoggedIn: function (user) {
+            isLoggedIn: function () {
                 return authenticated;
             },
 
-            login: function (user, success, error) {
+            setServer: function (newServer) {
+                server = newServer;
             },
+
+            getServer: function () {
+                return server;
+            },
+
+            setTheme: function (theme) {
+                // Save the theme to local storage
+                localStorage.setItem('Theme', theme);
+
+                userConfig.theme = theme;
+                $rootScope.$broadcast('habminTheme', theme);
+            },
+
+            getTheme: function () {
+                return userConfig.theme;
+            },
+
+            login: function () {
+                $rootScope.$broadcast('event:auth-loginRequired');
+            },
+
             logout: function (success, error) {
                 $http.defaults.headers.common['Authorization'] = '';
                 authenticated = false;
@@ -90,21 +123,24 @@ angular.module('HABmin.userModel', [
                 login.hide();
 
                 scope.$on('event:auth-loginRequired', function() {
-                    login.slideDown('slow', function() {
-                        main.hide();
+                    $('#login-holder').slideDown('slow', function() {
+                        $('#content').hide();
                     });
                 });
                 scope.$on('event:auth-loginConfirmed', function() {
-                    main.show();
-                    login.slideUp();
+                    $('#content').show();
+                    $('#login-holder').slideUp();
                 });
             }
         };
     })
 
-    .controller('LoginController', function ($scope, $http, authService, $base64) {
+    .controller('LoginController', function ($scope, $http, $base64, authService, UserService) {
         $scope.user = localStorage.getItem('Auth-user');
         $scope.period = localStorage.getItem('Auth-period');
+
+        $scope.showServer = document.HABminOnPhone;
+        $scope.server = UserService.getServer();
 
         if($scope.period == null) {
             $scope.period = 3600;

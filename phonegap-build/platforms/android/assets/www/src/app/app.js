@@ -117,8 +117,23 @@ angular.module('HABmin', [
     function HABminCtrl($scope, $location, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel) {
         $scope.isLoggedIn = UserService.isLoggedIn;
 
+        $scope.setTheme = function(theme) {
+            $('html').removeClass();
+            $('html').addClass(theme);
+        };
+
+        $scope.$on("habminTheme", function(event, theme) {
+            $scope.setTheme(theme);
+        });
+
+        $scope.setTheme(UserService.getTheme());
+
         $scope.logout = function () {
             UserService.logout();
+        };
+
+        $scope.login = function () {
+            UserService.login();
         };
 
         // Load models used in the nav bar

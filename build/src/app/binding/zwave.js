@@ -98,7 +98,10 @@ angular.module('Binding.zwave', [
             }
 
             var status = "";
-            if (node.retryRate > 3) {
+            if (node.retryRate >= 10) {
+                status += " " + locale.getString("zwave.zwaveStatusNoResponse");
+            }
+            else if (node.retryRate > 5) {
                 status += " " + locale.getString("zwave.zwaveStatusRetries", node.retryRate);
             }
 
@@ -477,7 +480,7 @@ angular.module('Binding.zwave', [
                                     var level = parseInt(power[1], 10);
                                     if (isNaN(level)) {
                                         device.batteryIcon = "oa-battery-empty";
-                                        device.batteryLevel = -1;
+                                        device.batteryLevel = 'UNK';
                                         device.powerInfo = locale.getString("zwave.zwaveBatteryPower");
                                     }
                                     else {
@@ -494,7 +497,7 @@ angular.module('Binding.zwave', [
                                     break;
                                 default:
                                     device.batteryIcon = "oa-battery-empty";
-                                    device.batteryLevel = -1;
+                                    device.batteryLevel = 'UNK';
                                     device.powerInfo = locale.getString("zwave.zwaveUnknownPower");
                                     break;
                             }

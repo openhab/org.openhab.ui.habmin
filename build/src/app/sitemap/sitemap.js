@@ -104,7 +104,6 @@ angular.module('HABmin.sitemap', [
 
                 // Click handler to handle page changes within the sitemap
                 $scope.click = function (sitemapName, sitemapPage) {
-                    console.log("Clicked!", sitemapName, sitemapPage);
                     $state.go('sitemap.view', {sitemapName: sitemapName, sitemapPage: sitemapPage}, { reload: true });
                     setPage(sitemapName + '/' + sitemapPage);
                 };
@@ -185,13 +184,13 @@ angular.module('HABmin.sitemap', [
                 }
 
                 function processPage(pageDef) {
-                    var pageTpl = '<div class="container sitemap-title"><div class="col-md-12">';
+                    var pageTpl = '<div class="container-fluid sitemap-title"><div class="col-md-12">';
                     if (pageDef.parent != null) {
                         pageTpl +=
                             '<span tooltip="Back to ' + pageDef.parent.title +
-                            '" tooltip-placement="bottom" ng-click="click(\'' +
+                            '" tooltip-placement="right" tooltip-popup-delay="500" ng-click="click(\'' +
                             sitemapName + '\',\'' + pageDef.parent.id +
-                            '\')" class="sitemap-parent back"></span>';
+                            '\')" class="sitemap-parent fa fa-chevron-circle-left"></span>';
                     }
                     else {
                         pageTpl += '<span class="sitemap-parent"></span>';
@@ -200,13 +199,12 @@ angular.module('HABmin.sitemap', [
                     var title = processWidgetLabel(pageDef.title);
 
                     pageTpl += '<span class="sitemap-title-icon">';
-                    pageTpl += '<img width="36px" src="../images/light_control.svg">';
+                    pageTpl += '<habmin-icon class="icon" icon="' + pageDef.icon + '"></habmin-icon>';
                     pageTpl += '</span>';
                     pageTpl += '<span>' + title.label + '</span>';
                     pageTpl += '<span class="pull-right">' + title.value + '</span></div></div>';
                     pageTpl += '<div class="sitemap-body">';
                     pageTpl += processWidget([].concat(pageDef.widget)) + "</div>";
-//                    console.log("Definition is", pageTpl);
 
                     return pageTpl;
                 }

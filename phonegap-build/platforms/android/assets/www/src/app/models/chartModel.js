@@ -11,8 +11,8 @@ angular.module('HABmin.chartModel', [
     'HABmin.userModel'
 ])
 
-    .service('ChartListModel', function ($http, $q) {
-        this.url = HABminServer + '/services/habmin/persistence/charts';
+    .service('ChartListModel', function ($http, $q, UserService) {
+        this.url = UserService.getServer() + '/services/habmin/persistence/charts';
         this.chartList = [];
         this.getList = function () {
             var tStart = new Date().getTime();
