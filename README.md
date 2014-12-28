@@ -13,12 +13,38 @@ Screenshots
 ===========
 The following images show a selection of screenshots. Note that the theme is user selectable, although most images are shown with a dark theme (except the mobile sitemap image).
 
+Graphing a saved chart...
+
 ![charting](https://raw.github.com/wiki/cdjackson/HABmin2/screenshots/charting-saved.png)
+
+
+Editing a saved chart...
+
 ![charting-editor](https://raw.github.com/wiki/cdjackson/HABmin2/screenshots/charting-edit.png)
+
+
+Editing rules (graphical editor)...
+
 ![rules-block](https://raw.github.com/wiki/cdjackson/HABmin2/screenshots/rules-blocks.png)
+
+
+Editing rules (text editor)...
+
 ![rules-source](https://raw.github.com/wiki/cdjackson/HABmin2/screenshots/rules-source.png)
+
+
+ZWave device configuration...
+
 ![zwave-config](https://raw.github.com/wiki/cdjackson/HABmin2/screenshots/zwave-config.png)
+
+
+ZWave network routing diagram...
+
 ![zwave-network](https://raw.github.com/wiki/cdjackson/HABmin2/screenshots/zwave-network.png)
+
+
+Sitemaps (mobile view)...
+
 ![sitemap](https://raw.github.com/wiki/cdjackson/HABmin2/screenshots/sitemap-mobile-yeti.png)
 
 
