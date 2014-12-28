@@ -15,10 +15,14 @@ angular.module('sitemapSwitchWidget', [
         return {
             restrict: 'E',
             template:
+                '<div style="width:100%;display:inline-block;">' +
                 '<habmin-icon class="icon-lg" icon="{{widget.icon}}"></habmin-icon>' +
-                '<span class="sitemap-item-text"><span ng-style="labelColor">{{widget.label}}</span>' +
-                '<span class="pull-right" ng-style="valueColor"></span></span>' +
-                '<span class="pull-right"><toggle-switch model="value" on-label="ON" off-label="OFF"></toggle-switch></span>',
+                '<span class="sitemap-item-text" ng-style="labelColor">{{widget.label}}</span>' +
+                '<span class="pull-right">' +
+                '<span class="sitemap-item-text" ng-style="valueColor"></span>' +
+                '<toggle-switch model="value" on-label="ON" off-label="OFF"></toggle-switch>' +
+                '</span>' +
+                '</div>',
             scope: {
                 itemModel: "=",
                 widget: "="
@@ -50,7 +54,6 @@ angular.module('sitemapSwitchWidget', [
 
                 function updateWidget() {
                     if ($scope.widget.item !== undefined) {
- //                       console.log("Update", $scope.widget.item.state, "received for", $scope.widget);
                         // Handle state translation
                         switch ($scope.widget.item.type) {
                             case "DimmerItem":
