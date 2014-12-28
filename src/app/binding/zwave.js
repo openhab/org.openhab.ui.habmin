@@ -477,7 +477,7 @@ angular.module('Binding.zwave', [
                                     var level = parseInt(power[1], 10);
                                     if (isNaN(level)) {
                                         device.batteryIcon = "oa-battery-empty";
-                                        device.batteryLevel = -1;
+                                        device.batteryLevel = 'UNK';
                                         device.powerInfo = locale.getString("zwave.zwaveBatteryPower");
                                     }
                                     else {
@@ -494,7 +494,7 @@ angular.module('Binding.zwave', [
                                     break;
                                 default:
                                     device.batteryIcon = "oa-battery-empty";
-                                    device.batteryLevel = -1;
+                                    device.batteryLevel = 'UNK';
                                     device.powerInfo = locale.getString("zwave.zwaveUnknownPower");
                                     break;
                             }
