@@ -7,6 +7,8 @@
 
 * Persist server address to local storage ([8a619066](git@github.com:cdjackson/HABmin2/commit/8a619066))
 
+* Reduce gutter on narrow width screens to provide more real-estate ([14c001a6](git@github.com:cdjackson/HABmin2/commit/14c001a6))
+
 ### UI
 
 * Add theme switching ([eebb64d3](git@github.com:cdjackson/HABmin2/commit/eebb64d3))
@@ -33,6 +35,8 @@
 * Update chart series icon styles ([64485dc5](git@github.com:cdjackson/HABmin2/commit/64485dc5))
 
 * Fix error with login and authorisation window ([9a0be091](git@github.com:cdjackson/HABmin2/commit/9a0be091))
+
+* Fix sitemap title bar style ([a6a39378](git@github.com:cdjackson/HABmin2/commit/a6a39378))
 
 
 

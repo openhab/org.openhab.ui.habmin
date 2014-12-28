@@ -193,12 +193,8 @@ angular.module('HABmin.sitemap', [
                             sitemapName + '\',\'' + pageDef.parent.id +
                             '\')" class="fa fa-chevron-circle-left"></span>';
                     }
-//                    else {
-//                        pageTpl += '<span class="sitemap-parent"></span>';
-                        pageTpl +=
-//                            '<span class="sitemap-parent">' +
-                            '</span>';
-//                    }
+
+                    pageTpl += '</span>';
 
                     var title = processWidgetLabel(pageDef.title);
 

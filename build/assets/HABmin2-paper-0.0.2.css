@@ -9563,6 +9563,12 @@ button.paper .close {
 .paper .gridster-item-moving {
   z-index: 3;
 }
+@media (max-width: 768px) {
+  .paper .col-sm-4 {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+}
 .paper * {
   -webkit-touch-callout: none;
   -webkit-user-select: none;

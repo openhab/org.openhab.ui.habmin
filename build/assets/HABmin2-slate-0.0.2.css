@@ -9469,6 +9469,12 @@ button.slate .close {
 .slate .gridster-item-moving {
   z-index: 3;
 }
+@media (max-width: 768px) {
+  .slate .col-sm-4 {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+}
 .slate * {
   -webkit-touch-callout: none;
   -webkit-user-select: none;

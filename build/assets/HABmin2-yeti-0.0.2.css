@@ -9411,6 +9411,12 @@ button.yeti .close {
 .yeti .gridster-item-moving {
   z-index: 3;
 }
+@media (max-width: 768px) {
+  .yeti .col-sm-4 {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+}
 .yeti * {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
