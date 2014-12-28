@@ -184,17 +184,21 @@ angular.module('HABmin.sitemap', [
                 }
 
                 function processPage(pageDef) {
-                    var pageTpl = '<div class="container-fluid sitemap-title"><div class="col-md-12">';
+                    var pageTpl = '<div class="container-fluid sitemap-title"><div class="col-md-12">' +
+                        '<span class="sitemap-parent">';
                     if (pageDef.parent != null) {
                         pageTpl +=
                             '<span tooltip="Back to ' + pageDef.parent.title +
                             '" tooltip-placement="right" tooltip-popup-delay="500" ng-click="click(\'' +
                             sitemapName + '\',\'' + pageDef.parent.id +
-                            '\')" class="sitemap-parent fa fa-chevron-circle-left"></span>';
+                            '\')" class="fa fa-chevron-circle-left"></span>';
                     }
-                    else {
-                        pageTpl += '<span class="sitemap-parent"></span>';
-                    }
+//                    else {
+//                        pageTpl += '<span class="sitemap-parent"></span>';
+                        pageTpl +=
+//                            '<span class="sitemap-parent">' +
+                            '</span>';
+//                    }
 
                     var title = processWidgetLabel(pageDef.title);
 

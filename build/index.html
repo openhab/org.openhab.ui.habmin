@@ -6,9 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     
-    <!-- Include PhoneGap -->
-    <script type="text/javascript" src="phonegap.js"></script>
-    
 
     <!-- compiled CSS -->
     <link rel="stylesheet" type="text/css" href="vendor/fontawesome/css/font-awesome.css"/>
@@ -189,15 +186,13 @@
     <script type="text/javascript">
 
         document.HABminVersionString = "0.0.2";
-        document.HABminVersionDate = "2014-12-28T19:02:53";
+        document.HABminVersionDate = "2014-12-28T21:14:10";
 
         
-        <!-- Handle application startup for PhoneGap -->
-        document.HABminOnPhone = true;
+        <!-- Handle application startup within browser -->
+        document.HABminOnPhone = false;
         $(document).ready(function() {
-            document.addEventListener("deviceready", function onDeviceReady() {
-                angular.bootstrap(document, ['HABmin']);
-            }, false);
+            angular.bootstrap(document, ['HABmin']);
         });
         
     </script>
