@@ -15,13 +15,14 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-bump');
     grunt.loadNpmTasks('grunt-json-minify');
     grunt.loadNpmTasks('grunt-karma');
-    grunt.loadNpmTasks('grunt-ngmin');
+    grunt.loadNpmTasks('grunt-ng-annotate');
     grunt.loadNpmTasks('grunt-html2js');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
     grunt.loadNpmTasks('grunt-phonegap');
     grunt.loadNpmTasks('grunt-bootlint');
     grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-run-java');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
 
     /**
      * Load in our build configuration file.
@@ -90,10 +91,20 @@ module.exports = function (grunt) {
         /**
          * The directories to delete when `grunt clean` is executed.
          */
-        clean: [
-            '<%= build_dir %>',
-            '<%= compile_dir %>'
-        ],
+        clean: {
+            init: [
+                '<%= build_dir %>',
+                '<%= compile_dir %>',
+                '<%= phonebuild_dir %>',
+                '<%= output_dir %>'
+            ],
+            css: {
+                src: '<%= compile_dir %>/assets/<%= pkg.name %>-*-<%= pkg.version %>.css'
+            },
+            changelog: {
+                src: 'CHANGELOG.md'
+            }
+        },
 
         /**
          * The `copy` task just copies files from A to B. We use it here to copy
@@ -162,16 +173,6 @@ module.exports = function (grunt) {
                     }
                 ]
             },
-            build_app_openhab: {
-                files: [
-                    {
-                        src: ['**'],
-                        dest: '../openhab/distribution/openhabhome/webapps/ng',
-                        cwd: '<%= build_dir %>',
-                        expand: true
-                    }
-                ]
-            },
             compile_assets: {
                 files: [
                     {
@@ -195,6 +196,21 @@ module.exports = function (grunt) {
         },
 
         /**
+         * Combine and minify all CSS
+         */
+        cssmin: {
+            target: {
+                files: [{
+                    src: [
+                        '<%= vendor_files.css %>',
+                        '<%= build_dir %>/assets/<%= pkg.name %>-*-<%= pkg.version %>.css'
+                    ],
+                    dest: '<%= compile_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
+                }]
+            }
+        },
+
+        /**
          * `grunt concat` concatenates multiple source files into a single file.
          */
         concat: {
@@ -205,7 +221,7 @@ module.exports = function (grunt) {
             build_css: {
                 src: [
                     '<%= vendor_files.css %>',
-                    '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
+                    '<%= build_dir %>/assets/<%= pkg.name %>-*-<%= pkg.version %>.css'
                 ],
                 dest: '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
             },
@@ -230,17 +246,14 @@ module.exports = function (grunt) {
         },
 
         /**
-         * `ng-min` annotates the sources before minifying. That is, it allows us
+         * `ng-annotate` annotates the sources before minifying. That is, it allows us
          * to code without the array syntax.
          */
-        ngmin: {
+        ngAnnotate: {
             compile: {
                 files: [
                     {
-                        src: ['<%= app_files.js %>'],
-                        cwd: '<%= build_dir %>',
-                        dest: '<%= build_dir %>',
-                        expand: true
+                        src: '<%= compile_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.js'
                     }
                 ]
             }
@@ -261,7 +274,9 @@ module.exports = function (grunt) {
         uglify: {
             compile: {
                 options: {
-                    banner: '<%= meta.banner %>'
+                    banner: '<%= meta.banner %>',
+                    ASCIIOnly: true,
+                    preserveComments: false
                 },
                 files: {
                     '<%= concat.compile_js.dest %>': '<%= concat.compile_js.dest %>'
@@ -271,8 +286,6 @@ module.exports = function (grunt) {
 
         /**
          * `grunt-contrib-less` handles our LESS compilation and uglification automatically.
-         * Only our `main.less` file is included in compilation; all other files
-         * must be imported from this file.
          */
         less: {
             // Will be generated dynamically to account for themes
@@ -324,8 +337,10 @@ module.exports = function (grunt) {
                     htmlmin: {
                         collapseBooleanAttributes: true,
                         collapseWhitespace: true,
+                        conservativeCollapse: true,
                         removeAttributeQuotes: true,
                         removeComments: true,
+                        removeCommentsFromCDATA: true,
                         removeEmptyAttributes: true,
                         removeRedundantAttributes: true,
                         removeScriptTypeAttributes: true,
@@ -420,8 +435,7 @@ module.exports = function (grunt) {
                 dir: '<%= compile_dir %>',
                 src: [
                     '<%= concat.compile_js.dest %>',
-                    '<%= vendor_files.css %>',
-                    '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
+                    '<%= compile_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
                 ],
                 build: 'browser'
             }
@@ -560,7 +574,7 @@ module.exports = function (grunt) {
                 config: 'phonegap/config.xml',
                 cordova: 'phonegap/.cordova',
                 html: 'index.html',
-                path: 'phonegap-build',
+                path: '<%= phonebuild_dir %>',
 //                plugins: ['/local/path/to/plugin', 'http://example.com/path/to/plugin.git'],
                 platforms: ['android'],
                 maxBuffer: 200, // You may need to raise this for iOS.
@@ -686,6 +700,76 @@ module.exports = function (grunt) {
                 relaxerror: []
             },
             files: ['<%= app_files.atpl %>']
+        },
+
+        /**
+         * Run java
+         */
+        run_java: {
+            options: {
+                // Task-specific options go here.
+            },
+            your_target: {
+                // Target-specific details go here.
+                execOptions:{
+                    cwd: "/your/current/working/directory/"
+                },
+                command: "",      //java ,javac, jarsigner, jar
+                jarName: "",      //used for java, jar and jarsigner
+                className: "",    //used for java
+                javaArgs : "",    //used for java
+                sourceFiles: [""],//used for javac
+                javaOptions: {    //used for java and javac
+                    "classpath": [""]
+                }
+            },
+            manifestName: "", //used for jar
+            dir: "",          //used for jar
+            files: "",        //used for jar
+            jarOptions : {    //used for jar and jarsigner
+                "keystore": ""
+            },
+            alias: ""         //used for jarsigner
+        },
+
+        /**
+         * Minify the index html file
+         */
+        htmlmin: {
+            compile: {
+                options: {
+                    removeComments: true,
+                    collapseWhitespace: true
+                },
+                files: [
+                    {
+                    src: '<%= compile_dir %>/index.html',
+                    dest: '<%= compile_dir %>/index.html'
+                    }
+                ]
+            }
+        },
+
+        /**
+         * Compress the output
+         */
+        compress: {
+            debug: {
+                options: {
+                    archive: '<%= output_dir %>/<%= pkg.name %>-<%= pkg.version %>-debug.zip'
+                },
+                files: [
+                    {expand: true, cwd: '<%= build_dir %>', src: ['**']}
+                ]
+            },
+            release: {
+                options: {
+                    archive: '<%= output_dir %>/<%= pkg.name %>-<%= pkg.version %>-release.zip'
+                },
+                files: [
+                    {expand: true, cwd: '<%= compile_dir %>', src: ['**']}
+                ]
+            }
         }
     };
 
@@ -748,27 +832,45 @@ module.exports = function (grunt) {
      * The `build` task gets your app ready to run for development and testing.
      */
     grunt.registerTask('build', [
-        'clean', 'html2js', 'jshint', 'bootlint', 'themes_build',
+        'clean:init', 'html2js', 'themes_build',
         'copy:build_vendorcss', 'copy:build_app_assets', 'copy:build_app_languages', 'copy:build_vendor_assets',
-        'copy:build_appjs', 'copy:build_vendorjs', 'index:build', 'karmaconfig',
-        'karma:continuous'
+        'copy:build_appjs', 'copy:build_vendorjs', 'index:build'
     ]);
+
+    /**
+     * The `dev` task builds and tests the app.
+     */
+    grunt.registerTask('dev', [
+        'build', 'jshint', 'bootlint', 'karmaconfig', 'karma:continuous'
+    ]);
+
+    /**
+     * Phonegap compiler - external...
+     */
+    grunt.registerTask('phones', [
+        'build', 'compile_phonegap']);
+
+
+    /**
+     * Phonegap compiler - internal...
+     */
+    grunt.registerTask('compile_phonegap', [
+        'index:phonegap', 'phonegap:build']);
 
     /**
      * The `compile` task gets your app ready for deployment by concatenating and
      * minifying your code.
+     * It starts
      */
     grunt.registerTask('compile', [
-        'less:compile', 'concat:build_css', 'copy:compile_assets', 'copy:compile_languages', 'json-minify', 'ngmin',
-        'concat:compile_js', 'uglify', 'index:compile'
+        'clean:changelog', 'changelog',
+        'build',
+        'copy:compile_assets', 'copy:compile_languages', 'clean:css', 'cssmin', 'json-minify',
+        'concat:compile_js', 'ngAnnotate', 'uglify', 'index:compile', 'htmlmin:compile',
+        'compress'
+        //,
+//        'compile_phonegap'
     ]);
-
-    /**
-     * Phonegap compiler...
-     */
-    grunt.registerTask('phones', ['clean', 'html2js', 'jshint', 'themes_build',
-        'copy:build_vendorcss', 'copy:build_app_assets', 'copy:build_app_languages', 'copy:build_vendor_assets',
-        'copy:build_appjs', 'copy:build_vendorjs', 'index:phonegap', 'copy:build_app_openhab', 'phonegap:build']);
 
     /**
      * A utility function to get all app JavaScript sources.

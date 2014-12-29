@@ -9,6 +9,8 @@ module.exports = {
      */
     build_dir: 'build',
     compile_dir: 'bin',
+    phonebuild_dir: 'phonegap-build',
+    output_dir: 'output',
 
     /**
      * This is a collection of file patterns that refer to our app code (the
@@ -106,7 +108,6 @@ module.exports = {
             'vendor/angular-bootstrap-select/build/angular-bootstrap-select.js'
         ],
         css: [
-            'vendor/fontawesome/css/font-awesome.css',
             'vendor/angular-growl-v2/build/angular-growl.css',
             'vendor/angular-rangeslider/angular-rangeslider.css',
             'vendor/angular-toggle-switch/angular-toggle-switch.css',
