@@ -11,7 +11,7 @@ angular.module('HABmin.userModel', [
     'http-auth-interceptor',
     'base64'
 ])
-    .factory('UserService', function ($http, $rootScope, $cookieStore, $interval) {
+    .factory('UserService', function ($http, $rootScope, authService) {
         var authenticated = false;
 
         // Install handlers to catch authorisation failures
@@ -57,6 +57,9 @@ angular.module('HABmin.userModel', [
 
         function changeUser(user) {
         }
+
+        // Send the login confirmation to signal the system that we're online
+        authService.loginConfirmed();
 
         return {
             isLoggedIn: function () {
@@ -107,6 +110,7 @@ angular.module('HABmin.userModel', [
 //                    success();
 //                }).error(error);
             },
+
             userCfg: function () {
                 return userConfig;
             }

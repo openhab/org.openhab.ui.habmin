@@ -136,48 +136,51 @@ angular.module('HABmin', [
             UserService.login();
         };
 
-        // Load models used in the nav bar
-        $scope.sitemaps = null;
-        SitemapModel.getList().then(
-            function (data) {
-                $scope.sitemaps = data;
-            },
-            function (reason) {
-                // Handle failure
-                growl.warning(locale.getString('habmin.mainErrorLoadingSitemaps'));
-            }
-        );
+        // Install handlers to catch authorisation failures
+        $scope.$on('event:auth-loginConfirmed', function () {
+            // Load models used in the nav bar
+            $scope.sitemaps = null;
+            SitemapModel.getList().then(
+                function (data) {
+                    $scope.sitemaps = data;
+                },
+                function (reason) {
+                    // Handle failure
+                    growl.warning(locale.getString('habmin.mainErrorLoadingSitemaps'));
+                }
+            );
 
-        BindingModel.getList().then(
-            function (data) {
-                var bindings = [];
-                angular.forEach(data, function (binding) {
-                    // Only show bindings that have defined names
-                    if (binding.name === undefined) {
-                        return;
-                    }
-                    var info = BindingModel.getBinding(binding.pid);
-                    var newBinding = {};
-                    newBinding.name = binding.name;
+            BindingModel.getList().then(
+                function (data) {
+                    var bindings = [];
+                    angular.forEach(data, function (binding) {
+                        // Only show bindings that have defined names
+                        if (binding.name === undefined) {
+                            return;
+                        }
+                        var info = BindingModel.getBinding(binding.pid);
+                        var newBinding = {};
+                        newBinding.name = binding.name;
 
-                    if (info === undefined) {
-                        newBinding.disabled = true;
-                    }
-                    else {
-                        newBinding.disabled = false;
-                        newBinding.icon = info.icon;
-                        newBinding.link = info.link;
-                    }
+                        if (info === undefined) {
+                            newBinding.disabled = true;
+                        }
+                        else {
+                            newBinding.disabled = false;
+                            newBinding.icon = info.icon;
+                            newBinding.link = info.link;
+                        }
 
-                    bindings.push(newBinding);
-                });
-                $scope.bindings = bindings;
-            },
-            function (reason) {
-                // Handle failure
-                growl.warning(locale.getString("habmin.mainErrorGettingBindings"));
-            }
-        );
+                        bindings.push(newBinding);
+                    });
+                    $scope.bindings = bindings;
+                },
+                function (reason) {
+                    // Handle failure
+                    growl.warning(locale.getString("habmin.mainErrorGettingBindings"));
+                }
+            );
+        });
 
         $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
             // Collapse the menu if we change view
