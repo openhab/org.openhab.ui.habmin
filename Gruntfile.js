@@ -167,9 +167,10 @@ module.exports = function (grunt) {
                 files: [
                     {
                         src: ['<%= vendor_files.css %>'],
-                        dest: '<%= build_dir %>/',
+                        dest: '<%= build_dir %>/assets',
                         cwd: '.',
-                        expand: true
+                        expand: true,
+                        flatten: true
                     }
                 ]
             },
@@ -200,6 +201,11 @@ module.exports = function (grunt) {
          */
         cssmin: {
             target: {
+                options: {
+// The following lines may be useful for debugging if there are problems with the minification
+//                    keepBreaks: true,
+//                    aggressiveMerging: false
+                },
                 files: [{
                     src: [
                         '<%= vendor_files.css %>',
@@ -407,7 +413,7 @@ module.exports = function (grunt) {
                     '<%= build_dir %>/src/**/*.js',
                     '<%= html2js.common.dest %>',
                     '<%= html2js.app.dest %>',
-                    '<%= vendor_files.css %>',
+                    '<%= build_dir %>/assets/**/*.css',
                     '<%= build_dir %>/assets/<%= pkg.name %>-*-<%= pkg.version %>.css'
                 ],
                 build: 'browser'
@@ -832,9 +838,9 @@ module.exports = function (grunt) {
      * The `build` task gets your app ready to run for development and testing.
      */
     grunt.registerTask('build', [
-        'clean:init', 'html2js', 'themes_build',
+        'clean:init', 'html2js',
         'copy:build_vendorcss', 'copy:build_app_assets', 'copy:build_app_languages', 'copy:build_vendor_assets',
-        'copy:build_appjs', 'copy:build_vendorjs', 'index:build'
+        'copy:build_appjs', 'copy:build_vendorjs', 'themes_build', 'index:build'
     ]);
 
     /**
