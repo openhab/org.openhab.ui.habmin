@@ -42,98 +42,79 @@
 </head>
 <body>
 
-<div id="login-holder" class="row login-form login-handler" style="display:none;">
-    <div id="loginbox" class="col-xs-12 col-sm-6 col-lg-4" ng-controller="LoginController">
-        <form name="form">
-            <!-- SERVER -->
-            <div class="form-group" ng-show="showServer" ng-class="{'has-error': form.server.$invalid && submitted}">
-                <label for="server" class="control-label">Server</label>
-
-                <div class="input-group">
-                    <span class="input-group-addon"><span class="fa fa-user"></span></span>
-                    <input
-                            type="text"
-                            class="form-control"
-                            id="server"
-                            name="server"
-                            placeholder="Server"
-                            ng-model="server"
-                            ng-model-options="{updateOn: 'blur'}"
-                            required>
-                </div>
+<div id="login-holder" class="login-form login-handler" style="display:none;">
+    <div class="container-fluid">
+    <div id="loginbox" class="col-sm-4 col-sm-offset-4" ng-controller="LoginController">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span class="fa fa-key"></span>&nbsp;<span i18n="habmin.loginFormTitle"></span>
             </div>
+            <div class="panel-body">
+                <form name="form">
+                    <!-- SERVER -->
+                    <div class="form-group" ng-show="showServer" ng-class="{'has-error': form.server.$invalid && submitted}">
+                        <label for="server" class="control-label"><span i18n="habmin.loginServer"></span></label>
 
-            <!-- USERNAME -->
-            <div class="form-group" ng-class="{'has-error': form.user.$invalid && submitted}">
-                <label for="user" class="control-label">Username</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="fa fa-user"></span></span>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    id="server"
+                                    name="server"
+                                    placeholder="Server"
+                                    ng-model="server"
+                                    ng-model-options="{updateOn: 'blur'}"
+                                    required>
+                        </div>
+                    </div>
 
-                <div class="input-group">
-                    <span class="input-group-addon"><span class="fa fa-user"></span></span>
-                    <input
-                            type="text"
-                            class="form-control"
-                            id="user"
-                            name="user"
-                            placeholder="Username"
-                            ng-model="user"
-                            ng-model-options="{updateOn: 'blur'}"
-                            required>
-                </div>
+                    <!-- USERNAME -->
+                    <div class="form-group" ng-class="{'has-error': form.user.$invalid && submitted}">
+                        <label for="user" class="control-label"><span i18n="habmin.loginUser"></span></label>
+
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="fa fa-user"></span></span>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    id="user"
+                                    name="user"
+                                    placeholder="Username"
+                                    ng-model="user"
+                                    ng-model-options="{updateOn: 'blur'}"
+                                    required>
+                        </div>
+                    </div>
+
+                    <!-- PASSWORD -->
+                    <div class="form-group" ng-class="{'has-error': form.password.$invalid && submitted}">
+                        <label for="password" class="control-label"><span i18n="habmin.loginPassword"></span></label>
+
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="fa fa-lock"></span></span>
+                            <input
+                                    type="password"
+                                    class="form-control"
+                                    id="password"
+                                    name="password"
+                                    placeholder="Password"
+                                    ng-model="password"
+                                    ng-model-options="{updateOn: 'blur'}"
+                                    required>
+                        </div>
+                    </div>
+                    <button type="submit" ng-click="submit()" class="btn btn-primary btn-block"><span i18n="habmin.loginSubmit"></span></button>
+                </form>
             </div>
-
-            <!-- PASSWORD -->
-            <div class="form-group" ng-class="{'has-error': form.password.$invalid && submitted}">
-                <label for="password" class="control-label">Password</label>
-
-                <div class="input-group">
-                    <span class="input-group-addon"><span class="fa fa-lock"></span></span>
-                    <input
-                            type="password"
-                            class="form-control"
-                            id="password"
-                            name="password"
-                            placeholder="Password"
-                            ng-model="password"
-                            ng-model-options="{updateOn: 'blur'}"
-                            required>
-                </div>
+            <div class="panel-footer">
+                <div class="text-center"><small>
+                    <span i18n="habmin.loginVersion"></span>&nbsp;<span>{{HABminVersion}}</span>,&nbsp;<span>{{HABminDate}}</span>
+                </small></div>
             </div>
-
-            <!-- STAY CONNECTED PERIOD -->
-            <div class="form-group" ng-class="{'has-error': form.password.$invalid && submitted}">
-                <label for="inputPeriod" class="control-label" i18n="habmin.chartSavePeriod"></label>
-
-                <div class="input-group">
-                    <span class="input-group-addon"><span class="fa fa-clock-o"></span></span>
-                    <select ng-model="period" class="form-control" id="inputPeriod">
-                        <option value="3600" i18n="habmin.period1Hour"></option>
-                        <option value="7200" i18n="habmin.period2Hours"></option>
-                        <option value="10800" i18n="habmin.period3Hours"></option>
-                        <option value="14400" i18n="habmin.period4Hours"></option>
-                        <option value="21600" i18n="habmin.period6Hours"></option>
-                        <option value="32400" i18n="habmin.period9Hours"></option>
-                        <option value="43200" i18n="habmin.period12Hours"></option>
-                        <option value="86400" i18n="habmin.period1Day"></option>
-                        <option value="172800" i18n="habmin.period2Days"></option>
-                        <option value="259200" i18n="habmin.period3Days"></option>
-                        <option value="345600" i18n="habmin.period4Days"></option>
-                        <option value="432000" i18n="habmin.period5Days"></option>
-                        <option value="604800" i18n="habmin.period1Week"></option>
-                        <option value="1209600" i18n="habmin.period2Weeks"></option>
-                        <option value="1814400" i18n="habmin.period3Weeks"></option>
-                        <option value="2419200" i18n="habmin.period1Month"></option>
-                        <option value="5184000" i18n="habmin.period2Months"></option>
-                        <option value="7776000" i18n="habmin.period3Months"></option>
-                        <option value="10454400" i18n="habmin.period4Months"></option>
-                        <option value="15724800" i18n="habmin.period6Months"></option>
-                        <option value="23095800" i18n="habmin.period9Months"></option>
-                        <option value="31536000" i18n="habmin.period1Year"></option>
-                    </select>
-                </div>
-            </div>
-            <button type="submit" ng-click="submit()" class="btn btn-primary btn-block">Login</button>
-        </form>
+        </div>
     </div>
+        </div>
 </div>
 
 <div id="content">

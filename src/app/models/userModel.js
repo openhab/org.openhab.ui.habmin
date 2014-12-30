@@ -146,6 +146,9 @@ angular.module('HABmin.userModel', [
         $scope.showServer = document.HABminOnPhone;
         $scope.server = UserService.getServer();
 
+        $scope.HABminVersion = document.HABminVersionString;
+        $scope.HABminDate = moment(document.HABminVersionDate).format("ll");
+
         if($scope.period == null) {
             $scope.period = 3600;
         }

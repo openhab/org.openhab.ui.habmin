@@ -16,6 +16,13 @@
     "mainErrorLoadingSitemaps": "Error loading sitemap list!",
     "mainErrorGettingBindings": "Error getting list of bindings!",
 
+    "loginFormTitle": "Login Required",
+    "loginVersion": "HABmin version",
+    "loginServer": "Server",
+    "loginUser": "Username",
+    "loginPassword": "Password",
+    "loginSubmit": "Login",
+
     "chartItemList": "Items",
     "chartChartList": "Charts",
     "chartNoItems": "No Items To Chart",
