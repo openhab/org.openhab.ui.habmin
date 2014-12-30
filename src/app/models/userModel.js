@@ -24,7 +24,7 @@ angular.module('HABmin.userModel', [
         var storedPass = localStorage.getItem('Auth-pass');
         var storedTime = localStorage.getItem('Auth-time');
 
-        if(storedTime > new Date().getTime()) {
+        if (storedTime > new Date().getTime()) {
             console.log("Using saved authentication data!");
             $http.defaults.headers.common['Authorization'] = 'Basic ' + storedPass;
 
@@ -46,12 +46,12 @@ angular.module('HABmin.userModel', [
         };
 
         var server = "";
-        if(document.HABminOnPhone === true) {
+        if (document.HABminOnPhone === true) {
             server = localStorage.getItem('Server');
         }
 
         // If we've previously saved the theme, restore the user selection
-        if(localStorage.getItem('Theme') != null) {
+        if (localStorage.getItem('Theme') != null) {
             userConfig.theme = localStorage.getItem('Theme');
         }
 
@@ -69,7 +69,7 @@ angular.module('HABmin.userModel', [
             },
 
             getServer: function () {
-                if(document.HABminOnPhone === true) {
+                if (document.HABminOnPhone === true) {
                     return server;
                 }
                 return "";
@@ -107,7 +107,7 @@ angular.module('HABmin.userModel', [
 //                    success();
 //                }).error(error);
             },
-            userCfg: function() {
+            userCfg: function () {
                 return userConfig;
             }
 
@@ -117,21 +117,21 @@ angular.module('HABmin.userModel', [
         };
     })
 
-    .directive('loginHandler', function() {
+    .directive('loginHandler', function () {
         return {
             restrict: 'C',
-            link: function(scope, elem, attrs) {
+            link: function (scope, elem, attrs) {
                 var login = elem.find('#login-holder');
                 var main = elem.find('#content');
 
                 login.hide();
 
-                scope.$on('event:auth-loginRequired', function() {
-                    $('#login-holder').slideDown('slow', function() {
+                scope.$on('event:auth-loginRequired', function () {
+                    $('#login-holder').slideDown('slow', function () {
                         $('#content').hide();
                     });
                 });
-                scope.$on('event:auth-loginConfirmed', function() {
+                scope.$on('event:auth-loginConfirmed', function () {
                     $('#content').show();
                     $('#login-holder').slideUp();
                 });
@@ -149,12 +149,13 @@ angular.module('HABmin.userModel', [
         $scope.HABminVersion = document.HABminVersionString;
         $scope.HABminDate = moment(document.HABminVersionDate).format("ll");
 
-        if($scope.period == null) {
+        if ($scope.period == null) {
             $scope.period = 3600;
         }
 
-        $scope.submit = function() {
-            var pass = $base64.encode( $scope.user + ':' + $scope.password);
+        $scope.submit = function () {
+            UserService.setServer($scope.server);
+            var pass = $base64.encode($scope.user + ':' + $scope.password);
             console.log($scope.password, $scope.user, pass);
             $http.defaults.headers.common['Authorization'] = 'Basic ' + pass;
 
@@ -163,7 +164,7 @@ angular.module('HABmin.userModel', [
             localStorage.setItem('Auth-time', $scope.period * 1000 + new Date().getTime());
             localStorage.setItem('Auth-period', $scope.period);
 
-            authService.loginConfirmed(null, function(config) {
+            authService.loginConfirmed(null, function (config) {
                 config.headers['Authorization'] = 'Basic ' + pass;
                 return config;
             });
