@@ -1,6 +1,7 @@
 *.sw*
 *~
 node_modules/
+phonegap-build/
 bin/
 build/
 .idea/
