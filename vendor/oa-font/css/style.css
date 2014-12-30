@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'openautomation';
-	src:url('../../../assets/openautomation.eot?5ao571');
-	src:url('../../../assets/openautomation.eot?#iefix5ao571') format('embedded-opentype'),
-		url('../../../assets/openautomation.woff?5ao571') format('woff'),
-		url('../../../assets/openautomation.ttf?5ao571') format('truetype'),
-		url('../../../assets/openautomation.svg?5ao571#openautomation') format('svg');
+	src:url('../assets/openautomation.eot?5ao571');
+	src:url('../assets/openautomation.eot?#iefix5ao571') format('embedded-opentype'),
+		url('../assets/openautomation.woff?5ao571') format('woff'),
+		url('../assets/openautomation.ttf?5ao571') format('truetype'),
+		url('../assets/openautomation.svg?5ao571#openautomation') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }

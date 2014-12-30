@@ -115,6 +115,8 @@ module.exports = {
             'vendor/jquery-ui/themes/base/core.css',
             'vendor/jquery-ui/themes/base/resizable.css',
             'vendor/oa-font/css/style.css',
+            'vendor/fontawesome/css/font-awesome.css',
+            'vendor/weather-icons/css/weather-icons.css',
             'vendor/fullcalendar/fullcalendar.css',
             'vendor/vis/dist/vis.css',
             'vendor/angular-bootstrap-datetimepicker/src/css/datetimepicker.css',
