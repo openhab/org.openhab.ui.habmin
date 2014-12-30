@@ -71,6 +71,16 @@
   }
 
   /**
+   * For smaller screens, reduce the padding on the side of the screen
+   */
+  .container-fluid {
+    @media (max-width: @grid-float-breakpoint-max) {
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+  }
+
+  /**
    * Navigation
    */
 
@@ -358,7 +368,7 @@
   .login-form {
     padding-top: 50px;
   }
-  
+
   .vis.timeline.root {
     border: none;
   }
