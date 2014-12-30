@@ -19,7 +19,6 @@
     <% }); %>
 
     <script type="text/javascript">
-
         document.HABminVersionString = "<%= version %>";
         document.HABminVersionDate = "<%= grunt.template.today('yyyy-mm-dd\'T\'HH:MM:ss') %>";
 
@@ -240,7 +239,7 @@
                     <li class="dropdown" ng-if="isLoggedIn()">
                         <a class="dropdown-toggle" data-toggle="dropdown">
                             <span class="fa fa-fw fa-user"></span>
-                            <span i18n="habmin.mainUserPreferences"></span>
+                            <span class="hidden-sm" i18n="habmin.mainUserPreferences"></span>
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
