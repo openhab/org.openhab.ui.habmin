@@ -180,6 +180,8 @@ angular.module('HABmin', [
         );
 
         $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+            // Collapse the menu if we change view
+            $scope.menuCollapsed=true;
             if (angular.isDefined(toState.data.pageTitle)) {
                 $scope.pageTitle = toState.data.pageTitle + ' | HABmin';
             }

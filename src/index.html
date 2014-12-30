@@ -43,76 +43,76 @@
 
 <div id="login-holder" class="login-form login-handler" style="display:none;">
     <div class="container-fluid">
-    <div id="loginbox" class="col-sm-4 col-sm-offset-4" ng-controller="LoginController">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <span class="fa fa-key"></span>&nbsp;<span i18n="habmin.loginFormTitle"></span>
-            </div>
-            <div class="panel-body">
-                <form name="form">
-                    <!-- SERVER -->
-                    <div class="form-group" ng-show="showServer" ng-class="{'has-error': form.server.$invalid && submitted}">
-                        <label for="server" class="control-label"><span i18n="habmin.loginServer"></span></label>
+        <div id="loginbox" class="col-sm-4 col-sm-offset-4" ng-controller="LoginController">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="fa fa-key"></span>&nbsp;<span i18n="habmin.loginFormTitle"></span>
+                </div>
+                <div class="panel-body">
+                    <form name="form">
+                        <!-- SERVER -->
+                        <div class="form-group" ng-show="showServer" ng-class="{'has-error': form.server.$invalid && submitted}">
+                            <label for="server" class="control-label"><span i18n="habmin.loginServer"></span></label>
 
-                        <div class="input-group">
-                            <span class="input-group-addon"><span class="fa fa-user"></span></span>
-                            <input
-                                    type="text"
-                                    class="form-control"
-                                    id="server"
-                                    name="server"
-                                    placeholder="Server"
-                                    ng-model="server"
-                                    ng-model-options="{updateOn: 'blur'}"
-                                    required>
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="fa fa-user"></span></span>
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        id="server"
+                                        name="server"
+                                        placeholder="Server"
+                                        ng-model="server"
+                                        ng-model-options="{updateOn: 'blur'}"
+                                        required>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- USERNAME -->
-                    <div class="form-group" ng-class="{'has-error': form.user.$invalid && submitted}">
-                        <label for="user" class="control-label"><span i18n="habmin.loginUser"></span></label>
+                        <!-- USERNAME -->
+                        <div class="form-group" ng-class="{'has-error': form.user.$invalid && submitted}">
+                            <label for="user" class="control-label"><span i18n="habmin.loginUser"></span></label>
 
-                        <div class="input-group">
-                            <span class="input-group-addon"><span class="fa fa-user"></span></span>
-                            <input
-                                    type="text"
-                                    class="form-control"
-                                    id="user"
-                                    name="user"
-                                    placeholder="Username"
-                                    ng-model="user"
-                                    ng-model-options="{updateOn: 'blur'}"
-                                    required>
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="fa fa-user"></span></span>
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        id="user"
+                                        name="user"
+                                        placeholder="Username"
+                                        ng-model="user"
+                                        ng-model-options="{updateOn: 'blur'}"
+                                        required>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- PASSWORD -->
-                    <div class="form-group" ng-class="{'has-error': form.password.$invalid && submitted}">
-                        <label for="password" class="control-label"><span i18n="habmin.loginPassword"></span></label>
+                        <!-- PASSWORD -->
+                        <div class="form-group" ng-class="{'has-error': form.password.$invalid && submitted}">
+                            <label for="password" class="control-label"><span i18n="habmin.loginPassword"></span></label>
 
-                        <div class="input-group">
-                            <span class="input-group-addon"><span class="fa fa-lock"></span></span>
-                            <input
-                                    type="password"
-                                    class="form-control"
-                                    id="password"
-                                    name="password"
-                                    placeholder="Password"
-                                    ng-model="password"
-                                    ng-model-options="{updateOn: 'blur'}"
-                                    required>
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="fa fa-lock"></span></span>
+                                <input
+                                        type="password"
+                                        class="form-control"
+                                        id="password"
+                                        name="password"
+                                        placeholder="Password"
+                                        ng-model="password"
+                                        ng-model-options="{updateOn: 'blur'}"
+                                        required>
+                            </div>
                         </div>
-                    </div>
-                    <button type="submit" ng-click="submit()" class="btn btn-primary btn-block"><span i18n="habmin.loginSubmit"></span></button>
-                </form>
-            </div>
-            <div class="panel-footer">
-                <div class="text-center"><small>
-                    <span i18n="habmin.loginVersion"></span>&nbsp;<span>{{HABminVersion}}</span>,&nbsp;<span>{{HABminDate}}</span>
-                </small></div>
+                        <button type="submit" ng-click="submit()" class="btn btn-primary btn-block"><span i18n="habmin.loginSubmit"></span></button>
+                    </form>
+                </div>
+                <div class="panel-footer">
+                    <div class="text-center"><small>
+                        <span i18n="habmin.loginVersion"></span>&nbsp;<span>{{HABminVersion}}</span>,&nbsp;<span>{{HABminDate}}</span>
+                    </small></div>
+                </div>
             </div>
         </div>
-    </div>
         </div>
 </div>
 
@@ -238,7 +238,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown" ng-if="isLoggedIn()">
                         <a class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="fa fa-fw fa-user"></span>
+                            <span class="fa fa-user"></span>
                             <span class="hidden-sm" i18n="habmin.mainUserPreferences"></span>
                             <span class="caret"></span>
                         </a>
