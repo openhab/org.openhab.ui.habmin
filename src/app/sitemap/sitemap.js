@@ -184,7 +184,7 @@ angular.module('HABmin.sitemap', [
                 }
 
                 function processPage(pageDef) {
-                    var pageTpl = '<div class="container-fluid sitemap-title"><div class="col-md-12">' +
+                    var pageTpl = '<div class=" sitemap-title"><div class="col-md-12">' +
                         '<span class="sitemap-parent">';
                     if (pageDef.parent != null) {
                         pageTpl +=
@@ -256,7 +256,6 @@ angular.module('HABmin.sitemap', [
                             children = "<div>" + processWidget([].concat(widget.widget)) + "</div>";
                         }
                         else {
-                            widgetClass.push("row");
                             widgetClass.push("sitemap-row");
                         }
 

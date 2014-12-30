@@ -150,8 +150,6 @@
     background-color: @panel-default-heading-bg;
     .box-shadow(0 1px 1px rgba(0,0,0,.05));
     width: 100%;
-    margin-left: -@panel-body-padding;
-    margin-right: -@panel-body-padding;
     padding-left: @panel-body-padding;
     padding-right: @panel-body-padding;
     margin-bottom: 5px;
@@ -189,8 +187,7 @@
   }
 
   .sitemap-row {
-    padding-left: 10px;
-    padding-right: 10px;
+    width:100%;
   }
 
   .sitemap-frame-title {
@@ -203,8 +200,10 @@
   }
 
   .sitemap-frame {
-    margin-left: 10px;
-    margin-right: 10px;
+    @media (min-width: @grid-float-breakpoint-max) {
+      margin-left: 10px;
+      margin-right: 10px;
+    }
     margin-bottom: 20px;
   }
 
