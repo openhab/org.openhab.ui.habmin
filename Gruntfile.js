@@ -193,6 +193,15 @@ module.exports = function (grunt) {
                         expand: true
                     }
                 ]
+            },
+            phonegap_android: {
+                files: [
+                    {
+                        src: ['<%= phonebuild_dir %>/platforms/android/ant-build/CordovaApp-debug.apk'],
+                        dest: '<%= output_dir %>/<%= pkg.name %>-<%= pkg.version %>.apk',
+                        cwd: '.'
+                    }
+                ]
             }
         },
 
@@ -584,20 +593,13 @@ module.exports = function (grunt) {
 //                plugins: ['/local/path/to/plugin', 'http://example.com/path/to/plugin.git'],
                 platforms: ['android'],
                 maxBuffer: 200, // You may need to raise this for iOS.
-                verbose: false,
+                verbose: true,
                 releases: 'releases',
                 releaseName: function () {
                     var pkg = grunt.file.readJSON('package.json');
                     return (pkg.name + '-' + pkg.version);
                 },
                 debuggable: false,
-
-                // Must be set for ios to work.
-                // Should return the app name.
-                name: function () {
-                    var pkg = grunt.file.readJSON('package.json');
-                    return pkg.name;
-                },
 
                 // Add a key if you plan to use the `release:android` task
                 // See http://developer.android.com/tools/publishing/app-signing.html
@@ -861,7 +863,7 @@ module.exports = function (grunt) {
      * Phonegap compiler - internal...
      */
     grunt.registerTask('compile_phonegap', [
-        'index:phonegap', 'phonegap:build']);
+        'index:phonegap', 'phonegap:build', 'copy:phonegap_android']);
 
     /**
      * The `compile` task gets your app ready for deployment by concatenating and

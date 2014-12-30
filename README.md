@@ -4,15 +4,18 @@ HABmin2
 HABmin version2 - ultimately targeted toward openHAB2
 
 ## Features
-* Responsive. Should work well on all devices. Of course some functions may be removed or be difficult to use on small devices (eg the graphical rule editor)
+* Responsive. Should work well on all devices. Of course some functions may be removed or be difficult to use on small devices (eg the graphical rule editor).
 * Theme-able. Multiple themes are available - take your pick.
+* Charting. Modern, fast charting of historical data.
+* Graphical rule editor. No need to learn rule syntax.
+* Available as native apps for Android.
 
 Installation
 ============
 
-To test, you need to grab the habmin JAR from the HABmin repository (https://github.com/cdjackson/HABmin/blob/master/addons/org.openhab.io.habmin-1.6.0-SNAPSHOT.jar) and add it to your addons folder.
+To test, you need to grab the habmin JAR from the HABmin repository (https://github.com/cdjackson/HABmin/blob/master/addons/org.openhab.io.habmin-1.7.0-SNAPSHOT.jar) and add it to your addons folder along with the zwave binding from the same site (or any other recent zwave binding if you prefer).
 
-Then grab the test ZIP file (https://github.com/cdjackson/HABmin2/releases/download/0.0.2/habmin2.zip) and unzip it into a folder webapps/habmin2 in your openhab installation.
+Then grab the appropriate ZIP file, generally the release version, from https://github.com/cdjackson/HABmin2/output and unzip it into a folder webapps/habmin2 in your openhab installation.
 
 Then open the browser at http://openhab server/habmin2.
 
