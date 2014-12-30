@@ -12,7 +12,7 @@
 [class^="oa-"], [class*=" oa-"] {
     display: inline-block;
 	font: normal normal normal 14px/1 'openautomation';
-    font-size: inherit; // can't have font-size inherit on line above, so need to override
+    font-size: inherit;
 	font-style: normal;
 	font-weight: normal;
 	font-variant: normal;
