@@ -9,7 +9,7 @@ module.exports = {
      */
     build_dir: 'build',
     compile_dir: 'bin',
-    phonebuild_dir: 'phonegap-build',
+    cordova_dir: 'cordova',
     output_dir: 'output',
 
     /**

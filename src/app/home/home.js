@@ -36,7 +36,7 @@ angular.module('HABmin.home', [
     .controller('HomeCtrl', function HomeController($scope, UserService) {
         $scope.version = document.HABminVersionString;
         $scope.date = document.HABminVersionDate;
-        $scope.phone = document.HABminOnPhone;
+        $scope.phone = document.HABminCordova;
         $scope.server = UserService.getServer();
     })
 

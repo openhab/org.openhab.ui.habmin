@@ -46,7 +46,7 @@ angular.module('HABmin.userModel', [
         };
 
         var server = "";
-        if (document.HABminOnPhone === true) {
+        if (document.HABminCordova === true) {
             server = localStorage.getItem('Server');
         }
 
@@ -72,7 +72,7 @@ angular.module('HABmin.userModel', [
             },
 
             getServer: function () {
-                if (document.HABminOnPhone === true) {
+                if (document.HABminCordova === true) {
                     return server;
                 }
                 return "";
@@ -147,7 +147,7 @@ angular.module('HABmin.userModel', [
         $scope.user = localStorage.getItem('Auth-user');
         $scope.period = localStorage.getItem('Auth-period');
 
-        $scope.showServer = document.HABminOnPhone;
+        $scope.showServer = document.HABminCordova;
         $scope.server = UserService.getServer();
 
         $scope.HABminVersion = document.HABminVersionString;

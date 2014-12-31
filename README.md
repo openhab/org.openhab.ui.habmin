@@ -65,12 +65,12 @@ Contributing
 Clone the repository to your computer.
 install ```npm``` (node package manager) and run ```npm update``` to install all the development dependencies.
 
-For phonegap compilation, you need to install ```ant``` and the android developers kits and set paths appropriately.
+For mobile app compilation, you need to install ```cordova``` and ```ant``` and the android developers kits and set paths appropriately.
 
 To compile for debug, run ```grunt build```. This will generate a debug build in the ```build`` folder
 and also put a zipped ```debug``` version into the ```output``` folder.
 
-To compile for PhoneGap releases, run ```grunt phones```
+To compile for mobile releases (currently only Android supported), run ```grunt mobile```
 
 To compile for release, run ```grunt compile```. This will generate a minified version in the ```bin``` folder
 and also put a zipped ```debug``` and ```release``` versions into the ```output``` folder.

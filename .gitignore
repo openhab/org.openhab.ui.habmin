@@ -1,7 +1,8 @@
 *.sw*
 *~
 node_modules/
-phonegap-build/
+cordova/platforms
+cordova/www
 bin/
 build/
 .idea/

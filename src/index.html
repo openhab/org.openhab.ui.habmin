@@ -22,9 +22,9 @@
         document.HABminVersionString = "<%= version %>";
         document.HABminVersionDate = "<%= grunt.template.today('yyyy-mm-dd\'T\'HH:MM:ss') %>";
 
-        <% if(buildtype == 'phonegap') { %>
-        <!-- Handle application startup for PhoneGap -->
-        document.HABminOnPhone = true;
+        <% if(buildtype == 'cordova') { %>
+        <!-- Handle application startup for Cordova -->
+        document.HABminCordova = true;
         $(document).ready(function() {
             document.addEventListener("deviceready", function onDeviceReady() {
                 angular.bootstrap(document, ['HABmin']);
@@ -32,7 +32,7 @@
         });
         <% } else { %>
         <!-- Handle application startup within browser -->
-        document.HABminOnPhone = false;
+        document.HABminCordova = false;
         $(document).ready(function() {
             angular.bootstrap(document, ['HABmin']);
         });
