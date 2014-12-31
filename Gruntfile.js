@@ -204,6 +204,16 @@ module.exports = function (grunt) {
                     }
                 ]
             },
+            cordova_compile: {
+                files: [
+                    {
+                        src: ['**'],
+                        dest: '<%= cordova_dir %>/www/',
+                        cwd: '<%= compile_dir %>',
+                        expand: true
+                    }
+                ]
+            },
             cordova_android: {
                 files: [
                     {
@@ -445,7 +455,7 @@ module.exports = function (grunt) {
                     '<%= build_dir %>/src/**/*.js',
                     '<%= html2js.common.dest %>',
                     '<%= html2js.app.dest %>',
-                    '<%= vendor_files.css %>',
+                    '<%= build_dir %>/assets/**/*.css',
                     '<%= build_dir %>/assets/<%= pkg.name %>-*-<%= pkg.version %>.css'
                 ],
                 build: 'cordova'
@@ -761,13 +771,19 @@ module.exports = function (grunt) {
      * Phonegap compiler - external...
      */
     grunt.registerTask('mobile', [
-        'build', 'compile_cordova']);
+        'build', 'build_cordova']);
+
+    /**
+     * Phonegap compiler - internal...
+     */
+    grunt.registerTask('build_cordova', [
+        'copy:cordova_build', 'index:cordova', 'shell:build_android', 'copy:cordova_android']);
 
     /**
      * Phonegap compiler - internal...
      */
     grunt.registerTask('compile_cordova', [
-        'copy:cordova_build', 'index:cordova', 'shell:build_android', 'copy:cordova_android']);
+        'copy:cordova_compile', 'index:cordova', 'shell:build_android', 'copy:cordova_android']);
 
     /**
      * The `compile` task gets your app ready for deployment by concatenating and
@@ -779,9 +795,8 @@ module.exports = function (grunt) {
         'build',
         'copy:compile_assets', 'copy:compile_languages', 'clean:css', 'cssmin', 'json-minify',
         'concat:compile_js', 'ngAnnotate', 'uglify', 'index:compile', 'htmlmin:compile',
-        'compress'
-        //,
-//        'compile_phonegap'
+        'compress',
+        'compile_cordova'
     ]);
 
     /**

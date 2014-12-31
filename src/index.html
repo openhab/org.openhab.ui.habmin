@@ -5,7 +5,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <% if(buildtype == 'phonegap') { %>
+    <% if(buildtype == 'cordova') { %>
     <!-- Include PhoneGap -->
     <script type="text/javascript" src="cordova.js"></script>
     <% } %>
@@ -28,7 +28,7 @@
         $(document).ready(function() {
             document.addEventListener("deviceready", function onDeviceReady() {
                 angular.bootstrap(document, ['HABmin']);
-            }, false);
+            }, true);
         });
         <% } else { %>
         <!-- Handle application startup within browser -->
