@@ -58,6 +58,8 @@ angular.module('HABmin', [
             warning: 5000,
             error: 15000
         });
+        growlProvider.globalDisableIcons(true);
+
         pickAColorProvider.setOptions({
             inlineDropdown: true
         });
