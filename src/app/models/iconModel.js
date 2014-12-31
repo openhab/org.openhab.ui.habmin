@@ -37,6 +37,7 @@ angular.module('HABmin.iconModel', [
             "garden": {class: "oa-scene_garden"},
             "heating": {class: "oa-sani_heating"},
             "heating_floor": {class: "oa-sani_floor_heating"},
+            "key": {class: "fa fa-key"},
             "kitchen": {class: ""},
             "light": {class: "oa-light_light"},
             "light-control": {class: "oa-light_control"},

@@ -49,7 +49,8 @@ angular.module('Binding.zwave', [
             "POWER_SWITCH_MULTILEVEL": "light-control",
             "ROUTING_SENSOR_BINARY": "door-open",
             "SWITCH_REMOTE_MULTILEVEL": "temperature",
-            "ALARM_SENSOR_ROUTING": "alarm"
+            "ALARM_SENSOR_ROUTING": "alarm",
+            "SECURE_KEYPAD_DOOR_LOCK": "lock"
         };
 
         $scope.devices = {};
