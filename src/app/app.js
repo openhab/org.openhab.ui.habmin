@@ -138,9 +138,10 @@ angular.module('HABmin', [
             UserService.login();
         };
 
-        // Install handlers to catch authorisation failures
-        $scope.$on('event:auth-loginConfirmed', function () {
-            // Load models used in the nav bar
+        console.log("Login updated");
+
+        // Load models used in the nav bar
+        function getAppData() {
             $scope.sitemaps = null;
             SitemapModel.getList().then(
                 function (data) {
@@ -182,9 +183,23 @@ angular.module('HABmin', [
                     growl.warning(locale.getString("habmin.mainErrorGettingBindings"));
                 }
             );
+        }
+
+        // If we're logged in, then get the app data
+        // This is needed as we will miss the event if we're already logged in!
+        if(UserService.isLoggedIn() === true) {
+            getAppData();
+        }
+
+        // Install handlers to catch authorisation failures
+        $scope.$on('event:auth-loginConfirmed', function () {
+            getAppData();
         });
 
         $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+            // Reset the sidebar
+            SidepanelService.showSidebar(true);
+
             // Collapse the menu if we change view
             $scope.menuCollapsed=true;
             if (angular.isDefined(toState.data.pageTitle)) {
