@@ -2,7 +2,173 @@
 http://visjs.org
 
 
-## 2014-10-16, version 3.5.0
+## 2014-12-09, version 3.7.2
+
+### Timeline
+
+- Fixed zooming issue on mobile devices.
+
+### Graph2D
+
+- Fixed infinite loop when clearing DataSet
+
+### Network
+
+- Sidestepped double touch event from hammer (ugly.. but functional) causing
+  strange behaviour in manipulation mode
+- Better cleanup after reconnecting edges in manipulation mode
+
+
+## 2014-11-28, version 3.7.1
+
+### Timeline
+
+- Implemented selection of a range of items using Shift+Click.
+- Fixed content in range items may overflow range after zoom.
+- Fixed onAdd/onUpdate callbacks when using a DataView (thanks @motzel).
+- Fixed configuring either `start` or `end`.
+- Fixed Timeline and Graph2d getting stuck in an infinite loop in some
+  circumstances.
+- Fixed background items being selectable and editable when a height is set.
+
+### Graph2D
+
+- Added `alignZeros` option to dataAxis with default value true.
+- Fixed bug with points drawn on bargraphs
+- Fixed docs
+- Fixed height increase on scrolling if only `graphHeight` is defined.
+
+### Network
+
+- dragEnd event now does not give the selected nodes if only the viewport has been dragged #453
+- merged high DPI fix by @crubier, thanks!
+
+
+## 2014-11-14, version 3.7.0
+
+### Graph2D
+
+- Added points style for scatterplots and pointclouds.
+- Modularized the Graph2D draw styles.
+- Added a finishedRedraw event.
+
+### Network
+
+- Added pointer properties to the click and the doubleClick events containing the XY coordinates in DOM and canvas space.
+- Removed IDs from navigation so multiple networks can be shown on the same page. (#438)
+
+
+### Timeline
+
+- Added a finishedRedraw event.
+- Fixed the disappearing item bug.
+- Fixed keycharm issue.
+
+## 2014-11-07, version 3.6.4
+
+### General
+
+- Removed mousetrap due to Apache license, created keycharm and implemented it with vis.
+
+### Timeline
+
+- Fixed height of background items when having a fixed or max height defined.
+- Fixed only one item being dragged when multiple items are selected.
+- Optimised a serious slowdown on performance since hidden dates.
+
+### Network
+
+- Fixed onRelease with navigation option.
+- Fixed arrow heads not being colored.
+
+### Graph2D
+
+- Fixed cleaning up of groups.
+- Throw error message when items are added before groups.
+- Made graphHeight automatic if height is defined AND if graphHeight is smaller than the center panel when height is defined as well.
+- Added new verticalDrag event for internal use, allowing the vertical scrolling of the grid lines on drag.
+- Fixed moving legend when postioned on the bottom and vertical dragging.
+- Optimised a serious slowdown on performance since hidden dates.
+
+- Accepted a large pull request from @cdjackson adding the following features (thank you!): 
+- Titles on the DataAxis to explain what units you are using.
+- A style field for groups and datapoints so you can dynamically change styles.
+- A precision option to manually set the amount of decimals.
+- Two new examples showing the new features.
+
+
+## 2014-10-28, version 3.6.3
+
+### Timeline
+
+- Fixed background items not always be cleared when removing them.
+- Fixed visible items not always be displayed.
+- Performance improvements when doing a lot of changes at once in a DataSet.
+
+### Network
+
+- Fixed dashed and arrow lines not using inheritColor.
+
+### DataSet
+
+- Support for queueing of changes, and flushing them at once.
+- Implemented `DataSet.setOptions`. Only applicable for the `queue` options.
+
+
+## 2014-10-24, version 3.6.2
+
+- Vis.js is now dual licensed under both Apache 2.0 and MIT.
+
+
+## 2014-10-22, version 3.6.1
+
+### Timeline
+
+- Fixed uneven stepsized with hidden dates.
+- Fixed multiple bugs with regards to hidden dates.
+- Fixed subgroups and added subgroup sorting. Subgroup labels will be in future releases.
+
+
+## 2014-10-21, version 3.6.0
+
+### Network
+
+- Title of nodes and edges can now be an HTML element too.
+- Renamed storePosition to storePositions. Added deprication message and old name still works.
+- Worked around hammer.js bug with multiple release listeners.
+- Improved cleaning up after manipulation toolbar.
+- Added getPositions() method to get the position of all nodes or some of them if specific Ids are supplied.
+- Added getCenterCoordinates() method to get the x and y position in canvas space of the center of the view.
+- Fixed node label becoming undefined.
+- Fixed cluster fontsize scaling.
+- Fixed cluster sector scaling.
+- Added oldHeight and oldWidth to resize event.
+
+### Timeline
+
+- Implemented field `style` for both items and groups, to set a custom style for
+  individual items.
+- Fixed height of BackgroundItems not being 100% when timeline has a fixed height.
+- Fixed width of BackgroundItems not being reduced to 0 when zooming out.
+- Fixed onclick events in items not working.
+- Added hiddenDates to hide specific times and/or days in the timeline.
+
+### DataSet
+
+- Event listeners of `update` now receive an extra property `data`, 
+  containing the changed fields of the changed items.
+
+### Graph2d
+
+- Fixed height of legend when there are many items showing.
+
+### Graph3d
+
+- Implemented options `xValueLabel`, `yValueLabel` and `zValueLabel` for custom labels along
+  the x, y, z axis. Thanks @fabriziofortino.
+
+
+## 2014-09-16, version 3.5.0
 
 ### Network
 
@@ -15,7 +181,7 @@ http://visjs.org
 - Fixed dataAxis not showing large numbers correctly.
 
 
-## 2014-10-12, version 3.4.2
+## 2014-09-12, version 3.4.2
 
 ### Network
 
@@ -23,9 +189,10 @@ http://visjs.org
 - Fixed possible cause of freezing graph when animating.
 - Added locked to focusOnNode and releaseNode().
 - Fixed minor bug in positioning of fontFill of nodes with certain shapes.
+- Added startStabilization event.
 
 
-## 2014-10-11, version 3.4.1
+## 2014-09-11, version 3.4.1
 
 ### Network
 

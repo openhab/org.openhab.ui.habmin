@@ -18,7 +18,14 @@ var LineGraph = require('./component/LineGraph');
  * @constructor
  * @extends Core
  */
-function Graph2d (container, items, options, groups) {
+function Graph2d (container, items, groups, options) {
+  // if the third element is options, the forth is groups (optionally);
+  if (!(Array.isArray(groups) || groups instanceof DataSet) && groups instanceof Object) {
+    var forthArgument = options;
+    options = groups;
+    groups = forthArgument;
+  }
+
   var me = this;
   this.defaultOptions = {
     start: null,
@@ -48,6 +55,7 @@ function Graph2d (container, items, options, groups) {
       off: this.off.bind(this),
       emit: this.emit.bind(this)
     },
+    hiddenDates: [],
     util: {
       snap: null, // will be specified after TimeAxis is created
       toScreen: me._toScreen.bind(me),
@@ -134,13 +142,16 @@ Graph2d.prototype.setItems = function(items) {
   this.itemsData = newDataSet;
   this.linegraph && this.linegraph.setItems(newDataSet);
 
-  if (initialLoad && ('start' in this.options || 'end' in this.options)) {
-    this.fit();
+  if (initialLoad) {
+    if (this.options.start != undefined || this.options.end != undefined) {
+      var start = this.options.start != undefined ? this.options.start : null;
+      var end   = this.options.end != undefined   ? this.options.end : null;
 
-    var start = ('start' in this.options) ? util.convert(this.options.start, 'Date') : null;
-    var end   = ('end' in this.options)   ? util.convert(this.options.end, 'Date') : null;
-
-    this.setWindow(start, end);
+      this.setWindow(start, end, {animate: false});
+    }
+    else {
+      this.fit({animate: false});
+    }
   }
 };
 

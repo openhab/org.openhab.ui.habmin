@@ -83,7 +83,7 @@ PointItem.prototype.redraw = function() {
   if (!dom.point.parentNode) {
     var foreground = this.parent.dom.foreground;
     if (!foreground) {
-      throw new Error('Cannot redraw time axis: parent has no foreground container element');
+      throw new Error('Cannot redraw item: parent has no foreground container element');
     }
     foreground.appendChild(dom.point);
   }
@@ -97,6 +97,7 @@ PointItem.prototype.redraw = function() {
     this._updateContents(this.dom.content);
     this._updateTitle(this.dom.point);
     this._updateDataAttributes(this.dom.point);
+    this._updateStyle(this.dom.point);
 
     // update class
     var className = (this.data.className? ' ' + this.data.className : '') +

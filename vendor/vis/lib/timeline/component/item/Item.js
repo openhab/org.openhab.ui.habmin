@@ -1,4 +1,5 @@
 var Hammer = require('../../../module/hammer');
+var util = require('../../../util');
 
 /**
  * @constructor Item
@@ -26,6 +27,8 @@ function Item (data, conversion, options) {
   this.width = null;
   this.height = null;
 }
+
+Item.prototype.stack = true;
 
 /**
  * Select current item
@@ -168,15 +171,22 @@ Item.prototype._updateContents = function (element) {
     content = this.data.content;
   }
 
-  if (content instanceof Element) {
-    element.innerHTML = '';
-    element.appendChild(content);
-  }
-  else if (content != undefined) {
-    element.innerHTML = content;
-  }
-  else {
-    throw new Error('Property "content" missing in item ' + this.data.id);
+  if(content !== this.content) {
+    // only replace the content when changed
+    if (content instanceof Element) {
+      element.innerHTML = '';
+      element.appendChild(content);
+    }
+    else if (content != undefined) {
+      element.innerHTML = content;
+    }
+    else {
+      if (!(this.data.type == 'background' && this.data.content === undefined)) {
+        throw new Error('Property "content" missing in item ' + this.id);
+      }
+    }
+
+    this.content = content;
   }
 };
 
@@ -201,8 +211,20 @@ Item.prototype._updateTitle = function (element) {
  */
  Item.prototype._updateDataAttributes = function(element) {
   if (this.options.dataAttributes && this.options.dataAttributes.length > 0) {
-    for (var i = 0; i < this.options.dataAttributes.length; i++) {
-      var name = this.options.dataAttributes[i];
+    var attributes = [];
+
+    if (Array.isArray(this.options.dataAttributes)) {
+      attributes = this.options.dataAttributes;
+    }
+    else if (this.options.dataAttributes == 'all') {
+      attributes = Object.keys(this.data);
+    }
+    else {
+      return;
+    }
+
+    for (var i = 0; i < attributes.length; i++) {
+      var name = attributes[i];
       var value = this.data[name];
 
       if (value != null) {
@@ -212,6 +234,25 @@ Item.prototype._updateTitle = function (element) {
         element.removeAttribute('data-' + name);
       }
     }
+  }
+};
+
+/**
+ * Update custom styles of the element
+ * @param element
+ * @private
+ */
+Item.prototype._updateStyle = function(element) {
+  // remove old styles
+  if (this.style) {
+    util.removeCssText(element, this.style);
+    this.style = null;
+  }
+
+  // append new styles
+  if (this.data.style) {
+    util.addCssText(element, this.data.style);
+    this.style = this.data.style;
   }
 };
 

@@ -55,6 +55,14 @@ module.exports = function (grunt) {
           base: '<%= dirs.demo %>',
           keepalive: true
         }
+      },
+      e2e: {
+        options: {
+          port: 9999,
+          hostname: '0.0.0.0',
+          base: '<%= dirs.demo %>',
+          keepalive: false
+        }
       }
     },
 
@@ -137,6 +145,23 @@ module.exports = function (grunt) {
       }
     },
 
+    protractor: {
+      options: {
+        configFile: 'node_modules/protractor/example/conf.js', // Default config file
+        keepAlive: true,
+        noColor: false,
+        args: {
+
+        }
+      },
+      demoApp: {   // Grunt requires at least one target to run so you can simply put 'all: {}' here too.
+        options: {
+          configFile: 'protractor-e2e.conf.js', // Target-specific config file
+          args: {} // Target-specific arguments
+        }
+      }
+    },
+
     release: {  // grunt-release
       options: {
         file: 'bower.json',
@@ -182,7 +207,9 @@ module.exports = function (grunt) {
   grunt.registerTask('test', [
     'jshint:all',
     'ngtemplates',
-    'karma:single'
+    'karma:single',
+    'connect:e2e',
+    'protractor'
   ]);
 
   // Build task.

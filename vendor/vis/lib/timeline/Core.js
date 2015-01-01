@@ -4,11 +4,9 @@ var util = require('../util');
 var DataSet = require('../DataSet');
 var DataView = require('../DataView');
 var Range = require('./Range');
-var TimeAxis = require('./component/TimeAxis');
-var CurrentTime = require('./component/CurrentTime');
-var CustomTime = require('./component/CustomTime');
 var ItemSet = require('./component/ItemSet');
 var Activator = require('../shared/Activator');
+var DateUtil = require('./DateUtil');
 
 /**
  * Create a timeline visualization
@@ -91,11 +89,27 @@ Core.prototype._create = function (container) {
   this.dom.rightContainer.appendChild(this.dom.shadowBottomRight);
 
   this.on('rangechange', this.redraw.bind(this));
-  this.on('change', this.redraw.bind(this));
   this.on('touch', this._onTouch.bind(this));
   this.on('pinch', this._onPinch.bind(this));
   this.on('dragstart', this._onDragStart.bind(this));
   this.on('drag', this._onDrag.bind(this));
+
+  var me = this;
+  this.on('change', function (properties) {
+    if (properties && properties.queue == true) {
+      // redraw once on next tick
+      if (!me._redrawTimer) {
+        me._redrawTimer = setTimeout(function () {
+          me._redrawTimer = null;
+          me.redraw();
+        }, 0)
+      }
+    }
+    else {
+      // redraw immediately
+      me.redraw();
+    }
+  });
 
   // create event listeners for all interesting events, these events will be
   // emitted via emitter
@@ -104,7 +118,6 @@ Core.prototype._create = function (container) {
   });
   this.listeners = {};
 
-  var me = this;
   var events = [
     'touch', 'pinch',
     'tap', 'doubletap', 'hold',
@@ -140,6 +153,8 @@ Core.prototype._create = function (container) {
   };
   this.touch = {}; // store state information needed for touch events
 
+  this.redrawCount = 0;
+
   // attach the root panel to the provided container
   if (!container) throw new Error('No container provided');
   container.appendChild(this.dom.root);
@@ -173,8 +188,12 @@ Core.prototype._create = function (container) {
 Core.prototype.setOptions = function (options) {
   if (options) {
     // copy the known options
-    var fields = ['width', 'height', 'minHeight', 'maxHeight', 'autoResize', 'start', 'end', 'orientation', 'clickToUse', 'dataAttributes'];
+    var fields = ['width', 'height', 'minHeight', 'maxHeight', 'autoResize', 'start', 'end', 'orientation', 'clickToUse', 'dataAttributes', 'hiddenDates'];
     util.selectiveExtend(fields, this.options, options);
+
+    if ('hiddenDates' in this.options) {
+      DateUtil.convertHiddenOptions(this.body, this.options.hiddenDates);
+    }
 
     if ('clickToUse' in options) {
       if (options.clickToUse) {
@@ -333,6 +352,23 @@ Core.prototype.clear = function(what) {
  *                                 for the animation. Default duration is 500 ms.
  */
 Core.prototype.fit = function(options) {
+  var range = this._getDataRange();
+
+  // skip range set if there is no start and end date
+  if (range.start === null && range.end === null) {
+    return;
+  }
+
+  var animate = (options && options.animate !== undefined) ? options.animate : true;
+  this.range.setRange(range.start, range.end, animate);
+};
+
+/**
+ * Calculate the data range of the items and applies a 5% window around it.
+ * @returns {{start: Date | null, end: Date | null}}
+ * @protected
+ */
+Core.prototype._getDataRange = function() {
   // apply the data range as range
   var dataRange = this.getItemRange();
 
@@ -349,13 +385,10 @@ Core.prototype.fit = function(options) {
     end = new Date(end.valueOf() + interval * 0.05);
   }
 
-  // skip range set if there is no start and end date
-  if (start === null && end === null) {
-    return;
+  return {
+    start: start,
+    end: end
   }
-
-  var animate = (options && options.animate !== undefined) ? options.animate : true;
-  this.range.setRange(start, end, animate);
 };
 
 /**
@@ -426,12 +459,14 @@ Core.prototype.getWindow = function() {
  * option autoResize=false
  */
 Core.prototype.redraw = function() {
-  var resized = false,
-    options = this.options,
-    props = this.props,
-    dom = this.dom;
+  var resized = false;
+  var options = this.options;
+  var props = this.props;
+  var dom = this.dom;
 
   if (!dom) return; // when destroyed
+
+  DateUtil.updateHiddenDates(this.body, this.options.hiddenDates);
 
   // update class names
   if (options.orientation == 'top') {
@@ -571,8 +606,18 @@ Core.prototype.redraw = function() {
   });
   if (resized) {
     // keep repainting until all sizes are settled
-    this.redraw();
+    var MAX_REDRAWS = 3; // maximum number of consecutive redraws
+    if (this.redrawCount < MAX_REDRAWS) {
+      this.redrawCount++;
+      this.redraw();
+    }
+    else {
+      console.log('WARNING: infinite loop in redraw?')
+    }
+    this.redrawCount = 0;
   }
+
+  this.emit("finishedRedraw");
 };
 
 // TODO: deprecated since version 1.1.0, remove some day
@@ -616,10 +661,8 @@ Core.prototype.getCurrentTime = function() {
  */
 // TODO: move this function to Range
 Core.prototype._toTime = function(x) {
-  var conversion = this.range.conversion(this.props.center.width);
-  return new Date(x / conversion.scale + conversion.offset);
+  return DateUtil.toTime(this, x, this.props.center.width);
 };
-
 
 /**
  * Convert a position on the global screen (pixels) to a datetime
@@ -629,8 +672,9 @@ Core.prototype._toTime = function(x) {
  */
 // TODO: move this function to Range
 Core.prototype._toGlobalTime = function(x) {
-  var conversion = this.range.conversion(this.props.root.width);
-  return new Date(x / conversion.scale + conversion.offset);
+  return DateUtil.toTime(this, x, this.props.root.width);
+  //var conversion = this.range.conversion(this.props.root.width);
+  //return new Date(x / conversion.scale + conversion.offset);
 };
 
 /**
@@ -642,9 +686,9 @@ Core.prototype._toGlobalTime = function(x) {
  */
 // TODO: move this function to Range
 Core.prototype._toScreen = function(time) {
-  var conversion = this.range.conversion(this.props.center.width);
-  return (time.valueOf() - conversion.offset) * conversion.scale;
+  return DateUtil.toScreen(this, time, this.props.center.width);
 };
+
 
 
 /**
@@ -657,8 +701,9 @@ Core.prototype._toScreen = function(time) {
  */
 // TODO: move this function to Range
 Core.prototype._toGlobalScreen = function(time) {
-  var conversion = this.range.conversion(this.props.root.width);
-  return (time.valueOf() - conversion.offset) * conversion.scale;
+  return DateUtil.toScreen(this, time, this.props.root.width);
+  //var conversion = this.range.conversion(this.props.root.width);
+  //return (time.valueOf() - conversion.offset) * conversion.scale;
 };
 
 
@@ -770,8 +815,10 @@ Core.prototype._onDrag = function (event) {
   var oldScrollTop = this._getScrollTop();
   var newScrollTop = this._setScrollTop(this.touch.initialScrollTop + delta);
 
+
   if (newScrollTop != oldScrollTop) {
     this.redraw(); // TODO: this causes two redraws when dragging, the other is triggered by rangechange already
+    this.emit("verticalDrag");
   }
 };
 

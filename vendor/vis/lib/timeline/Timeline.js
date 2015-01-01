@@ -14,13 +14,21 @@ var ItemSet = require('./component/ItemSet');
  * Create a timeline visualization
  * @param {HTMLElement} container
  * @param {vis.DataSet | Array | google.visualization.DataTable} [items]
+ * @param {vis.DataSet | Array | google.visualization.DataTable} [groups]
  * @param {Object} [options]  See Timeline.setOptions for the available options.
  * @constructor
  * @extends Core
  */
-function Timeline (container, items, options) {
+function Timeline (container, items, groups, options) {
   if (!(this instanceof Timeline)) {
     throw new SyntaxError('Constructor must be called with the new operator');
+  }
+
+  // if the third element is options, the forth is groups (optionally);
+  if (!(Array.isArray(groups) || groups instanceof DataSet) && groups instanceof Object) {
+    var forthArgument = options;
+    options = groups;
+    groups = forthArgument;
   }
 
   var me = this;
@@ -52,6 +60,7 @@ function Timeline (container, items, options) {
       off: this.off.bind(this),
       emit: this.emit.bind(this)
     },
+    hiddenDates: [],
     util: {
       snap: null, // will be specified after TimeAxis is created
       toScreen: me._toScreen.bind(me),
@@ -90,6 +99,11 @@ function Timeline (container, items, options) {
   // apply options
   if (options) {
     this.setOptions(options);
+  }
+
+  // IMPORTANT: THIS HAPPENS BEFORE SET ITEMS!
+  if (groups) {
+    this.setGroups(groups);
   }
 
   // create itemset
@@ -132,10 +146,15 @@ Timeline.prototype.setItems = function(items) {
   // set items
   this.itemsData = newDataSet;
   this.itemSet && this.itemSet.setItems(newDataSet);
+
   if (initialLoad) {
     if (this.options.start != undefined || this.options.end != undefined) {
-      var start = this.options.start != undefined ? this.options.start : null;
-      var end   = this.options.end != undefined   ? this.options.end : null;
+      if (this.options.start == undefined || this.options.end == undefined) {
+        var dataRange = this._getDataRange();
+      }
+
+      var start = this.options.start != undefined ? this.options.start : dataRange.start;
+      var end   = this.options.end != undefined   ? this.options.end   : dataRange.end;
 
       this.setWindow(start, end, {animate: false});
     }

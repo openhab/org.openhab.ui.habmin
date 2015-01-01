@@ -38,11 +38,15 @@ function Edge (properties, network, networkConstants) {
   this.value  = undefined;
   this.selected = false;
   this.hover = false;
-  this.labelDimensions = {top:0,left:0,width:0,height:0};
+  this.labelDimensions = {top:0,left:0,width:0,height:0,yLine:0}; // could be cached
+  this.dirtyLabel = true;
 
   this.from = null;   // a node
   this.to = null;     // a node
   this.via = null;    // a temp node
+
+  this.fromBackup = null; // used to clean up after reconnect
+  this.toBackup = null;;  // used to clean up after reconnect
 
   // we use this to be able to reconnect the edge to a cluster if its node is put into a cluster
   // by storing the original information we can revert to the original connection when the cluser is opened.
@@ -80,7 +84,7 @@ Edge.prototype.setProperties = function(properties) {
   if (properties.to !== undefined)             {this.toId = properties.to;}
 
   if (properties.id !== undefined)             {this.id = properties.id;}
-  if (properties.label !== undefined)          {this.label = properties.label;}
+  if (properties.label !== undefined)          {this.label = properties.label; this.dirtyLabel = true;}
 
   if (properties.title !== undefined)        {this.title = properties.title;}
   if (properties.value !== undefined)        {this.value = properties.value;}
@@ -243,7 +247,7 @@ Edge.prototype._getColor = function() {
   if (this.selected == true)   {return colorObj.highlight;}
   else if (this.hover == true) {return colorObj.hover;}
   else                         {return colorObj.color;}
-}
+};
 
 
 /**
@@ -480,7 +484,7 @@ Edge.prototype._getViaCoordinates = function () {
 
 
   return {x:xVia, y:yVia};
-}
+};
 
 /**
  * Draw a line between two nodes
@@ -545,37 +549,43 @@ Edge.prototype._circle = function (ctx, x, y, radius) {
  */
 Edge.prototype._label = function (ctx, text, x, y) {
   if (text) {
-    // TODO: cache the calculated size
     ctx.font = ((this.from.selected || this.to.selected) ? "bold " : "") +
-        this.options.fontSize + "px " + this.options.fontFace;
+    this.options.fontSize + "px " + this.options.fontFace;
+    var yLine;
 
+    if (this.dirtyLabel == true) {
+      var lines = String(text).split('\n');
+      var lineCount = lines.length;
+      var fontSize = (Number(this.options.fontSize) + 4);
+      yLine = y + (1 - lineCount) / 2 * fontSize;
 
-    var lines = String(text).split('\n');
-    var lineCount = lines.length;
-    var fontSize = (Number(this.options.fontSize) + 4);
-    var yLine = y + (1 - lineCount) / 2 * fontSize;
+      var width = ctx.measureText(lines[0]).width;
+      for (var i = 1; i < lineCount; i++) {
+        var lineWidth = ctx.measureText(lines[i]).width;
+        width = lineWidth > width ? lineWidth : width;
+      }
+      var height = this.options.fontSize * lineCount;
+      var left = x - width / 2;
+      var top = y - height / 2;
 
-    var width = ctx.measureText(lines[0]).width;
-    for (var i = 1; i < lineCount; i++) {
-      var lineWidth = ctx.measureText(lines[i]).width;
-      width = lineWidth > width ? lineWidth : width;
+      // cache
+      this.labelDimensions = {top:top,left:left,width:width,height:height,yLine:yLine};
     }
-    var height = this.options.fontSize * lineCount;
-    var left = x - width / 2;
-    var top = y - height / 2;
 
-    this.labelDimensions = {top:top,left:left,width:width,height:height};
 
     if (this.options.fontFill !== undefined && this.options.fontFill !== null && this.options.fontFill !== "none") {
       ctx.fillStyle = this.options.fontFill;
-      ctx.fillRect(left, top, width, height);
+      ctx.fillRect(this.labelDimensions.left,
+        this.labelDimensions.top,
+        this.labelDimensions.width,
+        this.labelDimensions.height);
     }
 
     // draw text
     ctx.fillStyle = this.options.fontColor || "black";
     ctx.textAlign = "center";
     ctx.textBaseline =  "middle";
-
+    yLine = this.labelDimensions.yLine;
     for (var i = 0; i < lineCount; i++) {
       ctx.fillText(lines[i], x, yLine);
       yLine += fontSize;
@@ -594,10 +604,7 @@ Edge.prototype._label = function (ctx, text, x, y) {
  */
 Edge.prototype._drawDashLine = function(ctx) {
   // set style
-  if (this.selected == true)   {ctx.strokeStyle = this.options.color.highlight;}
-  else if (this.hover == true) {ctx.strokeStyle = this.options.color.hover;}
-  else                         {ctx.strokeStyle = this.options.color.color;}
-
+  ctx.strokeStyle = this._getColor();
   ctx.lineWidth = this._getLineWidth();
 
   var via = null;
@@ -712,9 +719,8 @@ Edge.prototype._pointOnCircle = function (x, y, radius, percentage) {
 Edge.prototype._drawArrowCenter = function(ctx) {
   var point;
   // set style
-  if (this.selected == true)   {ctx.strokeStyle = this.options.color.highlight; ctx.fillStyle = this.options.color.highlight;}
-  else if (this.hover == true) {ctx.strokeStyle = this.options.color.hover;     ctx.fillStyle = this.options.color.hover;}
-  else                         {ctx.strokeStyle = this.options.color.color;     ctx.fillStyle = this.options.color.color;}
+  ctx.strokeStyle = this._getColor();
+  ctx.fillStyle = ctx.strokeStyle;
   ctx.lineWidth = this._getLineWidth();
 
   if (this.from != this.to) {
@@ -787,10 +793,8 @@ Edge.prototype._drawArrowCenter = function(ctx) {
  */
 Edge.prototype._drawArrow = function(ctx) {
   // set style
-  if (this.selected == true)   {ctx.strokeStyle = this.options.color.highlight; ctx.fillStyle = this.options.color.highlight;}
-  else if (this.hover == true) {ctx.strokeStyle = this.options.color.hover;     ctx.fillStyle = this.options.color.hover;}
-  else                         {ctx.strokeStyle = this.options.color.color;     ctx.fillStyle = this.options.color.color;}
-
+  ctx.strokeStyle = this._getColor();
+  ctx.fillStyle = ctx.strokeStyle;
   ctx.lineWidth = this._getLineWidth();
 
   var angle, length;
@@ -1008,7 +1012,7 @@ Edge.prototype._getDistanceToLine = function(x1,y1,x2,y2,x3,y3) {
   //# (i.e. remove the sqrt) to gain a little performance
 
   return Math.sqrt(dx*dx + dy*dy);
-}
+};
 
 /**
  * This allows the zoom level of the network to influence the rendering
@@ -1036,7 +1040,8 @@ Edge.prototype.positionBezierNode = function() {
 };
 
 /**
- * This function draws the control nodes for the manipulator. In order to enable this, only set the this.controlNodesEnabled to true.
+ * This function draws the control nodes for the manipulator.
+ * In order to enable this, only set the this.controlNodesEnabled to true.
  * @param ctx
  */
 Edge.prototype._drawControlNodes = function(ctx) {
@@ -1082,16 +1087,30 @@ Edge.prototype._drawControlNodes = function(ctx) {
  * @private
  */
 Edge.prototype._enableControlNodes = function() {
+  this.fromBackup = this.from;
+  this.toBackup = this.to;
   this.controlNodesEnabled = true;
 };
 
 /**
- * disable control nodes
+ * disable control nodes and remove from dynamicEdges from old node
  * @private
  */
 Edge.prototype._disableControlNodes = function() {
+  this.fromId = this.from.id;
+  this.toId = this.to.id;
+  if (this.fromId != this.fromBackup.id) { // from was changed, remove edge from old 'from' node dynamic edges
+    this.fromBackup.detachEdge(this);
+  }
+  else if (this.toId != this.toBackup.id) { // to was changed, remove edge from old 'to' node dynamic edges
+    this.toBackup.detachEdge(this);
+  }
+
+  this.fromBackup = null;
+  this.toBackup = null;
   this.controlNodesEnabled = false;
 };
+
 
 /**
  * This checks if one of the control nodes is selected and if so, returns the control node object. Else it returns null.
@@ -1131,7 +1150,7 @@ Edge.prototype._restoreControlNodes = function() {
     this.connectedNode = null;
     this.controlNodes.from.unselect();
   }
-  if (this.controlNodes.to.selected == true) {
+  else if (this.controlNodes.to.selected == true) {
     this.to = this.connectedNode;
     this.connectedNode = null;
     this.controlNodes.to.unselect();

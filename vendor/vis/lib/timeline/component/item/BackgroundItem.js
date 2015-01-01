@@ -1,5 +1,6 @@
 var Hammer = require('../../../module/hammer');
 var Item = require('./Item');
+var BackgroundGroup = require('../BackgroundGroup');
 var RangeItem = require('./RangeItem');
 
 /**
@@ -32,11 +33,14 @@ function BackgroundItem (data, conversion, options) {
   }
 
   Item.call(this, data, conversion, options);
+
+  this.emptyContent = false;
 }
 
 BackgroundItem.prototype = new Item (null, null, null);
 
 BackgroundItem.prototype.baseClassName = 'item background';
+BackgroundItem.prototype.stack = false;
 
 /**
  * Check whether this item is visible inside given range
@@ -58,7 +62,7 @@ BackgroundItem.prototype.redraw = function() {
     this.dom = {};
     dom = this.dom;
 
-      // background box
+    // background box
     dom.box = document.createElement('div');
     // className is updated in redraw()
 
@@ -67,8 +71,9 @@ BackgroundItem.prototype.redraw = function() {
     dom.content.className = 'content';
     dom.box.appendChild(dom.content);
 
-    // attach this item as attribute
-    dom.box['timeline-item'] = this;
+    // Note: we do NOT attach this item as attribute to the DOM,
+    //       such that background items cannot be selected
+    //dom.box['timeline-item'] = this;
 
     this.dirty = true;
   }
@@ -80,7 +85,7 @@ BackgroundItem.prototype.redraw = function() {
   if (!dom.box.parentNode) {
     var background = this.parent.dom.background;
     if (!background) {
-      throw new Error('Cannot redraw time axis: parent has no background container element');
+      throw new Error('Cannot redraw item: parent has no background container element');
     }
     background.appendChild(dom.box);
   }
@@ -94,6 +99,7 @@ BackgroundItem.prototype.redraw = function() {
     this._updateContents(this.dom.content);
     this._updateTitle(this.dom.content);
     this._updateDataAttributes(this.dom.content);
+    this._updateStyle(this.dom.box);
 
     // update class
     var className = (this.data.className ? (' ' + this.data.className) : '') +
@@ -133,10 +139,70 @@ BackgroundItem.prototype.repositionX = RangeItem.prototype.repositionX;
  * Reposition the item vertically
  * @Override
  */
-BackgroundItem.prototype.repositionY = function() {
+BackgroundItem.prototype.repositionY = function(margin) {
   var onTop = this.options.orientation === 'top';
   this.dom.content.style.top = onTop ? '' : '0';
   this.dom.content.style.bottom = onTop ? '0' : '';
+  var height;
+
+  // special positioning for subgroups
+  if (this.data.subgroup !== undefined) {
+    var itemSubgroup = this.data.subgroup;
+    var subgroups = this.parent.subgroups;
+    var subgroupIndex = subgroups[itemSubgroup].index;
+    // if the orientation is top, we need to take the difference in height into account.
+    if (onTop == true) {
+      // the first subgroup will have to account for the distance from the top to the first item.
+      height = this.parent.subgroups[itemSubgroup].height + margin.item.vertical;
+      height += subgroupIndex == 0 ? margin.axis - 0.5*margin.item.vertical : 0;
+      var newTop = this.parent.top;
+      for (var subgroup in subgroups) {
+        if (subgroups.hasOwnProperty(subgroup)) {
+          if (subgroups[subgroup].visible == true && subgroups[subgroup].index < subgroupIndex) {
+            newTop += subgroups[subgroup].height + margin.item.vertical;
+          }
+        }
+      }
+
+      // the others will have to be offset downwards with this same distance.
+      newTop += subgroupIndex != 0 ? margin.axis - 0.5 * margin.item.vertical : 0;
+      this.dom.box.style.top = newTop + 'px';
+      this.dom.box.style.bottom = '';
+    }
+    // and when the orientation is bottom:
+    else {
+      var newTop = this.parent.top;
+      for (var subgroup in subgroups) {
+        if (subgroups.hasOwnProperty(subgroup)) {
+          if (subgroups[subgroup].visible == true && subgroups[subgroup].index > subgroupIndex) {
+            newTop += subgroups[subgroup].height + margin.item.vertical;
+          }
+        }
+      }
+      height = this.parent.subgroups[itemSubgroup].height + margin.item.vertical;
+      this.dom.box.style.top = newTop + 'px';
+      this.dom.box.style.bottom = '';
+    }
+  }
+  // and in the case of no subgroups:
+  else {
+    // we want backgrounds with groups to only show in groups.
+    if (this.parent instanceof BackgroundGroup) {
+      // if the item is not in a group:
+      height = Math.max(this.parent.height,
+          this.parent.itemSet.body.domProps.center.height,
+          this.parent.itemSet.body.domProps.centerContainer.height);
+      this.dom.box.style.top = onTop ? '0' : '';
+      this.dom.box.style.bottom = onTop ? '' : '0';
+    }
+    else {
+      height = this.parent.height;
+      // same alignment for items when orientation is top or bottom
+      this.dom.box.style.top = this.parent.top + 'px';
+      this.dom.box.style.bottom = '';
+    }
+  }
+  this.dom.box.style.height = height + 'px';
 };
 
 module.exports = BackgroundItem;

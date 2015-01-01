@@ -10,10 +10,11 @@ exports._cleanNavigation = function() {
     this.navigationHammers.existing = [];
   }
 
+  this._navigationReleaseOverload = function () {};
+
   // clean up previous navigation items
-  var wrapper = document.getElementById('network-navigation_wrapper');
-  if (wrapper && wrapper.parentNode) {
-    wrapper.parentNode.removeChild(wrapper);
+  if (this.navigationDivs && this.navigationDivs['wrapper'] && this.navigationDivs['wrapper'].parentNode) {
+    this.navigationDivs['wrapper'].parentNode.removeChild(this.navigationDivs['wrapper']);
   }
 };
 
@@ -33,25 +34,21 @@ exports._loadNavigationElements = function() {
   var navigationDivActions = ['_moveUp','_moveDown','_moveLeft','_moveRight','_zoomIn','_zoomOut','_zoomExtent'];
 
   this.navigationDivs['wrapper'] = document.createElement('div');
-  this.navigationDivs['wrapper'].id = 'network-navigation_wrapper';
   this.frame.appendChild(this.navigationDivs['wrapper']);
 
   for (var i = 0; i < navigationDivs.length; i++) {
     this.navigationDivs[navigationDivs[i]] = document.createElement('div');
-    this.navigationDivs[navigationDivs[i]].id = 'network-navigation_' + navigationDivs[i];
     this.navigationDivs[navigationDivs[i]].className = 'network-navigation ' + navigationDivs[i];
     this.navigationDivs['wrapper'].appendChild(this.navigationDivs[navigationDivs[i]]);
 
     var hammer = Hammer(this.navigationDivs[navigationDivs[i]], {prevent_default: true});
     hammer.on('touch', this[navigationDivActions[i]].bind(this));
-    this.navigationHammers.new.push(hammer);
+    this.navigationHammers._new.push(hammer);
   }
 
-  var hammerDoc = Hammer(document, {prevent_default: false});
-  hammerDoc.on('release', this._stopMovement.bind(this));
-  this.navigationHammers.new.push(hammerDoc);
+  this._navigationReleaseOverload = this._stopMovement;
 
-  this.navigationHammers.existing = this.navigationHammers.new;
+  this.navigationHammers.existing = this.navigationHammers._new;
 };
 
 
@@ -61,12 +58,8 @@ exports._loadNavigationElements = function() {
  * @private
  */
 exports._zoomExtent = function(event) {
-  // FIXME: this is a workaround because the binding of Hammer on Document makes this fire twice
-  if (this._zoomExtentLastTime === undefined || new Date() - this._zoomExtentLastTime > 200) {
-    this._zoomExtentLastTime = new Date();
-    this.zoomExtent({duration:800});
-    event.stopPropagation();
-  }
+  this.zoomExtent({duration:700});
+  event.stopPropagation();
 };
 
 /**

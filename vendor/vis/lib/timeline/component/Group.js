@@ -10,7 +10,9 @@ var RangeItem = require('./item/RangeItem');
  */
 function Group (groupId, data, itemSet) {
   this.groupId = groupId;
-
+  this.subgroups = {};
+  this.subgroupIndex = 0;
+  this.subgroupOrderer = data && data.subgroupOrder;
   this.itemSet = itemSet;
 
   this.dom = {};
@@ -24,10 +26,15 @@ function Group (groupId, data, itemSet) {
 
   this.items = {};        // items filtered by groupId of this group
   this.visibleItems = []; // items currently visible in window
-  this.orderedItems = {   // items sorted by start and by end
+  this.orderedItems = {
     byStart: [],
     byEnd: []
   };
+  this.checkRangedItems = false; // needed to refresh the ranged items if the window is programatically changed with NO overlap.
+  var me = this;
+  this.itemSet.body.emitter.on("checkRangedItems", function () {
+    me.checkRangedItems = true;
+  })
 
   this._create();
 
@@ -63,7 +70,7 @@ Group.prototype._create = function() {
   // to the DOM, or the style of a parent of the Timeline is changed from
   // display:none is changed to visible.
   this.dom.marker = document.createElement('div');
-  this.dom.marker.style.visibility = 'hidden';
+  this.dom.marker.style.visibility = 'hidden'; // TODO: ask jos why this is not none?
   this.dom.marker.innerHTML = '?';
   this.dom.background.appendChild(this.dom.marker);
 };
@@ -110,6 +117,16 @@ Group.prototype.setData = function(data) {
     util.addClassName(this.dom.axis, className);
     this.className = className;
   }
+
+  // update style
+  if (this.style) {
+    util.removeCssText(this.dom.label, this.style);
+    this.style = null;
+  }
+  if (data && data.style) {
+    util.addCssText(this.dom.label, data.style);
+    this.style = data.style;
+  }
 };
 
 /**
@@ -152,33 +169,11 @@ Group.prototype.redraw = function(range, margin, restack) {
     stack.stack(this.visibleItems, margin, restack);
   }
   else { // no stacking
-    stack.nostack(this.visibleItems, margin);
+    stack.nostack(this.visibleItems, margin, this.subgroups);
   }
 
   // recalculate the height of the group
-  var height;
-  var visibleItems = this.visibleItems;
-  if (visibleItems.length) {
-    var min = visibleItems[0].top;
-    var max = visibleItems[0].top + visibleItems[0].height;
-    util.forEach(visibleItems, function (item) {
-      min = Math.min(min, item.top);
-      max = Math.max(max, (item.top + item.height));
-    });
-    if (min > margin.axis) {
-      // there is an empty gap between the lowest item and the axis
-      var offset = min - margin.axis;
-      max -= offset;
-      util.forEach(visibleItems, function (item) {
-        item.top -= offset;
-      });
-    }
-    height = max + margin.item.vertical / 2;
-  }
-  else {
-    height = margin.axis + margin.item.vertical;
-  }
-  height = Math.max(height, this.props.label.height);
+  var height = this._calculateHeight(margin);
 
   // calculate actual size and position
   var foreground = this.dom.foreground;
@@ -199,10 +194,57 @@ Group.prototype.redraw = function(range, margin, restack) {
   // update vertical position of items after they are re-stacked and the height of the group is calculated
   for (var i = 0, ii = this.visibleItems.length; i < ii; i++) {
     var item = this.visibleItems[i];
-    item.repositionY();
+    item.repositionY(margin);
   }
 
   return resized;
+};
+
+/**
+ * recalculate the height of the group
+ * @param {{item: {horizontal: number, vertical: number}, axis: number}} margin
+ * @returns {number} Returns the height
+ * @private
+ */
+Group.prototype._calculateHeight = function (margin) {
+  // recalculate the height of the group
+  var height;
+  var visibleItems = this.visibleItems;
+  //var visibleSubgroups = [];
+  //this.visibleSubgroups = 0;
+  this.resetSubgroups();
+  var me = this;
+  if (visibleItems.length) {
+    var min = visibleItems[0].top;
+    var max = visibleItems[0].top + visibleItems[0].height;
+    util.forEach(visibleItems, function (item) {
+      min = Math.min(min, item.top);
+      max = Math.max(max, (item.top + item.height));
+      if (item.data.subgroup !== undefined) {
+        me.subgroups[item.data.subgroup].height = Math.max(me.subgroups[item.data.subgroup].height,item.height);
+        me.subgroups[item.data.subgroup].visible = true;
+        //if (visibleSubgroups.indexOf(item.data.subgroup) == -1){
+        //  visibleSubgroups.push(item.data.subgroup);
+        //  me.visibleSubgroups += 1;
+        //}
+      }
+    });
+    if (min > margin.axis) {
+      // there is an empty gap between the lowest item and the axis
+      var offset = min - margin.axis;
+      max -= offset;
+      util.forEach(visibleItems, function (item) {
+        item.top -= offset;
+      });
+    }
+    height = max + margin.item.vertical / 2;
+  }
+  else {
+    height = margin.axis + margin.item.vertical;
+  }
+  height = Math.max(height, this.props.label.height);
+
+  return height;
 };
 
 /**
@@ -259,9 +301,53 @@ Group.prototype.add = function(item) {
   this.items[item.id] = item;
   item.setParent(this);
 
+  // add to
+  if (item.data.subgroup !== undefined) {
+    if (this.subgroups[item.data.subgroup] === undefined) {
+      this.subgroups[item.data.subgroup] = {height:0, visible: false, index:this.subgroupIndex, items: []};
+      this.subgroupIndex++;
+    }
+    this.subgroups[item.data.subgroup].items.push(item);
+  }
+  this.orderSubgroups();
+
   if (this.visibleItems.indexOf(item) == -1) {
     var range = this.itemSet.body.range; // TODO: not nice accessing the range like this
     this._checkIfVisible(item, this.visibleItems, range);
+  }
+};
+
+Group.prototype.orderSubgroups = function() {
+  if (this.subgroupOrderer !== undefined) {
+    var sortArray = [];
+    if (typeof this.subgroupOrderer == 'string') {
+      for (var subgroup in this.subgroups) {
+        sortArray.push({subgroup: subgroup, sortField: this.subgroups[subgroup].items[0].data[this.subgroupOrderer]})
+      }
+      sortArray.sort(function (a, b) {
+        return a.sortField - b.sortField;
+      })
+    }
+    else if (typeof this.subgroupOrderer == 'function') {
+      for (var subgroup in this.subgroups) {
+        sortArray.push(this.subgroups[subgroup].items[0].data);
+      }
+      sortArray.sort(this.subgroupOrderer);
+    }
+
+    if (sortArray.length > 0) {
+      for (var i = 0; i < sortArray.length; i++) {
+        this.subgroups[sortArray[i].subgroup].index = i;
+      }
+    }
+  }
+};
+
+Group.prototype.resetSubgroups = function() {
+  for (var subgroup in this.subgroups) {
+    if (this.subgroups.hasOwnProperty(subgroup)) {
+      this.subgroups[subgroup].visible = false;
+    }
   }
 };
 
@@ -271,7 +357,7 @@ Group.prototype.add = function(item) {
  */
 Group.prototype.remove = function(item) {
   delete this.items[item.id];
-  item.setParent(this.itemSet);
+  item.setParent(null);
 
   // remove from visible items
   var index = this.visibleItems.indexOf(item);
@@ -279,6 +365,7 @@ Group.prototype.remove = function(item) {
 
   // TODO: also remove from ordered items?
 };
+
 
 /**
  * Remove an item from the corresponding DataSet
@@ -288,34 +375,30 @@ Group.prototype.removeFromDataSet = function(item) {
   this.itemSet.removeItem(item.id);
 };
 
+
 /**
  * Reorder the items
  */
 Group.prototype.order = function() {
   var array = util.toArray(this.items);
-  this.orderedItems.byStart = array;
-  this.orderedItems.byEnd = this._constructByEndArray(array);
+  var startArray = [];
+  var endArray = [];
+
+  for (var i = 0; i < array.length; i++) {
+    if (array[i].data.end !== undefined) {
+      endArray.push(array[i]);
+    }
+    startArray.push(array[i]);
+  }
+  this.orderedItems = {
+    byStart: startArray,
+    byEnd: endArray
+  };
 
   stack.orderByStart(this.orderedItems.byStart);
   stack.orderByEnd(this.orderedItems.byEnd);
 };
 
-/**
- * Create an array containing all items being a range (having an end date)
- * @param {Item[]} array
- * @returns {RangeItem[]}
- * @private
- */
-Group.prototype._constructByEndArray = function(array) {
-  var endArray = [];
-
-  for (var i = 0; i < array.length; i++) {
-    if (array[i] instanceof RangeItem) {
-      endArray.push(array[i]);
-    }
-  }
-  return endArray;
-};
 
 /**
  * Update the visible items
@@ -325,79 +408,114 @@ Group.prototype._constructByEndArray = function(array) {
  * @return {Item[]} visibleItems                            The new visible items.
  * @private
  */
-Group.prototype._updateVisibleItems = function(orderedItems, visibleItems, range) {
-  var initialPosByStart,
-      newVisibleItems = [],
-      i;
+Group.prototype._updateVisibleItems = function(orderedItems, oldVisibleItems, range) {
+  var visibleItems = [];
+  var visibleItemsLookup = {}; // we keep this to quickly look up if an item already exists in the list without using indexOf on visibleItems
+  var interval = (range.end - range.start) / 4;
+  var lowerBound = range.start - interval;
+  var upperBound = range.end + interval;
+  var item, i;
+
+  // this function is used to do the binary search.
+  var searchFunction = function (value) {
+    if      (value < lowerBound)  {return -1;}
+    else if (value <= upperBound) {return  0;}
+    else                          {return  1;}
+  }
 
   // first check if the items that were in view previously are still in view.
-  // this handles the case for the RangeItem that is both before and after the current one.
-  if (visibleItems.length > 0) {
-    for (i = 0; i < visibleItems.length; i++) {
-      this._checkIfVisible(visibleItems[i], newVisibleItems, range);
+  // IMPORTANT: this handles the case for the items with startdate before the window and enddate after the window!
+  // also cleans up invisible items.
+  if (oldVisibleItems.length > 0) {
+    for (i = 0; i < oldVisibleItems.length; i++) {
+      this._checkIfVisibleWithReference(oldVisibleItems[i], visibleItems, visibleItemsLookup, range);
     }
   }
 
-  // If there were no visible items previously, use binarySearch to find a visible PointItem or RangeItem (based on startTime)
-  if (newVisibleItems.length == 0) {
-    initialPosByStart = util.binarySearch(orderedItems.byStart, range, 'data','start');
+  // we do a binary search for the items that have only start values.
+  var initialPosByStart = util.binarySearchCustom(orderedItems.byStart, searchFunction, 'data','start');
+
+  // trace the visible items from the inital start pos both ways until an invisible item is found, we only look at the start values.
+  this._traceVisible(initialPosByStart, orderedItems.byStart, visibleItems, visibleItemsLookup, function (item) {
+    return (item.data.start < lowerBound || item.data.start > upperBound);
+  });
+
+  // if the window has changed programmatically without overlapping the old window, the ranged items with start < lowerBound and end > upperbound are not shown.
+  // We therefore have to brute force check all items in the byEnd list
+  if (this.checkRangedItems == true) {
+    this.checkRangedItems = false;
+    for (i = 0; i < orderedItems.byEnd.length; i++) {
+      this._checkIfVisibleWithReference(orderedItems.byEnd[i], visibleItems, visibleItemsLookup, range);
+    }
   }
   else {
-    initialPosByStart = orderedItems.byStart.indexOf(newVisibleItems[0]);
+    // we do a binary search for the items that have defined end times.
+    var initialPosByEnd = util.binarySearchCustom(orderedItems.byEnd, searchFunction, 'data','end');
+
+    // trace the visible items from the inital start pos both ways until an invisible item is found, we only look at the end values.
+    this._traceVisible(initialPosByEnd, orderedItems.byEnd, visibleItems, visibleItemsLookup, function (item) {
+      return (item.data.end < lowerBound || item.data.end > upperBound);
+    });
   }
 
-  // use visible search to find a visible RangeItem (only based on endTime)
-  var initialPosByEnd = util.binarySearch(orderedItems.byEnd, range, 'data','end');
 
-  // if we found a initial ID to use, trace it up and down until we meet an invisible item.
-  if (initialPosByStart != -1) {
-    for (i = initialPosByStart; i >= 0; i--) {
-      if (this._checkIfInvisible(orderedItems.byStart[i], newVisibleItems, range)) {break;}
-    }
-    for (i = initialPosByStart + 1; i < orderedItems.byStart.length; i++) {
-      if (this._checkIfInvisible(orderedItems.byStart[i], newVisibleItems, range)) {break;}
-    }
-  }
-
-  // if we found a initial ID to use, trace it up and down until we meet an invisible item.
-  if (initialPosByEnd != -1) {
-    for (i = initialPosByEnd; i >= 0; i--) {
-      if (this._checkIfInvisible(orderedItems.byEnd[i], newVisibleItems, range)) {break;}
-    }
-    for (i = initialPosByEnd + 1; i < orderedItems.byEnd.length; i++) {
-      if (this._checkIfInvisible(orderedItems.byEnd[i], newVisibleItems, range)) {break;}
-    }
-  }
-
-  return newVisibleItems;
-};
-
-
-
-/**
- * this function checks if an item is invisible. If it is NOT we make it visible
- * and add it to the global visible items. If it is, return true.
- *
- * @param {Item} item
- * @param {Item[]} visibleItems
- * @param {{start:number, end:number}} range
- * @returns {boolean}
- * @private
- */
-Group.prototype._checkIfInvisible = function(item, visibleItems, range) {
-  if (item.isVisible(range)) {
+  // finally, we reposition all the visible items.
+  for (i = 0; i < visibleItems.length; i++) {
+    item = visibleItems[i];
     if (!item.displayed) item.show();
+    // reposition item horizontally
     item.repositionX();
-    if (visibleItems.indexOf(item) == -1) {
-      visibleItems.push(item);
-    }
-    return false;
   }
-  else {
-    if (item.displayed) item.hide();
-    return true;
-  }
+
+  // debug
+  //console.log("new line")
+  //if (this.groupId == null) {
+  //  for (i = 0; i < orderedItems.byStart.length; i++) {
+  //    item = orderedItems.byStart[i].data;
+  //    console.log('start',i,initialPosByStart, item.start.valueOf(), item.content, item.start >= lowerBound && item.start <= upperBound,i == initialPosByStart ? "<------------------- HEREEEE" : "")
+  //  }
+  //  for (i = 0; i < orderedItems.byEnd.length; i++) {
+  //    item = orderedItems.byEnd[i].data;
+  //    console.log('rangeEnd',i,initialPosByEnd, item.end.valueOf(), item.content, item.end >= range.start && item.end <= range.end,i == initialPosByEnd ? "<------------------- HEREEEE" : "")
+  //  }
+  //}
+
+  return visibleItems;
 };
+
+Group.prototype._traceVisible = function (initialPos, items, visibleItems, visibleItemsLookup, breakCondition) {
+  var item;
+  var i;
+
+  if (initialPos != -1) {
+    for (i = initialPos; i >= 0; i--) {
+      item = items[i];
+      if (breakCondition(item)) {
+        break;
+      }
+      else {
+        if (visibleItemsLookup[item.id] === undefined) {
+          visibleItemsLookup[item.id] = true;
+          visibleItems.push(item);
+        }
+      }
+    }
+
+    for (i = initialPos + 1; i < items.length; i++) {
+      item = items[i];
+      if (breakCondition(item)) {
+        break;
+      }
+      else {
+        if (visibleItemsLookup[item.id] === undefined) {
+          visibleItemsLookup[item.id] = true;
+          visibleItems.push(item);
+        }
+      }
+    }
+  }
+}
+
 
 /**
  * this function is very similar to the _checkIfInvisible() but it does not
@@ -411,15 +529,41 @@ Group.prototype._checkIfInvisible = function(item, visibleItems, range) {
  * @private
  */
 Group.prototype._checkIfVisible = function(item, visibleItems, range) {
+    if (item.isVisible(range)) {
+      if (!item.displayed) item.show();
+      // reposition item horizontally
+      item.repositionX();
+      visibleItems.push(item);
+    }
+    else {
+      if (item.displayed) item.hide();
+    }
+};
+
+
+/**
+ * this function is very similar to the _checkIfInvisible() but it does not
+ * return booleans, hides the item if it should not be seen and always adds to
+ * the visibleItems.
+ * this one is for brute forcing and hiding.
+ *
+ * @param {Item} item
+ * @param {Array} visibleItems
+ * @param {{start:number, end:number}} range
+ * @private
+ */
+Group.prototype._checkIfVisibleWithReference = function(item, visibleItems, visibleItemsLookup, range) {
   if (item.isVisible(range)) {
-    if (!item.displayed) item.show();
-    // reposition item horizontally
-    item.repositionX();
-    visibleItems.push(item);
+    if (visibleItemsLookup[item.id] === undefined) {
+      visibleItemsLookup[item.id] = true;
+      visibleItems.push(item);
+    }
   }
   else {
     if (item.displayed) item.hide();
   }
 };
+
+
 
 module.exports = Group;

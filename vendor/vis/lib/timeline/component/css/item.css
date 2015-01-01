@@ -54,15 +54,15 @@
   border: none;
   background-color: rgba(213, 221, 246, 0.4);
   box-sizing: border-box;
-  top: 0;
-  bottom: 0;
+  padding: 0;
+  margin: 0;
 }
 
 .vis.timeline .item.range .content {
   position: relative;
   display: inline-block;
-  overflow: hidden;
   max-width: 100%;
+  overflow: hidden;
 }
 
 .vis.timeline .item.background .content {

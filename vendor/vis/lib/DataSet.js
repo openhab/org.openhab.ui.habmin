@@ -1,4 +1,5 @@
 var util = require('./util');
+var Queue = require('./Queue');
 
 /**
  * DataSet
@@ -35,6 +36,11 @@ var util = require('./util');
  *                             {Object.<String, String} type
  *                                              A map with field names as key,
  *                                              and the field type as value.
+ *                             {Object} queue   Queue changes to the DataSet,
+ *                                              flush them all at once.
+ *                                              Queue options:
+ *                                              - {number} delay  Delay in ms, null by default
+ *                                              - {number} max    Maximum number of entries in the queue, Infinity by default
  * @constructor DataSet
  */
 // TODO: add a DataSet constructor DataSet(data, options)
@@ -77,7 +83,42 @@ function DataSet (data, options) {
   if (data) {
     this.add(data);
   }
+
+  this.setOptions(options);
 }
+
+/**
+ * @param {Object} [options]   Available options:
+ *                             {Object} queue   Queue changes to the DataSet,
+ *                                              flush them all at once.
+ *                                              Queue options:
+ *                                              - {number} delay  Delay in ms, null by default
+ *                                              - {number} max    Maximum number of entries in the queue, Infinity by default
+ * @param options
+ */
+DataSet.prototype.setOptions = function(options) {
+  if (options && options.queue !== undefined) {
+    if (options.queue === false) {
+      // delete queue if loaded
+      if (this._queue) {
+        this._queue.destroy();
+        delete this._queue;
+      }
+    }
+    else {
+      // create queue and update its options
+      if (!this._queue) {
+        this._queue = Queue.extend(this, {
+          replace: ['add', 'update', 'remove']
+        });
+      }
+
+      if (typeof options.queue === 'object') {
+        this._queue.setOptions(options.queue);
+      }
+    }
+  }
+};
 
 /**
  * Subscribe to an event, add an event listener
@@ -204,10 +245,11 @@ DataSet.prototype.add = function (data, senderId) {
  * @return {Array} updatedIds     The ids of the added or updated items
  */
 DataSet.prototype.update = function (data, senderId) {
-  var addedIds = [],
-      updatedIds = [],
-      me = this,
-      fieldId = me._fieldId;
+  var addedIds = [];
+  var updatedIds = [];
+  var updatedData = [];
+  var me = this;
+  var fieldId = me._fieldId;
 
   var addOrUpdate = function (item) {
     var id = item[fieldId];
@@ -215,6 +257,7 @@ DataSet.prototype.update = function (data, senderId) {
       // update item
       id = me._updateItem(item);
       updatedIds.push(id);
+      updatedData.push(item);
     }
     else {
       // add new item
@@ -254,7 +297,7 @@ DataSet.prototype.update = function (data, senderId) {
     this._trigger('add', {items: addedIds}, senderId);
   }
   if (updatedIds.length) {
-    this._trigger('update', {items: updatedIds}, senderId);
+    this._trigger('update', {items: updatedIds, data: updatedData}, senderId);
   }
 
   return addedIds.concat(updatedIds);

@@ -426,7 +426,7 @@ exports.getType = function(object) {
     if (object instanceof String) {
       return 'String';
     }
-    if (object instanceof Array) {
+    if (Array.isArray(object)) {
       return 'Array';
     }
     if (object instanceof Date) {
@@ -506,7 +506,7 @@ exports.removeClassName = function(elem, className) {
 exports.forEach = function(object, callback) {
   var i,
       len;
-  if (object instanceof Array) {
+  if (Array.isArray(object)) {
     // array
     for (i = 0, len = object.length; i < len; i++) {
       callback(object[i], i, object);
@@ -926,6 +926,63 @@ exports.RGBToHSV = function(red,green,blue) {
   return {h:hue,s:saturation,v:value};
 };
 
+var cssUtil = {
+  // split a string with css styles into an object with key/values
+  split: function (cssText) {
+    var styles = {};
+
+    cssText.split(';').forEach(function (style) {
+      if (style.trim() != '') {
+        var parts = style.split(':');
+        var key = parts[0].trim();
+        var value = parts[1].trim();
+        styles[key] = value;
+      }
+    });
+
+    return styles;
+  },
+
+  // build a css text string from an object with key/values
+  join: function (styles) {
+    return Object.keys(styles)
+        .map(function (key) {
+          return key + ': ' + styles[key];
+        })
+        .join('; ');
+  }
+};
+
+/**
+ * Append a string with css styles to an element
+ * @param {Element} element
+ * @param {String} cssText
+ */
+exports.addCssText = function (element, cssText) {
+  var currentStyles = cssUtil.split(element.style.cssText);
+  var newStyles = cssUtil.split(cssText);
+  var styles = exports.extend(currentStyles, newStyles);
+
+  element.style.cssText = cssUtil.join(styles);
+};
+
+/**
+ * Remove a string with css styles from an element
+ * @param {Element} element
+ * @param {String} cssText
+ */
+exports.removeCssText = function (element, cssText) {
+  var styles = cssUtil.split(element.style.cssText);
+  var removeStyles = cssUtil.split(cssText);
+
+  for (var key in removeStyles) {
+    if (removeStyles.hasOwnProperty(key)) {
+      delete styles[key];
+    }
+  }
+
+  element.style.cssText = cssUtil.join(styles);
+};
 
 /**
  * https://gist.github.com/mjijackson/5311256
@@ -1042,7 +1099,7 @@ exports.mergeOptions = function (mergeTarget, options, option) {
     }
     else {
       mergeTarget[option].enabled = true;
-      for (prop in options[option]) {
+      for (var prop in options[option]) {
         if (options[option].hasOwnProperty(prop)) {
           mergeTarget[option][prop] = options[option][prop];
         }
@@ -1053,118 +1110,49 @@ exports.mergeOptions = function (mergeTarget, options, option) {
 
 
 /**
- * this is used to set the options of subobjects in the options object. A requirement of these subobjects
- * is that they have an 'enabled' element which is optional for the user but mandatory for the program.
+ * This function does a binary search for a visible item in a sorted list. If we find a visible item, the code that uses
+ * this function will then iterate in both directions over this sorted list to find all visible items.
  *
- * @param [object] mergeTarget | this is either this.options or the options used for the groups.
- * @param [object] options     | options
- * @param [String] option      | this is the option key in the options argument
- * @private
- */
-exports.mergeOptions = function (mergeTarget, options, option) {
-  if (options[option] !== undefined) {
-    if (typeof options[option] == 'boolean') {
-      mergeTarget[option].enabled = options[option];
-    }
-    else {
-      mergeTarget[option].enabled = true;
-      for (prop in options[option]) {
-        if (options[option].hasOwnProperty(prop)) {
-          mergeTarget[option][prop] = options[option][prop];
-        }
-      }
-    }
-  }
-}
-
-
-
-
-/**
- * This function does a binary search for a visible item. The user can select either the this.orderedItems.byStart or .byEnd
- * arrays. This is done by giving a boolean value true if you want to use the byEnd.
- * This is done to be able to select the correct if statement (we do not want to check if an item is visible, we want to check
- * if the time we selected (start or end) is within the current range).
- *
- * The trick is that every interval has to either enter the screen at the initial load or by dragging. The case of the RangeItem that is
- * before and after the current range is handled by simply checking if it was in view before and if it is again. For all the rest,
- * either the start OR end time has to be in the range.
- *
- * @param {Item[]} orderedItems  Items ordered by start
- * @param {{start: number, end: number}} range
+ * @param {Item[]} orderedItems       | Items ordered by start
+ * @param {function} searchFunction   | -1 is lower, 0 is found, 1 is higher
  * @param {String} field
  * @param {String} field2
  * @returns {number}
  * @private
  */
-exports.binarySearch = function(orderedItems, range, field, field2) {
-  var array = orderedItems;
-
+exports.binarySearchCustom = function(orderedItems, searchFunction, field, field2) {
   var maxIterations = 10000;
   var iteration = 0;
-  var found = false;
   var low = 0;
-  var high = array.length;
-  var newLow = low;
-  var newHigh = high;
-  var guess = Math.floor(0.5*(high+low));
-  var value;
+  var high = orderedItems.length - 1;
 
-  if (high == 0) {
-    guess = -1;
-  }
-  else if (high == 1) {
-    if (array[guess].isVisible(range)) {
-      guess =  0;
-    }
-    else {
-      guess = -1;
-    }
-  }
-  else {
-    high -= 1;
+  while (low <= high && iteration < maxIterations) {
+    var middle = Math.floor((low + high) / 2);
 
-    while (found == false && iteration < maxIterations) {
-      value = field2 === undefined ? array[guess][field] : array[guess][field][field2];
+    var item = orderedItems[middle];
+    var value = (field2 === undefined) ? item[field] : item[field][field2];
 
-      if (array[guess].isVisible(range)) {
-        found = true;
-      }
-      else {
-        if (value < range.start) { // it is too small --> increase low
-          newLow = Math.floor(0.5*(high+low));
-        }
-        else {  // it is too big --> decrease high
-          newHigh = Math.floor(0.5*(high+low));
-        }
-        // not in list;
-        if (low == newLow && high == newHigh) {
-          guess = -1;
-          found = true;
-        }
-        else {
-          high = newHigh; low = newLow;
-          guess = Math.floor(0.5*(high+low));
-        }
-      }
-      iteration++;
+    var searchResult = searchFunction(value);
+    if (searchResult == 0) { // jihaa, found a visible item!
+      return middle;
     }
-    if (iteration >= maxIterations) {
-      console.log("BinarySearch too many iterations. Aborting.");
+    else if (searchResult == -1) {  // it is too small --> increase low
+      low = middle + 1;
     }
+    else {  // it is too big --> decrease high
+      high = middle - 1;
+    }
+
+    iteration++;
   }
-  return guess;
+
+  return -1;
 };
 
 /**
- * This function does a binary search for a visible item. The user can select either the this.orderedItems.byStart or .byEnd
- * arrays. This is done by giving a boolean value true if you want to use the byEnd.
- * This is done to be able to select the correct if statement (we do not want to check if an item is visible, we want to check
- * if the time we selected (start or end) is within the current range).
- *
- * The trick is that every interval has to either enter the screen at the initial load or by dragging. The case of the RangeItem that is
- * before and after the current range is handled by simply checking if it was in view before and if it is again. For all the rest,
- * either the start OR end time has to be in the range.
+ * This function does a binary search for a specific value in a sorted array. If it does not exist but is in between of
+ * two values, we return either the one before or the one after, depending on user input
+ * If it is found, we return the index, else -1.
  *
  * @param {Array} orderedItems
  * @param {{start: number, end: number}} target
@@ -1173,76 +1161,42 @@ exports.binarySearch = function(orderedItems, range, field, field2) {
  * @returns {number}
  * @private
  */
-exports.binarySearchGeneric = function(orderedItems, target, field, sidePreference) {
+exports.binarySearchValue = function(orderedItems, target, field, sidePreference) {
   var maxIterations = 10000;
   var iteration = 0;
-  var array = orderedItems;
-  var found = false;
   var low = 0;
-  var high = array.length;
-  var newLow = low;
-  var newHigh = high;
-  var guess = Math.floor(0.5*(high+low));
-  var newGuess;
-  var prevValue, value, nextValue;
+  var high = orderedItems.length - 1;
+  var prevValue, value, nextValue, middle;
 
-  if (high == 0) {guess = -1;}
-  else if (high == 1) {
-    value = array[guess][field];
-    if (value == target) {
-      guess =  0;
-    }
-    else {
-      guess = -1;
-    }
-  }
-  else {
-    high -= 1;
-    while (found == false && iteration < maxIterations) {
-      prevValue = array[Math.max(0,guess - 1)][field];
-      value = array[guess][field];
-      nextValue = array[Math.min(array.length-1,guess + 1)][field];
+  while (low <= high && iteration < maxIterations) {
+    // get a new guess
+    middle = Math.floor(0.5*(high+low));
+    prevValue = orderedItems[Math.max(0,middle - 1)][field];
+    value     = orderedItems[middle][field];
+    nextValue = orderedItems[Math.min(orderedItems.length-1,middle + 1)][field];
 
-      if (value == target || prevValue < target && value > target || value < target && nextValue > target) {
-        found = true;
-        if (value != target) {
-          if (sidePreference == 'before') {
-            if (prevValue < target && value > target) {
-              guess = Math.max(0,guess - 1);
-            }
-          }
-          else {
-            if (value < target && nextValue > target) {
-              guess = Math.min(array.length-1,guess + 1);
-            }
-          }
-        }
-      }
-      else {
-        if (value < target) { // it is too small --> increase low
-          newLow = Math.floor(0.5*(high+low));
-        }
-        else {  // it is too big --> decrease high
-          newHigh = Math.floor(0.5*(high+low));
-        }
-        newGuess = Math.floor(0.5*(high+low));
-        // not in list;
-        if (low == newLow && high == newHigh) {
-          guess = -1;
-          found = true;
-        }
-        else {
-          high = newHigh; low = newLow;
-          guess = Math.floor(0.5*(high+low));
-        }
-      }
-      iteration++;
+    if (value == target) { // we found the target
+      return middle;
     }
-    if (iteration >= maxIterations) {
-      console.log("BinarySearch too many iterations. Aborting.");
+    else if (prevValue < target && value > target) {  // target is in between of the previous and the current
+      return sidePreference == 'before' ? Math.max(0,middle - 1) : middle;
     }
+    else if (value < target && nextValue > target) { // target is in between of the current and the next
+      return sidePreference == 'before' ? middle : Math.min(orderedItems.length-1,middle + 1);
+    }
+    else {  // didnt find the target, we need to change our boundaries.
+      if (value < target) { // it is too small --> increase low
+        low = middle + 1;
+      }
+      else {  // it is too big --> decrease high
+        high = middle - 1;
+      }
+    }
+    iteration++;
   }
-  return guess;
+
+  // didnt find anything. Return -1.
+  return -1;
 };
 
 /**

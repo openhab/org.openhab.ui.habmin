@@ -53,6 +53,7 @@ function Node(properties, imagelist, grouplist, networkConstants) {
   this.level = -1;
   this.preassignedLevel = false;
   this.hierarchyEnumerated = false;
+  this.labelDimensions = {top:0,left:0,width:0,height:0,yLine:0}; // could be cached
 
 
   this.imagelist = imagelist;
@@ -144,7 +145,6 @@ Node.prototype.setProperties = function(properties, constants) {
   ];
   util.selectiveDeepExtend(fields, this.options, properties);
 
-  this.originalLabel = undefined;
   // basic properties
   if (properties.id !== undefined)        {this.id = properties.id;}
   if (properties.label !== undefined)     {this.label = properties.label; this.originalLabel = properties.label;}
@@ -729,7 +729,7 @@ Node.prototype._resizeEllipse = function (ctx) {
     }
     var defaultSize = this.width;
 
-      // scaling used for clustering
+    // scaling used for clustering
     this.width  += Math.min(this.clusterSize - 1, this.maxNodeSizeIncrements) * this.clusterSizeWidthFactor;
     this.height += Math.min(this.clusterSize - 1, this.maxNodeSizeIncrements) * this.clusterSizeHeightFactor;
     this.options.radius += Math.min(this.clusterSize - 1, this.maxNodeSizeIncrements) * this.clusterSizeRadiusFactor;
@@ -875,36 +875,39 @@ Node.prototype._drawText = function (ctx) {
 Node.prototype._label = function (ctx, text, x, y, align, baseline, labelUnderNode) {
   if (text && Number(this.options.fontSize) * this.networkScale > this.fontDrawThreshold) {
     ctx.font = (this.selected ? "bold " : "") + this.options.fontSize + "px " + this.options.fontFace;
-    ctx.textAlign = align || "center";
-    ctx.textBaseline = baseline || "middle";
 
     var lines = text.split('\n');
     var lineCount = lines.length;
-    var fontSize = (Number(this.options.fontSize) + 4);
+    var fontSize = (Number(this.options.fontSize) + 4); // TODO: why is this +4 ?
     var yLine = y + (1 - lineCount) / 2 * fontSize;
     if (labelUnderNode == true) {
       yLine = y + (1 - lineCount) / (2 * fontSize);
     }
 
     // font fill from edges now for nodes!
+    var width = ctx.measureText(lines[0]).width;
+    for (var i = 1; i < lineCount; i++) {
+      var lineWidth = ctx.measureText(lines[i]).width;
+      width = lineWidth > width ? lineWidth : width;
+    }
+    var height = this.options.fontSize * lineCount;
+    var left = x - width / 2;
+    var top = y - height / 2;
+    if (baseline == "top") {
+      top += 0.5 * fontSize;
+    }
+    this.labelDimensions = {top:top,left:left,width:width,height:height,yLine:yLine};
+
+    // create the fontfill background
     if (this.options.fontFill !== undefined && this.options.fontFill !== null && this.options.fontFill !== "none") {
-      var width = ctx.measureText(lines[0]).width;
-      for (var i = 1; i < lineCount; i++) {
-        var lineWidth = ctx.measureText(lines[i]).width;
-        width = lineWidth > width ? lineWidth : width;
-      }
-      var height = this.options.fontSize * lineCount;
-      var left = x - width / 2;
-      var top = y - height / 2;
-      if (ctx.textBaseline == "top") {
-        top += 0.5 * fontSize;
-      }
       ctx.fillStyle = this.options.fontFill;
       ctx.fillRect(left, top, width, height);
     }
 
     // draw text
     ctx.fillStyle = this.options.fontColor || "black";
+    ctx.textAlign = align || "center";
+    ctx.textBaseline = baseline || "middle";
     for (var i = 0; i < lineCount; i++) {
       ctx.fillText(lines[i], x, yLine);
       yLine += fontSize;

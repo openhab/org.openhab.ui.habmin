@@ -24,7 +24,7 @@
  * @param {Date} [end]           The end date
  * @param {Number} [minimumStep] Optional. Minimum step size in milliseconds
  */
-function DataStep(start, end, minimumStep, containerHeight, customRange) {
+function DataStep(start, end, minimumStep, containerHeight, customRange, alignZeros) {
   // variables
   this.current = 0;
 
@@ -39,6 +39,8 @@ function DataStep(start, end, minimumStep, containerHeight, customRange) {
 
   this.majorSteps = [1,     2,    5,  10];
   this.minorSteps = [0.25,  0.5,  1,  2];
+
+  this.alignZeros = alignZeros;
 
   this.setRange(start, end, minimumStep, containerHeight, customRange);
 }
@@ -64,9 +66,10 @@ DataStep.prototype.setRange = function(start, end, minimumStep, containerHeight,
     this._end += 1;
   }
 
-  if (this.autoScale) {
+  if (this.autoScale == true) {
     this.setMinimumStep(minimumStep, containerHeight);
   }
+
   this.setFirst(customRange);
 };
 
@@ -119,16 +122,23 @@ DataStep.prototype.setFirst = function(customRange) {
   if (customRange === undefined) {
     customRange = {};
   }
+
   var niceStart = customRange.min === undefined ? this._start - (this.scale * 2 * this.minorSteps[this.stepIndex]) : customRange.min;
   var niceEnd = customRange.max === undefined ? this._end + (this.scale * this.minorSteps[this.stepIndex]) : customRange.max;
 
   this.marginEnd = customRange.max === undefined ? this.roundToMinor(niceEnd) : customRange.max;
   this.marginStart = customRange.min === undefined ? this.roundToMinor(niceStart) : customRange.min;
+
+  // if we need to align the zero's we need to make sure that there is a zero to use.
+  if (this.alignZeros == true && (this.marginEnd - this.marginStart) % this.step != 0) {
+    this.marginEnd += this.marginEnd % this.step;
+  }
+
   this.deadSpace = this.roundToMinor(niceEnd) - niceEnd + this.roundToMinor(niceStart) - niceStart;
   this.marginRange = this.marginEnd - this.marginStart;
 
-  this.current = this.marginEnd;
 
+  this.current = this.marginEnd;
 };
 
 DataStep.prototype.roundToMinor = function(value) {
@@ -178,19 +188,59 @@ DataStep.prototype.previous = function() {
  * Get the current datetime
  * @return {String}  current The current date
  */
-DataStep.prototype.getCurrent = function() {
+DataStep.prototype.getCurrent = function(decimals) {
   var toPrecision = '' + Number(this.current).toPrecision(5);
-  if (toPrecision.indexOf(",") != -1 || toPrecision.indexOf(".") != -1) {
-    for (var i = toPrecision.length-1; i > 0; i--) {
-      if (toPrecision[i] == "0") {
-        toPrecision = toPrecision.slice(0,i);
+  // If decimals is specified, then limit or extend the string as required
+  if(decimals !== undefined && !isNaN(Number(decimals))) {
+    // If string includes exponent, then we need to add it to the end
+    var exp = "";
+    var index = toPrecision.indexOf("e");
+    if(index != -1) {
+      // Get the exponent
+      exp = toPrecision.slice(index);
+      // Remove the exponent in case we need to zero-extend
+      toPrecision = toPrecision.slice(0, index);
+    }
+    index = Math.max(toPrecision.indexOf(","), toPrecision.indexOf("."));
+    if(index === -1) {
+      // No decimal found - if we want decimals, then we need to add it
+      if(decimals !== 0) {
+        toPrecision += '.';
       }
-      else if (toPrecision[i] == "." || toPrecision[i] == ",") {
-        toPrecision = toPrecision.slice(0,i);
-        break;
+      // Calculate how long the string should be
+      index = toPrecision.length + decimals;
+    }
+    else if(decimals !== 0) {
+      // Calculate how long the string should be - accounting for the decimal place
+      index += decimals + 1;
+    }
+    if(index > toPrecision.length) {
+      // We need to add zeros!
+      for(var cnt = index - toPrecision.length; cnt > 0; cnt--) {
+        toPrecision += '0';
       }
-      else{
-        break;
+    }
+    else {
+      // we need to remove characters
+      toPrecision = toPrecision.slice(0, index);
+    }
+    // Add the exponent if there is one
+    toPrecision += exp;
+  }
+  else {
+    if (toPrecision.indexOf(",") != -1 || toPrecision.indexOf(".") != -1) {
+      // If no decimal is specified, and there are decimal places, remove trailing zeros
+      for (var i = toPrecision.length - 1; i > 0; i--) {
+        if (toPrecision[i] == "0") {
+          toPrecision = toPrecision.slice(0, i);
+        }
+        else if (toPrecision[i] == "." || toPrecision[i] == ",") {
+          toPrecision = toPrecision.slice(0, i);
+          break;
+        }
+        else {
+          break;
+        }
       }
     }
   }

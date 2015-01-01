@@ -1,4 +1,5 @@
 var moment = require('../module/moment');
+var DateUtil = require('./DateUtil');
 
 /**
  * @constructor  TimeStep
@@ -26,7 +27,7 @@ var moment = require('../module/moment');
  * @param {Date} [end]           The end date
  * @param {Number} [minimumStep] Optional. Minimum step size in milliseconds
  */
-function TimeStep(start, end, minimumStep) {
+function TimeStep(start, end, minimumStep, hiddenDates) {
   // variables
   this.current = new Date();
   this._start = new Date();
@@ -38,6 +39,15 @@ function TimeStep(start, end, minimumStep) {
 
   // initialize the range
   this.setRange(start, end, minimumStep);
+
+  // hidden Dates options
+  this.switchedDay = false;
+  this.switchedMonth = false;
+  this.switchedYear = false;
+  this.hiddenDates = hiddenDates;
+  if (hiddenDates === undefined) {
+    this.hiddenDates = [];
+  }
 }
 
 /// enum scale
@@ -190,6 +200,8 @@ TimeStep.prototype.next = function() {
   if (this.current.valueOf() == prev) {
     this.current = new Date(this._end.valueOf());
   }
+
+  DateUtil.stepOverHiddenDates(this, prev);
 };
 
 
@@ -241,6 +253,8 @@ TimeStep.prototype.setMinimumStep = function(minimumStep) {
   if (minimumStep == undefined) {
     return;
   }
+
+  //var b = asc + ds;
 
   var stepYear       = (1000 * 60 * 60 * 24 * 30 * 12);
   var stepMonth      = (1000 * 60 * 60 * 24 * 30);
@@ -394,6 +408,49 @@ TimeStep.prototype.snap = function(date) {
  * @return {boolean} true if current date is major, else false.
  */
 TimeStep.prototype.isMajor = function() {
+  if (this.switchedYear == true) {
+    this.switchedYear = false;
+    switch (this.scale) {
+      case TimeStep.SCALE.YEAR:
+      case TimeStep.SCALE.MONTH:
+      case TimeStep.SCALE.WEEKDAY:
+      case TimeStep.SCALE.DAY:
+      case TimeStep.SCALE.HOUR:
+      case TimeStep.SCALE.MINUTE:
+      case TimeStep.SCALE.SECOND:
+      case TimeStep.SCALE.MILLISECOND:
+        return true;
+      default:
+        return false;
+    }
+  }
+  else if (this.switchedMonth == true) {
+    this.switchedMonth = false;
+    switch (this.scale) {
+      case TimeStep.SCALE.WEEKDAY:
+      case TimeStep.SCALE.DAY:
+      case TimeStep.SCALE.HOUR:
+      case TimeStep.SCALE.MINUTE:
+      case TimeStep.SCALE.SECOND:
+      case TimeStep.SCALE.MILLISECOND:
+        return true;
+      default:
+        return false;
+    }
+  }
+  else if (this.switchedDay == true) {
+    this.switchedDay = false;
+    switch (this.scale) {
+      case TimeStep.SCALE.MILLISECOND:
+      case TimeStep.SCALE.SECOND:
+      case TimeStep.SCALE.MINUTE:
+      case TimeStep.SCALE.HOUR:
+        return true;
+      default:
+        return false;
+    }
+  }
+
   switch (this.scale) {
     case TimeStep.SCALE.MILLISECOND:
       return (this.current.getMilliseconds() == 0);
@@ -401,7 +458,6 @@ TimeStep.prototype.isMajor = function() {
       return (this.current.getSeconds() == 0);
     case TimeStep.SCALE.MINUTE:
       return (this.current.getHours() == 0) && (this.current.getMinutes() == 0);
-    // Note: this is no bug. Major label is equal for both minute and hour scale
     case TimeStep.SCALE.HOUR:
       return (this.current.getHours() == 0);
     case TimeStep.SCALE.WEEKDAY: // intentional fall through

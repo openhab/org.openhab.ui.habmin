@@ -36,8 +36,13 @@ function Legend(body, options, side, linegraphOptions) {
 
 Legend.prototype = new Component();
 
+Legend.prototype.clear = function() {
+  this.groups = {};
+  this.amountOfGroups = 0;
+}
 
 Legend.prototype.addGroup = function(label, graphOptions) {
+
   if (!this.groups.hasOwnProperty(label)) {
     this.groups[label] = graphOptions;
   }
@@ -71,6 +76,7 @@ Legend.prototype._create = function() {
   this.svg.style.position = 'absolute';
   this.svg.style.top = 0 +'px';
   this.svg.style.width = this.options.iconSize + 5 + 'px';
+  this.svg.style.height = '100%';
 
   this.dom.frame.appendChild(this.svg);
   this.dom.frame.appendChild(this.dom.textArea);
@@ -141,7 +147,8 @@ Legend.prototype.redraw = function() {
       this.dom.frame.style.bottom = '';
     }
     else {
-      this.dom.frame.style.bottom = 4 - Number(this.body.dom.center.style.top.replace("px","")) + 'px';
+      var scrollableHeight = this.body.domProps.center.height - this.body.domProps.centerContainer.height;
+      this.dom.frame.style.bottom = 4 + scrollableHeight + Number(this.body.dom.center.style.top.replace("px","")) + 'px';
       this.dom.frame.style.top = '';
     }
 

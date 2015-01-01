@@ -2,6 +2,7 @@ var util = require('../util');
 var hammerUtil = require('../hammerUtil');
 var moment = require('../module/moment');
 var Component = require('./component/Component');
+var DateUtil = require('./DateUtil');
 
 /**
  * @constructor Range
@@ -17,6 +18,10 @@ function Range(body, options) {
   this.end = now.clone().add(4, 'days').valueOf();   // Number
 
   this.body = body;
+  this.deltaDifference = 0;
+  this.scaleOffset = 0;
+  this.startToFront = false;
+  this.endToFront = true;
 
   // default options
   this.defaultOptions = {
@@ -77,7 +82,7 @@ Range.prototype = new Component();
 Range.prototype.setOptions = function (options) {
   if (options) {
     // copy the options that we know
-    var fields = ['direction', 'min', 'max', 'zoomMin', 'zoomMax', 'moveable', 'zoomable', 'activate'];
+    var fields = ['direction', 'min', 'max', 'zoomMin', 'zoomMax', 'moveable', 'zoomable', 'activate', 'hiddenDates'];
     util.selectiveExtend(fields, this.options, options);
 
     if ('start' in options || 'end' in options) {
@@ -112,7 +117,6 @@ function validateDirection (direction) {
 Range.prototype.setRange = function(start, end, animate) {
   var _start = start != undefined ? util.convert(start, 'Date').valueOf() : null;
   var _end   = end != undefined   ? util.convert(end, 'Date').valueOf()   : null;
-
   this._cancelAnimation();
 
   if (animate) {
@@ -123,7 +127,7 @@ Range.prototype.setRange = function(start, end, animate) {
     var initTime = new Date().valueOf();
     var anyChanged = false;
 
-    function next() {
+    var next = function () {
       if (!me.props.touch.dragging) {
         var now = new Date().valueOf();
         var time = now - initTime;
@@ -132,6 +136,7 @@ Range.prototype.setRange = function(start, end, animate) {
         var e = (done || _end === null)   ? _end   : util.easeInOutQuad(time, initEnd, _end, duration);
 
         changed = me._applyRange(s, e);
+        DateUtil.updateHiddenDates(me.body, me.options.hiddenDates);
         anyChanged = anyChanged || changed;
         if (changed) {
           me.body.emitter.emit('rangechange', {start: new Date(me.start), end: new Date(me.end)});
@@ -154,6 +159,7 @@ Range.prototype.setRange = function(start, end, animate) {
   }
   else {
     var changed = this._applyRange(_start, _end);
+    DateUtil.updateHiddenDates(this.body, this.options.hiddenDates);
     if (changed) {
       var params = {start: new Date(this.start), end: new Date(this.end)};
       this.body.emitter.emit('rangechange', params);
@@ -278,9 +284,14 @@ Range.prototype._applyRange = function(start, end) {
 
   var changed = (this.start != newStart || this.end != newEnd);
 
+  // if the new range does NOT overlap with the old range, emit checkRangedItems to avoid not showing ranged items (ranged meaning has end time, not neccesarily of type Range)
+  if (!((newStart >= this.start && newStart   <= this.end) || (newEnd   >= this.start && newEnd   <= this.end)) &&
+      !((this.start >= newStart && this.start <= newEnd)   || (this.end >= newStart   && this.end <= newEnd) )) {
+    this.body.emitter.emit('checkRangedItems');
+  }
+
   this.start = newStart;
   this.end = newEnd;
-
   return changed;
 };
 
@@ -301,8 +312,8 @@ Range.prototype.getRange = function() {
  * @param {Number} width
  * @returns {{offset: number, scale: number}} conversion
  */
-Range.prototype.conversion = function (width) {
-  return Range.conversion(this.start, this.end, width);
+Range.prototype.conversion = function (width, totalHidden) {
+  return Range.conversion(this.start, this.end, width, totalHidden);
 };
 
 /**
@@ -313,11 +324,14 @@ Range.prototype.conversion = function (width) {
  * @param {Number} width
  * @returns {{offset: number, scale: number}} conversion
  */
-Range.conversion = function (start, end, width) {
+Range.conversion = function (start, end, width, totalHidden) {
+  if (totalHidden === undefined) {
+    totalHidden = 0;
+  }
   if (width != 0 && (end - start != 0)) {
     return {
       offset: start,
-      scale: width / (end - start)
+      scale: width / (end - start - totalHidden)
     }
   }
   else {
@@ -334,6 +348,8 @@ Range.conversion = function (start, end, width) {
  * @private
  */
 Range.prototype._onDragStart = function(event) {
+  this.deltaDifference = 0;
+  this.previousDelta = 0;
   // only allow dragging when configured as movable
   if (!this.options.moveable) return;
 
@@ -358,18 +374,40 @@ Range.prototype._onDragStart = function(event) {
 Range.prototype._onDrag = function (event) {
   // only allow dragging when configured as movable
   if (!this.options.moveable) return;
-  var direction = this.options.direction;
-  validateDirection(direction);
-
   // refuse to drag when we where pinching to prevent the timeline make a jump
   // when releasing the fingers in opposite order from the touch screen
   if (!this.props.touch.allowDragging) return;
 
+  var direction = this.options.direction;
+  validateDirection(direction);
+
   var delta = (direction == 'horizontal') ? event.gesture.deltaX : event.gesture.deltaY;
+  delta -= this.deltaDifference;
   var interval = (this.props.touch.end - this.props.touch.start);
+
+  // normalize dragging speed if cutout is in between.
+  var duration = DateUtil.getHiddenDurationBetween(this.body.hiddenDates, this.start, this.end);
+  interval -= duration;
+
   var width = (direction == 'horizontal') ? this.body.domProps.center.width : this.body.domProps.center.height;
   var diffRange = -delta / width * interval;
-  this._applyRange(this.props.touch.start + diffRange, this.props.touch.end + diffRange);
+  var newStart = this.props.touch.start + diffRange;
+  var newEnd = this.props.touch.end + diffRange;
+
+
+  // snapping times away from hidden zones
+  var safeStart = DateUtil.snapAwayFromHidden(this.body.hiddenDates, newStart, this.previousDelta-delta, true);
+  var safeEnd = DateUtil.snapAwayFromHidden(this.body.hiddenDates, newEnd, this.previousDelta-delta, true);
+  if (safeStart != newStart || safeEnd != newEnd) {
+    this.deltaDifference += delta;
+    this.props.touch.start = safeStart;
+    this.props.touch.end = safeEnd;
+    this._onDrag(event);
+    return;
+  }
+
+  this.previousDelta = delta;
+  this._applyRange(newStart, newEnd);
 
   // fire a rangechange event
   this.body.emitter.emit('rangechange', {
@@ -444,7 +482,7 @@ Range.prototype._onMouseWheel = function(event) {
         pointer = getPointer(gesture.center, this.body.dom.center),
         pointerDate = this._pointerToDate(pointer);
 
-    this.zoom(scale, pointerDate);
+    this.zoom(scale, pointerDate, delta);
   }
 
   // Prevent default actions caused by mouse wheel
@@ -461,6 +499,8 @@ Range.prototype._onTouch = function (event) {
   this.props.touch.end = this.end;
   this.props.touch.allowDragging = true;
   this.props.touch.center = null;
+  this.scaleOffset = 0;
+  this.deltaDifference = 0;
 };
 
 /**
@@ -487,15 +527,35 @@ Range.prototype._onPinch = function (event) {
       this.props.touch.center = getPointer(event.gesture.center, this.body.dom.center);
     }
 
-    var scale = 1 / event.gesture.scale,
-        initDate = this._pointerToDate(this.props.touch.center);
+    var scale = 1 / (event.gesture.scale + this.scaleOffset);
+    var centerDate = this._pointerToDate(this.props.touch.center);
+
+    var hiddenDuration = DateUtil.getHiddenDurationBetween(this.body.hiddenDates, this.start, this.end);
+    var hiddenDurationBefore = DateUtil.getHiddenDurationBefore(this.body.hiddenDates, this, centerDate);
+    var hiddenDurationAfter = hiddenDuration - hiddenDurationBefore;
 
     // calculate new start and end
-    var newStart = parseInt(initDate + (this.props.touch.start - initDate) * scale);
-    var newEnd = parseInt(initDate + (this.props.touch.end - initDate) * scale);
+    var newStart = (centerDate - hiddenDurationBefore) + (this.props.touch.start - (centerDate - hiddenDurationBefore)) * scale;
+    var newEnd = (centerDate + hiddenDurationAfter) + (this.props.touch.end - (centerDate + hiddenDurationAfter)) * scale;
 
-    // apply new range
+    // snapping times away from hidden zones
+    this.startToFront = 1 - scale > 0 ? false : true; // used to do the right autocorrection with periodic hidden times
+    this.endToFront = scale - 1 > 0 ? false : true; // used to do the right autocorrection with periodic hidden times
+
+    var safeStart = DateUtil.snapAwayFromHidden(this.body.hiddenDates, newStart, 1 - scale, true);
+    var safeEnd = DateUtil.snapAwayFromHidden(this.body.hiddenDates, newEnd, scale - 1, true);
+    if (safeStart != newStart || safeEnd != newEnd) {
+      this.props.touch.start = safeStart;
+      this.props.touch.end = safeEnd;
+      this.scaleOffset = 1 - event.gesture.scale;
+      newStart = safeStart;
+      newEnd = safeEnd;
+    }
+
     this.setRange(newStart, newEnd);
+
+    this.startToFront = false; // revert to default
+    this.endToFront = true; // revert to default
   }
 };
 
@@ -512,9 +572,7 @@ Range.prototype._pointerToDate = function (pointer) {
   validateDirection(direction);
 
   if (direction == 'horizontal') {
-    var width = this.body.domProps.center.width;
-    conversion = this.conversion(width);
-    return pointer.x / conversion.scale + conversion.offset;
+    return this.body.util.toTime(pointer.x).valueOf();
   }
   else {
     var height = this.body.domProps.center.height;
@@ -547,18 +605,37 @@ function getPointer (touch, element) {
  * @param {Number} [center]   Value representing a date around which will
  *                            be zoomed.
  */
-Range.prototype.zoom = function(scale, center) {
+Range.prototype.zoom = function(scale, center, delta) {
   // if centerDate is not provided, take it half between start Date and end Date
   if (center == null) {
     center = (this.start + this.end) / 2;
   }
 
+  var hiddenDuration = DateUtil.getHiddenDurationBetween(this.body.hiddenDates, this.start, this.end);
+  var hiddenDurationBefore = DateUtil.getHiddenDurationBefore(this.body.hiddenDates, this, center);
+  var hiddenDurationAfter = hiddenDuration - hiddenDurationBefore;
+
   // calculate new start and end
-  var newStart = center + (this.start - center) * scale;
-  var newEnd = center + (this.end - center) * scale;
+  var newStart = (center-hiddenDurationBefore) + (this.start - (center-hiddenDurationBefore)) * scale;
+  var newEnd   = (center+hiddenDurationAfter) + (this.end - (center+hiddenDurationAfter)) * scale;
+
+  // snapping times away from hidden zones
+  this.startToFront = delta > 0 ? false : true; // used to do the right autocorrection with periodic hidden times
+  this.endToFront = -delta  > 0 ? false : true; // used to do the right autocorrection with periodic hidden times
+  var safeStart = DateUtil.snapAwayFromHidden(this.body.hiddenDates, newStart, delta, true);
+  var safeEnd = DateUtil.snapAwayFromHidden(this.body.hiddenDates, newEnd, -delta, true);
+  if (safeStart != newStart || safeEnd != newEnd) {
+    newStart = safeStart;
+    newEnd = safeEnd;
+  }
 
   this.setRange(newStart, newEnd);
+
+  this.startToFront = false; // revert to default
+  this.endToFront = true; // revert to default
 };
+
+
 
 /**
  * Move the range with a given delta to the left or right. Start and end

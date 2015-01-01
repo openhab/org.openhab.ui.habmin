@@ -36,6 +36,12 @@ function Graph3d(container, data, options) {
   this.xLabel = 'x';
   this.yLabel = 'y';
   this.zLabel = 'z';
+
+  var passValueFn = function(v) { return v; };
+  this.xValueLabel = passValueFn;
+  this.yValueLabel = passValueFn;
+  this.zValueLabel = passValueFn;
+  
   this.filterLabel = 'time';
   this.legendLabel = 'value';
 
@@ -519,9 +525,9 @@ Graph3d.prototype._getDataPoints = function (data) {
       }
     }
 
-    function sortNumber(a, b) {
+    var sortNumber = function (a, b) {
       return a - b;
-    }
+    };
     dataX.sort(sortNumber);
     dataY.sort(sortNumber);
 
@@ -828,6 +834,10 @@ Graph3d.prototype.setOptions = function (options) {
     if (options.xLabel !== undefined)     this.xLabel = options.xLabel;
     if (options.yLabel !== undefined)     this.yLabel = options.yLabel;
     if (options.zLabel !== undefined)     this.zLabel = options.zLabel;
+
+    if (options.xValueLabel !== undefined)     this.xValueLabel = options.xValueLabel;
+    if (options.yValueLabel !== undefined)     this.yValueLabel = options.yValueLabel;
+    if (options.zValueLabel !== undefined)     this.zValueLabel = options.zValueLabel;
 
     if (options.style !== undefined) {
       var styleNumber = this._getStyleNumber(options.style);
@@ -1179,7 +1189,7 @@ Graph3d.prototype._redrawAxis = function() {
       ctx.textBaseline = 'middle';
     }
     ctx.fillStyle = this.colorAxis;
-    ctx.fillText('  ' + step.getCurrent() + '  ', text.x, text.y);
+    ctx.fillText('  ' + this.xValueLabel(step.getCurrent()) + '  ', text.x, text.y);    
 
     step.next();
   }
@@ -1236,7 +1246,7 @@ Graph3d.prototype._redrawAxis = function() {
       ctx.textBaseline = 'middle';
     }
     ctx.fillStyle = this.colorAxis;
-    ctx.fillText('  ' + step.getCurrent() + '  ', text.x, text.y);
+    ctx.fillText('  ' + this.yValueLabel(step.getCurrent()) + '  ', text.x, text.y);    
 
     step.next();
   }
@@ -1263,7 +1273,7 @@ Graph3d.prototype._redrawAxis = function() {
     ctx.textAlign = 'right';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = this.colorAxis;
-    ctx.fillText(step.getCurrent() + ' ', from.x - 5, from.y);
+    ctx.fillText(this.zValueLabel(step.getCurrent()) + ' ', from.x - 5, from.y);
 
     step.next();
   }
@@ -2250,19 +2260,19 @@ Graph3d.prototype._hideTooltip = function () {
  * @param {Event} event
  * @return {Number} mouse x
  */
-getMouseX = function(event) {
+function getMouseX (event) {
   if ('clientX' in event) return event.clientX;
   return event.targetTouches[0] && event.targetTouches[0].clientX || 0;
-};
+}
 
 /**
  * Get the vertical mouse position from a mouse event
  * @param {Event} event
  * @return {Number} mouse y
  */
-getMouseY = function(event) {
+function getMouseY (event) {
   if ('clientY' in event) return event.clientY;
   return event.targetTouches[0] && event.targetTouches[0].clientY || 0;
-};
+}
 
 module.exports = Graph3d;

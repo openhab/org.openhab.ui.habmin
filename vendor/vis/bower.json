@@ -1,10 +1,7 @@
 {
   "name": "vis",
-  "version": "3.5.0",
-  "main": [
-    "dist/vis.min.js",
-    "dist/vis.min.css"
-  ],
+  "version": "3.7.2",
+  "main": ["dist/vis.min.js", "dist/vis.min.css"],
   "description": "A dynamic, browser-based visualization library.",
   "homepage": "http://visjs.org/",
   "repository": {

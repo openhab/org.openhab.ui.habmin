@@ -3,7 +3,7 @@
 'use strict';
 
 angular.module('yaru22.angular-timeago', [
-]).directive('timeAgo', function (timeAgo, nowTime) {
+]).directive('timeAgo', ['timeAgo', 'nowTime', function (timeAgo, nowTime) {
   return {
     restrict: 'EA',
     link: function(scope, elem, attrs) {
@@ -22,19 +22,21 @@ angular.module('yaru22.angular-timeago', [
       });
     }
   };
-}).factory('nowTime', function ($timeout) {
+}]).factory('nowTime', ['$window', '$rootScope', function ($window, $rootScope) {
   var nowTime = Date.now();
   var updateTime = function() {
-    $timeout(function() {
-      nowTime = Date.now();
-      updateTime();
+    $window.setTimeout(function() {
+      $rootScope.$apply(function(){
+        nowTime = Date.now();
+        updateTime();
+      });
     }, 1000);
   };
   updateTime();
   return function() {
     return nowTime;
   };
-}).factory('timeAgo', function () {
+}]).factory('timeAgo', function () {
   var service = {};
 
   service.settings = {
@@ -159,10 +161,10 @@ angular.module('yaru22.angular-timeago', [
   };
 
   return service;
-}).filter('timeAgo', function (nowTime, timeAgo) {
+}).filter('timeAgo', ['nowTime', 'timeAgo', function (nowTime, timeAgo) {
   return function (value) {
     var fromTime = timeAgo.parse(value);
     var diff = nowTime() - fromTime;
     return timeAgo.inWords(diff);
   };
-});
+}]);

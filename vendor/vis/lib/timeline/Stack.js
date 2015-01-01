@@ -49,7 +49,7 @@ exports.stack = function(items, margin, force) {
   // calculate new, non-overlapping positions
   for (i = 0, iMax = items.length; i < iMax; i++) {
     var item = items[i];
-    if (item.top === null) {
+    if (item.stack && item.top === null) {
       // initialize top position
       item.top = margin.axis;
 
@@ -59,7 +59,7 @@ exports.stack = function(items, margin, force) {
         var collidingItem = null;
         for (var j = 0, jj = items.length; j < jj; j++) {
           var other = items[j];
-          if (other.top !== null && other !== item && exports.collision(item, other, margin.item)) {
+          if (other.top !== null && other !== item && other.stack && exports.collision(item, other, margin.item)) {
             collidingItem = other;
             break;
           }
@@ -74,6 +74,7 @@ exports.stack = function(items, margin, force) {
   }
 };
 
+
 /**
  * Adjust vertical positions of the items without stacking them
  * @param {Item[]} items
@@ -81,12 +82,25 @@ exports.stack = function(items, margin, force) {
  * @param {{item: {horizontal: number, vertical: number}, axis: number}} margin
  *            Margins between items and between items and the axis.
  */
-exports.nostack = function(items, margin) {
-  var i, iMax;
+exports.nostack = function(items, margin, subgroups) {
+  var i, iMax, newTop;
 
   // reset top position of all items
   for (i = 0, iMax = items.length; i < iMax; i++) {
-    items[i].top = margin.axis;
+    if (items[i].data.subgroup !== undefined) {
+      newTop = margin.axis;
+      for (var subgroup in subgroups) {
+        if (subgroups.hasOwnProperty(subgroup)) {
+          if (subgroups[subgroup].visible == true && subgroups[subgroup].index < subgroups[items[i].data.subgroup].index) {
+            newTop += subgroups[subgroup].height + margin.item.vertical;
+          }
+        }
+      }
+      items[i].top = newTop;
+    }
+    else {
+      items[i].top = margin.axis;
+    }
   }
 };
 

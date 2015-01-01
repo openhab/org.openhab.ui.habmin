@@ -78,7 +78,7 @@ RangeItem.prototype.redraw = function() {
   if (!dom.box.parentNode) {
     var foreground = this.parent.dom.foreground;
     if (!foreground) {
-      throw new Error('Cannot redraw time axis: parent has no foreground container element');
+      throw new Error('Cannot redraw item: parent has no foreground container element');
     }
     foreground.appendChild(dom.box);
   }
@@ -92,6 +92,7 @@ RangeItem.prototype.redraw = function() {
     this._updateContents(this.dom.content);
     this._updateTitle(this.dom.box);
     this._updateDataAttributes(this.dom.box);
+    this._updateStyle(this.dom.box);
 
     // update class
     var className = (this.data.className ? (' ' + this.data.className) : '') +
@@ -102,8 +103,12 @@ RangeItem.prototype.redraw = function() {
     this.overflow = window.getComputedStyle(dom.content).overflow !== 'hidden';
 
     // recalculate size
+    // turn off max-width to be able to calculate the real width
+    // this causes an extra browser repaint/reflow, but so be it
+    this.dom.content.style.maxWidth = 'none';
     this.props.content.width = this.dom.content.offsetWidth;
     this.height = this.dom.box.offsetHeight;
+    this.dom.content.style.maxWidth = '';
 
     this.dirty = false;
   }
@@ -174,7 +179,7 @@ RangeItem.prototype.repositionX = function() {
   else {
     this.left = start;
     this.width = boxWidth;
-    contentWidth = Math.min(end - start, this.props.content.width);
+    contentWidth = Math.min(end - start - 2 * this.options.padding, this.props.content.width);
   }
 
   this.dom.box.style.left = this.left + 'px';
@@ -194,15 +199,19 @@ RangeItem.prototype.repositionX = function() {
       break;
 
     default: // 'auto'
+      // when range exceeds left of the window, position the contents at the left of the visible area
       if (this.overflow) {
-        // when range exceeds left of the window, position the contents at the left of the visible area
-        contentLeft = Math.max(-start, 0);
+        if (end > 0) {
+          contentLeft = Math.max(-start, 0);
+        }
+        else {
+          contentLeft = -contentWidth; // ensure it's not visible anymore
+        }
       }
       else {
-        // when range exceeds left of the window, position the contents at the left of the visible area
         if (start < 0) {
           contentLeft = Math.min(-start,
-              (end - start - this.props.content.width - 2 * this.options.padding));
+              (end - start - contentWidth - 2 * this.options.padding));
           // TODO: remove the need for options.padding. it's terrible.
         }
         else {

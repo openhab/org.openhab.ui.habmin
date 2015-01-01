@@ -403,7 +403,7 @@ exports._unselectConnectedEdges = function(node) {
  * @param {Boolean} [doNotTrigger] | ignore trigger
  * @private
  */
-exports._selectObject = function(object, append, doNotTrigger, highlightEdges) {
+exports._selectObject = function(object, append, doNotTrigger, highlightEdges, overrideSelectable) {
   if (doNotTrigger === undefined) {
     doNotTrigger = false;
   }
@@ -415,12 +415,18 @@ exports._selectObject = function(object, append, doNotTrigger, highlightEdges) {
     this._unselectAll(true);
   }
 
-  if (object.selected == false) {
+  // selectable allows the object to be selected. Override can be used if needed to bypass this.
+  if (object.selected == false && (this.constants.selectable == true || overrideSelectable)) {
     object.select();
     this._addToSelection(object);
     if (object instanceof Node && this.blockConnectingEdgeSelection == false && highlightEdges == true) {
       this._selectConnectedEdges(object);
     }
+  }
+  // do not select the object if selectable is false, only add it to selection to allow drag to work
+  else if (object.selected == false) {
+    this._addToSelection(object);
+    doNotTrigger = true;
   }
   else {
     object.unselect();
@@ -489,18 +495,23 @@ exports._handleTouch = function(pointer) {
 exports._handleTap = function(pointer) {
   var node = this._getNodeAt(pointer);
   if (node != null) {
-    this._selectObject(node,false);
+    this._selectObject(node, false);
   }
   else {
     var edge = this._getEdgeAt(pointer);
     if (edge != null) {
-      this._selectObject(edge,false);
+      this._selectObject(edge, false);
     }
     else {
       this._unselectAll();
     }
   }
-  this.emit("click", this.getSelection());
+  var properties = this.getSelection();
+  properties['pointer'] = {
+    DOM: {x: pointer.x, y: pointer.y},
+    canvas: {x: this._XconvertDOMtoCanvas(pointer.x), y: this._YconvertDOMtoCanvas(pointer.y)}
+  }
+  this.emit("click", properties);
   this._redraw();
 };
 
@@ -519,7 +530,12 @@ exports._handleDoubleTap = function(pointer) {
                         "y" : this._YconvertDOMtoCanvas(pointer.y)};
     this.openCluster(node);
   }
-  this.emit("doubleClick", this.getSelection());
+  var properties = this.getSelection();
+  properties['pointer'] = {
+    DOM: {x: pointer.x, y: pointer.y},
+    canvas: {x: this._XconvertDOMtoCanvas(pointer.x), y: this._YconvertDOMtoCanvas(pointer.y)}
+  }
+  this.emit("doubleClick", properties);
 };
 
 
@@ -545,15 +561,18 @@ exports._handleOnHold = function(pointer) {
 
 
 /**
- * handle the onRelease event. These functions are here for the navigation controls module.
+ * handle the onRelease event. These functions are here for the navigation controls module
+ * and data manipulation module.
  *
   * @private
  */
 exports._handleOnRelease = function(pointer) {
-
+  this._manipulationReleaseOverload(pointer);
+  this._navigationReleaseOverload(pointer);
 };
 
-
+exports._manipulationReleaseOverload = function (pointer) {};
+exports._navigationReleaseOverload = function (pointer) {};
 
 /**
  *
@@ -574,9 +593,11 @@ exports.getSelection = function() {
  */
 exports.getSelectedNodes = function() {
   var idArray = [];
-  for(var nodeId in this.selectionObj.nodes) {
-    if(this.selectionObj.nodes.hasOwnProperty(nodeId)) {
-      idArray.push(nodeId);
+  if (this.constants.selectable == true) {
+    for (var nodeId in this.selectionObj.nodes) {
+      if (this.selectionObj.nodes.hasOwnProperty(nodeId)) {
+        idArray.push(nodeId);
+      }
     }
   }
   return idArray
@@ -590,9 +611,11 @@ exports.getSelectedNodes = function() {
  */
 exports.getSelectedEdges = function() {
   var idArray = [];
-  for(var edgeId in this.selectionObj.edges) {
-    if(this.selectionObj.edges.hasOwnProperty(edgeId)) {
-      idArray.push(edgeId);
+  if (this.constants.selectable == true) {
+    for (var edgeId in this.selectionObj.edges) {
+      if (this.selectionObj.edges.hasOwnProperty(edgeId)) {
+        idArray.push(edgeId);
+      }
     }
   }
   return idArray;
@@ -600,32 +623,12 @@ exports.getSelectedEdges = function() {
 
 
 /**
- * select zero or more nodes
+ * select zero or more nodes DEPRICATED
  * @param {Number[] | String[]} selection     An array with the ids of the
  *                                            selected nodes.
  */
-exports.setSelection = function(selection) {
-  var i, iMax, id;
-
-  if (!selection || (selection.length == undefined))
-    throw 'Selection must be an array with ids';
-
-  // first unselect any selected node
-  this._unselectAll(true);
-
-  for (i = 0, iMax = selection.length; i < iMax; i++) {
-    id = selection[i];
-
-    var node = this.nodes[id];
-    if (!node) {
-      throw new RangeError('Node with id "' + id + '" not found');
-    }
-    this._selectObject(node,true,true);
-  }
-
+exports.setSelection = function() {
   console.log("setSelection is deprecated. Please use selectNodes instead.")
-
-  this.redraw();
 };
 
 
@@ -651,7 +654,7 @@ exports.selectNodes = function(selection, highlightEdges) {
     if (!node) {
       throw new RangeError('Node with id "' + id + '" not found');
     }
-    this._selectObject(node,true,true,highlightEdges);
+    this._selectObject(node,true,true,highlightEdges,true);
   }
   this.redraw();
 };
@@ -678,7 +681,7 @@ exports.selectEdges = function(selection) {
     if (!edge) {
       throw new RangeError('Edge with id "' + id + '" not found');
     }
-    this._selectObject(edge,true,true,highlightEdges);
+    this._selectObject(edge,true,true,false,true);
   }
   this.redraw();
 };

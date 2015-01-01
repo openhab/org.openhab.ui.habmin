@@ -1,4 +1,5 @@
 var Item = require('./Item');
+var util = require('../../../util');
 
 /**
  * @constructor BoxItem
@@ -84,17 +85,17 @@ BoxItem.prototype.redraw = function() {
   }
   if (!dom.box.parentNode) {
     var foreground = this.parent.dom.foreground;
-    if (!foreground) throw new Error('Cannot redraw time axis: parent has no foreground container element');
+    if (!foreground) throw new Error('Cannot redraw item: parent has no foreground container element');
     foreground.appendChild(dom.box);
   }
   if (!dom.line.parentNode) {
     var background = this.parent.dom.background;
-    if (!background) throw new Error('Cannot redraw time axis: parent has no background container element');
+    if (!background) throw new Error('Cannot redraw item: parent has no background container element');
     background.appendChild(dom.line);
   }
   if (!dom.dot.parentNode) {
     var axis = this.parent.dom.axis;
-    if (!background) throw new Error('Cannot redraw time axis: parent has no axis container element');
+    if (!background) throw new Error('Cannot redraw item: parent has no axis container element');
     axis.appendChild(dom.dot);
   }
   this.displayed = true;
@@ -107,6 +108,7 @@ BoxItem.prototype.redraw = function() {
     this._updateContents(this.dom.content);
     this._updateTitle(this.dom.box);
     this._updateDataAttributes(this.dom.box);
+    this._updateStyle(this.dom.box);
 
     // update class
     var className = (this.data.className? ' ' + this.data.className : '') +

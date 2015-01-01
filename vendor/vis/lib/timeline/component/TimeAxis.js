@@ -1,6 +1,7 @@
 var util = require('../../util');
 var Component = require('./Component');
 var TimeStep = require('../TimeStep');
+var DateUtil = require('../DateUtil');
 var moment = require('../../module/moment');
 
 /**
@@ -63,7 +64,7 @@ TimeAxis.prototype = new Component();
 TimeAxis.prototype.setOptions = function(options) {
   if (options) {
     // copy all options that we know
-    util.selectiveExtend(['orientation', 'showMinorLabels', 'showMajorLabels'], this.options, options);
+    util.selectiveExtend(['orientation', 'showMinorLabels', 'showMajorLabels','hiddenDates'], this.options, options);
 
     // apply locale to moment.js
     // TODO: not so nice, this is applied globally to moment.js
@@ -110,10 +111,10 @@ TimeAxis.prototype.destroy = function() {
  * @return {boolean} Returns true if the component is resized
  */
 TimeAxis.prototype.redraw = function () {
-  var options = this.options,
-      props = this.props,
-      foreground = this.dom.foreground,
-      background = this.dom.background;
+  var options = this.options;
+  var props = this.props;
+  var foreground = this.dom.foreground;
+  var background = this.dom.background;
 
   // determine the correct parent DOM element (depending on option orientation)
   var parent = (options.orientation == 'top') ? this.body.dom.top : this.body.dom.bottom;
@@ -174,11 +175,14 @@ TimeAxis.prototype._repaintLabels = function () {
   var orientation = this.options.orientation;
 
   // calculate range and step (step such that we have space for 7 characters per label)
-  var start = util.convert(this.body.range.start, 'Number'),
-      end = util.convert(this.body.range.end, 'Number'),
-      minimumStep = this.body.util.toTime((this.props.minorCharWidth || 10) * 7).valueOf()
-          -this.body.util.toTime(0).valueOf();
-  var step = new TimeStep(new Date(start), new Date(end), minimumStep);
+  var start = util.convert(this.body.range.start, 'Number');
+  var end = util.convert(this.body.range.end, 'Number');
+  var timeLabelsize = this.body.util.toTime((this.props.minorCharWidth || 10) * 7).valueOf();
+  var minimumStep = timeLabelsize - DateUtil.getHiddenDurationBefore(this.body.hiddenDates, this.body.range, timeLabelsize);
+  minimumStep -= this.body.util.toTime(0).valueOf();
+
+
+  var step = new TimeStep(new Date(start), new Date(end), minimumStep, this.body.hiddenDates);
   this.step = step;
 
   // Move all DOM elements to a "redundant" list, where they
@@ -199,9 +203,10 @@ TimeAxis.prototype._repaintLabels = function () {
   var max = 0;
   while (step.hasNext() && max < 1000) {
     max++;
-    var cur = step.getCurrent(),
-        x = this.body.util.toScreen(cur),
-        isMajor = step.isMajor();
+    var cur = step.getCurrent();
+    var x = this.body.util.toScreen(cur);
+    var isMajor = step.isMajor();
+
 
     // TODO: lines must have a width, such that we can create css backgrounds
 
@@ -385,7 +390,7 @@ TimeAxis.prototype._calculateCharSize = function () {
   // determine the char width and height on the major axis
   if (!this.dom.measureCharMajor) {
     this.dom.measureCharMajor = document.createElement('DIV');
-    this.dom.measureCharMajor.className = 'text minor measure';
+    this.dom.measureCharMajor.className = 'text major measure';
     this.dom.measureCharMajor.style.position = 'absolute';
 
     this.dom.measureCharMajor.appendChild(document.createTextNode('0'));
