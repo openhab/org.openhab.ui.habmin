@@ -508,6 +508,7 @@ angular.module('HABmin.chart', [
                         cnt--;
 
                         if(cnt === 0) {
+                            $scope.chartLoading = false;
                             dataItems.update(newChart);
                         }
                     },
