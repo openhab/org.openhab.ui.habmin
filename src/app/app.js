@@ -31,7 +31,8 @@ angular.module('HABmin', [
     'pickAColor',
     'angular-blockly',
     'Binding.zwave',
-    'angular-bootstrap-select'
+    'angular-bootstrap-select',
+    'SidepanelService'
 ])
     .value('localeConf', {
         basePath: 'languages',
@@ -116,15 +117,15 @@ angular.module('HABmin', [
     })
 
     .controller('HABminCtrl',
-    function HABminCtrl($scope, $location, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel) {
+    function HABminCtrl($scope, $location, $window, $timeout, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, SidepanelService) {
         $scope.isLoggedIn = UserService.isLoggedIn;
 
-        $scope.setTheme = function(theme) {
+        $scope.setTheme = function (theme) {
             $('html').removeClass();
             $('html').addClass(theme);
         };
 
-        $scope.$on("habminTheme", function(event, theme) {
+        $scope.$on("habminTheme", function (event, theme) {
             $scope.setTheme(theme);
         });
 
@@ -196,9 +197,46 @@ angular.module('HABmin', [
             getAppData();
         });
 
+        var el = angular.element(".navbar-toggle");
+        if(el != null) {
+            if(el.css('display') == 'none') {
+                SidepanelService.showPanel('all');
+            }
+            else {
+                SidepanelService.showPanel('side');
+            }
+        }
+
+        // Use the resize event to detect if the havbar is collapsed
+        // If it's not collapsed, tell the sidepanel to show all
+        angular.element($window).bind('resize', function() {
+            console.log("resize");
+            var el = angular.element(".navbar-toggle");
+            if (el != null) {
+                if (el.css('display') == 'none') {
+                    SidepanelService.showPanel('all');
+                }
+                else {
+                    // We need to detect the single instance the menu collapses
+                    // to avoid unwanted changes to the displayed panel
+                    if (SidepanelService.getPanel() == 'all') {
+                        SidepanelService.showPanel('side');
+                    }
+                }
+            }
+        });
+
+        $scope.$on("sidepanelChange", function() {
+            $timeout(function () {
+                $(window).trigger('resize');
+            }, 0);
+        });
+
         $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
             // Reset the sidebar
-            SidepanelService.showSidebar(true);
+            if(SidepanelService.getPanel() != 'all') {
+                SidepanelService.showPanel('side');
+            }
 
             // Collapse the menu if we change view
             $scope.menuCollapsed=true;

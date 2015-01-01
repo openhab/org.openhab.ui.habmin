@@ -115,6 +115,7 @@ angular.module('HABmin.iconModel', [
                 });
             }
         };
-    });
+    })
+;
 
 

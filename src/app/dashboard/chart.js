@@ -19,7 +19,8 @@ angular.module('HABmin.chart', [
     'HABmin.iconModel',
     'ngVis',
     'ngConfirmClick',
-    'ResizePanel'
+    'ResizePanel',
+    'SidepanelService'
 ])
 
     .config(function config($stateProvider) {
@@ -42,7 +43,7 @@ angular.module('HABmin.chart', [
     })
 
     .controller('DashboardChartCtrl',
-    function DashboardChartCtrl($scope, locale, PersistenceItemModel, PersistenceServiceModel, PersistenceDataModel, ChartListModel, ChartSave, growl, VisDataSet, $interval, $timeout) {
+    function DashboardChartCtrl($scope, locale, PersistenceItemModel, PersistenceServiceModel, PersistenceDataModel, ChartListModel, ChartSave, SidepanelService, growl, VisDataSet, $interval, $timeout) {
         var itemsLoaded = 0;
         var itemsLoading = 0;
         var newChart;
@@ -657,7 +658,7 @@ angular.module('HABmin.chart', [
             var style = "";
             if (itemCfg.lineColor !== undefined) {
                 var t = tinycolor(itemCfg.lineColor);
-                if (t.isValid() === true) {
+                if (t.ok === true) {                // isValid!!!
                     style += "stroke:" + t.toHexString() + ";";
                 }
             }
@@ -714,7 +715,7 @@ angular.module('HABmin.chart', [
                             if (axis.color != null && axis.color.length > 0) {
                                 // Sanatise the colours with tinycolor
                                 var t = tinycolor(axis.color);
-                                if (t.isValid() === true) {
+                                if (t.ok === true) {                // isValid!!!
                                     label.style = "color:" + t.toHexString() + ";";
                                 }
                             }

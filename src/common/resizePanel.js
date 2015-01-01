@@ -23,35 +23,16 @@ angular.module('ResizePanel', [
                     var h1 = element[0].offsetHeight;
                     $scope.headerSize = h - h1;
 
-                    var vvv = (w.height() - $scope.headerSize - top - 25);
-                    element.css('height', vvv + 'px');
+                    var pHeight = (w.height() - $scope.headerSize - top - 25);
+                    element.css('height', pHeight + 'px');
                     return {
                         'h': w.height()
                     };
                 };
                 $scope.$watch($scope.getWindowDimensions, function (newValue, oldValue) {
-                    var pa = element.parent();
-                    var h = pa[0].offsetHeight;
-                    var h1 = element[0].offsetHeight;
-                    var hh = w.height();
-                    var tt = pa[0].offsetTop;
-                    var ttt = element[0].offsetTop;
-                    $scope.headerSize = h - h1;
-                    var hx = hh - $scope.headerSize;
-                    var vvv = (w.height() - $scope.headerSize - 60 - 20);
                 }, true);
 
                 w.bind('resize', function () {
-                    var pa = element.parent();
-                    var h = pa[0].offsetHeight;
-                    var h1 = element[0].offsetHeight;
-                    var hh = w.height();
-                    var tt = pa[0].offsetTop;
-                    var ttt = element[0].offsetTop;
-                    $scope.headerSize = h - h1;
-                    var hx = hh - $scope.headerSize;
-                    var vvv = (w.height() - $scope.headerSize - 60 - 20);
-                    //                   element.css('height', vvv + 'px');
                     $scope.$apply();
                 });
             }

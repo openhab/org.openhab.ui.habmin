@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- Device List -->
-<div class="col-sm-4">
+<div class="col-sm-4" sidepanel-pane="side">
     <div class="panel panel-default">
         <!-- Header -->
         <div class="panel-heading">
@@ -45,7 +45,7 @@
         <div class="list-group habmin-list" resize-panel>
             <div ng-repeat="choice in devices">
                 <a role="presentation" ng-class="{'list-group-item':true, 'active': choice.device==devEdit.device}"
-                   ng-click="selectDevice(choice)">
+                   ng-click="selectDevice(choice)" sidepanel-click="main">
                     <habmin-icon class="icon-lg" icon="{{choice.icon}}"></habmin-icon>
                     <span>{{choice.label}}</span>
                     <span class="pull-right">
@@ -93,7 +93,7 @@
 </div>
 
 <!-- Device Configuration -->
-<div class="col-sm-8">
+<div class="col-sm-8" sidepanel-pane="main">
     <div class="panel panel-default">
         <!-- Header -->
         <div class="panel-heading">

@@ -98,6 +98,37 @@
     }
   }
 
+  // Bars
+  .navbar-toggle.pull-left {
+    padding-top: 2px;
+    display: inline-flex;
+    vertical-align:middle;
+    .nav-expand-bar {
+      padding-top: 7px;
+      .icon-bar {
+        padding-top: 0px;
+        width: 15px;
+      }
+    }
+
+    margin-right: 0px;
+    margin-bottom: 0px;
+    font-size: @font-size-large;
+    color: @link-color;
+
+    &:hover {
+      color: @nav-tabs-active-link-hover-color;
+    }
+
+    .nav-expand-dir {
+      padding-left: 3px;
+    }
+
+    @media (min-width: @grid-float-breakpoint) {
+      display:none;
+    }
+  }
+
   .fillspace {
     position: absolute;
     width: 100%;

@@ -16,7 +16,8 @@ angular.module('Binding.zwave', [
     'Binding.config',
     'yaru22.angular-timeago',
     'ngVis',
-    'ResizePanel'
+    'ResizePanel',
+    'SidepanelService'
 ])
 
     .config(function config($stateProvider) {
@@ -39,7 +40,7 @@ angular.module('Binding.zwave', [
     })
 
     .controller('ZwaveBindingCtrl',
-    function ZwaveBindingCtrl($scope, locale, growl, $timeout, $window, $http, timeAgo, $interval, UserService) {
+    function ZwaveBindingCtrl($scope, locale, growl, $timeout, $window, $http, timeAgo, $interval, UserService, SidepanelService) {
         var url = UserService.getServer() + '/services/habmin/zwave/';
 
         var deviceClassIcons = {
