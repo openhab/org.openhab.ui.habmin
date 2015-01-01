@@ -372,6 +372,17 @@
     padding-top: 50px;
   }
 
+  .chart-loading {
+    position: absolute;
+    bottom: calc(@line-height-computed + 3px);
+    left: calc(@panel-body-padding + 5px);
+    z-index: 2000;
+
+    @media (max-width: @grid-float-breakpoint-max) {
+      bottom: 3px;
+    }
+  }
+
   .vis.timeline.root {
     border: none;
   }

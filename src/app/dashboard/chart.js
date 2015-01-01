@@ -95,6 +95,8 @@ angular.module('HABmin.chart', [
         $scope.items = [];
         $scope.services = [];
 
+        $scope.chartLoading = false;
+
         // ------------------------------------------------
         // Load model data
 
@@ -147,6 +149,8 @@ angular.module('HABmin.chart', [
             console.log("doChart button clicked");
 
             if ($scope.selectCharts === false) {
+                $scope.chartLoading = true;
+
                 _displayItems();
             }
         };
@@ -207,6 +211,7 @@ angular.module('HABmin.chart', [
             });
 
             parm.selected = 'loading';
+            $scope.chartLoading = true;
 
             $scope.selectedChart = parm;
             _displayChart(parm.id);
@@ -241,6 +246,7 @@ angular.module('HABmin.chart', [
         };
 
         $scope.onLoaded = function (graphRef) {
+            $scope.chartLoading = false;
             console.log("graph loaded callback", graphRef);
             graph2d = graphRef;
             graph2d.setWindow($scope.startTime, $scope.stopTime);
@@ -483,6 +489,8 @@ angular.module('HABmin.chart', [
                 stopTime <= $scope.stopTime + allowableDelta) {
                 return;
             }
+
+            $scope.chartLoading = true;
 
             $scope.startTime = moment(period.start).valueOf();
             $scope.stopTime = moment(period.end).valueOf();
