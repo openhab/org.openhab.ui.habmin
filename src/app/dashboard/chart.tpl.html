@@ -174,7 +174,7 @@
                             <span class="fa fa-calendar-o"></span>
                             <span class="calendar-day">1</span>
                         </span>
-                    <span>Day</span>
+                    <span class="hidden-xs">Day</span>
                 </button>
                 <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded||calendarOpen"
                         ng-class="{active:graphWindow=='week'}" ng-click="setWindow('week')">
@@ -182,7 +182,7 @@
                             <span class="fa fa-calendar-o"></span>
                             <span class="calendar-day">7</span>
                         </span>
-                    <span>Week</span>
+                    <span class="hidden-xs">Week</span>
                 </button>
                 <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded||calendarOpen"
                         ng-class="{active:graphWindow=='month'}" ng-click="setWindow('month')">
@@ -190,7 +190,7 @@
                             <span class="fa fa-calendar-o"></span>
                             <span class="calendar-day">30</span>
                         </span>
-                    <span>Month</span>
+                    <span class="hidden-xs">Month</span>
                 </button>
 <!--                <button type="button" class="btn btn-default dropdown" ng-disabled="!graphLoaded"
                         ng-init="calendarOpen=false" ng-click="calendarOpen=!calendarOpen">
