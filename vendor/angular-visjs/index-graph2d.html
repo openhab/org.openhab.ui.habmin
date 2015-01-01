@@ -1,0 +1,140 @@
+<!doctype html>
+<html class="no-js" lang="en" ng-app="ngVisApp">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AngularVis</title>
+  <link rel="stylesheet" href="bower_components/foundation/css/foundation.css"/>
+  <link rel="stylesheet" href="bower_components/foundation-icons/foundation-icons.css"/>
+  <link rel="stylesheet" href="bower_components/vis/dist/vis.min.css"/>
+  <style>
+    #showcase {
+      padding: 30px;
+      background-color: #fbfbfb;
+    }
+
+    .fluid {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .vis.timeline {
+      background-color: #ffffff;
+    }
+
+    .vis.timeline .item {
+      /*background-color: #008CBA;*/
+      /*border-color: #008CBA;*/
+      /*color: #ffffff;*/
+      /*font-family: 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;*/
+      /*font-kerning: auto;*/
+      /*font-size: 13px;*/
+      /*font-style: normal;*/
+      /*font-variant: normal;*/
+      /*font-variant-ligatures: normal;*/
+      /*font-weight: normal;*/
+    }
+
+    .vis.timeline .item.green {
+      background-color: green;
+      border-color: green;
+      color: #ffffff;
+    }
+
+    .vis.timeline .item.red {
+      background-color: red;
+      border-color: red;
+      color: #ffffff;
+    }
+
+    .vis.timeline .item.orange {
+      background-color: orange;
+      border-color: orange;
+    }
+
+    .vis.timeline .item.magenta {
+      background-color: magenta;
+      border-color: magenta;
+      color: #ffffff;
+    }
+
+    .vis.timeline .item.past {
+      filter: alpha(opacity=50);
+      opacity: 0.5;
+    }
+
+    h6 {
+      font-size: 0.75rem;
+    }
+
+    pre {
+      font-size: 0.9rem;
+    }
+
+    body, html {
+        font-family: sans-serif;
+    }
+
+    .customStyle1 {
+        fill: #f2ea00;
+        fill-opacity:0;
+        stroke-width:2px;
+        stroke: #b3ab00;
+    }
+
+    .customStyle2 {
+        fill: #00a0f2;
+        fill-opacity:0;
+        stroke-width:2px;
+        stroke: #050092;
+    }
+
+    .customStyle3 {
+        fill: #00f201;
+        fill-opacity:0;
+        stroke-width:2px;
+        stroke: #029200;
+    }
+    path.customStyle3.fill {
+        fill-opacity:0.5 !important;
+        stroke: none;
+    }
+  </style>
+</head>
+<body ng-controller="appController">
+
+<nav class="top-bar" data-topbar="">
+  <ul class="title-area">
+    <li class="name">
+      <h1>
+        <a ng-click="setView('introduction')">AngularVis-Graph2D</a>
+      </h1>
+    </li>
+  </ul>
+
+  <section class="top-bar-section">
+    <ul class="right">
+      <li class="{{page.introduction && 'active'}}">
+        <a ng-click="setView('introduction')">Introduction</a>
+      </li>
+    </ul>
+  </section>
+</nav>
+
+<vis ng-transclude>
+    <graph2d data="data" options="options"></graph2d>
+</vis>
+
+
+<script src="bower_components/moment/min/moment.min.js"></script>
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/foundation/js/foundation.min.js"></script>
+<script src="bower_components/vis/dist/vis.min.js"></script>
+<script src="bower_components/angular/angular.min.js"></script>
+<script src="angular-vis.js"></script>
+<script src="app-graph2d.js"></script>
+<script>
+  $(document).foundation();
+</script>
+</body>
+</html>

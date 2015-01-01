@@ -1,0 +1,31 @@
+{
+  "name": "angular-visjs",
+  "homepage": "https://github.com/visjs/angular-visjs",
+  "authors": [
+    "Chris Jackson <chris@cd-jackson.com>"
+  ],
+  "description": "AngularJS directives for the VisJS visualisation library",
+  "keywords": [
+    "AngularJS",
+    "VisJS",
+    "JavaScript"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "8a71717dd5",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "8a71717dd5c2a41f38552fd9c86a79bba287cb32"
+  },
+  "_source": "git://github.com/visjs/angular-visjs.git",
+  "_target": "*",
+  "_originalSource": "angular-visjs",
+  "_direct": true
+}

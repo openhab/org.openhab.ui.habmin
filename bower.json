@@ -2,7 +2,7 @@
   "name": "HABmin",
   "version": "0.3.2",
   "devDependencies": {
-    "angular": "~1.2",
+    "angular": "~1.3",
     "angular-mocks": "~1.2",
     "bootstrap": "~3.1",
     "angular-bootstrap": "~0.10.0",
@@ -20,7 +20,7 @@
     "pick-a-color": "~1.2.3",
     "angular-pick-a-color": "~0.2.0",
     "angular-sanitize": "~1.2.23",
-    "moment": "~2.8.2",
+    "moment": "latest",
     "angular-ui-ace": "bower",
     "fontawesome": "~4.2.0",
     "angular-gridster": "~0.9.18",
@@ -28,20 +28,22 @@
     "weather-icons": "~0.0.1",
     "jquery-ui": "~1.11.1",
     "angular-dialgauge": "~0.1.2",
-    "tinycolor": "~1.0.0",
+    "tinycolor": "latest",
     "angular-timeago": "~0.1.2",
-    "vis": "~3.5.0",
+    "vis": "latest",
     "angular-http-auth": "~1.2.1",
     "angular-base64": "~2.0.2",
-    "angular-bootstrap-select": "~0.0.5"
+    "angular-bootstrap-select": "~0.0.5",
+    "angular-animate": "~1.3.8"
   },
   "resolutions": {
     "moment": "~2.8.2",
     "jquery-ui": "~1.11.1",
     "bootstrap": "~3.1",
     "angular-bootstrap": "0.11.2",
-    "angular": "^1.2",
+    "angular": "1.3.8",
     "tinycolor": "~1.0.0",
-    "jquery": "~2.x"
+    "jquery": "~2.x",
+    "angular-animate": "~1.3.8"
   }
 }

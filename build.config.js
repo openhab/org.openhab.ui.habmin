@@ -105,7 +105,8 @@ module.exports = {
             'vendor/angular-base64/angular-base64.js',
             'vendor/angular-bootstrap-datetimepicker/src/js/datetimepicker.js',
             'vendor/bootstrap-select/bootstrap-select.js',
-            'vendor/angular-bootstrap-select/build/angular-bootstrap-select.js'
+            'vendor/angular-bootstrap-select/build/angular-bootstrap-select.js',
+            'vendor/angular-visjs/angular-vis.js'
         ],
         css: [
             'vendor/angular-growl-v2/build/angular-growl.css',

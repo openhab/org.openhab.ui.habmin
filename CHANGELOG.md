@@ -33,6 +33,16 @@
 
 * Add shadow to sitemap frame headings ([190425a6](git@github.com:cdjackson/HABmin2/commit/190425a6))
 
+* Remove graph button text on small screens ([fe65e8a9](git@github.com:cdjackson/HABmin2/commit/fe65e8a9))
+
+* Remove graph button text on medium screens ([8f1aa8e8](git@github.com:cdjackson/HABmin2/commit/8f1aa8e8))
+
+* Remove some text to improve layout on small screens ([1f247234](git@github.com:cdjackson/HABmin2/commit/1f247234))
+
+* Add chart loading spinner to bottom left of chart area ([c89d825a](git@github.com:cdjackson/HABmin2/commit/c89d825a))
+
+* Add responsive sidebar when in small window (mobile) ([ceae2583](git@github.com:cdjackson/HABmin2/commit/ceae2583))
+
 ### ZWave
 
 * Add icon and processing for SECURE_KEYPAD_DOOR_LOCK class ([aae19184](git@github.com:cdjackson/HABmin2/commit/aae19184))
@@ -59,6 +69,10 @@
 * Fix navbar formatting when collapsing on small screens ([29c3dcdf](git@github.com:cdjackson/HABmin2/commit/29c3dcdf))
 
 * Improve styling of sitemaps to make better use of space ([010aa210](git@github.com:cdjackson/HABmin2/commit/010aa210))
+
+* Fix error getting config data from server if logging in from cached password ([e31d5aa8](git@github.com:cdjackson/HABmin2/commit/e31d5aa8))
+
+* Send authenticated event if using cached data ([fe8db276](git@github.com:cdjackson/HABmin2/commit/fe8db276))
 
 ### Mobile
 
