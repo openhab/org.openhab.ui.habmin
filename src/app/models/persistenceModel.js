@@ -36,7 +36,7 @@ angular.module('HABmin.persistenceModel', [
 
     })
 
-    .factory("PersistenceServiceModel", function ($resource) {
+    .factory("PersistenceServiceModel", function ($resource, UserService) {
         this.url = UserService.getServer() + '/services/habmin/persistence/services';
         return $resource(this.url,
             {

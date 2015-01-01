@@ -59,7 +59,9 @@ angular.module('HABmin.userModel', [
         }
 
         // Send the login confirmation to signal the system that we're online
-        authService.loginConfirmed();
+        if(authenticated === true) {
+            authService.loginConfirmed();
+        }
 
         return {
             isLoggedIn: function () {
