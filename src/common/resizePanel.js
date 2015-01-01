@@ -7,8 +7,7 @@
  *
  * (c) 2014 Chris Jackson (chris@cd-jackson.com)
  */
-angular.module('ResizePanel', [
-])
+angular.module('ResizePanel', [])
     .directive('resizePanel', function ($window) {
         return {
             restrict: 'A',
@@ -17,6 +16,11 @@ angular.module('ResizePanel', [
                 var top = element[0].offsetTop;
                 var w = angular.element($window);
                 $scope.getWindowDimensions = function () {
+                    if ($(element).is(":visible") == false) {
+                        console.log("Div is hidden!!");
+                        return;
+                    }
+
                     var pa = element.parent('.panel');
                     var top = pa.offset().top;
                     var h = pa[0].offsetHeight;
