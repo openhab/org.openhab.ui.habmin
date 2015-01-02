@@ -311,7 +311,10 @@ module.exports = function (grunt) {
                 options: {
                     banner: '<%= meta.banner %>',
                     ASCIIOnly: true,
-                    preserveComments: false
+                    preserveComments: false,
+                    compress: {
+                        drop_console: true
+                    }
                 },
                 files: {
                     '<%= concat.compile_js.dest %>': '<%= concat.compile_js.dest %>'
@@ -791,12 +794,21 @@ module.exports = function (grunt) {
      * It starts
      */
     grunt.registerTask('compile', [
-        'clean:changelog', 'changelog',
         'build',
         'copy:compile_assets', 'copy:compile_languages', 'clean:css', 'cssmin', 'json-minify',
         'concat:compile_js', 'ngAnnotate', 'uglify', 'index:compile', 'htmlmin:compile',
         'compress',
-        'compile_cordova'
+        'build_cordova'
+    ]);
+
+    /**
+     * The 'release' task compiles the targets, creates the change log, increments the version,
+     * and pushes to git
+     */
+    grunt.registerTask('release', [
+        'compile',
+        'clean:changelog', 'changelog',
+        'bump'
     ]);
 
     /**

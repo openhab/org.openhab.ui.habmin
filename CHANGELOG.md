@@ -1,4 +1,4 @@
-# 0.0.2 (2015-01-01)
+# 0.0.2 (2015-01-02)
 
 ## Features
 ### Mobile
@@ -8,6 +8,8 @@
 * Persist server address to local storage ([8a619066](git@github.com:cdjackson/HABmin2/commit/8a619066))
 
 * Reduce gutter on narrow width screens to provide more real-estate ([14c001a6](git@github.com:cdjackson/HABmin2/commit/14c001a6))
+
+* Present login screen if no server set when app starts ([83e3551b](git@github.com:cdjackson/HABmin2/commit/83e3551b))
 
 ### UI
 
@@ -43,6 +45,10 @@
 
 * Add responsive sidebar when in small window (mobile) ([ceae2583](git@github.com:cdjackson/HABmin2/commit/ceae2583))
 
+* Hide multiple panel switch button when Sitemap displayed ([c0945ec5](git@github.com:cdjackson/HABmin2/commit/c0945ec5))
+
+* Make rule and schedule templates multi panel for more responsive on phones ([ca49372c](git@github.com:cdjackson/HABmin2/commit/ca49372c))
+
 ### ZWave
 
 * Add icon and processing for SECURE_KEYPAD_DOOR_LOCK class ([aae19184](git@github.com:cdjackson/HABmin2/commit/aae19184))
@@ -73,6 +79,10 @@
 * Fix error getting config data from server if logging in from cached password ([e31d5aa8](git@github.com:cdjackson/HABmin2/commit/e31d5aa8))
 
 * Send authenticated event if using cached data ([fe8db276](git@github.com:cdjackson/HABmin2/commit/fe8db276))
+
+* Update resize directive to not resize when element is hidden ([d63930c6](git@github.com:cdjackson/HABmin2/commit/d63930c6))
+
+* Remove loading spinner when updating data following a change of zoom level ([5574fdde](git@github.com:cdjackson/HABmin2/commit/5574fdde))
 
 ### Mobile
 
