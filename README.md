@@ -1,23 +1,28 @@
 HABmin2
 =======
 
-HABmin version2 - ultimately targeted toward openHAB2
+HABmin version2 - ultimately targeted toward openHAB2, however currently only working with openHAB1.
 
-## Features
-* Responsive. Should work well on all devices. Of course some functions may be removed or be difficult to use on small devices (eg the graphical rule editor).
-* Theme-able. Multiple themes are available - take your pick.
-* Charting. Modern, fast charting of historical data.
-* Graphical rule editor. No need to learn rule syntax.
-* Available as native apps for Android.
+Features
+========
+* **Responsive**. Should work well on all devices. Of course some functions may be removed or be difficult to use on small devices (eg the graphical rule editor).
+* **Theme-able**. Multiple themes are available - take your pick.
+* **Charting**. Modern, fast charting of historical data.
+* **Graphical rule editor**. No need to learn rule syntax.
+* Available as native app for **Android**.
 
 Installation
 ============
 
 To test, you need to grab the habmin JAR from the HABmin repository (https://github.com/cdjackson/HABmin/blob/master/addons/org.openhab.io.habmin-1.7.0-SNAPSHOT.jar) and add it to your addons folder along with the zwave binding from the same site (or any other recent zwave binding if you prefer).
 
+### Web interface
 Then grab the appropriate ZIP file, generally the release version, from https://github.com/cdjackson/HABmin2/output and unzip it into a folder webapps/habmin2 in your openhab installation.
 
 Then open the browser at http://openhab server/habmin2.
+
+### Android
+The release also contains an Android package (```apk``` file) - this can be downloaded to an Android device - no further installation is required. When the app starts, it should ask you for server and login credentials. I'm still trying to get the reconnection sorted, so it's possible that you may need to log out, and log on to get the connect back when you start again. Please feel free to open an issue and report your findings.
 
 Screenshots
 ===========
