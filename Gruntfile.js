@@ -24,10 +24,13 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-shell');
 
+
     /**
      * Load in our build configuration file.
      */
     var userConfig = require('./build.config.js');
+
+    var pkg = grunt.file.readJSON("package.json");
 
     /**
      * This is the configuration object Grunt uses to give each plugin its
@@ -77,12 +80,11 @@ module.exports = function (grunt) {
                 commit: false,
                 commitMessage: 'chore(release): v%VERSION%',
                 commitFiles: [
-                    "package.json",
-                    "client/bower.json"
+                    "-a"
                 ],
                 createTag: false,
                 tagName: 'v%VERSION%',
-                tagMessage: 'Version %VERSION%',
+                tagMessage: 'Version ' + grunt.config("setversion"),
                 push: false,
                 pushTo: 'origin'
             }
@@ -774,19 +776,22 @@ module.exports = function (grunt) {
      * Phonegap compiler - external...
      */
     grunt.registerTask('mobile', [
-        'build', 'build_cordova']);
+        'build', 'build_cordova'
+    ]);
 
     /**
      * Phonegap compiler - internal...
      */
     grunt.registerTask('build_cordova', [
-        'copy:cordova_build', 'index:cordova', 'shell:build_android', 'copy:cordova_android']);
+        'copy:cordova_build', 'index:cordova', 'shell:build_android', 'copy:cordova_android'
+    ]);
 
     /**
      * Phonegap compiler - internal...
      */
     grunt.registerTask('compile_cordova', [
-        'copy:cordova_compile', 'index:cordova', 'shell:build_android', 'copy:cordova_android']);
+        'copy:cordova_compile', 'index:cordova', 'shell:build_android', 'copy:cordova_android'
+    ]);
 
     /**
      * The `compile` task gets your app ready for deployment by concatenating and
@@ -794,21 +799,12 @@ module.exports = function (grunt) {
      * It starts
      */
     grunt.registerTask('compile', [
+        'clean:changelog', 'changelog',
         'build',
         'copy:compile_assets', 'copy:compile_languages', 'clean:css', 'cssmin', 'json-minify',
         'concat:compile_js', 'ngAnnotate', 'uglify', 'index:compile', 'htmlmin:compile',
         'compress',
         'build_cordova'
-    ]);
-
-    /**
-     * The 'release' task compiles the targets, creates the change log, increments the version,
-     * and pushes to git
-     */
-    grunt.registerTask('release', [
-        'compile',
-        'clean:changelog', 'changelog',
-        'bump'
     ]);
 
     /**
@@ -841,7 +837,6 @@ module.exports = function (grunt) {
         var jsFiles = filterForJS(this.filesSrc).map(function (file) {
             return file.replace(dirRE, '');
         });
-        grunt.log.writeln("build:: " + this.data.build);
         var cssFiles = filterForCSS(this.filesSrc).map(function (file) {
             return file.replace(dirRE, '');
         });
