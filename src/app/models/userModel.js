@@ -12,12 +12,19 @@ angular.module('HABmin.userModel', [
     'base64'
 ])
     .factory('UserService', function ($http, $rootScope, authService) {
+        // The 'authenticated' flag is set to true if we have a user logged in
         var authenticated = false;
+
+        // The 'loginRequired' flag is set to true if we've requested the user logs in.
+        // This is specifically needed during startup where the login directive may not
+        // have loaded, and we need to know that the app has requested a login.
+        var loginRequired = false;
 
         // Install handlers to catch authorisation failures
         $rootScope.$on('event:auth-loginConfirmed', function () {
             console.log("Login complete");
             authenticated = true;
+            loginRequired = false;
         });
 
         // On startup, check the local storage to see if we've got saved info here
@@ -45,9 +52,13 @@ angular.module('HABmin.userModel', [
             theme: "slate"
         };
 
+        // For Cordova, get the server from local storage
         var server = "";
         if (document.HABminCordova === true) {
             server = localStorage.getItem('Server');
+            if(server == null) {
+                server = "";
+            }
         }
 
         // If we've previously saved the theme, restore the user selection
@@ -60,12 +71,17 @@ angular.module('HABmin.userModel', [
 
         // Send the login confirmation to signal the system that we're online
         if(authenticated === true) {
+            console.log("User authenticated at startup - confirming login");
             authService.loginConfirmed();
         }
 
         return {
             isLoggedIn: function () {
                 return authenticated;
+            },
+
+            isLoginRequired: function () {
+                return loginRequired;
             },
 
             setServer: function (newServer) {
@@ -93,6 +109,7 @@ angular.module('HABmin.userModel', [
             },
 
             login: function () {
+                loginRequired = true;
                 $rootScope.$broadcast('event:auth-loginRequired');
             },
 
@@ -123,7 +140,7 @@ angular.module('HABmin.userModel', [
         };
     })
 
-    .directive('loginHandler', function () {
+    .directive('loginHandler', function (UserService) {
         return {
             restrict: 'C',
             link: function (scope, elem, attrs) {
@@ -133,14 +150,24 @@ angular.module('HABmin.userModel', [
                 login.hide();
 
                 scope.$on('event:auth-loginRequired', function () {
+                    console.log("LOGIN: Authentication required.")
                     $('#login-holder').slideDown('slow', function () {
                         $('#content').hide();
                     });
                 });
                 scope.$on('event:auth-loginConfirmed', function () {
+                    console.log("LOGIN: Authentication confirmed.")
                     $('#content').show();
                     $('#login-holder').slideUp();
                 });
+
+                // During startup, we need to handle asynchronous operations.
+                // This directive may not have loaded when the app is checking
+                // to see if we've logged in. So, we store a 'loginRequired' flag
+                // and check it here to see what we need to do!
+                if(UserService.isLoginRequired()) {
+                    UserService.login();
+                }
             }
         };
     })
@@ -160,6 +187,11 @@ angular.module('HABmin.userModel', [
         }
 
         $scope.submit = function () {
+            console.log("Login info submitted.");
+
+            // The user can't (currently) set the timeout period, so make it 7 days
+            $scope.period = 7 * 86400;
+
             UserService.setServer($scope.server);
             var pass = $base64.encode($scope.user + ':' + $scope.password);
             console.log($scope.password, $scope.user, pass);

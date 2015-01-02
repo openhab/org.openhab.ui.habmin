@@ -139,8 +139,6 @@ angular.module('HABmin', [
             UserService.login();
         };
 
-        console.log("Login updated");
-
         // Load models used in the nav bar
         function getAppData() {
             $scope.sitemaps = null;
@@ -189,11 +187,24 @@ angular.module('HABmin', [
         // If we're logged in, then get the app data
         // This is needed as we will miss the event if we're already logged in!
         if(UserService.isLoggedIn() === true) {
+            console.log("App logged in at startup");
             getAppData();
+        }
+        else if(document.HABminCordova) {
+            // If running as an app, and we have the server, then kick-start comms
+            if(UserService.getServer() != "") {
+                console.log("App Start: Server is", UserService.getServer());
+                getAppData();
+            }
+            else {
+                // No server is set, so we need to pop up the login box
+                UserService.login();
+            }
         }
 
         // Install handlers to catch authorisation failures
         $scope.$on('event:auth-loginConfirmed', function () {
+            console.log("App login message - updating configuration data");
             getAppData();
         });
 
@@ -210,7 +221,6 @@ angular.module('HABmin', [
         // Use the resize event to detect if the navbar is collapsed
         // If it's not collapsed, tell the sidepanel to show all
         angular.element($window).bind('resize', function() {
-            console.log("resize");
             var el = angular.element(".navbar-toggle");
             if (el != null) {
                 if (el.css('display') == 'none') {
