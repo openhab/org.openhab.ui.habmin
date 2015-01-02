@@ -11,7 +11,6 @@ angular.module('ResizePanel', [])
     .directive('resizePanel', function ($window) {
         return {
             restrict: 'A',
-            scope: {},
             link: function ($scope, element, attrs) {
                 var top = element[0].offsetTop;
                 var w = angular.element($window);

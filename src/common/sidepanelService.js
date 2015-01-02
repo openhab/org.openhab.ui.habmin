@@ -35,7 +35,6 @@ angular.module('SidepanelService', [
         return {
             restrict: 'EA',
             transclude: false,
-            scope: {},
             link: function (scope, element, attr) {
                 if(attr.sidepanelToggle == null || attr.sidepanelToggle.length == 0) {
                     return;
@@ -74,7 +73,6 @@ angular.module('SidepanelService', [
         return {
             restrict: 'EA',
             transclude: false,
-            scope: {},
             link: function (scope, element, attr) {
                 // Handle the click event
                 element.on("click", function(event) {
@@ -91,7 +89,6 @@ angular.module('SidepanelService', [
         return {
             restrict: 'EA',
             transclude: false,
-            scope: {},
             link: function (scope, element, attr) {
                 if(attr.sidepanelClass == null || attr.sidepanelClass.length == 0) {
                     return;
@@ -134,7 +131,6 @@ angular.module('SidepanelService', [
         return {
             restrict: 'EA',
             transclude: false,
-            scope: {},
             link: function (scope, element, attr) {
                 if(SidepanelService.getPanel() != 'all' && SidepanelService.getPanel() != attr.sidepanelPane) {
                     element.addClass('ng-hide');
