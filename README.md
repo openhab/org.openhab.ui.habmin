@@ -63,7 +63,7 @@ Sitemaps (mobile view)...
 Contributing
 ============
 Clone the repository to your computer.
-install ```npm``` (node package manager) and run ```npm update``` to install all the development dependencies.
+install ```npm``` (node package manager) and run ```npm install``` to install all the development dependencies.
 
 For mobile app compilation, you need to install ```cordova``` and ```ant``` and the android developers kits and set paths appropriately.
 
