@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<div class="col-sm-4">
+<div class="col-sm-4" sidepanel-pane="side">
     <div class="panel panel-default">
         <!-- Header -->
         <div class="panel-heading">
@@ -20,7 +20,7 @@
         </div>
 
         <!-- Body -->
-        <div class="list-group" ng-if="!selectCharts" resize-panel>
+        <div class="list-group" resize-panel>
             <div ng-repeat="choice in rules">
                 <a role="presentation" ng-class="{'list-group-item':true, 'active':choice.id==selectedRule.id}"
                    ng-confirm-click="selectRule(choice)" ng-confirm-if="$parent.isDirty"
@@ -46,7 +46,8 @@
 </div>
 
 <!-- Rule Pane -->
-<div class="col-sm-8">
+<div class="col-sm-8" sidepanel-pane="main">
+    <!-- Heading -->
     <div class="panel panel-default">
         <div class="panel-heading" style="padding:3px;">
             <button type="button" ng-class="{'btn btn-sm btn-default':true, 'disabled':!isDirty}" ng-click="saveRule()">
@@ -71,6 +72,7 @@
             </div>
         </div>
 
+        <!-- Body -->
         <div resize-panel>
             <ng-blockly ng-show="!editSource">
             </ng-blockly>

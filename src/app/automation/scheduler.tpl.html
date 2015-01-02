@@ -1,4 +1,5 @@
-<div class="col-sm-4">
+<!DOCTYPE html>
+<div class="col-sm-4" sidepanel-pane="side">
     <div class="panel panel-default">
         <!-- Header -->
         <div class="panel-heading">
@@ -13,15 +14,18 @@
         </div>
 
         <!-- Body -->
-        <div class="list-group habmin-list" ng-style="styleList()" resize-page>
+        <div class="list-group habmin-list" resize-panel>
         </div>
 
         <!-- Footer -->
-
+        <div class="panel-footer panel-footer-none">
+        </div>
     </div>
 </div>
 
-<div class="col-sm-8">
+<!-- Calendar View Pane -->
+<div class="col-sm-8" sidepanel-pane="main">
+    <!-- Heading -->
     <div class="panel panel-default">
         <div class="panel-heading">
             <button type="button" class="btn btn-default" ng-click="stepDate('today')">
@@ -58,8 +62,11 @@
                                 </button> -->
             </div>
         </div>
-        <div ui-calendar="uiConfig.calendar" ng-model="eventSources" calendar="calendar" resize-page>
 
+        <!-- Body -->
+        <div resize-panel>
+            <div ui-calendar="uiConfig.calendar" ng-model="eventSources" calendar="calendar">
+            </div>
         </div>
     </div>
 </div>

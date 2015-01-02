@@ -11,7 +11,9 @@ angular.module('HABmin.scheduler', [
     'ui.router',
     'ui.bootstrap',
     'ngLocalize',
-    'ui.calendar'
+    'ui.calendar',
+    'ResizePanel',
+    'SidepanelService'
 ])
 
     .config(function config($stateProvider) {
@@ -75,17 +77,20 @@ angular.module('HABmin.scheduler', [
             ]
         };
         /* alert on eventClick */
-        $scope.alertOnEventClick = function (event, allDay, jsEvent, view) {
+        $scope.alertEventClick = function (event, allDay, jsEvent, view) {
             $scope.alertMessage = (event.title + ' was clicked ');
         };
         /* alert on Drop */
-        $scope.alertOnDrop = function (event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
+        $scope.alertEventDrop = function (event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
             $scope.alertMessage = ('Event Droped to make dayDelta ' + dayDelta);
         };
         /* alert on Resize */
-        $scope.alertOnResize = function (event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view) {
+        $scope.alertEventResize = function (event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view) {
             $scope.alertMessage = ('Event Resized to make dayDelta ' + minuteDelta);
         };
+
+
+
         /* add and removes an event source of choice */
         $scope.addRemoveEventSource = function (sources, source) {
             var canAdd = 0;
@@ -125,19 +130,28 @@ angular.module('HABmin.scheduler', [
             $scope.calendar.fullCalendar(set);
         };
 
-        var w = angular.element($window);
+        // TODO: Height is fixed - it needs to account for parent. Should really be in the calendar directive!
+        $timeout(function() {
+            var w = angular.element($window);
+            $scope.calendar.fullCalendar('option', 'height', w.height() - 152);
+
+            w.bind('resize', function () {
+                var w = angular.element($window);
+                $scope.calendar.fullCalendar('option', 'height', w.height() - 152);
+            });
+        },0);
 
         /* config object */
         $scope.uiConfig = {
             calendar: {
-                height: w.height() - 152,
+                height: 0,
                 editable: true,
                 header: false,
                 defaultView: 'agendaWeek',
                 eventLimit: true,
-                eventClick: $scope.alertOnEventClick,
-                eventDrop: $scope.alertOnDrop,
-                eventResize: $scope.alertOnResize
+                eventClick: $scope.alertEventClick,
+                eventDrop: $scope.alertEventDrop,
+                eventResize: $scope.alertEventResize
             }
         };
 //        $scope.title = $scope.calendar.fullCalendar('getView');
@@ -158,33 +172,8 @@ angular.module('HABmin.scheduler', [
         /* event sources array*/
         $scope.eventSources = [$scope.events, $scope.eventSource, $scope.eventsF];
         $scope.eventSources2 = [$scope.calEventsExt, $scope.eventsF, $scope.events];
+
+
     })
 
-
-    .directive('resizePage', function ($window) {
-        return function ($scope, element) {
-            var w = angular.element($window);
-            $scope.getWindowDimensions = function () {
-                return {
-                    'h': w.height()
-                };
-            };
-            $scope.$watch($scope.getWindowDimensions, function (newValue, oldValue) {
-                if($scope.calendar !== undefined) {
-                    $scope.calendar.fullCalendar('option', 'height', newValue.h - 152);
-                }
-
-                $scope.windowHeight = newValue.h;
-                $scope.styleList = function () {
-                    return {
-                        'height': (newValue.h - 141) + 'px'
-                    };
-                };
-            }, true);
-
-            w.bind('resize', function () {
-                $scope.$apply();
-            });
-        };
-    })
 ;
