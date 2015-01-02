@@ -32,7 +32,9 @@ angular.module('HABmin', [
     'angular-blockly',
     'Binding.zwave',
     'angular-bootstrap-select',
-    'SidepanelService'
+    'SidepanelService',
+    'ngAnimate',
+    'ngTouch'
 ])
     .value('localeConf', {
         basePath: 'languages',
@@ -117,7 +119,7 @@ angular.module('HABmin', [
     })
 
     .controller('HABminCtrl',
-    function HABminCtrl($scope, $location, $window, $timeout, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, SidepanelService) {
+    function HABminCtrl($scope, $location, $window, $timeout, locale, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, SidepanelService) {
         $scope.isLoggedIn = UserService.isLoggedIn;
 
         $scope.setTheme = function (theme) {
@@ -267,6 +269,24 @@ angular.module('HABmin', [
         $scope.showUserGeneralPrefs = function () {
             UserGeneralPrefs.showModal();
         };
+
+        // Swipe handler - mainly for handling small screens where we split the panels
+        // on a side and main panel and display them separately.
+        $scope.swipe = function (dir) {
+            console.log("Swipe action event:"+dir);
+            // Ignore this if we don't have the split screen
+            if($scope.sidepanelEnabled == false || SidepanelService.getPanel() == 'all') {
+                return;
+            }
+
+            // Handle the swipe notifications
+            if(dir == 'left') {
+                SidepanelService.showPanel('main');
+            }
+            if(dir == 'right') {
+                SidepanelService.showPanel('side');
+            }
+        }
     })
 
 ;
