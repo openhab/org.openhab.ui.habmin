@@ -207,7 +207,7 @@ angular.module('HABmin', [
             }
         }
 
-        // Use the resize event to detect if the havbar is collapsed
+        // Use the resize event to detect if the navbar is collapsed
         // If it's not collapsed, tell the sidepanel to show all
         angular.element($window).bind('resize', function() {
             console.log("resize");
@@ -242,6 +242,12 @@ angular.module('HABmin', [
             $scope.menuCollapsed=true;
             if (angular.isDefined(toState.data.pageTitle)) {
                 $scope.pageTitle = toState.data.pageTitle + ' | HABmin';
+            }
+            if (angular.isDefined(toState.data.sidepanelEnabled)) {
+                $scope.sidepanelEnabled = toState.data.sidepanelEnabled;
+            }
+            else {
+                $scope.sidepanelEnabled = true;
             }
         });
 

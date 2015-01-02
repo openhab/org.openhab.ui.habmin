@@ -28,7 +28,10 @@ angular.module('HABmin.sitemap', [
                     templateUrl: 'sitemap/sitemap.tpl.html'
                 }
             },
-            data: { pageTitle: 'Sitemap Main' },
+            data: {
+                pageTitle: 'Sitemap Main',
+                sidepanelEnabled: false
+            },
             controller: function ($scope, params) {
                 console.log("Sitemap parameters:", params);
 //                $scope.title = params.getData()
