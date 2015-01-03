@@ -1,6 +1,6 @@
 {
   "name": "angular-toggle-switch",
-  "version": "0.3.2",
+  "version": "1.0.0",
   "main": [
     "angular-toggle-switch.js",
     "angular-toggle-switch.css"
@@ -21,14 +21,14 @@
     "package.json",
     ".travis.yml"
   ],
-  "_release": "0.3.2",
+  "_release": "1.0.0",
   "_resolution": {
     "type": "version",
-    "tag": "v0.3.2",
-    "commit": "73f181bc73eb0bb0b0bd094bbbdf706ca45ce6c0"
+    "tag": "v1.0.0",
+    "commit": "4a8d0a2a8a0fa28a899f1a3e97a65c839bd65e4c"
   },
   "_source": "git://github.com/cgarvis/angular-toggle-switch.git",
-  "_target": "~0.3.2",
+  "_target": "~1.0.0",
   "_originalSource": "angular-toggle-switch",
   "_direct": true
 }

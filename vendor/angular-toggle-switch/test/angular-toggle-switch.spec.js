@@ -1,12 +1,12 @@
 describe('Toggle Switch', function() {
   var $scope, $compile;
 
-  var baseTemplate = '<toggle-switch model="switchState">\n</toggle-switch>';
-  var onLabelTemplate = '<toggle-switch model="switchState" on-label="CUSTOM-ON">\n</toggle-switch>';
-  var offLabelTemplate = '<toggle-switch model="switchState" off-label="CUSTOM-OFF">\n</toggle-switch>';
-  var knobLabelTemplate = '<toggle-switch model="switchState" knob-label="CUSTOM">\n</toggle-switch>';
-  var htmlLabelsTemplate = '<toggle-switch model="switchState" on-label="<i class=\'icon-ok icon-white\'></i>" off-label="<i class=\'icon-remove\'></i>">\n</toggle-switch>';
-  var disabledTemplate = '<toggle-switch model="switchState" disabled="isDisabled">\n</toggle-switch>';
+  var baseTemplate = '<toggle-switch ng-model="switchState">\n</toggle-switch>';
+  var onLabelTemplate = '<toggle-switch ng-model="switchState" on-label="CUSTOM-ON">\n</toggle-switch>';
+  var offLabelTemplate = '<toggle-switch ng-model="switchState" off-label="CUSTOM-OFF">\n</toggle-switch>';
+  var knobLabelTemplate = '<toggle-switch ng-model="switchState" knob-label="CUSTOM">\n</toggle-switch>';
+  var htmlLabelsTemplate = '<toggle-switch ng-model="switchState" on-label="<i class=\'icon-ok icon-white\'></i>" off-label="<i class=\'icon-remove\'></i>">\n</toggle-switch>';
+  var disabledTemplate = '<toggle-switch ng-model="switchState" disabled="isDisabled">\n</toggle-switch>';
 
   // Load up just our module
   beforeEach(module('toggle-switch'));
