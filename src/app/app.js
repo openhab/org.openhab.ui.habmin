@@ -188,13 +188,13 @@ angular.module('HABmin', [
 
         // If we're logged in, then get the app data
         // This is needed as we will miss the event if we're already logged in!
-        if(UserService.isLoggedIn() === true) {
+        if (UserService.isLoggedIn() === true) {
             console.log("App logged in at startup");
             getAppData();
         }
-        else if(document.HABminCordova) {
+        else if (document.HABminCordova) {
             // If running as an app, and we have the server, then kick-start comms
-            if(UserService.getServer() != "") {
+            if (UserService.getServer() != "") {
                 console.log("App Start: Server is", UserService.getServer());
                 getAppData();
             }
@@ -211,8 +211,8 @@ angular.module('HABmin', [
         });
 
         var el = angular.element(".navbar-toggle");
-        if(el != null) {
-            if(el.css('display') == 'none') {
+        if (el != null) {
+            if (el.css('display') == 'none') {
                 SidepanelService.showPanel('all');
             }
             else {
@@ -220,10 +220,9 @@ angular.module('HABmin', [
             }
         }
 
-        // Use the resize event to detect if the navbar is collapsed
-        // If it's not collapsed, tell the sidepanel to show all
-        angular.element($window).bind('resize', function() {
-            var el = angular.element(".navbar-toggle");
+        // Detect if we're in multi or single (collapsed) configuration
+        function checkPanelConfiguration() {
+            var el = angular.element(".navbar-toggle.pull-right");
             if (el != null) {
                 if (el.css('display') == 'none') {
                     $scope.doublePanel = true;
@@ -239,17 +238,23 @@ angular.module('HABmin', [
                     }
                 }
             }
-        });
+        }
+        checkPanelConfiguration();
 
-        $scope.$on("sidepanelChange", function() {
+        // Use the resize event to detect if the navbar is collapsed
+        // If it's not collapsed, tell the sidepanel to show all
+        angular.element($window).bind('resize', checkPanelConfiguration);
+
+        $scope.$on("sidepanelChange", function () {
             $timeout(function () {
                 $(window).trigger('resize');
             }, 0);
         });
 
         $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+            console.log("State change - panel is", SidepanelService.getPanel());
             // Collapse the menu if we change view
-            $scope.menuCollapsed=true;
+            $scope.menuCollapsed = true;
             if (angular.isDefined(toState.data.pageTitle)) {
                 $scope.pageTitle = toState.data.pageTitle + ' | HABmin';
             }
@@ -261,7 +266,7 @@ angular.module('HABmin', [
             }
 
             // Reset the sidebar
-            if($scope.doublePanel == false) {
+            if ($scope.doublePanel == false) {
                 SidepanelService.showPanel('side');
             }
         });
@@ -276,17 +281,17 @@ angular.module('HABmin', [
         // Swipe handler - mainly for handling small screens where we split the panels
         // on a side and main panel and display them separately.
         $scope.swipe = function (dir) {
-            console.log("Swipe action event:"+dir);
+            console.log("Swipe action event:" + dir);
             // Ignore this if we don't have the split screen
-            if($scope.sidepanelEnabled == false || SidepanelService.getPanel() == 'all') {
+            if ($scope.sidepanelEnabled == false || SidepanelService.getPanel() == 'all') {
                 return;
             }
 
             // Handle the swipe notifications
-            if(dir == 'left') {
+            if (dir == 'left') {
                 SidepanelService.showPanel('main');
             }
-            if(dir == 'right') {
+            if (dir == 'right') {
                 SidepanelService.showPanel('side');
             }
         }
