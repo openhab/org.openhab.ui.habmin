@@ -14,17 +14,18 @@ angular.module('sitemapSliderWidget', [
     .directive('sitemapSlider', function ($interval, ImgFactory) {
         return {
             restrict: 'E',
-            template: '<habmin-icon class="icon-lg sitemap-widget-icon" icon="{{widget.icon}}"></habmin-icon>' +
-            '<div class="sitemap-widget-content">' +
-            '  <span ng-style="labelColor">{{widget.label}}</span>' +
-            '  <span class="pull-right">' +
-            '    <span ng-style="valueColor">{{widget.value}}&nbsp</span>' +
-            '    <small>' +
-            '      <toggle-switch ng-show="showSwitch" ng-model="switchValue" on-label="ON" off-label="OFF"></toggle-switch>' +
-            '    </small>' +
-            '  </span>' +
-            '  <input type="range" min="0" max="100" step="10" ng-model="sliderValue">' +
-            '</div>',
+            template:
+                '<habmin-icon class="icon-lg sitemap-widget-icon" icon="{{widget.icon}}"></habmin-icon>' +
+                '<div class="sitemap-widget-content">' +
+                '  <span ng-style="labelColor">{{widget.label}}</span>' +
+                '  <span class="pull-right">' +
+                '    <span ng-style="valueColor">{{widget.value}}&nbsp</span>' +
+                '    <small>' +
+                '      <toggle-switch ng-show="showSwitch" ng-model="switchValue" on-label="ON" off-label="OFF"></toggle-switch>' +
+                '    </small>' +
+                '  </span>' +
+                '  <input type="range" min="0" max="100" step="1" ng-model="sliderValue">' +
+                '</div>',
             scope: {
                 itemModel: "=",
                 widget: "="
@@ -53,7 +54,7 @@ angular.module('sitemapSliderWidget', [
                 if ($scope.widget.item !== undefined) {
                     $scope.$on('$destroy', function () {
                         // Make sure that the interval timer is destroyed too
-                        $scope.stopTimer();
+                        stopTimer();
                     });
 
                     $scope.$watch('sliderValue', function (newValue, oldValue) {

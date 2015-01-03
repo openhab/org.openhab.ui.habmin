@@ -50,8 +50,7 @@ angular.module('Binding.zwave', [
             "POWER_SWITCH_MULTILEVEL": "light-control",
             "ROUTING_SENSOR_BINARY": "door-open",
             "SWITCH_REMOTE_MULTILEVEL": "temperature",
-            "ALARM_SENSOR_ROUTING": "alarm",
-            "SECURE_KEYPAD_DOOR_LOCK": "lock"
+            "ALARM_SENSOR_ROUTING": "alarm"
         };
 
         $scope.devices = {};
@@ -714,6 +713,9 @@ angular.module('Binding.zwave', [
                     case "ERROR":
                         newNode.color.border = "red";
                         break;
+                    default:
+                        newNode.color.border = "grey";
+                        break;
                 }
 
                 nodes.push(newNode);
@@ -733,6 +735,15 @@ angular.module('Binding.zwave', [
 
             for (var level = 1; level < 5; level++) {
                 checkNodeLevel(level);
+            }
+
+            function setNodeLevel(nodeId, level) {
+                angular.forEach(nodes, function (node) {
+                    if (node.id == nodeId) {
+                        node.level = level;
+                        doneNodes.push(nodeId);
+                    }
+                });
             }
 
             function checkNodeLevel(level) {
@@ -759,15 +770,7 @@ angular.module('Binding.zwave', [
                 });
             }
 
-            function setNodeLevel(nodeId, level) {
-                angular.forEach(nodes, function (node) {
-                    if (node.id == nodeId) {
-                        node.level = level;
-                        doneNodes.push(nodeId);
-                    }
-                });
-            }
-
+            // Calculate the max level
             var maxLevel = 0;
             angular.forEach(nodes, function (node) {
                 if (node.level > maxLevel) {
@@ -775,6 +778,7 @@ angular.module('Binding.zwave', [
                 }
             });
 
+            // Move all unconnected nodes up to the last level
             maxLevel += 1;
             angular.forEach(nodes, function (node) {
                 if (node.level == -1) {
@@ -783,8 +787,9 @@ angular.module('Binding.zwave', [
             });
 
             console.log("Setting network options");
-            console.log("Setting network data", angular.toJson({nodes: nodes, edges: edges}));
-            $scope.networkNodes = {nodes: nodes, edges: edges};
+            $timeout(function() {
+                $scope.networkNodes = {nodes: nodes, edges: edges};
+            });
             console.log("Setting network options DONE");
         }
     })

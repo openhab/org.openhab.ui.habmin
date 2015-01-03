@@ -82,10 +82,46 @@ angular.module('ngVis', [])
                 options: '='
             },
             link: function (scope, element, attr, visCtrl) {
+                var networkEvents = [
+                    'rangechange',
+                    'rangechanged',
+                    'timechange',
+                    'timechanged'
+                ];
+
                 var network = new vis.Network(element[0], scope.data, scope.options);
 
                 scope.$watch('data', function () {
+                    // Sanity check
+                    if (scope.data === undefined) {
+                        return;
+                    }
+
+                    // If we've actually changed the data set, then recreate the graph
+                    // We can always update the data by adding more data to the existing data set
+//                    if (network !== undefined) {
+//                        network.destroy();
+ //                   }
+
+                    // Create the graph2d object
+                    network = new vis.Network(element[0]);
+
+                    // Attach an event handler if defined
+                    angular.forEach(scope.events, function (callback, event) {
+                        if (networkEvents.indexOf(String(event)) >= 0) {
+                            network.on(event, callback);
+                        }
+                    });
+
+                    // Set the options first
+                    network.setOptions(scope.options);
                     network.setData(scope.data);
+
+
+                    // onLoad callback
+//                    if (scope.events.onload !== undefined && angular.isFunction(scope.events.onload)) {
+//                        scope.events.onload(graph);
+//                    }
                 });
 
                 scope.$watchCollection('options', function (options) {
