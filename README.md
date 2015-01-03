@@ -14,15 +14,20 @@ Features
 Installation
 ============
 
-To test, you need to grab the habmin JAR from the HABmin repository (https://github.com/cdjackson/HABmin/blob/master/addons/org.openhab.io.habmin-1.7.0-SNAPSHOT.jar) and add it to your addons folder along with the zwave binding from the same site (or any other recent zwave binding if you prefer).
+To test, you need to install the habmin JAR from the [HABmin repository] (https://github.com/cdjackson/HABmin/blob/master/addons/org.openhab.io.habmin-1.7.0-SNAPSHOT.jar) and add it to your addons folder along with the zwave binding from the same site (or any other recent zwave binding if you prefer). These files are needed no matter what installation you choose next - without this, some things may work, but most won't (eg sitemaps might work, but charting etc won't).
+
+Packages are available for easy install - either for a web server (ie. installation into openHAB so you can use a browser), or as an Android app.
+
+* You can download either the release version - grab the latest from the [releases folder](https://github.com/cdjackson/HABmin2/releases).
+* Or, if you want the latest snapshot, grab it from the [working folder](https://github.com/cdjackson/HABmin2/tree/master/output).
 
 ### Web interface
-Then grab the appropriate ZIP file, generally the release version, from https://github.com/cdjackson/HABmin2/output and unzip it into a folder webapps/habmin2 in your openhab installation.
+Then grab the appropriate ZIP file from the [releases folder](https://github.com/cdjackson/HABmin2/releases) or the latest snapshot from the [working folder](https://github.com/cdjackson/HABmin2/tree/master/output). Generally the ```-release``` version, however a ```-debug``` version is also supplied.  Unzip the file into a folder webapps/habmin2 in your openhab installation folder.
 
 Then open the browser at http://openhab server/habmin2.
 
 ### Android
-The release also contains an Android package (```apk``` file) - this can be downloaded to an Android device - no further installation is required. When the app starts, it should ask you for server and login credentials. I'm still trying to get the reconnection sorted, so it's possible that you may need to log out, and log on to get the connect back when you start again. Please feel free to open an issue and report your findings.
+The release also contains an Android package (```apk``` file) - this can be downloaded to an Android device - no further installation is required in openhab (other than the JAR files mentioned above). When the app starts, it should ask you for server and login credentials. I'm still trying to get the reconnection sorted, so it's possible that you may need to log out, and log on to get the connect back when you start again. Please feel free to open an issue and report your findings.
 
 Screenshots
 ===========
