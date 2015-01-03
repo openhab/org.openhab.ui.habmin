@@ -226,9 +226,12 @@ angular.module('HABmin', [
             var el = angular.element(".navbar-toggle");
             if (el != null) {
                 if (el.css('display') == 'none') {
+                    $scope.doublePanel = true;
                     SidepanelService.showPanel('all');
                 }
                 else {
+                    $scope.doublePanel = false;
+
                     // We need to detect the single instance the menu collapses
                     // to avoid unwanted changes to the displayed panel
                     if (SidepanelService.getPanel() == 'all') {
@@ -245,11 +248,6 @@ angular.module('HABmin', [
         });
 
         $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-            // Reset the sidebar
-            if(SidepanelService.getPanel() != 'all') {
-                SidepanelService.showPanel('side');
-            }
-
             // Collapse the menu if we change view
             $scope.menuCollapsed=true;
             if (angular.isDefined(toState.data.pageTitle)) {
@@ -260,6 +258,11 @@ angular.module('HABmin', [
             }
             else {
                 $scope.sidepanelEnabled = true;
+            }
+
+            // Reset the sidebar
+            if($scope.doublePanel == false) {
+                SidepanelService.showPanel('side');
             }
         });
 
