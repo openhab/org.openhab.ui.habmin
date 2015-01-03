@@ -34,7 +34,7 @@ The release also contains an Android package (```apk``` file) - this can be down
 
 Screenshots
 ===========
-The following images show a selection of screenshots. Note that the theme is user selectable, although most images are shown with a dark theme (except the mobile sitemap image).
+The following images show a selection of screenshots. Note that the theme is user selectable, although most images are shown with a dark (*slate*) theme (except the mobile sitemap image).
 
 Graphing a saved chart...
 
@@ -66,7 +66,7 @@ ZWave network routing diagram...
 ![zwave-network](https://raw.github.com/wiki/cdjackson/HABmin2/screenshots/zwave-network.png)
 
 
-Sitemaps (mobile view using ```yeti``` theme)...
+Sitemaps (mobile view using *yeti* theme)...
 
 ![sitemap](https://raw.github.com/wiki/cdjackson/HABmin2/screenshots/sitemap-mobile-yeti.png)
 
