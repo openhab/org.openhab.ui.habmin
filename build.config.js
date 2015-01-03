@@ -75,7 +75,6 @@ module.exports = {
             'vendor/angular-localization/angular-localization.js',
             'vendor/angular-cookies/angular-cookies.js',
             'vendor/angular-growl-v2/build/angular-growl.js',
-            'vendor/angular-rangeslider/angular-rangeslider.js',
             'vendor/angular-toggle-switch/angular-toggle-switch.js',
             'vendor/jquery-atmosphere/jquery.atmosphere.js',
             'vendor/angular-atmosphere/app/scripts/services/angular-atmosphere.js',
@@ -111,7 +110,6 @@ module.exports = {
         ],
         css: [
             'vendor/angular-growl-v2/build/angular-growl.css',
-            'vendor/angular-rangeslider/angular-rangeslider.css',
             'vendor/angular-toggle-switch/angular-toggle-switch.css',
             'vendor/angular-toggle-switch/angular-toggle-switch-bootstrap.css',
             'vendor/jquery-ui/themes/base/core.css',

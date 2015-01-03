@@ -15,13 +15,14 @@ angular.module('sitemapSwitchWidget', [
         return {
             restrict: 'E',
             template:
-                '<div style="width:100%;display:inline-block;">' +
-                '<habmin-icon class="icon-lg" icon="{{widget.icon}}"></habmin-icon>' +
-                '<span class="sitemap-item-text" ng-style="labelColor">{{widget.label}}</span>' +
-                '<span class="pull-right">' +
-                '<span class="sitemap-item-text" ng-style="valueColor"></span>' +
-                '<toggle-switch model="value" on-label="ON" off-label="OFF"></toggle-switch>' +
-                '</span>' +
+                '<habmin-icon class="icon-lg sitemap-widget-icon" icon="{{widget.icon}}"></habmin-icon>' +
+                '<div class="sitemap-widget-content">' +
+                '  <span ng-style="labelColor">{{widget.label}}</span>' +
+                '  <span class="pull-right">' +
+                '  <span ng-style="valueColor"></span>' +
+                '  <small>' +
+                '    <toggle-switch ng-model="value" on-label="ON" off-label="OFF"></toggle-switch>' +
+                '  </small>' +
                 '</div>',
             scope: {
                 itemModel: "=",
@@ -39,13 +40,13 @@ angular.module('sitemapSwitchWidget', [
 
                 if ($scope.widget.item !== undefined) {
                     $scope.$watch('value', function (newValue, oldValue) {
- //                       console.log("Changed switch", $scope.widget.label, newValue, oldValue);
+                        //                       console.log("Changed switch", $scope.widget.label, newValue, oldValue);
                         if (newValue != $scope.currentValue) {
                             // Keep a record of the current value so we can detect changes from the GUI
                             // and avoid changes coming from the server!
                             $scope.currentValue = newValue;
                             $scope.$emit('habminGUIUpdate', $scope.widget.item.name,
-                                    $scope.currentValue === true ? "ON" : "OFF");
+                                $scope.currentValue === true ? "ON" : "OFF");
                         }
                     });
                 }

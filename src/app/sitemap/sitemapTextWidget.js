@@ -14,12 +14,10 @@ angular.module('sitemapTextWidget', [
         return {
             restrict: 'E',
             template:
-                '<div style="width:100%;display:inline-block;">' +
-                '<habmin-icon class="icon-lg" icon="{{widget.icon}}"></habmin-icon>' +
-                '<span class="sitemap-item-text">' +
-                '<span ng-style="labelColor">{{widget.label}}</span>' +
-                '<span class="pull-right" ng-style="valueColor">{{widget.value}}</span>' +
-                '</span>' +
+                '<habmin-icon class="icon-lg sitemap-widget-icon" icon="{{widget.icon}}"></habmin-icon>' +
+                '<div class="sitemap-widget-content">' +
+                '  <span ng-style="labelColor">{{widget.label}}</span>' +
+                '  <span class="pull-right" ng-style="valueColor">{{widget.value}}</span>' +
                 '</div>',
             scope: {
                 itemModel: "=",

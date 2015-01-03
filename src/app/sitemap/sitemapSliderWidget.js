@@ -9,24 +9,22 @@
  */
 angular.module('sitemapSliderWidget', [
     'HABmin.iconModel',
-//    'ui-rangeSlider',
     'toggle-switch'
 ])
     .directive('sitemapSlider', function ($interval, ImgFactory) {
         return {
             restrict: 'E',
-            template:
-                '<div style="width:100%;display:inline-block;">' +
-                '<div style="display:block;">' +
-                '<habmin-icon class="icon-lg" icon="{{widget.icon}}"></habmin-icon>' +
-                '<span class="sitemap-item-text"><span ng-style="labelColor">{{widget.label}}</span>' +
-                '<span class="pull-right">' +
-                '<span ng-style="valueColor">{{widget.value}}&nbsp</span>' +
-                '<toggle-switch ng-show="showSwitch" model="switchValue" on-label="ON" off-label="OFF"></toggle-switch>' +
-                '</span>' +
-                '</div>' +
-                '<div range-slider min="0" max="100" show-values="false" pin-handle="min" model-max="sliderValue"></div>' +
-                '</div>',
+            template: '<habmin-icon class="icon-lg sitemap-widget-icon" icon="{{widget.icon}}"></habmin-icon>' +
+            '<div class="sitemap-widget-content">' +
+            '  <span ng-style="labelColor">{{widget.label}}</span>' +
+            '  <span class="pull-right">' +
+            '    <span ng-style="valueColor">{{widget.value}}&nbsp</span>' +
+            '    <small>' +
+            '      <toggle-switch ng-show="showSwitch" ng-model="switchValue" on-label="ON" off-label="OFF"></toggle-switch>' +
+            '    </small>' +
+            '  </span>' +
+            '  <input type="range" min="0" max="100" step="10" ng-model="sliderValue">' +
+            '</div>',
             scope: {
                 itemModel: "=",
                 widget: "="
@@ -37,12 +35,13 @@ angular.module('sitemapSliderWidget', [
                 }
 
                 $scope.$on('habminGUIRefresh', function (newValue, oldValue) {
-//                    console.log("Update", $scope.itemModel, "received for", $scope.widget);
+                    console.log("Update", $scope.itemModel, "received for", $scope.widget);
                     updateWidget();
                     $scope.$apply();
                 });
 
                 var timer;
+
                 function stopTimer() {
                     if (angular.isDefined(timer)) {
                         $interval.cancel(timer);
@@ -53,12 +52,12 @@ angular.module('sitemapSliderWidget', [
 
                 if ($scope.widget.item !== undefined) {
                     $scope.$on('$destroy', function () {
-                        // Make sure that the interval nis destroyed too
+                        // Make sure that the interval timer is destroyed too
                         $scope.stopTimer();
                     });
 
                     $scope.$watch('sliderValue', function (newValue, oldValue) {
-                        //console.log("SLIDER: Changed slider", $scope.widget.label, newValue, oldValue);
+                        console.log("SLIDER: Changed slider", $scope.widget.label, newValue, oldValue);
                         if (newValue != $scope.currentSliderValue) {
                             // Keep a record of the current value so we can detect changes from the GUI
                             // and avoid changes coming from the server!
@@ -69,7 +68,7 @@ angular.module('sitemapSliderWidget', [
                                 $scope.$emit('habminGUIUpdate', $scope.widget.item.name, $scope.currentSliderValue);
                                 var latestSliderValue = $scope.currentSliderValue;
                                 timer = $interval(function () {
-                                    if($scope.currentSliderValue != latestSliderValue) {
+                                    if ($scope.currentSliderValue != latestSliderValue) {
                                         latestSliderValue = $scope.currentSliderValue;
                                         $scope.$emit('habminGUIUpdate', $scope.widget.item.name,
                                             $scope.currentSliderValue);
@@ -89,7 +88,7 @@ angular.module('sitemapSliderWidget', [
                             // and avoid changes coming from the server!
                             $scope.currentSwitchValue = newValue;
                             $scope.$emit('habminGUIUpdate', $scope.widget.item.name,
-                                    $scope.currentSwitchValue === true ? "ON" : "OFF");
+                                $scope.currentSwitchValue === true ? "ON" : "OFF");
                         }
                     });
 

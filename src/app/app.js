@@ -221,6 +221,7 @@ angular.module('HABmin', [
         }
 
         // Detect if we're in multi or single (collapsed) configuration
+        // We need to use the right toggle as the left one changes visibility for other reasons!
         function checkPanelConfiguration() {
             var el = angular.element(".navbar-toggle.pull-right");
             if (el != null) {
