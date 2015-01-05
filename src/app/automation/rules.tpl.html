@@ -7,7 +7,7 @@
                     ng-confirm-click="newRule()" ng-confirm-if="isDirty"
                     data-i18n-attr="{'ngConfirmMessage': 'habmin.ruleUnsavedChangesCheck','ngConfirmTitle': 'habmin.ruleUnsavedChangesTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
                     rulename={{selectedRule.name}}">
-                <span class="fa fa-plus"></span>
+                <span class="fa fa-plus"></ngspan>
                 <span i18n="common.new"></span>
             </button>
             <button type="button" ng-confirm-click="deleteRule()"
@@ -40,6 +40,8 @@
                 <span i18n="habmin.ruleNoRules"></span>
             </div>
         </div>
+
+        <!-- Footer -->
         <div class="panel-footer panel-footer-none">
         </div>
     </div>
@@ -79,6 +81,10 @@
 
             <div style="height:100%" ng-show="editSource" ng-model="codeEditor" ui-ace="aceOptions">
             </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="panel-footer panel-footer-none">
         </div>
     </div>
 </div>

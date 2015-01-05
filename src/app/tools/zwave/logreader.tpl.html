@@ -1,0 +1,55 @@
+<!-- Rule Pane -->
+<div class="col-sm-12" sidepanel-pane="main">
+    <!-- Heading -->
+    <div class="panel panel-default">
+        <div class="panel-heading" style="padding:3px;">
+            <button type="button" ng-class="{'btn btn-sm btn-default':true, 'disabled':showOption=='LIST'}" ng-click="showOption='LIST'">
+                <span class="fa fa-list-alt"></span>
+                <span>Log</span>
+            </button>
+            <button type="button" ng-class="{'btn btn-sm btn-default':true, 'disabled':showOption=='TIMELINE'}" ng-click="showOption='TIMELINE'">
+                <span class="fa fa-line-chart"></span>
+                <span>Timeline</span>
+            </button>
+
+            <span class="pull-right">
+                <span class="btn btn-sm btn-default btn-file">
+                    <span class="fa fa-upload"></span>
+                    <span>Select File</span>
+                    <input onchange="angular.element(this).scope().file_changed(this)" type="file" />
+                </span>
+                <small>
+                    Lines Processed: {{countLines}}<br>
+                    Entries: {{countEntries}} | {{showOption}}
+                </small>
+            </span>
+        </div>
+
+        <!-- Body LIST -->
+        <div ng-show="showOption=='LIST'" class="habmin-list" resize-panel>
+            <table class="table">
+                <tbody>
+                <tr ng-repeat="log in data" ng-class="{'success': log.direction=='TXPacket'}">
+                    <td>{{log.time}}</td>
+                    <td>{{($index>0) ? log.millis - data[$index-1].millis : ""}}</td>
+                    <td>{{log.ref}}</td>
+                    <td>{{log.node}}</td>
+                    <td>{{log.message}}</td>
+                    <td>{{log.class}}</td>
+                    <td>{{log.stage}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Body TIMELINE -->
+        <div ng-show="showOption=='TIMELINE'" class="" resize-panel>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="panel-footer panel-footer-none">
+        </div>
+    </div>
+</div>
+
