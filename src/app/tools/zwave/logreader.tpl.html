@@ -19,8 +19,7 @@
                     <input onchange="angular.element(this).scope().file_changed(this)" type="file" />
                 </span>
                 <small>
-                    Lines Processed: {{countLines}}<br>
-                    Entries: {{countEntries}} | {{showOption}}
+                    Lines Processed: {{countEntries}}//{{countLines}}
                 </small>
             </span>
         </div>
@@ -29,12 +28,12 @@
         <div ng-show="showOption=='LIST'" class="habmin-list" resize-panel>
             <table class="table">
                 <tbody>
-                <tr ng-repeat="log in data" ng-class="{'success': log.direction=='TXPacket'}">
+                <tr ng-repeat="log in data" ng-class="log.result">
                     <td>{{log.time}}</td>
-                    <td>{{($index>0) ? log.millis - data[$index-1].millis : ""}}</td>
+                    <td>{{($index>0) ? log.start - data[$index-1].start : ""}}</td>
                     <td>{{log.ref}}</td>
                     <td>{{log.node}}</td>
-                    <td>{{log.message}}</td>
+                    <td>{{log.content}}</td>
                     <td>{{log.class}}</td>
                     <td>{{log.stage}}</td>
                 </tr>
@@ -43,8 +42,8 @@
         </div>
 
         <!-- Body TIMELINE -->
-        <div ng-show="showOption=='TIMELINE'" class="" resize-panel>
-
+        <div ng-show="showOption=='TIMELINE'"  style="padding:3px;" resize-panel>
+            <vis-timeline data="timelineData" options="timelineOptions" events="timelineEvents"></vis-timeline>
         </div>
 
         <!-- Footer -->
