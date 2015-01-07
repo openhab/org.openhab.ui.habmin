@@ -15,6 +15,7 @@ angular.module('HABmin.sitemap', [
     'sitemapSliderWidget',
     'sitemapSelectionWidget',
     'sitemapSwitchWidget',
+    'sitemapSetpointWidget',
     'sitemapTextWidget',
     'ui.bootstrap.tooltip'
 ])
@@ -86,7 +87,7 @@ angular.module('HABmin.sitemap', [
                         directive: "sitemap-selection"
                     },
                     Setpoint: {
-                        directive: "sitemap-text"
+                        directive: "sitemap-setpoint"
                     },
                     Slider: {
                         directive: "sitemap-slider"
