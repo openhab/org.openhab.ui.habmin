@@ -406,8 +406,9 @@ angular.module('Binding.zwave', [
                         else if (status.name === "NodeStage") {
                             // If the stage has changed, then update the info.
                             var stage = status.value.split(" ");
-                            if(device.nodeState != stage[0]) {
-                                device.nodeStage = stage[0];
+                            if(device.nodeState != stage[0] || device.nodeStage != stage[1]) {
+                                device.nodeState = stage[0];
+                                device.nodeStage = stage[1];
                                 updateInfo(id);
                             }
                         }

@@ -16,7 +16,7 @@ angular.module('ResizePanel', [])
                 var w = angular.element($window);
                 $scope.getWindowDimensions = function () {
                     if ($(element).is(":visible") == false) {
-                        console.log("Div is hidden!!");
+//                        console.log("Div is hidden!!", element);
                         return;
                     }
 

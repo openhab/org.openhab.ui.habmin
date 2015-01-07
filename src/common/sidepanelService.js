@@ -155,7 +155,7 @@ angular.module('SidepanelService', [
                     if(state) {
 //                        element.addClass('view-animate rtr');//.then(function () {
                         element.removeClass('ng-hide');
-//                            $animate.addClass(element, 'ng-hide');//.then(function () {
+//                            $animate.addClass(element, 'am-slide-right');//.then(function () {
 //                            tempClasses: 'ng-hide'
 //                        });
                     }
