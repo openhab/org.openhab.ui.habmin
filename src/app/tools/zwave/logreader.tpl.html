@@ -1,25 +1,67 @@
 <!-- Rule Pane -->
-<div class="col-sm-12" sidepanel-pane="main">
+<div class="col-sm-12">
     <!-- Heading -->
     <div class="panel panel-default">
         <div class="panel-heading" style="padding:3px;">
-            <button type="button" ng-class="{'btn btn-sm btn-default':true, 'disabled':showOption=='LIST'}" ng-click="showOption='LIST'">
+            <button type="button" ng-class="{'btn btn-sm btn-default':true, 'disabled':showOption=='LIST'}"
+                    ng-click="showOption='LIST'">
                 <span class="fa fa-list-alt"></span>
                 <span>Log</span>
             </button>
-            <button type="button" ng-class="{'btn btn-sm btn-default':true, 'disabled':showOption=='TIMELINE'}" ng-click="showOption='TIMELINE'">
+            <button type="button" ng-class="{'btn btn-sm btn-default':true, 'disabled':true}"
+                    ng-click="showOption='TIMELINE'">
                 <span class="fa fa-line-chart"></span>
                 <span>Timeline</span>
             </button>
+            <button type="button" ng-class="{'btn btn-sm btn-default':true, 'disabled':showOption=='TIMELINE'}"
+                    ng-click="showOption='STATS'">
+                <span class="fa fa-calculator"></span>
+                <span>Statistics</span>
+            </button>
+
 
             <span class="pull-right">
+
+            <span ng-class="{'btn-group btn-group-sm': true, 'open': filterOpen}">
+                <button type="button" class="btn btn-sm btn-default dropdown" ng-disabledx="!graphLoaded"
+                        ng-init="filterOpen=false" ng-click="filterOpen=!filterOpen">
+                    <span class="fa fa-clock-o"></span>&nbsp;Filter...
+                </button>
+                <div class="dropdown-menu dropdown_dialog" style="width:200px;">
+                    <table>
+                        <tr><td>
+                    <table>
+                        <tr ng-repeat="node in nodes">
+                            <td>
+                                <input type="checkbox" checklist-model="nodeFilter" checklist-value="node.id">&nbsp;Node {{node.id}}
+                            </td>
+                        </tr>
+                    </table>
+                        </td>
+                            <td style="vertical-align: top;padding-left: 10px;">
+                                <table>
+                                    <tr ng-repeat="process in processList">
+                                        <td>
+                                            <input type="checkbox" checklist-model="processFilter" checklist-value="process.ref">&nbsp;{{process.ref}}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="modal-footer">
+                        <button class="btn btn-sm btn-warning" ng-click="filterOpen=false;">Close</button>
+                    </div>
+                </div>
+            </span>
+
                 <span class="btn btn-sm btn-default btn-file">
-                    <span class="fa fa-upload"></span>
+                    <span class="fa fa-download"></span>
                     <span>Select File</span>
-                    <input onchange="angular.element(this).scope().file_changed(this)" type="file" />
+                    <input onchange="angular.element(this).scope().fileChanged(this);this.value = '';" type="file"/>
                 </span>
                 <small>
-                    Lines Processed: {{countEntries}}//{{countLines}}
+                    Lines Processed: {{countEntries}}:{{countLines}}
                 </small>
             </span>
         </div>
@@ -28,10 +70,8 @@
         <div ng-show="showOption=='LIST'" class="habmin-list" resize-panel>
             <table class="table">
                 <tbody>
-                <tr ng-repeat="log in data" ng-class="log.result">
+                <tr ng-repeat="log in data | filter:filterFunction" ng-class="log.result">
                     <td>{{log.time}}</td>
-                    <td>{{($index>0) ? log.start - data[$index-1].start : ""}}</td>
-                    <td>{{log.ref}}</td>
                     <td>{{log.node}}</td>
                     <td>{{log.content}}</td>
                     <td>{{log.class}}</td>
@@ -42,8 +82,23 @@
         </div>
 
         <!-- Body TIMELINE -->
-        <div ng-show="showOption=='TIMELINE'"  style="padding:3px;" resize-panel>
+        <div ng-show="showOption=='TIMELINE'" style="padding:3px;" resize-panel>
             <vis-timeline data="timelineData" options="timelineOptions" events="timelineEvents"></vis-timeline>
+        </div>
+
+        <!-- Body NODE STATISTICS -->
+        <div ng-show="showOption=='STATS'" class="habmin-list" resize-panel>
+            <div class="col-sm-4">
+            <table class="table">
+                <tbody>
+                    <tr ng-repeat="node in nodes">
+                        <td ng-class="{'list-group-item':true, 'active':false}">
+                            <span>Node {{node.node}}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+                </div>
         </div>
 
         <!-- Footer -->
