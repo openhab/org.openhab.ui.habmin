@@ -25,7 +25,7 @@ angular.module('HABmin.rules', [
             views: {
                 "main": {
                     controller: 'AutomationRuleCtrl',
-                    templateUrl: 'automation/rule.tpl.html'
+                    templateUrl: 'automation/rules.tpl.html'
                 }
             },
             data: {pageTitle: 'Rules'},
