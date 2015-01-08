@@ -19,7 +19,6 @@
                 <span>Statistics</span>
             </button>
 
-
             <span class="pull-right">
 
             <span ng-class="{'btn-group btn-group-sm': true, 'open': filterOpen}">
@@ -29,20 +28,23 @@
                 </button>
                 <div class="dropdown-menu dropdown_dialog" style="width:200px;">
                     <table>
-                        <tr><td>
-                    <table>
-                        <tr ng-repeat="node in nodes">
+                        <tr>
                             <td>
-                                <input type="checkbox" checklist-model="nodeFilter" checklist-value="node.id">&nbsp;Node {{node.id}}
+                                <table>
+                                    <tr ng-repeat="node in nodes">
+                                        <td>
+                                            <input type="checkbox" checklist-model="nodeFilter"
+                                                   checklist-value="node.id">&nbsp;Node {{node.id}}
+                                        </td>
+                                    </tr>
+                                </table>
                             </td>
-                        </tr>
-                    </table>
-                        </td>
                             <td style="vertical-align: top;padding-left: 10px;">
                                 <table>
                                     <tr ng-repeat="process in processList">
                                         <td>
-                                            <input type="checkbox" checklist-model="processFilter" checklist-value="process.ref">&nbsp;{{process.ref}}
+                                            <input type="checkbox" checklist-model="processFilter"
+                                                   checklist-value="process.ref">&nbsp;{{process.ref}}
                                         </td>
                                     </tr>
                                 </table>
@@ -70,7 +72,8 @@
         <div ng-show="showOption=='LIST'" class="habmin-list" resize-panel>
             <table class="table">
                 <tbody>
-                <tr ng-repeat="log in data | filter:filterFunction" ng-class="log.result">
+                <tr ng-repeat="log in data | filter:filterFunction" ng-class="log.result"
+                    popup-show="tools/zwave/logInfo.tpl.html" popup-placement="bottom-left" popup-shown="onPopupShown(log)">
                     <td>{{log.time}}</td>
                     <td>{{log.node}}</td>
                     <td>{{log.content}}</td>
@@ -89,16 +92,16 @@
         <!-- Body NODE STATISTICS -->
         <div ng-show="showOption=='STATS'" class="habmin-list" resize-panel>
             <div class="col-sm-4">
-            <table class="table">
-                <tbody>
+                <table class="table">
+                    <tbody>
                     <tr ng-repeat="node in nodes">
                         <td ng-class="{'list-group-item':true, 'active':false}">
                             <span>Node {{node.node}}</span>
                         </td>
                     </tr>
-                </tbody>
-            </table>
-                </div>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- Footer -->

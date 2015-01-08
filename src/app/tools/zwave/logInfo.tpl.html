@@ -1,0 +1,32 @@
+<div class="popover-content">
+    <table>
+        <tr>
+            <td>Time</td><td>{{selectedPkt.time}}</td>
+        </tr>
+        <tr>
+            <td>Node</td><td>{{selectedPkt.node}}</td>
+        </tr>
+        <tr ng-show="selectedPkt.stage">
+            <td>Current Stage</td><td>{{selectedPkt.stage}}</td>
+        </tr>
+        <tr ng-show="selectedPkt.class">
+            <td>Packet Class</td><td>{{selectedPkt.class}}</td>
+        </tr>
+        <tr ng-show="selectedPkt.packet.responseTime">
+            <td>Packet Response Time</td><td>{{selectedPkt.packet.responseTime}}</td>
+        </tr>
+        <tr ng-show="selectedNode">
+            <td>Node Total Messages Received</td><td>{{selectedNode.responseTimeCnt}}</td>
+        </tr>
+        <tr ng-show="selectedNode">
+            <td>Node Total Messages Timed-out</td><td>{{selectedNode.responseTimeouts}}</td>
+        </tr>
+        <tr ng-show="selectedNode">
+            <td>Node Total Response Time Stats</td><td>{{selectedNode.responseTimeMin}}/{{selectedNode.responseTimeAvg}}/{{selectedNode.responseTimeMax}}</td>
+        </tr>
+    </table>
+
+    <div class="pull-right">
+        <a ng-click="hidePopover()" class="btn btn-primary">Close</a>
+    </div>
+</div>
