@@ -11,6 +11,8 @@
     "mainNoSitemaps": "No Sitemaps Available",
     "mainNewSitemap": "Create New Sitemap",
     "mainConfiguration": "Configuration",
+    "mainTools": "Tools",
+    "mainZWaveLogReader": "ZWave Log Viewer",
     "mainChartPreferences": "Chart Defaults",
     "mainGeneralPreferences": "General Settings",
     "mainErrorLoadingSitemaps": "Error loading sitemap list!",

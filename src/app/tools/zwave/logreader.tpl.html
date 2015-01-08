@@ -13,7 +13,7 @@
                 <span class="fa fa-line-chart"></span>
                 <span>Timeline</span>
             </button>
-            <button type="button" ng-class="{'btn btn-sm btn-default':true, 'disabled':showOption=='TIMELINE'}"
+            <button type="button" ng-class="{'btn btn-sm btn-default':true, 'disabled':showOption=='STATS'}"
                     ng-click="showOption='STATS'">
                 <span class="fa fa-calculator"></span>
                 <span>Statistics</span>
@@ -25,7 +25,7 @@
             <span ng-class="{'btn-group btn-group-sm': true, 'open': filterOpen}">
                 <button type="button" class="btn btn-sm btn-default dropdown" ng-disabledx="!graphLoaded"
                         ng-init="filterOpen=false" ng-click="filterOpen=!filterOpen">
-                    <span class="fa fa-clock-o"></span>&nbsp;Filter...
+                    <span class="fa fa-filter"></span>&nbsp;Filter...
                 </button>
                 <div class="dropdown-menu dropdown_dialog" style="width:200px;">
                     <table>

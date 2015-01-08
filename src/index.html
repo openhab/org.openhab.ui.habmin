@@ -247,6 +247,23 @@
                             </li>
                         </ul>
                     </li>
+
+                    <!-- TOOLS menu -->
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="fa fa-laptop"></span>
+                            <span i18n="habmin.mainTools"></span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a ui-sref="tools/zwave/logreader">
+                                    <span class="fa fa-fw fa-info-circle"></span>
+                                    <span i18n="habmin.mainZWaveLogReader"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
 
                 <!-- USER menu -->
@@ -282,7 +299,7 @@
                     <li ng-if="!isLoggedIn()">
                         <a ng-click="login()">
                             <span class="fa fa-fw fa-user"></span>
-                            <span i18n="habmin.mainLogin"></span>
+                            <span class="hidden-sm" i18n="habmin.mainLogin"></span>
                         </a>
                     </li>
                 </ul>

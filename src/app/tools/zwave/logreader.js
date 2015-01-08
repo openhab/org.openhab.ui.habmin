@@ -10,9 +10,9 @@
 angular.module('ZWave.logReader', [
     'ui.router',
     'ui.bootstrap',
-    'ngLocalize',
     'angular-growl',
     'ngVis',
+    'ngLocalize',
     'ResizePanel',
     'checklist-model'
 ])
@@ -26,7 +26,7 @@ angular.module('ZWave.logReader', [
                     templateUrl: 'tools/zwave/logreader.tpl.html'
                 }
             },
-            data: {pageTitle: 'Charting'},
+            data: {pageTitle: 'ZWave Log Reader'},
             resolve: {
                 // Make sure the localisation files are resolved before the controller runs
                 localisations: function (locale) {
@@ -147,6 +147,7 @@ angular.module('ZWave.logReader', [
             },
             22: {
                 name: "SendDataAbort",
+                status: WARNING,
                 processor: null
             },
             32: {
@@ -573,6 +574,12 @@ angular.module('ZWave.logReader', [
                 processor: processPacketTX
             },
             {
+                string: "Sending ABORT Message = ",
+                ref: "SendAbort",
+                content: "Sending data abort",
+                status: WARNING
+            },
+            {
                 string: "Response processed after ",
                 ref: "PktStat",
                 processor: processResponseTime
@@ -601,9 +608,13 @@ angular.module('ZWave.logReader', [
             },
             {
                 string: "Timeout while sending message. Requeueing",
+                ref: "Retry",
+                processor: processRetry
+            },
+            {
+                string: "Retry count exceeded",
                 ref: "Timeout",
-                content: "Message timed out",
-                status: ERROR
+                processor: processTimeout
             },
             {
                 string: "NETWORK HEAL - ",
@@ -707,6 +718,23 @@ angular.module('ZWave.logReader', [
             return {
                 stage: stage,
                 content: "Stage advanced to " + stage
+            };
+        }
+
+        function processRetry(node, process, message) {
+            var count = parseInt(message.substr(message.indexOf("Requeueing - ") + 13));
+            return {
+                retry: count,
+                result: WARNING,
+                content: "Message retry (" + count + " attempts remaining)"
+            };
+        }
+
+        function processTimeout(node, process, message) {
+            addNodeInfo(node, "Stage", "DEAD");
+            return {
+                result: ERROR,
+                content: "Message timeout!"
             };
         }
 
@@ -844,7 +872,7 @@ angular.module('ZWave.logReader', [
                 sendData.callback = callback;
                 sendData.cmdClass = cmdClass;
                 sendData.content = "SendData: " + cmdClass.message;
-                
+
                 lastSendData.node = node;
                 lastSendData.callback = callback;
             }
@@ -949,6 +977,11 @@ angular.module('ZWave.logReader', [
                 setStatus(packet, packet.packet);			// Bubble status
             }
 
+            // Set the minimum status if we defined it in the packet definition
+            if(packetTypes[packet.pktType].status != null) {
+                setStatus(packet, packetTypes[packet.pktType].status);
+            }
+
             packet.content = "Packet ";
             packet.content += process.ref == "RXPacket" ? "received" : "sent";
 
@@ -994,7 +1027,7 @@ angular.module('ZWave.logReader', [
                         // If the packet provides a node, use it!
 //                        if(log.node !== undefined) {
 //                            node = log.node;
-  //                      }
+                        //                      }
 
                         if (process.content !== undefined) {
                             log.content = process.content;
@@ -1184,8 +1217,3 @@ angular.module('ZWave.logReader', [
 
     })
 ;
-
-
-
-
-
