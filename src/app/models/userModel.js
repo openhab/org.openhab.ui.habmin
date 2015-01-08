@@ -193,10 +193,19 @@ angular.module('HABmin.userModel', [
             $scope.period = 7 * 86400;
 
             UserService.setServer($scope.server);
-            var pass = $base64.encode($scope.user + ':' + $scope.password);
-            console.log($scope.password, $scope.user, pass);
-            $http.defaults.headers.common['Authorization'] = 'Basic ' + pass;
+            
+            if($scope.user == null || $scope.user.length == 0 ||
+                        $scope.password == null || $scope.password.length == 0) {
+                // No authentication used
+                $http.defaults.headers.common['Authorization'] = null;
+            }
+            else {
+                // Add the authentication headers
+                var pass = $base64.encode($scope.user + ':' + $scope.password);
+                $http.defaults.headers.common['Authorization'] = 'Basic ' + pass;
+            }
 
+            console.log("Login credentials: ", $scope.password, $scope.user, pass);
             localStorage.setItem('Auth-user', $scope.user);
             localStorage.setItem('Auth-pass', pass);
             localStorage.setItem('Auth-time', $scope.period * 1000 + new Date().getTime());
