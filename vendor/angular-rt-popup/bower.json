@@ -1,0 +1,20 @@
+{
+  "name": "angular-rt-popup",
+  "version": "1.0.0",
+  "main": "dist/angular-rt-popup.js",
+  "ignore": [
+    "**/.*",
+    "src",
+    "node_modules",
+    "bower_components",
+    "test",
+    "Gruntfile.coffee"
+  ],
+  "dependencies": {
+    "angular": "*",
+    "jquery": "*"
+  },
+  "devDependencies": {
+    "angular-mocks": "*"
+  }
+}

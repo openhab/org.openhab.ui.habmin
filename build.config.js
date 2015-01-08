@@ -107,7 +107,8 @@ module.exports = {
             'vendor/bootstrap-select/bootstrap-select.js',
             'vendor/angular-bootstrap-select/build/angular-bootstrap-select.js',
             'vendor/angular-visjs/angular-vis.js',
-            'vendor/checklist-model/checklist-model.js'
+            'vendor/checklist-model/checklist-model.js',
+            'vendor/angular-rt-popup/dist/angular-rt-popup.js'
         ],
         css: [
             'vendor/angular-growl-v2/build/angular-growl.css',

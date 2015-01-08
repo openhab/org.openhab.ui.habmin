@@ -1,0 +1,31 @@
+{
+  "name": "angular-rt-popup",
+  "version": "1.0.0",
+  "main": "dist/angular-rt-popup.js",
+  "ignore": [
+    "**/.*",
+    "src",
+    "node_modules",
+    "bower_components",
+    "test",
+    "Gruntfile.coffee"
+  ],
+  "dependencies": {
+    "angular": "*",
+    "jquery": "*"
+  },
+  "devDependencies": {
+    "angular-mocks": "*"
+  },
+  "homepage": "https://github.com/rubenv/angular-rt-popup",
+  "_release": "1.0.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.0.0",
+    "commit": "0f1404362609d29b15b25c08fa2dd8085f83c8b6"
+  },
+  "_source": "git://github.com/rubenv/angular-rt-popup.git",
+  "_target": "~1.0.0",
+  "_originalSource": "angular-rt-popup",
+  "_direct": true
+}

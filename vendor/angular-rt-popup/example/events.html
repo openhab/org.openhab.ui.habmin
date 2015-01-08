@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html ng-app='myApp'>
+    <head>
+        <meta charset="utf-8" />
+
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+
+        <script type="text/javascript" src="../bower_components/jquery/dist/jquery.js"></script>
+        <script type="text/javascript" src="../bower_components/angular/angular.js"></script>
+        <script type="text/javascript" src="../dist/angular-rt-popup.js"></script>
+        <script>
+            angular.module('myApp', ['rt.popup']);
+
+            angular.module('myApp').run(function ($rootScope) {
+                $rootScope.onShown = function () {
+                    console.log("Shown");
+                };
+
+                $rootScope.onHidden = function () {
+                    console.log("Hidden");
+                };
+            });
+        </script>
+    </head>
+    <body>
+        <h1>Popup</h1>
+        <a popup-show="popup.html" popup-shown="onShown()" popup-hidden="onHidden()" class="btn btn-primary">Show popup with lifecycle events!</a>
+    </body>
+</html>
