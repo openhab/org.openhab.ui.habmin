@@ -20,62 +20,65 @@
             </button>
 
             <span class="pull-right">
-
-            <span ng-class="{'btn-group btn-group-sm': true, 'open': filterOpen}">
-                <button type="button" class="btn btn-sm btn-default dropdown" ng-disabledx="!graphLoaded"
-                        ng-init="filterOpen=false" ng-click="filterOpen=!filterOpen">
-                    <span class="fa fa-filter"></span>&nbsp;Filter...
-                </button>
-                <div class="dropdown-menu dropdown_dialog" style="width:200px;">
-                    <table>
-                        <tr>
-                            <td>
-                                <table>
-                                    <tr>
-                                        <td colspan="2">
-                                            <button class="btn btn-xs default" ng-click="checkAllNodes(true)">All Nodes</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <button class="btn btn-xs default" ng-click="checkAllNodes(false)">No Nodes</button>
-                                        </td>
-                                    </tr>
-                                    <tr ng-repeat="node in nodes">
-                                        <td>
-                                            <input type="checkbox" checklist-model="nodeFilter"
-                                                   checklist-value="node.id">&nbsp;Node {{node.id}}
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                            <td style="vertical-align: top;padding-left: 10px;">
-                                <table>
-                                    <tr ng-repeat="process in processFilterOptions">
-                                        <td>
-                                            <input type="checkbox" checklist-model="processFilter"
-                                                   checklist-value="process.ref">&nbsp;{{process.name}}
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
-                    <div class="modal-footer">
-                        <button class="btn btn-xs btn-default" ng-click="filterOpen=false;">Close</button>
+                <span ng-class="{'btn-group btn-group-sm': true, 'open': filterOpen}">
+                    <button type="button" class="btn btn-sm btn-default dropdown" ng-disabledx="!graphLoaded"
+                            ng-init="filterOpen=false" ng-click="filterOpen=!filterOpen">
+                        <span class="fa fa-filter"></span>&nbsp;Filter...
+                    </button>
+                    <div class="dropdown-menu dropdown_dialog" style="width:200px;">
+                        <table>
+                            <tr>
+                                <td>
+                                    <table>
+                                        <tr>
+                                            <td colspan="2">
+                                                <button class="btn btn-xs default" ng-click="checkAllNodes(true)">All
+                                                    Nodes
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <button class="btn btn-xs default" ng-click="checkAllNodes(false)">No
+                                                    Nodes
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr ng-repeat="node in nodes">
+                                            <td>
+                                                <input type="checkbox" checklist-model="nodeFilter"
+                                                       checklist-value="node.id">&nbsp;Node {{node.id}}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td style="vertical-align: top;padding-left: 10px;">
+                                    <table>
+                                        <tr ng-repeat="process in processFilterOptions">
+                                            <td>
+                                                <input type="checkbox" checklist-model="processFilter"
+                                                       checklist-value="process.ref">&nbsp;{{process.name}}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="modal-footer">
+                            <button class="btn btn-xs btn-default" ng-click="filterOpen=false;">Close</button>
+                        </div>
                     </div>
-                </div>
-            </span>
+                </span>
 
                 <span class="btn btn-sm btn-default btn-file">
                     <span class="fa fa-download"></span>
                     <span>Select File</span>
                     <input onchange="angular.element(this).scope().fileChanged(this);this.value = '';" type="file"/>
                 </span>
-                <small>
-                    Lines Processed: {{countEntries}}:{{countLines}}
-                </small>
-            </span>
+            <small>
+                Lines Processed: {{countEntries}}:{{countLines}}
+            </small>
+        </span>
         </div>
 
         <!-- Body LIST -->

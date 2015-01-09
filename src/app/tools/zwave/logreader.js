@@ -151,6 +151,7 @@ angular.module('ZWave.logReader', [
             $scope.data = [];
             $scope.countLines = 0;
             $scope.countEntries = 0;
+            $scope.loadProgress = 0
 
             reader.open(file, function (lines, err) {
                 if (err != null) {
@@ -160,7 +161,7 @@ angular.module('ZWave.logReader', [
                     return;
                 }
 
-                // output every line
+                // Process every line
                 lines.forEach(function (line) {
                     $scope.countLines++;
 
@@ -170,6 +171,8 @@ angular.module('ZWave.logReader', [
                         $scope.data.push(d);
                         $scope.countEntries++;
                     }
+
+                    $scope.loadProgress = reader.getProgress();
                 });
 
                 reader.getNextBatch();
@@ -1259,10 +1262,12 @@ angular.module('ZWave.logReader', [
             };
 
             this.getProgress = function () {
-                if (file == null)
+                if (file == null) {
                     return 0;
-                if (chunkStart == fileSize)
+                }
+                if (chunkStart == fileSize) {
                     return 100;
+                }
                 return Math.round(100 * (chunkStart / fileSize));
             }
 
