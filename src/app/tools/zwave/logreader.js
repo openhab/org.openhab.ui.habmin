@@ -50,8 +50,13 @@ angular.module('ZWave.logReader', [
         // Some globals used by the processor
         var logTime = 0;
         var lastNode = 0;
+        var lastCmd = {};
         var lastSendData = {};
 
+        /**
+         * Function called when a line is clicked so we can add data to the popup
+         * @param selected
+         */
         $scope.onPopupShown = function (selected) {
             $scope.selectedPkt = selected;
             $scope.selectedNode = $scope.nodes[selected.node];
@@ -63,11 +68,49 @@ angular.module('ZWave.logReader', [
         $scope.countLines = 0;
         $scope.countEntries = 0;
         $scope.showOption = "LIST";//"TIMELINE";
-        $scope.processFilter = ['Start', 'RXPacket', 'TXPacket', 'Wakeup', 'Sleep', 'Timeout', 'CAN'];
+        $scope.processFilter = ['Start', 'RXPacket', 'TXPacket', 'Wakeup', 'Timeout', 'SendAbort'];
+        $scope.processFilterOptions = [
+            {
+                ref: 'Start',
+                name: 'Binding Start/Stop'
+            },
+            {
+                ref: 'RXPacket',
+                name: 'Packets Received'
+            },
+            {
+                ref: 'TXPacket',
+                name: 'Packets Sent'
+            },
+            {
+                ref: 'Wakeup',
+                name: 'Device Wakeup/Sleep'
+            },
+            {
+                ref: 'Timeout',
+                name: 'Timeouts and Retries'
+            },
+            {
+                ref: 'SendAbort',
+                name: 'Abort Messages'
+            },
+            {
+                ref: 'NodeState',
+                name: 'Node State Changes'
+            }
+        ];
         $scope.nodeFilter = [];
 
-        $scope.checkAllNodes = function () {
+        /**
+         * Marks all nodes as selected in the node filter
+         * @param state
+         */
+        $scope.checkAllNodes = function (state) {
+            $scope.nodeFilter = null;
             $scope.nodeFilter = [];
+            if(state === false) {
+                return;
+            }
             for (var key in $scope.nodes) {
                 $scope.nodeFilter.push(parseInt(key));
             }
@@ -166,7 +209,7 @@ angular.module('ZWave.logReader', [
             },
             21: {
                 name: "GetVersion",
-                processor: null
+                processor: processControllerCmd
             },
             22: {
                 name: "SendDataAbort",
@@ -183,7 +226,7 @@ angular.module('ZWave.logReader', [
             },
             65: {
                 name: "IdentifyNode",
-                processor: null
+                processor: processControllerCmd
             },
             66: {
                 name: "SetDefault",
@@ -243,19 +286,19 @@ angular.module('ZWave.logReader', [
             },
             96: {
                 name: "RequestNodeInfo",
-                processor: null
+                processor: processControllerCmd
             },
             97: {
                 name: "RemoveFailedNodeID",
-                processor: processFailedNode
+                processor: null
             },
             98: {
                 name: "IsFailedNodeID",
-                processor: null
+                processor: processFailedNode
             },
             128: {
                 name: "GetRoutingInfo",
-                processor: null
+                processor: processControllerCmd
             }
         };
 
@@ -614,18 +657,23 @@ angular.module('ZWave.logReader', [
             },
             {
                 string: "Node advancer - advancing to ",
-                ref: "NodeStage",
+                ref: "NodeState",
                 processor: processStage
             },
             {
-                string: "Received WAKE_UP_NOTIFICATION",
+                string: "Stage set to",
+                ref: "NodeState",
+                processor: processAlive     // TODO: Rationalise this!
+            },
+            {
+                string: "Is awake with",
                 ref: "Wakeup",
                 content: "Node is AWAKE",
                 status: INFO
             },
             {
                 string: "Went to sleep",
-                ref: "Sleep",
+                ref: "Wakeup",
                 content: "Node is ASLEEP",
                 status: INFO
             },
@@ -636,7 +684,7 @@ angular.module('ZWave.logReader', [
             },
             {
                 string: "Retry count exceeded",
-                ref: "Timeout",
+                ref: "Retry",
                 processor: processTimeout
             },
             {
@@ -645,7 +693,7 @@ angular.module('ZWave.logReader', [
             },
             {
                 string: "Message cancelled by controller (CAN)",
-                ref: "CAN",
+                ref: "Timeout",
                 content: "Message cancelled by controller",
                 status: ERROR
             }
@@ -746,10 +794,27 @@ angular.module('ZWave.logReader', [
 
         function processStage(node, process, message) {
             var stage = message.substr(message.indexOf(" to ") + 4);
+            var point = stage.indexOf(".");
+            if(point !== -1) {
+                stage = stage.substr(0, point);
+            }
             addNodeInfo(node, "Stage", stage);
             return {
                 stage: stage,
                 content: "Stage advanced to " + stage
+            };
+        }
+
+        function processAlive(node, process, message) {
+            var stage = message.substr(message.indexOf(" Stage set to ") + 14);
+            var point = stage.indexOf(".");
+            if(point !== -1) {
+                stage = stage.substr(0, point);
+            }
+            addNodeInfo(node, "Stage", stage);
+            return {
+                stage: stage,
+                content: "Stage set to " + stage
             };
         }
 
@@ -799,24 +864,21 @@ angular.module('ZWave.logReader', [
                 // If we've defined a command within the class, then process this
                 if (commandClasses[cmdCls].commands != null &&
                     commandClasses[cmdCls].commands[cmdCmd] != null) {
-                    cmdClass.content =
-                        commandClasses[cmdCls].name + ": " + commandClasses[cmdCls].commands[cmdCmd].name;
+                    cmdClass.class = commandClasses[cmdCls].name;
+                    cmdClass.function = commandClasses[cmdCls].commands[cmdCmd].name
                     if (commandClasses[cmdCls].commands[cmdCmd].processor != null) {
                         cmdClass = commandClasses[cmdCls].commands[cmdCmd].processor(bytes.slice(0, -2));
-                    }
-                    else {
-                        cmdClass.content =
-                            commandClasses[cmdCls].name + ": " + commandClasses[cmdCls].commands[cmdCmd].name;
-                        cmdClass.class = commandClasses[cmdCls].commands[cmdCmd].name;
                     }
                 }
                 else if (commandClasses[cmdCls].processor) {
                     cmdClass = commandClasses[cmdCls].processor(bytes.slice(0, -2));
                 }
                 else {
-                    cmdClass.content = commandClasses[cmdCls].name;
+                    cmdClass.class = commandClasses[cmdCls].name;
+                    cmdClass.function = bytes[1];
                 }
                 cmdClass.name = commandClasses[cmdCls].name;
+                cmdClass.content = cmdClass.class + ": " + cmdClass.function;
             }
 
             return cmdClass;
@@ -831,6 +893,26 @@ angular.module('ZWave.logReader', [
                 else {
                 }
             }
+        }
+
+        function processControllerCmd(node, direction, type, bytes, len) {
+            var data = {result: SUCCESS};
+            if (direction == "TX") {
+                data.node = HEX2DEC(bytes[0]);
+
+                lastCmd = {
+                    node: data.node
+                };
+            } else {
+                if (type == REQUEST) {
+                    setState(data, ERROR);
+                }
+                else {
+                    data.node = lastCmd.node;
+                }
+            }
+
+            return data;
         }
 
         function processApplicationCommand(node, direction, type, bytes, len) {
@@ -990,10 +1072,11 @@ angular.module('ZWave.logReader', [
         }
 
         function processPacket(direction, node, process, message) {
-            var bytes = message.substr(message.indexOf(" = ") + 3).split(' ');
             var packet = {
                 direction: direction
             };
+            packet.packetData = message.substr(message.indexOf(" = ") + 3);
+            var bytes = packet.packetData.split(' ');
 
             // Frame starts with 01
             if (HEX2DEC(bytes[0]) != 1) {
@@ -1006,7 +1089,7 @@ angular.module('ZWave.logReader', [
             packet.class = packetTypes[packet.pktType].name;
             if (packet.class == undefined) {
                 packet.class = "Unknown " + bytes[3] + " (" + packet.pktType + ")";
-                setStatus(log.result, WARNING);
+                setStatus(packet.result, WARNING);
             }
             else if (packetTypes[packet.pktType].processor != null) {
                 // Process the frame if we have a processor function
@@ -1024,8 +1107,7 @@ angular.module('ZWave.logReader', [
 
             packet.content = "Packet ";
             packet.content += process.ref == "RXPacket" ? "received" : "sent";
-
-            if (packet.packet != null) {
+            if (packet.packet != null && packet.packet.content != null) {
                 packet.content += ": " + packet.packet.content;
             }
             else {
@@ -1081,7 +1163,10 @@ angular.module('ZWave.logReader', [
 
             if (log != null) {
                 // Add node information
-                if (node != 0) {
+                if(log.packet != null && log.packet.node != null) {
+                    log.node = log.packet.node;
+                }
+                else if (node != 0) {
                     log.node = node;
                 }
                 if (log.node != undefined && log.node != 0 && log.node != 255) {
