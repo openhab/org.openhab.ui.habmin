@@ -85,7 +85,9 @@ This expects a scope similar to the previous example, but with customItemMap als
         sizeX: 'item.size.x',
         sizeY: 'item.size.y',
         row: 'item.position[0]',
-        col: 'item.position[1]'
+        col: 'item.position[1]',
+        minSizeY: 'item.minSizeY',
+        maxSizeY: 'item.maxSizeY'
     };
 ```
 The gridsterItem directive can be configured like this:
@@ -107,6 +109,7 @@ Simply pass your desired options to the gridster directive
 		columns: 6, // the width of the grid, in columns
 		pushing: true, // whether to push other items out of the way on move or resize
 		floating: true, // whether to automatically float items up so they stack (you can temporarily disable if you are adding unsorted items with ng-repeat)
+		swapping: false, // whether or not to have items of the same size switch places instead of pushing down if they are the same size
 		width: 'auto', // can be an integer or 'auto'. 'auto' scales gridster to be the full width of its containing element
 		colWidth: 'auto', // can be an integer or 'auto'.  'auto' uses the pixel width of the element divided by 'columns'
 		rowHeight: 'match', // can be an integer or 'match'.  Match uses the colWidth, giving you square widgets.
@@ -120,19 +123,23 @@ Simply pass your desired options to the gridster directive
 		maxRows: 100,
 		defaultSizeX: 2, // the default width of a gridster item, if not specifed
 		defaultSizeY: 1, // the default height of a gridster item, if not specified
+		minSizeX: 1, // minimum column width of an item
+		maxSizeX: null, // maximum column width of an item
+		minSizeY: 1, // minumum row height of an item
+		maxSizeY: null, // maximum row height of an item
 		resizable: {
 		   enabled: true,
-		   handles: 'n, e, s, w, ne, se, sw, nw',
-		   start: function(event, uiWidget, $element) {}, // optional callback fired when resize is started,
-		   resize: function(event, uiWidget, $element) {}, // optional callback fired when item is resized,
-		   stop: function(event, uiWidget, $element) {} // optional callback fired when item is finished resizing
+		   handles: ['n', 'e', 's', 'w', 'ne', 'se', 'sw', 'nw'],
+		   start: function(event, $element, widget) {}, // optional callback fired when resize is started,
+		   resize: function(event, $element, widget) {}, // optional callback fired when item is resized,
+		   stop: function(event, $element, widget) {} // optional callback fired when item is finished resizing
 		},
 		draggable: {
 		   enabled: true, // whether dragging items is supported
 		   handle: '.my-class', // optional selector for resize handle
-		   start: function(event, uiWidget, $element) {}, // optional callback fired when drag is started,
-		   drag: function(event, uiWidget, $element) {}, // optional callback fired when item is moved,
-		   stop: function(event, uiWidget, $element) {} // optional callback fired when item is finished dragging
+		   start: function(event, $element, widget) {}, // optional callback fired when drag is started,
+		   drag: function(event, $element, widget) {}, // optional callback fired when item is moved,
+		   stop: function(event, $element, widget) {} // optional callback fired when item is finished dragging
 		}
     };
 ```
@@ -197,7 +204,7 @@ The third argument, true, is to make the watch based on the value of the object,
 
 
 ##Note
-This directive/plugin does not generate style tags, like the jQuery plugin.  It also uses standard camalCase for variables and object properties, while the original plugin used lower\_case\_with_underscores.  These options have not and may never be implemented:
+This directive/plugin does not generate style tags, like the jQuery plugin.  It also uses standard camelCase for variables and object properties, while the original plugin used lower\_case\_with_underscores.  These options have not and may never be implemented:
 
 * widget_class - not necessary since directives already whatever classes and attributes you want to add
 * widget_margins - replaced by 'margins'
