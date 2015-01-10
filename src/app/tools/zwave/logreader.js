@@ -1127,6 +1127,9 @@ angular.module('ZWave.logReader', [
 
             // Parse the time
             var time = moment(line.substr(0, 23), "YYYY-MM-DD HH:mm:ss.SSS");
+            if(time.isValid() == false) {
+                var time = moment(line.substr(0, 12), "HH:mm:ss.SSS");
+            }
             var node = 0;
 
             logTime = time.valueOf();
