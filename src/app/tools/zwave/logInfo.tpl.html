@@ -11,6 +11,12 @@
         <tr ng-show="selectedPkt.class">
             <td>Packet Class</td><td>{{selectedPkt.class}}</td>
         </tr>
+        <tr ng-show="selectedPkt.warnFlag">
+            <td>Warning Message</td><td><span class="text-warning fa fa-question-circle"></span> {{selectedPkt.warnMessage}}</td>
+        </tr>
+        <tr ng-show="selectedPkt.errorFlag">
+            <td>Error Message</td><td><span class="text-danger fa fa-exclamation-circle"></span> {{selectedPkt.errorMessage}}</td>
+        </tr>
 
         <!-- COMMAND CLASS INFORMATION -->
         <tr ng-show="selectedPkt.packet.class">

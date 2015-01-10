@@ -52,7 +52,8 @@ angular.module('ZWave.logReader', [
         var lastNode = 0;
         var lastCmd = {};
         var lastSendData = {};
-        var lastReceived = null;
+        var lastPacketRx = null;
+        var lastPacketTx = null;
 
 
         /**
@@ -66,6 +67,8 @@ angular.module('ZWave.logReader', [
             }
         };
 
+        $scope.logState = "empty";
+
         $scope.data = [];
         $scope.countLines = 0;
         $scope.countEntries = 0;
@@ -73,8 +76,8 @@ angular.module('ZWave.logReader', [
         $scope.processFilter = ['Start', 'RXPacket', 'TXPacket', 'Wakeup', 'Timeout', 'SendAbort'];
         $scope.processFilterOptions = [
             {
-                ref: 'Start',
-                name: 'Binding Start/Stop'
+                ref: 'Info',
+                name: 'Binding Information'
             },
             {
                 ref: 'RXPacket',
@@ -89,7 +92,7 @@ angular.module('ZWave.logReader', [
                 name: 'Device Wakeup/Sleep'
             },
             {
-                ref: 'Retry',
+                ref: 'Timeout',
                 name: 'Timeouts and Retries'
             },
             {
@@ -169,6 +172,15 @@ angular.module('ZWave.logReader', [
 
             // Calculate node statistics
             for (var key in $scope.nodes) {
+                if($scope.nodes[key].responseTimeMin < 0) {
+                    $scope.nodes[key].responseTimeMin = 0;
+                }
+                if($scope.nodes[key].responseTimeAvg < 0) {
+                    $scope.nodes[key].responseTimeAvg = 0;
+                }
+                if($scope.nodes[key].responseTimeMax < 0) {
+                    $scope.nodes[key].responseTimeMax = 0;
+                }
                 if($scope.nodes[key].responseTimeCnt == 0) {
                     $scope.nodes[key].responseTimeMin = "-";
                     $scope.nodes[key].responseTimeAvg = "-";
@@ -180,7 +192,7 @@ angular.module('ZWave.logReader', [
                 }
             }
 
-            $scope.isLoading = false;
+            $scope.logState = "loaded";
         }
 
         /**
@@ -193,9 +205,9 @@ angular.module('ZWave.logReader', [
             $scope.countLines = 0;
             $scope.countEntries = 0;
             $scope.loadProgress = 0;
-            $scope.isLoading = true;
+            $scope.logState = "loading";
 
-            lastReceived = null;
+            lastPacketRx = null;
 
             var reader = new FileLineStreamer();
 
@@ -678,8 +690,13 @@ angular.module('ZWave.logReader', [
             {
                 string: "Z-Wave binding has been started.",
                 ref: "Start",
-                processor: null,
                 content: "Binding Started",
+                status: INFO
+            },
+            {
+                string: "Starting Z-Wave receive thread",
+                ref: "Info",
+                content: "Receive thread started",
                 status: INFO
             },
             {
@@ -732,12 +749,12 @@ angular.module('ZWave.logReader', [
             },
             {
                 string: "Timeout while sending message. Requeueing",
-                ref: "Retry",
+                ref: "Timeout",
                 processor: processRetry
             },
             {
                 string: "Retry count exceeded",
-                ref: "Retry",
+                ref: "Timeout",
                 processor: processTimeout
             },
             {
@@ -749,9 +766,21 @@ angular.module('ZWave.logReader', [
                 ref: "Heal"
             },
             {
-                string: "Message cancelled by controller (CAN)",
-                ref: "Timeout",
-                content: "Message cancelled by controller",
+                string: "controller (CAN)",
+                error: "Message cancelled by controller",
+                processor: processTxMessageError,
+                status: ERROR
+            },
+            {
+                string: "controller (NAK)",
+                error: "Message rejected by controller",
+                processor: processTxMessageError,
+                status: ERROR
+            },
+            {
+                string: "Message is not valid, discarding",
+                error: "Message is invalid",
+                processor: processTxMessageError,
                 status: ERROR
             }
         ];
@@ -850,9 +879,27 @@ angular.module('ZWave.logReader', [
         }
 
         function processTransactionComplete(node, process, message) {
-            if(lastReceived != null) {
-                lastReceived.transactionComplete = true;
-                lastReceived = null;
+            if(lastPacketRx != null) {
+                lastPacketRx.successFlag = true;
+                lastPacketRx = null;
+            }
+        }
+
+        function processRxMessageError(node, process, message) {
+            if(lastPacketRx != null) {
+                lastPacketRx.errorFlag = true;
+                lastPacketRx.errorMessage = process.error;
+                setStatus(lastPacketRx, process.status);
+                lastPacketRx = null;
+            }
+        }
+
+        function processTxMessageError(node, process, message) {
+            if(lastPacketTx != null) {
+                lastPacketTx.errorFlag = true;
+                lastPacketTx.errorMessage = process.error;
+                setStatus(lastPacketTx, process.status);
+                lastPacketTx = null;
             }
         }
 
@@ -914,18 +961,28 @@ angular.module('ZWave.logReader', [
         }
 
         function processCommandClass(bytes) {
+            var cmdClass = {result: SUCCESS, id: cmdCls};
+            if (bytes == null || bytes.length == 0) {
+                cmdClass.content = "Zero length frame in command class";
+                setStatus(cmdClass, ERROR);
+                return;
+            }
+
             // Handle our requests
             var cmdCls = HEX2DEC(bytes[0]);
-            var cmdCmd = HEX2DEC(bytes[1]);
+            var cmdCmd = null;
+
+            if(bytes.length > 1) {
+                HEX2DEC(bytes[1]);
+            }
 
             // Process the command class
-            var cmdClass = {result: SUCCESS, id: cmdCls};
             if (commandClasses[cmdCls] == undefined) {
                 cmdClass.content = "Unknown command class " + bytes[0];
                 setStatus(cmdClass, ERROR);
             }
             else {
-                // If we've defined a command within the class, then process this
+                // If we've defined a command/function within the class, then process this
                 if (commandClasses[cmdCls].commands != null &&
                     commandClasses[cmdCls].commands[cmdCmd] != null) {
                     cmdClass.class = commandClasses[cmdCls].name;
@@ -939,10 +996,15 @@ angular.module('ZWave.logReader', [
                 }
                 else {
                     cmdClass.class = commandClasses[cmdCls].name;
-                    cmdClass.function = bytes[1];
+                    if(cmdCmd != null) {
+                        cmdClass.function = bytes[1];
+                    }
                 }
                 cmdClass.name = commandClasses[cmdCls].name;
-                cmdClass.content = cmdClass.class + ": " + cmdClass.function;
+                cmdClass.content = cmdClass.class;
+                if(cmdClass.function != null) {
+                    cmdClass.content += ": " + cmdClass.function;
+                }
             }
 
             return cmdClass;
@@ -1042,8 +1104,8 @@ angular.module('ZWave.logReader', [
 
             if (direction == "TX") {
                 node = HEX2DEC(bytes[0]);
-                var cmdClass = processCommandClass(bytes.slice(2, -3));
-
+                // Remove the transmit options and callback id
+                var cmdClass = processCommandClass(bytes.slice(2, -2));
                 // Get the callback ID
                 var callback = HEX2DEC(bytes[len - 1]);
 
@@ -1054,7 +1116,7 @@ angular.module('ZWave.logReader', [
                     node: node
                 };
 
-                setStatus(sendData, cmdClass.status);
+                setStatus(sendData, cmdClass.result);
                 sendData.node = node;
                 sendData.callback = callback;
                 sendData.cmdClass = cmdClass;
@@ -1074,7 +1136,7 @@ angular.module('ZWave.logReader', [
                     // Recover the data on the original message
                     var callbackData = {};
                     if (callbackCache[callback] == null) {
-                        sendData.status = "No callback ID found (" + bytes[0] + ")";
+                        sendData.content = "No callback ID found (" + bytes[0] + ")";
                         sendData.responseTime = "Unknown";
                         setStatus(sendData, ERROR);
                     }
@@ -1100,6 +1162,8 @@ angular.module('ZWave.logReader', [
                             sendData.content =
                                 "SendData: Message (" + callback + ") completed in " + sendData.responseTime +
                                 "ms. NO ACK!";
+                            sendData.warnFlag = true;
+                            sendData.warnMessage = "No ack received from device";
                             break;
                         case 2:		// COMPLETE_FAIL
                             updateNodeResponse(node, -1);
@@ -1135,20 +1199,21 @@ angular.module('ZWave.logReader', [
         }
 
         function processPacketTX(node, process, message) {
-            return processPacket("TX", node, process, message);
+            lastPacketTx = processPacket("TX", node, process, message);
+            return lastPacketTx;
         }
 
         function processPacketRX(node, process, message) {
             var data = processPacket("RX", node, process, message);
             // Check for duplicates
-            if(lastReceived != null) {
+            if(lastPacketRx != null) {
                 // If we receive the same packet then mark it as a duplicate
                 // Maybe this should check time, but it's not currently available here
-                if(lastReceived.packetData == data.packetData) {
+                if(lastPacketRx.packetData == data.packetData) {
                     data.duplicate = true;
                 }
             }
-            lastReceived = data;
+            lastPacketRx = data;
 
             return data;
         }
@@ -1157,7 +1222,7 @@ angular.module('ZWave.logReader', [
             var packet = {
                 direction: direction
             };
-            packet.packetData = message.substr(message.indexOf(" = ") + 3);
+            packet.packetData = message.substr(message.indexOf(" = ") + 3).trim();
             var bytes = packet.packetData.split(' ');
 
             // Frame starts with 01
@@ -1179,12 +1244,16 @@ angular.module('ZWave.logReader', [
                     packetTypes[packet.pktType].processor(node, direction, packet.reqType, bytes.slice(4, -1),
                         packet.length - 3);
                 packet.node = packet.packet.node;
-                setStatus(packet, packet.packet);			// Bubble status
+                setStatus(packet, packet.packet.result);			// Bubble status
+                packet.warnFlag = packet.packet.warnFlag;
+                packet.warnMessage = packet.packet.warnMessage;
+                packet.errorFlag = packet.packet.errorFlag;
+                packet.errorMessage = packet.packet.errorMessage;
             }
 
             // Set the minimum status if we defined it in the packet definition
-            if (packetTypes[packet.pktType].status != null) {
-                setStatus(packet, packetTypes[packet.pktType].status);
+            if (packetTypes[packet.pktType].result != null) {
+                setStatus(packet, packetTypes[packet.pktType].result);
             }
 
             packet.content = "Packet ";

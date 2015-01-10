@@ -3,12 +3,12 @@
     <!-- Heading -->
     <div class="panel panel-default">
         <div class="panel-heading" style="padding:3px;">
-            <button type="button" ng-class="{'btn btn-sm btn-default':true, 'disabled':showOption=='LIST'}"
+            <button type="button" ng-disabled="logState!='loaded' || showOption!='LIST'" class="btn btn-sm btn-default"
                     ng-click="showOption='LIST'">
                 <span class="fa fa-list-alt"></span>
                 <span>Log</span>
             </button>
-            <button type="button" ng-class="{'btn btn-sm btn-default':true, 'disabled':showOption=='TIMELINE'}"
+            <button type="button" ng-disabled="logState!='loaded' || showOption!='TIMELINE'" class="btn btn-sm btn-default"
                     ng-click="showOption='TIMELINE'">
                 <span class="fa fa-line-chart"></span>
                 <span>Timeline</span>
@@ -16,7 +16,7 @@
 
             <span class="pull-right">
                 <span ng-class="{'btn-group btn-group-sm': true, 'open': filterOpen}">
-                    <button type="button" class="btn btn-sm btn-default dropdown" ng-disabledx="!graphLoaded"
+                    <button type="button" class="btn btn-sm btn-default dropdown" ng-disabled="logState!='loaded'"
                             ng-init="filterOpen=false" ng-click="filterOpen=!filterOpen">
                         <span class="fa fa-filter"></span>
                         &nbsp;Filter...
@@ -31,7 +31,6 @@
                                 Nodes
                             </button>
                         </div>
-
                         <table>
                             <tr>
                                 <td>
@@ -62,8 +61,9 @@
                     </div>
                 </span>
 
-                <span class="btn btn-sm btn-default btn-file">
-                    <span class="fa fa-download"></span>
+                <span class="btn btn-sm btn-default btn-file" ng-disabled="logState=='loading'">
+                    <span class="fa fa-download" ng-hide="logState=='loading'"></span>
+
                     <span>Select File</span>
                     <input onchange="angular.element(this).scope().fileChanged(this);this.value = '';" type="file"/>
                 </span>
@@ -89,13 +89,17 @@
                     <td>
                         {{log.content}}
                     </td>
-                    <td>{{log.class}}</td>
-                    <td>
+                    <td class="text-center">
+                        {{log.class}}
+                    </td>
+                    <td class="text-center">
                         {{log.stage}}
                     </td>
-                    <td>
-                        <span ng-show="log.duplicate" class="text-warning"><span class="fa fa-copy"></span></span>
-                        <span ng-show="log.transactionComplete" class="text-success"><span class="fa fa-check-circle"></span></span>
+                    <td class="text-center">
+                        <span ng-show="log.duplicate" class="text-muted fa fa-copy"></span>
+                        <span ng-show="log.successFlag" class="text-success fa fa-check-circle"></span>
+                        <span ng-show="log.warnFlag" class="text-warning fa fa-question-circle"></span>
+                        <span ng-show="log.errorFlag" class="text-danger fa fa-exclamation-circle"></span>
                     </td>
                 </tr>
                 </tbody>
