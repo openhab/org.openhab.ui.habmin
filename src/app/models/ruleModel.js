@@ -25,7 +25,7 @@ angular.module('HABmin.ruleModel', [
 
                     // Keep a local copy.
                     // This allows us to update the data later and keeps the GUI in sync.
-                    this.ruleList = data.designs;
+                    this.ruleList = [].concat(data.designs);
                     console.log("Processing completed in", new Date().getTime() - tStart);
 
                     deferred.resolve(this.ruleList);

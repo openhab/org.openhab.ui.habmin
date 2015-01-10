@@ -25,7 +25,7 @@ angular.module('HABmin.persistenceModel', [
 
                     console.log("Store completed in", new Date().getTime() - tStart);
 
-                    deferred.resolve(data.items);
+                    deferred.resolve([].concat(data.items));
                 })
                 .error(function (data, status) {
                     deferred.reject(data);

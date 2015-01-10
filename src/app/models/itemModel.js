@@ -23,7 +23,7 @@ angular.module('HABmin.itemModel', [
                 }
             ).success(function (data, status) {
                     // Some extra manipulation on data if you want...
-                    deferred.resolve();
+                    deferred.resolve([].concat(data));
                 }).error(function (data, status) {
                     deferred.reject(data);
                 });
