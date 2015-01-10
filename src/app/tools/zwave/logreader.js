@@ -38,7 +38,7 @@ angular.module('ZWave.logReader', [
     })
 
     .controller('ZWaveLogReaderCtrl',
-    function DashboardChartCtrl($scope, locale, PersistenceItemModel, PersistenceServiceModel, PersistenceDataModel, ChartListModel, ChartSave, SidepanelService, growl, VisDataSet, $interval, $timeout) {
+    function ZWaveLogReaderCtrl($scope, locale, PersistenceItemModel, PersistenceServiceModel, PersistenceDataModel, ChartListModel, ChartSave, SidepanelService, growl, VisDataSet, $interval, $timeout) {
         // Constant definitions
         var REQUEST = "Request";
         var RESPONSE = "Response";
@@ -52,6 +52,8 @@ angular.module('ZWave.logReader', [
         var lastNode = 0;
         var lastCmd = {};
         var lastSendData = {};
+        var lastReceived = null;
+
 
         /**
          * Function called when a line is clicked so we can add data to the popup
@@ -87,7 +89,7 @@ angular.module('ZWave.logReader', [
                 name: 'Device Wakeup/Sleep'
             },
             {
-                ref: 'Timeout',
+                ref: 'Retry',
                 name: 'Timeouts and Retries'
             },
             {
@@ -108,7 +110,7 @@ angular.module('ZWave.logReader', [
         $scope.checkAllNodes = function (state) {
             $scope.nodeFilter = null;
             $scope.nodeFilter = [];
-            if(state === false) {
+            if (state === false) {
                 return;
             }
             for (var key in $scope.nodes) {
@@ -136,49 +138,97 @@ angular.module('ZWave.logReader', [
          * Perform any calculations etc on the completion of loading a file
          */
         function loadComplete() {
+/*            var groups = new VisDataSet();
             for (var key in $scope.nodes) {
-                $scope.nodes[key].responseTimeAvg =
-                    Math.round($scope.nodes[key].responseTimeAvg / $scope.nodes[key].responseTimeCnt);
+                groups.add({id: key, content: "Node " + key});
             }
+
+            // Create a dataset with items
+            var items = new VisDataSet();
+            items.add($scope.data);
+
+            // create visualization
+            $scope.timelineOptions = {
+                height:"100%",
+                groupOrder: 'content'  // groupOrder can be a property name or a sorting function
+            };
+
+            $scope.timelineEvents = {};
+//                rangechange: $scope.onRangeChange,
+  //              rangechanged: $scope.onRangeChanged,
+    //            onload: $scope.onLoaded
+      //      };
+
+            $scope.timelineData = {
+                items: items,
+                groups: groups
+            };*/
+
+            // Display all nodes to start
+            $scope.checkAllNodes();
+
+            // Calculate node statistics
+            for (var key in $scope.nodes) {
+                if($scope.nodes[key].responseTimeCnt == 0) {
+                    $scope.nodes[key].responseTimeMin = "-";
+                    $scope.nodes[key].responseTimeAvg = "-";
+                    $scope.nodes[key].responseTimeMax = "-";
+                }
+                else {
+                    $scope.nodes[key].responseTimeAvg =
+                        Math.round($scope.nodes[key].responseTimeAvg / $scope.nodes[key].responseTimeCnt);
+                }
+            }
+
+            $scope.isLoading = false;
         }
 
         /**
-         * Load the log
+         * Load the log - called when the user selects a file
          */
         function loadLog(file) {
-            var reader = new FileLineStreamer();
-
+            // Initialise variables for loading
             $scope.data = [];
+            $scope.nodes = {};
             $scope.countLines = 0;
             $scope.countEntries = 0;
-            $scope.loadProgress = 0
+            $scope.loadProgress = 0;
+            $scope.isLoading = true;
 
-            reader.open(file, function (lines, err) {
-                if (err != null) {
-                    return;
-                }
-                if (lines == null) {
-                    return;
-                }
+            lastReceived = null;
 
-                // Process every line
-                lines.forEach(function (line) {
-                    $scope.countLines++;
+            var reader = new FileLineStreamer();
 
-                    var d = logProcessLine(line);
-                    if (d != null) {
-                        $scope.data.id = $scope.countEntries;
-                        $scope.data.push(d);
-                        $scope.countEntries++;
+            // Putting this in a $timeout allows the digest to complete.
+            // This allows the UI to update before we start loading the file.
+            $timeout(function() {
+                reader.open(file, function (lines, err) {
+                    if (err != null) {
+                        return;
+                    }
+                    if (lines == null) {
+                        return;
                     }
 
-                    $scope.loadProgress = reader.getProgress();
+                    // Process every line
+                    lines.forEach(function (line) {
+                        $scope.countLines++;
+
+                        var d = logProcessLine(line);
+                        if (d != null && d.ref != null) {
+                            $scope.data.id = $scope.countEntries;
+                            $scope.data.push(d);
+                            $scope.countEntries++;
+                        }
+
+                        $scope.loadProgress = reader.getProgress();
+                    });
+
+                    reader.getNextBatch();
                 });
 
                 reader.getNextBatch();
             });
-
-            reader.getNextBatch();
         }
 
         var packetTypes = {
@@ -691,6 +741,10 @@ angular.module('ZWave.logReader', [
                 processor: processTimeout
             },
             {
+                string: "transaction complete!",
+                processor: processTransactionComplete
+            },
+            {
                 string: "NETWORK HEAL - ",
                 ref: "Heal"
             },
@@ -795,10 +849,17 @@ angular.module('ZWave.logReader', [
             cfg.result = SUCCESS;
         }
 
+        function processTransactionComplete(node, process, message) {
+            if(lastReceived != null) {
+                lastReceived.transactionComplete = true;
+                lastReceived = null;
+            }
+        }
+
         function processStage(node, process, message) {
             var stage = message.substr(message.indexOf(" to ") + 4);
             var point = stage.indexOf(".");
-            if(point !== -1) {
+            if (point !== -1) {
                 stage = stage.substr(0, point);
             }
             addNodeInfo(node, "Stage", stage);
@@ -811,7 +872,7 @@ angular.module('ZWave.logReader', [
         function processAlive(node, process, message) {
             var stage = message.substr(message.indexOf(" Stage set to ") + 14);
             var point = stage.indexOf(".");
-            if(point !== -1) {
+            if (point !== -1) {
                 stage = stage.substr(0, point);
             }
             addNodeInfo(node, "Stage", stage);
@@ -945,16 +1006,23 @@ angular.module('ZWave.logReader', [
             var data = {result: SUCCESS};
 
             if (direction == "TX") {
-                data.name = "Check if node is failed: " + HEX2DEC(bytes[0]);
+                data.node = HEX2DEC(bytes[0]);
+                data.name = "Check if node " + data.node + " is failed";
+
+                lastCmd = {
+                    node: data.node
+                };
             } else {
                 if (type == REQUEST) {
                     setStatus(data, ERROR);
                 }
                 else {
+                    data.node = lastCmd.node;
+
                     // This is just the response to say it was sent
                     if (HEX2DEC(bytes[0]) > 0) {
                         // Success
-                        data.content = "Node is failed";
+                        data.content = "Node " + data.node + " is failed!";
                         setStatus(data, ERROR);
                     }
                     else {
@@ -1071,7 +1139,18 @@ angular.module('ZWave.logReader', [
         }
 
         function processPacketRX(node, process, message) {
-            return processPacket("RX", node, process, message);
+            var data = processPacket("RX", node, process, message);
+            // Check for duplicates
+            if(lastReceived != null) {
+                // If we receive the same packet then mark it as a duplicate
+                // Maybe this should check time, but it's not currently available here
+                if(lastReceived.packetData == data.packetData) {
+                    data.duplicate = true;
+                }
+            }
+            lastReceived = data;
+
+            return data;
         }
 
         function processPacket(direction, node, process, message) {
@@ -1109,7 +1188,7 @@ angular.module('ZWave.logReader', [
             }
 
             packet.content = "Packet ";
-            packet.content += process.ref == "RXPacket" ? "received" : "sent";
+            packet.content += process.ref == "RXPacket" ? "RX" : "TX";
             if (packet.packet != null && packet.packet.content != null) {
                 packet.content += ": " + packet.packet.content;
             }
@@ -1169,7 +1248,7 @@ angular.module('ZWave.logReader', [
 
             if (log != null) {
                 // Add node information
-                if(log.packet != null && log.packet.node != null) {
+                if (log.packet != null && log.packet.node != null) {
                     log.node = log.packet.node;
                 }
                 else if (node != 0) {
@@ -1304,34 +1383,10 @@ angular.module('ZWave.logReader', [
                 }
                 // End of File
                 if (chunkStart == fileSize) {
-
-                    var groups = new VisDataSet();
-                    for (var key in $scope.nodes) {
-                        groups.add({id: key, content: "Node " + key});
-                    }
-
-                    // create a dataset with items
-                    var items = new VisDataSet();
-                    items.add($scope.data);
-
-                    $scope.timelineOptions = {
-                        height: '100%',
-                        width: '100%'
-                    };
-
-                    $scope.timelineData = {
-                        items: items,
-                        groups: groups
-                    };
-
-                    // Display all nodes to start
-                    $scope.checkAllNodes();
                     loadComplete();
 
                     $scope.$apply();
 
-
-                    handler(null, null);
                     return;
                 }
                 // File part bigger than expectedChunkSize is left
