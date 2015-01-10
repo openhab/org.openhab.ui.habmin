@@ -11,30 +11,13 @@ angular.module('HABmin.sitemapModel', [
     'HABmin.userModel'
 //    'ngResource'
 ])
-/*
-    .factory("SitemapModel", function ($resource) {
-        return $resource('/rest/sitemaps',
-            {
-                //              bookId: '@bookId'
-            },
-            {
-                query: {
-                    method: 'GET',
-//                    params: { bookId: '@bookI  d' },
-                    isArray: false//,
-//                    headers: { 'auth-token': 'C3PO R2D2' }
-                }
-            }
-        );
-    })
-*/
     .service('SitemapModel', function ($http, $q, UserService) {
         this.url = UserService.getServer() + '/rest/sitemaps';
         this.socket = null;
         this.getList = function () {
             var deferred = $q.defer();
             $http.get(this.url).success(function (data, status) {
-                deferred.resolve(data.sitemap);
+                deferred.resolve([].concat(data.sitemap));
             }).error(function (data, status) {
                 deferred.reject(data);
             });
