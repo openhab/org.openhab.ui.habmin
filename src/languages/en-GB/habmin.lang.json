@@ -3,6 +3,8 @@
     "mainLogout": "Logout",
     "mainUserPreferences": "User Preferences",
     "mainDashboard": "Dashboard",
+    "mainDashboardNew": "New Dashboard",
+    "mainDashboardEdit": "Edit Dashboard",
     "mainCharts": "Charts",
     "mainRules": "Rules",
     "mainScheduler": "Scheduler",

@@ -267,6 +267,10 @@ angular.module('HABmin', [
                 $scope.sidepanelEnabled = true;
             }
 
+            // Remember the state so we can enable some state dependant options
+            // (The ui router directives don't seem to support hide options!)
+            $scope.currentState = toState.name;
+
             // Reset the sidebar
             if ($scope.doublePanel == false) {
                 SidepanelService.showPanel('side');
