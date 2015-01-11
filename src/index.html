@@ -154,17 +154,23 @@
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
-                            <li>
-                                <a ui-sref="chart">
+                            <li ui-sref="chart">
+                                <a>
                                     <span class="fa fa-fw fa-area-chart"></span>
                                     <span i18n="habmin.mainCharts"></span>
                                 </a>
                             </li>
                             <li role="presentation" class="divider"></li>
-                            <li>
-                                <a ui-sref="dashboard">
-                                    <span class="fa fa-fw fa-cubes"></span>
-                                    <span i18n="habmin.mainDashboard"></span>
+                            <li ui-sref="dashboard">
+                                <a>
+                                    <span class="fa fa-fw fa-th"></span>
+                                    <span i18n="habmin.mainDashboardNew"></span>
+                                </a>
+                            </li>
+                            <li ui-sref="dashboard" ng-show="currentState.indexOf('dashboard')==0">
+                                <a>
+                                    <span class="fa fa-fw fa-magic"></span>
+                                    <span i18n="habmin.mainDashboardEdit"></span>
                                 </a>
                             </li>
                         </ul>
