@@ -587,7 +587,8 @@ angular.module('ZWave.logReader', [
                         name: "MANUFACTURER_SPECIFIC_GET"
                     },
                     5: {
-                        name: "MANUFACTURER_SPECIFIC_REPORT"
+                        name: "MANUFACTURER_SPECIFIC_REPORT",
+                        processor: processManufacturer
                     }
                 }
             },
@@ -665,7 +666,8 @@ angular.module('ZWave.logReader', [
                         name: "VERSION_REPORT"
                     },
                     19: {
-                        name: "VERSION_COMMAND_CLASS_GET"
+                        name: "VERSION_COMMAND_CLASS_GET",
+                        processor: processVersion
                     },
                     20: {
                         name: "VERSION_COMMAND_CLASS_REPORT"
@@ -698,6 +700,17 @@ angular.module('ZWave.logReader', [
                 ref: "Info",
                 content: "Receive thread started",
                 status: INFO
+            },
+            {
+                string: "Deserializing from file",
+                ref: "Info",
+                content: "Restoring node from file",
+                processor: processDeserialiser
+            },
+            {
+                string: "Error deserializing from file",
+                ref: "Info",
+                processor: processDeserialiserError
             },
             {
                 string: "Receive Message = ",
@@ -798,7 +811,8 @@ angular.module('ZWave.logReader', [
                     responseTimeMin: 9999,
                     responseTimeAvg: 0,
                     responseTimeMax: 0,
-                    responseTimeCnt: 0
+                    responseTimeCnt: 0,
+                    messagesSent: 0
                 };
                 for (var cnt = 0; cnt < 100; cnt++) {
                     $scope.nodes[id].responseTime[cnt] = 0;
@@ -879,9 +893,29 @@ angular.module('ZWave.logReader', [
         }
 
         function processTransactionComplete(node, process, message) {
-            if(lastPacketRx != null) {
+            if (lastPacketRx != null) {
                 lastPacketRx.successFlag = true;
                 lastPacketRx = null;
+            }
+        }
+
+        var lastRestore = null;
+        function processDeserialiser(node, process, message) {
+            var data = {
+                result: SUCCESS,
+                node: node,
+                content: process.content
+            };
+
+            lastRestore = data;
+            return data;
+        }
+
+        function processDeserialiserError(node, process, message) {
+            if(lastRestore != null) {
+                lastRestore.warnFlag = true;
+                lastRestore.warnMessage = "Failed to restore state";
+                lastRestore = null;
             }
         }
 
@@ -960,8 +994,36 @@ angular.module('ZWave.logReader', [
             return null;
         }
 
-        function processCommandClass(bytes) {
-            var cmdClass = {result: SUCCESS, id: cmdCls};
+        function processVersion(node, bytes) {
+            var data = {result: SUCCESS};
+
+            var cmdCls = HEX2DEC(bytes[1]);
+            var cmdCmd = HEX2DEC(bytes[2]);
+            var cmdPrm = HEX2DEC(bytes[3]);
+
+            data.content = commandClasses[cmdCls].name + "::" + commandClasses[cmdCls].commands[cmdCmd].name;
+            switch(cmdCmd) {
+                case 19:
+                    data.content += " (" + commandClasses[cmdPrm].name + ")";
+                    break;
+            }
+
+            return data;
+        }
+
+        function processManufacturer(node, bytes) {
+            var data = {result: SUCCESS};
+            addNodeInfo(node, "Manufacturer", bytes[3] + bytes[4]);
+            addNodeInfo(node, "DeviceType", bytes[5] + bytes[6]);
+            addNodeInfo(node, "DeviceID", bytes[7] + bytes[8]);
+            data.content = "Manufacturer Info: " + getNodeInfo(node, "Manufacturer") + ":" +
+            getNodeInfo(node, "DeviceType") + ":" + getNodeInfo(node, "DeviceID");
+
+            return data;
+        }
+
+        function processCommandClass(node, bytes) {
+            var cmdClass = {result: SUCCESS};
             if (bytes == null || bytes.length == 0) {
                 cmdClass.content = "Zero length frame in command class";
                 setStatus(cmdClass, ERROR);
@@ -969,44 +1031,49 @@ angular.module('ZWave.logReader', [
             }
 
             // Handle our requests
-            var cmdCls = HEX2DEC(bytes[0]);
+            var cmdCls = HEX2DEC(bytes[1]);
             var cmdCmd = null;
 
+            cmdClass.id = cmdCls;
+
             if(bytes.length > 1) {
-                HEX2DEC(bytes[1]);
+                cmdCmd = HEX2DEC(bytes[2]);
             }
 
             // Process the command class
             if (commandClasses[cmdCls] == undefined) {
-                cmdClass.content = "Unknown command class " + bytes[0];
-                setStatus(cmdClass, ERROR);
+                cmdClass.content = "Unknown command class " + bytes[1];
+                setStatus(cmdClass, WARNING);
             }
             else {
                 // If we've defined a command/function within the class, then process this
                 if (commandClasses[cmdCls].commands != null &&
                     commandClasses[cmdCls].commands[cmdCmd] != null) {
-                    cmdClass.class = commandClasses[cmdCls].name;
-                    cmdClass.function = commandClasses[cmdCls].commands[cmdCmd].name
                     if (commandClasses[cmdCls].commands[cmdCmd].processor != null) {
-                        cmdClass = commandClasses[cmdCls].commands[cmdCmd].processor(bytes.slice(0, -2));
+                        cmdClass = commandClasses[cmdCls].commands[cmdCmd].processor(node, bytes);//.slice(0, 0));
                     }
+                    cmdClass.function = commandClasses[cmdCls].commands[cmdCmd].name;
                 }
                 else if (commandClasses[cmdCls].processor) {
-                    cmdClass = commandClasses[cmdCls].processor(bytes.slice(0, -2));
+                    cmdClass = commandClasses[cmdCls].processor(node, bytes);//.slice(0, 0));
                 }
                 else {
-                    cmdClass.class = commandClasses[cmdCls].name;
                     if(cmdCmd != null) {
-                        cmdClass.function = bytes[1];
+                        cmdClass.function = bytes[2];
                     }
                 }
+                cmdClass.class = commandClasses[cmdCls].name;
                 cmdClass.name = commandClasses[cmdCls].name;
-                cmdClass.content = cmdClass.class;
-                if(cmdClass.function != null) {
-                    cmdClass.content += ": " + cmdClass.function;
+
+                if(cmdClass.content == null) {
+                    cmdClass.content = cmdClass.class;
+                    if (cmdClass.function != null) {
+                        cmdClass.content += "::" + cmdClass.function;
+                    }
                 }
             }
 
+            cmdClass.node = node;
             return cmdClass;
         }
 
@@ -1047,8 +1114,8 @@ angular.module('ZWave.logReader', [
                 setStatus(data, ERROR);
             } else {
                 if (type == REQUEST) {
-                    var data = processCommandClass(bytes.slice(3, -1));
                     data.node = HEX2DEC(bytes[1]);
+                    var data = processCommandClass(data.node, bytes.slice(2));
 
                     createNode(node);
                     if ($scope.nodes[node].classes[data.id] == undefined) {
@@ -1105,9 +1172,9 @@ angular.module('ZWave.logReader', [
             if (direction == "TX") {
                 node = HEX2DEC(bytes[0]);
                 // Remove the transmit options and callback id
-                var cmdClass = processCommandClass(bytes.slice(2, -2));
+                var cmdClass = processCommandClass(node, bytes.slice(1, -2));
                 // Get the callback ID
-                var callback = HEX2DEC(bytes[len - 1]);
+                var callback = HEX2DEC(bytes[bytes.length - 1]);
 
                 // Save information on this transaction
                 callbackCache[callback] = {
@@ -1120,10 +1187,13 @@ angular.module('ZWave.logReader', [
                 sendData.node = node;
                 sendData.callback = callback;
                 sendData.cmdClass = cmdClass;
-                sendData.content = "SendData: Message (" + callback + ") sent: " + cmdClass.content;
+                sendData.content = "SendData: Message (" + callback + "). Sent: " + cmdClass.content;
 
                 lastSendData.node = node;
                 lastSendData.callback = callback;
+
+                createNode(node);
+                $scope.nodes[node].messagesSent++
             }
             else {
                 // Handle response from network
@@ -1154,14 +1224,13 @@ angular.module('ZWave.logReader', [
                                 updateNodeResponse(node, sendData.responseTime);
                             }
                             sendData.content =
-                                "SendData: Message (" + callback + ") completed OK in " + sendData.responseTime + "ms";
+                                "SendData: Message (" + callback + "). ACK'd by device in " + sendData.responseTime + "ms";
                             break;
                         case 1:		// COMPLETE_NO_ACK
                             updateNodeResponse(node, -1);
                             setStatus(sendData, WARNING);
                             sendData.content =
-                                "SendData: Message (" + callback + ") completed in " + sendData.responseTime +
-                                "ms. NO ACK!";
+                                "SendData: Message (" + callback + "). No ACK after " + sendData.responseTime + "ms";
                             sendData.warnFlag = true;
                             sendData.warnMessage = "No ack received from device";
                             break;
@@ -1242,7 +1311,7 @@ angular.module('ZWave.logReader', [
                 // Process the frame if we have a processor function
                 packet.packet =
                     packetTypes[packet.pktType].processor(node, direction, packet.reqType, bytes.slice(4, -1),
-                        packet.length - 3);
+                        packet.length - 4);
                 packet.node = packet.packet.node;
                 setStatus(packet, packet.packet.result);			// Bubble status
                 packet.warnFlag = packet.packet.warnFlag;
