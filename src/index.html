@@ -178,14 +178,14 @@
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
-                            <li>
-                                <a ui-sref="rules">
+                            <li ui-sref="rules">
+                                <a>
                                     <span class="fa fa-fw fa-puzzle-piece"></span>
                                     <span i18n="habmin.mainRules"></span>
                                 </a>
                             </li>
-                            <li>
-                                <a ui-sref="scheduler">
+                            <li ui-sref="scheduler">
+                                <a>
                                     <span class="fa fa-fw fa-clock-o"></span>
                                     <span i18n="habmin.mainScheduler"></span>
                                 </a>
@@ -204,19 +204,19 @@
                             <li ng-repeat="choice in sitemaps">
                                 <a ui-sref="sitemap.view({sitemapName:'{{choice.name}}', sitemapPage:'{{choice.name}}'})"
                                    ui-sref-opts="{ reload: true }">
-                                    <habmin-icon class="fa-fw" icon="{{choice.icon}}"></habmin-icon>
+                                    <habmin-icon class="" icon="{{choice.icon}}"></habmin-icon>
                                     <span>{{choice.label}}</span>
                                 </a>
                             </li>
                             <li class="disabled" ng-if="!sitemaps">
                                 <a>
-                                    <span class="fa fa-warning"></span>
+                                    <span class="fa fa-fw fa-warning"></span>
                                     <span i18n="habmin.mainNoSitemaps"></span>
                                 </a>
                             </li>
                             <li role="presentation" class="divider"></li>
-                            <li>
-                                <a ui-sref="sitemap.view">
+                            <li ui-sref="sitemap.view">
+                                <a>
                                     <span class="fa fa-fw fa-plus"></span>
                                     <span i18n="habmin.mainNewSitemap"></span>
                                 </a>
