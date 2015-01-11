@@ -67,8 +67,13 @@
                     <span>Select File</span>
                     <input onchange="angular.element(this).scope().fileChanged(this);this.value = '';" type="file"/>
                 </span>
+
+                <div class="btn-group pull-right" style="min-width:180px;">
+                    <div class="text-right small">{{logName}}</div>
+                    <div class="text-right small">Lines Processed: {{countEntries}}:{{countLines}}</div>
+                </div>
             <small>
-                Lines Processed: {{countEntries}}:{{countLines}}
+
             </small>
         </span>
         </div>
