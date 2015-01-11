@@ -3,6 +3,8 @@ HABmin2
 
 HABmin version2 - ultimately targeted toward openHAB2, however currently only working with openHAB1.
 
+To get a feel for the interface, check out an online version [here](http://cdjackson.github.io/HABmin2/#/home). Note that this is a static site, so there will be errors, and dynamic content such as graphs etc won't work.
+
 HABmin is intended as a complete GUI for the openHAB Home Automation system. It is in early and active development, and as the ultimate target is openHAB2, which is also being actively developped, features are varied. In general, I'm focussing on features that I don't anticipate will change in OH2, or where the changes on the server side will not greatly impact the client.
 
 
