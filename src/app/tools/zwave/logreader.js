@@ -67,6 +67,13 @@ angular.module('ZWave.logReader', [
             }
         };
 
+        $scope.changePanel = function(panel) {
+            $scope.showOption = panel;
+            $timeout(function () {
+                $(window).trigger('resize');
+            }, 0);
+        };
+
         $scope.logState = "empty";
         $scope.logName = " ";
 

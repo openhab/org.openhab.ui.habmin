@@ -4,17 +4,17 @@
     <div class="panel panel-default">
         <div class="panel-heading" style="padding:3px;">
             <button type="button" ng-disabled="logState!='loaded' || showOption=='LIST'" class="btn btn-sm btn-default"
-                    ng-click="showOption='LIST'">
+                    ng-click="changePanel('LIST')">
                 <span class="fa fa-list-alt"></span>
                 <span>Log</span>
             </button>
             <button type="button" ng-disabled="logState!='loaded' || showOption=='TIMELINE'" class="btn btn-sm btn-default"
-                    ng-click="showOption='TIMELINE'">
+                    ng-click="changePanel('TIMELINE')">
                 <span class="fa fa-line-chart"></span>
                 <span>Timeline</span>
             </button>
             <button type="button" ng-disabled="logState!='loaded' || showOption=='NODES'" class="btn btn-sm btn-default"
-                    ng-click="showOption='NODES'">
+                    ng-click="changePanel('NODES')">
                 <span class="fa fa-list"></span>
                 <span>Nodes</span>
             </button>
