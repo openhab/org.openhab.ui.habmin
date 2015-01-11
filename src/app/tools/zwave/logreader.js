@@ -73,6 +73,7 @@ angular.module('ZWave.logReader', [
         $scope.data = [];
         $scope.countLines = 0;
         $scope.countEntries = 0;
+        $scope.selectedNode = {};
         $scope.showOption = "LIST";//"TIMELINE";
         $scope.processFilter = ['Start', 'RXPacket', 'TXPacket', 'Wakeup', 'Timeout', 'SendAbort'];
         $scope.processFilterOptions = [
@@ -106,6 +107,10 @@ angular.module('ZWave.logReader', [
             }
         ];
         $scope.nodeFilter = [];
+
+        $scope.selectNode = function(node) {
+            $scope.selectedNode = node;
+        };
 
         /**
          * Marks all nodes as selected in the node filter

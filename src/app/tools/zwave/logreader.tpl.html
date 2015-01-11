@@ -3,15 +3,20 @@
     <!-- Heading -->
     <div class="panel panel-default">
         <div class="panel-heading" style="padding:3px;">
-            <button type="button" ng-disabled="logState!='loaded' || showOption!='LIST'" class="btn btn-sm btn-default"
+            <button type="button" ng-disabled="logState!='loaded' || showOption=='LIST'" class="btn btn-sm btn-default"
                     ng-click="showOption='LIST'">
                 <span class="fa fa-list-alt"></span>
                 <span>Log</span>
             </button>
-            <button type="button" ng-disabled="logState!='loaded' || showOption!='TIMELINE'" class="btn btn-sm btn-default"
+            <button type="button" ng-disabled="logState!='loaded' || showOption=='TIMELINE'" class="btn btn-sm btn-default"
                     ng-click="showOption='TIMELINE'">
                 <span class="fa fa-line-chart"></span>
                 <span>Timeline</span>
+            </button>
+            <button type="button" ng-disabled="logState!='loaded' || showOption=='NODES'" class="btn btn-sm btn-default"
+                    ng-click="showOption='NODES'">
+                <span class="fa fa-list"></span>
+                <span>Nodes</span>
             </button>
 
             <span class="pull-right">
@@ -114,6 +119,31 @@
         <!-- Body TIMELINE -->
         <div ng-show="showOption=='TIMELINE'" style="padding:3px;" resize-panel>
             <vis-timeline data="timelineData" options="timelineOptions" events="timelineEvents"></vis-timeline>
+        </div>
+
+        <!-- Body NODES -->
+        <div ng-show="showOption=='NODES'" style="padding:10px;" resize-panel>
+            <div class="col-sm-4 panel panel-default" style="height:100%;padding:0px;border-left:0px;border-right:0px;">
+                <div class="habmin-list" style="height:100%;">
+                    <div class="list-group" style="height:100%;margin-bottom:0px;">
+                        <a class="list-group-item" ng-repeat="node in nodes" ng-click="selectNode(node)">
+                            Node {{node.id}}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8 panel panel-default" style="height:100%;padding:0px;border-left:0px;border-right:0px;">
+                <div class="habmin-list" style="height:100%;">
+                    <table class="table">
+                        <tbody>
+                        <tr ng-repeat="(key, value) in selectedNode">
+                            <td>{{key}}</td>
+                            <td>{{value}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
         <!-- Footer -->
