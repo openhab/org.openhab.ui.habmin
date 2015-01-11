@@ -283,7 +283,7 @@ angular.module('ZWave.logReader', [
             },
             32: {
                 name: "MemoryGetId",
-                processor: null
+                processor: processMemoryGetId
             },
             64: {
                 name: "SetLearnNodeState",
@@ -291,7 +291,7 @@ angular.module('ZWave.logReader', [
             },
             65: {
                 name: "IdentifyNode",
-                processor: processControllerCmd
+                processor: processIdentifyNode
             },
             66: {
                 name: "SetDefault",
@@ -1017,7 +1017,7 @@ angular.module('ZWave.logReader', [
             addNodeInfo(node, "DeviceType", bytes[5] + bytes[6]);
             addNodeInfo(node, "DeviceID", bytes[7] + bytes[8]);
             data.content = "Manufacturer Info: " + getNodeInfo(node, "Manufacturer") + ":" +
-            getNodeInfo(node, "DeviceType") + ":" + getNodeInfo(node, "DeviceID");
+                    getNodeInfo(node, "DeviceType") + ":" + getNodeInfo(node, "DeviceID");
 
             return data;
         }
@@ -1086,6 +1086,54 @@ angular.module('ZWave.logReader', [
                 else {
                 }
             }
+        }
+
+        function processMemoryGetId(node, direction, type, bytes, len) {
+            var data = {result: SUCCESS};
+            if (direction == "TX") {
+            } else {
+                if (type == REQUEST) {
+                    setState(data, ERROR);
+                }
+                else {
+                    addNodeInfo(node, "HomeID", bytes[0] + bytes[1] + bytes[2] + bytes[3]);
+                    addNodeInfo(node, "ControllerID", HEX2DEC(bytes[4]));
+                    data.content = "MemoryGetId: HomeID=" + getNodeInfo(node, "HomeID") + ", Controller=" + getNodeInfo(node, "ControllerID")
+                }
+            }
+
+            return data;
+        }
+
+        function processIdentifyNode(node, direction, type, bytes, len) {
+            var data = {result: SUCCESS};
+            if (direction == "TX") {
+                data.node = HEX2DEC(bytes[0]);
+
+                lastCmd = {
+                    node: data.node
+                };
+            } else {
+                if (type == REQUEST) {
+                    setState(data, ERROR);
+                }
+                else {
+                    data.node = lastCmd.node;
+
+                    var a = HEX2DEC(bytes[0]);
+                    addNodeInfo(node, "Listening", a | 0x80 == 0 ? false : true);
+                    addNodeInfo(node, "Routing", a | 0x40 == 0 ? false : true);
+                    addNodeInfo(node, "Version", (a | 0x07) + 1);
+                    a = HEX2DEC(bytes[1]);
+                    addNodeInfo(node, "FLiRS", a | 0x60);
+                    addNodeInfo(node, "BasicClass", HEX2DEC(bytes[3]));
+                    addNodeInfo(node, "GenericClass", HEX2DEC(bytes[4]));
+                    addNodeInfo(node, "SpecificClass", HEX2DEC(bytes[5]));
+                    data.content = "IdentifyNode: Listening:" + getNodeInfo(node, "Listening");
+                }
+            }
+
+            return data;
         }
 
         function processControllerCmd(node, direction, type, bytes, len) {
