@@ -197,7 +197,7 @@ angular.module('ngVis', [])
                     }
 
                     // onLoad callback
-                    if (scope.events.onload !== undefined && angular.isFunction(scope.events.onload)) {
+                    if (scope.events != null && scope.events.onload !== undefined && angular.isFunction(scope.events.onload)) {
                         scope.events.onload(graph);
                     }
                 });
