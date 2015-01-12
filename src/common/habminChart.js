@@ -21,13 +21,14 @@ angular.module('habminChart', [
                 chart: '=',
                 service: '=',
                 options: '=',
+                items: '=',
                 events: '='
             },
             template: '<vis-graph2d data="graphData" options="graphOptions" events="graphEvents"></vis-graph2d>',
             transclude: false,
             link: function (scope, element, attr) {
             },
-            controller: function($scope) {
+            controller: function ($scope) {
                 var roundingTime;
                 var itemsLoading;
                 var itemsLoaded;
@@ -63,14 +64,6 @@ angular.module('habminChart', [
                     zoomMin: 60000
                 };
 
-                $scope.$watch('chart', function () {
-                    // Sanity check
-                    if ($scope.chart === undefined) {
-                        return;
-                    }
-
-                    _displayChart($scope.chart);
-                });
 
                 // ------------------------------------------------
                 // Private functions
@@ -113,22 +106,21 @@ angular.module('habminChart', [
                     );
                 }
 
-                function _displayItems() {
+                function _displayItems(items) {
+                    items = [].concat(items);
                     $scope.stopTime = Math.floor((new Date()).getTime());
                     $scope.startTime = $scope.stopTime - (86400 * 1000);
                     _initChart($scope.stopTime - $scope.startTime);
 
                     chartDef = {items: []};
-                    angular.forEach($scope.items, function (item) {
-                        if (item.selected === true) {
-                            itemsLoading++;
-                            var i = {};
-                            i.item = item.name;
-                            i.label = item.label;
-                            i.axis = "left";
-                            chartDef.items.push(i);
-                            _loadItem(item.name, $scope.startTime, $scope.stopTime);
-                        }
+                    angular.forEach(items, function (item) {
+                        itemsLoading++;
+                        var i = {};
+                        i.item = item.item;
+                        i.label = item.label;
+                        i.axis = "left";
+                        chartDef.items.push(i);
+                        _loadItem(item.item, $scope.startTime, $scope.stopTime);
                     });
                 }
 
@@ -395,10 +387,37 @@ angular.module('habminChart', [
                 };
 
                 $scope.graphEvents = {
-//                    rangechange: $scope.onRangeChange,
-                    rangechanged: $scope.onRangeChanged//,
-//                    onload: $scope.onLoaded
+                    rangechanged: $scope.onRangeChanged
                 };
+
+                $scope.$watch('events', function () {
+                    if ($scope.events != null) {
+                        if ($scope.events.rangechange != null) {
+                            $scope.graphEvents.rangechange = $scope.events.rangechange;
+                        }
+                        if ($scope.events.rangechange != null) {
+                            $scope.graphEvents.onload = $scope.events.onload;
+                        }
+                    }
+                });
+
+                $scope.$watch('chart', function () {
+                    // Sanity check
+                    if ($scope.chart == null ) {
+                        return;
+                    }
+
+                    _displayChart($scope.chart);
+                });
+
+                $scope.$watch('items', function () {
+                    // Sanity check
+                    if ($scope.items == null || $scope.length == 0) {
+                        return;
+                    }
+
+                    _displayItems($scope.items);
+                });
             }
         }
     })

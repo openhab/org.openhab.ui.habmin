@@ -44,7 +44,7 @@ angular.module('HABmin.chart', [
     })
 
     .controller('DashboardChartCtrl',
-        function DashboardChartCtrl($scope, locale, PersistenceItemModel, PersistenceServiceModel, PersistenceDataModel, ChartListModel, ChartSave, SidepanelService, growl, VisDataSet, $interval, $timeout) {
+    function DashboardChartCtrl($scope, locale, PersistenceItemModel, PersistenceServiceModel, PersistenceDataModel, ChartListModel, ChartSave, SidepanelService, growl, VisDataSet, $interval, $timeout) {
         var itemsLoaded = 0;
         var itemsLoading = 0;
         var newChart;
@@ -53,11 +53,6 @@ angular.module('HABmin.chart', [
         var graph2d;
 
         var roundingTime = 1000;
-
-        $scope.graphEvents = {
-            rangechange: $scope.onRangeChange,
-            onload: $scope.onLoaded
-        };
 
         $scope.graphLoaded = false;
 
@@ -128,7 +123,18 @@ angular.module('HABmin.chart', [
             if ($scope.selectCharts === false) {
                 $scope.chartLoading = true;
 
-                _displayItems();
+                var items = [];
+                angular.forEach($scope.items, function (item) {
+                    if (item.selected === true) {
+                        var i = {};
+                        i.item = item.name;
+                        i.label = item.label;
+                        i.axis = "left";
+                        items.push(i);
+                    }
+                });
+
+                $scope.graphItems = items;
             }
         };
 
@@ -191,10 +197,6 @@ angular.module('HABmin.chart', [
             $scope.chartLoading = true;
 
             $scope.selectedChart = parm;
-//            $scope.chartId = parm.id;
-//            _displayChart(parm.id);
-
-
         };
 
         $scope.setType = function (selectType) {
@@ -226,12 +228,15 @@ angular.module('HABmin.chart', [
         };
 
         $scope.onLoaded = function (graphRef) {
+            $scope.graphLoaded = true;
             $scope.chartLoading = false;
             console.log("graph loaded callback", graphRef);
             graph2d = graphRef;
             graph2d.setWindow($scope.startTime, $scope.stopTime);
+            if($scope.selectedChart != null) {
+                $scope.selectedChart.selected = "yes";
+            }
         };
-
 
         $scope.filterDefaultString = locale.getString('common.filter');
 
@@ -400,5 +405,12 @@ angular.module('HABmin.chart', [
                 }, 0);
             }
         };
+
+        $scope.graphEvents = {
+            rangechange: $scope.onRangeChange,
+            onload: $scope.onLoaded
+        };
+
+
     })
 ;
