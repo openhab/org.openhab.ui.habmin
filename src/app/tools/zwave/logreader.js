@@ -402,7 +402,17 @@ angular.module('ZWave.logReader', [
             },
             32: {
                 name: "BASIC",
-                processor: null
+                commands: {
+                    1: {
+                        name: "BASIC_SET"
+                    },
+                    2: {
+                        name: "BASIC_GET"
+                    },
+                    3: {
+                        name: "BASIC_REPORT"
+                    }
+                }
             },
             34: {
                 name: "APPLICATION_STATUS",
@@ -1491,7 +1501,7 @@ angular.module('ZWave.logReader', [
                     setStatus(packet, packetTypes[packet.pktType].result);
                 }
             }
-            
+
             packet.content = "Packet ";
             packet.content += process.ref == "RXPacket" ? "RX" : "TX";
             packet.content += " (" + packet.reqType + "): ";
