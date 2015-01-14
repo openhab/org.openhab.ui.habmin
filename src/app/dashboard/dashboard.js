@@ -81,11 +81,11 @@ angular.module('HABmin.dashboard', [
         $scope.editStart = function () {
             $scope.gridsterOptions.resizable = {
                 enabled: true,
-                handles: 'n, e, s, w, ne, se, sw, nw',
+                handles: ['n', 'e', 's', 'w', 'ne', 'se', 'sw', 'nw'],
                 stop: function(event, uiWidget, $element) {
                     console.log("Resize done", uiWidget, $element);
-                    console.log("Resize to", $element[0].getBoundingClientRect());
-                    console.log("Resize to", uiWidget.element[0].getBoundingClientRect());
+//                    console.log("Resize to", $element[0].getBoundingClientRect());
+//                    console.log("Resize to", uiWidget.element[0].getBoundingClientRect());
 //                    console.log("Parent", $element[0].parent());
                     $element.on(whichTransitionEvent(), function(){
                         console.log("Transition event");
