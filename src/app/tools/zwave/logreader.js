@@ -339,7 +339,7 @@ angular.module('ZWave.logReader', [
             },
             73: {
                 name: "ApplicationUpdate",
-                processor: null
+                processor: processAppUpdate
             },
             74: {
                 name: "AddNodeToNetwork",
@@ -1229,6 +1229,20 @@ angular.module('ZWave.logReader', [
                 }
                 else {
                     data.node = lastCmd.node;
+                }
+            }
+
+            return data;
+        }
+
+        function processAppUpdate(node, direction, type, bytes, len) {
+            var data = {result: SUCCESS};
+            if (direction == "TX") {
+            } else {
+                if (type == REQUEST) {
+                    data.node = HEX2DEC(bytes[0]);
+                }
+                else {
                 }
             }
 
