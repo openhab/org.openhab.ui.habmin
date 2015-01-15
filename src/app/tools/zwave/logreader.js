@@ -469,10 +469,10 @@ angular.module('ZWave.logReader', [
             48: {
                 name: "SENSOR_BINARY",
                 commands: {
-                    1: {
+                    2: {
                         name: "SENSOR_BINARY_GET"
                     },
-                    2: {
+                    3: {
                         name: "SENSOR_BINARY_REPORT"
                     }
                 }
