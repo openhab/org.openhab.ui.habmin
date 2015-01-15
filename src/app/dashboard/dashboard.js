@@ -22,6 +22,28 @@ angular.module('HABmin.dashboard', [
             },
             data: { pageTitle: 'Dashboard' }
         });
+
+
+        $stateProvider.state('dashboard.view', {
+            url: '/view/:dashName/:dashPage',
+            data: { pageTitle: 'Dashboard View' },
+            onEnter: function () {
+                console.log("onEnter");
+            },
+            onExit: function () {
+                console.log("onExit");
+            }
+        });
+        $stateProvider.state('dashboard.edit', {
+            url: '/edit/:dashName/:dashPage',
+            data: { pageTitle: 'Dashboard View' },
+            onEnter: function () {
+                console.log("onEnter");
+            },
+            onExit: function () {
+                console.log("onExit");
+            }
+        });
     })
 
     .controller('DashboardCtrl',
@@ -66,7 +88,7 @@ angular.module('HABmin.dashboard', [
                         col: 2,
                         row: 1,
                         sizeY: 1,
-                        sizeX: 1,
+                        sizeX: 2,
                         name: "Widget 2",
                         value:93
                     }

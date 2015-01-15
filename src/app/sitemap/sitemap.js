@@ -17,6 +17,7 @@ angular.module('HABmin.sitemap', [
     'sitemapSwitchWidget',
     'sitemapSetpointWidget',
     'sitemapTextWidget',
+    'sitemapChartWidget',
     'ui.bootstrap.tooltip'
 ])
 
@@ -69,7 +70,7 @@ angular.module('HABmin.sitemap', [
                         directive: "sitemap-text"
                     },
                     Chart: {
-                        directive: "sitemap-text"
+                        directive: "sitemap-chart"
                     },
                     Frame: {
                         directive: "sitemap-frame"

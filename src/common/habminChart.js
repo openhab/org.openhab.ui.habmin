@@ -22,7 +22,9 @@ angular.module('habminChart', [
                 service: '=',
                 options: '=',
                 items: '=',
-                events: '='
+                events: '=',
+                height: '=',
+                width: '='
             },
             template: '<vis-graph2d data="graphData" options="graphOptions" events="graphEvents"></vis-graph2d>',
             transclude: false,
@@ -279,6 +281,14 @@ angular.module('habminChart', [
                             items: dataItems,
                             groups: dataGroups
                         };
+
+                        if($scope.height !== undefined) {
+                            chartOptions.height = $scope.height;
+                        }
+                        if($scope.width !== undefined) {
+                            chartOptions.width = $scope.width;
+                        }
+
                         chartOptions.max = moment().valueOf();
                         $scope.graphOptions = chartOptions;
 
