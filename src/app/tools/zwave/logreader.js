@@ -371,7 +371,7 @@ angular.module('ZWave.logReader', [
             },
             86: {
                 name: "GetSucNodeId",
-                processor: null
+                processor: processSucNodeId
             },
             87: {
                 name: "SendSucId",
@@ -1117,15 +1117,20 @@ angular.module('ZWave.logReader', [
             return cmdClass;
         }
 
-        function processTemplate(node, direction, type, bytes, len) {
+        function processSucNodeId(node, direction, type, bytes, len) {
+            var data = {result: SUCCESS};
             if (direction == "TX") {
-
             } else {
                 if (type == REQUEST) {
                 }
                 else {
+                    data.node = 255;
+                    addNodeInfo(255, "SUCID", HEX2DEC(bytes[0]));
+                    data.content = "SUC ID: " + getNodeInfo(255, "SUCID");
                 }
             }
+
+            return data;
         }
 
         function processMemoryGetId(node, direction, type, bytes, len) {
@@ -1136,6 +1141,7 @@ angular.module('ZWave.logReader', [
                     setStatus(data, ERROR);
                 }
                 else {
+                    data.node = 255;
                     addNodeInfo(node, "HomeID", bytes[0] + bytes[1] + bytes[2] + bytes[3]);
                     addNodeInfo(node, "ControllerID", HEX2DEC(bytes[4]));
                     data.content = "MemoryGetId: HomeID=" + getNodeInfo(node, "HomeID") + ", Controller=" +
@@ -1376,7 +1382,7 @@ angular.module('ZWave.logReader', [
                 sendData.node = node;
                 sendData.callback = callback;
                 sendData.cmdClass = cmdClass;
-                sendData.content = "SendData: Message (" + callback + "). Sent: " + cmdClass.content;
+                sendData.content = "SendData (" + callback + "). Sent: " + cmdClass.content;
 
                 lastSendData.node = node;
                 lastSendData.callback = callback;
@@ -1413,14 +1419,14 @@ angular.module('ZWave.logReader', [
                                 updateNodeResponse(node, sendData.responseTime);
                             }
                             sendData.content =
-                                "SendData: Message (" + callback + "). ACK'd by device in " + sendData.responseTime +
+                                "SendData (" + callback + "). ACK'd by device in " + sendData.responseTime +
                                 "ms";
                             break;
                         case 1:		// COMPLETE_NO_ACK
                             updateNodeResponse(node, -1);
                             setStatus(sendData, WARNING);
                             sendData.content =
-                                "SendData: Message (" + callback + "). No ACK after " + sendData.responseTime + "ms";
+                                "SendData (" + callback + "). No ACK after " + sendData.responseTime + "ms";
                             sendData.warnFlag = true;
                             sendData.warnMessage = "No ack received from device";
                             break;
@@ -1428,7 +1434,7 @@ angular.module('ZWave.logReader', [
                             updateNodeResponse(node, -1);
                             setStatus(sendData, ERROR);
                             sendData.content =
-                                "SendData: Message (" + callback + ") failed in " + sendData.responseTime + "ms";
+                                "SendData (" + callback + ") failed in " + sendData.responseTime + "ms";
                             break;
                         case 3:		// COMPLETE_NOT_IDLE
                             updateNodeResponse(node, -1);
@@ -1443,13 +1449,13 @@ angular.module('ZWave.logReader', [
                     // This is just the response to say it was sent
                     if (HEX2DEC(bytes[0]) > 0) {
                         // Success
-                        sendData.content = "SendData: Message (" + lastSendData.callback + ") sent OK";
+                        sendData.content = "SendData (" + lastSendData.callback + ") sent OK";
                         setStatus(sendData, SUCCESS);
                     }
                     else {
                         // Error
                         setStatus(sendData, ERROR);
-                        sendData.content = "SendData: Message (" + lastSendData.callback + ") not sent!";
+                        sendData.content = "SendData (" + lastSendData.callback + ") not sent!";
                     }
                 }
             }
@@ -1496,19 +1502,22 @@ angular.module('ZWave.logReader', [
                 packet.class = "Unknown " + bytes[3] + " (" + packet.pktType + ")";
                 setStatus(packet, WARNING);
             }
-            else if (packetTypes[packet.pktType].processor != null) {
+            else {
                 packet.class = packetTypes[packet.pktType].name;
 
-                // Process the frame if we have a processor function
-                packet.packet =
-                    packetTypes[packet.pktType].processor(node, direction, packet.reqType, bytes.slice(4, -1),
-                        packet.length - 4);
-                packet.node = packet.packet.node;
-                setStatus(packet, packet.packet.result);			// Bubble status
-                packet.warnFlag = packet.packet.warnFlag;
-                packet.warnMessage = packet.packet.warnMessage;
-                packet.errorFlag = packet.packet.errorFlag;
-                packet.errorMessage = packet.packet.errorMessage;
+                if (packetTypes[packet.pktType].processor != null) {
+                    // Process the frame if we have a processor function
+                    packet.packet =
+                        packetTypes[packet.pktType].processor(node, direction, packet.reqType, bytes.slice(4, -1),
+                            packet.length - 4);
+
+                    packet.node = packet.packet.node;
+                    setStatus(packet, packet.packet.result);			// Bubble status
+                    packet.warnFlag = packet.packet.warnFlag;
+                    packet.warnMessage = packet.packet.warnMessage;
+                    packet.errorFlag = packet.packet.errorFlag;
+                    packet.errorMessage = packet.packet.errorMessage;
+                }
 
                 // Set the minimum status if we defined it in the packet definition
                 if (packetTypes[packet.pktType].result != null) {
