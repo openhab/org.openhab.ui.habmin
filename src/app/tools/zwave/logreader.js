@@ -592,7 +592,8 @@ angular.module('ZWave.logReader', [
                         name: "MULTI_CHANNEL_ENDPOINT_FIND_REPORT"
                     },
                     13: {
-                        name: "MULTI_CHANNEL_ENCAP"
+                        name: "MULTI_CHANNEL_ENCAP",
+                        processor: processMultiChannelEncap
                     }
                 }
             },
@@ -1034,12 +1035,16 @@ angular.module('ZWave.logReader', [
             return null;
         }
 
+        /**
+         * Command Class Processors
+         */
+
         function processVersion(node, bytes) {
             var data = {result: SUCCESS};
 
-            var cmdCls = HEX2DEC(bytes[1]);
-            var cmdCmd = HEX2DEC(bytes[2]);
-            var cmdPrm = HEX2DEC(bytes[3]);
+            var cmdCls = HEX2DEC(bytes[0]);
+            var cmdCmd = HEX2DEC(bytes[1]);
+            var cmdPrm = HEX2DEC(bytes[2]);
 
             data.content = commandClasses[cmdCls].name + "::" + commandClasses[cmdCls].commands[cmdCmd].name;
             switch (cmdCmd) {
@@ -1053,12 +1058,26 @@ angular.module('ZWave.logReader', [
 
         function processManufacturer(node, bytes) {
             var data = {result: SUCCESS};
-            addNodeInfo(node, "Manufacturer", bytes[3] + bytes[4]);
-            addNodeInfo(node, "DeviceType", bytes[5] + bytes[6]);
-            addNodeInfo(node, "DeviceID", bytes[7] + bytes[8]);
+            addNodeInfo(node, "Manufacturer", bytes[1] + bytes[2]);
+            addNodeInfo(node, "DeviceType", bytes[3] + bytes[4]);
+            addNodeInfo(node, "DeviceID", bytes[5] + bytes[6]);
             data.content = "Manufacturer Info: " + getNodeInfo(node, "Manufacturer") + ":" +
             getNodeInfo(node, "DeviceType") + ":" + getNodeInfo(node, "DeviceID");
 
+            return data;
+        }
+
+        function processMultiChannelEncap(node, bytes) {
+            var data = {result: SUCCESS};
+
+            data.endPoint = HEX2DEC(bytes[2]);
+            data.endClassCode = HEX2DEC(bytes[4]);
+            data.endClassPacket = processCommandClass(data.node, bytes.slice(4));
+
+            data.content = "MULTI_INSTANCE::MULTI_CHANNEL_CAPABILITY_GET::" + data.endPoint;
+            if(data.endClassPacket != null) {
+                data.content += "::" + data.endClassPacket.class + "::" + data.endClassPacket.function;
+            }
             return data;
         }
 
@@ -1071,18 +1090,18 @@ angular.module('ZWave.logReader', [
             }
 
             // Handle our requests
-            var cmdCls = HEX2DEC(bytes[1]);
+            var cmdCls = HEX2DEC(bytes[0]);
             var cmdCmd = null;
 
             cmdClass.id = cmdCls;
 
             if (bytes.length > 1) {
-                cmdCmd = HEX2DEC(bytes[2]);
+                cmdCmd = HEX2DEC(bytes[1]);
             }
 
             // Process the command class
             if (commandClasses[cmdCls] == undefined) {
-                cmdClass.content = "Unknown command class " + bytes[1];
+                cmdClass.content = "Unknown command class " + bytes[0];
                 setStatus(cmdClass, WARNING);
             }
             else {
@@ -1090,12 +1109,12 @@ angular.module('ZWave.logReader', [
                 if (commandClasses[cmdCls].commands != null &&
                     commandClasses[cmdCls].commands[cmdCmd] != null) {
                     if (commandClasses[cmdCls].commands[cmdCmd].processor != null) {
-                        cmdClass = commandClasses[cmdCls].commands[cmdCmd].processor(node, bytes);//.slice(0, 0));
+                        cmdClass = commandClasses[cmdCls].commands[cmdCmd].processor(node, bytes);
                     }
                     cmdClass.function = commandClasses[cmdCls].commands[cmdCmd].name;
                 }
                 else if (commandClasses[cmdCls].processor) {
-                    cmdClass = commandClasses[cmdCls].processor(node, bytes);//.slice(0, 0));
+                    cmdClass = commandClasses[cmdCls].processor(node, bytes);
                 }
                 else {
                     if (cmdCmd != null) {
@@ -1310,7 +1329,7 @@ angular.module('ZWave.logReader', [
             } else {
                 if (type == REQUEST) {
                     data.node = HEX2DEC(bytes[1]);
-                    var data = processCommandClass(data.node, bytes.slice(2));
+                    var data = processCommandClass(data.node, bytes.slice(3));
 
                     createNode(node);
                     if ($scope.nodes[node].classes[data.id] == undefined) {
@@ -1367,7 +1386,7 @@ angular.module('ZWave.logReader', [
             if (direction == "TX") {
                 node = HEX2DEC(bytes[0]);
                 // Remove the transmit options and callback id
-                var cmdClass = processCommandClass(node, bytes.slice(1, -2));
+                var cmdClass = processCommandClass(node, bytes.slice(2, -2));
                 // Get the callback ID
                 var callback = HEX2DEC(bytes[bytes.length - 1]);
 
@@ -1525,8 +1544,7 @@ angular.module('ZWave.logReader', [
                 }
             }
 
-            packet.content = "Packet ";
-            packet.content += process.ref == "RXPacket" ? "RX" : "TX";
+            packet.content = process.ref == "RXPacket" ? "RX" : "TX";
             packet.content += " (" + packet.reqType + "): ";
             if (packet.packet != null && packet.packet.content != null) {
                 packet.content += packet.packet.content;
