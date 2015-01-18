@@ -18,50 +18,56 @@
                 <span class="fa fa-list"></span>
                 <span>Nodes</span>
             </button>
+            <span ng-class="{'btn-group btn-group-sm': true, 'open': filterOpen}">
+                <button type="button" class="btn btn-sm btn-default dropdown" ng-disabled="logState!='loaded'"
+                        ng-init="filterOpen=false" ng-click="filterOpen=!filterOpen">
+                    <span class="fa fa-filter"></span>
+                    &nbsp;Filter
+                    <span class="caret"></span>
+                </button>
+                <div class="dropdown-menu dropdown_dialog" style="min-width:200px;white-space:nowrap;">
+                    <div class="modal-header">
+                        <button class="btn btn-xs default" ng-click="checkAllNodes(true)">All
+                            Nodes
+                        </button>
+
+                        <button class="btn btn-xs default" ng-click="checkAllNodes(false)">No
+                            Nodes
+                        </button>
+                    </div>
+                    <table>
+                        <tr>
+                            <td>
+                                <table>
+                                    <tr ng-repeat="node in nodes | orderObjectBy:'id'">
+                                        <td>
+                                            <input type="checkbox" checklist-model="nodeFilter"
+                                                   checklist-value="node.id">
+                                            &nbsp;Node {{node.id}}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td style="vertical-align: top;padding-left: 10px;">
+                                <table>
+                                    <tr ng-repeat="process in processFilterOptions">
+                                        <td>
+                                            <input type="checkbox" checklist-model="processFilter"
+                                                   checklist-value="process.ref">&nbsp;{{process.name}}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </span>
 
             <span class="pull-right">
-                <span ng-class="{'btn-group btn-group-sm': true, 'open': filterOpen}">
-                    <button type="button" class="btn btn-sm btn-default dropdown" ng-disabled="logState!='loaded'"
-                            ng-init="filterOpen=false" ng-click="filterOpen=!filterOpen">
-                        <span class="fa fa-filter"></span>
-                        &nbsp;Filter...
-                    </button>
-                    <div class="dropdown-menu dropdown_dialog" style="min-width:200px;white-space:nowrap;">
-                        <div class="modal-header">
-                            <button class="btn btn-xs default" ng-click="checkAllNodes(true)">All
-                                Nodes
-                            </button>
-
-                            <button class="btn btn-xs default" ng-click="checkAllNodes(false)">No
-                                Nodes
-                            </button>
-                        </div>
-                        <table>
-                            <tr>
-                                <td>
-                                    <table>
-                                        <tr ng-repeat="node in nodes">
-                                            <td>
-                                                <input type="checkbox" checklist-model="nodeFilter"
-                                                       checklist-value="node.id">&nbsp;Node {{node.id}}
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td style="vertical-align: top;padding-left: 10px;">
-                                    <table>
-                                        <tr ng-repeat="process in processFilterOptions">
-                                            <td>
-                                                <input type="checkbox" checklist-model="processFilter"
-                                                       checklist-value="process.ref">&nbsp;{{process.name}}
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </span>
+                <div class="btn-group">
+                    <div class="text-right small">{{logName}}</div>
+                    <div class="text-right small">Lines Processed: {{countEntries}}:{{countLines}}</div>
+                </div>
 
                 <span class="btn btn-sm btn-default btn-file" ng-disabled="logState=='loading'">
                     <span class="fa fa-download" ng-hide="logState=='loading'"></span>
@@ -69,15 +75,7 @@
                     <span>Select File</span>
                     <input onchange="angular.element(this).scope().fileChanged(this);this.value = '';" type="file"/>
                 </span>
-
-                <div class="btn-group pull-right" style="min-width:180px;">
-                    <div class="text-right small">{{logName}}</div>
-                    <div class="text-right small">Lines Processed: {{countEntries}}:{{countLines}}</div>
-                </div>
-            <small>
-
-            </small>
-        </span>
+            </span>
         </div>
 
         <!-- Body LIST -->

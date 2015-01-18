@@ -67,7 +67,7 @@ angular.module('ZWave.logReader', [
             }
         };
 
-        $scope.changePanel = function(panel) {
+        $scope.changePanel = function (panel) {
             $scope.showOption = panel;
             $timeout(function () {
                 $(window).trigger('resize');
@@ -120,8 +120,8 @@ angular.module('ZWave.logReader', [
          * We do some analyses here rather than at the end of the load function.
          * @param node
          */
-        $scope.selectNode = function(node) {
-            if(node.computed == false) {
+        $scope.selectNode = function (node) {
+            if (node.computed == false) {
 
             }
             $scope.selectedNode = node;
@@ -130,7 +130,7 @@ angular.module('ZWave.logReader', [
         /**
          * Compute some statistics on a node
          */
-        function computeNodeStats (node) {
+        function computeNodeStats(node) {
         }
 
         /**
@@ -1075,7 +1075,7 @@ angular.module('ZWave.logReader', [
             data.endClassPacket = processCommandClass(data.node, bytes.slice(4));
 
             data.content = "MULTI_INSTANCE::MULTI_CHANNEL_CAPABILITY_GET::" + data.endPoint;
-            if(data.endClassPacket != null) {
+            if (data.endClassPacket != null) {
                 data.content += "::" + data.endClassPacket.class + "::" + data.endClassPacket.function;
             }
             return data;
@@ -1215,7 +1215,7 @@ angular.module('ZWave.logReader', [
                     data.node = lastCmd.node;
 
                     data.content = "Neighbor update ";
-                    switch(HEX2DEC(bytes[1])) {
+                    switch (HEX2DEC(bytes[1])) {
                         case 33:
                             data.content += "STARTED";
                             break;
@@ -1758,7 +1758,22 @@ angular.module('ZWave.logReader', [
                     chunkReader.readAsText(blob);
                 }
             };
-        };
+        }
+    })
 
+    .filter('orderObjectBy', function () {
+        return function (items, field, reverse) {
+            var filtered = [];
+            angular.forEach(items, function (item) {
+                filtered.push(item);
+            });
+            filtered.sort(function (a, b) {
+                return (a[field] > b[field] ? 1 : -1);
+            });
+            if (reverse) {
+                filtered.reverse();
+            }
+            return filtered;
+        };
     })
 ;
