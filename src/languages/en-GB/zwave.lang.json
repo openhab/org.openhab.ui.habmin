@@ -6,6 +6,7 @@
     "zwaveDeviceTools": "Device Tools",
     "zwaveNetworkInclude": "Add device to network",
     "zwaveNetworkExclude": "Remove device from network",
+    "zwaveNetworkUpdate": "Update secondary controller",
     "zwaveNetworkReset": "Soft reset the controller",
     "zwaveNetworkHeal": "Heal the network",
     "zwaveNetworkReplicate": "Replicate network from primary",

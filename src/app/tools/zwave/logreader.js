@@ -1058,9 +1058,9 @@ angular.module('ZWave.logReader', [
 
         function processManufacturer(node, bytes) {
             var data = {result: SUCCESS};
-            addNodeInfo(node, "Manufacturer", bytes[1] + bytes[2]);
-            addNodeInfo(node, "DeviceType", bytes[3] + bytes[4]);
-            addNodeInfo(node, "DeviceID", bytes[5] + bytes[6]);
+            addNodeInfo(node, "Manufacturer", bytes[2] + bytes[3]);
+            addNodeInfo(node, "DeviceType", bytes[4] + bytes[5]);
+            addNodeInfo(node, "DeviceID", bytes[6] + bytes[7]);
             data.content = "Manufacturer Info: " + getNodeInfo(node, "Manufacturer") + ":" +
             getNodeInfo(node, "DeviceType") + ":" + getNodeInfo(node, "DeviceID");
 
