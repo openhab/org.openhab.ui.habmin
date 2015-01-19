@@ -793,13 +793,13 @@ angular.module('ZWave.logReader', [
                 ref: "Heal"
             },
             {
-                string: "controller (CAN)",
+                string: "(CAN)",
                 error: "Message cancelled by controller",
                 processor: processTxMessageError,
                 status: ERROR
             },
             {
-                string: "controller (NAK)",
+                string: "(NAK)",
                 error: "Message rejected by controller",
                 processor: processTxMessageError,
                 status: ERROR
