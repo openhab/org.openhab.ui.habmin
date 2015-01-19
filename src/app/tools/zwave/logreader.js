@@ -111,6 +111,10 @@ angular.module('ZWave.logReader', [
             {
                 ref: 'NodeState',
                 name: 'Node State Changes'
+            },
+            {
+                ref: 'Heal',
+                name: 'Node Heal'
             }
         ];
         $scope.nodeFilter = [];
@@ -815,7 +819,8 @@ angular.module('ZWave.logReader', [
             },
             {
                 string: "NETWORK HEAL - ",
-                ref: "Heal"
+                ref: "Heal",
+                processor: processHealState
             },
             {
                 string: "controller (CAN)",
@@ -978,6 +983,15 @@ angular.module('ZWave.logReader', [
             }
         }
 
+        function processHealState(node, process, message) {
+            var stage = message.substr(message.indexOf(" HEAL - ") + 8);
+            return {
+                node: node,
+                healstage: stage,
+                content: "Heal stage advanced to " + stage
+            }
+        }
+
         function processStage(node, process, message) {
             var stage = message.substr(message.indexOf(" to ") + 4);
             var point = stage.indexOf(".");
@@ -988,7 +1002,7 @@ angular.module('ZWave.logReader', [
             return {
                 stage: stage,
                 content: "Stage advanced to " + stage
-            };
+            }
         }
 
         function processAlive(node, process, message) {
@@ -1001,7 +1015,7 @@ angular.module('ZWave.logReader', [
             return {
                 stage: stage,
                 content: "Stage set to " + stage
-            };
+            }
         }
 
         function processRetry(node, process, message) {
@@ -1018,7 +1032,7 @@ angular.module('ZWave.logReader', [
             return {
                 result: ERROR,
                 content: "Message timeout!"
-            };
+            }
         }
 
         function processResponseTime(node, process, message) {
