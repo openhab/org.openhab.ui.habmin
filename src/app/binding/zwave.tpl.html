@@ -81,7 +81,7 @@
                 <span i18n="common.loading"></span>
             </div>
             <div ng-if="deviceCnt==0" class="list-group-item text-center">
-                <span class="fa fa-exclamation-triangle"></span>
+                <span class="fa fa-exclamation-triangle text-warning"></span>
                 <span i18n="zwave.zwaveNoDevices"></span>
             </div>
         </div>
@@ -126,7 +126,7 @@
                             <span i18n="zwave.zwaveDeviceHeal"></span>
                         </a>
                     </li>
-                    <li ng-class="{'disabled':devEdit.nodeStage!='FAILED'}">
+                    <li ng-class1="{'disabled':devEdit.nodeStage!='FAILED'}">
                         <a ng-confirm-click="zwaveAction('nodes/'+devEdit.device+'/', 'Delete')"
                            data-i18n-attr="{'ngConfirmMessage': 'zwave.zwaveRemoveFailedText','ngConfirmTitle': 'zwave.zwaveRemoveFailedTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
                            nodenumber="{{devEdit.id}}">

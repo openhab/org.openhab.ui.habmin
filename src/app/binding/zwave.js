@@ -409,6 +409,11 @@ angular.module('Binding.zwave', [
                             if(device.nodeState != stage[0] || device.nodeStage != stage[1]) {
                                 device.nodeState = stage[0];
                                 device.nodeStage = stage[1];
+
+                                // For old binding compatibility
+                                if(stage[1] == '@') {
+                                    device.nodeStage = stage[0];
+                                }
                                 updateInfo(id);
                             }
                         }
