@@ -823,13 +823,13 @@ angular.module('ZWave.logReader', [
                 processor: processHealState
             },
             {
-                string: "controller (CAN)",
+                string: "(CAN)",
                 error: "Message cancelled by controller",
                 processor: processTxMessageError,
                 status: ERROR
             },
             {
-                string: "controller (NAK)",
+                string: "(NAK)",
                 error: "Message rejected by controller",
                 processor: processTxMessageError,
                 status: ERROR
@@ -839,6 +839,10 @@ angular.module('ZWave.logReader', [
                 error: "Message is invalid",
                 processor: processTxMessageError,
                 status: ERROR
+            },
+            {
+                string: "Restore from config",
+                processor: processRestoreConfig
             }
         ];
 
@@ -981,6 +985,20 @@ angular.module('ZWave.logReader', [
                 setStatus(lastPacketTx, process.status);
                 lastPacketTx = null;
             }
+        }
+
+        function processRestoreConfig(node, process, message) {
+            var data = {node: node};
+            if (message.indexOf(": Ok") != -1) {
+                data.content = "Config restored from file."
+            }
+            if (message.indexOf(": Error") != -1) {
+                data.content = "Config restored from file: Failed.";
+                data.errorFlag = true;
+                data.errorMessage = "Error restoring configuration from file";
+                setStatus(data, WARNING);
+            }
+            return data;
         }
 
         function processHealState(node, process, message) {
@@ -1343,7 +1361,16 @@ angular.module('ZWave.logReader', [
             } else {
                 if (type == REQUEST) {
                     data.node = HEX2DEC(bytes[1]);
-                    var data = processCommandClass(data.node, bytes.slice(3));
+                    data = processCommandClass(data.node, bytes.slice(3));
+
+                    // Indicate if this is a broadcast or multicast message
+                    data.rxStatus = HEX2DEC(bytes[0]);
+                    if(data.rxStatus & 0x04) {
+                        data.content = "[BC]" + data.content;
+                    }
+                    if(data.rxStatus & 0x08) {
+                        data.content = "[MC]" + data.content;
+                    }
 
                     createNode(node);
                     if ($scope.nodes[node].classes[data.id] == undefined) {
