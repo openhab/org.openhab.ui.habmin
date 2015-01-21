@@ -30,7 +30,7 @@ angular.module('HABmin.chart', [
             views: {
                 "main": {
                     controller: 'DashboardChartCtrl',
-                    templateUrl: 'dashboard/chart.tpl.html'
+                    templateUrl: 'chart.tpl.html'
                 }
             },
             data: {pageTitle: 'Charting'},
