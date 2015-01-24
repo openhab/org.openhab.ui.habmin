@@ -142,16 +142,14 @@
                         <tr ng-repeat="error in selectedNode.errors">
                             <td>
                                 Error
-                                <span class="pull-right text-danger fa fa-exclamation-circle"></span>
                             </td>
-                            <td>{{error}}</td>
+                            <td><span class="text-danger fa fa-exclamation-circle"></span>&nbsp;{{error}}</td>
                         </tr>
                         <tr ng-repeat="warning in selectedNode.warnings">
                             <td>
                                 Warning
-                                <span class="pull-right text-warning fa fa-question-circle"></span>
                             </td>
-                            <td>{{warning}}</td>
+                            <td><span class="text-warning fa fa-question-circle"></span>&nbsp;{{warning}}</td>
                         </tr>
                         <tr>
                             <td>Listening State</td>

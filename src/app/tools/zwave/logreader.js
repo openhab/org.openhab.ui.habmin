@@ -741,7 +741,8 @@ angular.module('ZWave.logReader', [
                     6: {
                         name: "ASSOCIATIONCMD_GROUPINGSREPORT"
                     }
-                }
+                },
+                processor: processAssociation
             },
             134: {
                 name: "VERSION",
@@ -1131,6 +1132,26 @@ angular.module('ZWave.logReader', [
                     break;
                 case 7:
                     incNodeInfo(node, "wakeupCnt");
+                    break;
+            }
+
+            return data;
+        }
+
+        function processAssociation(node, bytes) {
+            var data = {result: SUCCESS};
+
+            var cmdCls = HEX2DEC(bytes[0]);
+            var cmdCmd = HEX2DEC(bytes[1]);
+            data.content = commandClasses[cmdCls].name + "::" + commandClasses[cmdCls].commands[cmdCmd].name;
+            switch (cmdCmd) {
+                case 2:             // GET
+                    var group = HEX2DEC(bytes[2]);
+                    data.content += " Group " + group;
+                    break;
+                case 3:             // REPORT
+                    var group = HEX2DEC(bytes[2]);
+                    data.content += " Group " + group;
                     break;
             }
 
