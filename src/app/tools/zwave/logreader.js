@@ -795,7 +795,8 @@ angular.module('ZWave.logReader', [
                 string: "Is awake with",
                 ref: "Wakeup",
                 content: "Node is AWAKE",
-                status: INFO
+                status: INFO,
+                processor: processAwake
             },
             {
                 string: "Went to sleep",
@@ -839,10 +840,6 @@ angular.module('ZWave.logReader', [
                 error: "Message is invalid",
                 processor: processTxMessageError,
                 status: ERROR
-            },
-            {
-                string: "Restore from config",
-                processor: processRestoreConfig
             }
         ];
 
@@ -860,8 +857,7 @@ angular.module('ZWave.logReader', [
                     responseTimeMin: 9999,
                     responseTimeAvg: 0,
                     responseTimeMax: 0,
-                    responseTimeCnt: 0,
-                    messagesSent: 0
+                    responseTimeCnt: 0
                 };
                 for (var cnt = 0; cnt < 100; cnt++) {
                     $scope.nodes[id].responseTime[cnt] = 0;
@@ -872,6 +868,16 @@ angular.module('ZWave.logReader', [
         function addNodeInfo(id, type, value) {
             createNode(id);
             $scope.nodes[id][type] = value;
+        }
+
+        function incNodeInfo(id, type) {
+            createNode(id);
+            if($scope.nodes[id][type] == null) {
+                $scope.nodes[id][type] = 1;
+            }
+            else {
+                $scope.nodes[id][type]++;
+            }
         }
 
         function getNodeInfo(id, type) {
@@ -987,20 +993,6 @@ angular.module('ZWave.logReader', [
             }
         }
 
-        function processRestoreConfig(node, process, message) {
-            var data = {node: node};
-            if (message.indexOf(": Ok") != -1) {
-                data.content = "Config restored from file."
-            }
-            if (message.indexOf(": Error") != -1) {
-                data.content = "Config restored from file: Failed.";
-                data.errorFlag = true;
-                data.errorMessage = "Error restoring configuration from file";
-                setStatus(data, WARNING);
-            }
-            return data;
-        }
-
         function processHealState(node, process, message) {
             var stage = message.substr(message.indexOf(" HEAL - ") + 8);
             return {
@@ -1034,6 +1026,10 @@ angular.module('ZWave.logReader', [
                 stage: stage,
                 content: "Stage set to " + stage
             }
+        }
+
+        function processAwake(node, process, message) {
+            incNodeInfo(node, "WakeupCnt");
         }
 
         function processRetry(node, process, message) {
@@ -1297,7 +1293,7 @@ angular.module('ZWave.logReader', [
             if (direction == "TX") {
             } else {
                 if (type == REQUEST) {
-                    data.node = HEX2DEC(bytes[0]);
+                    data.node = HEX2DEC(bytes[1]);
                 }
                 else {
                 }
@@ -1361,16 +1357,7 @@ angular.module('ZWave.logReader', [
             } else {
                 if (type == REQUEST) {
                     data.node = HEX2DEC(bytes[1]);
-                    data = processCommandClass(data.node, bytes.slice(3));
-
-                    // Indicate if this is a broadcast or multicast message
-                    data.rxStatus = HEX2DEC(bytes[0]);
-                    if(data.rxStatus & 0x04) {
-                        data.content = "[BC]" + data.content;
-                    }
-                    if(data.rxStatus & 0x08) {
-                        data.content = "[MC]" + data.content;
-                    }
+                    var data = processCommandClass(data.node, bytes.slice(3));
 
                     createNode(node);
                     if ($scope.nodes[node].classes[data.id] == undefined) {
@@ -1447,8 +1434,7 @@ angular.module('ZWave.logReader', [
                 lastSendData.node = node;
                 lastSendData.callback = callback;
 
-                createNode(node);
-                $scope.nodes[node].messagesSent++
+                incNodeInfo(node, 'messagesSent');
             }
             else {
                 // Handle response from network
