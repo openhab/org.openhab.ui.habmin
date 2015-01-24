@@ -220,7 +220,7 @@ angular.module('HABmin.chartSave', [
                 keyboard: true,
                 modalFade: true,
                 size: 'lg',
-                templateUrl: 'chartSave.tpl.html',
+                templateUrl: 'chart/chartSave.tpl.html',
                 controller: controller,
                 windowClass: UserService.getTheme(),
                 scope: scope
@@ -234,7 +234,7 @@ angular.module('HABmin.chartSave', [
             scope: { // Isolate scope
                 model: '='
             },
-            templateUrl: 'chartSaveGeneral.tpl.html',
+            templateUrl: 'chart/chartSaveGeneral.tpl.html',
             link: function ($scope, $element, $state) {
             }
         };
@@ -246,7 +246,7 @@ angular.module('HABmin.chartSave', [
             scope: { // Isolate scope
                 model: '='
             },
-            templateUrl: 'chartSaveItem.tpl.html',
+            templateUrl: 'chart/chartSaveItem.tpl.html',
             link: function ($scope, $element, $state) {
             }
         };
@@ -258,7 +258,7 @@ angular.module('HABmin.chartSave', [
             scope: { // Isolate scope
                 model: '='
             },
-            templateUrl: 'chartSaveAxis.tpl.html',
+            templateUrl: 'chart/chartSaveAxis.tpl.html',
             link: function ($scope, $element, $state) {
             }
         };

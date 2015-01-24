@@ -1,26 +1,35 @@
-<div ng-if="editMode" class="page-header">
-    <a class="pull-right btn btn-primary" ng-click="editEnd()"><i class="glyphicon glyphicon-plus"></i> End Edit</a>
-    <a class="pull-right btn btn-primary" ng-click="addWidget()"><i class="glyphicon glyphicon-plus"></i> Add Widget</a>
-    <a class="pull-right btn btn-warning" ng-click="clear()"><i class="glyphicon glyphicon-trash"></i> Clear</a>
+<div class="btn-group btn-group-sm" role="group" ng-if="editMode" class="page-header">
+    <button class="btn btn-sm btn-primary" ng-click="editEnd()"><i class="fa fa-check-square"></i> End Edit</button>
+    <div class="btn-group dropdown">
+        <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
+            <span class="fa fa-plus-square-o"></span> Add Widget
+            <span class="caret"></span>
+            <span class="sr-only">Dropdown</span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li>
+                <a ng-click="addWidget('chart')">
+                    <span class="fa fa-list-alt"></span>
+                    <span i18nx="habmin.chartItemList">Chart</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <button class="btn btn-sm btn-warning" ng-click="clear()"><i class="fa fa-trash-o"></i> Clear</button>
 </div>
+
 <div gridster="gridsterOptions">
     <ul>
         <li gridster-item="widget" ng-repeat="widget in dashboard.widgets">
-            <div ng-class="{'box':true, 'box-edit':editMode}" ng-controller="CustomWidgetCtrl">
-                <div ng-if="editMode" class="box-header">
-                    <div class="box-header-btns pull-right">
+            <div ng-class="{'dashboard':true, 'dashboard-edit':editMode}" ng-controller="CustomWidgetCtrl">
+                <div ng-if="editMode" class="dashboard-header">
+                    <div class="dashboard-header-btns pull-right">
                         <a title="settings" ng-click="openSettings(widget)"><span class="fa fa-cog"></span></a>
                         <a title="Remove widget" ng-click="remove(widget)"><span class="fa fa-trash"></span></a>
                     </div>
                 </div>
 
-                <div class="box-content">
-                    <div style="height:145px;">
-                    <ng-dial-gauge
-                          ng-model="widget.value" options="widget.options">
-                        </ng-dial-gauge>
-                    </div>
-                </div>
+                <dashboard-widget class="dashboard-content"></dashboard-widget>
             </div>
         </li>
     </ul>

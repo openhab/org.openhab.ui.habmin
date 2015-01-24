@@ -11,10 +11,11 @@ angular.module('habminChart', [
     'ngLocalize',
     'HABmin.persistenceModel',
     'HABmin.chartModel',
-    'ngVis'
+    'ngVis',
+    'angular-growl'
 ])
 
-    .directive('habminChart', function (PersistenceItemModel, PersistenceDataModel, ChartListModel, VisDataSet) {
+    .directive('habminChart', function (PersistenceItemModel, PersistenceDataModel, ChartListModel, VisDataSet, growl) {
         return {
             restrict: 'E',
             scope: {

@@ -8,12 +8,13 @@
  * (c) 2014 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('HABmin.dashboard', [
+    'ui.router',
     'gridster',
     'angular-dialgauge'
 ])
     .config(function config($stateProvider) {
         $stateProvider.state('dashboard', {
-            url: '/dashboard',
+            url: '/dashboard/:dashName/:dashPage?edit',
             views: {
                 "main": {
                     controller: 'DashboardCtrl',
@@ -22,41 +23,20 @@ angular.module('HABmin.dashboard', [
             },
             data: { pageTitle: 'Dashboard' }
         });
-
-
-        $stateProvider.state('dashboard.view', {
-            url: '/view/:dashName/:dashPage',
-            data: { pageTitle: 'Dashboard View' },
-            onEnter: function () {
-                console.log("onEnter");
-            },
-            onExit: function () {
-                console.log("onExit");
-            }
-        });
-        $stateProvider.state('dashboard.edit', {
-            url: '/edit/:dashName/:dashPage',
-            data: { pageTitle: 'Dashboard View' },
-            onEnter: function () {
-                console.log("onEnter");
-            },
-            onExit: function () {
-                console.log("onExit");
-            }
-        });
     })
 
     .controller('DashboardCtrl',
-    function ($scope, $timeout) {
-        $scope.editMode = true;
+    function ($scope, $timeout, $state, $stateParams) {
+        $scope.editMode = $stateParams.edit == "true";
 
         $scope.gridsterOptions = {
             outerMargin: false,
             margins: [10, 10],
-            columns: 8,
+            columns: 25,
             draggable: {
                 handle: '.box-header'
-            }
+            },
+            resizable: false
         };
 
         $scope.dashboards = {
@@ -123,6 +103,7 @@ angular.module('HABmin.dashboard', [
         $scope.editEnd = function () {
             $scope.editMode = false;
             $scope.gridsterOptions.resizable = false;
+        //    $state;//.transitionTo($)
         };
 
         $scope.addWidget = function () {
@@ -160,6 +141,32 @@ angular.module('HABmin.dashboard', [
         }
 
 
+        function updateDashboard(dashboardDef) {
+            // Sanity check
+            if (dashboardDef === null || dashboardDef.widget === undefined) {
+                return "";
+            }
+
+            // Loop through all widgets on the page
+            // If the widget model isn't in the $scope, then we assume this is new
+            processWidgetUpdate(dashboardDef.widget);
+            $scope.$digest();
+
+            function processWidgetUpdate(widgetArray) {
+                // Sanity check
+                if(widgetArray == null) {
+                    return;
+                }
+
+                angular.forEach(widgetArray,function (widget) {
+                    // Sanity check
+                    if (widget == null) {
+                        return;
+                    }
+                });
+            }
+        }
+
 
 
 
@@ -179,7 +186,9 @@ angular.module('HABmin.dashboard', [
         // init dashboard
         $scope.selectedDashboardId = '1';
 
-        $scope.editStart();
+        if($scope.editMode) {
+            $scope.editStart();
+        }
 
 
 
@@ -253,14 +262,22 @@ angular.module('HABmin.dashboard', [
         };
     })
 
-// helper code
-    .filter('object2Array', function () {
-        return function (input) {
-            var out = [];
-            for (var i in input) {
-                out.push(input[i]);
+    .directive('dashboardWidget', ['$compile', function($compile) {
+        return {
+            restrict: 'AE',
+            scope: {
+                widget: '='
+            },
+            link: function(scope, element, attrs) {
+                var build = function (html) {
+                    element.empty().append($compile(html)(scope));
+                };
+                scope.$watch('widget.template', function (newValue, oldValue){
+                    if (newValue) {
+                        build(newValue);
+                    }
+                });
             }
-            return out;
         };
-    })
+    }])
 ;

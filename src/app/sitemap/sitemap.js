@@ -38,8 +38,8 @@ angular.module('HABmin.sitemap', [
                 console.log("Sitemap parameters:", params);
 //                $scope.title = params.getData()
             }
-        });
-        $stateProvider.state('sitemap.view', {
+        })
+        .state('sitemap.view', {
             url: '/view/:sitemapName/:sitemapPage',
             //           views: {
             //             "main": {
