@@ -43,32 +43,32 @@
 
         <!-- Body -->
         <div class="list-group habmin-list" resize-panel>
-            <div ng-repeat="choice in devices">
-                <a role="presentation" ng-class="{'list-group-item':true, 'active': choice.device==devEdit.device}"
-                   ng-click="selectDevice(choice)" sidepanel-click="main">
-                    <habmin-icon class="icon-lg" icon="{{choice.icon}}"></habmin-icon>
-                    <span>{{choice.label}}</span>
+            <div ng-repeat="device in devices | orderObjectBy:'deviceID'">
+                <a role="presentation" ng-class="{'list-group-item':true, 'active': device.device==devEdit.device}"
+                   ng-click="selectDevice(device)" sidepanel-click="main">
+                    <habmin-icon class="icon-lg" icon="{{device.icon}}"></habmin-icon>
+                    <span>{{device.label}}</span>
                     <span class="pull-right">
-                        <span popover="{{stateHeal(choice)}}" popover-trigger="mouseenter" popover-placement="top"
+                        <span popover="{{stateHeal(device)}}" popover-trigger="mouseenter" popover-placement="top"
                               popover-append-to-body="true" popover-popup-delay="500">
-                            <span ng-class="{'text-success': choice.healState=='RUN','text-danger': choice.healState =='ERROR','text-warning': choice.healState =='WAIT','text-muted': choice.healState =='OK'}">
+                            <span ng-class="{'text-success': device.healState=='RUN','text-danger': device.healState =='ERROR','text-warning': device.healState =='WAIT','text-muted': device.healState =='OK'}">
                                 <span class="fa fa-ambulance"></span>
                             </span>
                         </span>
-                        <span popover="{{stateOnline(choice)}}" popover-trigger="mouseenter" popover-placement="top"
+                        <span popover="{{stateOnline(device)}}" popover-trigger="mouseenter" popover-placement="top"
                               popover-append-to-body="true" popover-popup-delay="500">
-                            <span ng-class="{'text-success': choice.state=='OK','text-danger': choice.state=='ERROR','text-warning': choice.state =='WARNING','text-muted': choice.state =='INITIALIZING'}">
+                            <span ng-class="{'text-success': device.state=='OK','text-danger': device.state=='ERROR','text-warning': device.state =='WARNING','text-muted': device.state =='INITIALIZING'}">
                                 <span class="fa fa-rss"></span>
                             </span>
                         </span>
                     </span>
                     <br>
-                    <span ng-class="{'small': true, 'text-warning': choice.typeUnknown}">{{choice.type}}</span>
+                    <span ng-class="{'small': true, 'text-warning': device.typeUnknown}">{{device.type}}</span>
                     <span class="pull-right">
-                        <span popover="{{choice.powerInfo}}" popover-trigger="mouseenter" popover-placement="top"
+                        <span popover="{{device.powerInfo}}" popover-trigger="mouseenter" popover-placement="top"
                               popover-append-to-body="true" popover-popup-delay="500">
-                            <span ng-class="{'text-success': choice.batteryLevel>=40,'text-danger': choice.batteryLevel==0,'text-muted': choice.batteryLevel=='UNK','text-warning': choice.batteryLevel<40}">
-                                <span ng-class="choice.batteryIcon"></span>
+                            <span ng-class="{'text-success': device.batteryLevel>=40,'text-danger': device.batteryLevel==0,'text-muted': device.batteryLevel=='UNK','text-warning': device.batteryLevel<40}">
+                                <span ng-class="device.batteryIcon"></span>
                             </span>
                         </span>
                     </span>

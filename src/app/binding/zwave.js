@@ -287,6 +287,7 @@ angular.module('Binding.zwave', [
 
                         // If the device isn't known, then create a new entry
                         if ($scope.devices[domain[1]] === undefined) {
+                            node.deviceID = parseInt(domain[1].substr(4), 10);
                             node.device = domain[1];
                             node.domain = device.domain;
                             node.lifeState = 0;
@@ -404,16 +405,17 @@ angular.module('Binding.zwave', [
                             device.dead = dead[0];
                         }
                         else if (status.name === "NodeStage") {
-                            // If the stage has changed, then update the info.
                             var stage = status.value.split(" ");
+                            // For old binding compatibility
+                            if(stage[1] == '@') {
+                                stage[1] = stage[0];
+                            }
+
+                            // If the stage has changed, then update the info.
                             if(device.nodeState != stage[0] || device.nodeStage != stage[1]) {
                                 device.nodeState = stage[0];
                                 device.nodeStage = stage[1];
 
-                                // For old binding compatibility
-                                if(stage[1] == '@') {
-                                    device.nodeStage = stage[0];
-                                }
                                 updateInfo(id);
                             }
                         }

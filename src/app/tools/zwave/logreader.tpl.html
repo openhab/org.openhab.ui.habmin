@@ -121,7 +121,7 @@
             <div class="col-sm-4 panel panel-default" style="height:100%;padding:0px;border-left:0px;border-right:0px;">
                 <div class="habmin-list" style="height:100%;">
                     <div class="list-group" style="height:100%;margin-bottom:0px;">
-                        <a class="list-group-item" ng-repeat="node in nodes" ng-click="selectNode(node)">
+                        <a class="list-group-item" ng-repeat="node in nodes | orderObjectBy:'id'" ng-click="selectNode(node)">
                             Node {{node.id}}
                         </a>
                     </div>
