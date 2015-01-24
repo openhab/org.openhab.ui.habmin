@@ -121,16 +121,62 @@
             <div class="col-sm-4 panel panel-default" style="height:100%;padding:0px;border-left:0px;border-right:0px;">
                 <div class="habmin-list" style="height:100%;">
                     <div class="list-group" style="height:100%;margin-bottom:0px;">
-                        <a class="list-group-item" ng-repeat="node in nodes | orderObjectBy:'id'" ng-click="selectNode(node)">
+                        <a ng-class="{'list-group-item':true, 'active':node==selectedNode}" ng-repeat="node in nodes | orderObjectBy:'id'" ng-click="selectNode(node)">
                             Node {{node.id}}
+                            <span class="pull-right">
+                                <span ng-if="node.warnings.length" class="text-warning fa fa-question-circle"></span>
+                                <span ng-if="node.errors.length" class="text-danger fa fa-exclamation-circle"></span>
+                            </span>
                         </a>
                     </div>
                 </div>
             </div>
             <div class="col-sm-8 panel panel-default" style="height:100%;padding:0px;border-left:0px;border-right:0px;">
                 <div class="habmin-list" style="height:100%;">
-                    <table class="table">
+                    <table ng-if="selectedNode" class="table">
                         <tbody>
+                        <tr>
+                            <td>Node ID</td>
+                            <td>{{selectedNode.id}}</td>
+                        </tr>
+                        <tr ng-repeat="error in selectedNode.errors">
+                            <td>
+                                Error
+                                <span class="pull-right text-danger fa fa-exclamation-circle"></span>
+                            </td>
+                            <td>{{error}}</td>
+                        </tr>
+                        <tr ng-repeat="warning in selectedNode.warnings">
+                            <td>
+                                Warning
+                                <span class="pull-right text-warning fa fa-question-circle"></span>
+                            </td>
+                            <td>{{warning}}</td>
+                        </tr>
+                        <tr>
+                            <td>Listening State</td>
+                            <td>
+                                <span ng-if="selectedNode.isListening">Yes</span>
+                                &nbsp;
+                                <span ng-if="selectedNode.isFLiRS">Frequently</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Basic Device Class</td>
+                            <td>{{selectedNode.basicClass}}</td>
+                        </tr>
+                        <tr>
+                            <td>Generic Device Class</td>
+                            <td>{{selectedNode.genericClass}}</td>
+                        </tr>
+                        <tr>
+                            <td>Specific Device Class</td>
+                            <td>{{selectedNode.specificClass}}</td>
+                        </tr>
+                        <tr>
+                            <td>Response Times</td>
+                            <td>{{selectedNode.responseTimeMin}} / {{selectedNode.responseTimeAvg}} / {{selectedNode.responseTimeMax}}</td>
+                        </tr>
                         <tr ng-repeat="(key, value) in selectedNode">
                             <td>{{key}}</td>
                             <td>{{value}}</td>

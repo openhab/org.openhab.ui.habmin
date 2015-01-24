@@ -72,12 +72,17 @@ angular.module('ZWave.logReader', [
             $timeout(function () {
                 $(window).trigger('resize');
             }, 0);
+
+            if (panel == "NODES" && $scope.nodeInfoProcessed == false) {
+                processDeviceInformation();
+            }
         };
 
         $scope.logState = "empty";
         $scope.logName = " ";
 
         $scope.data = [];
+        $scope.nodeInfoProcessed = false;
         $scope.countLines = 0;
         $scope.countEntries = 0;
         $scope.selectedNode = {};
@@ -132,9 +137,31 @@ angular.module('ZWave.logReader', [
         };
 
         /**
-         * Compute some statistics on a node
+         * Process the node information looking for errors etc
          */
-        function computeNodeStats(node) {
+        function processDeviceInformation() {
+            angular.forEach($scope.nodes, function (node) {
+                node.warnings = [];
+                node.errors = [];
+                // Process any errors/warnings for battery devices
+                if (node.isListening == false) {
+                    if (node.wakeupCnt == null || node.wakeupCnt == 0) {
+                        node.warnings.push("Device appears to be battery operated, but has not woken up")
+                    }
+                    if (node.wakeupNode != null && node.wakeupNode != $scope.nodes[255].controllerID) {
+                        node.errors.push("Wakeup node is not set to the controller")
+                    }
+                    if (node.wakeupInterval != null && node.wakeupInterval == 0) {
+                        node.errors.push("Wakeup interval is set to 0")
+                    }
+                }
+
+                if (node.id == $scope.nodes[255].controllerID) {
+                    if (node.isListening == false) {
+                        node.errors.push("Device is the controller, but it's not listening");
+                    }
+                }
+            });
         }
 
         /**
@@ -165,7 +192,7 @@ angular.module('ZWave.logReader', [
             if (element.node === undefined) {
                 return true;
             }
-            return $scope.nodeFilter.indexOf(element.node) === -1 ? false : true;
+            return $scope.nodeFilter.indexOf(element.node) !== -1;
         };
 
         /**
@@ -238,6 +265,7 @@ angular.module('ZWave.logReader', [
             $scope.loadProgress = 0;
             $scope.logState = "loading";
             $scope.logName = file.name;
+            $scope.nodeInfoProcessed = false;
 
             lastPacketRx = null;
 
@@ -294,7 +322,7 @@ angular.module('ZWave.logReader', [
             },
             7: {
                 name: "SerialApiGetCapabilities",
-                processor: null
+                processor: processControllerInfo
             },
             8: {
                 name: "SerialApiSoftReset",
@@ -306,7 +334,7 @@ angular.module('ZWave.logReader', [
             },
             21: {
                 name: "GetVersion",
-                processor: processControllerCmd
+                processor: processGetVersion
             },
             22: {
                 name: "SendDataAbort",
@@ -657,7 +685,7 @@ angular.module('ZWave.logReader', [
                         name: "WAKE_UP_INTERVAL_SET"
                     },
                     5: {
-                        name: "WAKE_UP_INTERVAL_SET"
+                        name: "WAKE_UP_INTERVAL_GET"
                     },
                     6: {
                         name: "WAKE_UP_INTERVAL_REPORT"
@@ -674,7 +702,8 @@ angular.module('ZWave.logReader', [
                     10: {
                         name: "WAKE_UP_INTERVAL_CAPABILITIES_REPORT"
                     }
-                }
+                },
+                processor: processWakeup
             },
             133: {
                 name: "ASSOCIATION",
@@ -795,8 +824,7 @@ angular.module('ZWave.logReader', [
                 string: "Is awake with",
                 ref: "Wakeup",
                 content: "Node is AWAKE",
-                status: INFO,
-                processor: processAwake
+                status: INFO
             },
             {
                 string: "Went to sleep",
@@ -866,13 +894,21 @@ angular.module('ZWave.logReader', [
         }
 
         function addNodeInfo(id, type, value) {
+            if (id == 0) {
+                console.log("Trying to save data for node 0", type, value);
+                return;
+            }
             createNode(id);
             $scope.nodes[id][type] = value;
         }
 
         function incNodeInfo(id, type) {
+            if (id == 0) {
+                console.log("Trying to save data for node 0", type, value);
+                return;
+            }
             createNode(id);
-            if($scope.nodes[id][type] == null) {
+            if ($scope.nodes[id][type] == null) {
                 $scope.nodes[id][type] = 1;
             }
             else {
@@ -1028,10 +1064,6 @@ angular.module('ZWave.logReader', [
             }
         }
 
-        function processAwake(node, process, message) {
-            incNodeInfo(node, "WakeupCnt");
-        }
-
         function processRetry(node, process, message) {
             var count = parseInt(message.substr(message.indexOf("Requeueing - ") + 13));
             return {
@@ -1067,6 +1099,29 @@ angular.module('ZWave.logReader', [
          * Command Class Processors
          */
 
+        function processWakeup(node, bytes) {
+            var data = {result: SUCCESS};
+
+            var cmdCmd = HEX2DEC(bytes[1]);
+            switch (cmdCmd) {
+                case 6:             // WAKE_UP_INTERVAL_REPORT
+                    var interval = HEX2DEC(bytes[2]) * 65536 + HEX2DEC(bytes[3]) * 256 + HEX2DEC(bytes[4]);
+                    addNodeInfo(node, "wakeupInterval", interval);
+                    addNodeInfo(node, "wakeupNode", HEX2DEC(bytes[5]));
+                    data.content = "Wakeup period: " + getNodeInfo(node, "wakeupInterval") + "(s), reporting to node " +
+                    getNodeInfo(node, "wakeupNode");
+                    if (interval == 0) {
+                        data.errorMessage = "Wakeup interval is not set";
+                    }
+                    break;
+                case 7:
+                    incNodeInfo(node, "wakeupCnt");
+                    break;
+            }
+
+            return data;
+        }
+
         function processVersion(node, bytes) {
             var data = {result: SUCCESS};
 
@@ -1086,11 +1141,11 @@ angular.module('ZWave.logReader', [
 
         function processManufacturer(node, bytes) {
             var data = {result: SUCCESS};
-            addNodeInfo(node, "Manufacturer", bytes[2] + bytes[3]);
-            addNodeInfo(node, "DeviceType", bytes[4] + bytes[5]);
-            addNodeInfo(node, "DeviceID", bytes[6] + bytes[7]);
-            data.content = "Manufacturer Info: " + getNodeInfo(node, "Manufacturer") + ":" +
-            getNodeInfo(node, "DeviceType") + ":" + getNodeInfo(node, "DeviceID");
+            addNodeInfo(node, "manufacturer", bytes[2] + bytes[3]);
+            addNodeInfo(node, "deviceType", bytes[4] + bytes[5]);
+            addNodeInfo(node, "deviceID", bytes[6] + bytes[7]);
+            data.content = "Manufacturer Info: " + getNodeInfo(node, "manufacturer") + ":" +
+            getNodeInfo(node, "deviceType") + ":" + getNodeInfo(node, "deviceID");
 
             return data;
         }
@@ -1139,6 +1194,9 @@ angular.module('ZWave.logReader', [
                     if (commandClasses[cmdCls].commands[cmdCmd].processor != null) {
                         cmdClass = commandClasses[cmdCls].commands[cmdCmd].processor(node, bytes);
                     }
+                    else if (commandClasses[cmdCls].processor) {
+                        cmdClass = commandClasses[cmdCls].processor(node, bytes);
+                    }
                     cmdClass.function = commandClasses[cmdCls].commands[cmdCmd].name;
                 }
                 else if (commandClasses[cmdCls].processor) {
@@ -1172,8 +1230,8 @@ angular.module('ZWave.logReader', [
                 }
                 else {
                     data.node = 255;
-                    addNodeInfo(255, "SUCID", HEX2DEC(bytes[0]));
-                    data.content = "SUC ID: " + getNodeInfo(255, "SUCID");
+                    addNodeInfo(data.node, "sucID", HEX2DEC(bytes[0]));
+                    data.content = "SUC ID: " + getNodeInfo(255, "sucID");
                 }
             }
 
@@ -1189,10 +1247,10 @@ angular.module('ZWave.logReader', [
                 }
                 else {
                     data.node = 255;
-                    addNodeInfo(node, "HomeID", bytes[0] + bytes[1] + bytes[2] + bytes[3]);
-                    addNodeInfo(node, "ControllerID", HEX2DEC(bytes[4]));
-                    data.content = "MemoryGetId: HomeID=" + getNodeInfo(node, "HomeID") + ", Controller=" +
-                    getNodeInfo(node, "ControllerID")
+                    addNodeInfo(data.node, "homeID", bytes[0] + bytes[1] + bytes[2] + bytes[3]);
+                    addNodeInfo(data.node, "controllerID", HEX2DEC(bytes[4]));
+                    data.content = "MemoryGetId: HomeID=" + getNodeInfo(data.node, "homeID") + ", Controller=" +
+                    getNodeInfo(data.node, "controllerID")
                 }
             }
 
@@ -1215,15 +1273,15 @@ angular.module('ZWave.logReader', [
                     data.node = lastCmd.node;
 
                     var a = HEX2DEC(bytes[0]);
-                    addNodeInfo(node, "Listening", a | 0x80 == 0 ? false : true);
-                    addNodeInfo(node, "Routing", a | 0x40 == 0 ? false : true);
-                    addNodeInfo(node, "Version", (a | 0x07) + 1);
+                    addNodeInfo(data.node, "isListening", (a & 0x80) != 0 ? true : false);
+                    addNodeInfo(data.node, "isRouting", (a & 0x40) != 0);
+                    addNodeInfo(data.node, "version", (a & 0x07) + 1);
                     a = HEX2DEC(bytes[1]);
-                    addNodeInfo(node, "FLiRS", a | 0x60);
-                    addNodeInfo(node, "BasicClass", HEX2DEC(bytes[3]));
-                    addNodeInfo(node, "GenericClass", HEX2DEC(bytes[4]));
-                    addNodeInfo(node, "SpecificClass", HEX2DEC(bytes[5]));
-                    data.content = "IdentifyNode: Listening:" + getNodeInfo(node, "Listening");
+                    addNodeInfo(data.node, "isFLiRS", (a & 0x60) ? true : false);
+                    addNodeInfo(data.node, "basicClass", HEX2DEC(bytes[3]));
+                    addNodeInfo(data.node, "genericClass", HEX2DEC(bytes[4]));
+                    addNodeInfo(data.node, "specificClass", HEX2DEC(bytes[5]));
+                    data.content = "IdentifyNode: Listening:" + getNodeInfo(data.node, "isListening");
                 }
             }
 
@@ -1302,6 +1360,20 @@ angular.module('ZWave.logReader', [
             return data;
         }
 
+        function processGetVersion(node, direction, type, bytes, len) {
+            var data = {result: SUCCESS};
+            if (direction == "RX" && type == RESPONSE) {
+                data.node = 255;
+                data.zwaveVersion = "";
+                for (var i = 0; i < 11; i++) {
+                    data.zwaveVersion += String.fromCharCode(HEX2DEC(bytes[i]));
+                }
+                addNodeInfo(data.node, "zwaveVersion", data.zwaveVersion);
+            }
+
+            return data;
+        }
+
         function processControllerCmd(node, direction, type, bytes, len) {
             var data = {result: SUCCESS};
             if (direction == "TX") {
@@ -1330,6 +1402,7 @@ angular.module('ZWave.logReader', [
                     setStatus(data, ERROR);
                 }
                 else {
+                    data.node = 255;
                     var cnt = 0;
                     for (var i = 3; i < 3 + 29; i++) {
                         var incomingByte = HEX2DEC(bytes[i]);
@@ -1350,6 +1423,21 @@ angular.module('ZWave.logReader', [
             return data;
         }
 
+        function processControllerInfo(node, direction, type, bytes, len) {
+            var data = {result: SUCCESS};
+            if (direction == "RX" && type == RESPONSE) {
+                data.node = 255;
+                addNodeInfo(data.node, "serialApiVersion", bytes[0] + '.' + bytes[1]);
+                addNodeInfo(data.node, "manufacturer", bytes[2] + bytes[3]);
+                addNodeInfo(data.node, "deviceType", bytes[4] + bytes[5]);
+                addNodeInfo(data.node, "deviceID", bytes[6] + bytes[7]);
+                data.content = "Controller Info: " + getNodeInfo(data.node, "danufacturer") + ":" +
+                getNodeInfo(data.node, "deviceType") + ":" + getNodeInfo(data.node, "deviceID");
+            }
+
+            return data;
+        }
+
         function processApplicationCommand(node, direction, type, bytes, len) {
             var data = {result: SUCCESS};
             if (direction == "TX") {
@@ -1357,7 +1445,7 @@ angular.module('ZWave.logReader', [
             } else {
                 if (type == REQUEST) {
                     data.node = HEX2DEC(bytes[1]);
-                    var data = processCommandClass(data.node, bytes.slice(3));
+                    data = processCommandClass(data.node, bytes.slice(3));
 
                     createNode(node);
                     if ($scope.nodes[node].classes[data.id] == undefined) {
@@ -1635,23 +1723,13 @@ angular.module('ZWave.logReader', [
                 if (log.packet != null && log.packet.node != null) {
                     log.node = log.packet.node;
                 }
-                else if (node != 0) {
-                    log.node = node;
+                else if (node == 0) {
+                    log.node = 255;
                 }
                 if (log.node != undefined && log.node != 0 && log.node != 255) {
                     log.stage = getNodeInfo(log.node, "Stage");
                 }
 
-                log.group = log.node;
-                if (log.node != 0) {
-                    //                   log.group = node;
-                }
-                else if (log.node == 255) {
-                    //                 log.group = "CTRL";
-                }
-                else {
-                    //               log.group = "0";
-                }
                 log.time = time.format("HH:mm:ss.SSS");
                 log.start = time.valueOf();
 
