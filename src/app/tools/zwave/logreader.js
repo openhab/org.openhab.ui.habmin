@@ -161,6 +161,21 @@ angular.module('ZWave.logReader', [
                         node.errors.push("Device is the controller, but it's not listening");
                     }
                 }
+
+                if (node.responseTimeAvg > 1000) {
+                    node.errors.push("Average response time is very high (" + node.responseTimeAvg + ")");
+                }
+                else if (node.responseTimeAvg > 500) {
+                    node.warnings.push("Average response time is high (" + node.responseTimeAvg + ")");
+                }
+
+                var avg = node.responseTimeout / node.messagesSent;
+                if (node.messagesSent > 40 && avg > 0.15) {
+                    node.errors.push("Node has a very high timeout ratio (" + node.responseTimeout + "/" + node.messagesSent + ")");
+                }
+                else if (node.messagesSent > 20 && avg > 0.05) {
+                    node.warnings.push("Node has a high timeout ratio (" + node.responseTimeout + "/" + node.messagesSent + ")");
+                }
             });
         }
 
