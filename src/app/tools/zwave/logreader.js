@@ -1042,6 +1042,13 @@ angular.module('ZWave.logReader', [
                 lastPacketTx.errorMessage = process.error;
                 setStatus(lastPacketTx, process.status);
                 lastPacketTx = null;
+
+                if (message.indexOf("(CAN)")) {
+                    incNodeInfo(255, "txErrorCan");
+                }
+                else if (message.indexOf("(NAK)")) {
+                    incNodeInfo(255, "txErrorNak");
+                }
             }
         }
 
@@ -1467,7 +1474,7 @@ angular.module('ZWave.logReader', [
                 addNodeInfo(data.node, "manufacturer", bytes[2] + bytes[3]);
                 addNodeInfo(data.node, "deviceType", bytes[4] + bytes[5]);
                 addNodeInfo(data.node, "deviceID", bytes[6] + bytes[7]);
-                data.content = "Controller Info: " + getNodeInfo(data.node, "danufacturer") + ":" +
+                data.content = "Controller Info: " + getNodeInfo(data.node, "manufacturer") + ":" +
                 getNodeInfo(data.node, "deviceType") + ":" + getNodeInfo(data.node, "deviceID");
             }
 

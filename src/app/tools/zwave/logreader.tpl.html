@@ -140,16 +140,20 @@
                             <td>{{selectedNode.id}}</td>
                         </tr>
                         <tr ng-repeat="error in selectedNode.errors">
-                            <td>
-                                Error
-                            </td>
+                            <td>Error</td>
                             <td><span class="text-danger fa fa-exclamation-circle"></span>&nbsp;{{error}}</td>
                         </tr>
                         <tr ng-repeat="warning in selectedNode.warnings">
-                            <td>
-                                Warning
-                            </td>
+                            <td>Warning</td>
                             <td><span class="text-warning fa fa-question-circle"></span>&nbsp;{{warning}}</td>
+                        </tr>
+                        <tr ng-if="selectedNode.txErrorCan">
+                            <td>Messages CANcelled</td>
+                            <td><span class="text-danger fa fa-exclamation-circle"></span>&nbsp;{{selectedNode.txErrorCan}}</td>
+                        </tr>
+                        <tr ng-if="selectedNode.txErrorNak">
+                            <td>Messages NAKed</td>
+                            <td><span class="text-danger fa fa-exclamation-circle"></span>&nbsp;{{selectedNode.txErrorNak}}</td>
                         </tr>
                         <tr>
                             <td>Listening State</td>
