@@ -141,8 +141,6 @@ angular.module('ZWave.logReader', [
          */
         function processDeviceInformation() {
             angular.forEach($scope.nodes, function (node) {
-                node.warnings = [];
-                node.errors = [];
                 // Process any errors/warnings for battery devices
                 if (node.isListening == false) {
                     if (node.wakeupCnt == null || node.wakeupCnt == 0) {
@@ -894,6 +892,8 @@ angular.module('ZWave.logReader', [
             if ($scope.nodes[id] == null) {
                 $scope.nodes[id] = {
                     id: id,
+                    warnings: [],
+                    errors: [],
                     computed: false,
                     responseTime: [],
                     responseTimeouts: 0,
@@ -930,6 +930,16 @@ angular.module('ZWave.logReader', [
             else {
                 $scope.nodes[id][type]++;
             }
+        }
+
+        function addNodeWarning(id, msg) {
+            createNode(id);
+            $scope.nodes[id].warnings.push(msg);
+        }
+
+        function addNodeError(id, msg) {
+            createNode(id);
+            $scope.nodes[id].errors.push(msg);
         }
 
         function getNodeInfo(id, type) {
@@ -1526,9 +1536,11 @@ angular.module('ZWave.logReader', [
                         // Success
                         data.content = "Node " + data.node + " is failed!";
                         setStatus(data, ERROR);
+                        addNodeError(data.node, "Controller is reporting node has failed");
                     }
                     else {
                         // Error
+                        data.content = "Node " + data.node + " is healthy";
                         setStatus(data, SUCCESS);
                     }
                 }
@@ -1764,10 +1776,15 @@ angular.module('ZWave.logReader', [
             if (log != null) {
                 // Add node information
                 if (log.packet != null && log.packet.node != null) {
+                    // Use the node from the processed data if there is one
                     log.node = log.packet.node;
                 }
                 else if (node == 0) {
+                    // If node is 0, then assume this is the controller
                     log.node = 255;
+                }
+                else {
+                    log.node = node;
                 }
                 if (log.node != undefined && log.node != 0 && log.node != 255) {
                     log.stage = getNodeInfo(log.node, "Stage");
