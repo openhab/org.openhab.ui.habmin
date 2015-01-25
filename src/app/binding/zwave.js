@@ -99,7 +99,7 @@ angular.module('Binding.zwave', [
             }
 
             var status = "";
-            if (node.retryRate >= 10) {
+            if (node.retryRate >= 100) {
                 status += " " + locale.getString("zwave.zwaveStatusNoResponse");
             }
             else if (node.retryRate > 5) {
