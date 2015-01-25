@@ -69,10 +69,6 @@ angular.module('HABmin.dashboard', [
             }
         };
 
-        $scope.clear = function () {
-            $scope.dashboard.widgets = [];
-        };
-
         $scope.editStart = function () {
             $scope.gridsterOptions.resizable = {
                 enabled: true,
@@ -96,12 +92,20 @@ angular.module('HABmin.dashboard', [
             };
         };
 
-        $scope.editEnd = function () {
+        $scope.clearEdit = function () {
+            $scope.dashboard.widgets = [];
+        };
+
+        $scope.endEdit = function () {
             $scope.editMode = false;
             $scope.gridsterOptions.resizable = false;
             $scope.gridsterOptions.draggable = false;
             //    $state;//.transitionTo($)
         };
+
+        $scope.saveEdit = function () {
+            $scope.endEdit();
+        }
 
         $scope.addWidget = function (type) {
             $scope.dashboard.widgets.push({
