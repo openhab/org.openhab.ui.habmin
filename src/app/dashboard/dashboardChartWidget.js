@@ -10,19 +10,18 @@
 angular.module('dashboardChartWidget', [
     'habminChart'
 ])
-    .directive('sitemapChart', function () {
+    .directive('dashboardChart', function () {
         return {
             restrict: 'E',
             template:
             '<habmin-chart style="display:inline-block;height:100%;width:100%" ' +
             'chart="chartId" service="serviceId"></habmin-chart>',
             scope: {
-                itemModel: "=",
-                widget: "="
+                options: "="
             },
             link: function ($scope, element, attrs, controller) {
-                $scope.chartId = 20;
-                $scope.serviceId = "mysql";
+                $scope.chartId = $scope.options.chartId;
+                $scope.serviceId = $scope.options.serviceId;
             }
         };
     })
