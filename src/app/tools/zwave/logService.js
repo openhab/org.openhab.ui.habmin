@@ -7,11 +7,10 @@
  *
  * (c) 2014 Chris Jackson (chris@cd-jackson.com)
  */
-angular.module('ZWaveLogReader', [
-])
+angular.module('ZWaveLogReader', [])
 
     .service('ZWaveLogReader', function ($q, $timeout) {
-	    // Constant definitions
+        // Constant definitions
         var REQUEST = "Request";
         var RESPONSE = "Response";
         var ERROR = "danger";
@@ -27,20 +26,20 @@ angular.module('ZWaveLogReader', [
         var lastSendData = {};
         var lastPacketRx = null;
         var lastPacketTx = null;
-		
-		var countLines = 0;
-		var countEntries = 0;
-		var loadProgress = 0;
-		var nodeInfoProcessed = false;
-		var data = [];
-		
-		this.getData = function () {
-			return data;
-		};
 
-		this.getLinesProcessed = function () {
-			return countLines;
-		};
+        var countLines = 0;
+        var countEntries = 0;
+        var loadProgress = 0;
+        var nodeInfoProcessed = false;
+        var data = [];
+
+        this.getData = function () {
+            return data;
+        };
+
+        this.getLinesProcessed = function () {
+            return countLines;
+        };
 
         this.getFileName = function () {
             return fileName;
@@ -53,14 +52,40 @@ angular.module('ZWaveLogReader', [
         /**
          * Process the node information looking for errors etc
          */
-        this.processDeviceInformation = function() {
+        function processDeviceInformation() {
             angular.forEach(nodes, function (node) {
+                if (node.responseTimeMin < 0) {
+                    node.responseTimeMin = 0;
+                }
+                if (node.responseTimeAvg < 0) {
+                    node.responseTimeAvg = 0;
+                }
+                if (node.responseTimeMax < 0) {
+                    node.responseTimeMax = 0;
+                }
+                if (node.responseTimeCnt == 0) {
+                    node.responseTimeMin = "-";
+                    node.responseTimeAvg = "-";
+                    node.responseTimeMax = "-";
+                }
+                else {
+                    node.responseTimeAvg =
+                        Math.round(node.responseTimeAvg / node.responseTimeCnt);
+                }
+
+                if(node.messagesSent == null || node.messagesSent == 0) {
+                    node.retryPercent = 0;
+                }
+                else {
+                    node.retryPercent = Math.ceil(node.responseTimeouts * 100 / node.messagesSent);
+                }
+
                 // Process any errors/warnings for battery devices
                 if (node.isListening == false) {
                     if (node.wakeupCnt == null || node.wakeupCnt == 0) {
                         node.warnings.push("Device appears to be battery operated, but has not woken up")
                     }
-                    if (node.wakeupNode != null && node.wakeupNode != $scope.nodes[255].controllerID) {
+                    if (node.wakeupNode != null && node.wakeupNode != nodes[255] != null && nodes[255].controllerID) {
                         node.errors.push("Wakeup node is not set to the controller")
                     }
                     if (node.wakeupInterval != null && node.wakeupInterval == 0) {
@@ -68,7 +93,7 @@ angular.module('ZWaveLogReader', [
                     }
                 }
 
-                if (node.id == $scope.nodes[255].controllerID) {
+                if (nodes[255] != null && node.id == nodes[255].controllerID) {
                     if (node.isListening == false) {
                         node.errors.push("Device is the controller, but it's not listening");
                     }
@@ -81,20 +106,19 @@ angular.module('ZWaveLogReader', [
                     node.warnings.push("Average response time is high (" + node.responseTimeAvg + ")");
                 }
 
-                var avg = node.responseTimeout / node.messagesSent;
-                if (node.messagesSent > 40 && avg > 0.15) {
-                    node.errors.push("Node has a very high timeout ratio (" + node.responseTimeout + "/" + node.messagesSent + ")");
+                if (node.messagesSent > 40 && node.retryPercent > 15) {
+                    node.errors.push("Node has a very high timeout ratio (" + node.retryPercent + "%)");
                 }
-                else if (node.messagesSent > 20 && avg > 0.05) {
-                    node.warnings.push("Node has a high timeout ratio (" + node.responseTimeout + "/" + node.messagesSent + ")");
+                else if (node.messagesSent > 20 && node.retryPercent > 5) {
+                    node.warnings.push("Node has a high timeout ratio (" + node.retryPercent + "%)");
                 }
             });
-			
-			nodeInfoProcessed = true;
+
+            nodeInfoProcessed = true;
         };
-		
-		// Packet type definitions
-		var packetTypes = {
+
+        // Packet type definitions
+        var packetTypes = {
             2: {
                 name: "SerialApiGetInitData",
                 processor: processInitData
@@ -218,7 +242,7 @@ angular.module('ZWaveLogReader', [
             }
         };
 
-		// Command class definitions
+        // Command class definitions
         var commandClasses = {
             0: {
                 name: "NO_OPERATION",
@@ -317,7 +341,7 @@ angular.module('ZWaveLogReader', [
                         name: "SENSOR_MULTI_LEVEL_REPORT"
                     }
                 },
-				processor: processMultilevelSensor
+                processor: processMultilevelSensor
             },
             50: {
                 name: "METER",
@@ -554,7 +578,7 @@ angular.module('ZWaveLogReader', [
             }
         };
 
-		// Definition of strings to search for in the log
+        // Definition of strings to search for in the log
         var processList = [
             {
                 string: "Z-Wave binding has been started.",
@@ -666,10 +690,10 @@ angular.module('ZWaveLogReader', [
             }
         ];
 
-		// Array of node information
+        // Array of node information
         var nodes = {};
-		
-		// Binding configuration parameters
+
+        // Binding configuration parameters
         var config = {};
 
         function createNode(id) {
@@ -725,17 +749,17 @@ angular.module('ZWaveLogReader', [
             createNode(id);
             nodes[id].errors.push(msg);
         }
-		
-		function addNodeItem(node, endpoint, name, cmd, item) {
-		    createNode(id);
-			var msg = name + " = " + node + ":";
-			if(endpoint != 0) {
-				msg += endpoint + ":";
-			}
-			msg += "command=" + cmd;
-			if(item != null) {
-				msg += "," + item;
-			}
+
+        function addNodeItem(node, endpoint, name, cmd, item) {
+            createNode(id);
+            var msg = name + " = " + node + ":";
+            if (endpoint != 0) {
+                msg += endpoint + ":";
+            }
+            msg += "command=" + cmd;
+            if (item != null) {
+                msg += "," + item;
+            }
             nodes[id].items.push(msg);
         }
 
@@ -971,43 +995,43 @@ angular.module('ZWaveLogReader', [
 
             return data;
         }
-		
-		var multilevelSensors = {
-			1:"Temperature",
-			2:"General",
-			3:"Luminance",
-			4:"Power",
-			5:"RelativeHumidity",
-			6:"Velocity",
-			7:"Direction",
-			8:"AtmosphericPressure",
-			9:"BarometricPressure",
-			10:"SolarRadiation",
-			11:"DewPoint",
-			12:"RainRate",
-			13:"TideLevel",
-			14:"Weight",
-			15:"Voltage",
-			16:"Current",
-			17:"CO2",
-			18:"AirFlow",
-			19:"TankCapacity",
-			20:"Distance",
-			21:"AnglePosition",
-			22:"Rotation",
-			23:"WaterTemperature",
-			24:"SoilTemperature",
-			25:"SeismicIntensity",
-			26:"SeismicMagnitude",
-			27:"Ultraviolet",
-			28:"ElectricalResistivity",
-			29:"ElectricalConductivity",
-			30:"Loudness",
-			31:"Moisture",
-			32:"MaxType"
-		};
 
-		function processMultilevelSensor(node, endpoint, bytes) {
+        var multilevelSensors = {
+            1: "Temperature",
+            2: "General",
+            3: "Luminance",
+            4: "Power",
+            5: "RelativeHumidity",
+            6: "Velocity",
+            7: "Direction",
+            8: "AtmosphericPressure",
+            9: "BarometricPressure",
+            10: "SolarRadiation",
+            11: "DewPoint",
+            12: "RainRate",
+            13: "TideLevel",
+            14: "Weight",
+            15: "Voltage",
+            16: "Current",
+            17: "CO2",
+            18: "AirFlow",
+            19: "TankCapacity",
+            20: "Distance",
+            21: "AnglePosition",
+            22: "Rotation",
+            23: "WaterTemperature",
+            24: "SoilTemperature",
+            25: "SeismicIntensity",
+            26: "SeismicMagnitude",
+            27: "Ultraviolet",
+            28: "ElectricalResistivity",
+            29: "ElectricalConductivity",
+            30: "Loudness",
+            31: "Moisture",
+            32: "MaxType"
+        };
+
+        function processMultilevelSensor(node, endpoint, bytes) {
             var data = {result: SUCCESS};
 
             var cmdCls = HEX2DEC(bytes[0]);
@@ -1015,44 +1039,45 @@ angular.module('ZWaveLogReader', [
             data.content = commandClasses[cmdCls].name + "::" + commandClasses[cmdCls].commands[cmdCmd].name;
             switch (cmdCmd) {
                 case 2:             // SENSOR_MULTI_LEVEL_SUPPORTED_REPORT 
-					for(var i = 0; i < bytes.length - 3; ++i ) {
-	                    var a = HEX2DEC(bytes[i + 2]);
-						for(var bit = 0; bit < 8; ++bit) {
-							if( (a & (1 << bit) ) == 0 ) {
-								continue;
-							}
-							var index = (i * 8 ) + bit + 1;
+                    for (var i = 0; i < bytes.length - 3; ++i) {
+                        var a = HEX2DEC(bytes[i + 2]);
+                        for (var bit = 0; bit < 8; ++bit) {
+                            if ((a & (1 << bit) ) == 0) {
+                                continue;
+                            }
+                            var index = (i * 8 ) + bit + 1;
 
-							if(multilevelSensors[index] == null) {
-								// Add to list of supported sensors
-								addNodeItem(node, endpoint, multilevelSensors[index], commandClasses[cmdCls].name, "sensor_type="+index);
-							}
-						}
-					}
+                            if (multilevelSensors[index] == null) {
+                                // Add to list of supported sensors
+                                addNodeItem(node, endpoint, multilevelSensors[index], commandClasses[cmdCls].name,
+                                    "sensor_type=" + index);
+                            }
+                        }
+                    }
                     break;
-				case 4:				// SENSOR_MULTI_LEVEL_GET
-					var type = HEX2DEC(bytes[2]);
-					if(multilevelSensors[type] == null) {
-						data.content += "::" + type;
-					}
-					else {
-						data.content += "::" + multilevelSensors[type];
-					}
-					break;
-				case 5:				// SENSOR_MULTI_LEVEL_REPORT
-					var type = HEX2DEC(bytes[2]);
-					var scale = HEX2DEC(bytes[3]);
-					if(multilevelSensors[type] == null) {
-						data.content += "::" + type + "=" + scale;
-					}
-					else {
-						data.content += "::" + multilevelSensors[type] + "=" + scale;
-					}
-					break;
+                case 4:				// SENSOR_MULTI_LEVEL_GET
+                    var type = HEX2DEC(bytes[2]);
+                    if (multilevelSensors[type] == null) {
+                        data.content += "::" + type;
+                    }
+                    else {
+                        data.content += "::" + multilevelSensors[type];
+                    }
+                    break;
+                case 5:				// SENSOR_MULTI_LEVEL_REPORT
+                    var type = HEX2DEC(bytes[2]);
+                    var scale = HEX2DEC(bytes[3]);
+                    if (multilevelSensors[type] == null) {
+                        data.content += "::" + type + "=" + scale;
+                    }
+                    else {
+                        data.content += "::" + multilevelSensors[type] + "=" + scale;
+                    }
+                    break;
             }
 
-            return data;		
-		}
+            return data;
+        }
 
         function processVersion(node, endpoint, bytes) {
             var data = {result: SUCCESS};
@@ -1193,6 +1218,7 @@ angular.module('ZWaveLogReader', [
             var data = {result: SUCCESS};
             if (direction == "TX") {
                 data.node = HEX2DEC(bytes[0]);
+                createNode(data.node);
 
                 lastCmd = {
                     node: data.node
@@ -1224,6 +1250,7 @@ angular.module('ZWaveLogReader', [
             var data = {result: SUCCESS};
             if (direction == "TX") {
                 data.node = HEX2DEC(bytes[0]);
+                createNode(data.node);
 
                 lastCmd = {
                     node: data.node
@@ -1249,26 +1276,6 @@ angular.module('ZWaveLogReader', [
                             setStatus(data, WARNING);
                             break;
                     }
-                }
-                else {
-                    data.node = lastCmd.node;
-                }
-            }
-
-            return data;
-        }
-
-        function processControllerCallbackCmd(node, direction, type, bytes, len) {
-            var data = {result: SUCCESS};
-            if (direction == "TX") {
-                data.node = HEX2DEC(bytes[0]);
-
-                lastCmd = {
-                    node: data.node
-                };
-            } else {
-                if (type == REQUEST) {
-                    data.node = lastCmd.node;
                 }
                 else {
                     data.node = lastCmd.node;
@@ -1310,6 +1317,28 @@ angular.module('ZWaveLogReader', [
             var data = {result: SUCCESS};
             if (direction == "TX") {
                 data.node = HEX2DEC(bytes[0]);
+                createNode(data.node);
+
+                lastCmd = {
+                    node: data.node
+                };
+            } else {
+                if (type == REQUEST) {
+                    data.node = lastCmd.node;
+                }
+                else {
+                    data.node = lastCmd.node;
+                }
+            }
+
+            return data;
+        }
+
+        function processControllerCallbackCmd(node, direction, type, bytes, len) {
+            var data = {result: SUCCESS};
+            if (direction == "TX") {
+                data.node = HEX2DEC(bytes[0]);
+                createNode(data.node);
 
                 lastCmd = {
                     node: data.node
@@ -1681,12 +1710,13 @@ angular.module('ZWaveLogReader', [
         this.loadLogfile = function (file) {
             fileName = file.name;
             var deferred = $q.defer();
-            var reader = new FileLineStreamer();
 
             lastPacketRx = null;
             nodeInfoProcessed = false;
             countLines = 0;
+            countEntries = 0;
             data = [];
+            nodes = [];
 
             // Check for the various File API support.
             if (window.FileReader) {
@@ -1697,7 +1727,6 @@ angular.module('ZWaveLogReader', [
             }
 
             return deferred.promise;
-
 
             function getAsText(fileToRead) {
                 var reader = new FileReader();
@@ -1719,11 +1748,12 @@ angular.module('ZWaveLogReader', [
                     countLines++;
                     var d = logProcessLine(allTextLines[i]);
                     if (d != null && d.ref != null) {
+                        d.id = countEntries++;
                         data.push(d);
-                        countEntries++;
                     }
                 }
 
+                processDeviceInformation();
                 deferred.resolve();
             }
 
@@ -1733,5 +1763,5 @@ angular.module('ZWaveLogReader', [
                 }
             }
         };
-	})
+    })
 ;

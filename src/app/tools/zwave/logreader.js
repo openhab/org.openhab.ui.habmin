@@ -25,7 +25,7 @@ angular.module('ZWaveLogViewer', [
             views: {
                 "main": {
                     controller: 'ZWaveLogReaderCtrl',
-                    templateUrl: 'tools/zwave/logreader.tpl.html'
+                    templateUrl: 'tools/zwave/logReader.tpl.html'
                 }
             },
             data: {pageTitle: 'ZWave Log Reader'},
@@ -161,7 +161,8 @@ angular.module('ZWaveLogViewer', [
 				$scope.data = ZWaveLogReader.getData();
 				$scope.countLines = ZWaveLogReader.getLinesProcessed();
 				$scope.nodes = ZWaveLogReader.getNodes();
-				
+                $scope.countEntries = $scope.data.length;
+
 	            // Display all nodes to start
 				$scope.checkAllNodes();
 

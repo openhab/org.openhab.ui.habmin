@@ -176,6 +176,14 @@
                             <td>{{selectedNode.specificClass}}</td>
                         </tr>
                         <tr>
+                            <td>Messages Sent</td>
+                            <td>{{selectedNode.messagesSent}}</td>
+                        </tr>
+                        <tr>
+                            <td>Messages Timed-out</td>
+                            <td>{{selectedNode.responseTimeouts}} ({{selectedNode.retryPercent}}%)</td>
+                        </tr>
+                        <tr>
                             <td>Response Times</td>
                             <td>{{selectedNode.responseTimeMin}} / {{selectedNode.responseTimeAvg}} / {{selectedNode.responseTimeMax}}</td>
                         </tr>
@@ -191,6 +199,8 @@
                             <td>Device ID</td>
                             <td>{{selectedNode.deviceID}}</td>
                         </tr>
+
+                        <tr></tr>
 
 
 
