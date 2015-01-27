@@ -176,9 +176,34 @@
                             <td>{{selectedNode.specificClass}}</td>
                         </tr>
                         <tr>
+                            <td>Messages Sent</td>
+                            <td>{{selectedNode.messagesSent}}</td>
+                        </tr>
+                        <tr>
+                            <td>Messages Timed-out</td>
+                            <td>{{selectedNode.responseTimeouts}} ({{selectedNode.retryPercent}}%)</td>
+                        </tr>
+                        <tr>
                             <td>Response Times</td>
                             <td>{{selectedNode.responseTimeMin}} / {{selectedNode.responseTimeAvg}} / {{selectedNode.responseTimeMax}}</td>
                         </tr>
+                        <tr>
+                            <td>Manufacturer</td>
+                            <td>{{selectedNode.manufacturer}}</td>
+                        </tr>
+                        <tr>
+                            <td>Device Type</td>
+                            <td>{{selectedNode.deviceType}}</td>
+                        </tr>
+                        <tr>
+                            <td>Device ID</td>
+                            <td>{{selectedNode.deviceID}}</td>
+                        </tr>
+
+                        <tr></tr>
+
+
+
                         <tr ng-repeat="(key, value) in selectedNode">
                             <td>{{key}}</td>
                             <td>{{value}}</td>

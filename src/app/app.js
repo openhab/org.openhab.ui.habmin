@@ -20,7 +20,7 @@ angular.module('HABmin', [
     'HABmin.bindingModel',
     'HABmin.dashboard',
     'HABmin.scheduler',
-    'ZWave.logReader',
+    'ZWaveLogViewer',
     'UserChartPrefs',
     'UserGeneralPrefs',
     'ui.router',
