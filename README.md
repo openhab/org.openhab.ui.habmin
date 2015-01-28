@@ -40,7 +40,7 @@ The following images show a selection of screenshots. Note that the theme is use
 
 Graphing a saved chart...
 
-![charting](https://github.com/wiki/cdjackson/HABmin2/screenshots/charting-saved.png)
+![charting](https://github.com/cdjackson/HABmin2/wiki/screenshots/charting-saved.png)
 
 
 Editing a saved chart...
