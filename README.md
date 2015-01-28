@@ -45,32 +45,32 @@ Graphing a saved chart...
 
 Editing a saved chart...
 
-![charting-editor](https://github.com/wiki/cdjackson/HABmin2/screenshots/charting-edit.png)
+![charting-editor](https://github.com/cdjackson/HABmin2/wiki/screenshots/charting-edit.png)
 
 
 Editing rules (graphical editor)...
 
-![rules-block](https://github.com/wiki/cdjackson/HABmin2/screenshots/rules-blocks.png)
+![rules-block](https://github.com/cdjackson/HABmin2/wiki/screenshots/rules-blocks.png)
 
 
 Editing rules (text editor)...
 
-![rules-source](https://github.com/wiki/cdjackson/HABmin2/screenshots/rules-source.png)
+![rules-source](https://github.com/cdjackson/HABmin2/wiki/screenshots/rules-source.png)
 
 
 ZWave device configuration...
 
-![zwave-config](https://github.com/wiki/cdjackson/HABmin2/screenshots/zwave-config.png)
+![zwave-config](https://github.com/cdjackson/HABmin2/wiki/screenshots/zwave-config.png)
 
 
 ZWave network routing diagram...
 
-![zwave-network](https://github.com/wiki/cdjackson/HABmin2/screenshots/zwave-network.png)
+![zwave-network](https://github.com/cdjackson/HABmin2/wiki/screenshots/zwave-network.png)
 
 
 Sitemaps (mobile view using *yeti* theme)...
 
-![sitemap](https://github.com/wiki/cdjackson/HABmin2/screenshots/sitemap-mobile-yeti.png)
+![sitemap](https://github.com/cdjackson/HABmin2/wiki/screenshots/sitemap-mobile-yeti.png)
 
 
 
