@@ -1126,7 +1126,7 @@ angular.module('ZWaveLogReader', [])
             if (bytes == null || bytes.length == 0) {
                 cmdClass.content = "Zero length frame in command class";
                 setStatus(cmdClass, ERROR);
-                return;
+                return cmdClass;
             }
 
             // Handle our requests
