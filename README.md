@@ -40,37 +40,37 @@ The following images show a selection of screenshots. Note that the theme is use
 
 Graphing a saved chart...
 
-![charting](https://raw.github.com/wiki/cdjackson/HABmin2/screenshots/charting-saved.png)
+![charting](https://github.com/wiki/cdjackson/HABmin2/screenshots/charting-saved.png)
 
 
 Editing a saved chart...
 
-![charting-editor](https://raw.github.com/wiki/cdjackson/HABmin2/screenshots/charting-edit.png)
+![charting-editor](https://github.com/wiki/cdjackson/HABmin2/screenshots/charting-edit.png)
 
 
 Editing rules (graphical editor)...
 
-![rules-block](https://raw.github.com/wiki/cdjackson/HABmin2/screenshots/rules-blocks.png)
+![rules-block](https://github.com/wiki/cdjackson/HABmin2/screenshots/rules-blocks.png)
 
 
 Editing rules (text editor)...
 
-![rules-source](https://raw.github.com/wiki/cdjackson/HABmin2/screenshots/rules-source.png)
+![rules-source](https://github.com/wiki/cdjackson/HABmin2/screenshots/rules-source.png)
 
 
 ZWave device configuration...
 
-![zwave-config](https://raw.github.com/wiki/cdjackson/HABmin2/screenshots/zwave-config.png)
+![zwave-config](https://github.com/wiki/cdjackson/HABmin2/screenshots/zwave-config.png)
 
 
 ZWave network routing diagram...
 
-![zwave-network](https://raw.github.com/wiki/cdjackson/HABmin2/screenshots/zwave-network.png)
+![zwave-network](https://github.com/wiki/cdjackson/HABmin2/screenshots/zwave-network.png)
 
 
 Sitemaps (mobile view using *yeti* theme)...
 
-![sitemap](https://raw.github.com/wiki/cdjackson/HABmin2/screenshots/sitemap-mobile-yeti.png)
+![sitemap](https://github.com/wiki/cdjackson/HABmin2/screenshots/sitemap-mobile-yeti.png)
 
 
 
