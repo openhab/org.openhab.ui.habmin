@@ -73,7 +73,7 @@ angular.module('ZWaveLogReader', [])
                         Math.round(node.responseTimeAvg / node.responseTimeCnt);
                 }
 
-                if(node.messagesSent == null || node.messagesSent == 0) {
+                if (node.messagesSent == null || node.messagesSent == 0) {
                     node.retryPercent = 0;
                 }
                 else {
@@ -96,6 +96,39 @@ angular.module('ZWaveLogReader', [])
                 if (nodes[255] != null && node.id == nodes[255].controllerID) {
                     if (node.isListening == false) {
                         node.errors.push("Device is the controller, but it's not listening");
+                    }
+                }
+
+                if (node.neighboursList != null) {
+                    node.neighboursUnknown = 0;
+                    node.neighboursListening = 0;
+                    angular.forEach(node.neighboursList, function (neighbour) {
+                        if (nodes[neighbour] != null) {
+                            if (nodes[neighbour].isListening == null) {
+                                node.neighboursUnknown++;
+                            }
+                            else if (nodes[neighbour].isListening == true) {
+                                node.neighboursListening++;
+                            }
+                        }
+                    });
+                }
+
+                if (node.neighboursTotal != null) {
+                    if (node.neighboursTotal == 0) {
+                        node.errors.push("Node has no neighbours");
+                    }
+                    else if (node.neighboursTotal < 4) {
+                        node.warnings.push("Node only has " + node.neighboursTotal + " neighbours");
+                    }
+                    
+                    if (node.neighboursListening != node.neighboursTotal) {
+                        if (node.neighboursListening == 0) {
+                            node.errors.push("Node has no listening neighbours");
+                        }
+                        else if (node.neighboursListening < 4) {
+                            node.warnings.push("Node only has " + node.neighboursListening + " listening neighbours");
+                        }
                     }
                 }
 
@@ -238,7 +271,7 @@ angular.module('ZWaveLogReader', [])
             },
             128: {
                 name: "GetRoutingInfo",
-                processor: processControllerCmd
+                processor: processRoutingInfo
             }
         };
 
@@ -1313,6 +1346,50 @@ angular.module('ZWaveLogReader', [])
             return data;
         }
 
+        function processRoutingInfo(node, direction, type, bytes, len) {
+            var data = {result: SUCCESS};
+            if (direction == "TX") {
+                data.node = HEX2DEC(bytes[0]);
+                createNode(data.node);
+
+                lastCmd = {
+                    node: data.node
+                };
+            } else {
+                if (type == REQUEST) {
+                    data.node = lastCmd.node;
+                }
+                else {
+                    data.node = lastCmd.node;
+
+                    var cntTotal = 0;
+                    var cntListening = 0;
+                    var node;
+                    var neighbours = [];
+                    for (var i = 0; i < 29; i++) {
+                        var incomingByte = HEX2DEC(bytes[i]);
+                        // loop bits in byte
+                        for (var j = 0; j < 8; j++) {
+                            node++;
+                            var b1 = incomingByte & Math.pow(2, j);
+                            var b2 = Math.pow(2, j);
+                            if (b1 == b2) {
+                                cntTotal++;
+                                neighbours.push(node);
+                            }
+                        }
+                    }
+
+                    addNodeInfo(data.node, "neighboursList", neighbours);
+                    addNodeInfo(data.node, "neighboursTotal", cntTotal);
+
+                    data.content = "RoutingInfo: Found " + getNodeInfo(data.node, "neighboursTotal") + " neighbours";
+                }
+            }
+
+            return data;
+        }
+
         function processControllerCmd(node, direction, type, bytes, len) {
             var data = {result: SUCCESS};
             if (direction == "TX") {
@@ -1434,23 +1511,25 @@ angular.module('ZWaveLogReader', [])
                 };
             } else {
                 if (type == REQUEST) {
-                    setStatus(data, ERROR);
-                }
-                else {
-                    data.node = lastCmd.node;
+                    data = processCommandClass(HEX2DEC(bytes[1]), 0, bytes.slice(3));
 
-                    // This is just the response to say it was sent
-                    if (HEX2DEC(bytes[0]) > 0) {
-                        // Success
-                        data.content = "Node " + data.node + " is failed!";
-                        setStatus(data, ERROR);
-                        addNodeError(data.node, "Controller is reporting node has failed");
+                    if (data == null) {
+                        data = {
+                            result: WARNING,
+                            node: HEX2DEC(bytes[1]),
+                            content: "Unprocessed command class: " + bytes[3]
+                        };
                     }
                     else {
-                        // Error
-                        data.content = "Node " + data.node + " is healthy";
-                        setStatus(data, SUCCESS);
+                        createNode(data.node);
+                        if (nodes[data.node].classes[data.id] == undefined) {
+                            nodes[data.node].classes[data.id] = 0;
+                        }
+                        nodes[data.node].classes[data.id]++;
                     }
+                }
+                else {
+                    setStatus(data, ERROR);
                 }
             }
 
