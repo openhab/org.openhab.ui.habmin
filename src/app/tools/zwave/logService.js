@@ -121,7 +121,7 @@ angular.module('ZWaveLogReader', [])
                     else if (node.neighboursTotal < 4) {
                         node.warnings.push("Node only has " + node.neighboursTotal + " neighbours");
                     }
-                    
+
                     if (node.neighboursListening != node.neighboursTotal) {
                         if (node.neighboursListening == 0) {
                             node.errors.push("Node has no listening neighbours");
@@ -342,6 +342,20 @@ angular.module('ZWaveLogReader', [])
             39: {
                 name: "SWITCH_ALL",
                 processor: null
+            },
+            40: {
+                name: "SWITCH_TOGGLE_BINARY",
+                commands: {
+                    1: {
+                        name: "SWITCH_TOGGLE_BINARY_SET"
+                    },
+                    2: {
+                        name: "SWITCH_TOGGLE_BINARY_GET"
+                    },
+                    3: {
+                        name: "SWITCH_TOGGLE_BINARY_REPORT"
+                    }
+                }
             },
             43: {
                 name: "SCENE_ACTIVATION",
@@ -605,19 +619,36 @@ angular.module('ZWaveLogReader', [])
                 name: "MULTI_CMD",
                 processor: null
             },
+            145: {
+                name: "MANUFACTURER_PROPRIETARY"
+            },
             156: {
                 name: "SENSOR_ALARM",
-                processor: null
+                commands: {
+                    1: {
+                        name: "SENSOR_ALARM_GET"
+                    },
+                    2: {
+                        name: "SENSOR_ALARM_REPORT"
+                    },
+                    3: {
+                        name: "SENSOR_ALARM_SUPPORTED_GET"
+                    },
+                    4: {
+                        name: "SENSOR_ALARM_SUPPORTED_REPORT"
+                    }
+                },
+                processor: processAlarmSensor
             }
         };
 
         // Definition of strings to search for in the log
         var processList = [
             {
-                string: "Z-Wave binding has been started.",
-                ref: "Start",
-                content: "Binding Started",
-                status: INFO
+                string: "Z-Wave binding",
+                ref: "Info",
+                status: INFO,
+                processor: processBindingStart
             },
             {
                 string: "Starting Z-Wave receive thread",
@@ -870,6 +901,21 @@ angular.module('ZWaveLogReader', [])
             }
         }
 
+        function processBindingStart(node, process, message) {
+            var data = {
+                result: INFO
+            };
+
+            if (message.indexOf("started") != -1) {
+                data.content = "Binding started. Version " + message.substr(message.indexOf("Version") + 8);
+            }
+            else if (message.indexOf("stopped") != -1) {
+                data.content = "Binding stopped.";
+            }
+
+            return data;
+        }
+
         var lastRestore = null;
 
         function processDeserialiser(node, process, message) {
@@ -1029,6 +1075,55 @@ angular.module('ZWaveLogReader', [])
             return data;
         }
 
+        var alarmSensors = {
+            0: "General",
+            1: "Smoke",
+            2: "Carbon Monoxide",
+            3: "Carbon Dioxide",
+            4: "Heat",
+            5: "Flood",
+            6: "Access Control",
+            7: "Burglar",
+            8: "Power Management",
+            9: "System",
+            10: "Emergency",
+            11: "Count"
+        };
+
+        function processAlarmSensor(node, endpoint, bytes) {
+            var data = {result: SUCCESS};
+
+            var cmdCls = HEX2DEC(bytes[0]);
+            var cmdCmd = HEX2DEC(bytes[1]);
+            data.content = commandClasses[cmdCls].commands[cmdCmd].name;
+            switch (cmdCmd) {
+                case 1:             // GET
+                    if (bytes.length >= 3) {
+                        var getType = HEX2DEC(bytes[2]);
+                        if (alarmSensors[getType] == null) {
+                            data.content += "::" + getType;
+                        }
+                        else {
+                            data.content += "::" + alarmSensors[getType];
+                        }
+                    }
+                    break;
+                case 2:             // REPORT
+                    var repSource = HEX2DEC(bytes[2]);
+                    var repType = HEX2DEC(bytes[3]);
+                    var repValue = HEX2DEC(bytes[4]);
+                    if (alarmSensors[repType] == null) {
+                        data.content += "::" + repType + "=" + repValue;
+                    }
+                    else {
+                        data.content += "::" + alarmSensors[repType] + "=" + repValue;
+                    }
+                    break;
+            }
+
+            return data;
+        }
+
         var multilevelSensors = {
             1: "Temperature",
             2: "General",
@@ -1089,7 +1184,7 @@ angular.module('ZWaveLogReader', [])
                     }
                     break;
                 case 4:				// SENSOR_MULTI_LEVEL_GET
-                    if(bytes.length >= 3) {
+                    if (bytes.length >= 3) {
                         var type = HEX2DEC(bytes[2]);
                         if (multilevelSensors[type] == null) {
                             data.content += "::" + type;
@@ -1196,14 +1291,19 @@ angular.module('ZWaveLogReader', [])
                 }
                 else {
                     if (cmdCmd != null) {
-                        cmdClass.function = bytes[2];
+                        cmdClass.function = bytes[1];
                     }
                 }
                 cmdClass.class = commandClasses[cmdCls].name;
                 cmdClass.name = commandClasses[cmdCls].name;
 
                 if (cmdClass.content == null) {
-                    if (cmdClass.function != null) {
+                    // Check if the function contains the class name
+                    if (cmdClass.function != null && cmdClass.function.indexOf(cmdClass.name) == -1) {
+                        // No - we need to have both
+                        cmdClass.content = cmdClass.class + "::" + cmdClass.function;
+                    }
+                    else if (cmdClass.function != null) {
                         cmdClass.content = cmdClass.function;
                     }
                     else {
@@ -1602,7 +1702,7 @@ angular.module('ZWaveLogReader', [])
                                 updateNodeResponse(node, sendData.responseTime);
                             }
                             sendData.content += "ACK'd by device in " + sendData.responseTime +
-                                "ms";
+                            "ms";
                             break;
                         case 1:		// COMPLETE_NO_ACK
                             updateNodeResponse(node, -1);
