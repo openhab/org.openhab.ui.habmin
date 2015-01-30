@@ -519,6 +519,12 @@ angular.module('Binding.zwave', [
                                 device.icon = deviceClassIcons[status.value];
                             }
                         }
+                        if(status.name === "Listening") {
+                            device.listening = status.value == "true";
+                        }
+                        if(status.name === "Routing") {
+                            device.routing = status.value == "true";
+                        }
                         if(status.name === "NodeID") {
                             device.nodeID = parseInt(status.value, 10);
                         }
@@ -708,7 +714,7 @@ angular.module('Binding.zwave', [
                 newNode.borderWidth = 2;    // TODO: put this in general options?
                 newNode.color = {};
 
-                if (device.power == "Battery") {
+                if (device.listening == false) {
                     newNode.color.background = "grey";
                 }
                 switch (device.state) {
