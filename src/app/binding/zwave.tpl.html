@@ -51,7 +51,7 @@
                     <span class="pull-right">
                         <span popover="{{stateHeal(device)}}" popover-trigger="mouseenter" popover-placement="top"
                               popover-append-to-body="true" popover-popup-delay="500">
-                            <span ng-class="{'text-success': device.healState=='RUN','text-danger': device.healState =='ERROR','text-warning': device.healState =='WAIT','text-muted': device.healState =='OK'}">
+                            <span ng-class="{'text-success': device.healState=='OK','text-danger': device.healState =='ERROR','text-warning': device.healState =='RUN','text-muted': device.healState =='WAIT'}">
                                 <span class="fa fa-ambulance"></span>
                             </span>
                         </span>
