@@ -85,7 +85,7 @@ angular.module('ZWaveLogReader', [])
                     if (node.wakeupCnt == null || node.wakeupCnt == 0) {
                         node.warnings.push("Device appears to be battery operated, but has not woken up")
                     }
-                    if (node.wakeupNode != null && node.wakeupNode != nodes[255] != null && nodes[255].controllerID) {
+                    if (node.wakeupNode != null && nodes[255] != null && node.wakeupNode != nodes[255].controllerID) {
                         node.errors.push("Wakeup node is not set to the controller")
                     }
                     if (node.wakeupInterval != null && node.wakeupInterval == 0) {
@@ -1582,6 +1582,7 @@ angular.module('ZWaveLogReader', [])
                     var callbackData = {};
                     if (callbackCache[callback] == null) {
                         sendData.content = "No callback ID found (" + bytes[0] + ")";
+                        // TODO: Add error
                         sendData.responseTime = "Unknown";
                         setStatus(sendData, ERROR);
                     }
@@ -1592,29 +1593,28 @@ angular.module('ZWaveLogReader', [])
                         sendData.responseTime = logTime - callbackData.time;
                     }
 
+                    sendData.content = "SendData (" + callback + "). ";
+
                     switch (status) {
                         case 0:		// COMPLETE_OK
                             // If we know the response, update stats
                             if (sendData.responseTime != "Unknown") {
                                 updateNodeResponse(node, sendData.responseTime);
                             }
-                            sendData.content =
-                                "SendData (" + callback + "). ACK'd by device in " + sendData.responseTime +
+                            sendData.content += "ACK'd by device in " + sendData.responseTime +
                                 "ms";
                             break;
                         case 1:		// COMPLETE_NO_ACK
                             updateNodeResponse(node, -1);
                             setStatus(sendData, WARNING);
-                            sendData.content =
-                                "SendData (" + callback + "). No ACK after " + sendData.responseTime + "ms";
+                            sendData.content += "No ACK after " + sendData.responseTime + "ms";
                             sendData.warnFlag = true;
                             sendData.warnMessage = "No ack received from device";
                             break;
                         case 2:		// COMPLETE_FAIL
                             updateNodeResponse(node, -1);
                             setStatus(sendData, ERROR);
-                            sendData.content =
-                                "SendData (" + callback + ") failed in " + sendData.responseTime + "ms";
+                            sendData.content += "Failed in " + sendData.responseTime + "ms";
                             break;
                         case 3:		// COMPLETE_NOT_IDLE
                             updateNodeResponse(node, -1);
@@ -1629,13 +1629,13 @@ angular.module('ZWaveLogReader', [])
                     // This is just the response to say it was sent
                     if (HEX2DEC(bytes[0]) > 0) {
                         // Success
-                        sendData.content = "SendData (" + lastSendData.callback + ") sent OK";
+                        sendData.content = "SendData (" + lastSendData.callback + "). Sent OK";
                         setStatus(sendData, SUCCESS);
                     }
                     else {
                         // Error
                         setStatus(sendData, ERROR);
-                        sendData.content = "SendData (" + lastSendData.callback + ") not sent!";
+                        sendData.content = "SendData (" + lastSendData.callback + "). Not sent!";
                     }
                 }
             }
