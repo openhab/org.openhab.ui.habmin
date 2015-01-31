@@ -202,12 +202,15 @@ angular.module('Binding.zwave', [
         }
 
         $scope.deviceSave = function () {
+            var doUpdateInfo = false;
             // TODO: This needs some rationalisation...
             angular.forEach($scope.deviceData, function (el) {
                 if(el.dirty) {
                     saveDomain(el.domain, el.value);
                     el.dirty = false;
                     el.pending = true;
+
+                    doUpdateInfo = true;
                 }
             });
             angular.forEach($scope.infoData, function (el) {
@@ -231,6 +234,12 @@ angular.module('Binding.zwave', [
                     el.pending = true;
                 }
             });
+
+            // The name and location aren't handled normally
+            // so we need to handle this explicitly here
+            if(doUpdateInfo == true) {
+                updateInfo($scope.devEdit.device);
+            }
         };
 
         $scope.deviceCancel = function () {
