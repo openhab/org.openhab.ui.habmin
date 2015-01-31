@@ -769,7 +769,7 @@ angular.module('ZWaveLogReader', [])
                     computed: false,
                     responseTime: [],
                     responseTimeouts: 0,
-                    classes: [],
+                    classes: {},
                     responseTimeMin: 9999,
                     responseTimeAvg: 0,
                     responseTimeMax: 0,
@@ -1422,12 +1422,43 @@ angular.module('ZWaveLogReader', [])
             return data;
         }
 
+        var appUpdateState = {
+            0x84: "NODE_INFO_RECEIVED",
+            0x82: "NODE_INFO_REQ_DONE",
+            0x81: "NODE_INFO_REQ_FAILED",
+            0x80: "ROUTING_PENDING",
+            0x40: "NEW_ID_ASSIGNED",
+            0x20: "DELETE_DONE",
+            0x10: "SUC_ID"
+        };
         function processAppUpdate(node, direction, type, bytes, len) {
             var data = {result: SUCCESS};
             if (direction == "TX") {
             } else {
                 if (type == REQUEST) {
+                    var state = HEX2DEC(bytes[0]);
                     data.node = HEX2DEC(bytes[1]);
+                    data.content = "ApplicationUpdate::";
+                    if(appUpdateState[state] != null) {
+                        data.content += appUpdateState[state];
+                    }
+                    else {
+                        data.content += bytes[0];
+                    }
+                    switch(state) {
+                        case 0x84:
+                            createNode(data.node);
+                            for(var c = 6; c < bytes.length; c++) {
+                                var id = HEX2DEC(bytes[c]);
+                                if (id == 0xEF) {
+                                    break;
+                                }
+                                if (nodes[data.node].classes[id] == undefined) {
+                                    nodes[data.node].classes[id] = 0;
+                                }
+                            }
+                            break;
+                    }
                 }
                 else {
                 }
@@ -1586,14 +1617,13 @@ angular.module('ZWaveLogReader', [])
                 setStatus(data, ERROR);
             } else {
                 if (type == REQUEST) {
-                    data.node = HEX2DEC(bytes[1]);
-                    data = processCommandClass(data.node, 0, bytes.slice(3));
+                    data = processCommandClass(HEX2DEC(bytes[1]), 0, bytes.slice(3));
 
-                    createNode(node);
-                    if (nodes[node].classes[data.id] == undefined) {
-                        nodes[node].classes[data.id] = 0;
+                    createNode(data.node);
+                    if (nodes[data.node].classes[data.class] == null) {
+                        nodes[data.node].classes[data.class] = 0;
                     }
-                    nodes[node].classes[data.id]++;
+                    nodes[data.node].classes[data.class]++;
                 }
                 else {
                     setStatus(data, ERROR);

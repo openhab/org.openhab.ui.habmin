@@ -156,6 +156,7 @@ angular.module('ZWaveLogViewer', [
             $scope.logState = "loading";
             $scope.logName = file.name;
             $scope.selectedNode = {};
+            $scope.showOption = "LIST";
 
             ZWaveLogReader.loadLogfile(file).then(function() {
 				$scope.data = ZWaveLogReader.getData();
