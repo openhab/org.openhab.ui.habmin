@@ -111,6 +111,11 @@ angular.module('Binding.zwave', [
         };
 
         $scope.selectDevice = function (node) {
+            // Make sure the node really changed!
+            if(node == $scope.devEdit) {
+                return;
+            }
+
             $scope.devEdit = node;
 
             // Close the panels
