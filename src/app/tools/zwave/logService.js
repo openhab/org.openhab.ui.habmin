@@ -1608,28 +1608,20 @@ angular.module('ZWaveLogReader', [])
 
             if (direction == "TX") {
                 data.node = HEX2DEC(bytes[0]);
-                data.name = "Check if node " + data.node + " is failed";
+                data.content = "Check if node " + data.node + " is failed";
 
                 lastCmd = {
                     node: data.node
                 };
             } else {
-                if (type == REQUEST) {
-                    data = processCommandClass(HEX2DEC(bytes[1]), 0, bytes.slice(3));
-
-                    if (data == null) {
-                        data = {
-                            result: WARNING,
-                            node: HEX2DEC(bytes[1]),
-                            content: "Unprocessed command class: " + bytes[3]
-                        };
+                data.node = lastCmd.node;
+                if (type == RESPONSE) {
+                    if (HEX2DEC(bytes[0]) == 0) {
+                        data.content = "Node is marked as HEALTHY by controller";
                     }
                     else {
-                        createNode(data.node);
-                        if (nodes[data.node].classes[data.id] == undefined) {
-                            nodes[data.node].classes[data.id] = 0;
-                        }
-                        nodes[data.node].classes[data.id]++;
+                        data.content = "Node is marked as FAILED by controller";
+                        setStatus(data, WARNING);
                     }
                 }
                 else {
