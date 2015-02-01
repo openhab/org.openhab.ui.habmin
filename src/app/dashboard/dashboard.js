@@ -10,7 +10,8 @@
 angular.module('HABmin.dashboard', [
     'ui.router',
     'gridster',
-    'dashboardChartWidget'
+    'dashboardChartWidget',
+    'dashboardWidgetProperties'
 ])
     .config(function config($stateProvider) {
         $stateProvider.state('dashboard', {

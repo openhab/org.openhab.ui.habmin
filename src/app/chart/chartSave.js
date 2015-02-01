@@ -18,6 +18,11 @@ angular.module('HABmin.chartSave', [
 ])
     .service('ChartSave',
     function ($modal, $rootScope, ChartListModel, growl, locale, UserService) {
+        /**
+         * Edits a chart given it's chart id.
+         * First it loads the chart from the server, then calls the editor
+         * @param chartId
+         */
         this.editChart = function (chartId) {
             var me = this;
 
@@ -26,6 +31,11 @@ angular.module('HABmin.chartSave', [
             });
         };
 
+        /**
+         * Edits the chart properties
+         * @param chart
+         * @returns {*}
+         */
         this.saveChart = function (chart) {
             var scope = $rootScope.$new();
             scope.showTab = 0;
@@ -94,6 +104,11 @@ angular.module('HABmin.chartSave', [
                 });
             }
 
+            /**
+             * Controller functions get called when the modal closes
+             * @param $scope
+             * @param $modalInstance
+             */
             var controller = function ($scope, $modalInstance) {
                 $scope.ok = function (result) {
                     var query = {};

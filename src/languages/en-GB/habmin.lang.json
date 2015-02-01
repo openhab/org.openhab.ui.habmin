@@ -82,6 +82,7 @@
   "dashboardEndEdit": "End Edit",
   "dashboardClearTitle": "Clear Dashboard",
   "dashboardClearText": "Are you sure you want to remove all widgets from the dashboard?",
+  "dashboardWidgetEditTitle": "Edit Widget Properties",
 
   "errorLoadingSitemaps": "Error loading the sitemap list!",
   "period1Second": "1 Second",
