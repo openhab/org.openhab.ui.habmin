@@ -235,7 +235,8 @@ angular.module('ZWaveLogReader', [])
                     2: "SCENE_SWITCH_BINARY_DISCONTINUED",
                     3: "SCENE_SWITCH_BINARY",
                     5: "SIREN_SWITCH_BINARY"
-                }
+                },
+                class: "SWITCH_BINARY"
             },
             0x11: {
                 name: "MULTILEVEL_SWITCH",
@@ -309,7 +310,8 @@ angular.module('ZWaveLogReader', [])
                 name: "METER",
                 specific: {
                     1: "SIMPLE_METER"
-                }
+                },
+                class: "METER"
             },
             0x40: {
                 name: "ENTRY_CONTROL",
@@ -336,12 +338,43 @@ angular.module('ZWaveLogReader', [])
                     8: "SMOKE_SENSOR_ZENSOR_BASIC",
                     9: "SMOKE_SENSOR_ZENSOR",
                     10: "SMOKE_SENSOR_ZENSOR_ADVANCED"
-                }
+                },
+                class: "BASIC"
             },
             0xff: {
                 name: "NON_INTEROPERABLE"
             }
         };
+
+        function getDeviceClass(basic, generic, specific) {
+            var devClass;
+            if (deviceClassBasic[basic] != null) {
+                devClass = deviceClassBasic[basic].name + ":";
+            }
+            else {
+                devClass = basic + ":";
+            }
+            if (deviceClass[generic] != null) {
+                if (deviceClass[generic].specific[specific] != null) {
+                    devClass += deviceClass[generic].specific[specific];
+                }
+                else {
+                    devClass += deviceClass[generic].name + ":" + specific;
+                }
+            }
+            else {
+                devClass += generic + ":" + specific;
+            }
+            return devClass;
+        }
+
+        function getDeviceCommand(generic) {
+            if (deviceClass[generic] != null) {
+                return deviceClass[generic].class;
+            }
+
+            return null;
+        }
 
         // Packet type definitions
         var packetTypes = {
@@ -675,7 +708,8 @@ angular.module('ZWaveLogReader', [])
                         name: "MULTI_CHANNEL_CAPABILITY_GET"
                     },
                     10: {
-                        name: "MULTI_CHANNEL_CAPABILITY_REPORT"
+                        name: "MULTI_CHANNEL_CAPABILITY_REPORT",
+                        processor: processMultiChannelReport
                     },
                     11: {
                         name: "MULTI_CHANNEL_ENDPOINT_FIND"
@@ -805,13 +839,13 @@ angular.module('ZWaveLogReader', [])
                         name: "VERSION_REPORT"
                     },
                     19: {
-                        name: "VERSION_COMMAND_CLASS_GET",
-                        processor: processVersion
+                        name: "VERSION_COMMAND_CLASS_GET"
                     },
                     20: {
                         name: "VERSION_COMMAND_CLASS_REPORT"
                     }
-                }
+                },
+                processor: processVersion
             },
             135: {
                 name: "INDICATOR",
@@ -980,8 +1014,10 @@ angular.module('ZWaveLogReader', [])
                     computed: false,
                     responseTime: [],
                     responseTimeouts: 0,
+                    items: [],
                     classes: {},
                     control: {},
+                    endpoints: {},
                     responseTimeMin: 9999,
                     responseTimeAvg: 0,
                     responseTimeMax: 0,
@@ -1000,6 +1036,18 @@ angular.module('ZWaveLogReader', [])
             }
             createNode(id);
             nodes[id][type] = value;
+        }
+
+        function addNodeEndpointInfo(id, endpoint, type, value) {
+            if (id === 0) {
+                console.log("Trying to save data for node 0", type, value);
+                return;
+            }
+            createNode(id);
+            if(nodes[id].endpoints[endpoint] == null) {
+                nodes[id].endpoints[endpoint] = {};
+            }
+            nodes[id].endpoints[endpoint][type] = value;
         }
 
         function incNodeInfo(id, type) {
@@ -1026,13 +1074,15 @@ angular.module('ZWaveLogReader', [])
             nodes[id].errors.push(msg);
         }
 
-        function addNodeItem(node, endpoint, name, cmd, item) {
+        function addNodeItem(id, endpoint, name, cmd, item) {
             createNode(id);
-            var msg = name + " = " + node + ":";
+            var msg = name + " = " + id + ":";
             if (endpoint !== 0) {
                 msg += endpoint + ":";
             }
-            msg += "command=" + cmd;
+            if(cmd !== "") {
+                msg += "command=" + cmd;
+            }
             if (item != null) {
                 msg += "," + item;
             }
@@ -1417,11 +1467,14 @@ angular.module('ZWaveLogReader', [])
                             }
                             var index = (i * 8 ) + bit + 1;
 
-                            if (multilevelSensors[index] == null) {
-                                // Add to list of supported sensors
-                                addNodeItem(node, endpoint, multilevelSensors[index], commandClasses[cmdCls].name,
-                                    "sensor_type=" + index);
+                            var name = "UNKNOWN!";
+                            if (multilevelSensors[index] != null) {
+                                name = multilevelSensors[index];
                             }
+
+                            // Add to list of supported sensors
+                            addNodeItem(node, endpoint, name, commandClasses[cmdCls].name,
+                                "sensor_type=" + index);
                         }
                     }
                     break;
@@ -1463,6 +1516,10 @@ angular.module('ZWaveLogReader', [])
                 case 19:
                     data.content += " (" + commandClasses[cmdPrm].name + ")";
                     break;
+                case 20:
+                    var version = HEX2DEC(bytes[3]);
+                    data.content += " (" + commandClasses[cmdPrm].name + "=V" + version + ")";
+                    break;
             }
 
             return data;
@@ -1476,6 +1533,23 @@ angular.module('ZWaveLogReader', [])
             data.content = "Manufacturer Info: " + getNodeInfo(node, "manufacturer") + ":" +
             getNodeInfo(node, "deviceType") + ":" + getNodeInfo(node, "deviceID");
 
+            return data;
+        }
+
+        function processMultiChannelReport(node, endpoint, bytes) {
+            var data = {result: SUCCESS};
+
+            data.endPoint = HEX2DEC(bytes[2]) & 0x7f;
+            var generic = HEX2DEC(bytes[3]);
+            var specific = HEX2DEC(bytes[4]);
+
+            data.content = "MULTI_CHANNEL_CAPABILITY_REPORT::" + data.endPoint;
+
+            var devClass = getDeviceClass(getNodeInfo(node, "basicClass"), generic, specific);
+            addNodeEndpointInfo(node, data.endPoint, "deviceClass", devClass);
+            var cmdClass = getDeviceCommand(generic);
+
+            addNodeItem(node, data.endPoint, data.endPoint, cmdClass);
             return data;
         }
 
@@ -1623,25 +1697,10 @@ angular.module('ZWaveLogReader', [])
                     addNodeInfo(data.node, "genericClass", generic);
                     addNodeInfo(data.node, "specificClass", specific);
 
-                    var devClass;
-                    if(deviceClassBasic[basic] != null) {
-                        devClass = deviceClassBasic[basic].name + ":";
-                    }
-                    else {
-                        devClass = bytes[3] + ":";
-                    }
-                    if(deviceClass[generic] != null) {
-                        if(deviceClass[generic].specific[specific] != null) {
-                            devClass += deviceClass[generic].specific[specific];
-                        }
-                        else {
-                            devClass += deviceClass[generic].name + ":" + bytes[5];
-                        }
-                    }
-                    else {
-                        devClass += bytes[4] + ":" + bytes[5];
-                    }
+                    var cmdClass = getDeviceCommand(generic);
+                    addNodeItem(data.node, 0, 0, cmdClass);
 
+                    var devClass = getDeviceClass(basic, generic, specific);
                     addNodeInfo(data.node, "deviceClass", devClass);
                     data.content = "IdentifyNode: " + devClass + ". Listening:" + getNodeInfo(data.node, "isListening");
                 }

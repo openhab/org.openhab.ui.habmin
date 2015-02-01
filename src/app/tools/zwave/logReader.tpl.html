@@ -160,15 +160,7 @@
                             <td><span class="text-danger fa fa-exclamation-circle"></span>&nbsp;{{selectedNode.txErrorNak}}</td>
                         </tr>
                         <tr>
-                            <td>Listening State</td>
-                            <td>
-                                <span ng-if="selectedNode.isListening">Yes</span>
-                                &nbsp;
-                                <span ng-if="selectedNode.isFLiRS">Frequently</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Supported Classes</td>
+                            <td>Command Classes</td>
                             <td>
                                 <table>
                                     <tr ng-repeat="(key, value) in selectedNode.classes">
@@ -186,6 +178,40 @@
                                         <td>{{key}}</td>
                                     </tr>
                                 </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Endpoints</td>
+                            <td>
+                                <table>
+                                    <tr ng-repeat="(key, value) in selectedNode.endpoints">
+                                        <td>{{key}}</td>
+                                        <td>
+                                            <table>
+                                                <tr>Device Class</tr>
+                                                <tr>{{value.deviceClass}}</tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Item Definitions</td>
+                            <td>
+                                <table>
+                                    <tr ng-repeat="item in selectedNode.items">
+                                        <td>{{item}}</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Listening State</td>
+                            <td>
+                                <span ng-if="selectedNode.isListening">Yes</span>
+                                &nbsp;
+                                <span ng-if="selectedNode.isFLiRS">Frequently</span>
                             </td>
                         </tr>
                         <tr ng-if="selectedNode.neighboursTotal!=null">
