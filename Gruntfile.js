@@ -752,9 +752,9 @@ module.exports = function (grunt) {
     grunt.registerTask('watch', [ 'build', 'karma:unit', 'delta' ]);
 
     /**
-     * The default task is to build and compile.
+     * The default task is to build.
      */
-    grunt.registerTask('default', [ 'build', 'compile' ]);
+    grunt.registerTask('default', [ 'build' ]);
 
     /**
      * The `build` task gets your app ready to run for development and testing.

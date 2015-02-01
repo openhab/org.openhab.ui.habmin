@@ -207,7 +207,7 @@ angular.module('HABmin', [
         }
         else if (document.HABminCordova) {
             // If running as an app, and we have the server, then kick-start comms
-            if (UserService.getServer() != "") {
+            if (UserService.getServer() !== "") {
                 console.log("App Start: Server is", UserService.getServer());
                 getAppData();
             }
@@ -284,7 +284,7 @@ angular.module('HABmin', [
             $scope.currentState = toState.name;
 
             // Reset the sidebar
-            if ($scope.doublePanel == false) {
+            if ($scope.doublePanel === false) {
                 SidepanelService.showPanel('side');
             }
         });
@@ -301,7 +301,7 @@ angular.module('HABmin', [
         $scope.swipe = function (dir) {
             console.log("Swipe action event:" + dir);
             // Ignore this if we don't have the split screen
-            if ($scope.sidepanelEnabled == false || SidepanelService.getPanel() == 'all') {
+            if ($scope.sidepanelEnabled === false || SidepanelService.getPanel() == 'all') {
                 return;
             }
 
@@ -312,7 +312,7 @@ angular.module('HABmin', [
             if (dir == 'right') {
                 SidepanelService.showPanel('side');
             }
-        }
+        };
     })
 
     .filter('orderObjectBy', function () {

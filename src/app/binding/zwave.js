@@ -242,7 +242,7 @@ angular.module('Binding.zwave', [
 
             // The name and location aren't handled normally
             // so we need to handle this explicitly here
-            if(doUpdateInfo == true) {
+            if(doUpdateInfo === true) {
                 updateInfo($scope.devEdit.device);
             }
         };
@@ -728,7 +728,7 @@ angular.module('Binding.zwave', [
                 newNode.borderWidth = 2;    // TODO: put this in general options?
                 newNode.color = {};
 
-                if (device.listening == false) {
+                if (device.listening === false) {
                     newNode.color.background = "grey";
                 }
                 switch (device.state) {

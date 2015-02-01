@@ -36,12 +36,12 @@ angular.module('SidepanelService', [
             restrict: 'EA',
             transclude: false,
             link: function (scope, element, attr) {
-                if(attr.sidepanelToggle == null || attr.sidepanelToggle.length == 0) {
+                if(attr.sidepanelToggle == null || attr.sidepanelToggle.length === 0) {
                     return;
                 }
 
                 var options = attr.sidepanelToggle.split(",");
-                if(options.length == 0) {
+                if(options.length === 0) {
                     return;
                 }
 
@@ -66,7 +66,7 @@ angular.module('SidepanelService', [
                     }
                 });
             }
-        }
+        };
     })
 
     .directive('sidepanelClick', function (SidepanelService) {
@@ -82,7 +82,7 @@ angular.module('SidepanelService', [
                     SidepanelService.showPanel(attr.sidepanelClick);
                 });
             }
-        }
+        };
     })
 
     .directive('sidepanelClass', function (SidepanelService) {
@@ -90,12 +90,12 @@ angular.module('SidepanelService', [
             restrict: 'EA',
             transclude: false,
             link: function (scope, element, attr) {
-                if(attr.sidepanelClass == null || attr.sidepanelClass.length == 0) {
+                if(attr.sidepanelClass == null || attr.sidepanelClass.length === 0) {
                     return;
                 }
 
                 var options = attr.sidepanelClass.split(",");
-                if(options.length == 0) {
+                if(options.length === 0) {
                     return;
                 }
 
@@ -121,10 +121,10 @@ angular.module('SidepanelService', [
                         else {
                             element.removeClass(c.class);
                         }
-                    })
+                    });
                 });
             }
-        }
+        };
     })
 
     .directive('sidepanelPane', function ($animate, SidepanelService) {
@@ -168,6 +168,6 @@ angular.module('SidepanelService', [
                     }
                 });
             }
-        }
+        };
     })
 ;

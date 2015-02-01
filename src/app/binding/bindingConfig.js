@@ -146,7 +146,7 @@ angular.module('Binding.config', [
                         newOption = angular.element('<button></button>');
                         newOption.attr('class', 'btn btn-default');
                         newOption.attr('type', 'button');
-                        if(field.description == null || field.description.length == 0) {
+                        if(field.description == null || field.description.length === 0) {
                             newOption.attr('disabled', '');
                         }
                         else {
