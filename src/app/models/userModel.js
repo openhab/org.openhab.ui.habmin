@@ -150,13 +150,13 @@ angular.module('HABmin.userModel', [
                 login.hide();
 
                 scope.$on('event:auth-loginRequired', function () {
-                    console.log("LOGIN: Authentication required.")
+                    console.log("LOGIN: Authentication required.");
                     $('#login-holder').slideDown('slow', function () {
                         $('#content').hide();
                     });
                 });
                 scope.$on('event:auth-loginConfirmed', function () {
-                    console.log("LOGIN: Authentication confirmed.")
+                    console.log("LOGIN: Authentication confirmed.");
                     $('#content').show();
                     $('#login-holder').slideUp();
                 });
@@ -193,15 +193,16 @@ angular.module('HABmin.userModel', [
             $scope.period = 7 * 86400;
 
             UserService.setServer($scope.server);
-            
-            if($scope.user == null || $scope.user.length == 0 ||
-                        $scope.password == null || $scope.password.length == 0) {
+
+            var pass = "";
+            if($scope.user == null || $scope.user.length === 0 ||
+                        $scope.password == null || $scope.password.length === 0) {
                 // No authentication used
                 $http.defaults.headers.common['Authorization'] = null;
             }
             else {
                 // Add the authentication headers
-                var pass = $base64.encode($scope.user + ':' + $scope.password);
+                pass = $base64.encode($scope.user + ':' + $scope.password);
                 $http.defaults.headers.common['Authorization'] = 'Basic ' + pass;
             }
 

@@ -107,7 +107,7 @@ angular.module('ZWaveLogViewer', [
          * @param node
          */
         $scope.selectNode = function (node) {
-            if (node.computed == false) {
+            if (node.computed === false) {
 
             }
             $scope.selectedNode = node;
@@ -124,7 +124,7 @@ angular.module('ZWaveLogViewer', [
                 return;
             }
             for (var key in $scope.nodes) {
-                $scope.nodeFilter.push(parseInt(key));
+                $scope.nodeFilter.push(parseInt(key, 10));
             }
             $scope.nodeFilter.push(255);
         };
@@ -164,7 +164,7 @@ angular.module('ZWaveLogViewer', [
 				$scope.nodes = ZWaveLogReader.getNodes();
                 $scope.countEntries = $scope.data.length;
 
-	            // Display all nodes to start
+                // Display all nodes to start
 				$scope.checkAllNodes();
 
 				$scope.logState = "loaded";
@@ -172,7 +172,7 @@ angular.module('ZWaveLogViewer', [
         }
 
         $scope.logName = ZWaveLogReader.getFileName();
-        if($scope.logName == "") {
+        if($scope.logName === "") {
             $scope.logState = "empty";
         }
         else {

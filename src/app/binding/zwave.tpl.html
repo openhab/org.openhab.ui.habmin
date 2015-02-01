@@ -28,7 +28,7 @@
                     </a></li>
                     <li role="presentation" class="divider"></li>
                     <li><a ng-confirm-click="zwaveAction('binding/network', 'SoftReset')"
-                           data-i18n-attr="{'ngConfirmMessage': 'zwave.zwaveSoftResetConfirmMessage','ngConfirmTitle': 'zwave.zwaveSoftResetConfirmTitle','ngConfirmNoBtn': 'common.cancel', 'ngConfirmYesBtn': 'common.ok'}"
+                           i18n-attr="{'ngConfirmMessage': 'zwave.zwaveSoftResetConfirmMessage','ngConfirmTitle': 'zwave.zwaveSoftResetConfirmTitle','ngConfirmNoBtn': 'common.cancel', 'ngConfirmYesBtn': 'common.ok'}"
                             >
                         <span class="fa fa-fw fa-power-off"></span>
                         <span i18n="zwave.zwaveNetworkReset"></span>
@@ -128,7 +128,7 @@
                     </li>
                     <li ng-class1="{'disabled':devEdit.nodeStage!='FAILED'}">
                         <a ng-confirm-click="zwaveAction('nodes/'+devEdit.device+'/', 'Delete')"
-                           data-i18n-attr="{'ngConfirmMessage': 'zwave.zwaveRemoveFailedText','ngConfirmTitle': 'zwave.zwaveRemoveFailedTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
+                           i18n-attr="{'ngConfirmMessage': 'zwave.zwaveRemoveFailedText','ngConfirmTitle': 'zwave.zwaveRemoveFailedTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
                            nodenumber="{{devEdit.id}}">
                             <span class="fa fa-fw fa-trash-o"></span>
                             <span i18n="zwave.zwaveDeviceKill"></span>

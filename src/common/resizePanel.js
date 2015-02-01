@@ -15,7 +15,7 @@ angular.module('ResizePanel', [])
                 var top = element[0].offsetTop;
                 var w = angular.element($window);
                 $scope.getWindowDimensions = function () {
-                    if ($(element).is(":visible") == false) {
+                    if ($(element).is(":visible") === false) {
                         return;
                     }
 

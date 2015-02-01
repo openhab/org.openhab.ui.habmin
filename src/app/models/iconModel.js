@@ -87,7 +87,7 @@ angular.module('HABmin.iconModel', [
         };
 
         this.lookupImage = function (src) {
-            if(src == undefined || src == "") {
+            if(src === undefined || src === "") {
                 return "";
             }
             if (this._lookupTable[src] === undefined || this._lookupTable[src].class === "") {
