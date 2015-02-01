@@ -1,6 +1,6 @@
 {
   "name": "HABmin",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "devDependencies": {
     "angular": "~1.3",
     "angular-mocks": "~1.2",
@@ -12,7 +12,7 @@
     "bootstrap": "3.2.0",
     "angular-localization": "~1.0.2",
     "angular-resource": "~1.2.21",
-    "angular-growl-v2": "~0.6.1",
+    "angular-growl-v2": "latest",
     "angular-toggle-switch": "~1.0.0",
     "jquery-atmosphere": "2.0.5",
     "angular-dragdrop": "~1.0.7",

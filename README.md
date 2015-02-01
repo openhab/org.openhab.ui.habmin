@@ -1,11 +1,11 @@
 HABmin2
 =======
 
-HABmin version2 - ultimately targeted toward openHAB2, however currently only working with openHAB1.
+HABmin version2 - ultimately targeted toward openHAB2, however currently only working with openHAB1. The goal of HABmin2 is to provide a modern, professional and portable user interface for openHAB, providing both user and administrative functions (eg sitemaps for users, and configuration utilities to aid setup). It is written in such a way that it can be compiled as a native application for mobile devices using [Apache Cordova](http://cordova.apache.org/). This provides a portable application that with a small amount of work should run as a native application on a diverse range of devices.
 
 To get a feel for the interface, check out an online version [here](http://cdjackson.github.io/HABmin2/#/home). Note that this is a static site, so there will be errors, and dynamic content such as graphs etc won't work.
 
-HABmin is intended as a complete GUI for the openHAB Home Automation system. It is in early and active development, and as the ultimate target is openHAB2, which is also being actively developped, features are varied. In general, I'm focussing on features that I don't anticipate will change in OH2, or where the changes on the server side will not greatly impact the client.
+HABmin is intended as a complete GUI for the openHAB Home Automation system. It is in early and [active development](https://github.com/cdjackson/HABmin2/blob/master/CHANGELOG.md), and as the ultimate target is openHAB2, which is also being actively developped, features are varied. In general, I'm focussing on features that I don't anticipate will change in OH2, or where the changes on the server side will not greatly impact the client.
 
 
 Features
@@ -40,37 +40,37 @@ The following images show a selection of screenshots. Note that the theme is use
 
 Graphing a saved chart...
 
-![charting](https://raw.github.com/wiki/cdjackson/HABmin2/screenshots/charting-saved.png)
+![charting](https://github.com/cdjackson/HABmin2/wiki/screenshots/charting-saved.png)
 
 
 Editing a saved chart...
 
-![charting-editor](https://raw.github.com/wiki/cdjackson/HABmin2/screenshots/charting-edit.png)
+![charting-editor](https://github.com/cdjackson/HABmin2/wiki/screenshots/charting-edit.png)
 
 
 Editing rules (graphical editor)...
 
-![rules-block](https://raw.github.com/wiki/cdjackson/HABmin2/screenshots/rules-blocks.png)
+![rules-block](https://github.com/cdjackson/HABmin2/wiki/screenshots/rules-blocks.png)
 
 
 Editing rules (text editor)...
 
-![rules-source](https://raw.github.com/wiki/cdjackson/HABmin2/screenshots/rules-source.png)
+![rules-source](https://github.com/cdjackson/HABmin2/wiki/screenshots/rules-source.png)
 
 
 ZWave device configuration...
 
-![zwave-config](https://raw.github.com/wiki/cdjackson/HABmin2/screenshots/zwave-config.png)
+![zwave-config](https://github.com/cdjackson/HABmin2/wiki/screenshots/zwave-config.png)
 
 
 ZWave network routing diagram...
 
-![zwave-network](https://raw.github.com/wiki/cdjackson/HABmin2/screenshots/zwave-network.png)
+![zwave-network](https://github.com/cdjackson/HABmin2/wiki/screenshots/zwave-network.png)
 
 
 Sitemaps (mobile view using *yeti* theme)...
 
-![sitemap](https://raw.github.com/wiki/cdjackson/HABmin2/screenshots/sitemap-mobile-yeti.png)
+![sitemap](https://github.com/cdjackson/HABmin2/wiki/screenshots/sitemap-mobile-yeti.png)
 
 
 

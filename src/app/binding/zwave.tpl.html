@@ -51,7 +51,7 @@
                     <span class="pull-right">
                         <span popover="{{stateHeal(device)}}" popover-trigger="mouseenter" popover-placement="top"
                               popover-append-to-body="true" popover-popup-delay="500">
-                            <span ng-class="{'text-success': device.healState=='RUN','text-danger': device.healState =='ERROR','text-warning': device.healState =='WAIT','text-muted': device.healState =='OK'}">
+                            <span ng-class="{'text-success': device.healState=='OK','text-danger': device.healState =='ERROR','text-warning': device.healState =='RUN','text-muted': device.healState =='WAIT'}">
                                 <span class="fa fa-ambulance"></span>
                             </span>
                         </span>
@@ -162,7 +162,8 @@
         <div ng-show="deviceDisplay=='CONFIG'" class="list-group habmin-list" resize-panel>
             <!-- INFORMATION -->
             <div ng-show="devEdit.information">
-                <a role="presentation" class="list-group-item" ng-click="showPanel('INFO')">
+                <a role="presentation" ng-class="{'list-group-item':true, 'active': panelDisplayed=='INFO'}"
+                   ng-click="showPanel('INFO')">
                     <span class="fa fa-fw fa-info"></span>
                     <span i18n="zwave.zwaveInformation"></span>
                 </a>
@@ -178,7 +179,8 @@
 
             <!-- CONFIGURATION -->
             <div ng-show="devEdit.configuration">
-                <a role="presentation" class="list-group-item" ng-click="showPanel('CONFIG')">
+                <a role="presentation" ng-class="{'list-group-item':true, 'active': panelDisplayed=='CONFIG'}"
+                   ng-click="showPanel('CONFIG')">
                     <span class="fa fa-fw fa-wrench"></span>
                     <span i18n="zwave.zwaveConfiguration"></span>
                 </a>
@@ -191,7 +193,8 @@
 
             <!-- ASSOCIATIONS -->
             <div ng-show="devEdit.associations">
-                <a role="presentation" class="list-group-item" ng-click="showPanel('ASSOC')">
+                <a role="presentation" ng-class="{'list-group-item':true, 'active': panelDisplayed=='ASSOC'}"
+                   ng-click="showPanel('ASSOC')">
                     <span class="fa fa-fw fa-link"></span>
                     <span i18n="zwave.zwaveAssociations"></span>
                 </a>
@@ -207,7 +210,8 @@
 
             <!-- WAKEUP -->
             <div ng-show="devEdit.wakeup">
-                <a role="presentation" class="list-group-item" ng-click="showPanel('WAKE')">
+                <a role="presentation" ng-class="{'list-group-item':true, 'active': panelDisplayed=='WAKE'}"
+                   ng-click="showPanel('WAKE')">
                     <span class="fa fa-fw fa-moon-o"></span>
                     <span i18n="zwave.zwaveWakeup"></span>
                 </a>

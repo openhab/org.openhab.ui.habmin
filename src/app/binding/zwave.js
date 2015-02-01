@@ -111,6 +111,11 @@ angular.module('Binding.zwave', [
         };
 
         $scope.selectDevice = function (node) {
+            // Make sure the node really changed!
+            if(node == $scope.devEdit) {
+                return;
+            }
+
             $scope.devEdit = node;
 
             // Close the panels
@@ -202,12 +207,15 @@ angular.module('Binding.zwave', [
         }
 
         $scope.deviceSave = function () {
+            var doUpdateInfo = false;
             // TODO: This needs some rationalisation...
             angular.forEach($scope.deviceData, function (el) {
                 if(el.dirty) {
                     saveDomain(el.domain, el.value);
                     el.dirty = false;
                     el.pending = true;
+
+                    doUpdateInfo = true;
                 }
             });
             angular.forEach($scope.infoData, function (el) {
@@ -231,6 +239,12 @@ angular.module('Binding.zwave', [
                     el.pending = true;
                 }
             });
+
+            // The name and location aren't handled normally
+            // so we need to handle this explicitly here
+            if(doUpdateInfo == true) {
+                updateInfo($scope.devEdit.device);
+            }
         };
 
         $scope.deviceCancel = function () {
@@ -519,6 +533,12 @@ angular.module('Binding.zwave', [
                                 device.icon = deviceClassIcons[status.value];
                             }
                         }
+                        if(status.name === "Listening") {
+                            device.listening = status.value == "true";
+                        }
+                        if(status.name === "Routing") {
+                            device.routing = status.value == "true";
+                        }
                         if(status.name === "NodeID") {
                             device.nodeID = parseInt(status.value, 10);
                         }
@@ -708,7 +728,7 @@ angular.module('Binding.zwave', [
                 newNode.borderWidth = 2;    // TODO: put this in general options?
                 newNode.color = {};
 
-                if (device.power == "Battery") {
+                if (device.listening == false) {
                     newNode.color.background = "grey";
                 }
                 switch (device.state) {

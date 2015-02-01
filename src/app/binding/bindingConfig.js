@@ -8,8 +8,19 @@
  * (c) 2014 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('Binding.config', [
-    'angular-bootstrap-select'
+    'angular-bootstrap-select',
+    'ngSanitize'
 ])
+    .run([
+        '$templateCache',
+        function ($templateCache) {
+            // Update the notification template. The use of <button> causes problems with some templates
+            $templateCache.put('binding/bindingHelp.tpl.html',
+                '<div class="popover-content"><span ng-bind-html="popup_text"></span></div>'
+            );
+        }
+    ])
+
     .directive('bindingConfig',
     function ($q, $parse, $compile, $document, $timeout) {
         return {
@@ -33,6 +44,8 @@ angular.module('Binding.config', [
                     newChild = angular.element('<label></label>');
                     newChild.attr('for', field.name);
                     newChild.attr('class', 'control-label');
+
+
                     angular.element(newChild).html(field.label);
                     newElement.append(newChild);
 
@@ -54,6 +67,7 @@ angular.module('Binding.config', [
                     newElement.append(newChild);
 
                     newChild = angular.element('<div></div>');
+                    newChild.attr('class', 'input-group');
 
                     switch (field.type) {
                         case "BYTE":
@@ -99,6 +113,7 @@ angular.module('Binding.config', [
                             newInput.attr('class', 'form-control');
                             break;
                     }
+
                     if (newInput !== null) {
                         if (field.readonly == "true") {
                             newInput.attr('readonly', 'true');
@@ -124,6 +139,25 @@ angular.module('Binding.config', [
                         newInput.attr('ng-change', 'changeHandler("' + field.name + '","' + field.domain + '")');
 
                         newChild.append(newInput);
+
+                        newInput = angular.element('<span></span>');
+                        newInput.attr('class', 'input-group-btn');
+
+                        newOption = angular.element('<button></button>');
+                        newOption.attr('class', 'btn btn-default');
+                        newOption.attr('type', 'button');
+                        if(field.description == null || field.description.length == 0) {
+                            newOption.attr('disabled', '');
+                        }
+                        else {
+                            newOption.attr('popup-show', 'binding/bindingHelp.tpl.html');
+                            newOption.attr('popup-placement', 'left');
+                            newOption.attr('popup-shown', 'popup_text="' + field.description + '"');
+                        }
+                        angular.element(newOption).html('<span class="fa fa-question-circle"></span>');
+                        newInput.append(newOption);
+                        newChild.append(newInput);
+
                         newElement.append(newChild);
                     }
                     this.append(newElement);

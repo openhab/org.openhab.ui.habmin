@@ -63,6 +63,7 @@ angular.module('HABmin', [
             error: 15000
         });
         growlProvider.globalDisableIcons(true);
+        growlProvider.globalDisableCountDown(true);
 
         pickAColorProvider.setOptions({
             inlineDropdown: true
@@ -116,8 +117,19 @@ angular.module('HABmin', [
         });
     })
 
-    .run(function run() {
-    })
+    .run([
+        '$templateCache',
+        function ($templateCache) {
+            // Update the notification template. The use of <button> causes problems with some templates
+            $templateCache.put('templates/growl/growl.html',
+                '<div class="growl-container" ng-class="wrapperClasses()">' +
+                '<div class="growl-item alert" ng-repeat="message in growlMessages.directives[referenceId].messages" ng-class="alertClasses(message)" ng-click="stopTimeoutClose(message)">' +
+                '<span type="button" class="close" data-dismiss="alert" aria-hidden="true" ng-click="growlMessages.deleteMessage(message)" ng-show="!message.disableCloseButton"><span class="fa fa-close"></span></span>' +
+                '<h4 class="growl-title" ng-show="message.title" ng-bind="message.title"></h4>' +
+                '<div class="growl-message" ng-bind-html="message.text"></div></div></div>'
+            );
+        }
+    ])
 
     .controller('HABminCtrl',
     function HABminCtrl($scope, $location, $window, $timeout, locale, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, SidepanelService) {
