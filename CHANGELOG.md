@@ -4,7 +4,8 @@
 
 #### Bug Fixes
 
-* **UI:** Fix notification template to remove invalid button background ([3828d99d](git@github.com:cdjackson/HABmin2/commit/3828d99d18b33a1d6a7c7bf8872a168a50ab3c3e))
+* **UI:**
+  * Fix notification template to remove invalid button background ([3828d99d](git@github.com:cdjackson/HABmin2/commit/3828d99d18b33a1d6a7c7bf8872a168a50ab3c3e))
 * **ZWave:**
   * Don't reload parameters if reselecting the current device ([fd6f99a0](git@github.com:cdjackson/HABmin2/commit/fd6f99a0ccf2cbdf02d69442bfba18001eaae6c9))
   * Poll node information after setting Name/Location to update 'pending' flag ([0cb84b4f](git@github.com:cdjackson/HABmin2/commit/0cb84b4fc8a94fe31adccdd30e60f095e8534de8))
@@ -137,7 +138,8 @@
   * Fix positioning of title bar on small screens ([93186a52](git@github.com:cdjackson/HABmin2/commit/93186a52c0f3eb2bf8ab2980656bef24e6e5dbbe))
   * Fix initialisation of collapsed panel configuration ([373a4c47](git@github.com:cdjackson/HABmin2/commit/373a4c47ffdd96fe9eb7dd6d15061bc67fdcd3f5))
   * Fix error handling panels when changing from single to multi panel view ([06e76dcb](git@github.com:cdjackson/HABmin2/commit/06e76dcbdc229f9e247e1b34d4da3f52af84fd66))
-* **ZWave:** Fix rendering of network diagram ([2c66ad52](git@github.com:cdjackson/HABmin2/commit/2c66ad52cddfd04f1fce8a68c05b8a95b793e4c9))
+* **ZWave:**
+  * Fix rendering of network diagram ([2c66ad52](git@github.com:cdjackson/HABmin2/commit/2c66ad52cddfd04f1fce8a68c05b8a95b793e4c9))
 
 
 #### Features
@@ -204,5 +206,6 @@
   * Add weather-icons ([ae1ce462](git@github.com:cdjackson/HABmin2/commit/ae1ce462eb54e0a8690ae761c709eebfe2079a41))
   * Persist user theme choice to local storage and reset on startup ([2ce3952b](git@github.com:cdjackson/HABmin2/commit/2ce3952bbe5da9cbee822687937d24c6ae782b82))
   * Add theme switching ([eebb64d3](git@github.com:cdjackson/HABmin2/commit/eebb64d371f7a36a5a45ae3820c83fff46aedf65))
-* **ZWave:** Add icon and processing for SECURE_KEYPAD_DOOR_LOCK class ([aae19184](git@github.com:cdjackson/HABmin2/commit/aae191849d95b528d67563b9bcba2d35f8d20490))
+* **ZWave:**
+  * Add icon and processing for SECURE_KEYPAD_DOOR_LOCK class ([aae19184](git@github.com:cdjackson/HABmin2/commit/aae191849d95b528d67563b9bcba2d35f8d20490))
 
