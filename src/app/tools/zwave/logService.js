@@ -1453,7 +1453,7 @@ angular.module('ZWaveLogReader', [])
                                 if (id == 0xEF) {
                                     break;
                                 }
-                                if (nodes[data.node].classes[id] == undefined) {
+                                if (nodes[data.node].classes[id] == null) {
                                     nodes[data.node].classes[id] = 0;
                                 }
                             }
