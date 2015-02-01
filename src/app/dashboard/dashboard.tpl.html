@@ -1,9 +1,9 @@
 <div class="btn-group btn-group-sm" role="group" ng-if="editMode" class="page-header">
-    <button class="btn btn-sm btn-primary" ng-click="saveEdit()"><i class="fa fa-save"></i> Save</button>
-    <button class="btn btn-sm btn-primary" ng-click="endEdit()"><i class="fa fa-check-square"></i> End Edit</button>
+    <button class="btn btn-sm btn-primary" ng-click="saveEdit()"><i class="fa fa-save"></i> <span i18n="common.save"></span></button>
+    <button class="btn btn-sm btn-primary" ng-click="endEdit()"><i class="fa fa-check-square"></i> <span i18n="habmin.dashboardEndEdit"></button>
     <div class="dashboard-toolbar btn-group dropdown">
         <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
-            <span class="fa fa-plus-square-o"></span> Add Widget
+            <span class="fa fa-plus-square-o"></span> <span i18n="habmin.dashboardAddWidget"></span>
             <span class="caret"></span>
             <span class="sr-only">Dropdown</span>
         </button>
@@ -11,12 +11,15 @@
             <li>
                 <a ng-click="addWidget('Chart')">
                     <span class="fa fa-list-alt"></span>
-                    <span i18nx="habmin.chartItemList">Chart</span>
+                    <span i18nx="habmin.chartItemList"><span i18n="habmin.dashboardAddChart"></span></span>
                 </a>
             </li>
         </ul>
     </div>
-    <button class="btn btn-sm btn-warning" ng-click="clearEdit()"><i class="fa fa-trash-o"></i> Clear</button>
+    <button class="btn btn-sm btn-warning" ng-confirm-click="clearEdit()"
+            i18n-attr="{'ngConfirmMessage': 'habmin.dashboardClearText','ngConfirmTitle': 'habmin.dashboardClearTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}">
+        <i class="fa fa-trash-o"></i> <span i18n="common.clear"></span>
+    </button>
 </div>
 
 <div gridster="gridsterOptions">

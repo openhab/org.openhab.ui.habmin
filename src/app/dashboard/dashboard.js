@@ -104,8 +104,8 @@ angular.module('HABmin.dashboard', [
         };
 
         $scope.saveEdit = function () {
-            $scope.endEdit();
-        }
+
+        };
 
         $scope.addWidget = function (type) {
             $scope.dashboard.widgets.push({
