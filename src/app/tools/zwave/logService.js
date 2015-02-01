@@ -150,6 +150,194 @@ angular.module('ZWaveLogReader', [])
             nodeInfoProcessed = true;
         }
 
+        var deviceClassBasic = {
+            1: {
+                name: "CONTROLLER"
+            },
+            2: {
+                name: "STATIC_CONTROLLER"
+            },
+            3: {
+                name: "SLAVE"
+            },
+            4: {
+                name: "ROUTING_SLAVE"
+            }
+        };
+
+        var deviceClass = {
+            0x00: {
+                name: "NOT_KNOWN"
+            },
+            0x01: {
+                name: "REMOTE_CONTROLLER",
+                specific: {
+                    1: "PORTABLE_REMOTE_CONTROLLER",
+                    2: "PORTABLE_SCENE_CONTROLLER",
+                    3: "PORTABLE_INSTALLER_TOOL"
+                }
+            },
+            0x02: {
+                name: "STATIC_CONTOLLER",
+                specific: {
+                    1: "PC_CONTROLLER",
+                    2: "SCENE_CONTROLLER",
+                    3: "INSTALLER_TOOL"
+                }
+            },
+            0x03: {
+                name: "AV_CONTROL_POINT",
+                specific: {
+                    4: "SATELLITE_RECEIVER",
+                    17: "SATELLITE_RECEIVER_V2",
+                    18: "DOORBELL"
+                }
+            },
+            0x06: {
+                name: "DISPLAY",
+                specific: {
+                    1: "SIMPLE_DISPLAY"
+                }
+            },
+            0x07: {
+                name: "GARAGE_DOOR",
+                specific: {
+                    1: "SIMPLE_GARAGE_DOOR"
+                }
+            },
+            0x08: {
+                name: "THERMOSTAT",
+                specific: {
+                    1: "THERMOSTAT_HEATING",
+                    2: "THERMOSTAT_GENERAL",
+                    3: "SETBACK_SCHEDULE_THERMOSTAT",
+                    4: "SETPOINT_THERMOSTAT",
+                    5: "SETBACK_THERMOSTAT",
+                    6: "THERMOSTAT_GENERAL_V2"
+                }
+            },
+            0x09: {
+                name: "WINDOW_COVERING",
+                specific: {
+                    1: "SIMPLE_WINDOW_COVERING"
+                }
+            },
+            0x0f: {
+                name: "REPEATER_SLAVE",
+                specific: {
+                    1: "BASIC_REPEATER_SLAVE"
+                }
+            },
+            0x10: {
+                name: "BINARY_SWITCH",
+                specific: {
+                    1: "POWER_SWITCH_BINARY",
+                    2: "SCENE_SWITCH_BINARY_DISCONTINUED",
+                    3: "SCENE_SWITCH_BINARY",
+                    5: "SIREN_SWITCH_BINARY"
+                }
+            },
+            0x11: {
+                name: "MULTILEVEL_SWITCH",
+                specific: {
+                    1: "POWER_SWITCH_MULTILEVEL",
+                    2: "SCENE_SWITCH_MULTILEVEL_DISCONTINUED",
+                    3: "MOTOR_MULTIPOSITION",
+                    4: "SCENE_SWITCH_MULTILEVEL",
+                    5: "MOTOR_CONTROL_CLASS_A",
+                    6: "MOTOR_CONTROL_CLASS_B",
+                    7: "MOTOR_CONTROL_CLASS_C"
+                }
+            },
+            0x12: {
+                name: "REMOTE_SWITCH",
+                specific: {
+                    1: "SWITCH_REMOTE_BINARY",
+                    2: "SWITCH_REMOTE_MULTILEVEL",
+                    3: "SWITCH_REMOTE_TOGGLE_BINARY",
+                    4: "SWITCH_REMOTE_TOGGLE_MULTILEVEL"
+                }
+            },
+            0x13: {
+                name: "TOGGLE_SWITCH",
+                specific: {
+                    1: "SWITCH_TOGGLE_BINARY",
+                    2: "SWITCH_TOGGLE_MULTILEVEL"
+                }
+            },
+            0x14: {
+                name: "Z_IP_GATEWAY"
+            },
+            0x15: {
+                name: "Z_IP_NODE"
+            },
+            0x16: {
+                name: "VENTILATION",
+                specific: {
+                    1: "RESIDENTIAL_HEAT_RECOVERY_VENTILATION"
+                }
+            },
+            0x18: {
+                name: "REMOTE_SWITCH_2",
+                specific: {
+                    1: "SWITCH_REMOTE2_MULTILEVEL"
+                }
+            },
+            0x20: {
+                name: "BINARY_SENSOR",
+                specific: {
+                    1: "ROUTING_SENSOR_BINARY"
+                }
+            },
+            0x21: {
+                name: "MULTILEVEL_SENSOR",
+                specific: {
+                    1: "ROUTING_SENSOR_MULTILEVEL"
+                }
+            },
+            0x22: {
+                name: "WATER_CONTROL"
+            },
+            0x30: {
+                name: "PULSE_METER"
+            },
+            0x31: {
+                name: "METER",
+                specific: {
+                    1: "SIMPLE_METER"
+                }
+            },
+            0x40: {
+                name: "ENTRY_CONTROL",
+                specific: {
+                    1: "DOOR_LOCK",
+                    2: "ADVANCED_DOOR_LOCK",
+                    3: "SECURE_KEYPAD_DOOR_LOCK"
+                }
+            },
+            0x50: {
+                name: "SEMI_INTEROPERABLE"
+            },
+            0xa1: {
+                name: "ALARM_SENSOR",
+                specific: {
+                    1: "ALARM_SENSOR_ROUTING_BASIC",
+                    2: "ALARM_SENSOR_ROUTING",
+                    3: "ALARM_SENSOR_ZENSOR_BASIC",
+                    4: "ALARM_SENSOR_ZENSOR",
+                    5: "ALARM_SENSOR_ZENSOR_ADVANCED",
+                    6: "SMOKE_SENSOR_ROUTING_BASIC",
+                    7: "SMOKE_SENSOR_ROUTING",
+                    8: "SMOKE_SENSOR_ZENSOR_BASIC",
+                    9: "SMOKE_SENSOR_ZENSOR",
+                    10: "SMOKE_SENSOR_ZENSOR_ADVANCED"
+                }
+            },
+            0xff: {
+                name: "NON_INTEROPERABLE"
+            }
+        };
+
         // Packet type definitions
         var packetTypes = {
             2: {
@@ -1395,16 +1583,41 @@ angular.module('ZWaveLogReader', [])
                 else {
                     data.node = lastCmd.node;
 
+                    var basic = HEX2DEC(bytes[3])
+                    var generic = HEX2DEC(bytes[4]);
+                    var specific = HEX2DEC(bytes[5]);
+
                     var a = HEX2DEC(bytes[0]);
                     addNodeInfo(data.node, "isListening", (a & 0x80) !== 0 ? true : false);
                     addNodeInfo(data.node, "isRouting", (a & 0x40) !== 0 ? true : false);
                     addNodeInfo(data.node, "version", (a & 0x07) + 1);
                     a = HEX2DEC(bytes[1]);
                     addNodeInfo(data.node, "isFLiRS", (a & 0x60) ? true : false);
-                    addNodeInfo(data.node, "basicClass", HEX2DEC(bytes[3]));
-                    addNodeInfo(data.node, "genericClass", HEX2DEC(bytes[4]));
-                    addNodeInfo(data.node, "specificClass", HEX2DEC(bytes[5]));
-                    data.content = "IdentifyNode: Listening:" + getNodeInfo(data.node, "isListening");
+                    addNodeInfo(data.node, "basicClass", basic);
+                    addNodeInfo(data.node, "genericClass", generic);
+                    addNodeInfo(data.node, "specificClass", specific);
+
+                    var devClass;
+                    if(deviceClassBasic[basic] != null) {
+                        devClass = deviceClassBasic[basic].name + ":";
+                    }
+                    else {
+                        devClass = bytes[3] + ":";
+                    }
+                    if(deviceClass[generic] != null) {
+                        if(deviceClass[generic].specific[specific] != null) {
+                            devClass += deviceClass[generic].specific[specific];
+                        }
+                        else {
+                            devClass += deviceClass[generic].name + ":" + bytes[5];
+                        }
+                    }
+                    else {
+                        devClass += bytes[4] + ":" + bytes[5];
+                    }
+
+                    addNodeInfo(data.node, "deviceClass", devClass);
+                    data.content = "IdentifyNode: " + devClass + ". Listening:" + getNodeInfo(data.node, "isListening");
                 }
             }
 

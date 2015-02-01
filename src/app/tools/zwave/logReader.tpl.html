@@ -139,6 +139,10 @@
                             <td>Node ID</td>
                             <td>{{selectedNode.id}}</td>
                         </tr>
+                        <tr>
+                            <td>Device Class</td>
+                            <td>{{selectedNode.deviceClass}}</td>
+                        </tr>
                         <tr ng-repeat="error in selectedNode.errors">
                             <td>Error</td>
                             <td><span class="text-danger fa fa-exclamation-circle"></span>&nbsp;{{error}}</td>
