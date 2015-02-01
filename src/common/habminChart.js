@@ -67,6 +67,7 @@ angular.module('habminChart', [
                     zoomMin: 60000
                 };
 
+                $scope.graphOptions = chartOptions;
 
                 // ------------------------------------------------
                 // Private functions
