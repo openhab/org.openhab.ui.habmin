@@ -168,24 +168,22 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Basic Device Class</td>
-                            <td>{{selectedNode.basicClass}}</td>
-                        </tr>
-                        <tr>
-                            <td>Generic Device Class</td>
-                            <td>{{selectedNode.genericClass}}</td>
-                        </tr>
-                        <tr>
-                            <td>Specific Device Class</td>
-                            <td>{{selectedNode.specificClass}}</td>
-                        </tr>
-                        <tr>
                             <td>Supported Classes</td>
                             <td>
                                 <table>
                                     <tr ng-repeat="(key, value) in selectedNode.classes">
                                         <td>{{key}}</td>
                                         <td>{{value}}</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Control Classes</td>
+                            <td>
+                                <table>
+                                    <tr ng-repeat="(key, value) in selectedNode.control">
+                                        <td>{{key}}</td>
                                     </tr>
                                 </table>
                             </td>
@@ -217,6 +215,18 @@
                         <tr>
                             <td>Device ID</td>
                             <td>{{selectedNode.deviceID}}</td>
+                        </tr>
+                        <tr>
+                            <td>Basic Device Class</td>
+                            <td>{{selectedNode.basicClass}}</td>
+                        </tr>
+                        <tr>
+                            <td>Generic Device Class</td>
+                            <td>{{selectedNode.genericClass}}</td>
+                        </tr>
+                        <tr>
+                            <td>Specific Device Class</td>
+                            <td>{{selectedNode.specificClass}}</td>
                         </tr>
 
                         <tr></tr>

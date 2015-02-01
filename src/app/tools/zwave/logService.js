@@ -247,7 +247,8 @@ angular.module('ZWaveLogReader', [])
                     5: "MOTOR_CONTROL_CLASS_A",
                     6: "MOTOR_CONTROL_CLASS_B",
                     7: "MOTOR_CONTROL_CLASS_C"
-                }
+                },
+                class: "SWITCH_MULTILEVEL"
             },
             0x12: {
                 name: "REMOTE_SWITCH",
@@ -287,19 +288,22 @@ angular.module('ZWaveLogReader', [])
                 name: "BINARY_SENSOR",
                 specific: {
                     1: "ROUTING_SENSOR_BINARY"
-                }
+                },
+                class: "SENSOR_BINARY"
             },
             0x21: {
                 name: "MULTILEVEL_SENSOR",
                 specific: {
                     1: "ROUTING_SENSOR_MULTILEVEL"
-                }
+                },
+                class: "SENSOR_MULTILEVEL"
             },
             0x22: {
                 name: "WATER_CONTROL"
             },
             0x30: {
-                name: "PULSE_METER"
+                name: "PULSE_METER",
+                class: "METER_PULSE"
             },
             0x31: {
                 name: "METER",
@@ -313,7 +317,8 @@ angular.module('ZWaveLogReader', [])
                     1: "DOOR_LOCK",
                     2: "ADVANCED_DOOR_LOCK",
                     3: "SECURE_KEYPAD_DOOR_LOCK"
-                }
+                },
+                class: "LOCK"
             },
             0x50: {
                 name: "SEMI_INTEROPERABLE"
@@ -976,6 +981,7 @@ angular.module('ZWaveLogReader', [])
                     responseTime: [],
                     responseTimeouts: 0,
                     classes: {},
+                    control: {},
                     responseTimeMin: 9999,
                     responseTimeAvg: 0,
                     responseTimeMax: 0,
@@ -1689,17 +1695,27 @@ angular.module('ZWaveLogReader', [])
                     switch(state) {
                         case 0x84:
                             createNode(data.node);
+                            var cntrl = false;
                             for(var c = 6; c < bytes.length; c++) {
                                 var id = HEX2DEC(bytes[c]);
                                 if (id == 0xEF) {
-                                    break;
+                                    cntrl = true;
+                                    continue;
                                 }
 
+                                // If we know the command class name, use it
                                 if(commandClasses[id] != null) {
                                     id = commandClasses[id].name;
                                 }
-                                if (nodes[data.node].classes[id] == null) {
-                                    nodes[data.node].classes[id] = 0;
+                                if(cntrl == false) {
+                                    if (nodes[data.node].classes[id] == null) {
+                                        nodes[data.node].classes[id] = 0;
+                                    }
+                                }
+                                else {
+                                    if (nodes[data.node].control[id] == null) {
+                                        nodes[data.node].control[id] = 0;
+                                    }
                                 }
                             }
                             break;
