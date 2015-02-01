@@ -175,6 +175,17 @@
                             <td>Specific Device Class</td>
                             <td>{{selectedNode.specificClass}}</td>
                         </tr>
+                        <tr>
+                            <td>Supported Classes</td>
+                            <td>
+                                <table>
+                                    <tr ng-repeat="(key, value) in selectedNode.classes">
+                                        <td>{{key}}</td>
+                                        <td>{{value}}</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
                         <tr ng-if="selectedNode.neighboursTotal!=null">
                             <td>Neighbours</td>
                             <td>{{selectedNode.neighboursTotal}} total, {{selectedNode.neighboursListening}} listening, {{selectedNode.neighboursUnknown}} unknown</td>

@@ -457,6 +457,9 @@ angular.module('ZWaveLogReader', [])
                 name: "CLIMATE_CONTROL_SCHEDULE",
                 processor: null
             },
+            86: {
+                name: "CRC_16_ENCAP"
+            },
             96: {
                 name: "MULTI_INSTANCE",
                 commands: {
@@ -526,6 +529,12 @@ angular.module('ZWaveLogReader', [])
                         processor: processManufacturer
                     }
                 }
+            },
+            115: {
+                name: "POWERLEVEL"
+            },
+            122: {
+                name: "FIRMWARE_UPDATE_MD"
             },
             128: {
                 name: "BATTERY",
@@ -614,6 +623,15 @@ angular.module('ZWaveLogReader', [])
             135: {
                 name: "INDICATOR",
                 processor: null
+            },
+            138: {
+                name: "TIME"
+            },
+            139: {
+                name: "TIME_PARAMETERS"
+            },
+            142: {
+                name: "MULTI_INSTANCE_ASSOCIATION"
             },
             143: {
                 name: "MULTI_CMD",
@@ -1058,19 +1076,27 @@ angular.module('ZWaveLogReader', [])
         }
 
         function processAssociation(node, endpoint, bytes) {
-            var data = {result: SUCCESS};
+            var data = {
+                result: SUCCESS,
+                node: node
+            };
 
             var cmdCls = HEX2DEC(bytes[0]);
             var cmdCmd = HEX2DEC(bytes[1]);
             data.content = commandClasses[cmdCls].commands[cmdCmd].name;
             switch (cmdCmd) {
-                case 2:             // GET
+                case 2:             // ASSOCIATIONCMD_GET
                     var groupGet = HEX2DEC(bytes[2]);
                     data.content += " Group " + groupGet;
                     break;
-                case 3:             // REPORT
+                case 3:             // ASSOCIATIONCMD_REPORT
                     var groupReport = HEX2DEC(bytes[2]);
                     data.content += " Group " + groupReport;
+                    break;
+                case 6:             // ASSOCIATIONCMD_GROUPINGSREPORT
+                    var groupCnt = HEX2DEC(bytes[2]);
+                    addNodeInfo(node, "associationGroups", groupCnt);
+                    data.content += " Supports " + groupCnt + " groups";
                     break;
             }
 
@@ -1370,8 +1396,8 @@ angular.module('ZWaveLogReader', [])
                     data.node = lastCmd.node;
 
                     var a = HEX2DEC(bytes[0]);
-                    addNodeInfo(data.node, "isListening", (a & 0x80) !== 0);
-                    addNodeInfo(data.node, "isRouting", (a & 0x40) !== 0);
+                    addNodeInfo(data.node, "isListening", (a & 0x80) !== 0 ? true : false);
+                    addNodeInfo(data.node, "isRouting", (a & 0x40) !== 0 ? true : false);
                     addNodeInfo(data.node, "version", (a & 0x07) + 1);
                     a = HEX2DEC(bytes[1]);
                     addNodeInfo(data.node, "isFLiRS", (a & 0x60) ? true : false);
@@ -1455,6 +1481,10 @@ angular.module('ZWaveLogReader', [])
                                 if (id == 0xEF) {
                                     break;
                                 }
+
+                                if(commandClasses[id] != null) {
+                                    id = commandClasses[id].name;
+                                }
                                 if (nodes[data.node].classes[id] == null) {
                                     nodes[data.node].classes[id] = 0;
                                 }
@@ -1501,7 +1531,7 @@ angular.module('ZWaveLogReader', [])
 
                     var cntTotal = 0;
                     var cntListening = 0;
-                    var nodeLoop;
+                    var nodeLoop = 0;
                     var neighbours = [];
                     for (var i = 0; i < 29; i++) {
                         var incomingByte = HEX2DEC(bytes[i]);
@@ -1687,7 +1717,7 @@ angular.module('ZWaveLogReader', [])
                 sendData.node = node;
                 sendData.callback = callbackTx;
                 sendData.cmdClass = cmdClass;
-                sendData.content = "SendData (" + callback + "). Sent: " + cmdClass.content;
+                sendData.content = "SendData (" + callbackTx + "). Sent: " + cmdClass.content;
 
                 lastSendData.node = node;
                 lastSendData.callback = callbackTx;
