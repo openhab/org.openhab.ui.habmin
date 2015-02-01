@@ -1341,6 +1341,26 @@ angular.module('ZWaveLogReader', [])
                         data.content += "::" + alarmSensors[repType] + "=" + repValue;
                     }
                     break;
+                case 4:             // SENSOR_ALARM_SUPPORTED_REPORT
+                    for (var i = 0; i < bytes.length - 3; ++i) {
+                        var a = HEX2DEC(bytes[i + 3]);
+                        for (var bit = 0; bit < 8; ++bit) {
+                            if ((a & (1 << bit) ) === 0) {
+                                continue;
+                            }
+                            var index = (i * 8 ) + bit;
+
+                            var name = "UNKNOWN!";
+                            if (alarmSensors[index] != null) {
+                                name = alarmSensors[index];
+                            }
+
+                            // Add to list of supported sensors
+                            addNodeItem(node, endpoint, name, commandClasses[cmdCls].name,
+                                "alarm_type=" + index);
+                        }
+                    }
+                    break;
             }
 
             return data;
