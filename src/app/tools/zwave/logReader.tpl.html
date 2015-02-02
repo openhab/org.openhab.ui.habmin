@@ -139,6 +139,10 @@
                             <td>Node ID</td>
                             <td>{{selectedNode.id}}</td>
                         </tr>
+                        <tr>
+                            <td>Device Class</td>
+                            <td>{{selectedNode.deviceClass}}</td>
+                        </tr>
                         <tr ng-repeat="error in selectedNode.errors">
                             <td>Error</td>
                             <td><span class="text-danger fa fa-exclamation-circle"></span>&nbsp;{{error}}</td>
@@ -156,24 +160,59 @@
                             <td><span class="text-danger fa fa-exclamation-circle"></span>&nbsp;{{selectedNode.txErrorNak}}</td>
                         </tr>
                         <tr>
+                            <td>Command Classes</td>
+                            <td>
+                                <table>
+                                    <tr ng-repeat="(key, value) in selectedNode.classes">
+                                        <td>{{key}}</td>
+                                        <td>{{value}}</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Control Classes</td>
+                            <td>
+                                <table>
+                                    <tr ng-repeat="(key, value) in selectedNode.control">
+                                        <td>{{key}}</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Endpoints</td>
+                            <td>
+                                <table>
+                                    <tr ng-repeat="(key, value) in selectedNode.endpoints">
+                                        <td>{{key}}</td>
+                                        <td>
+                                            <table>
+                                                <tr>Device Class</tr>
+                                                <tr>{{value.deviceClass}}</tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Item Definitions</td>
+                            <td>
+                                <table>
+                                    <tr ng-repeat="item in selectedNode.items">
+                                        <td>{{item}}</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
                             <td>Listening State</td>
                             <td>
                                 <span ng-if="selectedNode.isListening">Yes</span>
                                 &nbsp;
                                 <span ng-if="selectedNode.isFLiRS">Frequently</span>
                             </td>
-                        </tr>
-                        <tr>
-                            <td>Basic Device Class</td>
-                            <td>{{selectedNode.basicClass}}</td>
-                        </tr>
-                        <tr>
-                            <td>Generic Device Class</td>
-                            <td>{{selectedNode.genericClass}}</td>
-                        </tr>
-                        <tr>
-                            <td>Specific Device Class</td>
-                            <td>{{selectedNode.specificClass}}</td>
                         </tr>
                         <tr ng-if="selectedNode.neighboursTotal!=null">
                             <td>Neighbours</td>
@@ -202,6 +241,18 @@
                         <tr>
                             <td>Device ID</td>
                             <td>{{selectedNode.deviceID}}</td>
+                        </tr>
+                        <tr>
+                            <td>Basic Device Class</td>
+                            <td>{{selectedNode.basicClass}}</td>
+                        </tr>
+                        <tr>
+                            <td>Generic Device Class</td>
+                            <td>{{selectedNode.genericClass}}</td>
+                        </tr>
+                        <tr>
+                            <td>Specific Device Class</td>
+                            <td>{{selectedNode.specificClass}}</td>
                         </tr>
 
                         <tr></tr>

@@ -150,6 +150,232 @@ angular.module('ZWaveLogReader', [])
             nodeInfoProcessed = true;
         }
 
+        var deviceClassBasic = {
+            1: {
+                name: "CONTROLLER"
+            },
+            2: {
+                name: "STATIC_CONTROLLER"
+            },
+            3: {
+                name: "SLAVE"
+            },
+            4: {
+                name: "ROUTING_SLAVE"
+            }
+        };
+
+        var deviceClass = {
+            0x00: {
+                name: "NOT_KNOWN"
+            },
+            0x01: {
+                name: "REMOTE_CONTROLLER",
+                specific: {
+                    1: "PORTABLE_REMOTE_CONTROLLER",
+                    2: "PORTABLE_SCENE_CONTROLLER",
+                    3: "PORTABLE_INSTALLER_TOOL"
+                }
+            },
+            0x02: {
+                name: "STATIC_CONTOLLER",
+                specific: {
+                    1: "PC_CONTROLLER",
+                    2: "SCENE_CONTROLLER",
+                    3: "INSTALLER_TOOL"
+                }
+            },
+            0x03: {
+                name: "AV_CONTROL_POINT",
+                specific: {
+                    4: "SATELLITE_RECEIVER",
+                    17: "SATELLITE_RECEIVER_V2",
+                    18: "DOORBELL"
+                }
+            },
+            0x06: {
+                name: "DISPLAY",
+                specific: {
+                    1: "SIMPLE_DISPLAY"
+                }
+            },
+            0x07: {
+                name: "GARAGE_DOOR",
+                specific: {
+                    1: "SIMPLE_GARAGE_DOOR"
+                }
+            },
+            0x08: {
+                name: "THERMOSTAT",
+                specific: {
+                    1: "THERMOSTAT_HEATING",
+                    2: "THERMOSTAT_GENERAL",
+                    3: "SETBACK_SCHEDULE_THERMOSTAT",
+                    4: "SETPOINT_THERMOSTAT",
+                    5: "SETBACK_THERMOSTAT",
+                    6: "THERMOSTAT_GENERAL_V2"
+                }
+            },
+            0x09: {
+                name: "WINDOW_COVERING",
+                specific: {
+                    1: "SIMPLE_WINDOW_COVERING"
+                }
+            },
+            0x0f: {
+                name: "REPEATER_SLAVE",
+                specific: {
+                    1: "BASIC_REPEATER_SLAVE"
+                }
+            },
+            0x10: {
+                name: "BINARY_SWITCH",
+                specific: {
+                    1: "POWER_SWITCH_BINARY",
+                    2: "SCENE_SWITCH_BINARY_DISCONTINUED",
+                    3: "SCENE_SWITCH_BINARY",
+                    5: "SIREN_SWITCH_BINARY"
+                },
+                class: "SWITCH_BINARY"
+            },
+            0x11: {
+                name: "MULTILEVEL_SWITCH",
+                specific: {
+                    1: "POWER_SWITCH_MULTILEVEL",
+                    2: "SCENE_SWITCH_MULTILEVEL_DISCONTINUED",
+                    3: "MOTOR_MULTIPOSITION",
+                    4: "SCENE_SWITCH_MULTILEVEL",
+                    5: "MOTOR_CONTROL_CLASS_A",
+                    6: "MOTOR_CONTROL_CLASS_B",
+                    7: "MOTOR_CONTROL_CLASS_C"
+                },
+                class: "SWITCH_MULTILEVEL"
+            },
+            0x12: {
+                name: "REMOTE_SWITCH",
+                specific: {
+                    1: "SWITCH_REMOTE_BINARY",
+                    2: "SWITCH_REMOTE_MULTILEVEL",
+                    3: "SWITCH_REMOTE_TOGGLE_BINARY",
+                    4: "SWITCH_REMOTE_TOGGLE_MULTILEVEL"
+                }
+            },
+            0x13: {
+                name: "TOGGLE_SWITCH",
+                specific: {
+                    1: "SWITCH_TOGGLE_BINARY",
+                    2: "SWITCH_TOGGLE_MULTILEVEL"
+                }
+            },
+            0x14: {
+                name: "Z_IP_GATEWAY"
+            },
+            0x15: {
+                name: "Z_IP_NODE"
+            },
+            0x16: {
+                name: "VENTILATION",
+                specific: {
+                    1: "RESIDENTIAL_HEAT_RECOVERY_VENTILATION"
+                }
+            },
+            0x18: {
+                name: "REMOTE_SWITCH_2",
+                specific: {
+                    1: "SWITCH_REMOTE2_MULTILEVEL"
+                }
+            },
+            0x20: {
+                name: "BINARY_SENSOR",
+                specific: {
+                    1: "ROUTING_SENSOR_BINARY"
+                },
+                class: "SENSOR_BINARY"
+            },
+            0x21: {
+                name: "MULTILEVEL_SENSOR",
+                specific: {
+                    1: "ROUTING_SENSOR_MULTILEVEL"
+                },
+                class: "SENSOR_MULTILEVEL"
+            },
+            0x22: {
+                name: "WATER_CONTROL"
+            },
+            0x30: {
+                name: "PULSE_METER",
+                class: "METER_PULSE"
+            },
+            0x31: {
+                name: "METER",
+                specific: {
+                    1: "SIMPLE_METER"
+                },
+                class: "METER"
+            },
+            0x40: {
+                name: "ENTRY_CONTROL",
+                specific: {
+                    1: "DOOR_LOCK",
+                    2: "ADVANCED_DOOR_LOCK",
+                    3: "SECURE_KEYPAD_DOOR_LOCK"
+                },
+                class: "LOCK"
+            },
+            0x50: {
+                name: "SEMI_INTEROPERABLE"
+            },
+            0xa1: {
+                name: "ALARM_SENSOR",
+                specific: {
+                    1: "ALARM_SENSOR_ROUTING_BASIC",
+                    2: "ALARM_SENSOR_ROUTING",
+                    3: "ALARM_SENSOR_ZENSOR_BASIC",
+                    4: "ALARM_SENSOR_ZENSOR",
+                    5: "ALARM_SENSOR_ZENSOR_ADVANCED",
+                    6: "SMOKE_SENSOR_ROUTING_BASIC",
+                    7: "SMOKE_SENSOR_ROUTING",
+                    8: "SMOKE_SENSOR_ZENSOR_BASIC",
+                    9: "SMOKE_SENSOR_ZENSOR",
+                    10: "SMOKE_SENSOR_ZENSOR_ADVANCED"
+                },
+                class: "BASIC"
+            },
+            0xff: {
+                name: "NON_INTEROPERABLE"
+            }
+        };
+
+        function getDeviceClass(basic, generic, specific) {
+            var devClass;
+            if (deviceClassBasic[basic] != null) {
+                devClass = deviceClassBasic[basic].name + ":";
+            }
+            else {
+                devClass = basic + ":";
+            }
+            if (deviceClass[generic] != null) {
+                if (deviceClass[generic].specific[specific] != null) {
+                    devClass += deviceClass[generic].specific[specific];
+                }
+                else {
+                    devClass += deviceClass[generic].name + ":" + specific;
+                }
+            }
+            else {
+                devClass += generic + ":" + specific;
+            }
+            return devClass;
+        }
+
+        function getDeviceCommand(generic) {
+            if (deviceClass[generic] != null) {
+                return deviceClass[generic].class;
+            }
+
+            return null;
+        }
+
         // Packet type definitions
         var packetTypes = {
             2: {
@@ -457,6 +683,9 @@ angular.module('ZWaveLogReader', [])
                 name: "CLIMATE_CONTROL_SCHEDULE",
                 processor: null
             },
+            86: {
+                name: "CRC_16_ENCAP"
+            },
             96: {
                 name: "MULTI_INSTANCE",
                 commands: {
@@ -479,7 +708,8 @@ angular.module('ZWaveLogReader', [])
                         name: "MULTI_CHANNEL_CAPABILITY_GET"
                     },
                     10: {
-                        name: "MULTI_CHANNEL_CAPABILITY_REPORT"
+                        name: "MULTI_CHANNEL_CAPABILITY_REPORT",
+                        processor: processMultiChannelReport
                     },
                     11: {
                         name: "MULTI_CHANNEL_ENDPOINT_FIND"
@@ -526,6 +756,12 @@ angular.module('ZWaveLogReader', [])
                         processor: processManufacturer
                     }
                 }
+            },
+            115: {
+                name: "POWERLEVEL"
+            },
+            122: {
+                name: "FIRMWARE_UPDATE_MD"
             },
             128: {
                 name: "BATTERY",
@@ -603,17 +839,26 @@ angular.module('ZWaveLogReader', [])
                         name: "VERSION_REPORT"
                     },
                     19: {
-                        name: "VERSION_COMMAND_CLASS_GET",
-                        processor: processVersion
+                        name: "VERSION_COMMAND_CLASS_GET"
                     },
                     20: {
                         name: "VERSION_COMMAND_CLASS_REPORT"
                     }
-                }
+                },
+                processor: processVersion
             },
             135: {
                 name: "INDICATOR",
                 processor: null
+            },
+            138: {
+                name: "TIME"
+            },
+            139: {
+                name: "TIME_PARAMETERS"
+            },
+            142: {
+                name: "MULTI_INSTANCE_ASSOCIATION"
             },
             143: {
                 name: "MULTI_CMD",
@@ -769,7 +1014,10 @@ angular.module('ZWaveLogReader', [])
                     computed: false,
                     responseTime: [],
                     responseTimeouts: 0,
+                    items: [],
                     classes: {},
+                    control: {},
+                    endpoints: {},
                     responseTimeMin: 9999,
                     responseTimeAvg: 0,
                     responseTimeMax: 0,
@@ -788,6 +1036,18 @@ angular.module('ZWaveLogReader', [])
             }
             createNode(id);
             nodes[id][type] = value;
+        }
+
+        function addNodeEndpointInfo(id, endpoint, type, value) {
+            if (id === 0) {
+                console.log("Trying to save data for node 0", type, value);
+                return;
+            }
+            createNode(id);
+            if(nodes[id].endpoints[endpoint] == null) {
+                nodes[id].endpoints[endpoint] = {};
+            }
+            nodes[id].endpoints[endpoint][type] = value;
         }
 
         function incNodeInfo(id, type) {
@@ -814,13 +1074,15 @@ angular.module('ZWaveLogReader', [])
             nodes[id].errors.push(msg);
         }
 
-        function addNodeItem(node, endpoint, name, cmd, item) {
+        function addNodeItem(id, endpoint, name, cmd, item) {
             createNode(id);
-            var msg = name + " = " + node + ":";
+            var msg = name + " = " + id + ":";
             if (endpoint !== 0) {
                 msg += endpoint + ":";
             }
-            msg += "command=" + cmd;
+            if(cmd !== "") {
+                msg += "command=" + cmd;
+            }
             if (item != null) {
                 msg += "," + item;
             }
@@ -1058,19 +1320,27 @@ angular.module('ZWaveLogReader', [])
         }
 
         function processAssociation(node, endpoint, bytes) {
-            var data = {result: SUCCESS};
+            var data = {
+                result: SUCCESS,
+                node: node
+            };
 
             var cmdCls = HEX2DEC(bytes[0]);
             var cmdCmd = HEX2DEC(bytes[1]);
             data.content = commandClasses[cmdCls].commands[cmdCmd].name;
             switch (cmdCmd) {
-                case 2:             // GET
+                case 2:             // ASSOCIATIONCMD_GET
                     var groupGet = HEX2DEC(bytes[2]);
                     data.content += " Group " + groupGet;
                     break;
-                case 3:             // REPORT
+                case 3:             // ASSOCIATIONCMD_REPORT
                     var groupReport = HEX2DEC(bytes[2]);
                     data.content += " Group " + groupReport;
+                    break;
+                case 6:             // ASSOCIATIONCMD_GROUPINGSREPORT
+                    var groupCnt = HEX2DEC(bytes[2]);
+                    addNodeInfo(node, "associationGroups", groupCnt);
+                    data.content += " Supports " + groupCnt + " groups";
                     break;
             }
 
@@ -1119,6 +1389,26 @@ angular.module('ZWaveLogReader', [])
                     }
                     else {
                         data.content += "::" + alarmSensors[repType] + "=" + repValue;
+                    }
+                    break;
+                case 4:             // SENSOR_ALARM_SUPPORTED_REPORT
+                    for (var i = 0; i < bytes.length - 3; ++i) {
+                        var a = HEX2DEC(bytes[i + 3]);
+                        for (var bit = 0; bit < 8; ++bit) {
+                            if ((a & (1 << bit) ) === 0) {
+                                continue;
+                            }
+                            var index = (i * 8 ) + bit;
+
+                            var name = "UNKNOWN!";
+                            if (alarmSensors[index] != null) {
+                                name = alarmSensors[index];
+                            }
+
+                            // Add to list of supported sensors
+                            addNodeItem(node, endpoint, name, commandClasses[cmdCls].name,
+                                "alarm_type=" + index);
+                        }
                     }
                     break;
             }
@@ -1177,11 +1467,14 @@ angular.module('ZWaveLogReader', [])
                             }
                             var index = (i * 8 ) + bit + 1;
 
-                            if (multilevelSensors[index] == null) {
-                                // Add to list of supported sensors
-                                addNodeItem(node, endpoint, multilevelSensors[index], commandClasses[cmdCls].name,
-                                    "sensor_type=" + index);
+                            var name = "UNKNOWN!";
+                            if (multilevelSensors[index] != null) {
+                                name = multilevelSensors[index];
                             }
+
+                            // Add to list of supported sensors
+                            addNodeItem(node, endpoint, name, commandClasses[cmdCls].name,
+                                "sensor_type=" + index);
                         }
                     }
                     break;
@@ -1223,6 +1516,10 @@ angular.module('ZWaveLogReader', [])
                 case 19:
                     data.content += " (" + commandClasses[cmdPrm].name + ")";
                     break;
+                case 20:
+                    var version = HEX2DEC(bytes[3]);
+                    data.content += " (" + commandClasses[cmdPrm].name + "=V" + version + ")";
+                    break;
             }
 
             return data;
@@ -1236,6 +1533,23 @@ angular.module('ZWaveLogReader', [])
             data.content = "Manufacturer Info: " + getNodeInfo(node, "manufacturer") + ":" +
             getNodeInfo(node, "deviceType") + ":" + getNodeInfo(node, "deviceID");
 
+            return data;
+        }
+
+        function processMultiChannelReport(node, endpoint, bytes) {
+            var data = {result: SUCCESS};
+
+            data.endPoint = HEX2DEC(bytes[2]) & 0x7f;
+            var generic = HEX2DEC(bytes[3]);
+            var specific = HEX2DEC(bytes[4]);
+
+            data.content = "MULTI_CHANNEL_CAPABILITY_REPORT::" + data.endPoint;
+
+            var devClass = getDeviceClass(getNodeInfo(node, "basicClass"), generic, specific);
+            addNodeEndpointInfo(node, data.endPoint, "deviceClass", devClass);
+            var cmdClass = getDeviceCommand(generic);
+
+            addNodeItem(node, data.endPoint, data.endPoint, cmdClass);
             return data;
         }
 
@@ -1369,16 +1683,26 @@ angular.module('ZWaveLogReader', [])
                 else {
                     data.node = lastCmd.node;
 
+                    var basic = HEX2DEC(bytes[3])
+                    var generic = HEX2DEC(bytes[4]);
+                    var specific = HEX2DEC(bytes[5]);
+
                     var a = HEX2DEC(bytes[0]);
-                    addNodeInfo(data.node, "isListening", (a & 0x80) !== 0);
-                    addNodeInfo(data.node, "isRouting", (a & 0x40) !== 0);
+                    addNodeInfo(data.node, "isListening", (a & 0x80) !== 0 ? true : false);
+                    addNodeInfo(data.node, "isRouting", (a & 0x40) !== 0 ? true : false);
                     addNodeInfo(data.node, "version", (a & 0x07) + 1);
                     a = HEX2DEC(bytes[1]);
                     addNodeInfo(data.node, "isFLiRS", (a & 0x60) ? true : false);
-                    addNodeInfo(data.node, "basicClass", HEX2DEC(bytes[3]));
-                    addNodeInfo(data.node, "genericClass", HEX2DEC(bytes[4]));
-                    addNodeInfo(data.node, "specificClass", HEX2DEC(bytes[5]));
-                    data.content = "IdentifyNode: Listening:" + getNodeInfo(data.node, "isListening");
+                    addNodeInfo(data.node, "basicClass", basic);
+                    addNodeInfo(data.node, "genericClass", generic);
+                    addNodeInfo(data.node, "specificClass", specific);
+
+                    var cmdClass = getDeviceCommand(generic);
+                    addNodeItem(data.node, 0, 0, cmdClass);
+
+                    var devClass = getDeviceClass(basic, generic, specific);
+                    addNodeInfo(data.node, "deviceClass", devClass);
+                    data.content = "IdentifyNode: " + devClass + ". Listening:" + getNodeInfo(data.node, "isListening");
                 }
             }
 
@@ -1450,13 +1774,27 @@ angular.module('ZWaveLogReader', [])
                     switch(state) {
                         case 0x84:
                             createNode(data.node);
+                            var cntrl = false;
                             for(var c = 6; c < bytes.length; c++) {
                                 var id = HEX2DEC(bytes[c]);
                                 if (id == 0xEF) {
-                                    break;
+                                    cntrl = true;
+                                    continue;
                                 }
-                                if (nodes[data.node].classes[id] == null) {
-                                    nodes[data.node].classes[id] = 0;
+
+                                // If we know the command class name, use it
+                                if(commandClasses[id] != null) {
+                                    id = commandClasses[id].name;
+                                }
+                                if(cntrl == false) {
+                                    if (nodes[data.node].classes[id] == null) {
+                                        nodes[data.node].classes[id] = 0;
+                                    }
+                                }
+                                else {
+                                    if (nodes[data.node].control[id] == null) {
+                                        nodes[data.node].control[id] = 0;
+                                    }
                                 }
                             }
                             break;
@@ -1501,7 +1839,7 @@ angular.module('ZWaveLogReader', [])
 
                     var cntTotal = 0;
                     var cntListening = 0;
-                    var nodeLoop;
+                    var nodeLoop = 0;
                     var neighbours = [];
                     for (var i = 0; i < 29; i++) {
                         var incomingByte = HEX2DEC(bytes[i]);
@@ -1687,7 +2025,7 @@ angular.module('ZWaveLogReader', [])
                 sendData.node = node;
                 sendData.callback = callbackTx;
                 sendData.cmdClass = cmdClass;
-                sendData.content = "SendData (" + callback + "). Sent: " + cmdClass.content;
+                sendData.content = "SendData (" + callbackTx + "). Sent: " + cmdClass.content;
 
                 lastSendData.node = node;
                 lastSendData.callback = callbackTx;
