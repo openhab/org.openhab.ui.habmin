@@ -356,7 +356,7 @@ angular.module('ZWaveLogReader', [])
                 devClass = basic + ":";
             }
             if (deviceClass[generic] != null) {
-                if (deviceClass[generic].specific[specific] != null) {
+                if (deviceClass[generic].specific != null && deviceClass[generic].specific[specific] != null) {
                     devClass += deviceClass[generic].specific[specific];
                 }
                 else {
@@ -1086,6 +1086,10 @@ angular.module('ZWaveLogReader', [])
             }
             if (item != null) {
                 msg += "," + item;
+            }
+            // Check if the item exists
+            if(nodes[id].items.indexOf(msg) != -1) {
+                return;
             }
             nodes[id].items.push(msg);
         }
