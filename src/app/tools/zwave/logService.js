@@ -283,7 +283,8 @@ angular.module('ZWaveLogReader', [])
                 name: "REMOTE_SWITCH_2",
                 specific: {
                     1: "SWITCH_REMOTE2_MULTILEVEL"
-                }
+                },
+                class: "SWITCH_MULTILEVEL"
             },
             0x20: {
                 name: "BINARY_SENSOR",

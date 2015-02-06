@@ -64,7 +64,7 @@ angular.module('ZWaveLogViewer', [
 
         $scope.selectedNode = {};
         $scope.showOption = "LIST";
-        $scope.processFilter = ['Start', 'RXPacket', 'TXPacket', 'Wakeup', 'Timeout', 'SendAbort'];
+        $scope.processFilter = ['Info', 'Start', 'RXPacket', 'TXPacket', 'Wakeup', 'Timeout', 'SendAbort'];
         $scope.processFilterOptions = [
             {
                 ref: 'Info',
