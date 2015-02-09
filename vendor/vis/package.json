@@ -1,6 +1,6 @@
 {
   "name": "vis",
-  "version": "3.7.2",
+  "version": "3.9.1",
   "description": "A dynamic, browser-based visualization library.",
   "homepage": "http://visjs.org/",
   "repository": {
@@ -30,8 +30,8 @@
   "dependencies": {
     "emitter-component": "^1.1.1",
     "hammerjs": "^1.1.0",
-    "moment": "^2.7.0",
-    "keycharm": "^0.1.6"
+    "moment": "^2.9.0",
+    "keycharm": "^0.2.0"
   },
   "devDependencies": {
     "clean-css": "latest",
