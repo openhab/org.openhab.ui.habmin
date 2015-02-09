@@ -1170,6 +1170,15 @@ angular.module('ZWaveLogReader', [])
             }
         }
 
+        function processCommand(node, process, message) {
+            var data = {
+                result: INFO
+            };
+            data.content = "Incoming Command: Item '" + message.slice(message.indexOf("itemname = ") + 11, message.indexOf(',')) +
+                "' to '" + message.slice(message.indexOf("Command = ") + 10, -1) + "'";
+            return data;
+        }
+
         function processBindingStart(node, process, message) {
             var data = {
                 result: INFO

@@ -143,13 +143,18 @@
                             <td>Device Class</td>
                             <td>{{selectedNode.deviceClass}}</td>
                         </tr>
-                        <tr ng-repeat="error in selectedNode.errors">
-                            <td>Error</td>
-                            <td><span class="text-danger fa fa-exclamation-circle"></span>&nbsp;{{error}}</td>
-                        </tr>
-                        <tr ng-repeat="warning in selectedNode.warnings">
-                            <td>Warning</td>
-                            <td><span class="text-warning fa fa-question-circle"></span>&nbsp;{{warning}}</td>
+                        <tr>
+                            <td>Alerts</td>
+                            <td>
+                                <table>
+                                    <tr ng-repeat="error in selectedNode.errors">
+                                        <td><span class="text-danger fa fa-exclamation-circle"></span>&nbsp;{{error}}</td>
+                                    </tr>
+                                    <tr ng-repeat="warning in selectedNode.warnings">
+                                        <td><span class="text-warning fa fa-question-circle"></span>&nbsp;{{warning}}</td>
+                                    </tr>
+                                </table>
+                            </td>
                         </tr>
                         <tr ng-if="selectedNode.txErrorCan">
                             <td>Messages CANcelled</td>

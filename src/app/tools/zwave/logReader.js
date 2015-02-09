@@ -58,17 +58,20 @@ angular.module('ZWaveLogViewer', [
             }, 0);
 
             if (panel == "NODES") {
-                ZWaveLogReader.processDeviceInformation();
             }
         };
 
         $scope.selectedNode = {};
         $scope.showOption = "LIST";
-        $scope.processFilter = ['Info', 'Start', 'RXPacket', 'TXPacket', 'Wakeup', 'Timeout', 'SendAbort'];
+        $scope.processFilter = ['Info', 'Cmd', 'Start', 'RXPacket', 'TXPacket', 'Wakeup', 'Timeout', 'SendAbort'];
         $scope.processFilterOptions = [
             {
                 ref: 'Info',
                 name: 'Binding Information'
+            },
+            {
+                ref: 'Cmd',
+                name: 'Commands'
             },
             {
                 ref: 'RXPacket',
