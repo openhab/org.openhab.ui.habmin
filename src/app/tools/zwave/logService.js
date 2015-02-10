@@ -742,7 +742,8 @@ angular.module('ZWaveLogReader', [])
                     6: {
                         name: "CONFIGURATION_REPORT"
                     }
-                }
+                },
+                processor: processConfiguration
             },
             113: {
                 name: "ALARM",
@@ -1737,6 +1738,25 @@ angular.module('ZWaveLogReader', [])
             return data;
         }
 
+        function processConfiguration(node, endpoint, bytes) {
+            var data = {result: SUCCESS};
+
+            var cmdCls = HEX2DEC(bytes[0]);
+            var cmdCmd = HEX2DEC(bytes[1]);
+            var cmdCfg = HEX2DEC(bytes[2]);
+
+            data.content = commandClasses[cmdCls].commands[cmdCmd].name + "::" + cmdCfg;
+
+            if(cmdCmd == 4) {       // SET
+            }
+            else if(cmdCmd == 5) {  // GET
+            }
+            else if(cmdCmd == 6) {  // REPORT
+            }
+
+            return data;
+        }
+
         function processManufacturer(node, endpoint, bytes) {
             var data = {result: SUCCESS};
             addNodeInfo(node, "manufacturer", bytes[2] + bytes[3]);
@@ -1745,7 +1765,7 @@ angular.module('ZWaveLogReader', [])
             data.content = "Manufacturer Info: " + getNodeInfo(node, "manufacturer") + ":" +
             getNodeInfo(node, "deviceType") + ":" + getNodeInfo(node, "deviceID");
 
-            return {result: SUCCESS};
+            return data;
         }
 
         function processSwitchBinary(node, endpoint, bytes) {
