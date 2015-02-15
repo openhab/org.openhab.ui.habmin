@@ -26,6 +26,11 @@ angular.module('ZWaveLogReader', [])
         var lastSendData = {};
         var lastPacketRx = null;
         var lastPacketTx = null;
+        var txQueueLen = 0;
+
+        var packetsSent = 0;
+        var packetsRecv = 0;
+        var timeStart;
 
         var countLines = 0;
         var countEntries = 0;
@@ -53,6 +58,11 @@ angular.module('ZWaveLogReader', [])
          * Process the node information looking for errors etc
          */
         function processDeviceInformation() {
+            // Calculate some overall statistics
+            addNodeInfo(255, "Frames Sent", packetsSent);
+            addNodeInfo(255, "Frames Received", packetsRecv);
+            addNodeInfo(255, "Frame Period", Math.floor((logTime - timeStart) / (packetsRecv + packetsSent)));
+
             angular.forEach(nodes, function (node) {
                 if (node.responseTimeMin < 0) {
                     node.responseTimeMin = 0;
@@ -133,10 +143,10 @@ angular.module('ZWaveLogReader', [])
                 }
 
                 if (node.responseTimeAvg > 1000) {
-                    node.errors.push("Average response time is very high (" + node.responseTimeAvg + ")");
+                    node.errors.push("Average response time is very high (" + node.responseTimeAvg + "mS)");
                 }
                 else if (node.responseTimeAvg > 500) {
-                    node.warnings.push("Average response time is high (" + node.responseTimeAvg + ")");
+                    node.warnings.push("Average response time is high (" + node.responseTimeAvg + "mS)");
                 }
 
                 if (node.messagesSent > 40 && node.retryPercent > 15) {
@@ -989,6 +999,10 @@ angular.module('ZWaveLogReader', [])
                 processor: processHealState
             },
             {
+                string: "Took message from queue for sending",
+                processor: processTxQueueLength
+            },
+            {
                 string: "(CAN)",
                 error: "Message cancelled by controller",
                 processor: processTxMessageError,
@@ -1230,6 +1244,10 @@ angular.module('ZWaveLogReader', [])
                 setStatus(lastPacketRx, process.status);
                 lastPacketRx = null;
             }
+        }
+
+        function processTxQueueLength(node, process, message) {
+            txQueueLen = parseInt(message.substr(message.indexOf("Queue length = ") + 15), 10);
         }
 
         function processTxMessageError(node, process, message) {
@@ -2349,11 +2367,14 @@ angular.module('ZWaveLogReader', [])
         }
 
         function processPacketTX(node, process, message) {
+            packetsSent++;
             lastPacketTx = processPacket("TX", node, process, message);
+            lastPacketTx.queueLen = txQueueLen;
             return lastPacketTx;
         }
 
         function processPacketRX(node, process, message) {
+            packetsRecv++;
             var data = processPacket("RX", node, process, message);
             // Check for duplicates
             if (lastPacketRx != null) {
@@ -2436,6 +2457,10 @@ angular.module('ZWaveLogReader', [])
 
             logTime = time.valueOf();
 
+            if(timeStart == 0) {
+                timeStart = logTime;
+            }
+
             // See if this line includes a node ID
             var nodeOffset = line.indexOf("- NODE ");
             if (nodeOffset !== -1) {
@@ -2503,6 +2528,11 @@ angular.module('ZWaveLogReader', [])
             nodeInfoProcessed = false;
             countLines = 0;
             countEntries = 0;
+            txQueueLen = 0;
+            packetsSent = 0;
+            packetsRecv = 0;
+            timeStart = 0;
+
             data = [];
             nodes = [];
 

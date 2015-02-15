@@ -101,10 +101,12 @@
                         {{log.stage}}
                     </td>
                     <td class="text-center" style="white-space:nowrap;">
-                        <span ng-show="log.duplicate" class="text-muted fa fa-copy"></span>
-                        <span ng-show="log.successFlag" class="text-success fa fa-check-circle"></span>
-                        <span ng-show="log.warnFlag" class="text-warning fa fa-question-circle"></span>
-                        <span ng-show="log.errorFlag" class="text-danger fa fa-exclamation-circle"></span>
+                        <span ng-if="log.duplicate" class="text-muted fa fa-copy"></span>
+                        <span ng-if="log.successFlag" class="text-success fa fa-check-circle"></span>
+                        <span ng-if="log.warnFlag" class="text-warning fa fa-question-circle"></span>
+                        <span ng-if="log.errorFlag" class="text-danger fa fa-exclamation-circle"></span>
+                        <span ng-if="log.queueLen>5&&log.queueLen<15" class="small label label-warning">{{log.queueLen}}</span>
+                        <span ng-if="log.queueLen>=15" class="small label label-danger">{{log.queueLen}}</span>
                     </td>
                 </tr>
                 </tbody>
