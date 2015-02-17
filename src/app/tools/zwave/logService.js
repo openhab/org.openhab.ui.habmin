@@ -1022,6 +1022,15 @@ angular.module('ZWaveLogReader', [])
             }
         ];
 
+        function getCommandClassName(cmdCls, cmdCmd) {
+            if (commandClasses[cmdCls].commands[cmdCmd] == null) {
+                return commandClasses[cmdCls].name + "[" + cmdCmd + "]";
+            }
+            else {
+                return commandClasses[cmdCls].commands[cmdCmd].name;
+            }
+        }
+
         // Array of node information
         var nodes = {};
 
@@ -1487,7 +1496,7 @@ angular.module('ZWaveLogReader', [])
 
             var cmdCls = HEX2DEC(bytes[0]);
             var cmdCmd = HEX2DEC(bytes[1]);
-            data.content = commandClasses[cmdCls].commands[cmdCmd].name;
+            data.content = getCommandClassName(cmdCls, cmdCmd);
             switch (cmdCmd) {
                 case 2:				// SENSOR_BINARY_GET
                     if (bytes.length >= 3) {
@@ -1539,7 +1548,7 @@ angular.module('ZWaveLogReader', [])
 
             var cmdCls = HEX2DEC(bytes[0]);
             var cmdCmd = HEX2DEC(bytes[1]);
-            data.content = commandClasses[cmdCls].commands[cmdCmd].name;
+            data.content = getCommandClassName(cmdCls, cmdCmd);
             switch (cmdCmd) {
                 case 4:             // METER_SUPPORTED_REPORT
                     for (var i = 0; i < bytes.length - 3; ++i) {
@@ -1628,7 +1637,7 @@ angular.module('ZWaveLogReader', [])
 
             var cmdCls = HEX2DEC(bytes[0]);
             var cmdCmd = HEX2DEC(bytes[1]);
-            data.content = commandClasses[cmdCls].commands[cmdCmd].name;
+            data.content = getCommandClassName(cmdCls, cmdCmd);
             switch (cmdCmd) {
                 case 2:             // SENSOR_MULTI_LEVEL_SUPPORTED_REPORT 
                     for (var i = 0; i < bytes.length - 3; ++i) {
@@ -1682,11 +1691,7 @@ angular.module('ZWaveLogReader', [])
 
             var cmdCls = HEX2DEC(bytes[0]);
             var cmdCmd = HEX2DEC(bytes[1]);
-            if(commandClasses[cmdCls].commands[cmdCmd] == null) {
-                data.content = commandClasses[cmdCls].name + " - unknown cmd " + bytes[1];
-                return data;
-            }
-            data.content = commandClasses[cmdCls].commands[cmdCmd].name;
+            data.content = getCommandClassName(cmdCls, cmdCmd);
             switch (cmdCmd) {
                 case 2:             // SENSOR_MULTI_LEVEL_SUPPORTED_REPORT
                     for (var i = 0; i < bytes.length - 3; ++i) {
@@ -1742,7 +1747,7 @@ angular.module('ZWaveLogReader', [])
             var cmdCmd = HEX2DEC(bytes[1]);
             var cmdPrm = HEX2DEC(bytes[2]);
 
-            data.content = commandClasses[cmdCls].commands[cmdCmd].name;
+            data.content = getCommandClassName(cmdCls, cmdCmd);
             switch (cmdCmd) {
                 case 19:
                     data.content += " (" + commandClasses[cmdPrm].name + ")";
@@ -1763,7 +1768,8 @@ angular.module('ZWaveLogReader', [])
             var cmdCmd = HEX2DEC(bytes[1]);
             var cmdCfg = HEX2DEC(bytes[2]);
 
-            data.content = commandClasses[cmdCls].commands[cmdCmd].name + "::" + cmdCfg;
+            data.content = getCommandClassName(cmdCls, cmdCmd);
+            data.content += "::" + cmdCfg;
 
             if(cmdCmd == 4) {       // SET
             }
