@@ -1,3 +1,32 @@
+<a name="0.0.7"></a>
+### 0.0.7 (2015-02-22)
+
+
+#### Bug Fixes
+
+* **UI:**
+  * Fixed selection of persistence service ([03fa03fb](git@github.com:cdjackson/HABmin2/commit/03fa03fb815ffae1ca67d389b1eb661e8e5268e4))
+  * Fix error saving password to local cache ([c10ce94c](git@github.com:cdjackson/HABmin2/commit/c10ce94cde7b99e4f1adb7a0d22353be88b128b9))
+* **ZWave:**
+  * Log Reader - fix error formatting command class if command id unknown ([8f4e760e](git@github.com:cdjackson/HABmin2/commit/8f4e760ef57c0b2f0f3fc67e01837d873f5c0fdc))
+  * Log Reader - avoid duplicate item definitions ([303312d5](git@github.com:cdjackson/HABmin2/commit/303312d5c08106c07a361da1192d93d4318dc29f))
+  * Log Reader - fixed handling of sensor alarm types ([c4193f6a](git@github.com:cdjackson/HABmin2/commit/c4193f6a24773a6d7c5c5f796a495579fecdfcdd))
+
+
+#### Features
+
+* **ZWave:**
+  * Log Reader - added general packet statistics information ([9f92a281](git@github.com:cdjackson/HABmin2/commit/9f92a281604eb6515d84d5e80bec1e1027674600))
+  * Log Reader - add processing of CONFIGURATION class ([5c75e2de](git@github.com:cdjackson/HABmin2/commit/5c75e2dea0a2c2b0d4bc602fbf427bdff1d6ceea))
+  * Log Reader - process sensor packets ([0a072b50](git@github.com:cdjackson/HABmin2/commit/0a072b5078a8a2aa9e165747bbd3a594d2235678))
+  * Log Reader - show commands in log ([ded27845](git@github.com:cdjackson/HABmin2/commit/ded27845faf6e774ccd10690ecf440338bc23aa6))
+  * Log Reader - default to showing binding info ([6e7c5b47](git@github.com:cdjackson/HABmin2/commit/6e7c5b47d63da8db682c0a6c0d16e95593c3e959))
+  * Log Reader - add processing of endpoints and endpoint classes ([383e7aae](git@github.com:cdjackson/HABmin2/commit/383e7aaeceb03e66aaaa1f6a4f920dcc00754724))
+  * Log Reader - decode and display control classes ([16ffb3b5](git@github.com:cdjackson/HABmin2/commit/16ffb3b5a49e6832980458dede209863decb6638))
+  * Display information on device class ([5ae8be74](git@github.com:cdjackson/HABmin2/commit/5ae8be7476ee75b9c22f505805a5178d336c2473))
+  * Log Reader - Process the association group report ([82a767df](git@github.com:cdjackson/HABmin2/commit/82a767dfe968d588a2a0c0111945ecc8df880b1b))
+
+
 <a name="0.0.6"></a>
 ### 0.0.6 (2015-02-01)
 
