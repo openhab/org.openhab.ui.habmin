@@ -244,6 +244,7 @@ angular.module('HABmin.chart', [
                     service.selected = false;
                 }
             });
+            $scope.selectedService = sel.name;
         };
 
         $scope.onLoaded = function (graphRef) {

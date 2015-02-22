@@ -876,7 +876,11 @@ angular.module('ZWaveLogReader', [])
             },
             143: {
                 name: "MULTI_CMD",
-                processor: null
+                commands: {
+                    1: {
+                        name: "MULTI_COMMMAND_ENCAP"
+                    }
+                }
             },
             145: {
                 name: "MANUFACTURER_PROPRIETARY"
