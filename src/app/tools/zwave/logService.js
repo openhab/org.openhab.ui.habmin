@@ -885,6 +885,9 @@ angular.module('ZWaveLogReader', [])
             145: {
                 name: "MANUFACTURER_PROPRIETARY"
             },
+            152: {
+                name: "SECURITY"
+            },
             156: {
                 name: "SENSOR_ALARM",
                 commands: {
