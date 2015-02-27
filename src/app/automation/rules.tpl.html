@@ -26,6 +26,8 @@
                    ng-confirm-click="selectRule(choice)" ng-confirm-if="$parent.isDirty"
                    data-i18n-attr="{'ngConfirmMessage': 'habmin.ruleUnsavedChangesCheck','ngConfirmTitle': 'habmin.ruleUnsavedChangesTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
                    rulename={{selectedRule.name}}">
+                    <span ng-if="choice.type=='block'" class="fa fa-fw fa-puzzle-piece"></span>
+                    <span ng-if="choice.type=='code'" class="fa fa-fw fa-code"></span>
                     <span>{{choice.name}}</span>
                 </a>
             </div>

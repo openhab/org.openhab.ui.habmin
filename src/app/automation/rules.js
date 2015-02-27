@@ -93,6 +93,9 @@ angular.module('HABmin.rules', [
                 $scope.rules = rules;
                 $scope.rulesTotal = 0;
                 if ($scope.rules != null) {
+                    angular.forEach($scope.rules, function(rule) {
+                        rule.type = 'block';
+                    });
                     $scope.rulesTotal = $scope.rules.length;
                 }
             },
