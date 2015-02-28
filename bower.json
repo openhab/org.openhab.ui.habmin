@@ -20,7 +20,7 @@
     "angular-sanitize": "~1.2.23",
     "moment": "latest",
     "angular-ui-ace": "bower",
-    "fontawesome": "~4.2.0",
+    "fontawesome": "~4.3.0",
     "angular-gridster": "latest",
     "angular-ui-calendar": "latest",
     "weather-icons": "~0.0.1",
