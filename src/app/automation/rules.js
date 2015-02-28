@@ -101,7 +101,7 @@ angular.module('HABmin.rules', [
             },
             function (reason) {
                 // handle failure
-                growl.warning(locale.getString('habmin.ruleErrorLoadingRuleList', [rule.name, reason]));
+                growl.warning(locale.getString('habmin.ruleErrorLoadingRuleList'));
                 $scope.rulesTotal = 0;
             }
         );
