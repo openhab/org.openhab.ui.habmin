@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "bootstrap": "3.3.2",
-    "angular-localization": "~1.0.2",
+    "angular-localization": "~1.2.0",
     "angular-resource": "~1.2.21",
     "angular-growl-v2": "latest",
     "angular-toggle-switch": "~1.0.0",

@@ -1,8 +1,8 @@
 {
   "name": "angular-localization",
-  "version": "1.0.2",
+  "version": "1.2.0",
   "homepage": "https://github.com/doshprompt/angular-localization",
-  "description": "angularjs localization, the good parts.",
+  "description": "angularjs localization done right",
   "main": "angular-localization.js",
   "keywords": [
     "angularjs",
@@ -25,16 +25,23 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "*",
-    "angular-cookies": "*"
+    "angular": "1.2.x",
+    "angular-cookies": "1.2.x",
+    "angular-sanitize": "1.2.x"
   },
-  "_release": "1.0.2",
+  "devDependencies": {
+    "angular-mocks": "1.2.x",
+    "bootstrap": "~3.1.1",
+    "angular-route": "1.2.x",
+    "bca-flag-sprite": "~1.0.0"
+  },
+  "_release": "1.2.0",
   "_resolution": {
     "type": "version",
-    "tag": "v1.0.2",
-    "commit": "575e066ef4c3c2670bf1993f6d9f88152365a575"
+    "tag": "v1.2.0",
+    "commit": "d0d959142d09e8c62a0c2f1687f411bfa4539625"
   },
   "_source": "git://github.com/doshprompt/bower-angular-localization.git",
-  "_target": "~1.0.2",
+  "_target": "~1.2.0",
   "_originalSource": "angular-localization"
 }
