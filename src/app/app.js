@@ -135,8 +135,13 @@ angular.module('HABmin', [
             $templateCache.put('templates/notifications/summary.tpl.html',
                 '<div class="popover-content">' +
                 '<table class="table table-condensed small">' +
-                '<tr ng-repeat="msg in inboxSummary">' +
-                '<td>NEW</td><td>{{msg.label}}</td>' +
+                '<tr ng-repeat="msg in inboxSummary" ng-if="msg.flag==\'NEW\'" class="text-success">' +
+                '<td><span i18n="habmin.thingNew"></span></td>' +
+                '<td>{{msg.label}}</td>' +
+                '</tr>' +
+                '<tr ng-repeat="msg in inboxSummary" ng-if="msg.flag==\'IGNORED\'" class="text-muted">' +
+                '<td><span i18n="habmin.thingIgnored"></span></td>' +
+                '<td>{{msg.label}}</td>' +
                 '</tr>' +
                 '</table>' +
                 '<div class="pull-right">' +

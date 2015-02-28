@@ -84,6 +84,9 @@
   "dashboardClearTitle": "Clear Dashboard",
   "dashboardClearText": "Are you sure you want to remove all widgets from the dashboard?",
 
+  "thingNew": "New",
+  "thingIgnored": "Ignored",
+
   "errorLoadingSitemaps": "Error loading the sitemap list!",
   "period1Second": "1 Second",
   "period5Seconds": "5 Seconds",
