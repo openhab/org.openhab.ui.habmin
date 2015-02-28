@@ -19,6 +19,7 @@
   "mainGeneralPreferences": "General Settings",
   "mainErrorLoadingSitemaps": "Error loading sitemap list!",
   "mainErrorGettingBindings": "Error getting list of bindings!",
+  "mainOpenHABOffline": "OpenHAB is offline!",
   "loginFormTitle": "Login Required",
   "loginVersion": "HABmin version",
   "loginServer": "Server",

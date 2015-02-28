@@ -308,6 +308,17 @@
                             <span class="hidden-sm" i18n="habmin.mainLogin"></span>
                         </a>
                     </li>
+
+                    <!-- NOTIFICATION AREA -->
+                    <li class="navbar-notification">
+                        <p class="no-padding" ng-if="notificationCnt" popup-overlap="0"
+                           popup-show="templates/notifications/summary.tpl.html" popup-placement="left"
+                           popup-shown="showNotifications()" popup-class="zwave-logreader-popover">
+                            <span class="badge">
+                                {{notificationCnt}}
+                            </span>
+                        </p>
+                    </li>
                 </ul>
             </div>
         </nav>
