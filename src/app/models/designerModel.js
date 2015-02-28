@@ -7,23 +7,18 @@
  *
  * (c) 2014 Chris Jackson (chris@cd-jackson.com)
  */
-angular.module('HABmin.ruleModel', [
+angular.module('HABmin.designerModel', [
     'HABmin.userModel',
     'HABmin.restModel'
 ])
 
-    .service('RuleModel', function ($http, $q, UserService, RestService) {
+    .service('DesignerModel', function ($http, $q, UserService, RestService) {
         this.ruleList = [];
-        this.svcName = "habmin/rules";
+        this.svcName = "habmin/designer";
 
         this.getList = function () {
             var tStart = new Date().getTime();
             var deferred = $q.defer();
-
-            if(!RestService.isServiceSupported(this.svcName)) {
-                deferred.resolve(null);
-                return deferred.promise;
-            }
 
             var url = RestService.getService(this.svcName);
             $http.get(url)
@@ -32,7 +27,7 @@ angular.module('HABmin.ruleModel', [
 
                     // Keep a local copy.
                     // This allows us to update the data later and keeps the GUI in sync.
-                    this.ruleList = [].concat(data.rules);
+                    this.ruleList = [].concat(data.designs);
                     console.log("Processing completed in", new Date().getTime() - tStart);
 
                     deferred.resolve(this.ruleList);

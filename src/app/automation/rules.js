@@ -15,6 +15,7 @@ angular.module('HABmin.rules', [
     'angular-growl',
     'angular-blockly',
     'HABmin.ruleModel',
+    'HABmin.designerModel',
     'HABmin.userModel',
     'ResizePanel'
 ])
@@ -39,7 +40,7 @@ angular.module('HABmin.rules', [
     })
 
     .controller('AutomationRuleCtrl',
-    function AutomationRuleCtrl($scope, locale, growl, RuleModel, UserService, Blockly, $timeout) {
+    function AutomationRuleCtrl($scope, locale, growl, RuleModel, DesignerModel, UserService, Blockly, $timeout) {
         var newDesign = [
             {
                 type: 'openhab_rule',
@@ -51,8 +52,9 @@ angular.module('HABmin.rules', [
             }
         ];
 
-        $scope.editSource = false;
+        $scope.rules = [];
         $scope.rulesTotal = -1;
+        $scope.editSource = false;
         $scope.isDirty = false;
         $scope.selectedRule = null;
         $scope.aceOptions = {
@@ -90,19 +92,36 @@ angular.module('HABmin.rules', [
         // Load the list of rules
         RuleModel.getList().then(
             function (rules) {
-                $scope.rules = rules;
-                $scope.rulesTotal = 0;
-                if ($scope.rules != null) {
-                    angular.forEach($scope.rules, function(rule) {
-                        rule.type = 'block';
+                if (rules != null) {
+                    angular.forEach(rules, function(rule) {
+                        rule.type = 'code';
+                        $scope.rules.push(rule);
                     });
-                    $scope.rulesTotal = $scope.rules.length;
                 }
+                $scope.rulesTotal = $scope.rules.length;
             },
             function (reason) {
                 // handle failure
                 growl.warning(locale.getString('habmin.ruleErrorLoadingRuleList'));
-                $scope.rulesTotal = 0;
+                $scope.rulesTotal = $scope.rules.length;
+            }
+        );
+
+        // Load the list of designs
+        DesignerModel.getList().then(
+            function (rules) {
+                if (rules != null) {
+                    angular.forEach(rules, function(rule) {
+                        rule.type = 'block';
+                        $scope.rules.push(rule);
+                    });
+                }
+                $scope.rulesTotal = $scope.rules.length;
+            },
+            function (reason) {
+                // handle failure
+                growl.warning(locale.getString('habmin.ruleErrorLoadingRuleList'));
+                $scope.rulesTotal = $scope.rules.length;
             }
         );
 
@@ -132,21 +151,39 @@ angular.module('HABmin.rules', [
 
             handleDirtyNotification();
 
-            RuleModel.getRule(rule.id).then(
-                function (rule) {
-                    restoreRule = rule;
-                    if (rule.block === undefined || rule.block === null) {
-                        rule.block = newDesign;
+            if(rule.type == "block") {
+                DesignerModel.getRule(rule.id).then(
+                    function (rule) {
+                        restoreRule = rule;
+                        if (rule.block === undefined || rule.block === null) {
+                            rule.block = newDesign;
+                        }
+                        $scope.codeEditor = rule.source;
+                        Blockly.setWorkspace({block: rule.block});
+                        $scope.isDirty = false;
+                    },
+                    function (reason) {
+                        // handle failure
+                        growl.warning(locale.getString('habmin.ruleErrorLoadingRule', [rule.name, reason]));
                     }
-                    $scope.codeEditor = rule.source;
-                    Blockly.setWorkspace({block: rule.block});
-                    $scope.isDirty = false;
-                },
-                function (reason) {
-                    // handle failure
-                    growl.warning(locale.getString('habmin.ruleErrorLoadingRule', [rule.name, reason]));
-                }
-            );
+                );
+            }
+            else {
+                $scope.editSource = true;
+                RuleModel.getRule(rule.name).then(
+                    function (rule) {
+                        restoreRule = rule;
+                        if (rule.block === undefined || rule.block === null) {
+                        }
+                        $scope.codeEditor = rule.source;
+                        $scope.isDirty = false;
+                    },
+                    function (reason) {
+                        // handle failure
+                        growl.warning(locale.getString('habmin.ruleErrorLoadingRule', [rule.name, reason]));
+                    }
+                );
+            }
         };
 
         $scope.newRule = function () {
