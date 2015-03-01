@@ -16,14 +16,9 @@ angular.module('HABmin.thingModel', [
         var thingList = [];
         var svcName = "things";
 
-        this.getThings = function () {
+        this.getList = function () {
             var tStart = new Date().getTime();
             var deferred = $q.defer();
-
-            if (!RestService.isServiceSupported(svcName)) {
-                deferred.resolve(null);
-                return deferred.promise;
-            }
 
             RestService.getService(svcName).then(
                 function (url) {

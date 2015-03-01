@@ -87,6 +87,7 @@
 
   "thingNew": "New",
   "thingIgnored": "Ignored",
+  "thingSearch": "Start Scan",
 
   "errorLoadingSitemaps": "Error loading the sitemap list!",
   "period1Second": "1 Second",

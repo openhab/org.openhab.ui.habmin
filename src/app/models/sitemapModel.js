@@ -14,7 +14,7 @@ angular.module('HABmin.sitemapModel', [
 ])
     .service('SitemapModel', function ($http, $q, UserService, RestService) {
         var sitemapURL = '/rest/sitemaps';
-        var svcName = 'rest/sitemaps';
+        var svcName = 'sitemaps';
         socket = null;
 
         this.getList = function () {

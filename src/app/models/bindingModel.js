@@ -13,7 +13,7 @@ angular.module('HABmin.bindingModel', [
 ])
 
     .service('BindingModel', function ($http, $q, UserService, RestService) {
-        var svcName = "habmin/bindings";
+        var svcName = "bindings";
         var bindingList = [];
         var bindingCfg = {
             zwave: {
@@ -33,7 +33,12 @@ angular.module('HABmin.bindingModel', [
 
                             // Keep a local copy.
                             // This allows us to update the data later and keeps the GUI in sync.
-                            bindingList = [].concat(data.binding);
+                            if(data.binding) {      // OH1
+                                bindingList = [].concat(data.binding);
+                            }
+                            else {                  // OH2
+                                bindingList = [].concat(data);
+                            }
                             console.log("Processing completed in", new Date().getTime() - tStart);
 
                             deferred.resolve(bindingList);

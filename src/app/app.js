@@ -23,6 +23,7 @@ angular.module('HABmin', [
     'HABmin.dashboard',
     'HABmin.scheduler',
     'ZWaveLogViewer',
+    'Config.Things',
     'UserChartPrefs',
     'UserGeneralPrefs',
     'ui.router',
