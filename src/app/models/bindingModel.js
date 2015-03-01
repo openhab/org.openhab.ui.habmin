@@ -8,13 +8,14 @@
  * (c) 2014 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('HABmin.bindingModel', [
-    'HABmin.userModel'
+    'HABmin.userModel',
+    'HABmin.restModel'
 ])
 
-    .service('BindingModel', function ($http, $q, UserService) {
-        this.url = UserService.getServer() + '/services/habmin/config/bindings';
-        this.bindingList = [];
-        this.bindingCfg = {
+    .service('BindingModel', function ($http, $q, UserService, RestService) {
+        var svcName = "habmin/bindings";
+        var bindingList = [];
+        var bindingCfg = {
             zwave: {
                 link: 'binding/zwave',
                 icon: 'zwave'
@@ -24,26 +25,33 @@ angular.module('HABmin.bindingModel', [
             var tStart = new Date().getTime();
             var deferred = $q.defer();
 
-            $http.get(this.url)
-                .success(function (data) {
-                    console.log("Fetch completed in", new Date().getTime() - tStart);
+            RestService.getService(svcName).then(
+                function (url) {
+                    $http.get(url)
+                        .success(function (data) {
+                            console.log("Fetch completed in", new Date().getTime() - tStart);
 
-                    // Keep a local copy.
-                    // This allows us to update the data later and keeps the GUI in sync.
-                    this.bindingList = [].concat(data.binding);
-                    console.log("Processing completed in", new Date().getTime() - tStart);
+                            // Keep a local copy.
+                            // This allows us to update the data later and keeps the GUI in sync.
+                            bindingList = [].concat(data.binding);
+                            console.log("Processing completed in", new Date().getTime() - tStart);
 
-                    deferred.resolve(this.bindingList);
-                })
-                .error(function (data, status) {
-                    deferred.reject(data);
-                });
+                            deferred.resolve(bindingList);
+                        })
+                        .error(function (data, status) {
+                            deferred.reject(data);
+                        });
+                },
+                function () {
+                    deferred.reject(null);
+                }
+            );
 
             return deferred.promise;
         };
 
         this.getBinding = function (binding) {
-            return this.bindingCfg[binding];
+            return bindingCfg[binding];
         };
     })
 ;

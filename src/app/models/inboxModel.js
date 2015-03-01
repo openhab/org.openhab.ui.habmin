@@ -29,21 +29,27 @@ angular.module('HABmin.inboxModel', [
                 return deferred.promise;
             }
 
-            var url = RestService.getService(svcName);
-            $http.get(url)
-                .success(function (data) {
-                    console.log("Fetch completed in", new Date().getTime() - tStart);
+            RestService.getService(svcName).then(
+                function (url) {
+                    $http.get(url)
+                        .success(function (data) {
+                            console.log("Fetch completed in", new Date().getTime() - tStart);
 
-                    // Keep a local copy.
-                    // This allows us to update the data later and keeps the GUI in sync.
-                    inboxContents = [].concat(data);
-                    console.log("Processing completed in", new Date().getTime() - tStart);
+                            // Keep a local copy.
+                            // This allows us to update the data later and keeps the GUI in sync.
+                            inboxContents = [].concat(data);
+                            console.log("Processing completed in", new Date().getTime() - tStart);
 
-                    deferred.resolve(inboxContents);
-                })
-                .error(function (data, status) {
-                    deferred.reject(data);
-                });
+                            deferred.resolve(inboxContents);
+                        })
+                        .error(function (data, status) {
+                            deferred.reject(data);
+                        });
+                },
+                function () {
+                    deferred.reject(null);
+                }
+            );
 
             return deferred.promise;
         };

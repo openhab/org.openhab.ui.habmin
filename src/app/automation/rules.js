@@ -17,7 +17,8 @@ angular.module('HABmin.rules', [
     'HABmin.ruleModel',
     'HABmin.designerModel',
     'HABmin.userModel',
-    'ResizePanel'
+    'ResizePanel',
+    'HABmin.restModel'
 ])
 
     .config(function config($stateProvider) {

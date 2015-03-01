@@ -56,7 +56,7 @@ angular.module('HABmin.userModel', [
         var server = "";
         if (document.HABminCordova === true) {
             server = localStorage.getItem('Server');
-            if(server == null) {
+            if (server == null) {
                 server = "";
             }
         }
@@ -70,7 +70,7 @@ angular.module('HABmin.userModel', [
         }
 
         // Send the login confirmation to signal the system that we're online
-        if(authenticated === true) {
+        if (authenticated === true) {
             console.log("User authenticated at startup - confirming login");
             authService.loginConfirmed();
         }
@@ -165,7 +165,7 @@ angular.module('HABmin.userModel', [
                 // This directive may not have loaded when the app is checking
                 // to see if we've logged in. So, we store a 'loginRequired' flag
                 // and check it here to see what we need to do!
-                if(UserService.isLoginRequired()) {
+                if (UserService.isLoginRequired()) {
                     UserService.login();
                 }
             }
@@ -174,7 +174,7 @@ angular.module('HABmin.userModel', [
 
     .controller('LoginController', function ($scope, $http, $base64, authService, UserService) {
         $scope.user = localStorage.getItem('Auth-user');
-        if($scope.user == null) {
+        if ($scope.user == null) {
             $scope.user = "";
         }
         $scope.period = localStorage.getItem('Auth-period');
@@ -198,8 +198,8 @@ angular.module('HABmin.userModel', [
             UserService.setServer($scope.server);
 
             var pass = "";
-            if($scope.user == null || $scope.user.length === 0 ||
-                        $scope.password == null || $scope.password.length === 0) {
+            if ($scope.user == null || $scope.user.length === 0 ||
+                $scope.password == null || $scope.password.length === 0) {
                 // No authentication used
                 $http.defaults.headers.common['Authorization'] = null;
             }

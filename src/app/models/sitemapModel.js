@@ -8,42 +8,61 @@
  * (c) 2014 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('HABmin.sitemapModel', [
-    'HABmin.userModel'
+    'HABmin.userModel',
+    'HABmin.restModel'
 //    'ngResource'
 ])
-    .service('SitemapModel', function ($http, $q, UserService) {
-        this.url = UserService.getServer() + '/rest/sitemaps';
-        this.socket = null;
+    .service('SitemapModel', function ($http, $q, UserService, RestService) {
+        var sitemapURL = '/rest/sitemaps';
+        var svcName = 'rest/sitemaps';
+        socket = null;
+
         this.getList = function () {
             var deferred = $q.defer();
-            $http.get(this.url).success(function (data, status) {
-                deferred.resolve([].concat(data.sitemap));
-            }).error(function (data, status) {
-                deferred.reject(data);
-            });
+
+            RestService.getService(svcName).then(
+                function (url) {
+                    $http.get(url).success(function (data, status) {
+                        deferred.resolve([].concat(data.sitemap));
+                    }).error(function (data, status) {
+                        deferred.reject(data);
+                    });
+                },
+                function () {
+                    deferred.reject(null);
+                }
+            );
 
             return deferred.promise;
         };
 
         this.getPage = function (page) {
             var deferred = $q.defer();
-            $http.get(this.url + "/" + page).success(function (data, status) {
-                // Some extra manipulation on data if you want...
-                deferred.resolve(data);
-            }).error(function (data, status) {
-                deferred.reject(data);
-            });
+
+            RestService.getService(svcName).then(
+                function (url) {
+                    $http.get(url + "/" + page).success(function (data, status) {
+                        // Some extra manipulation on data if you want...
+                        deferred.resolve(data);
+                    }).error(function (data, status) {
+                        deferred.reject(data);
+                    });
+                },
+                function () {
+                    deferred.reject(null);
+                }
+            );
 
             return deferred.promise;
         };
 
         this.initWatch = function (page, onData) {
-            if(this.socket != null) {
+            if (socket != null) {
                 this.cancelWatch();
             }
 
             var request = {
-                url: this.url + "/" + page,
+                url: sitemapURL + "/" + page,
 //            contentType: 'application/json',
                 headers: {'Accept': 'application/json'},
                 disableCaching: true,
@@ -65,7 +84,7 @@ angular.module('HABmin.sitemapModel', [
 //            pollingInterval: 60000
             };
 
-            if($http.defaults.headers.common['Authorization'] !== undefined) {
+            if ($http.defaults.headers.common['Authorization'] !== undefined) {
                 request.headers['Authorization'] = $http.defaults.headers.common['Authorization'];
             }
 
@@ -107,14 +126,14 @@ angular.module('HABmin.sitemapModel', [
             };
 
             console.log("Socket request is:", request);
-            this.socket = $.atmosphere.subscribe(request);
-            console.log("Socket response is:", this.socket);
+            socket = $.atmosphere.subscribe(request);
+            console.log("Socket response is:", socket);
         };
 
         this.cancelWatch = function () {
-            if(this.socket != null) {
-                this.socket.close();
-                this.socket = null;
+            if (socket != null) {
+                socket.close();
+                socket = null;
             }
         };
 
