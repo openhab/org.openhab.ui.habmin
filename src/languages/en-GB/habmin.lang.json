@@ -8,6 +8,7 @@
   "mainCharts": "Charts",
   "mainRules": "Rules",
   "mainScheduler": "Scheduler",
+  "mainThings": "Thing Configuration",
   "mainSitemaps": "Sitemaps",
   "mainAutomation": "Automation",
   "mainNoSitemaps": "No Sitemaps Available",

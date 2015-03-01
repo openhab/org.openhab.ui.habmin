@@ -7,24 +7,20 @@
  *
  * (c) 2014 Chris Jackson (chris@cd-jackson.com)
  */
-angular.module('HABmin.inboxModel', [
+angular.module('HABmin.thingModel', [
     'HABmin.userModel',
     'HABmin.restModel'
 ])
 
-    .service('InboxModel', function ($http, $q, UserService, RestService) {
-        var inboxContents = [];
-        var svcName = "inbox";
+    .service('ThingModel', function ($http, $q, UserService, RestService) {
+        var thingList = [];
+        var svcName = "things";
 
-        this.getInbox = function () {
-            return inboxContents;
-        };
-
-        this.refreshInbox = function () {
+        this.getThings = function () {
             var tStart = new Date().getTime();
             var deferred = $q.defer();
 
-            if (!RestService.isServiceSupported(svcName)) {
+            if(!RestService.isServiceSupported(svcName)) {
                 deferred.resolve(null);
                 return deferred.promise;
             }
@@ -36,10 +32,10 @@ angular.module('HABmin.inboxModel', [
 
                     // Keep a local copy.
                     // This allows us to update the data later and keeps the GUI in sync.
-                    inboxContents = [].concat(data);
+                    thingList = [].concat(data);
                     console.log("Processing completed in", new Date().getTime() - tStart);
 
-                    deferred.resolve(inboxContents);
+                    deferred.resolve(thingList);
                 })
                 .error(function (data, status) {
                     deferred.reject(data);
@@ -47,5 +43,6 @@ angular.module('HABmin.inboxModel', [
 
             return deferred.promise;
         };
+
     })
 ;
