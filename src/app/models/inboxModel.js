@@ -26,6 +26,9 @@ angular.module('HABmin.inboxModel', [
 
             RestService.getService(svcName).then(
                 function (url) {
+                    if(url == null) {
+                        deferred.resolve(null);
+                    }
                     $http.get(url)
                         .success(function (data) {
                             console.log("Fetch completed in", new Date().getTime() - tStart);

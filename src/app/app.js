@@ -208,7 +208,7 @@ angular.module('HABmin', [
                         },
                         function (reason) {
                             // Handle failure
-                            growl.warning(locale.getString('habmin.mainErrorLoadingSitemaps'));
+                            growl.warning(locale.getString('habmin.mainErrorLoadingInbox'));
                         }
                     );
 

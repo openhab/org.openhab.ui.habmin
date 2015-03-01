@@ -25,8 +25,8 @@ angular.module('HABmin.restModel', [
         var initialised = false;
         var me = this;
 
-        this.isServiceSupported = function(svc) {
-            if(serviceList[svc] == null) {
+        this.isServiceSupported = function (svc) {
+            if (serviceList[svc] == null) {
                 return false
             }
             return true;
@@ -46,14 +46,14 @@ angular.module('HABmin.restModel', [
 
                     // Handle the different responses between OH1 and OH2
                     var links;
-                    if(data.links != null) {
+                    if (data.links != null) {
                         links = data.links;
                     }
                     else {
                         links = data.link;
                     }
                     // Copy all the service links into the service list
-                    angular.forEach(links, function(svc) {
+                    angular.forEach(links, function (svc) {
                         //  create an anchor element (note: no need to append this element to the document)
                         var link = document.createElement('a');
 
@@ -67,7 +67,7 @@ angular.module('HABmin.restModel', [
                     });
                     console.log("REST Processing completed in", new Date().getTime() - tStart);
 
-                    if(deferredList != null) {
+                    if (deferredList != null) {
                         angular.forEach(deferredList, function (deferred) {
                             deferred.resolve();
                         });
@@ -76,7 +76,7 @@ angular.module('HABmin.restModel', [
                 })
                 .error(function (data, status) {
                     console.log("REST Processing failed in", new Date().getTime() - tStart);
-                    if(deferredList != null) {
+                    if (deferredList != null) {
                         angular.forEach(deferredList, function (deferred) {
                             deferred.reject();
                         });
@@ -88,24 +88,30 @@ angular.module('HABmin.restModel', [
         };
 
         // Return a url to the requested service
-        this.getService = function(svc) {
+        this.getService = function (svc) {
             var deferred = $q.defer();
-            if(initialised == true) {
-                deferred.resolve(UserService.getServer() + serviceList[svc]);
-                if(serviceList[svc] == null) {
+            if (initialised == true) {
+                if (serviceList[svc] == null) {
                     console.log("Request for unknown service", svc);
+                    deferred.resolve(null);
+                }
+                else {
+                    deferred.resolve(UserService.getServer() + serviceList[svc]);
                 }
                 return deferred.promise;
             }
 
             me.updateServices().then(
-                function() {
-                    if(serviceList[svc] == null) {
+                function () {
+                    if (serviceList[svc] == null) {
                         console.log("Request for unknown service", svc);
+                        deferred.resolve(null);
                     }
-                    deferred.resolve(UserService.getServer() + serviceList[svc]);
+                    else {
+                        deferred.resolve(UserService.getServer() + serviceList[svc]);
+                    }
                 },
-                function() {
+                function () {
                     deferred.reject(null);
                 }
             );
