@@ -53,7 +53,8 @@ angular.module('HABmin.rules', [
             }
         ];
 
-        $scope.rules = [];
+        $scope.blockRules = [];
+        $scope.codeRules = [];
         $scope.rulesTotal = -1;
         $scope.editSource = false;
         $scope.isDirty = false;
@@ -94,17 +95,14 @@ angular.module('HABmin.rules', [
         RuleModel.getList().then(
             function (rules) {
                 if (rules != null) {
-                    angular.forEach(rules, function(rule) {
-                        rule.type = 'code';
-                        $scope.rules.push(rule);
-                    });
+                    $scope.codeRules = rules;
                 }
-                $scope.rulesTotal = $scope.rules.length;
+                $scope.rulesTotal = $scope.blockRules.length + $scope.codeRules.length;
             },
             function (reason) {
                 // handle failure
                 growl.warning(locale.getString('habmin.ruleErrorLoadingRuleList'));
-                $scope.rulesTotal = $scope.rules.length;
+                $scope.rulesTotal = $scope.blockRules.length + $scope.codeRules.length;
             }
         );
 
@@ -112,17 +110,14 @@ angular.module('HABmin.rules', [
         DesignerModel.getList().then(
             function (rules) {
                 if (rules != null) {
-                    angular.forEach(rules, function(rule) {
-                        rule.type = 'block';
-                        $scope.rules.push(rule);
-                    });
+                    $scope.blockRules = rules;
                 }
-                $scope.rulesTotal = $scope.rules.length;
+                $scope.rulesTotal = $scope.blockRules.length + $scope.codeRules.length;
             },
             function (reason) {
                 // handle failure
                 growl.warning(locale.getString('habmin.ruleErrorLoadingRuleList'));
-                $scope.rulesTotal = $scope.rules.length;
+                $scope.rulesTotal = $scope.blockRules.length + $scope.codeRules.length;
             }
         );
 
@@ -214,7 +209,7 @@ angular.module('HABmin.rules', [
                 rule.name = rule.block.fields[0].value;
             }
 
-            RuleModel.putRule(rule).then(function (result) {
+            DesignerModel.putRule(rule).then(function (result) {
                 $scope.selectedRule = result;
                 $scope.isDirty = false;
             });
@@ -230,7 +225,7 @@ angular.module('HABmin.rules', [
         };
 
         $scope.deleteRule = function () {
-            RuleModel.deleteRule($scope.selectedRule.id).then(function () {
+            DesignerModel.deleteRule($scope.selectedRule.id).then(function () {
                 Blockly.clearWorkspace();
                 $scope.codeEditor = "";
                 $scope.selectedRule = null;
