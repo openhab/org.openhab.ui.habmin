@@ -11,7 +11,7 @@ angular.module('HABmin.itemModel', [
     'HABmin.userModel'
 ])
 
-    .service('ItemModel', function ($http, $q, UserService) {
+    .service('ItemModel', function ($http, $q, UserService, RestService) {
         var svcName = "items";
         var itemList = [];
         var url = UserService.getServer() + '/rest/items';

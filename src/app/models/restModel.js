@@ -18,7 +18,8 @@ angular.module('HABmin.restModel', [
             'habmin/bindings': '/services/habmin/config/bindings',
             'habmin/charts': '/services/habmin/persistence/charts',
             'sitemaps': '/rest/sitemaps',
-            'bindings': '/services/habmin/config/bindings'
+            'bindings': '/services/habmin/config/bindings',
+            'persistence': '/services/habmin/persistence/services'
         };
 
         var deferredList = [];

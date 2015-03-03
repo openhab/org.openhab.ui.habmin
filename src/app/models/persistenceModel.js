@@ -33,24 +33,40 @@ angular.module('HABmin.persistenceModel', [
 
             return deferred.promise;
         };
-
     })
 
-    .factory("PersistenceServiceModel", function ($resource, UserService) {
-        this.url = UserService.getServer() + '/services/habmin/persistence/services';
-        return $resource(this.url,
-            {
-                //              bookId: '@bookId'
-            },
-            {
-                query: {
-                    method: 'GET',
-//                    params: { bookId: '@bookI  d' },
-                    isArray: false//,
-//                    headers: { 'auth-token': 'C3PO R2D2' }
+    .service("PersistenceServiceModel", function ($http, $q, RestService) {
+        var serviceList = [];
+
+        this.getList = function () {
+            var tStart = new Date().getTime();
+            var deferred = $q.defer();
+            RestService.getService('habmin/persistence').then(
+                function (url) {
+                    $http.get(url)
+                        .success(function (data) {
+                            console.log("Fetch completed in", new Date().getTime() - tStart);
+
+                            // Keep a local copy.
+                            // This allows us to update the data later and keeps the GUI in sync.
+                            serviceList = [].concat(data);
+                            if(serviceList.services != null) {
+                                serviceList = serviceList.services;
+                            }
+                            console.log("Processing completed in", new Date().getTime() - tStart);
+
+                            deferred.resolve(serviceList);
+                        })
+                        .error(function (data, status) {
+                            deferred.reject(data);
+                        });
+                },
+                function () {
+                    deferred.reject(null);
                 }
-            }
-        );
+            );
+            return deferred.promise;
+        }
     })
 
     .service('PersistenceDataModel', function ($http, $q, UserService) {

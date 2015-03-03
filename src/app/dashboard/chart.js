@@ -131,9 +131,9 @@ angular.module('HABmin.chart', [
         );
 
         // Load the list of persistence services
-        PersistenceServiceModel.query().$promise.then(
+        PersistenceServiceModel.getList().then(
             function (data) {
-                $scope.services = [].concat(data.services);
+                $scope.services = [].concat(data);
                 $scope.services[0].selected = true;
                 $scope.selectedService = $scope.services[0].name;
             },
