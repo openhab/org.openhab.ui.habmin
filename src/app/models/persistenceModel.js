@@ -12,29 +12,6 @@ angular.module('HABmin.persistenceModel', [
     'HABmin.userModel'
 ])
 
-    .service('PersistenceItemModel', function ($http, $q, UserService) {
-        this.url = UserService.getServer() + '/services/habmin/persistence/items';
-        this.get = function () {
-            var tStart = new Date().getTime();
-            var deferred = $q.defer();
-
-            $http.get(this.url)
-                .success(function (data) {
-                    console.log("Fetch completed in", new Date().getTime() - tStart);
-
-
-                    console.log("Store completed in", new Date().getTime() - tStart);
-
-                    deferred.resolve([].concat(data.items));
-                })
-                .error(function (data, status) {
-                    deferred.reject(data);
-                });
-
-            return deferred.promise;
-        };
-    })
-
     .service("PersistenceServiceModel", function ($http, $q, RestService) {
         var serviceList = [];
 

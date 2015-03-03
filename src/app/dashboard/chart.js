@@ -14,6 +14,7 @@ angular.module('HABmin.chart', [
     'ngLocalize',
     'angular-growl',
     'HABmin.persistenceModel',
+    'HABmin.itemModel',
     'HABmin.chartModel',
     'HABmin.chartSave',
     'HABmin.iconModel',
@@ -43,7 +44,7 @@ angular.module('HABmin.chart', [
     })
 
     .controller('DashboardChartCtrl',
-    function DashboardChartCtrl($scope, locale, PersistenceItemModel, PersistenceServiceModel, PersistenceDataModel, ChartListModel, ChartSave, SidepanelService, growl, VisDataSet, $interval, $timeout) {
+    function DashboardChartCtrl($scope, locale, ItemModel, PersistenceServiceModel, PersistenceDataModel, ChartListModel, ChartSave, SidepanelService, growl, VisDataSet, $interval, $timeout) {
         var itemsLoaded = 0;
         var itemsLoading = 0;
         var newChart;
@@ -102,7 +103,7 @@ angular.module('HABmin.chart', [
         // Load model data
 
         // Load the list of items
-        PersistenceItemModel.get().then(
+        ItemModel.getList().then(
             function (items) {
                 $scope.items = items;
                 if ($scope.items != null) {
