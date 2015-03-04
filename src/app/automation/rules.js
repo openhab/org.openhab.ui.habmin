@@ -147,39 +147,43 @@ angular.module('HABmin.rules', [
 
             handleDirtyNotification();
 
-            if(rule.type == "block") {
-                DesignerModel.getRule(rule.id).then(
-                    function (rule) {
-                        restoreRule = rule;
-                        if (rule.block === undefined || rule.block === null) {
-                            rule.block = newDesign;
-                        }
-                        $scope.codeEditor = rule.source;
-                        Blockly.setWorkspace({block: rule.block});
-                        $scope.isDirty = false;
-                    },
-                    function (reason) {
-                        // handle failure
-                        growl.warning(locale.getString('habmin.ruleErrorLoadingRule', [rule.name, reason]));
+            $scope.editSource = true;
+            RuleModel.getRule(rule.name).then(
+                function (rule) {
+                    restoreRule = rule;
+                    if (rule.block === undefined || rule.block === null) {
                     }
-                );
-            }
-            else {
-                $scope.editSource = true;
-                RuleModel.getRule(rule.name).then(
-                    function (rule) {
-                        restoreRule = rule;
-                        if (rule.block === undefined || rule.block === null) {
-                        }
-                        $scope.codeEditor = rule.source;
-                        $scope.isDirty = false;
-                    },
-                    function (reason) {
-                        // handle failure
-                        growl.warning(locale.getString('habmin.ruleErrorLoadingRule', [rule.name, reason]));
+                    $scope.codeEditor = rule.source;
+                    $scope.isDirty = false;
+                },
+                function (reason) {
+                    // handle failure
+                    growl.warning(locale.getString('habmin.ruleErrorLoadingRule', [rule.name, reason]));
+                }
+            );
+        };
+
+        $scope.selectBlock = function (rule) {
+            $scope.editSource = false;
+            $scope.selectedRule = rule;
+
+            handleDirtyNotification();
+
+            DesignerModel.getRule(rule.id).then(
+                function (rule) {
+                    restoreRule = rule;
+                    if (rule.block === undefined || rule.block === null) {
+                        rule.block = newDesign;
                     }
-                );
-            }
+                    $scope.codeEditor = rule.source;
+                    Blockly.setWorkspace({block: rule.block});
+                    $scope.isDirty = false;
+                },
+                function (reason) {
+                    // handle failure
+                    growl.warning(locale.getString('habmin.ruleErrorLoadingRule', [rule.name, reason]));
+                }
+            );
         };
 
         $scope.newRule = function () {
