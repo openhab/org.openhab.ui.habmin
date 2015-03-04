@@ -62,7 +62,7 @@ You can control the placement of the popup by adding a `popup-placement` attribu
 <a popup-show="popup.html" popup-placement="right">Show popup!</a>
 ```
 
-Supported values: `right`, `left`, `bottom`, `top`.
+Supported values: `right`, `left`, `bottom`, `bottom-left`, `top`.
 
 
 ### `popup-if`
@@ -117,7 +117,7 @@ You can control the overlap position with the anchor element by adding a `popup-
 
     (The MIT License)
 
-    Copyright (C) 2014 by Ruben Vermeersch <ruben@rocketeer.be>
+    Copyright (C) 2014-2015 by Ruben Vermeersch <ruben@rocketeer.be>
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
