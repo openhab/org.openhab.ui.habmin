@@ -77,7 +77,15 @@ Sitemaps (mobile view using *yeti* theme)...
 
 Contributing
 ============
-Clone the repository to your computer.
+There are a number of ways you can contribute - obviously code additions to add new features or correct bugs
+are very welcome, but it would also be great to get some translations to support other languages.
+
+If you want to add a translation for your language, then you need to copy the files in ```/src/app/languages```
+and copy the folder ```en-GB``` and rename it to your language (eg ```de-DE```). The folder name is
+```language-country``` and you should be able find the country code and language from the (ISO 2 letter country code list)
+[https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes].
+
+To set up a development environment, clone the repository to your computer.
 install ```npm``` (node package manager) and run ```npm install``` to install all the development dependencies.
 
 For mobile app compilation, you need to install ```cordova``` and ```ant``` and the android developers kits and set paths appropriately.
