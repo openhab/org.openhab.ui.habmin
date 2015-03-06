@@ -46,6 +46,23 @@ angular.module('HABmin.itemModel', [
                             // Keep a local copy.
                             // This allows us to update the data later and keeps the GUI in sync.
                             itemList = [].concat(data);
+                            angular.forEach(itemList, function (item) {
+                                if (item.label == null) {
+                                    item.label = {
+                                        title: ""
+                                    };
+                                    return;
+                                }
+                                var title = item.label;
+                                var pntStart = item.label.indexOf("[");
+                                if (pntStart != -1) {
+                                    title = item.label.substr(0, pntStart).trim();
+                                    //    var pntFinish = item.label.lastIndexOf("]");
+                                }
+                                item.label = {
+                                    title: title
+                                };
+                            });
                             console.log("Processing completed in", new Date().getTime() - tStart);
 
                             deferred.resolve(itemList);

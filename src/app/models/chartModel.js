@@ -28,7 +28,12 @@ angular.module('HABmin.chartModel', [
 
                             // Keep a local copy.
                             // This allows us to update the data later and keeps the GUI in sync.
-                            chartList = data.chart;
+                            if(data.entries) {
+                                chartList = data.entries;
+                            }
+                            else {
+                                chartList = data.chart;
+                            }
                             console.log("Processing completed in", new Date().getTime() - tStart);
 
                             deferred.resolve(chartList);

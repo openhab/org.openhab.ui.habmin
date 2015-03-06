@@ -27,7 +27,7 @@ angular.module('HABmin.persistenceModel', [
                             // Keep a local copy.
                             // This allows us to update the data later and keeps the GUI in sync.
                             serviceList = [].concat(data);
-                            if(serviceList.services != null) {
+                            if (serviceList.services != null) {
                                 serviceList = serviceList.services;
                             }
                             console.log("Processing completed in", new Date().getTime() - tStart);
@@ -46,8 +46,7 @@ angular.module('HABmin.persistenceModel', [
         }
     })
 
-    .service('PersistenceDataModel', function ($http, $q, UserService) {
-        this.url = UserService.getServer() + '/services/habmin/persistence/services/';
+    .service('PersistenceDataModel', function ($http, $q, RestService, UserService) {
         this.get = function (service, item, start, stop) {
             var deferred = $q.defer();
             var parms = {};
@@ -78,7 +77,7 @@ angular.module('HABmin.persistenceModel', [
             var cacheStop = Number(localStorage.getItem(storeName + '.stop'));
 
             // Modify the request based on data in the cache
-            if(UserService.userCfg().useCache === false) {
+            if (UserService.userCfg().useCache === false) {
                 console.log("Caching disabled");
                 cacheState = CACHE_IGNORE;
             }
@@ -122,59 +121,65 @@ angular.module('HABmin.persistenceModel', [
             console.log("Request start", start, requestStart, "stop", stop, requestStop);
             console.log("HTML GET start at", new Date().getTime() - tStart);
 
-            $http.get(this.url + service + "/" + item,
-                {
-                    params: {
-                        starttime: requestStart,
-                        endtime: requestStop
-                    }
+            RestService.getService('habmin/persistence').then(
+                function (url) {
+                    $http.get(url + "/" + service + "/" + item,
+                        {
+                            params: {
+                                starttime: requestStart,
+                                endtime: requestStop
+                            }
+                        })
+                        .success(function (data) {
+                            console.log("HTML GET completed in", new Date().getTime() - tStart);
+                            console.log("HTML GET data is", data);
+
+                            var persistence = [].concat(data.data);
+                            /*
+                             // Response handling
+                             switch (cacheState) {
+                             case CACHE_IGNORE:
+                             console.log("CACHE_IGNORE");
+                             // Just ignore the cache and return this data
+                             break;
+                             case CACHE_UPDATE:
+                             console.log("CACHE_UPDATE");
+                             var cache = angular.fromJson(localStorage.getItem(storeName + '.cache'));
+
+                             var newData;
+                             if (persistence[0].time < cacheStart) {
+                             // New data needs to be pre-pended to cache
+                             newData = persistence.concat(cache);
+                             }
+                             else {
+                             // New data goes on the end
+                             newData = cache.concat(persistence);
+                             }
+
+                             localStorage.setItem(storeName + '.cache', angular.toJson(newData));
+                             localStorage.setItem(storeName + '.start', newData[0].time);
+                             localStorage.setItem(storeName + '.stop', newData[newData.length - 1].time);
+                             persistence = getCache(newData, start, stop);
+                             break;
+                             case CACHE_WRITE:
+                             console.log("CACHE_WRITE");
+                             localStorage.setItem(storeName + '.cache', angular.toJson(persistence));
+                             localStorage.setItem(storeName + '.start', persistence[0].time);
+                             localStorage.setItem(storeName + '.stop', persistence[persistence.length - 1].time);
+                             break;
+                             }
+                             */
+                            console.log("Store completed in", new Date().getTime() - tStart);
+
+                            deferred.resolve(persistence);
+                        }).error(function (data, status) {
+                            deferred.reject(data);
+                        });
+                },
+                function () {
+                    deferred.reject(null);
                 }
-            ).success(function (data, status) {
-                    console.log("HTML GET completed in", new Date().getTime() - tStart);
-                    console.log("HTML GET data is", data);
-
-                    var persistence = [].concat(data.data);
-/*
-                    // Response handling
-                    switch (cacheState) {
-                        case CACHE_IGNORE:
-                            console.log("CACHE_IGNORE");
-                            // Just ignore the cache and return this data
-                            break;
-                        case CACHE_UPDATE:
-                            console.log("CACHE_UPDATE");
-                            var cache = angular.fromJson(localStorage.getItem(storeName + '.cache'));
-
-                            var newData;
-                            if (persistence[0].time < cacheStart) {
-                                // New data needs to be pre-pended to cache
-                                newData = persistence.concat(cache);
-                            }
-                            else {
-                                // New data goes on the end
-                                newData = cache.concat(persistence);
-                            }
-
-                            localStorage.setItem(storeName + '.cache', angular.toJson(newData));
-                            localStorage.setItem(storeName + '.start', newData[0].time);
-                            localStorage.setItem(storeName + '.stop', newData[newData.length - 1].time);
-                            persistence = getCache(newData, start, stop);
-                            break;
-                        case CACHE_WRITE:
-                            console.log("CACHE_WRITE");
-                            localStorage.setItem(storeName + '.cache', angular.toJson(persistence));
-                            localStorage.setItem(storeName + '.start', persistence[0].time);
-                            localStorage.setItem(storeName + '.stop', persistence[persistence.length - 1].time);
-                            break;
-                    }
-*/
-                    console.log("Store completed in", new Date().getTime() - tStart);
-
-                    deferred.resolve(persistence);
-                }).error(function (data, status) {
-                    deferred.reject(data);
-                });
-
+            );
             return deferred.promise;
 
             function getCache(cache, start, stop) {

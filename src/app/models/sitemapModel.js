@@ -15,7 +15,9 @@ angular.module('HABmin.sitemapModel', [
     .service('SitemapModel', function ($http, $q, UserService, RestService) {
         var sitemapURL = '/rest/sitemaps';
         var svcName = 'sitemaps';
-        socket = null;
+        var socket = null;
+
+        var sitemapList = [];
 
         this.getList = function () {
             var deferred = $q.defer();
@@ -23,7 +25,13 @@ angular.module('HABmin.sitemapModel', [
             RestService.getService(svcName).then(
                 function (url) {
                     $http.get(url).success(function (data, status) {
-                        deferred.resolve([].concat(data.sitemap));
+                        if(data.sitemap != null) {
+                            sitemapList = [].concat(data.sitemap);
+                        }
+                        else {
+                            sitemapList = [].concat(data);
+                        }
+                        deferred.resolve([].concat(sitemapList));
                     }).error(function (data, status) {
                         deferred.reject(data);
                     });

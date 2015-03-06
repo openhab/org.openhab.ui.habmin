@@ -22,7 +22,7 @@
         <!-- Body -->
         <div class="list-group" resize-panel>
             <div ng-repeat="choice in blockRules">
-                <a role="presentation" ng-class="{'list-group-item':true, 'active':choice.id==selectedRule.id}"
+                <a role="presentation" ng-class="{'list-group-item':true, 'active':choice==selectedRule}"
                    ng-confirm-click="selectBlock(choice)" ng-confirm-if="$parent.isDirty"
                    data-i18n-attr="{'ngConfirmMessage': 'habmin.ruleUnsavedChangesCheck','ngConfirmTitle': 'habmin.ruleUnsavedChangesTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
                    rulename={{selectedRule.name}}">
@@ -32,7 +32,7 @@
             </div>
 
             <div ng-repeat="choice in codeRules">
-                <a role="presentation" ng-class="{'list-group-item':true, 'active':choice.id==selectedRule.id}"
+                <a role="presentation" ng-class="{'list-group-item':true, 'active':choice==selectedRule}"
                    ng-confirm-click="selectRule(choice)" ng-confirm-if="$parent.isDirty"
                    data-i18n-attr="{'ngConfirmMessage': 'habmin.ruleUnsavedChangesCheck','ngConfirmTitle': 'habmin.ruleUnsavedChangesTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
                    rulename={{selectedRule.name}}">
