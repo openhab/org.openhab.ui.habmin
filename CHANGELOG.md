@@ -1,3 +1,34 @@
+<a name="0.0.8"></a>
+### 0.0.8 (2015-03-08)
+
+
+#### Bug Fixes
+
+* **UI:**
+  * Fixed display of things if no things are actually listed ([97273001](git@github.com:cdjackson/HABmin2/commit/97273001c254f3fa7c996406a070b5d55695fd64))
+  * Improved handling of inbox popup ([cb670829](git@github.com:cdjackson/HABmin2/commit/cb670829e7020949dc5218d3d7be0abee9b90e73))
+  * Fix error messages when saving chart ([8c4accca](git@github.com:cdjackson/HABmin2/commit/8c4accca07cac6219baacc442fb03a34ec75e47c))
+  * Fixed updating rule list following save ([40302911](git@github.com:cdjackson/HABmin2/commit/403029110e3944763170ba918731e0672ad982d6))
+  * Fixed inbox popup template to color code lines ([f4fcf4c7](git@github.com:cdjackson/HABmin2/commit/f4fcf4c744d25a5e5c8fe28b376219e94873ef39))
+  * Fix default username entry when not previously set ([bd90b906](git@github.com:cdjackson/HABmin2/commit/bd90b9064c410edeb0c4b98e6632ef8a1ba4ca24))
+  * Fixed error handling if no rules are returned ([109f1c52](git@github.com:cdjackson/HABmin2/commit/109f1c5236bc6f051f9765981247ee289eba5d82))
+
+
+#### Features
+
+* **Rules:**
+  * Add support for editing rule files in openHAB2 ([bd5d8736](git@github.com:cdjackson/HABmin2/commit/bd5d87360b0ed2e93e9a3e418d57647997ee6931))
+* **UI:**
+  * Login box is now displayed if no login has been completed ([bbafd881](git@github.com:cdjackson/HABmin2/commit/bbafd8819debe6fee8e3c133c9f3bbf169152d7a))
+  * Fix error deleting chart in OH2 ([9022ae15](git@github.com:cdjackson/HABmin2/commit/9022ae1528ea8838e4d63f7375bcb00327bf9a5c))
+  * Handle chart items for both OH1 and OH2 interfaces ([82921d0f](git@github.com:cdjackson/HABmin2/commit/82921d0ff9df57efa91f4a1d414cbed1eebef13a))
+  * Handle differences between OH1 and OH2 sitemaps ([444d0ac4](git@github.com:cdjackson/HABmin2/commit/444d0ac42bdbd85d0ef3934b0b0f14980cc5dd79))
+  * Add support for openhab inbox for new device notifications ([c8a91430](git@github.com:cdjackson/HABmin2/commit/c8a91430049f7d80bc0c6cb04d76478f23c1c5d4))
+  * Display rule type icon in rule list ([2dd31189](git@github.com:cdjackson/HABmin2/commit/2dd3118953de1089be63f6f0f5b48a186d29b584))
+* **ZWave:**
+  * Log Reader - display security command class ([de5b9f0f](git@github.com:cdjackson/HABmin2/commit/de5b9f0f29dabcf67496ad7ac6925d6ecbcbfe46))
+
+
 <a name="0.0.7"></a>
 ### 0.0.7 (2015-02-22)
 
