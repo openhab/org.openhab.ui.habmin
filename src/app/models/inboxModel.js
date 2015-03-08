@@ -28,6 +28,7 @@ angular.module('HABmin.inboxModel', [
                 function (url) {
                     if(url == null) {
                         deferred.resolve(null);
+                        return;
                     }
                     $http.get(url)
                         .success(function (data) {

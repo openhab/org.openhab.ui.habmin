@@ -44,7 +44,7 @@ angular.module('HABmin.chart', [
     })
 
     .controller('DashboardChartCtrl',
-    function DashboardChartCtrl($scope, locale, ItemModel, PersistenceServiceModel, PersistenceDataModel, ChartListModel, ChartSave, SidepanelService, growl, VisDataSet, $interval, $timeout) {
+    function DashboardChartCtrl($scope, locale, ItemModel, PersistenceServiceModel, PersistenceItemModel, PersistenceDataModel, ChartListModel, ChartSave, SidepanelService, growl, VisDataSet, $interval, $timeout) {
         var itemsLoaded = 0;
         var itemsLoading = 0;
         var newChart;
@@ -103,8 +103,28 @@ angular.module('HABmin.chart', [
         // Load model data
 
         // Load the list of items
-        ItemModel.getList().then(
+        // For OH1/OH2 compatability, we first try and load the list of items using the HABmin
+        // service which is only available on OH1. If this fails, then we use the items list
+        // for OH2
+        PersistenceItemModel.get().then(
             function (items) {
+                if(items == null) {
+                    ItemModel.getList().then(
+                        function (items) {
+                            $scope.items = items;
+                            if ($scope.items != null) {
+                                $scope.itemsTotal = $scope.items.length;
+                            }
+                        },
+                        function (reason) {
+                            // handle failure
+                            growl.warning(locale.getString('habmin.chartErrorGettingItems'));
+                        }
+                    );
+
+                    return;
+                }
+
                 $scope.items = items;
                 if ($scope.items != null) {
                     $scope.itemsTotal = $scope.items.length;

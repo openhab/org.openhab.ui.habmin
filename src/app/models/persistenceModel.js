@@ -26,9 +26,12 @@ angular.module('HABmin.persistenceModel', [
 
                             // Keep a local copy.
                             // This allows us to update the data later and keeps the GUI in sync.
-                            serviceList = [].concat(data);
-                            if (serviceList.services != null) {
-                                serviceList = serviceList.services;
+                            // Handle difference between OH1 and OH2
+                            if (data.services != null) {
+                                serviceList = [].concat(data.services);
+                            }
+                            else {
+                                serviceList = [].concat(data);
                             }
                             console.log("Processing completed in", new Date().getTime() - tStart);
 
@@ -231,4 +234,52 @@ angular.module('HABmin.persistenceModel', [
                 return data;
             }
         };
-    });
+    })
+
+    // Item model - currently only used for OH1
+    .service('PersistenceItemModel', function ($http, $q, UserService, RestService) {
+        this.url = UserService.getServer() + '/services/habmin/persistence/items';
+        this.get = function () {
+            var itemList = [];
+            var tStart = new Date().getTime();
+            var deferred = $q.defer();
+
+            RestService.getService('habmin/persistenceitem').then(
+                function (url) {
+                    if(url == null) {
+                        deferred.resolve(null);
+                        return;
+                    }
+
+                    $http.get(url)
+                        .success(function (data) {
+                            console.log("Fetch completed in", new Date().getTime() - tStart);
+
+                            itemList = [].concat(data.items);
+                            angular.forEach(itemList, function (item) {
+                                if (item.label == null) {
+                                    item.label = {
+                                        title: ""
+                                    };
+                                    return;
+                                }
+                                item.label = {
+                                    title: item.label,
+                                    format: item.format
+                                };
+                            });
+
+                            deferred.resolve(itemList);
+                        })
+                        .error(function (data, status) {
+                            deferred.reject(data);
+                        });
+                },
+                function () {
+                    deferred.reject(null);
+                }
+            );
+            return deferred.promise;
+        }
+    })
+;

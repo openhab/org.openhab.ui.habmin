@@ -45,7 +45,13 @@ angular.module('HABmin.itemModel', [
 
                             // Keep a local copy.
                             // This allows us to update the data later and keeps the GUI in sync.
-                            itemList = [].concat(data);
+                            // Handle difference between OH1 and OH2
+                            if(data.item != null) {
+                                itemList = [].concat(data.item);
+                            }
+                            else {
+                                itemList = [].concat(data);
+                            }
                             angular.forEach(itemList, function (item) {
                                 if (item.label == null) {
                                     item.label = {

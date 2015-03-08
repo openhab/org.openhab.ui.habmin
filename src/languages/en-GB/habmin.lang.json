@@ -31,6 +31,7 @@
   "chartItemList": "Items",
   "chartChartList": "Charts",
   "chartNoItems": "No Items To Chart",
+  "chartNoPersistenceServices": "No persistence services",
   "chartNoCharts": "No Charts Defined",
   "chartTotalItems": "Total Items",
   "chartSelectedItems": "Selected Items",

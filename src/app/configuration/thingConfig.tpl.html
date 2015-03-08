@@ -18,7 +18,7 @@
             <div ng-repeat="thing in things">
                 <a role="presentation" ng-class="{'list-group-item':true, 'activ1e': device.device==devEdit.device}"
                    ng-click="selectDevice(device)" sidepanel-click="main">
-                    <table>
+                    <table style="background-color: transparent">
                         <tr>
                             <td class="text-large" rowspan="2">
                                 <span ng-if="thing.status=='ONLINE'" class="fa fa-fw fa-check-circle text-success"></span>
@@ -37,7 +37,7 @@
             <div ng-repeat="thing in inbox">
                 <a role="presentation" ng-class="{'list-group-item':true, 'activ1e': device.device==devEdit.device}"
                    ng-click="selectDevice(device)" sidepanel-click="main">
-                    <table>
+                    <table style="background-color: transparent">
                         <tr>
                             <td class="text-large" rowspan="2">
                                 <span ng-if="thing.flag=='NEW'" class="fa fa-fw fa-plus-circle text-warning"></span>

@@ -18,8 +18,12 @@ angular.module('HABmin.restModel', [
             'habmin/bindings': '/services/habmin/config/bindings',
             'habmin/charts': '/services/habmin/persistence/charts',
             'sitemaps': '/rest/sitemaps',
+            'items': '/rest/items',
             'bindings': '/services/habmin/config/bindings',
-            'persistence': '/services/habmin/persistence/services'
+            'habmin/persistence': '/services/habmin/persistence/services',
+
+            // OH1 only
+            'habmin/persistenceitem': '/services/habmin/persistence/items'
         };
 
         var deferredList = [];
@@ -53,6 +57,13 @@ angular.module('HABmin.restModel', [
                     else {
                         links = data.link;
                     }
+
+                    // For OH2, we use the list from the server directly
+                    // This removes any OH1 defaults we've added
+                    if(data.version != null) {
+                        serviceList = {};
+                    }
+
                     // Copy all the service links into the service list
                     angular.forEach(links, function (svc) {
                         //  create an anchor element (note: no need to append this element to the document)
