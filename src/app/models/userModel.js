@@ -69,10 +69,16 @@ angular.module('HABmin.userModel', [
         function changeUser(user) {
         }
 
-        // Send the login confirmation to signal the system that we're online
         if (authenticated === true) {
+            // Send the login confirmation to signal the system that we're online
             console.log("User authenticated at startup - confirming login");
             authService.loginConfirmed();
+        }
+        else {
+            // If we didn't log in, then pop up the login box to make it clear
+            // what's required!
+            loginRequired = true;
+            $rootScope.$broadcast('event:auth-loginRequired');
         }
 
         return {
