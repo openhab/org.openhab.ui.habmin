@@ -74,8 +74,8 @@
   "chartSaveName": "Chart Name",
   "chartSaveTitle": "Chart Title",
   "chartSavePeriod": "Default Period",
-  "chartSaveSuccess": "Chart <i>{1}</i> saved successfully.",
-  "chartSaveError": "Error saving chart <i>{1}</i>:<BR><b><i>{2}</i></b>.",
+  "chartSaveSuccess": "Chart <i>{chartName}</i> saved successfully.",
+  "chartSaveError": "Error saving chart <i>{chartName}</i>:<BR><b><i>{error}</i></b>.",
 
   "dashboardAddWidget": "Add Widget",
   "dashboardAddChart": "Chart",
