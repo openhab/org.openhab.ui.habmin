@@ -15,7 +15,7 @@
 
         <!-- Body -->
         <div class="list-group habmin-list" resize-panel>
-            <div ng-repeat="thing in things">
+            <div ng-if="thingCnt!=-1 && inboxCnt!=-1" ng-repeat="thing in things">
                 <a role="presentation" ng-class="{'list-group-item':true, 'activ1e': device.device==devEdit.device}"
                    ng-click="selectDevice(device)" sidepanel-click="main">
                     <table style="background-color: transparent">
@@ -34,7 +34,7 @@
                     </table>
                 </a>
             </div>
-            <div ng-repeat="thing in inbox">
+            <div ng-if="thingCnt!=-1 && inboxCnt!=-1" ng-repeat="thing in inbox">
                 <a role="presentation" ng-class="{'list-group-item':true, 'activ1e': device.device==devEdit.device}"
                    ng-click="selectDevice(device)" sidepanel-click="main">
                     <table style="background-color: transparent">
@@ -59,9 +59,9 @@
                 <span class="fa fa-spin fa-refresh"></span>
                 <span i18n="common.loading"></span>
             </div>
-            <div ng-if="thingCnt==0" class="list-group-item text-center">
+            <div ng-if="thingCnt==0 && inboxCnt==0" class="list-group-item text-center">
                 <span class="fa fa-exclamation-triangle text-warning"></span>
-                <span i18n="zwave.zwaveNoDevices"></span>
+                <span i18n="habmin.thingNoneFound"></span>
             </div>
         </div>
 

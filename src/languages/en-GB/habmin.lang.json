@@ -92,6 +92,7 @@
   "thingNew": "New",
   "thingIgnored": "Ignored",
   "thingSearch": "Start Scan",
+  "thingNoneFound": "No things found",
 
   "errorLoadingSitemaps": "Error loading the sitemap list!",
   "period1Second": "1 Second",
