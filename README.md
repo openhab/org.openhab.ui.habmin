@@ -1,11 +1,26 @@
 HABmin2
 =======
 
-HABmin version2 - ultimately targeted toward openHAB2, however currently only working with openHAB1. The goal of HABmin2 is to provide a modern, professional and portable user interface for openHAB, providing both user and administrative functions (eg sitemaps for users, and configuration utilities to aid setup). It is written in such a way that it can be compiled as a native application for mobile devices using [Apache Cordova](http://cordova.apache.org/). This provides a portable application that with a small amount of work should run as a native application on a diverse range of devices.
+HABmin version2 - ultimately targeted toward openHAB2.
 
-To get a feel for the interface, check out an online version [here](http://cdjackson.github.io/HABmin2/#/home). Note that this is a static site, so there will be errors, and dynamic content such as graphs etc won't work.
+An **OPENHAB2** bundle is now available with initial support for charting and some OH2 features such
+as listing the newly discovered devices. I hope to keep a single source base that supports as many
+OH1 and OH2 features as possible while OH2 is being developped.
 
-HABmin is intended as a complete GUI for the openHAB Home Automation system. It is in early and [active development](https://github.com/cdjackson/HABmin2/blob/master/CHANGELOG.md), and as the ultimate target is openHAB2, which is also being actively developped, features are varied. In general, I'm focussing on features that I don't anticipate will change in OH2, or where the changes on the server side will not greatly impact the client.
+The goal of HABmin2 is to provide a modern, professional and portable user interface for openHAB,
+providing both user and administrative functions (eg sitemaps for users, and configuration utilities
+to aid setup). It is written in such a way that it can be compiled as a native application for mobile
+devices using [Apache Cordova](http://cordova.apache.org/). This provides a portable application that
+with a small amount of work should run as a native application on a diverse range of devices.
+
+To get a feel for the interface, check out an online version [here](http://cdjackson.github.io/HABmin2/#/home).
+Note that this is a static site, so there will be errors, and dynamic content such as graphs etc won't work.
+
+HABmin is intended as a complete GUI for the openHAB Home Automation system. It is in early and
+[active development](https://github.com/cdjackson/HABmin2/blob/master/CHANGELOG.md), and as the
+ultimate target is openHAB2, which is also being actively developed, features are varied.
+In general, I'm focusing on features that I don't anticipate will change too much in OH2, or where
+the changes on the server side will not greatly impact the client.
 
 
 Features
