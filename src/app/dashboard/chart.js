@@ -213,7 +213,14 @@ angular.module('HABmin.chart', [
                 return;
             }
 
-            ChartListModel.deleteChart($scope.selectedChart);
+            ChartListModel.deleteChart($scope.selectedChart.id).then(
+                function() {
+                    growl.success(locale.getString('habmin.chartDeleteOk'));
+                },
+                function() {
+                    growl.warning(locale.getString('habmin.chartDeleteError'));
+                }
+            );
         };
 
         $scope.selectItem = function (parm) {
@@ -275,7 +282,6 @@ angular.module('HABmin.chart', [
             graph2d.setWindow($scope.startTime, $scope.stopTime);
         };
 
-
         $scope.filterDefaultString = locale.getString('common.filter');
 
         // This is what we will bind the filter to
@@ -284,10 +290,10 @@ angular.module('HABmin.chart', [
             if ($scope.filter.text === "") {
                 return true;
             }
-            if (element.label == null) {
+            if (element.label == null || element.label.title == null || element.label.title.length == 0) {
                 return false;
             }
-            return element.label.toLowerCase().indexOf($scope.filter.text.toLowerCase()) !== -1 ? true : false;
+            return element.label.title.toLowerCase().indexOf($scope.filter.text.toLowerCase()) !== -1 ? true : false;
         };
 
         $scope.setWindow = function (window) {
