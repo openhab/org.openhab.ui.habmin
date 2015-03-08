@@ -110,7 +110,7 @@ angular.module('rt.popup', [])
 
                 popupPosition = {
                     top: anchorPoint.top - element.height() / 2,
-                    left: anchorPoint.left - element.width()
+                    right: $window.innerWidth - anchorPoint.left
                 };
 
                 // Clamp for edge of screen
@@ -183,8 +183,9 @@ angular.module('rt.popup', [])
             element.removeClass('left right bottom top');
             element.addClass(placement);
             element.css({
-                top: popupPosition.top + 'px',
-                left: popupPosition.left + 'px',
+                top: popupPosition.top !== undefined ? popupPosition.top + 'px' : 'initial',
+                left: popupPosition.left !== undefined ? popupPosition.left + 'px' : 'initial',
+                right: popupPosition.right !== undefined ? popupPosition.right + 'px' : 'initial',
                 display: 'block',
                 maxHeight: maxHeight
             });

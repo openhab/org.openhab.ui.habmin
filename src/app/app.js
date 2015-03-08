@@ -146,7 +146,9 @@ angular.module('HABmin', [
                 '</tr>' +
                 '</table>' +
                 '<div class="pull-right">' +
-                '<a ng-click="hidePopover()" class="btn btn-xs btn-primary">Close</a></div>' +
+                '<a ui-sref="things" ng-click="hidePopover()" class="btn btn-xs btn-primary"><span i18n="common.open"></span></a>' +
+                '<a ng-click="hidePopover()" class="btn btn-xs btn-primary"><span i18n="common.close"></span></a>' +
+                '</div>' +
                 '</div>'
             );
         }
