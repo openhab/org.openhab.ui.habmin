@@ -7,41 +7,39 @@
  *
  * (c) 2014 Chris Jackson (chris@cd-jackson.com)
  */
-angular.module('HABmin.bindingModel', [
+angular.module('HABmin.inboxModel', [
     'HABmin.userModel',
     'HABmin.restModel'
 ])
 
-    .service('BindingModel', function ($http, $q, UserService, RestService) {
-        var svcName = "bindings";
-        var bindingList = [];
-        var bindingCfg = {
-            zwave: {
-                link: 'binding/zwave',
-                icon: 'zwave'
-            }
+    .service('InboxModel', function ($http, $q, UserService, RestService) {
+        var inboxContents = [];
+        var svcName = "inbox";
+
+        this.getInbox = function () {
+            return inboxContents;
         };
-        this.getList = function () {
+
+        this.refreshInbox = function () {
             var tStart = new Date().getTime();
             var deferred = $q.defer();
 
             RestService.getService(svcName).then(
                 function (url) {
+                    if(url == null) {
+                        deferred.resolve(null);
+                        return;
+                    }
                     $http.get(url)
                         .success(function (data) {
                             console.log("Fetch completed in", new Date().getTime() - tStart);
 
                             // Keep a local copy.
                             // This allows us to update the data later and keeps the GUI in sync.
-                            if(data.binding) {      // OH1
-                                bindingList = [].concat(data.binding);
-                            }
-                            else {                  // OH2
-                                bindingList = [].concat(data);
-                            }
+                            inboxContents = [].concat(data);
                             console.log("Processing completed in", new Date().getTime() - tStart);
 
-                            deferred.resolve(bindingList);
+                            deferred.resolve(inboxContents);
                         })
                         .error(function (data, status) {
                             deferred.reject(data);
@@ -53,10 +51,6 @@ angular.module('HABmin.bindingModel', [
             );
 
             return deferred.promise;
-        };
-
-        this.getBinding = function (binding) {
-            return bindingCfg[binding];
         };
     })
 ;

@@ -12,15 +12,18 @@ angular.module('HABmin', [
     'templates-common',
     'http-auth-interceptor',
     'HABmin.home',
-    'HABmin.userModel',
     'HABmin.chart',
     'HABmin.sitemap',
     'HABmin.rules',
+    'HABmin.userModel',
+    'HABmin.restModel',
     'HABmin.sitemapModel',
     'HABmin.bindingModel',
+    'HABmin.inboxModel',
     'HABmin.dashboard',
     'HABmin.scheduler',
     'ZWaveLogViewer',
+    'Config.Things',
     'UserChartPrefs',
     'UserGeneralPrefs',
     'ui.router',
@@ -128,11 +131,29 @@ angular.module('HABmin', [
                 '<h4 class="growl-title" ng-show="message.title" ng-bind="message.title"></h4>' +
                 '<div class="growl-message" ng-bind-html="message.text"></div></div></div>'
             );
+
+            // Update the notification template. The use of <button> causes problems with some templates
+            $templateCache.put('templates/notifications/summary.tpl.html',
+                '<div class="popover-content">' +
+                '<table class="table table-condensed small">' +
+                '<tr ng-repeat="msg in inboxSummary" ng-if="msg.flag==\'NEW\'" class="text-success">' +
+                '<td><span i18n="habmin.thingNew"></span></td>' +
+                '<td>{{msg.label}}</td>' +
+                '</tr>' +
+                '<tr ng-repeat="msg in inboxSummary" ng-if="msg.flag==\'IGNORED\'" class="text-muted">' +
+                '<td><span i18n="habmin.thingIgnored"></span></td>' +
+                '<td>{{msg.label}}</td>' +
+                '</tr>' +
+                '</table>' +
+                '<div class="pull-right">' +
+                '<a ng-click="hidePopover()" class="btn btn-xs btn-primary">Close</a></div>' +
+                '</div>'
+            );
         }
     ])
 
     .controller('HABminCtrl',
-    function HABminCtrl($scope, $location, $window, $timeout, locale, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, SidepanelService) {
+    function HABminCtrl($scope, $location, $window, $timeout, $interval, locale, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, InboxModel, SidepanelService, RestService) {
         $scope.isLoggedIn = UserService.isLoggedIn;
 
         $scope.setTheme = function (theme) {
@@ -154,47 +175,87 @@ angular.module('HABmin', [
             UserService.login();
         };
 
+        $scope.showNotifications = function () {
+            $scope.inboxSummary = InboxModel.getInbox();
+        };
+
+        $scope.updateRestServices = function() {
+            RestService.updateServices();
+        };
+
+        // Create a poll timer to update the REST services every 30 seconds
+        var pollTimer = $interval(function () {
+            $scope.updateRestServices();
+        }, 30000);
+
         // Load models used in the nav bar
         function getAppData() {
             $scope.sitemaps = null;
-            SitemapModel.getList().then(
+            $scope.notificationCnt = 0;
+
+            RestService.updateServices().then(
                 function (data) {
-                    $scope.sitemaps = data;
+                    $scope.updateRestServices();
+
+                    InboxModel.refreshInbox().then(
+                        function (data) {
+                            $scope.notificationCnt = 0;
+                            angular.forEach(data, function(msg) {
+                                if(msg.flag == "NEW") {
+                                    $scope.notificationCnt++;
+                                }
+                            });
+                        },
+                        function (reason) {
+                            // Handle failure
+                            growl.warning(locale.getString('habmin.mainErrorLoadingInbox'));
+                        }
+                    );
+
+                    SitemapModel.getList().then(
+                        function (data) {
+                            $scope.sitemaps = data;
+                        },
+                        function (reason) {
+                            // Handle failure
+                            growl.warning(locale.getString('habmin.mainErrorLoadingSitemaps'));
+                        }
+                    );
+
+                    BindingModel.getList().then(
+                        function (data) {
+                            var bindings = [];
+                            angular.forEach(data, function (binding) {
+                                // Only show bindings that have defined names
+                                if (binding.name === undefined) {
+                                    return;
+                                }
+                                var info = BindingModel.getBinding(binding.pid);
+                                var newBinding = {};
+                                newBinding.name = binding.name;
+
+                                if (info === undefined) {
+                                    newBinding.disabled = true;
+                                }
+                                else {
+                                    newBinding.disabled = false;
+                                    newBinding.icon = info.icon;
+                                    newBinding.link = info.link;
+                                }
+
+                                bindings.push(newBinding);
+                            });
+                            $scope.bindings = bindings;
+                        },
+                        function (reason) {
+                            // Handle failure
+                            growl.warning(locale.getString("habmin.mainErrorGettingBindings"));
+                        }
+                    );
                 },
                 function (reason) {
                     // Handle failure
-                    growl.warning(locale.getString('habmin.mainErrorLoadingSitemaps'));
-                }
-            );
-
-            BindingModel.getList().then(
-                function (data) {
-                    var bindings = [];
-                    angular.forEach(data, function (binding) {
-                        // Only show bindings that have defined names
-                        if (binding.name === undefined) {
-                            return;
-                        }
-                        var info = BindingModel.getBinding(binding.pid);
-                        var newBinding = {};
-                        newBinding.name = binding.name;
-
-                        if (info === undefined) {
-                            newBinding.disabled = true;
-                        }
-                        else {
-                            newBinding.disabled = false;
-                            newBinding.icon = info.icon;
-                            newBinding.link = info.link;
-                        }
-
-                        bindings.push(newBinding);
-                    });
-                    $scope.bindings = bindings;
-                },
-                function (reason) {
-                    // Handle failure
-                    growl.warning(locale.getString("habmin.mainErrorGettingBindings"));
+                    growl.warning(locale.getString('habmin.mainOpenHABOffline'));
                 }
             );
         }

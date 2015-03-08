@@ -7,14 +7,14 @@
  *
  * (c) 2014 Chris Jackson (chris@cd-jackson.com)
  */
-angular.module('HABmin.chartModel', [
+angular.module('HABmin.designerModel', [
     'HABmin.userModel',
     'HABmin.restModel'
 ])
 
-    .service('ChartListModel', function ($http, $q, UserService, RestService) {
-        var svcName = "habmin/charts";
-        var chartList = [];
+    .service('DesignerModel', function ($http, $q, UserService, RestService) {
+        ruleList = [];
+        svcName = "habmin/designer";
 
         this.getList = function () {
             var tStart = new Date().getTime();
@@ -28,20 +28,14 @@ angular.module('HABmin.chartModel', [
 
                             // Keep a local copy.
                             // This allows us to update the data later and keeps the GUI in sync.
-                            if(data.entries) {
-                                chartList = data.entries;
-                            }
-                            else {
-                                chartList = data.chart;
-                            }
+                            ruleList = [].concat(data.designs);
                             console.log("Processing completed in", new Date().getTime() - tStart);
 
-                            deferred.resolve(chartList);
+                            deferred.resolve(ruleList);
                         })
                         .error(function (data, status) {
                             deferred.reject(data);
                         });
-
                 },
                 function () {
                     deferred.reject(null);
@@ -51,7 +45,7 @@ angular.module('HABmin.chartModel', [
             return deferred.promise;
         };
 
-        this.getChart = function (id) {
+        this.getRule = function (id) {
             var tStart = new Date().getTime();
             var deferred = $q.defer();
 
@@ -68,7 +62,6 @@ angular.module('HABmin.chartModel', [
                         .error(function (data, status) {
                             deferred.reject(data);
                         });
-
                 },
                 function () {
                     deferred.reject(null);
@@ -78,23 +71,21 @@ angular.module('HABmin.chartModel', [
             return deferred.promise;
         };
 
-
-        this.putChart = function (chart) {
+        this.putRule = function (rule) {
             var tStart = new Date().getTime();
             var deferred = $q.defer();
 
             RestService.getService(svcName).then(
                 function (url) {
-                    if (chart.id !== undefined && Number(chart.id) > 0) {
-                        // This is an existing chart - use PUT
-                        $http.put(url + "/" + chart.id, chart)
+                    if (rule.id !== undefined && Number(rule.id) > 0) {
+                        $http.put(url + "/" + rule.id, rule)
                             .success(function (data) {
                                 console.log("PUT completed in", new Date().getTime() - tStart);
 
                                 // Update the name in the cache. This will update the GUI if needed.
-                                angular.forEach(chartList, function (c) {
-                                    if (c.id === chart.id) {
-                                        c.name = chart.name;
+                                angular.forEach(ruleList, function (r) {
+                                    if (r.id === rule.id) {
+                                        r.name = rule.name;
                                     }
                                 });
 
@@ -105,12 +96,11 @@ angular.module('HABmin.chartModel', [
                             });
                     }
                     else {
-                        // This is an new chart - use POST
-                        $http.post(url, chart)
+                        $http.post(url + "/", rule)
                             .success(function (data) {
                                 console.log("POST completed in", new Date().getTime() - tStart);
 
-                                chartList.push(chart);
+                                ruleList.push(data);
 
                                 deferred.resolve(data);
                             })
@@ -118,7 +108,6 @@ angular.module('HABmin.chartModel', [
                                 deferred.reject(data);
                             });
                     }
-
                 },
                 function () {
                     deferred.reject(null);
@@ -128,8 +117,7 @@ angular.module('HABmin.chartModel', [
             return deferred.promise;
         };
 
-
-        this.deleteChart = function (id) {
+        this.deleteRule = function (id) {
             var tStart = new Date().getTime();
             var deferred = $q.defer();
 
@@ -143,20 +131,23 @@ angular.module('HABmin.chartModel', [
                                 var ref = 0;
 
                                 // Update the name in the cache. This will update the GUI if needed.
-                                angular.forEach(chartList, function (c, key) {
-                                    if (c.id === id) {
+                                angular.forEach(ruleList, function (r, key) {
+                                    if (r.id === id) {
                                         ref = key;
                                     }
                                 });
 
                                 if (ref !== 0) {
-                                    chartList.splice(ref, 1);
+                                    ruleList.splice(ref, 1);
                                 }
                                 deferred.resolve(data);
                             })
                             .error(function (data, status) {
                                 deferred.reject(data);
                             });
+                    }
+                    else {
+                        deferred.reject(data);
                     }
                 },
                 function () {
@@ -166,5 +157,5 @@ angular.module('HABmin.chartModel', [
 
             return deferred.promise;
         };
-
-    });
+    })
+;

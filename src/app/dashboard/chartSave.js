@@ -79,7 +79,7 @@ angular.module('HABmin.chartSave', [
                         itemModel.axis = 'left';
                     }
                     itemModel.item = item.item;
-                    itemModel.label = item.label;
+                    itemModel.label = item.label.title;
                     itemModel.format = item.format;
                     itemModel.fill = item.fill;
                     itemModel.fillColor = item.fillColor;
@@ -162,34 +162,34 @@ angular.module('HABmin.chartSave', [
                             var newItem = {};
 
                             newItem.item = item.item;
-                            if (item.label !== undefined) {
+                            if (item.label != null) {
                                 newItem.label = item.label;
                             }
-                            if (item.lineColor !== undefined) {
+                            if (item.lineColor != null) {
                                 newItem.lineColor = item.lineColor;
                             }
-                            if (item.lineStyle !== undefined) {
+                            if (item.lineStyle != null) {
                                 newItem.lineStyle = item.lineStyle;
                             }
-                            if (item.lineWidth !== undefined) {
+                            if (!isNaN(item.lineWidth)) {
                                 newItem.lineWidth = item.lineWidth;
                             }
                             if (!isNaN(item.repeatTime)) {
                                 newItem.repeatTime = item.repeatTime;
                             }
-                            if (item.axis !== undefined) {
+                            if (item.axis != null) {
                                 newItem.axis = item.axis;
                             }
-                            if (item.fill !== undefined) {
+                            if (item.fill != null) {
                                 newItem.fill = item.fill;
                             }
-                            if (item.fillColor !== undefined) {
+                            if (item.fillColor != null) {
                                 newItem.fillColor = item.fillColor;
                             }
-                            if (item.points !== undefined) {
+                            if (!isNaN(item.points)) {
                                 newItem.points = item.points;
                             }
-                            if (item.pointsSize !== undefined) {
+                            if (!isNaN(item.pointsSize)) {
                                 newItem.pointsSize = item.pointsSize;
                             }
 

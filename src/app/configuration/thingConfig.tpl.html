@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<!-- Device List -->
+<div class="col-sm-4" sidepanel-pane="side">
+    <div class="panel panel-default">
+        <!-- Header -->
+        <div class="panel-heading">
+            <!-- Network tools dropdown -->
+            <div class="btn-group dropdown">
+                <button type="button" class="btn btn-default" data-toggle="dropdown">
+                    <span class="fa fa-search"></span>
+                    <span i18n="habmin.thingSearch"></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Body -->
+        <div class="list-group habmin-list" resize-panel>
+            <div ng-repeat="thing in things">
+                <a role="presentation" ng-class="{'list-group-item':true, 'activ1e': device.device==devEdit.device}"
+                   ng-click="selectDevice(device)" sidepanel-click="main">
+                    <table style="background-color: transparent">
+                        <tr>
+                            <td class="text-large" rowspan="2">
+                                <span ng-if="thing.status=='ONLINE'" class="fa fa-fw fa-check-circle text-success"></span>
+                                <span ng-if="thing.status=='OFFLINE'" class="fa fa-fw fa-times-circle text-danger"></span>
+                            </td>
+                            <td>
+                                <span>{{thing.item.label}}&nbsp;</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted small">{{thing.UID}}</td>
+                        </tr>
+                    </table>
+                </a>
+            </div>
+            <div ng-repeat="thing in inbox">
+                <a role="presentation" ng-class="{'list-group-item':true, 'activ1e': device.device==devEdit.device}"
+                   ng-click="selectDevice(device)" sidepanel-click="main">
+                    <table style="background-color: transparent">
+                        <tr>
+                            <td class="text-large" rowspan="2">
+                                <span ng-if="thing.flag=='NEW'" class="fa fa-fw fa-plus-circle text-warning"></span>
+                                <span ng-if="thing.flag=='IGNORED'" class="fa fa-fw fa-dot-circle-o text-muted"></span>
+                            </td>
+                            <td>
+                                <span>{{thing.label}}&nbsp;</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted small">{{thing.thingUID}}</td>
+                        </tr>
+                    </table>
+                </a>
+            </div>
+
+            <!-- Cover options for loading, and no devices -->
+            <div ng-if="thingCnt==-1" class="list-group-item text-center">
+                <span class="fa fa-spin fa-refresh"></span>
+                <span i18n="common.loading"></span>
+            </div>
+            <div ng-if="thingCnt==0" class="list-group-item text-center">
+                <span class="fa fa-exclamation-triangle text-warning"></span>
+                <span i18n="zwave.zwaveNoDevices"></span>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="panel-footer panel-footer-none">
+        </div>
+    </div>
+</div>
+
+<!-- Device Configuration -->
+<div class="col-sm-8" sidepanel-pane="main">
+    <div class="panel panel-default">
+        <!-- Header -->
+        <div class="panel-heading">
+            <div class="btn-group dropdown">
+                <button type="button" ng-class="{'disabled': !devEdit.label}"
+                        class="btn btn-default dropdown-toggle"
+                        data-toggle="dropdown">
+                    <span class="fa fa-cog"></span>
+                    <span i18n="zwave.zwaveDeviceTools"></span>
+                    <span class="caret"></span>
+                    <span class="sr-only">Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li>
+                        <a ng-click="setView('CONFIG')">
+                            <span class="fa fa-fw fa-wrench"></span>
+                            <span i18n="zwave.zwaveDeviceConfiguration"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a ng-click="setView('NETWORK')">
+                            <span class="fa fa-fw fa-sitemap"></span>
+                            <span i18n="zwave.zwaveDeviceNetworkDiagram"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <button ng-show="deviceDisplay=='CONFIG'" type="button" ng-click="deviceSave()" ng-class="{'btn btn-default':true, 'disabled':!isDirty}">
+                <span class="fa fa-floppy-o"></span>
+                <span class="hidden-xs hidden-sm" i18n="common.save"></span>
+            </button>
+            <button ng-show="deviceDisplay=='CONFIG'" type="button" ng-click="deviceCancel()" ng-class="{'btn btn-default':true, 'disabled':!isDirty}">
+                <span class="fa fa-times"></span>
+                <span class="hidden-xs hidden-sm" i18n="common.cancel"></span>
+            </button>
+
+            <div ng-hide="!devEdit.label" class="btn-group pull-right">
+                <div class="text-right">{{devEdit.label}}</div>
+                <div class="text-right small"><span i18n="zwave.zwaveNode"></span>&nbsp;<span>{{devEdit.nodeID}}</span>:&nbsp;<span class="hidden-xs">{{devEdit.type}}</span></div>
+            </div>
+        </div>
+
+        <!-- Body -->
+        <div class="list-group habmin-list" resize-panel>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="panel-footer panel-footer-none">
+        </div>
+    </div>
+</div>
