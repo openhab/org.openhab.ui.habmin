@@ -63,7 +63,10 @@ angular.module('HABmin.rules', [
             useWrapMode : true,
             showGutter: true,
             theme:'tomorrow',
-            mode: 'openhabrules'
+            mode: 'openhabrules',
+            onLoad: function (editor) {
+                $scope.aceEditor = editor;
+            }
         };
 
         // Align the Ace Editor theme with the Bootstrap theme
