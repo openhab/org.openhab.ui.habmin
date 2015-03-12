@@ -30,7 +30,7 @@ angular.module('HABmin.iconModel', [
             "fan_level_1": {class: "oa-vent_ventilation_level_1"},
             "fan_level_2": {class: "oa-vent_ventilation_level_2"},
             "fan_level_3": {class: "oa-vent_ventilation_level_3"},
-            "fire": {class: "fa fire"},
+            "fire": {class: "fa fa-fire"},
             "frontdoor": {class: "oa-fts_door_open"},
             "garage": {class: "oa-fts_garage"},
             "garagedoor": {class: "oa-fts_garage_door_100"},
@@ -63,6 +63,7 @@ angular.module('HABmin.iconModel', [
             "scene_sleeping": {class: "oa-scene_sleeping"},
             "slider": {class: "fa fa-sliders"},
             "socket": {class: "oa-message_socket"},
+            "soundcloud": {class: "fa fa-soundcloud"},
             "sun_clouds": {class: "wi-day-cloudy"},
             "switch": {class: "oa-message_socket_on_off"},
             "temperature": {class: "oa-temp_temperature"},
@@ -120,5 +121,3 @@ angular.module('HABmin.iconModel', [
         };
     })
 ;
-
-

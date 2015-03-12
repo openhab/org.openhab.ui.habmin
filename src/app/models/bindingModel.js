@@ -13,19 +13,53 @@ angular.module('HABmin.bindingModel', [
 ])
 
     .service('BindingModel', function ($http, $q, UserService, RestService) {
-        var svcName = "bindings";
-        var bindingList = [];
-        var bindingCfg = {
-            zwave: {
-                link: 'binding/zwave',
-                icon: 'zwave'
-            }
+        var svcBind = "bindings";
+        var svcDisc = "discovery";
+        var bindingList = {
+            sonos: {icon: "soundcloud"},
+            yahooweather: {icon: "weather"},
+            zwave: {icon: "zwave"}
         };
+
         this.getList = function () {
             var tStart = new Date().getTime();
             var deferred = $q.defer();
 
-            RestService.getService(svcName).then(
+            var defBind = $q.defer();
+            RestService.getService(svcBind).then(
+                function (url) {
+                    $http.get(url)
+                        .success(function (data) {
+                            console.log("Fetch completed in", new Date().getTime() - tStart);
+
+                            var newList = {};
+
+                            // Keep a local copy.
+                            // This allows us to update the data later and keeps the GUI in sync.
+                            angular.forEach(data, function (binding) {
+                                if (bindingList[binding.id] != null) {
+                                    binding.icon = bindingList[binding.id].icon;
+                                    binding.discovery = bindingList[binding.id].discovery;
+                                }
+                                newList[binding.id] = binding;
+                            });
+                            bindingList = newList;
+
+                            console.log("Processing completed in", new Date().getTime() - tStart);
+
+                            defBind.resolve();
+                        })
+                        .error(function (data, status) {
+                            defBind.reject();
+                        });
+                },
+                function () {
+                    defBind.reject();
+                }
+            );
+
+            var defDisc = $q.defer();
+            RestService.getService(svcDisc).then(
                 function (url) {
                     $http.get(url)
                         .success(function (data) {
@@ -33,30 +67,45 @@ angular.module('HABmin.bindingModel', [
 
                             // Keep a local copy.
                             // This allows us to update the data later and keeps the GUI in sync.
-                            if(data.binding) {      // OH1
-                                bindingList = [].concat(data.binding);
-                            }
-                            else {                  // OH2
-                                bindingList = [].concat(data);
-                            }
+                            angular.forEach(data, function (binding) {
+                                if (bindingList[binding] == null) {
+                                    bindingList[binding] = {};
+                                }
+                                bindingList[binding].discovery = true;
+                            });
+
                             console.log("Processing completed in", new Date().getTime() - tStart);
 
-                            deferred.resolve(bindingList);
+                            defDisc.resolve();
                         })
                         .error(function (data, status) {
-                            deferred.reject(data);
+                            defDisc.reject();
                         });
                 },
                 function () {
-                    deferred.reject(null);
+                    defDisc.reject();
+                }
+            );
+
+            $q.all([defBind.promise, defDisc.promise]).then(
+                function () {
+                    deferred.resolve(bindingList);
                 }
             );
 
             return deferred.promise;
         };
 
-        this.getBinding = function (binding) {
-            return bindingCfg[binding];
+        this.startDiscovery = function (binding) {
+//            rest/discovery/scan/yahooweather
         };
     })
 ;
+
+
+
+
+
+
+
+

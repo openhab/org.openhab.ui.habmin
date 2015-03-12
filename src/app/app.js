@@ -225,9 +225,9 @@ angular.module('HABmin', [
                     );
 
                     BindingModel.getList().then(
-                        function (data) {
-                            var bindings = [];
-                            angular.forEach(data, function (binding) {
+                        function (bindings) {
+//                            var bindings = [];
+/*                            angular.forEach(data, function (binding) {
                                 // Only show bindings that have defined names
                                 if (binding.name === undefined) {
                                     return;
@@ -246,7 +246,7 @@ angular.module('HABmin', [
                                 }
 
                                 bindings.push(newBinding);
-                            });
+                            });*/
                             $scope.bindings = bindings;
                         },
                         function (reason) {

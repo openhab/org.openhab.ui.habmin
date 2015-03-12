@@ -15,15 +15,14 @@ angular.module('HABmin.restModel', [
         // Service defaults. We default this to OH1 since OH2 provides the information
         var serviceList = {
             'habmin/designer': '/services/habmin/config/designer',
-            'habmin/bindings': '/services/habmin/config/bindings',
             'habmin/charts': '/services/habmin/persistence/charts',
             'sitemaps': '/rest/sitemaps',
             'items': '/rest/items',
-            'bindings': '/services/habmin/config/bindings',
             'habmin/persistence': '/services/habmin/persistence/services',
 
             // OH1 only
-            'habmin/persistenceitem': '/services/habmin/persistence/items'
+            'habmin/persistenceitem': '/services/habmin/persistence/items',
+            'habmin/bindings': '/services/habmin/config/bindings'
         };
 
         var deferredList = [];

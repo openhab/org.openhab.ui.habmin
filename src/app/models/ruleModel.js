@@ -26,7 +26,7 @@ angular.module('HABmin.ruleModel', [
                         deferred.resolve(null);
                         return;
                     }
-                    
+
                     $http.get(url)
                         .success(function (data) {
                             console.log("Fetch completed in", new Date().getTime() - tStart);
