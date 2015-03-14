@@ -142,9 +142,15 @@
   "ruleDeleteRuleCheck": "Are you sure you want to delete rule '{{selectedRule.name}}'?",
   "ruleUnsavedChangesTitle": "Warning: Unsaved Changes",
   "ruleUnsavedChangesCheck": "There are unsaved changes in rule '{rulename}'. Are you sure you wish to continue - if you click Yes your changes will be lost!",
+
   "userChartPrefTitle": "Chart Settings",
   "userChartPeriod": "Chart Period",
   "userChartLegend": "Show Legend",
   "userGeneralPrefTitle": "General Settings",
+
+  "userName": "Name",
+  "userTheme": "Theme",
+  "userLanguage": "Language",
+
   "ruleNoDevices": "No Devices"
 }

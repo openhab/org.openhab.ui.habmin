@@ -101,11 +101,3 @@ angular.module('HABmin.bindingModel', [
         };
     })
 ;
-
-
-
-
-
-
-
-

@@ -49,7 +49,8 @@ angular.module('HABmin.userModel', [
 
         var userConfig = {
             useCache: false,
-            theme: "slate"
+            theme: "slate",
+            language: "en-GB"
         };
 
         // For Cordova, get the server from local storage
@@ -61,9 +62,15 @@ angular.module('HABmin.userModel', [
             }
         }
 
+        // TODO: Maybe this should just save/restore the userConfig object???
         // If we've previously saved the theme, restore the user selection
         if (localStorage.getItem('Theme') != null) {
             userConfig.theme = localStorage.getItem('Theme');
+        }
+
+        // If we've previously saved the language, restore the user selection
+        if (localStorage.getItem('Language') != null) {
+            userConfig.theme = localStorage.getItem('Language');
         }
 
         function changeUser(user) {
@@ -112,6 +119,17 @@ angular.module('HABmin.userModel', [
 
             getTheme: function () {
                 return userConfig.theme;
+            },
+
+            setLanguage: function (language) {
+                // Save the theme to local storage
+                localStorage.setItem('Language', language);
+
+                userConfig.language = language;
+            },
+
+            getLanguage: function () {
+                return userConfig.language;
             },
 
             login: function () {

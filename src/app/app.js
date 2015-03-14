@@ -50,9 +50,9 @@ angular.module('HABmin', [
         observableAttrs: new RegExp('^data-(?!ng-|i18n)'),
         delimiter: '::'
     })
-    .value('localeSupported', [
-        'en-GB'
-    ])
+    .value('localeSupported', {
+        'en-GB': "English (United Kingdom)"
+    })
     .value('localeFallbacks', {
         'en': 'en-GB'
     })
