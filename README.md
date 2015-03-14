@@ -102,8 +102,10 @@ are very welcome, but it would also be great to get some translations to support
 ## Language Translations
 If you want to add a translation for your language, then you need to copy the files in ```/src/app/languages```
 and copy the folder ```en-GB``` and rename it to your language (eg ```de-DE```). The folder name is
-```language-country``` and you should be able find the country code and language from the [ISO 2 letter country code list]
-(https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes).
+```language-country``` and you should be able find the
+[language](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) and
+[country](https://en.wikipedia.org/wiki/ISO_3166-1) codes from these links.
+
 
 In ```app.js```, you should then add your language to the list of supported locales.
 
