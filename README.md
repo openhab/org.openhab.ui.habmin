@@ -27,9 +27,11 @@ Features
 ========
 * **Responsive**. Should work well on all devices. Of course some functions may be removed or be difficult to use on small devices (eg the graphical rule editor).
 * **Theme-able**. Multiple themes are available - take your pick.
+* **Internal support**. OpenHAB is a multinational community - so the software should support your language and country.
 * **Charting**. Modern, fast charting of historical data.
 * **Graphical rule editor**. No need to learn rule syntax.
 * Available as native app for **Android**.
+
 
 Installation
 ============
@@ -38,7 +40,7 @@ Installation
 For openhab 2, simply add the _org.openhab.ui.habmin_ JAR file to your addons folder.
 
 ### OpenHAB-1
-To test, you need to install the [HABmin JAR](https://github.com/cdjackson/HABmin/blob/master/addons/org.openhab.io.habmin-1.7.0-SNAPSHOT.jar?raw=true) **AND** the [ZWave JAR](https://github.com/cdjackson/HABmin/blob/master/addons/org.openhab.binding.zwave-1.7.0-SNAPSHOT.jar?raw=true) from the [HABmin repository](https://github.com/cdjackson/HABmin) and add them to your openHAB ```addons``` folder  (note that you can use any other recent zwave binding if you prefer). These files are needed no matter what installation you choose next - if you don't install these files, some things may work, but most won't (eg sitemaps might work, but charting etc won't). Note that the zwave binding is needed even if you don't have zwave installed - it won't do anything, but is needed to resolve some dependancies - this will be removed in openHAB2.  You also (currently) need to install HABmin version 1 since the HABmin JAR is using a few files in this repository (I know this is bad - I should remove this dependancy soon).
+You need to install the [HABmin JAR](https://github.com/cdjackson/HABmin/blob/master/addons/org.openhab.io.habmin-1.7.0-SNAPSHOT.jar?raw=true) **AND** the [ZWave JAR](https://github.com/cdjackson/HABmin/blob/master/addons/org.openhab.binding.zwave-1.7.0-SNAPSHOT.jar?raw=true) from the [HABmin repository](https://github.com/cdjackson/HABmin) and add them to your openHAB ```addons``` folder  (note that you can use any other recent zwave binding if you prefer). These files are needed no matter what installation you choose next - if you don't install these files, some things may work, but most won't (eg sitemaps might work, but charting etc won't). Note that the zwave binding is needed even if you don't have zwave installed - it won't do anything, but is needed to resolve some dependancies - this will be removed in openHAB2.  You also (currently) need to install HABmin version 1 since the HABmin JAR is using a few files in this repository (I know this is bad - I should remove this dependancy soon).
 
 Packages are available for easy install - either for a web server (ie. installation into openHAB so you can use a browser), or as an Android app.
 
@@ -99,6 +101,20 @@ Contributing
 There are a number of ways you can contribute - obviously code additions to add new features or correct bugs
 are very welcome, but it would also be great to get some translations to support other languages.
 
+## Development Environment Setup
+To set up a development environment, clone the repository to your computer.
+Install ```npm``` (node package manager) and run ```npm install``` to install all the development dependencies.
+
+For mobile app compilation, you need to install ```cordova``` and ```ant``` and the android developers kits and set paths appropriately.
+
+To compile for debug, run ```grunt build```. This will generate a debug build in the ```build`` folder
+and also put a zipped ```debug``` version into the ```output``` folder.
+
+To compile for mobile releases (currently only Android supported), run ```grunt mobile```
+
+To compile for release, run ```grunt compile```. This will generate a minified version in the ```bin``` folder
+and also put a zipped ```debug``` and ```release``` versions into the ```output``` folder.
+
 ## Language Translations
 If you want to add a translation for your language, then you need to copy the files in ```/src/app/languages```
 and copy the folder ```en-GB``` and rename it to your language (eg ```de-DE```). The folder name is
@@ -128,20 +144,6 @@ defined in the ```localeFallbacks``` array.
         'en': 'en-GB'
     })
 ```
-
-## Development Environment Setup
-To set up a development environment, clone the repository to your computer.
-Install ```npm``` (node package manager) and run ```npm install``` to install all the development dependencies.
-
-For mobile app compilation, you need to install ```cordova``` and ```ant``` and the android developers kits and set paths appropriately.
-
-To compile for debug, run ```grunt build```. This will generate a debug build in the ```build`` folder
-and also put a zipped ```debug``` version into the ```output``` folder.
-
-To compile for mobile releases (currently only Android supported), run ```grunt mobile```
-
-To compile for release, run ```grunt compile```. This will generate a minified version in the ```bin``` folder
-and also put a zipped ```debug``` and ```release``` versions into the ```output``` folder.
 
 ## Commit Messages
 I am using the conventional changelog, and this requires that commit messages be in a certain format for them to be used to generate the change log.
