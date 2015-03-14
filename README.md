@@ -99,13 +99,23 @@ Contributing
 There are a number of ways you can contribute - obviously code additions to add new features or correct bugs
 are very welcome, but it would also be great to get some translations to support other languages.
 
+## Language Translations
 If you want to add a translation for your language, then you need to copy the files in ```/src/app/languages```
 and copy the folder ```en-GB``` and rename it to your language (eg ```de-DE```). The folder name is
 ```language-country``` and you should be able find the country code and language from the [ISO 2 letter country code list]
 (https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes).
 
+In ```app.js```, you should then add your language to the list of supported locales.
+
+```javascript
+    .value('localeSupported', {
+        'en-GB': "English (United Kingdom)"
+    })
+```
+
+## Development Environment Setup
 To set up a development environment, clone the repository to your computer.
-install ```npm``` (node package manager) and run ```npm install``` to install all the development dependencies.
+Install ```npm``` (node package manager) and run ```npm install``` to install all the development dependencies.
 
 For mobile app compilation, you need to install ```cordova``` and ```ant``` and the android developers kits and set paths appropriately.
 
