@@ -22,7 +22,7 @@ angular.module('HABmin.restModel', [
 
             // OH1 only
             'habmin/persistenceitem': '/services/habmin/persistence/items',
-            'habmin/bindings': '/services/habmin/config/bindings'
+            'bindings': '/services/habmin/config/bindings'
         };
 
         var deferredList = [];

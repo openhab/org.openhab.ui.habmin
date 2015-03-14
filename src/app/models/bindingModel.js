@@ -28,20 +28,38 @@ angular.module('HABmin.bindingModel', [
             var defBind = $q.defer();
             RestService.getService(svcBind).then(
                 function (url) {
+                    if (url == null) {
+                        deferred.resolve(null);
+                        return;
+                    }
+
                     $http.get(url)
                         .success(function (data) {
                             console.log("Fetch completed in", new Date().getTime() - tStart);
 
                             var newList = {};
 
+                            // OH1 detection
+                            if (data.binding != null) {
+                                data = data.binding;
+                            }
+
                             // Keep a local copy.
                             // This allows us to update the data later and keeps the GUI in sync.
                             angular.forEach(data, function (binding) {
+                                // OH1 detection
+                                if (binding.pid != null) {
+                                    binding.id = binding.pid;
+                                }
+
                                 if (bindingList[binding.id] != null) {
                                     binding.icon = bindingList[binding.id].icon;
                                     binding.discovery = bindingList[binding.id].discovery;
                                 }
-                                newList[binding.id] = binding;
+
+                                if (binding.id !== undefined) {
+                                    newList[binding.id] = binding;
+                                }
                             });
                             bindingList = newList;
 
@@ -61,6 +79,11 @@ angular.module('HABmin.bindingModel', [
             var defDisc = $q.defer();
             RestService.getService(svcDisc).then(
                 function (url) {
+                    if (url == null) {
+                        defDisc.resolve();
+                        return;
+                    }
+
                     $http.get(url)
                         .success(function (data) {
                             console.log("Fetch completed in", new Date().getTime() - tStart);

@@ -70,7 +70,7 @@ angular.module('HABmin.userModel', [
 
         // If we've previously saved the language, restore the user selection
         if (localStorage.getItem('Language') != null) {
-            userConfig.theme = localStorage.getItem('Language');
+            userConfig.language = localStorage.getItem('Language');
         }
 
         function changeUser(user) {
