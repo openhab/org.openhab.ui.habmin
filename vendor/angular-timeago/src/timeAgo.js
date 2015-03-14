@@ -96,6 +96,42 @@ angular.module('yaru22.angular-timeago', [
         year: 'כשנה',
         years: '%d שנים',
         numbers: []
+      },
+      'pt_BR': {
+        prefixAgo: null,
+        prefixFromNow: 'daqui a',
+        suffixAgo: 'atrás',
+        suffixFromNow: null,
+        seconds: 'menos de um minuto',
+        minute: 'cerca de um minuto',
+        minutes: '%d minutos',
+        hour: 'cerca de uma hora',
+        hours: 'cerca de %d horas',
+        day: 'um dia',
+        days: '%d dias',
+        month: 'cerca de um mês',
+        months: '%d meses',
+        year: 'cerca de um ano',
+        years: '%d anos',
+        numbers: []
+      },
+      'fr_FR': {
+        prefixAgo: 'il y a',
+        prefixFromNow: null,
+        suffixAgo: null,
+        suffixFromNow: 'from now',
+        seconds: 'moins d\'une minute',
+        minute: 'environ une minute',
+        minutes: '%d minutes',
+        hour: 'environ une heure',
+        hours: 'environ %d heures',
+        day: 'un jour',
+        days: '%d jours',
+        month: 'environ un mois',
+        months: '%d mois',
+        year: 'environ un an',
+        years: '%d ans',
+        numbers: []
       }
     }
   };
@@ -151,6 +187,9 @@ angular.module('yaru22.angular-timeago', [
   service.parse = function (iso8601) {
     if (angular.isNumber(iso8601)) {
       return parseInt(iso8601, 10);
+    }
+    if (iso8601 instanceof Date){
+      return iso8601;
     }
     var s = (iso8601 || '').trim();
     s = s.replace(/\.\d+/, ''); // remove milliseconds
