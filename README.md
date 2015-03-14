@@ -107,11 +107,25 @@ and copy the folder ```en-GB``` and rename it to your language (eg ```de-DE```).
 [country](https://en.wikipedia.org/wiki/ISO_3166-1) codes from these links.
 
 
-In ```app.js```, you should then add your language to the list of supported locales.
+In ```app.js```, you should then add your language to the list of supported locales in the ```localeSupported``` array.
 
 ```javascript
     .value('localeSupported', {
         'en-GB': "English (United Kingdom)"
+    })
+```
+
+The idea is that languages will be hierarchical (although this isn't implemented yet). So we might have ```de-CH```
+for Swiss German, and strings defined for this locale will use Swiss localisation. If no string is available,
+then it should fall back to the default German localisation, and if no string is found here, it will fall back
+to the default localisation - English.
+
+This should allow regional overrides of specific strings without having to override the whole file. Overrides are
+defined in the ```localeFallbacks``` array.
+
+```javascript
+    .value('localeFallbacks', {
+        'en': 'en-GB'
     })
 ```
 
