@@ -9,9 +9,10 @@
  */
 angular.module('HABmin.userModel', [
     'http-auth-interceptor',
-    'base64'
+    'base64',
+    'ngLocalize'
 ])
-    .factory('UserService', function ($http, $rootScope, authService) {
+    .factory('UserService', function ($http, $rootScope, authService, locale) {
         // The 'authenticated' flag is set to true if we have a user logged in
         var authenticated = false;
 
@@ -71,6 +72,7 @@ angular.module('HABmin.userModel', [
         // If we've previously saved the language, restore the user selection
         if (localStorage.getItem('Language') != null) {
             userConfig.language = localStorage.getItem('Language');
+            locale.setLocale(userConfig.language);
         }
 
         function changeUser(user) {
