@@ -51,10 +51,12 @@ angular.module('HABmin', [
         delimiter: '::'
     })
     .value('localeSupported', {
-        'en-GB': "English (United Kingdom)"
+        'en-GB': "English (United Kingdom)",
+        'de-DE': "Deutsch (Deutschland)"
     })
     .value('localeFallbacks', {
-        'en': 'en-GB'
+        'en': 'en-GB',
+        'de': 'de-DE'
     })
 
     .config(function myAppConfig($stateProvider, $urlRouterProvider, growlProvider, pickAColorProvider, ngBlocklyProvider) {
