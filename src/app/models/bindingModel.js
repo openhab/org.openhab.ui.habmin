@@ -120,7 +120,30 @@ angular.module('HABmin.bindingModel', [
         };
 
         this.startDiscovery = function (binding) {
-//            rest/discovery/scan/yahooweather
+            var deferred = $q.defer();
+
+            RestService.getService(svcDisc).then(
+                function (url) {
+                    if (url == null) {
+                        deferred.resolve(false);
+                        return;
+                    }
+
+                    $http.post(url + "/scan/" + binding, {bindingId: binding})
+                        .success(function (data) {
+                            deferred.resolve(true);
+                        })
+                        .error(function (data, status) {
+                            deferred.reject(false);
+                        });
+                },
+                function () {
+                    deferred.reject(false);
+                }
+            );
+
+            return deferred.promise;
         };
+
     })
 ;
