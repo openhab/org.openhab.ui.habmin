@@ -24,6 +24,7 @@ angular.module('HABmin', [
     'HABmin.scheduler',
     'ZWaveLogViewer',
     'Config.Things',
+    'Config.Discovery',
     'UserChartPrefs',
     'UserGeneralPrefs',
     'ui.router',
@@ -138,12 +139,12 @@ angular.module('HABmin', [
             $templateCache.put('templates/notifications/summary.tpl.html',
                 '<div class="popover-content">' +
                 '<table class="table table-condensed small">' +
-                '<tr ng-repeat="msg in inboxSummary" ng-if="msg.flag==\'NEW\'" class="text-success">' +
-                '<td><span i18n="habmin.thingNew"></span></td>' +
+                '<tr ng-repeat="msg in inbox" ng-if="msg.flag==\'NEW\'" class="text-success">' +
+                '<td><span class="fa fa-fw fa-plus-circle text-success"></span><span i18n="habmin.thingNew"></span></td>' +
                 '<td>{{msg.label}}</td>' +
                 '</tr>' +
-                '<tr ng-repeat="msg in inboxSummary" ng-if="msg.flag==\'IGNORED\'" class="text-muted">' +
-                '<td><span i18n="habmin.thingIgnored"></span></td>' +
+                '<tr ng-repeat="msg in inbox" ng-if="msg.flag==\'IGNORED\'" class="text-muted">' +
+                '<td><span class="fa fa-fw fa-dot-circle-o text-muted"></span><span i18n="habmin.thingIgnored"></span></td>' +
                 '<td>{{msg.label}}</td>' +
                 '</tr>' +
                 '</table>' +
@@ -179,9 +180,17 @@ angular.module('HABmin', [
             UserService.login();
         };
 
-        $scope.showNotifications = function () {
-            $scope.inboxSummary = InboxModel.getInbox();
-        };
+        // Get the inbox.
+        // If there are any changes, then count the number of NEW messages
+        $scope.inbox = InboxModel.getInbox();
+        $scope.$watch('inbox', function() {
+            $scope.notificationCnt = 0;
+            angular.forEach($scope.inbox, function(msg) {
+                if(msg.flag == "NEW") {
+                    $scope.notificationCnt++;
+                }
+            });
+        }, true);
 
         $scope.updateRestServices = function() {
             RestService.updateServices();
@@ -203,12 +212,6 @@ angular.module('HABmin', [
 
                     InboxModel.refreshInbox().then(
                         function (data) {
-                            $scope.notificationCnt = 0;
-                            angular.forEach(data, function(msg) {
-                                if(msg.flag == "NEW") {
-                                    $scope.notificationCnt++;
-                                }
-                            });
                         },
                         function (reason) {
                             // Handle failure

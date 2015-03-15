@@ -248,6 +248,12 @@
                                 </a>
                             </li>
                             <li>
+                                <a ui-sref="discovery">
+                                    <span class="fa fa-fw fa-share-alt"></span>
+                                    <span i18n="habmin.mainDiscovery"></span>
+                                </a>
+                            </li>
+                            <li>
                             <a ui-sref="rules">
                                 <span class="fa fa-fw fa-wifi"></span>
                                 <span i181n="habmin.mainZWave">Items</span>
@@ -322,7 +328,7 @@
                     <li class="navbar-notification">
                         <p class="no-padding" ng-if="notificationCnt"
                            popup-show="templates/notifications/summary.tpl.html" popup-placement="left"
-                           popup-shown="showNotifications()" popup-class="zwave-logreader-popover">
+                           popup-class="zwave-logreader-popover">
                             <span class="badge">
                                 {{notificationCnt}}
                             </span>

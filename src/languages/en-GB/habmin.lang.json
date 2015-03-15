@@ -9,6 +9,7 @@
   "mainRules": "Rules",
   "mainScheduler": "Scheduler",
   "mainThings": "Thing Configuration",
+  "mainDiscovery": "Thing Discovery",
   "mainSitemaps": "Sitemaps",
   "mainAutomation": "Automation",
   "mainNoSitemaps": "No Sitemaps Available",
@@ -22,12 +23,14 @@
   "mainErrorLoadingInbox": "Error loading inbox!",
   "mainErrorGettingBindings": "Error loading list of bindings!",
   "mainOpenHABOffline": "OpenHAB is offline!",
+
   "loginFormTitle": "Login Required",
   "loginVersion": "HABmin version",
   "loginServer": "Server",
   "loginUser": "Username",
   "loginPassword": "Password",
   "loginSubmit": "Login",
+
   "chartItemList": "Items",
   "chartChartList": "Charts",
   "chartNoItems": "No Items To Chart",
@@ -91,8 +94,19 @@
 
   "thingNew": "New",
   "thingIgnored": "Ignored",
+  "thingOnline": "Online",
+  "thingOffline": "Offline",
   "thingSearch": "Start Scan",
   "thingNoneFound": "No things found",
+
+  "discoveryStartOk": "Discovery started for binding <b><i>{name}</i></b>",
+  "discoveryStartFail": "Discovery failed for binding <b><i>{name}</i></b>",
+  "discoveryIgnoreFail": "Failed to ignore <b><i>{name}</i></b>",
+  "discoveryDeleteConfirmMsg": "Are you sure you want to delete the thing from the inbox?",
+  "discoveryDeleteConfirmTitle": "Delete Thing From Inbox",
+  "discoveryIgnoreConfirmMsg": "Are you sure you want to ignore the thing in the inbox?",
+  "discoveryIgnoreConfirmTitle": "Ignore Thing In Inbox",
+  "discoveryNewThing": "New thing discovered <b><i>{name}</i></b>.",
 
   "errorLoadingSitemaps": "Error loading the sitemap list!",
   "period1Second": "1 Second",
