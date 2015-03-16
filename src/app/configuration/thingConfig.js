@@ -12,8 +12,8 @@ angular.module('Config.Things', [
     'ui.bootstrap',
     'ngLocalize',
     'HABmin.userModel',
-    'HABmin.inboxModel',
     'HABmin.thingModel',
+    'HABmin.bindingModel',
     'angular-growl',
     'Binding.config',
     'yaru22.angular-timeago',
@@ -42,7 +42,7 @@ angular.module('Config.Things', [
     })
 
     .controller('ThingConfigCtrl',
-    function ThingConfigCtrl($scope, locale, growl, $timeout, $window, $http, timeAgo, $interval, UserService, ThingModel, InboxModel, SidepanelService) {
+    function ThingConfigCtrl($scope, locale, growl, $timeout, $window, $http, timeAgo, $interval, UserService, ThingModel, BindingModel, SidepanelService) {
         $scope.thingCnt = -1;
         ThingModel.getList().then(
             function(list) {
@@ -50,11 +50,27 @@ angular.module('Config.Things', [
                 $scope.thingCnt = $scope.things.length;
             }
         );
-        $scope.inboxCnt = -1;
-        InboxModel.refreshInbox().then(
-            function(list) {
-                $scope.inbox = list;
-                $scope.inboxCnt = $scope.inbox.length;
+
+        $scope.listOnline = true;
+        $scope.listOffline = true;
+
+        $scope.filterFunction = function (element) {
+            if(element.status == "ONLINE" && $scope.listOnline) {
+                return true;
+            }
+            if(element.status == "OFFLINE" && $scope.listOffline) {
+                return true;
+            }
+            return false;
+        };
+
+        BindingModel.getList().then(
+            function (bindings) {
+                $scope.bindings = bindings;
+            },
+            function (reason) {
+                // Handle failure
+                growl.warning(locale.getString("habmin.mainErrorGettingBindings"));
             }
         );
     })

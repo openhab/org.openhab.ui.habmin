@@ -9,6 +9,7 @@
   "mainRules": "Rules",
   "mainScheduler": "Scheduler",
   "mainThings": "Thing Configuration",
+  "mainDiscovery": "Thing Discovery",
   "mainSitemaps": "Sitemaps",
   "mainAutomation": "Automation",
   "mainNoSitemaps": "No Sitemaps Available",
@@ -22,12 +23,14 @@
   "mainErrorLoadingInbox": "Error loading inbox!",
   "mainErrorGettingBindings": "Error loading list of bindings!",
   "mainOpenHABOffline": "OpenHAB is offline!",
+
   "loginFormTitle": "Login Required",
   "loginVersion": "HABmin version",
   "loginServer": "Server",
   "loginUser": "Username",
   "loginPassword": "Password",
   "loginSubmit": "Login",
+
   "chartItemList": "Items",
   "chartChartList": "Charts",
   "chartNoItems": "No Items To Chart",
@@ -39,8 +42,8 @@
   "chartEditChart": "Edit Chart",
   "chartDeleteChart": "Delete Chart",
   "chartDeleteChartCheck": "Are you sure you want to delete the chart?",
-  "chartDeleteOk": "Chart deleted successfully",
-  "chartDeleteError": "Error deleting chart",
+  "chartDeleteOk": "Chart <b><i>{name}</i></b> deleted successfully",
+  "chartDeleteError": "Error deleting chart <b><i>{name}</i></b>.",
   "chartErrorLoadingDef": "Error loading chart!",
   "chartErrorGettingServices": "Error loading persistence services!",
   "chartErrorGettingCharts": "Error loading list of charts!",
@@ -91,8 +94,19 @@
 
   "thingNew": "New",
   "thingIgnored": "Ignored",
+  "thingOnline": "Online",
+  "thingOffline": "Offline",
   "thingSearch": "Start Scan",
   "thingNoneFound": "No things found",
+
+  "discoveryStartOk": "Discovery started for binding <b><i>{name}</i></b>",
+  "discoveryStartFail": "Discovery failed for binding <b><i>{name}</i></b>",
+  "discoveryIgnoreFail": "Failed to ignore <b><i>{name}</i></b>",
+  "discoveryDeleteConfirmMsg": "Are you sure you want to delete the thing from the inbox?",
+  "discoveryDeleteConfirmTitle": "Delete Thing From Inbox",
+  "discoveryIgnoreConfirmMsg": "Are you sure you want to ignore the thing in the inbox?",
+  "discoveryIgnoreConfirmTitle": "Ignore Thing In Inbox",
+  "discoveryNewThing": "New thing discovered <b><i>{name}</i></b>.",
 
   "errorLoadingSitemaps": "Error loading the sitemap list!",
   "period1Second": "1 Second",
@@ -130,6 +144,7 @@
   "period6Months": "6 Months",
   "period9Months": "9 Months",
   "period1Year": "1 Year",
+
   "ruleRule": "Rule",
   "ruleSource": "Source",
   "ruleValue": "Value",
@@ -138,12 +153,18 @@
   "ruleErrorLoadingRule": "Error loading rule <i>{1}</i>:<BR><b><i>{2}</i></b>.",
   "ruleErrorLoadingRuleList": "Error loading rule list.",
   "ruleDeleteRuleTitle": "Delete Rule",
-  "ruleDeleteRuleCheck": "Are you sure you want to delete rule '{rulename}'?",
+  "ruleDeleteRuleCheck": "Are you sure you want to delete rule '{{selectedRule.name}}'?",
   "ruleUnsavedChangesTitle": "Warning: Unsaved Changes",
-  "ruleUnsavedChangesCheck": "There are unsaved changes in rule'{rulename}'. Are you sure you wish to continue - if you click Yes your changes will be lost!",
+  "ruleUnsavedChangesCheck": "There are unsaved changes in rule '{rulename}'. Are you sure you wish to continue - if you click Yes your changes will be lost!",
+
   "userChartPrefTitle": "Chart Settings",
   "userChartPeriod": "Chart Period",
   "userChartLegend": "Show Legend",
   "userGeneralPrefTitle": "General Settings",
+
+  "userName": "Name",
+  "userTheme": "Theme",
+  "userLanguage": "Language",
+
   "ruleNoDevices": "No Devices"
 }

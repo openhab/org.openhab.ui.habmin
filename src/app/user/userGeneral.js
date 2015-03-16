@@ -9,18 +9,23 @@
  */
 angular.module('UserGeneralPrefs', [
     'ngLocalize',
-    'HABmin.userModel'
+    'HABmin.userModel',
+    'ngLocalize'
 ])
     .service('UserGeneralPrefs',
-    function ($modal, $rootScope, UserService) {
+    function ($modal, $rootScope, UserService, localeSupported) {
         this.showModal = function () {
             var scope = $rootScope.$new();
             scope.model = {};
             scope.model.theme = UserService.getTheme();
+            scope.model.language = UserService.getLanguage();
+
+            scope.model.languages = localeSupported;
 
             var controller = function ($scope, $modalInstance) {
                 $scope.ok = function (result) {
                     UserService.setTheme(scope.model.theme);
+                    UserService.setLanguage(scope.model.language);
 
                     $modalInstance.close(result);
                 };

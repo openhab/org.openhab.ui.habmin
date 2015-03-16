@@ -215,10 +215,10 @@ angular.module('HABmin.chart', [
 
             ChartListModel.deleteChart($scope.selectedChart.id).then(
                 function() {
-                    growl.success(locale.getString('habmin.chartDeleteOk'));
+                    growl.success(locale.getString('habmin.chartDeleteOk', {name: $scope.selectedChart.name}));
                 },
                 function() {
-                    growl.warning(locale.getString('habmin.chartDeleteError'));
+                    growl.warning(locale.getString('habmin.chartDeleteError', {name: $scope.selectedChart.name}));
                 }
             );
         };

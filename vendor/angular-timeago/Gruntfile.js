@@ -14,7 +14,6 @@ module.exports = function (grunt) {
       src: 'src',
       dist: 'dist',
       demo: 'demo',
-      tmpl: 'template'
     },
 
     meta: {
@@ -38,7 +37,7 @@ module.exports = function (grunt) {
         banner: '<%= meta.banner %>'
       },
       js: {
-        src: ['<%= dirs.src %>/*.js', '<%= dirs.tmpl %>/cache.js'],
+        src: ['<%= dirs.src %>/*.js'],
         dest: '<%= dirs.dist %>/<%= pkg.name %>.js'
       },
       css: {
@@ -118,27 +117,6 @@ module.exports = function (grunt) {
       }
     },
 
-    ngtemplates: {  // grunt-angular-templates
-      all: {
-        src: '<%= dirs.tmpl %>/**.tmpl',
-        dest: '<%= dirs.tmpl %>/cache.js',
-        options: {
-          htmlmin: {
-            collapseBooleanAttributes: true,
-            collapseWhitespace: true,
-            removeAttributeQuotes: true,
-            removeComments: true,
-            removeEmptyAttributes: true,
-            removeRedundantAttributes: true,
-            removeScriptTypeAttributes: true,
-            removeStyleLinkTypeAttributes: true
-          },
-          module: 'namespace.component-name.tmpls',
-          standalone: true
-        }
-      }
-    },
-
     open: {  // grunt-open
       demo: {
         path: 'http://localhost:9999/'
@@ -184,7 +162,6 @@ module.exports = function (grunt) {
         files: [
           '<%= dirs.src %>/*.js',
           '<%= dirs.src %>/*.css',
-          '<%= dirs.tmpl %>/*.tmpl'
         ],
         tasks: ['test'],
       }
@@ -206,7 +183,6 @@ module.exports = function (grunt) {
   // Test task.
   grunt.registerTask('test', [
     'jshint:all',
-    'ngtemplates',
     'karma:single',
     'connect:e2e',
     'protractor'

@@ -15,7 +15,7 @@ Check out the demo [here](http://www.brianpark.ca/projects/angular_timeago/demo/
 Displays time ago since `myDate`. `myDate` can be time in **milliseconds since January 1st 1970** (see [MDN Date.prototype.getTime](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime)) or an **ISO 8601** string (see [MDN Date.prototype.toISOString](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString))
 
 **Language support**
-angular-timeago currently supports: `en_US`, `de_DE`, `he_IL`. If you want more languages: feel free to contribute!
+angular-timeago currently supports: `en_US`, `de_DE`, `he_IL`, `pt_BR`. If you want more languages: feel free to contribute!
 The language is determined by the string in `document.documentElement.lang` which you can set in your HTML markup:
 ```
 <html lang="en_US"></html>
