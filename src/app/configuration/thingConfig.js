@@ -16,7 +16,6 @@ angular.module('Config.Things', [
     'HABmin.bindingModel',
     'angular-growl',
     'Binding.config',
-    'yaru22.angular-timeago',
     'ngVis',
     'ResizePanel',
     'SidepanelService'
@@ -42,10 +41,10 @@ angular.module('Config.Things', [
     })
 
     .controller('ThingConfigCtrl',
-    function ThingConfigCtrl($scope, locale, growl, $timeout, $window, $http, timeAgo, $interval, UserService, ThingModel, BindingModel, SidepanelService) {
+    function ThingConfigCtrl($scope, locale, growl, $timeout, $window, $http, $interval, UserService, ThingModel, BindingModel, SidepanelService) {
         $scope.thingCnt = -1;
         ThingModel.getList().then(
-            function(list) {
+            function (list) {
                 $scope.things = list;
                 $scope.thingCnt = $scope.things.length;
             }

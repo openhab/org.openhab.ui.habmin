@@ -73,6 +73,7 @@ angular.module('HABmin.userModel', [
         if (localStorage.getItem('Language') != null) {
             userConfig.language = localStorage.getItem('Language');
             locale.setLocale(userConfig.language);
+            moment.locale(userConfig.language);
         }
 
         function changeUser(user) {
