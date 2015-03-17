@@ -3,7 +3,7 @@ HABmin2
 
 HABmin version2 - ultimately targeted toward openHAB2.
 
-An **OPENHAB2** bundle is now available with initial support for charting and some OH2 features such
+An **openHAB2** bundle is now available with initial support for charting and some OH2 features such
 as listing the newly discovered devices. I hope to keep a single source base that supports as many
 OH1 and OH2 features as possible while OH2 is being developped.
 
@@ -26,10 +26,11 @@ the changes on the server side will not greatly impact the client.
 Features
 ========
 * **Responsive**. Should work well on all devices. Of course some functions may be removed or be difficult to use on small devices (eg the graphical rule editor).
-* **Theme-able**. Multiple themes are available - take your pick.
+* **Theme-able**. Multiple themes are available - take your pick (currently 3 themes).
 * **Internal support**. OpenHAB is a multinational community - so the software should support your language and country.
 * **Charting**. Modern, fast charting of historical data.
 * **Graphical rule editor**. No need to learn rule syntax.
+* **International support**. Currently translated in English, Deutsch, Français. Add support for your language...
 * Available as native app for **Android**.
 
 
@@ -122,7 +123,7 @@ and copy the folder ```en-GB``` and rename it to your language (eg ```de-DE```).
 [language](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) and
 [country](https://en.wikipedia.org/wiki/ISO_3166-1) codes from these links.
 
-The language translation files accept special characters.
+The language translation files accept special characters in UTF-8 format.
 
 In ```app.js```, you should then add your language to the list of supported locales in the ```localeSupported``` array.
 
@@ -132,10 +133,10 @@ In ```app.js```, you should then add your language to the list of supported loca
     })
 ```
 
-The idea is that languages will be hierarchical (although this isn't implemented yet). So we might have ```de-CH```
-for Swiss German, and strings defined for this locale will use Swiss localisation. If no string is available,
-then it should fall back to the default German localisation, and if no string is found here, it will fall back
-to the default localisation - English.
+The idea is that languages are hierarchical. So we might have ```de-CH```
+for Swiss German, and strings defined for this locale will use Swiss localisation as first priority.
+If no string is available, then it should fall back to the default German localisation, and if no string
+is found here, it will fall back to the default localisation - English.
 
 Note that in the above special characters aren't supported natively as they are embedded in the code.
 To provide support use the sequence below. (note that the ```escape``` function is deprecated in javascript so
