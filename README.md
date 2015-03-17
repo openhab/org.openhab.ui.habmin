@@ -122,6 +122,7 @@ and copy the folder ```en-GB``` and rename it to your language (eg ```de-DE```).
 [language](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) and
 [country](https://en.wikipedia.org/wiki/ISO_3166-1) codes from these links.
 
+The language translation files accept special characters.
 
 In ```app.js```, you should then add your language to the list of supported locales in the ```localeSupported``` array.
 
@@ -136,6 +137,13 @@ for Swiss German, and strings defined for this locale will use Swiss localisatio
 then it should fall back to the default German localisation, and if no string is found here, it will fall back
 to the default localisation - English.
 
+Note that in the above special characters aren't supported natively as they are embedded in the code.
+To provide support use the sequence below. (note that the ```escape``` function is deprecated in javascript so
+if anyone knows of a better way to do this, please update the code).
+```javascript
+    decodeURIComponent(escape("Français (France)"))
+```
+
 This should allow regional overrides of specific strings without having to override the whole file. Overrides are
 defined in the ```localeFallbacks``` array.
 
@@ -144,6 +152,7 @@ defined in the ```localeFallbacks``` array.
         'en': 'en-GB'
     })
 ```
+
 
 ## Commit Messages
 I am using the conventional changelog, and this requires that commit messages be in a certain format for them to be used to generate the change log.

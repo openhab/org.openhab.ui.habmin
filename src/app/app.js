@@ -5,7 +5,7 @@
  * This software is copyright of Chris Jackson under the GPL license.
  * Note that this licence may be changed at a later date.
  *
- * (c) 2014 Chris Jackson (chris@cd-jackson.com)
+ * (c) 2014-2015 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('HABmin', [
     'templates-app',
@@ -54,7 +54,7 @@ angular.module('HABmin', [
     .value('localeSupported', {
         'en-GB': "English (United Kingdom)",
         'de-DE': "Deutsch (Deutschland)",
-        'fr-FR': "Français (France)"
+        'fr-FR': decodeURIComponent(escape("Français (France)"))
     })
     .value('localeFallbacks', {
         'en': 'en-GB',
