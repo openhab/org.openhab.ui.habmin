@@ -98,6 +98,7 @@ angular.module('rt.popup', [])
 
                 // Clamp for edge of screen
                 popupPosition.top = Math.max(padding, popupPosition.top);
+                maxHeight -= popupPosition.top;
 
                 arrowPosition = {
                     top: anchorPoint.top - popupPosition.top
@@ -115,6 +116,7 @@ angular.module('rt.popup', [])
 
                 // Clamp for edge of screen
                 popupPosition.top = Math.max(padding, popupPosition.top);
+                maxHeight -= popupPosition.top;
 
                 arrowPosition = {
                     top: anchorPoint.top - popupPosition.top
