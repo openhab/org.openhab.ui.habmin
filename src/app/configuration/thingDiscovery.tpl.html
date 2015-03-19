@@ -15,14 +15,14 @@
                 </button>
                 <ul class="dropdown-menu" role="menu">
                     <li><a ng-click="listNew=!listNew">
+                        <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': listNew}"></span>
                         <span class="fa fa-fw fa-plus-circle text-success"></span>
                         <span i18n="habmin.thingNew"></span>
-                        <span ng-if="listNew" class="pull-right fa fa-check-square-o"></span>
                     </a></li>
                     <li><a ng-click="listIgnored=!listIgnored">
+                        <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': listIgnored}"></span>
                         <span class="fa fa-fw fa-dot-circle-o text-muted"></span>
                         <span i18n="habmin.thingIgnored"></span>
-                        <span ng-if="listIgnored" class="pull-right fa fa-check-square-o"></span>
                     </a></li>
                 </ul>
             </div>
@@ -36,7 +36,6 @@
                     <span class="sr-only">Dropdown</span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
-                    <li role="presentation" class="divider"></li>
                     <li ng-repeat="choice in bindings" ng-class="{'disabled': choice.disabled}"
                             ng-if="choice.discovery">
                         <a ng-click="startDiscovery(choice)">
@@ -44,9 +43,6 @@
                             <span>{{choice.name}}</span>
                         </a>
                     </li>
-
-                    <li role="presentation" class="divider"></li>
-
                 </ul>
             </div>
         </div>

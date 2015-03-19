@@ -15,18 +15,19 @@
                 </button>
                 <ul class="dropdown-menu" role="menu">
                     <li><a ng-click="listOnline=!listOnline">
+                        <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': listOnline}"></span>
                         <span class="fa fa-fw fa-check-circle text-success"></span>
                         <span i18n="habmin.thingOnline"></span>
-                        <span ng-if="listOnline" class="pull-right fa fa-check-square-o"></span>
                     </a></li>
                     <li><a ng-click="listOffline=!listOffline">
+                        <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': listOffline}"></span>
                         <span class="fa fa-fw fa-times-circle text-danger"></span>
                         <span i18n="habmin.thingOffline"></span>
-                        <span ng-if="listOffline" class="pull-right fa fa-check-square-o"></span>
                     </a></li>
                     <li role="presentation" class="divider"></li>
                     <li ng-repeat="choice in bindings" ng-class="{'disabled': choice.disabled}">
-                        <a ui-sref="binding/zwave" ui-sref="choice.link">
+                        <a>
+                            <span class="fa-fw fa fa-check-square-o"></span>
                             <habmin-icon class="fa-fw" icon="{{choice.icon}}"></habmin-icon>
                             <span>{{choice.name}}</span>
                         </a>
@@ -38,13 +39,15 @@
         <!-- Body -->
         <div class="list-group habmin-list" resize-panel>
             <div ng-if="thingCnt!=-1" ng-repeat="thing in things | filter:filterFunction">
-                <a role="presentation" ng-class="{'list-group-item':true, 'activ1e': device.device==devEdit.device}"
-                   ng-click="selectDevice(device)" sidepanel-click="main">
+                <a role="presentation" ng-class="{'list-group-item':true, 'active': thing==thingSelected}"
+                   ng-click="selectThing(thing)" sidepanel-click="main">
                     <table style="background-color: transparent">
                         <tr>
                             <td class="text-large" rowspan="2">
-                                <span ng-if="thing.status=='ONLINE'" class="fa fa-fw fa-check-circle text-success"></span>
-                                <span ng-if="thing.status=='OFFLINE'" class="fa fa-fw fa-times-circle text-danger"></span>
+                                <span ng-if="thing.status=='ONLINE'"
+                                      class="fa fa-fw fa-check-circle text-success"></span>
+                                <span ng-if="thing.status=='OFFLINE'"
+                                      class="fa fa-fw fa-times-circle text-danger"></span>
                             </td>
                             <td>
                                 <span>{{thing.item.label}}&nbsp;</span>
@@ -76,56 +79,138 @@
 
 <!-- Device Configuration -->
 <div class="col-sm-8" sidepanel-pane="main">
-    <div class="panel panel-default">
-        <!-- Header -->
-        <div class="panel-heading">
-            <div class="btn-group dropdown">
-                <button type="button" ng-class="{'disabled': !devEdit.label}"
-                        class="btn btn-default dropdown-toggle"
-                        data-toggle="dropdown">
-                    <span class="fa fa-cog"></span>
-                    <span i18n="zwave.zwaveDeviceTools"></span>
-                    <span class="caret"></span>
-                    <span class="sr-only">Dropdown</span>
+        <div class="panel panel-default">
+            <!-- Header -->
+            <div class="panel-heading">
+                <button type="button"
+                        class="btn btn-default"
+                        ng-click="thingSave()"
+                        ngx-disabled="!thingConfigForm.modified">
+                    <span class="fa fa-floppy-o"></span>
+                    <span class="hidden-xs hidden-sm" i18n="common.save"></span>
                 </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li>
-                        <a ng-click="setView('CONFIG')">
-                            <span class="fa fa-fw fa-wrench"></span>
-                            <span i18n="zwave.zwaveDeviceConfiguration"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a ng-click="setView('NETWORK')">
-                            <span class="fa fa-fw fa-sitemap"></span>
-                            <span i18n="zwave.zwaveDeviceNetworkDiagram"></span>
-                        </a>
-                    </li>
-                </ul>
+                <button type="button"
+                        class="btn btn-default"
+                        ng-click=""
+                        ng-disabled="!thingConfigForm.modified">
+                    <span class="fa fa-times"></span>
+                    <span class="hidden-xs hidden-sm" i18n="common.cancel"></span>
+                </button>
+
+                <div ng-hidex="!devEdit.label" class="btn-group">
+                    <div>{{thingType.label}}</div>
+                    <div class="text-muted small">{{thingType.description}}</div>
+                </div>
+
+                <div class="pull-right btn-group dropdown">
+                    <button type="button"
+                            class="btn btn-default dropdown-toggle"
+                            ng-disabled="true"
+                            data-toggle="dropdown">
+                        <span class="fa fa-cog"></span>
+                        <span i18n="habmin.thingTools"></span>
+                        <span class="caret"></span>
+                        <span class="sr-only">Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <a ng-click="setView('NETWORK')">
+                                <span class="fa fa-fw fa-sitemap"></span>
+                                <span ></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
 
-            <button ng-show="deviceDisplay=='CONFIG'" type="button" ng-click="deviceSave()" ng-class="{'btn btn-default':true, 'disabled':!isDirty}">
-                <span class="fa fa-floppy-o"></span>
-                <span class="hidden-xs hidden-sm" i18n="common.save"></span>
-            </button>
-            <button ng-show="deviceDisplay=='CONFIG'" type="button" ng-click="deviceCancel()" ng-class="{'btn btn-default':true, 'disabled':!isDirty}">
-                <span class="fa fa-times"></span>
-                <span class="hidden-xs hidden-sm" i18n="common.cancel"></span>
-            </button>
+            <!-- Body -->
+            <div class="list-group habmin-list" resize-panel>
+                <!-- OVERVIEW -->
+                <div ng-showx="devEdit.information">
+                    <a role="presentation"
+                       ng-class="{'list-group-item config-panel-title':true, 'active': panelDisplayed=='PROPERTIES'}"
+                       ng-click="panelDisplayed='PROPERTIES'">
+                        <span class="fa fa-fw fa-info"></span>
+                        <span i18n="habmin.thingProperties"></span>
+                    </a>
+                </div>
+                <div ng-showx="devEdit.information" collapse="panelDisplayed!='PROPERTIES'"
+                     class="panel-form form-horizontal">
+                    <div class="form-group">
+                        <label for="inputThingLabel" class="control-label" i18n="habmin.thingLabel"></label>
+                        <input type="text"
+                               class="form-control"
+                               id="inputThingLabel"
+                               ng-model="thingSelected.item.label"
+                               placeholder="format">
+                    </div>
+                </div>
 
-            <div ng-hide="!devEdit.label" class="btn-group pull-right">
-                <div class="text-right">{{devEdit.label}}</div>
-                <div class="text-right small"><span i18n="zwave.zwaveNode"></span>&nbsp;<span>{{devEdit.nodeID}}</span>:&nbsp;<span class="hidden-xs">{{devEdit.type}}</span></div>
+                <!-- CONFIGURATION -->
+                <div ng-showx="devEdit.information">
+                    <a role="presentation"
+                       ng-class="{'list-group-item list-group-item-heading':true, 'active': panelDisplayed=='CONFIG'}"
+                       ng-click="panelDisplayed='CONFIG'">
+                        <span class="fa fa-fw fa-wrench"></span>
+                        <span i18n="habmin.thingConfiguration"></span>
+                    </a>
+                </div>
+                <div ng-showx="devEdit.information" collapse="panelDisplayed!='CONFIG'"
+                     class="panel-form form-horizontal">
+                    <div ng-repeat="config in thingType.configParameters">
+                        <div class="form-group">
+                            <label for="CONFIGLABEL{{$index+1}}" class="control-label">{{config.label}}</label>
+                            <input config-parameter="{{config}}"
+                                   class="form-control"
+                                   ng-dirty ng-required="{{config.required}}"
+                                   id="CONFIGLABEL{{$index+1}}"
+                                   ng-model="thingSelected.configuration[config.name]">
+                            <span class="help-block">{{config.description}}</span>
+                            <!--
+                                                    <span class="fa fa-check form-control-feedback" aria-hidden="true"></span>
+                                                    <span id="CONFIGLABEL{{$index+1}}STATUS" class="sr-only">(error)</span>
+                            -->
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- CHANNELS -->
+                <div ng-showx="devEdit.information">
+                    <a role="presentation" ng-class="{'list-group-item':true, 'active': panelDisplayed=='CHANNELS'}"
+                       ng-click="panelDisplayed='CHANNELS'">
+                        <span class="fa fa-fw fa-navicon"></span>
+                        <span i18n="habmin.thingChannels"></span>
+                    </a>
+                </div>
+                <div ng-showx="devEdit.information" collapse="panelDisplayed!='CHANNELS'"
+                     class="panel-form form-horizontal">
+                    <div ng-repeat="channel in thingType.channels">
+                        <div class="form-group">
+                            <label for="CHANNELLABEL{{$index+1}}" class="control-label">{{channel.label}}</label>
+
+                            <div class="input-group">
+                                <span class="input-group-addon category-icon"
+                                      ng-class="categoryIcons[channel.category]"></span>
+                                <input type="number" class="form-control" id="CHANNELLABEL{{$index+1}}"
+                                       ng-model="model.format" placeholder="format">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" ng-click="channelEnable(channel)">
+                                    <span ng-if="channelEnabled(channel)"
+                                          class="fa fa-check-circle text-success"></span>
+                                    <span ng-if="!channelEnabled(channel)"
+                                          class="fa fa-times-circle text-danger"></span>
+                                </button>
+                            </span>
+                            </div>
+                            <span class="help-block">{{channel.description}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="panel-footer panel-footer-none">
             </div>
         </div>
-
-        <!-- Body -->
-        <div class="list-group habmin-list" resize-panel>
-
-        </div>
-
-        <!-- Footer -->
-        <div class="panel-footer panel-footer-none">
-        </div>
-    </div>
 </div>

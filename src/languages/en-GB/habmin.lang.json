@@ -98,6 +98,13 @@
   "thingOffline": "Offline",
   "thingSearch": "Start Scan",
   "thingNoneFound": "No things found",
+  "thingTools": "Tools",
+  "thingLabel": "Label",
+  "thingProperties": "Properties",
+  "thingConfiguration": "Configuration",
+  "thingChannels": "Channels",
+  "thingSuccessSavingThing": "Error saving thing <b><i>{name}</i></b>",
+  "thingErrorSavingThing": "Error saving thing <b><i>{name}</i></b>",
 
   "discoveryStartOk": "Discovery started for binding <b><i>{name}</i></b>",
   "discoveryStartFail": "Discovery failed for binding <b><i>{name}</i></b>",
