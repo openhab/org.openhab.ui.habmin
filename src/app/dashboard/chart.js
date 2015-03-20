@@ -18,6 +18,7 @@ angular.module('HABmin.chart', [
     'HABmin.chartModel',
     'HABmin.chartSave',
     'HABmin.iconModel',
+    'HABmin.userModel',
     'ngVis',
     'ngConfirmClick',
     'ResizePanel',
@@ -44,7 +45,7 @@ angular.module('HABmin.chart', [
     })
 
     .controller('DashboardChartCtrl',
-    function DashboardChartCtrl($scope, locale, ItemModel, PersistenceServiceModel, PersistenceItemModel, PersistenceDataModel, ChartListModel, ChartSave, SidepanelService, growl, VisDataSet, $interval, $timeout) {
+    function DashboardChartCtrl($scope, locale, ItemModel, PersistenceServiceModel, PersistenceItemModel, PersistenceDataModel, ChartListModel, ChartSave, SidepanelService, growl, VisDataSet, UserService,  $interval, $timeout) {
         var itemsLoaded = 0;
         var itemsLoading = 0;
         var newChart;
@@ -81,7 +82,8 @@ angular.module('HABmin.chart', [
             },
             showCurrentTime: false,
             legend: true,
-            zoomMin: 60000
+            zoomMin: 60000,
+            locale: UserService.getLanguage()
         };
 
         $scope.graphLoaded = false;
