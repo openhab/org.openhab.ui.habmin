@@ -70,6 +70,28 @@ angular.module('HABmin.thingModel', [
             return deferred.promise;
         };
 
+        this.getThing = function (uid) {
+            var tStart = new Date().getTime();
+            var deferred = $q.defer();
+
+            RestService.getService(svcName).then(
+                function (url) {
+                    $http.get(url + "/" + uid)
+                        .success(function (data) {
+                            deferred.resolve(data);
+                        })
+                        .error(function (data, status) {
+                            deferred.reject(data);
+                        });
+                },
+                function () {
+                    deferred.reject(null);
+                }
+            );
+
+            return deferred.promise;
+        };
+
         this.putThing = function (thing) {
             var tStart = new Date().getTime();
             var deferred = $q.defer();
@@ -77,6 +99,50 @@ angular.module('HABmin.thingModel', [
             RestService.getService(svcSetup).then(
                 function (url) {
                     $http.put(url + "/things", thing)
+                        .success(function (data) {
+                            deferred.resolve(data);
+                        })
+                        .error(function (data, status) {
+                            deferred.reject(data);
+                        });
+                },
+                function () {
+                    deferred.reject(null);
+                }
+            );
+
+            return deferred.promise;
+        };
+
+        this.enableChannel = function (channel) {
+            var tStart = new Date().getTime();
+            var deferred = $q.defer();
+
+            RestService.getService(svcSetup).then(
+                function (url) {
+                    $http.put(url + "/things/channels/" + channel, {channelUID: channel})
+                        .success(function (data) {
+                            deferred.resolve(data);
+                        })
+                        .error(function (data, status) {
+                            deferred.reject(data);
+                        });
+                },
+                function () {
+                    deferred.reject(null);
+                }
+            );
+
+            return deferred.promise;
+        };
+
+        this.disableChannel = function (channel) {
+            var tStart = new Date().getTime();
+            var deferred = $q.defer();
+
+            RestService.getService(svcSetup).then(
+                function (url) {
+                    $http.delete(url + "/things/channels/" + channel, {channelUID: channel})
                         .success(function (data) {
                             deferred.resolve(data);
                         })

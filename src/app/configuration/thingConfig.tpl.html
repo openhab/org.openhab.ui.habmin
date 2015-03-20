@@ -39,7 +39,7 @@
         <!-- Body -->
         <div class="list-group habmin-list" resize-panel>
             <div ng-if="thingCnt!=-1" ng-repeat="thing in things | filter:filterFunction">
-                <a role="presentation" ng-class="{'list-group-item':true, 'active': thing==thingSelected}"
+                <a role="presentation" ng-class="{'list-group-item':true, 'active': thing.UID==thingSelected.UID}"
                    ng-click="selectThing(thing)" sidepanel-click="main">
                     <table style="background-color: transparent">
                         <tr>
@@ -79,54 +79,55 @@
 
 <!-- Device Configuration -->
 <div class="col-sm-8" sidepanel-pane="main">
-        <div class="panel panel-default">
-            <!-- Header -->
-            <div class="panel-heading">
-                <button type="button"
-                        class="btn btn-default"
-                        ng-click="thingSave()"
-                        ngx-disabled="!thingConfigForm.modified">
-                    <span class="fa fa-floppy-o"></span>
-                    <span class="hidden-xs hidden-sm" i18n="common.save"></span>
-                </button>
-                <button type="button"
-                        class="btn btn-default"
-                        ng-click=""
-                        ng-disabled="!thingConfigForm.modified">
-                    <span class="fa fa-times"></span>
-                    <span class="hidden-xs hidden-sm" i18n="common.cancel"></span>
-                </button>
+    <div class="panel panel-default">
+        <!-- Header -->
+        <div class="panel-heading">
+            <button type="button"
+                    class="btn btn-default"
+                    ng-click="thingSave()"
+                    ngx-disabled="!thingConfigForm.modified">
+                <span class="fa fa-floppy-o"></span>
+                <span class="hidden-xs hidden-sm" i18n="common.save"></span>
+            </button>
+            <button type="button"
+                    class="btn btn-default"
+                    ng-click=""
+                    ng-disabled="!thingConfigForm.modified">
+                <span class="fa fa-times"></span>
+                <span class="hidden-xs hidden-sm" i18n="common.cancel"></span>
+            </button>
 
-                <div ng-hidex="!devEdit.label" class="btn-group">
-                    <div>{{thingType.label}}</div>
-                    <div class="text-muted small">{{thingType.description}}</div>
-                </div>
-
-                <div class="pull-right btn-group dropdown">
-                    <button type="button"
-                            class="btn btn-default dropdown-toggle"
-                            ng-disabled="true"
-                            data-toggle="dropdown">
-                        <span class="fa fa-cog"></span>
-                        <span i18n="habmin.thingTools"></span>
-                        <span class="caret"></span>
-                        <span class="sr-only">Dropdown</span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li>
-                            <a ng-click="setView('NETWORK')">
-                                <span class="fa fa-fw fa-sitemap"></span>
-                                <span ></span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+            <div ng-hidex="!devEdit.label" class="btn-group">
+                <div>{{thingType.label}}</div>
+                <div class="text-muted small">{{thingType.description}}</div>
             </div>
 
-            <!-- Body -->
-            <div class="list-group habmin-list" resize-panel>
+            <div class="pull-right btn-group dropdown">
+                <button type="button"
+                        class="btn btn-default dropdown-toggle"
+                        ng-disabled="true"
+                        data-toggle="dropdown">
+                    <span class="fa fa-cog"></span>
+                    <span i18n="habmin.thingTools"></span>
+                    <span class="caret"></span>
+                    <span class="sr-only">Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li>
+                        <a ng-click="setView('NETWORK')">
+                            <span class="fa fa-fw fa-sitemap"></span>
+                            <span></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Body -->
+        <div class="list-group habmin-list" resize-panel>
+            <div ng-if="thingSelected">
                 <!-- OVERVIEW -->
-                <div ng-showx="devEdit.information">
+                <div>
                     <a role="presentation"
                        ng-class="{'list-group-item config-panel-title':true, 'active': panelDisplayed=='PROPERTIES'}"
                        ng-click="panelDisplayed='PROPERTIES'">
@@ -147,7 +148,7 @@
                 </div>
 
                 <!-- CONFIGURATION -->
-                <div ng-showx="devEdit.information">
+                <div>
                     <a role="presentation"
                        ng-class="{'list-group-item list-group-item-heading':true, 'active': panelDisplayed=='CONFIG'}"
                        ng-click="panelDisplayed='CONFIG'">
@@ -155,7 +156,7 @@
                         <span i18n="habmin.thingConfiguration"></span>
                     </a>
                 </div>
-                <div ng-showx="devEdit.information" collapse="panelDisplayed!='CONFIG'"
+                <div collapse="panelDisplayed!='CONFIG'"
                      class="panel-form form-horizontal">
                     <div ng-repeat="config in thingType.configParameters">
                         <div class="form-group">
@@ -176,14 +177,14 @@
 
 
                 <!-- CHANNELS -->
-                <div ng-showx="devEdit.information">
+                <div>
                     <a role="presentation" ng-class="{'list-group-item':true, 'active': panelDisplayed=='CHANNELS'}"
                        ng-click="panelDisplayed='CHANNELS'">
                         <span class="fa fa-fw fa-navicon"></span>
                         <span i18n="habmin.thingChannels"></span>
                     </a>
                 </div>
-                <div ng-showx="devEdit.information" collapse="panelDisplayed!='CHANNELS'"
+                <div collapse="panelDisplayed!='CHANNELS'"
                      class="panel-form form-horizontal">
                     <div ng-repeat="channel in thingType.channels">
                         <div class="form-group">
@@ -192,8 +193,13 @@
                             <div class="input-group">
                                 <span class="input-group-addon category-icon"
                                       ng-class="categoryIcons[channel.category]"></span>
-                                <input type="number" class="form-control" id="CHANNELLABEL{{$index+1}}"
-                                       ng-model="model.format" placeholder="format">
+                                <input type="text"
+                                       class="form-control"
+                                       id="CHANNELLABEL{{$index+1}}"
+                                       readonly="true"
+                                       value="{{channel.description}}"
+                                       placeholder="{{channel.category}}">
+
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="button" ng-click="channelEnable(channel)">
                                     <span ng-if="channelEnabled(channel)"
@@ -208,9 +214,10 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Footer -->
-            <div class="panel-footer panel-footer-none">
-            </div>
         </div>
+
+        <!-- Footer -->
+        <div class="panel-footer panel-footer-none">
+        </div>
+    </div>
 </div>

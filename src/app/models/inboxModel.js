@@ -51,7 +51,6 @@ angular.module('HABmin.inboxModel', [
                     }
                 }
             });
-
         };
 
         this.getInbox = function () {
@@ -186,6 +185,5 @@ angular.module('HABmin.inboxModel', [
 
             return deferred.promise;
         };
-
     })
 ;

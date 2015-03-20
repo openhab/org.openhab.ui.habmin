@@ -76,7 +76,9 @@ angular.module('Config.Things', [
         );
 
         $scope.selectThing = function (thing) {
-            $scope.thingSelected = thing;
+            $scope.thingSelected = null;
+            $scope.panelDisplayed = 'PROPERTIES';
+
             var uid = thing.UID.substring(0, thing.UID.lastIndexOf(":"));
             uid = thing.UID.split(':', 2).join(':');
             ThingModel.getThingInfo(uid).then(
@@ -84,13 +86,59 @@ angular.module('Config.Things', [
                     $scope.thingType = type;
                 },
                 function () {
-
+                    growl.warning(locale.getString("habmin.thingErrorGettingThing",
+                        {name: thing.item.label}));
                 }
-            )
+            );
+
+            ThingModel.getThing(thing.UID).then(
+                function (data) {
+                    $scope.thingSelected = data;
+                },
+                function () {
+                    growl.warning(locale.getString("habmin.thingErrorGettingThing",
+                        {name: thing.item.label}));
+                }
+            );
         };
 
         $scope.channelEnable = function (channel) {
-            //if(channel.)
+            if($scope.channelEnabled(channel)) {
+                ThingModel.disableChannel($scope.thingSelected.UID + ":" + channel.id).then(
+                    function() {
+                        growl.success(locale.getString("habmin.thingChannelDisabledOk",
+                            {thing: $scope.thingSelected.item.label, channel: channel.label}));
+
+                        ThingModel.getThing($scope.thingSelected.UID).then(
+                            function (data) {
+                                $scope.thingSelected = data;
+                            }
+                        );
+                    },
+                    function () {
+                        growl.warning(locale.getString("habmin.thingChannelDisabledError",
+                            {thing: $scope.thingSelected.item.label, channel: channel.label}));
+                    }
+                );
+            }
+            else {
+                ThingModel.enableChannel($scope.thingSelected.UID + ":" + channel.id).then(
+                    function() {
+                        growl.success(locale.getString("habmin.thingChannelDisabledOk",
+                            {thing: $scope.thingSelected.item.label, channel: channel.label}));
+
+                        ThingModel.getThing($scope.thingSelected.UID).then(
+                            function (data) {
+                                $scope.thingSelected = data;
+                            }
+                        );
+                    },
+                    function () {
+                        growl.warning(locale.getString("habmin.thingChannelDisabledError",
+                            {thing: $scope.thingSelected.item.label, channel: channel.label}));
+                    }
+                );
+            }
         };
 
         $scope.channelEnabled = function (channel) {
@@ -114,10 +162,12 @@ angular.module('Config.Things', [
         $scope.thingSave = function () {
             ThingModel.putThing($scope.thingSelected).then(
                 function () {
-                    growl.success(locale.getString("habmin.thingSuccessSavingThing", {name: $scope.thingSelected.item.label}));
+                    growl.success(locale.getString("habmin.thingSuccessSavingThing",
+                        {name: $scope.thingSelected.item.label}));
                 },
                 function () {
-                    growl.error(locale.getString("habmin.thingErrorSavingThing", {name: $scope.thingSelected.item.label}));
+                    growl.error(locale.getString("habmin.thingErrorSavingThing",
+                        {name: $scope.thingSelected.item.label}));
                 }
             )
         };
