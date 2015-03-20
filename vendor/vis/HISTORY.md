@@ -2,6 +2,92 @@
 http://visjs.org
 
 
+## 2015-03-05, version 3.11.0
+
+### Network
+
+- (added gradient coloring for lines, but set for release in 4.0 due to required refactoring of options)
+- Fixed bug where a network that has frozen physics would resume redrawing after setData, setOptions etc.
+- Added option to bypass default groups. If more groups are specified in the nodes than there are in the groups, loop over supplied groups instead of default.
+- Added two new static smooth curves modes: curveCW and curve CCW.
+- Added request redraw for certain internal processes to reduce number of draw calls (performance improvements!).
+- Added pull request for usage of Icons. Thanks @Dude9177!
+- Allow hierarchical view to be set in setOptions.
+- Fixed manipulation bar for mobile.
+- Fixed #670: Bug when updating data in a DataSet, when Network is connected to the DataSet via a DataView.
+- Fixed #688: Added a css class to be able to distinguish buttons "Edit node"
+  and "Edit edge".
+
+### Timeline
+
+- Implemented orientation option `'both'`, displaying a time axis both on top
+  and bottom (#665).
+- Implemented creating new range items by dragging in an empty space with the
+  ctrl key down.
+- Implemented configuration option `order: function` to define a custom ordering
+  for the items (see #538, #234).
+- Implemented events `click`, `doubleClick`, and `contextMenu`.
+- Implemented method `getEventProperties(event)`.
+- Fixed not property initializing with a DataView for groups.
+- Merged add custom timebar functionality, thanks @aytech!
+- Fixed #664: end of item not restored when canceling a move event.
+- Fixed #609: reduce the left/right dragarea when an item range is very small,
+  so you can still move it as a whole.
+- Fixed #676: misalignment of background items when using subgroups and the
+  group label's height is larger than the contents.
+
+### Graph2d
+
+- Implemented events `click`, `doubleClick`, and `contextMenu`.
+- Implemented method `getEventProperties(event)`.
+
+### DataSet/DataView
+
+- Implemented support for mapping field names. Thanks @spatialillusions.
+- Fixed #670: DataView not passing a data property on update events (see #670)
+
+
+
+## 2015-02-11, version 3.10.0
+
+### Network
+
+- Added option bindToWindow (default true) to choose whether the keyboard binds are global or to the network div.
+- Improved images handling so broken images are shown on all references of images that are broken.
+- Added getConnectedNodes method.
+- Added fontSizeMin, fontSizeMax, fontSizeMaxVisible, scaleFontWithValue, fontDrawThreshold to Nodes.
+- Added fade in of labels (on nodes) near the fontDrawThreshold.
+- Added nodes option to zoomExtent to zoom in on specific set of nodes.
+- Added stabilizationIterationsDone event which fires at the end of the internal stabilization run. Does not imply that the network is stabilized.
+- Added freezeSimulation method.
+- Added clusterByZoom option.
+- Added class name 'network-tooltip' to the tooltip, allowing custom styling.
+- Fixed bug when redrawing was not right on zoomed-out browsers.
+- Added opacity option to edges. Opacity is only used for the unselected state.
+- Fixed bug where selections from removed data elements persisted.
+
+### Timeline
+
+- `Timeline.redraw()` now also recalculates the size of items.
+- Implemented option `snap: function` to customize snapping to nice dates
+  when dragging items.
+- Implemented option `timeAxis: {scale: string, step: number}` to set a
+  fixed scale.
+- Fixed width of range items not always being maintained when moving due to
+  snapping to nice dates.
+- Fixed not being able to drag items to an other group on mobile devices.
+- Fixed `setWindow` not working when applying an interval larger than the
+  configured `zoomMax`.
+
+### DataSet/DataView
+
+- Added property `length` holding the total number of items to the `DataSet`
+  and `DataView`.
+- Added a method `refresh()` to the `DataView`, to update filter results.
+- Fixed a bug in the `DataSet` returning an empty object instead of `null` when
+  no item was found when using both a filter and specifying fields.
+
+
 ## 2015-01-16, version 3.9.1
 
 ### General

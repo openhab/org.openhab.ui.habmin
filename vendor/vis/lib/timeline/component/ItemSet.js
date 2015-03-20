@@ -2,6 +2,7 @@ var Hammer = require('../../module/hammer');
 var util = require('../../util');
 var DataSet = require('../../DataSet');
 var DataView = require('../../DataView');
+var TimeStep = require('../TimeStep');
 var Component = require('./Component');
 var Group = require('./Group');
 var BackgroundGroup = require('./BackgroundGroup');
@@ -40,6 +41,8 @@ function ItemSet(body, options) {
       add: false,
       remove: false
     },
+
+    snap:  TimeStep.snap,
 
     onAdd: function (item, callback) {
       callback(item);
@@ -271,7 +274,7 @@ ItemSet.prototype._create = function(){
 ItemSet.prototype.setOptions = function(options) {
   if (options) {
     // copy all options that we know
-    var fields = ['type', 'align', 'orientation', 'padding', 'stack', 'selectable', 'groupOrder', 'dataAttributes', 'template','hide'];
+    var fields = ['type', 'align', 'orientation', 'order', 'padding', 'stack', 'selectable', 'groupOrder', 'dataAttributes', 'template','hide', 'snap'];
     util.selectiveExtend(fields, this.options, options);
 
     if ('margin' in options) {
@@ -324,11 +327,20 @@ ItemSet.prototype.setOptions = function(options) {
 };
 
 /**
- * Mark the ItemSet dirty so it will refresh everything with next redraw
+ * Mark the ItemSet dirty so it will refresh everything with next redraw.
+ * Optionally, all items can be marked as dirty and be refreshed.
+ * @param {{refreshItems: boolean}} [options]
  */
-ItemSet.prototype.markDirty = function() {
+ItemSet.prototype.markDirty = function(options) {
   this.groupIds = [];
   this.stackDirty = true;
+
+  if (options && options.refreshItems) {
+    util.forEach(this.items, function (item) {
+      item.dirty = true;
+      if (item.displayed) item.redraw();
+    });
+  }
 };
 
 /**
@@ -1070,7 +1082,7 @@ ItemSet.prototype._constructByEndArray = function(array) {
  */
 ItemSet.prototype._onTouch = function (event) {
   // store the touched item, used in _onDragStart
-  this.touchParams.item = ItemSet.itemFromTarget(event);
+  this.touchParams.item = this.itemFromTarget(event);
 };
 
 /**
@@ -1130,8 +1142,15 @@ ItemSet.prototype._onDragStart = function (event) {
         };
 
         if (me.options.editable.updateTime) {
-          if ('start' in item.data) props.start = item.data.start.valueOf();
-          if ('end' in item.data)   props.end = item.data.end.valueOf();
+          if ('start' in item.data) {
+            props.start = item.data.start.valueOf();
+
+            if ('end' in item.data) {
+              // we store a duration here in order not to change the width
+              // of the item when moving it.
+              props.duration = item.data.end.valueOf() - props.start;
+            }
+          }
         }
         if (me.options.editable.updateGroup) {
           if ('group' in item.data) props.group = item.data.group;
@@ -1143,6 +1162,54 @@ ItemSet.prototype._onDragStart = function (event) {
 
     event.stopPropagation();
   }
+  else if (this.options.editable.add && event.gesture.srcEvent.ctrlKey) {
+    // create a new range item when dragging with ctrl key down
+    this._onDragStartAddItem(event);
+  }
+};
+
+/**
+ * Start creating a new range item by dragging.
+ * @param {Event} event
+ * @private
+ */
+ItemSet.prototype._onDragStartAddItem = function (event) {
+  var snap = this.options.snap || null;
+  var xAbs = util.getAbsoluteLeft(this.dom.frame);
+  var x = event.gesture.center.pageX - xAbs - 10;  // minus 10 to compensate for the drag starting as soon as you've moved 10px
+  var time = this.body.util.toTime(x);
+  var scale = this.body.util.getScale();
+  var step = this.body.util.getStep();
+  var start = snap ? snap(time, scale, step) : start;
+  var end = start;
+
+  var itemData = {
+    type: 'range',
+    start: start,
+    end: end,
+    content: 'new item'
+  };
+
+  var id = util.randomUUID();
+  itemData[this.itemsData._fieldId] = id;
+
+  var group = this.groupFromTarget(event);
+  if (group) {
+    itemData.group = group.groupId;
+  }
+
+  var newItem = new RangeItem(itemData, this.conversion, this.options);
+  newItem.id = id; // TODO: not so nice setting id afterwards
+  this._addItem(newItem);
+
+  var props = {
+    item: newItem,
+    end: end.valueOf(),
+    initialX: event.gesture.center.clientX
+  };
+  this.touchParams.itemProps = [props];
+
+  event.stopPropagation();
 };
 
 /**
@@ -1151,12 +1218,14 @@ ItemSet.prototype._onDragStart = function (event) {
  * @private
  */
 ItemSet.prototype._onDrag = function (event) {
-  event.preventDefault()
+  event.preventDefault();
 
   if (this.touchParams.itemProps) {
     var me = this;
-    var snap = this.body.util.snap || null;
+    var snap = this.options.snap || null;
     var xOffset = this.body.dom.root.offsetLeft + this.body.domProps.left.width;
+    var scale = this.body.util.getScale();
+    var step = this.body.util.getStep();
 
     // move
     this.touchParams.itemProps.forEach(function (props) {
@@ -1167,17 +1236,20 @@ ItemSet.prototype._onDrag = function (event) {
 
       if ('start' in props) {
         var start = new Date(props.start + offset);
-        newProps.start = snap ? snap(start) : start;
+        newProps.start = snap ? snap(start, scale, step) : start;
       }
 
       if ('end' in props) {
         var end = new Date(props.end + offset);
-        newProps.end = snap ? snap(end) : end;
+        newProps.end = snap ? snap(end, scale, step) : end;
+      }
+      else if ('duration' in props) {
+        newProps.end = new Date(newProps.start.valueOf() + props.duration);
       }
 
       if ('group' in props) {
         // drag from one group to another
-        var group = ItemSet.groupFromTarget(event);
+        var group = me.groupFromTarget(event);
         newProps.group = group && group.groupId;
       }
 
@@ -1205,8 +1277,15 @@ ItemSet.prototype._onDrag = function (event) {
  */
 ItemSet.prototype._updateItemProps = function(item, props) {
   // TODO: copy all properties from props to item? (also new ones)
-  if ('start' in props) item.data.start = props.start;
-  if ('end' in props)   item.data.end   = props.end;
+  if ('start' in props) {
+    item.data.start = props.start;
+  }
+  if ('end' in props) {
+    item.data.end = props.end;
+  }
+  else if ('duration' in props) {
+    item.data.end = new Date(props.start.valueOf() + props.duration);
+  }
   if ('group' in props && item.data.group != props.group) {
     this._moveToGroup(item, props.group)
   }
@@ -1241,48 +1320,64 @@ ItemSet.prototype._onDragEnd = function (event) {
 
   if (this.touchParams.itemProps) {
     // prepare a change set for the changed items
-    var changes = [],
-        me = this,
-        dataset = this.itemsData.getDataSet();
+    var changes = [];
+    var me = this;
+    var dataset = this.itemsData.getDataSet();
 
     var itemProps = this.touchParams.itemProps ;
     this.touchParams.itemProps = null;
     itemProps.forEach(function (props) {
-      var id = props.item.id,
-          itemData = me.itemsData.get(id, me.itemOptions);
+      var id = props.item.id;
+      var itemData = me.itemsData.get(id, me.itemOptions);
 
-      var changed = false;
-      if ('start' in props.item.data) {
-        changed = (props.start != props.item.data.start.valueOf());
-        itemData.start = util.convert(props.item.data.start,
-                dataset._options.type && dataset._options.type.start || 'Date');
-      }
-      if ('end' in props.item.data) {
-        changed = changed  || (props.end != props.item.data.end.valueOf());
-        itemData.end = util.convert(props.item.data.end,
-                dataset._options.type && dataset._options.type.end || 'Date');
-      }
-      if ('group' in props.item.data) {
-        changed = changed  || (props.group != props.item.data.group);
-        itemData.group = props.item.data.group;
-      }
-
-      // only apply changes when start or end is actually changed
-      if (changed) {
-        me.options.onMove(itemData, function (itemData) {
+      if (!itemData) {
+        // add a new item
+        me.options.onAdd(props.item.data, function (itemData) {
+          me._removeItem(props.item); // remove temporary item
           if (itemData) {
-            // apply changes
-            itemData[dataset._fieldId] = id; // ensure the item contains its id (can be undefined)
-            changes.push(itemData);
+            me.itemsData.getDataSet().add(itemData);
           }
-          else {
-            // restore original values
-            me._updateItemProps(props.item, props);
 
-            me.stackDirty = true; // force re-stacking of all items next redraw
-            me.body.emitter.emit('change');
-          }
+          // force re-stacking of all items next redraw
+          me.stackDirty = true;
+          me.body.emitter.emit('change');
         });
+      }
+      else {
+        // update existing item
+        var changed = false;
+        if ('start' in props.item.data) {
+          changed = (props.start != props.item.data.start.valueOf());
+          itemData.start = util.convert(props.item.data.start,
+              dataset._options.type && dataset._options.type.start || 'Date');
+        }
+        if ('end' in props.item.data) {
+          changed = changed  || (props.end != props.item.data.end.valueOf());
+          itemData.end = util.convert(props.item.data.end,
+              dataset._options.type && dataset._options.type.end || 'Date');
+        }
+        if ('group' in props.item.data) {
+          changed = changed  || (props.group != props.item.data.group);
+          itemData.group = props.item.data.group;
+        }
+
+        // only apply changes when start or end is actually changed
+        if (changed) {
+          me.options.onMove(itemData, function (itemData) {
+            if (itemData) {
+              // apply changes
+              itemData[dataset._fieldId] = id; // ensure the item contains its id (can be undefined)
+              changes.push(itemData);
+            }
+            else {
+              // restore original values
+              me._updateItemProps(props.item, props);
+
+              me.stackDirty = true; // force re-stacking of all items next redraw
+              me.body.emitter.emit('change');
+            }
+          });
+        }
       }
     });
 
@@ -1312,7 +1407,7 @@ ItemSet.prototype._onSelectItem = function (event) {
 
   var oldSelection = this.getSelection();
 
-  var item = ItemSet.itemFromTarget(event);
+  var item = this.itemFromTarget(event);
   var selection = item ? [item.id] : [];
   this.setSelection(selection);
 
@@ -1337,8 +1432,8 @@ ItemSet.prototype._onAddItem = function (event) {
   if (!this.options.editable.add) return;
 
   var me = this,
-      snap = this.body.util.snap || null,
-      item = ItemSet.itemFromTarget(event);
+      snap = this.options.snap || null,
+      item = this.itemFromTarget(event);
 
   if (item) {
     // update item
@@ -1356,20 +1451,23 @@ ItemSet.prototype._onAddItem = function (event) {
     var xAbs = util.getAbsoluteLeft(this.dom.frame);
     var x = event.gesture.center.pageX - xAbs;
     var start = this.body.util.toTime(x);
+    var scale = this.body.util.getScale();
+    var step = this.body.util.getStep();
+
     var newItem = {
-      start: snap ? snap(start) : start,
+      start: snap ? snap(start, scale, step) : start,
       content: 'new item'
     };
 
     // when default type is a range, add a default end date to the new item
     if (this.options.type === 'range') {
       var end = this.body.util.toTime(x + this.props.width / 5);
-      newItem.end = snap ? snap(end) : end;
+      newItem.end = snap ? snap(end, scale, step) : end;
     }
 
     newItem[this.itemsData._fieldId] = util.randomUUID();
 
-    var group = ItemSet.groupFromTarget(event);
+    var group = this.groupFromTarget(event);
     if (group) {
       newItem.group = group.groupId;
     }
@@ -1393,7 +1491,7 @@ ItemSet.prototype._onMultiSelectItem = function (event) {
   if (!this.options.selectable) return;
 
   var selection,
-      item = ItemSet.itemFromTarget(event);
+      item = this.itemFromTarget(event);
 
   if (item) {
     // multi select items
@@ -1481,7 +1579,7 @@ ItemSet._getItemRange = function(itemsData) {
  * @param {Event} event
  * @return {Item | null} item
  */
-ItemSet.itemFromTarget = function(event) {
+ItemSet.prototype.itemFromTarget = function(event) {
   var target = event.target;
   while (target) {
     if (target.hasOwnProperty('timeline-item')) {
@@ -1499,13 +1597,27 @@ ItemSet.itemFromTarget = function(event) {
  * @param {Event} event
  * @return {Group | null} group
  */
-ItemSet.groupFromTarget = function(event) {
-  var target = event.target;
-  while (target) {
-    if (target.hasOwnProperty('timeline-group')) {
-      return target['timeline-group'];
+ItemSet.prototype.groupFromTarget = function(event) {
+  var clientY = event.gesture ? event.gesture.center.clientY : event.clientY;
+  for (var i = 0; i < this.groupIds.length; i++) {
+    var groupId = this.groupIds[i];
+    var group = this.groups[groupId];
+    var foreground = group.dom.foreground;
+    var top = util.getAbsoluteTop(foreground);
+    if (clientY > top && clientY < top + foreground.offsetHeight) {
+      return group;
     }
-    target = target.parentNode;
+
+    if (this.options.orientation === 'top') {
+      if (i === this.groupIds.length - 1 && clientY > top) {
+        return group;
+      }
+    }
+    else {
+      if (i === 0 && clientY < top + foreground.offset) {
+        return group;
+      }
+    }
   }
 
   return null;

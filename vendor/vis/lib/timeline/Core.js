@@ -5,8 +5,10 @@ var DataSet = require('../DataSet');
 var DataView = require('../DataView');
 var Range = require('./Range');
 var ItemSet = require('./component/ItemSet');
+var TimeAxis = require('./component/TimeAxis');
 var Activator = require('../shared/Activator');
 var DateUtil = require('./DateUtil');
+var CustomTime = require('./component/CustomTime');
 
 /**
  * Create a timeline visualization
@@ -25,7 +27,7 @@ Emitter(Core.prototype);
  * top, bottom, content, and background panel.
  * @param {Element} container  The container element where the Core will
  *                             be attached.
- * @private
+ * @protected
  */
 Core.prototype._create = function (container) {
   this.dom = {};
@@ -53,7 +55,7 @@ Core.prototype._create = function (container) {
   this.dom.background.className           = 'vispanel background';
   this.dom.backgroundVertical.className   = 'vispanel background vertical';
   this.dom.backgroundHorizontal.className = 'vispanel background horizontal';
-  this.dom.centerContainer.className      = 'vispanel center';
+  this.dom.centerContainer.className      = 'vispanel center jooo';
   this.dom.leftContainer.className        = 'vispanel left';
   this.dom.rightContainer.className       = 'vispanel right';
   this.dom.top.className                  = 'vispanel top';
@@ -88,7 +90,7 @@ Core.prototype._create = function (container) {
   this.dom.rightContainer.appendChild(this.dom.shadowTopRight);
   this.dom.rightContainer.appendChild(this.dom.shadowBottomRight);
 
-  this.on('rangechange', this.redraw.bind(this));
+  this.on('rangechange', this._redraw.bind(this));
   this.on('touch', this._onTouch.bind(this));
   this.on('pinch', this._onPinch.bind(this));
   this.on('dragstart', this._onDragStart.bind(this));
@@ -101,13 +103,13 @@ Core.prototype._create = function (container) {
       if (!me._redrawTimer) {
         me._redrawTimer = setTimeout(function () {
           me._redrawTimer = null;
-          me.redraw();
+          me._redraw();
         }, 0)
       }
     }
     else {
       // redraw immediately
-      me.redraw();
+      me._redraw();
     }
   });
 
@@ -191,6 +193,28 @@ Core.prototype.setOptions = function (options) {
     var fields = ['width', 'height', 'minHeight', 'maxHeight', 'autoResize', 'start', 'end', 'orientation', 'clickToUse', 'dataAttributes', 'hiddenDates'];
     util.selectiveExtend(fields, this.options, options);
 
+    if (this.options.orientation === 'both') {
+      if (!this.timeAxis2) {
+        var timeAxis2 = this.timeAxis2 = new TimeAxis(this.body);
+        timeAxis2.setOptions = function (options) {
+          var _options = options ? util.extend({}, options) : {};
+          _options.orientation = 'top'; // override the orientation option, always top
+          TimeAxis.prototype.setOptions.call(timeAxis2, _options);
+        };
+        this.components.push(timeAxis2);
+      }
+    }
+    else {
+      if (this.timeAxis2) {
+        var index = this.components.indexOf(this.timeAxis2);
+        if (index !== -1) {
+          this.components.splice(index, 1);
+        }
+        this.timeAxis2.destroy();
+        this.timeAxis2 = null;
+      }
+    }
+
     if ('hiddenDates' in this.options) {
       DateUtil.convertHiddenOptions(this.body, this.options.hiddenDates);
     }
@@ -218,13 +242,8 @@ Core.prototype.setOptions = function (options) {
     component.setOptions(options);
   });
 
-  // TODO: remove deprecation error one day (deprecated since version 0.8.0)
-  if (options && options.order) {
-    throw new Error('Option order is deprecated. There is no replacement for this feature.');
-  }
-
   // redraw everything
-  this.redraw();
+  this._redraw();
 };
 
 /**
@@ -281,25 +300,123 @@ Core.prototype.destroy = function () {
 /**
  * Set a custom time bar
  * @param {Date} time
+ * @param {int} id
  */
-Core.prototype.setCustomTime = function (time) {
+Core.prototype.setCustomTime = function (time, id) {
   if (!this.customTime) {
     throw new Error('Cannot get custom time: Custom time bar is not enabled');
   }
 
-  this.customTime.setCustomTime(time);
+  var barId = id || 0;
+
+  this.components.forEach(function (element, index, components) {
+    if (element instanceof CustomTime && element.options.id === barId) {
+      element.setCustomTime(time);
+    }
+  });
 };
 
 /**
  * Retrieve the current custom time.
  * @return {Date} customTime
+ * @param {int} id
  */
-Core.prototype.getCustomTime = function() {
+Core.prototype.getCustomTime = function(id) {
   if (!this.customTime) {
     throw new Error('Cannot get custom time: Custom time bar is not enabled');
   }
 
-  return this.customTime.getCustomTime();
+  var barId = id || 0,
+      customTime = this.customTime.getCustomTime();
+
+  this.components.forEach(function (element, index, components) {
+    if (element instanceof CustomTime && element.options.id === barId) {
+      customTime = element.getCustomTime();
+    }
+  });
+
+  return customTime;
+};
+
+/**
+ * Add custom vertical bar
+ * @param {Date | String | Number} time  A Date, unix timestamp, or
+ *                                      ISO date string. Time point where the new bar should be placed
+ * @param {Number | String} ID of the new bar
+ * @return {Number | String} ID of the new bar
+ */
+Core.prototype.addCustomTime = function (time, id) {
+  if (!this.currentTime) {
+    throw new Error('Option showCurrentTime must be true');
+  }
+
+  if (time === undefined) {
+    throw new Error('Time parameter for the custom bar must be provided');
+  }
+
+  var ts = util.convert(time, 'Date').valueOf(),
+      numIds, customTime, customBarId;
+
+  // All bar IDs are kept in 1 array, mixed types
+  // Bar with ID 0 is the default bar.
+  if (!this.customBarIds || this.customBarIds.constructor !== Array) {
+    this.customBarIds = [0];
+  }
+
+  // If the ID is not provided, generate one, otherwise just use it
+  if (id === undefined) {
+
+    numIds = this.customBarIds.filter(function (element) {
+      return util.isNumber(element);
+    });
+
+    customBarId = numIds.length > 0 ? Math.max.apply(null, numIds) + 1 : 1;
+
+  } else {
+    
+    // Check for duplicates
+    this.customBarIds.forEach(function (element) {
+      if (element === id) {
+        throw new Error('Custom time ID already exists');
+      }
+    });
+
+    customBarId = id;
+  }
+
+  this.customBarIds.push(customBarId);
+
+  customTime = new CustomTime(this.body, {
+    showCustomTime : true,
+    time : ts,
+    id : customBarId
+  });
+
+  this.components.push(customTime);
+  this.redraw();
+
+  return customBarId;
+};
+
+/**
+ * Remove previously added custom bar
+ * @param {int} id ID of the custom bar to be removed
+ * @return {boolean} True if the bar exists and is removed, false otherwise
+ */
+Core.prototype.removeCustomTime = function (id) {
+
+  var me = this;
+
+  this.components.forEach(function (bar, index, components) {
+    if (bar instanceof CustomTime && bar.options.id === id) {
+      // Only the lines added by the user will be removed
+      if (bar.options.id !== 0) {
+        me.customBarIds.splice(me.customBarIds.indexOf(id), 1);
+        components.splice(index, 1);
+        bar.destroy();
+      }
+    }
+  });
 };
 
 
@@ -398,6 +515,7 @@ Core.prototype._getDataRange = function() {
  * start or only end. Syntax:
  *
  *     TimeLine.setWindow(start, end)
+ *     TimeLine.setWindow(start, end, options)
  *     TimeLine.setWindow(range)
  *
  * Where start and end can be a Date, number, or string, and range is an
@@ -413,12 +531,14 @@ Core.prototype._getDataRange = function() {
  *                                 for the animation. Default duration is 500 ms.
  */
 Core.prototype.setWindow = function(start, end, options) {
-  var animate = (options && options.animate !== undefined) ? options.animate : true;
+  var animate;
   if (arguments.length == 1) {
     var range = arguments[0];
+    animate = (range.animate !== undefined) ? range.animate : true;
     this.range.setRange(range.start, range.end, animate);
   }
   else {
+    animate = (options && options.animate !== undefined) ? options.animate : true;
     this.range.setRange(start, end, animate);
   }
 };
@@ -457,10 +577,18 @@ Core.prototype.getWindow = function() {
 };
 
 /**
- * Force a redraw of the Core. Can be useful to manually redraw when
- * option autoResize=false
+ * Force a redraw. Can be overridden by implementations of Core
  */
 Core.prototype.redraw = function() {
+  this._redraw();
+};
+
+/**
+ * Redraw for internal use. Redraws all components. See also the public
+ * method redraw.
+ * @protected
+ */
+Core.prototype._redraw = function() {
   var resized = false;
   var options = this.options;
   var props = this.props;
@@ -611,7 +739,7 @@ Core.prototype.redraw = function() {
     var MAX_REDRAWS = 3; // maximum number of consecutive redraws
     if (this.redrawCount < MAX_REDRAWS) {
       this.redrawCount++;
-      this.redraw();
+      this._redraw();
     }
     else {
       console.log('WARNING: infinite loop in redraw?');
@@ -659,7 +787,7 @@ Core.prototype.getCurrentTime = function() {
  * Convert a position on screen (pixels) to a datetime
  * @param {int}     x    Position on the screen in pixels
  * @return {Date}   time The datetime the corresponds with given position x
- * @private
+ * @protected
  */
 // TODO: move this function to Range
 Core.prototype._toTime = function(x) {
@@ -670,7 +798,7 @@ Core.prototype._toTime = function(x) {
  * Convert a position on the global screen (pixels) to a datetime
  * @param {int}     x    Position on the screen in pixels
  * @return {Date}   time The datetime the corresponds with given position x
- * @private
+ * @protected
  */
 // TODO: move this function to Range
 Core.prototype._toGlobalTime = function(x) {
@@ -684,7 +812,7 @@ Core.prototype._toGlobalTime = function(x) {
  * @param {Date}   time A date
  * @return {int}   x    The position on the screen in pixels which corresponds
  *                      with the given date.
- * @private
+ * @protected
  */
 // TODO: move this function to Range
 Core.prototype._toScreen = function(time) {
@@ -699,7 +827,7 @@ Core.prototype._toScreen = function(time) {
  * @param {Date}   time A date
  * @return {int}   x    The position on root in pixels which corresponds
  *                      with the given date.
- * @private
+ * @protected
  */
 // TODO: move this function to Range
 Core.prototype._toGlobalScreen = function(time) {
@@ -819,7 +947,7 @@ Core.prototype._onDrag = function (event) {
 
 
   if (newScrollTop != oldScrollTop) {
-    this.redraw(); // TODO: this causes two redraws when dragging, the other is triggered by rangechange already
+    this._redraw(); // TODO: this causes two redraws when dragging, the other is triggered by rangechange already
     this.emit("verticalDrag");
   }
 };

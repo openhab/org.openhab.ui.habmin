@@ -484,6 +484,10 @@ DataAxis.prototype.convertValue = function (value) {
   return convertedValue;
 };
 
+DataAxis.prototype.screenToValue = function (x) {
+  return this.valueAtZero - (x / this.conversionFactor);
+};
+
 /**
  * Create a label for the axis at position x
  * @private
@@ -624,16 +628,6 @@ DataAxis.prototype._calculateCharSize = function () {
 
     this.dom.frame.removeChild(measureCharTitle);
   }
-};
-
-/**
- * Snap a date to a rounded value.
- * The snap intervals are dependent on the current scale and step.
- * @param {Date} date   the date to be snapped.
- * @return {Date} snappedDate
- */
-DataAxis.prototype.snap = function(date) {
-  return this.step.snap(date);
 };
 
 module.exports = DataAxis;

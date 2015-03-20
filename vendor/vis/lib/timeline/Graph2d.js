@@ -57,7 +57,6 @@ function Graph2d (container, items, groups, options) {
     },
     hiddenDates: [],
     util: {
-      snap: null, // will be specified after TimeAxis is created
       toScreen: me._toScreen.bind(me),
       toGlobalScreen: me._toGlobalScreen.bind(me), // this refers to the root.width
       toTime: me._toTime.bind(me),
@@ -73,7 +72,7 @@ function Graph2d (container, items, groups, options) {
   // time axis
   this.timeAxis = new TimeAxis(this.body);
   this.components.push(this.timeAxis);
-  this.body.util.snap = this.timeAxis.snap.bind(this.timeAxis);
+  //this.body.util.snap = this.timeAxis.snap.bind(this.timeAxis);
 
   // current time bar
   this.currentTime = new CurrentTime(this.body);
@@ -91,6 +90,16 @@ function Graph2d (container, items, groups, options) {
   this.itemsData = null;      // DataSet
   this.groupsData = null;     // DataSet
 
+  this.on('tap', function (event) {
+    me.emit('click', me.getEventProperties(event))
+  });
+  this.on('doubletap', function (event) {
+    me.emit('doubleClick', me.getEventProperties(event))
+  });
+  this.dom.root.oncontextmenu = function (event) {
+    me.emit('contextmenu', me.getEventProperties(event))
+  };
+
   // apply options
   if (options) {
     this.setOptions(options);
@@ -106,7 +115,7 @@ function Graph2d (container, items, groups, options) {
     this.setItems(items);
   }
   else {
-    this.redraw();
+    this._redraw();
   }
 }
 
@@ -192,7 +201,7 @@ Graph2d.prototype.getLegend = function(groupId, width, height) {
   else {
     return "cannot find group:" +  groupId;
   }
-}
+};
 
 /**
  * This checks if the visible option of the supplied group (by ID) is true or false.
@@ -206,7 +215,7 @@ Graph2d.prototype.isGroupVisible = function(groupId) {
   else {
     return false;
   }
-}
+};
 
 
 /**
@@ -239,6 +248,53 @@ Graph2d.prototype.getItemRange = function() {
   };
 };
 
+
+/**
+ * Generate Timeline related information from an event
+ * @param {Event} event
+ * @return {Object} An object with related information, like on which area
+ *                  The event happened, whether clicked on an item, etc.
+ */
+Graph2d.prototype.getEventProperties = function (event) {
+  var pageX = event.gesture ? event.gesture.center.pageX : event.pageX;
+  var pageY = event.gesture ? event.gesture.center.pageY : event.pageY;
+  var x = pageX - util.getAbsoluteLeft(this.dom.centerContainer);
+  var y = pageY - util.getAbsoluteTop(this.dom.centerContainer);
+  var time = this._toTime(x);
+
+  var element = util.getTarget(event);
+  var what = null;
+  if (util.hasParent(element, this.timeAxis.dom.foreground))              {what = 'axis';}
+  else if (this.timeAxis2 && util.hasParent(element, this.timeAxis2.dom.foreground)) {what = 'axis';}
+  else if (util.hasParent(element, this.linegraph.yAxisLeft.dom.frame))   {what = 'data-axis';}
+  else if (util.hasParent(element, this.linegraph.yAxisRight.dom.frame))  {what = 'data-axis';}
+  else if (util.hasParent(element, this.linegraph.legendLeft.dom.frame))  {what = 'legend';}
+  else if (util.hasParent(element, this.linegraph.legendRight.dom.frame)) {what = 'legend';}
+  else if (util.hasParent(element, this.customTime.bar))                  {what = 'custom-time';} // TODO: fix for multiple custom time bars
+  else if (util.hasParent(element, this.currentTime.bar))                 {what = 'current-time';}
+  else if (util.hasParent(element, this.dom.center))                      {what = 'background';}
+
+  var value = [];
+  var yAxisLeft = this.linegraph.yAxisLeft;
+  var yAxisRight = this.linegraph.yAxisRight;
+  if (!yAxisLeft.hidden) {
+    value.push(yAxisLeft.screenToValue(y));
+  }
+  if (!yAxisRight.hidden) {
+    value.push(yAxisRight.screenToValue(y));
+  }
+
+  return {
+    event: event,
+    what: what,
+    pageX: pageX,
+    pageY: pageY,
+    x: x,
+    y: y,
+    time: time,
+    value: value
+  }
+};
 
 
 module.exports = Graph2d;

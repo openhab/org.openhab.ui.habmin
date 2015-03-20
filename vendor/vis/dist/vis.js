@@ -4,8 +4,8 @@
  *
  * A dynamic, browser-based visualization library.
  *
- * @version 3.9.1
- * @date    2015-01-22
+ * @version 3.11.0
+ * @date    2015-03-05
  *
  * @license
  * Copyright (C) 2011-2014 Almende B.V, http://almende.com
@@ -38,41 +38,41 @@
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-/******/
+
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-/******/
+
 /******/ 		// Check if module is in cache
 /******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-/******/
+
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			exports: {},
 /******/ 			id: moduleId,
 /******/ 			loaded: false
 /******/ 		};
-/******/
+
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
+
 /******/ 		// Flag the module as loaded
 /******/ 		module.loaded = true;
-/******/
+
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/
-/******/
+
+
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-/******/
+
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-/******/
+
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-/******/
+
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
 /******/ })
@@ -174,6 +174,26 @@ return /******/ (function(modules) { // webpackBootstrap
   exports.isNumber = function(object) {
     return (object instanceof Number || typeof object == 'number');
   };
+
+
+  /**
+   * this function gives you a range between 0 and 1 based on the min and max values in the set, the total sum of all values and the current value.
+   *
+   * @param min
+   * @param max
+   * @param total
+   * @param value
+   * @returns {number}
+   */
+  exports.giveRange = function(min,max,total,value) {
+    if (max == min) {
+      return 0.5;
+    }
+    else {
+      var scale = 1 / (max - min);
+      return Math.max(0,(value - min)*scale);
+    }
+  }
 
   /**
    * Test whether given object is a string
@@ -807,6 +827,24 @@ return /******/ (function(modules) { // webpackBootstrap
     return target;
   };
 
+  /**
+   * Check if given element contains given parent somewhere in the DOM tree
+   * @param {Element} element
+   * @param {Element} parent
+   */
+  exports.hasParent = function (element, parent) {
+    var e = element;
+
+    while (e) {
+      if (e === parent) {
+        return true;
+      }
+      e = e.parentNode;
+    }
+
+    return false;
+  };
+
   exports.option = {};
 
   /**
@@ -918,6 +956,28 @@ return /******/ (function(modules) { // webpackBootstrap
         b: parseInt(result[3], 16)
     } : null;
   };
+
+  /**
+   * This function takes color in hex format or rgb() or rgba() format and overrides the opacity. Returns rgba() string.
+   * @param color
+   * @param opacity
+   * @returns {*}
+   */
+  exports.overrideOpacity = function(color,opacity) {
+    if (color.indexOf("rgb") != -1) {
+      var rgb = color.substr(color.indexOf("(")+1).replace(")","").split(",");
+      return "rgba(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + "," + opacity + ")"
+    }
+    else {
+      var rgb = exports.hexToRGB(color);
+      if (rgb == null) {
+        return color;
+      }
+      else {
+        return "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + "," + opacity + ")"
+      }
+    }
+  }
 
   /**
    *
@@ -1528,9 +1588,10 @@ return /******/ (function(modules) { // webpackBootstrap
    * @param group
    * @param JSONcontainer
    * @param svgContainer
+   * @param labelObj
    * @returns {*}
    */
-  exports.drawPoint = function(x, y, group, JSONcontainer, svgContainer) {
+  exports.drawPoint = function(x, y, group, JSONcontainer, svgContainer, labelObj) {
     var point;
     if (group.options.drawPoints.style == 'circle') {
       point = exports.getSVGElement('circle',JSONcontainer,svgContainer);
@@ -1550,6 +1611,28 @@ return /******/ (function(modules) { // webpackBootstrap
       point.setAttributeNS(null, "style", group.group.options.drawPoints.styles);
     }
     point.setAttributeNS(null, "class", group.className + " point");
+    //handle label 
+    var label = exports.getSVGElement('text',JSONcontainer,svgContainer);
+    if (labelObj){
+        if (labelObj.xOffset) {
+          x = x + labelObj.xOffset;
+        }
+
+        if (labelObj.yOffset) {
+          y = y + labelObj.yOffset;
+        }
+        if (labelObj.content) {
+          label.textContent = labelObj.content;
+        }
+
+        if (labelObj.className) {
+          label.setAttributeNS(null, "class", labelObj.className  + " label");
+        }
+
+
+    }
+    label.setAttributeNS(null, "x", x);
+    label.setAttributeNS(null, "y", y);
     return point;
   };
 
@@ -1634,6 +1717,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
     this._options = options || {};
     this._data = {};                                 // map with data indexed by id
+    this.length = 0;                                 // number of items in the DataSet
     this._fieldId = this._options.fieldId || 'id';   // name of the field containing id
     this._type = {};                                 // internal field types (NOTE: this can differ from this._options.type)
 
@@ -2231,17 +2315,29 @@ return /******/ (function(modules) { // webpackBootstrap
 
   /**
    * Filter the fields of an item
-   * @param {Object} item
+   * @param {Object | null} item
    * @param {String[]} fields     Field names
-   * @return {Object} filteredItem
+   * @return {Object | null} filteredItem or null if no item is provided
    * @private
    */
   DataSet.prototype._filterFields = function (item, fields) {
+    if (!item) { // item is null
+      return item;
+    }
+
     var filteredItem = {};
 
-    for (var field in item) {
-      if (item.hasOwnProperty(field) && (fields.indexOf(field) != -1)) {
-        filteredItem[field] = item[field];
+    if(Array.isArray(fields)){
+      for (var field in item) {
+        if (item.hasOwnProperty(field) && (fields.indexOf(field) != -1)) {
+          filteredItem[field] = item[field];
+        }
+      }
+    }else{
+      for (var field in item) {
+        if (item.hasOwnProperty(field) && fields.hasOwnProperty(field)) {
+          filteredItem[fields[field]] = item[field];
+        }
       }
     }
 
@@ -2318,6 +2414,7 @@ return /******/ (function(modules) { // webpackBootstrap
     if (util.isNumber(id) || util.isString(id)) {
       if (this._data[id]) {
         delete this._data[id];
+        this.length--;
         return id;
       }
     }
@@ -2325,6 +2422,7 @@ return /******/ (function(modules) { // webpackBootstrap
       var itemId = id[this._fieldId];
       if (itemId && this._data[itemId]) {
         delete this._data[itemId];
+        this.length--;
         return itemId;
       }
     }
@@ -2340,6 +2438,7 @@ return /******/ (function(modules) { // webpackBootstrap
     var ids = Object.keys(this._data);
 
     this._data = {};
+    this.length = 0;
 
     this._trigger('remove', {items: ids}, senderId);
 
@@ -2465,6 +2564,7 @@ return /******/ (function(modules) { // webpackBootstrap
       }
     }
     this._data[id] = d;
+    this.length++;
 
     return id;
   };
@@ -2590,6 +2690,7 @@ return /******/ (function(modules) { // webpackBootstrap
   function DataView (data, options) {
     this._data = null;
     this._ids = {}; // ids of the items currently in memory (just contains a boolean true)
+    this.length = 0; // number of items in the DataView
     this._options = options || {};
     this._fieldId = 'id'; // name of the field containing id
     this._subscribers = {}; // event subscribers
@@ -2626,6 +2727,7 @@ return /******/ (function(modules) { // webpackBootstrap
         }
       }
       this._ids = {};
+      this.length = 0;
       this._trigger('remove', {items: ids});
     }
 
@@ -2643,12 +2745,55 @@ return /******/ (function(modules) { // webpackBootstrap
         id = ids[i];
         this._ids[id] = true;
       }
+      this.length = ids.length;
       this._trigger('add', {items: ids});
 
       // subscribe to new dataset
       if (this._data.on) {
         this._data.on('*', this.listener);
       }
+    }
+  };
+
+  /**
+   * Refresh the DataView. Useful when the DataView has a filter function
+   * containing a variable parameter.
+   */
+  DataView.prototype.refresh = function () {
+    var id;
+    var ids = this._data.getIds({filter: this._options && this._options.filter});
+    var newIds = {};
+    var added = [];
+    var removed = [];
+
+    // check for additions
+    for (var i = 0; i < ids.length; i++) {
+      id = ids[i];
+      newIds[id] = true;
+      if (!this._ids[id]) {
+        added.push(id);
+        this._ids[id] = true;
+        this.length++;
+      }
+    }
+
+    // check for removals
+    for (id in this._ids) {
+      if (this._ids.hasOwnProperty(id)) {
+        if (!newIds[id]) {
+          removed.push(id);
+          delete this._ids[id];
+          this.length--;
+        }
+      }
+    }
+
+    // trigger events
+    if (added.length) {
+      this._trigger('add', {items: added});
+    }
+    if (removed.length) {
+      this._trigger('remove', {items: removed});
     }
   };
 
@@ -2789,12 +2934,13 @@ return /******/ (function(modules) { // webpackBootstrap
    * @private
    */
   DataView.prototype._onEvent = function (event, params, senderId) {
-    var i, len, id, item,
-        ids = params && params.items,
-        data = this._data,
-        added = [],
-        updated = [],
-        removed = [];
+    var i, len, id, item;
+    var ids = params && params.items;
+    var data = this._data;
+    var updatedData = [];
+    var added = [];
+    var updated = [];
+    var removed = [];
 
     if (ids && data) {
       switch (event) {
@@ -2821,6 +2967,7 @@ return /******/ (function(modules) { // webpackBootstrap
             if (item) {
               if (this._ids[id]) {
                 updated.push(id);
+                updatedData.push(params.data[i]);
               }
               else {
                 this._ids[id] = true;
@@ -2853,11 +3000,13 @@ return /******/ (function(modules) { // webpackBootstrap
           break;
       }
 
+      this.length += added.length - removed.length;
+
       if (added.length) {
         this._trigger('add', {items: added}, senderId);
       }
       if (updated.length) {
-        this._trigger('update', {items: updated}, senderId);
+        this._trigger('update', {items: updated, data: updatedData}, senderId);
       }
       if (removed.length) {
         this._trigger('remove', {items: removed}, senderId);
@@ -6356,8 +6505,8 @@ return /******/ (function(modules) { // webpackBootstrap
   /**
    * Create a timeline visualization
    * @param {HTMLElement} container
-   * @param {vis.DataSet | Array | google.visualization.DataTable} [items]
-   * @param {vis.DataSet | Array | google.visualization.DataTable} [groups]
+   * @param {vis.DataSet | vis.DataView | Array | google.visualization.DataTable} [items]
+   * @param {vis.DataSet | vis.DataView | Array | google.visualization.DataTable} [groups]
    * @param {Object} [options]  See Timeline.setOptions for the available options.
    * @constructor
    * @extends Core
@@ -6368,7 +6517,7 @@ return /******/ (function(modules) { // webpackBootstrap
     }
 
     // if the third element is options, the forth is groups (optionally);
-    if (!(Array.isArray(groups) || groups instanceof DataSet) && groups instanceof Object) {
+    if (!(Array.isArray(groups) || groups instanceof DataSet || groups instanceof DataView) && groups instanceof Object) {
       var forthArgument = options;
       options = groups;
       groups = forthArgument;
@@ -6381,7 +6530,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
       autoResize: true,
 
-      orientation: 'bottom',
+      orientation: 'bottom', // 'bottom', 'top', or 'both'
       width: null,
       height: null,
       maxHeight: null,
@@ -6405,7 +6554,13 @@ return /******/ (function(modules) { // webpackBootstrap
       },
       hiddenDates: [],
       util: {
-        snap: null, // will be specified after TimeAxis is created
+        getScale: function () {
+          return me.timeAxis.step.scale;
+        },
+        getStep: function () {
+          return me.timeAxis.step.step;
+        },
+
         toScreen: me._toScreen.bind(me),
         toGlobalScreen: me._toGlobalScreen.bind(me), // this refers to the root.width
         toTime: me._toTime.bind(me),
@@ -6420,8 +6575,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
     // time axis
     this.timeAxis = new TimeAxis(this.body);
+    this.timeAxis2 = null; // used in case of orientation option 'both'
     this.components.push(this.timeAxis);
-    this.body.util.snap = this.timeAxis.snap.bind(this.timeAxis);
 
     // current time bar
     this.currentTime = new CurrentTime(this.body);
@@ -6439,6 +6594,16 @@ return /******/ (function(modules) { // webpackBootstrap
     this.itemsData = null;      // DataSet
     this.groupsData = null;     // DataSet
 
+    this.on('tap', function (event) {
+      me.emit('click', me.getEventProperties(event))
+    });
+    this.on('doubletap', function (event) {
+      me.emit('doubleClick', me.getEventProperties(event))
+    });
+    this.dom.root.oncontextmenu = function (event) {
+      me.emit('contextmenu', me.getEventProperties(event))
+    };
+
     // apply options
     if (options) {
       this.setOptions(options);
@@ -6454,12 +6619,22 @@ return /******/ (function(modules) { // webpackBootstrap
       this.setItems(items);
     }
     else {
-      this.redraw();
+      this._redraw();
     }
   }
 
   // Extend the functionality from Core
   Timeline.prototype = new Core();
+
+  /**
+   * Force a redraw. The size of all items will be recalculated.
+   * Can be useful to manually redraw when option autoResize=false and the window
+   * has been resized, or when the items CSS has been changed.
+   */
+  Timeline.prototype.redraw = function() {
+    this.itemSet && this.itemSet.markDirty({refreshItems: true});
+    this._redraw();
+  };
 
   /**
    * Set items
@@ -6653,6 +6828,49 @@ return /******/ (function(modules) { // webpackBootstrap
     };
   };
 
+  /**
+   * Generate Timeline related information from an event
+   * @param {Event} event
+   * @return {Object} An object with related information, like on which area
+   *                  The event happened, whether clicked on an item, etc.
+   */
+  Timeline.prototype.getEventProperties = function (event) {
+    var item  = this.itemSet.itemFromTarget(event);
+    var group = this.itemSet.groupFromTarget(event);
+    var pageX = event.gesture ? event.gesture.center.pageX : event.pageX;
+    var pageY = event.gesture ? event.gesture.center.pageY : event.pageY;
+    var x = pageX - util.getAbsoluteLeft(this.dom.centerContainer);
+    var y = pageY - util.getAbsoluteTop(this.dom.centerContainer);
+
+    var snap = this.itemSet.options.snap || null;
+    var scale = this.body.util.getScale();
+    var step = this.body.util.getStep();
+    var time = this._toTime(x);
+    var snappedTime = snap ? snap(time, scale, step) : time;
+
+    var element = util.getTarget(event);
+    var what = null;
+    if (item != null)                                                    {what = 'item';}
+    else if (util.hasParent(element, this.timeAxis.dom.foreground))      {what = 'axis';}
+    else if (this.timeAxis2 && util.hasParent(element, this.timeAxis2.dom.foreground)) {what = 'axis';}
+    else if (util.hasParent(element, this.itemSet.dom.labelSet))         {what = 'group-label';}
+    else if (util.hasParent(element, this.customTime.bar))               {what = 'custom-time';} // TODO: fix for multiple custom time bars
+    else if (util.hasParent(element, this.currentTime.bar))              {what = 'current-time';}
+    else if (util.hasParent(element, this.dom.center))                   {what = 'background';}
+
+    return {
+      event: event,
+      item: item ? item.id : null,
+      group: group ? group.groupId : null,
+      what: what,
+      pageX: pageX,
+      pageY: pageY,
+      x: x,
+      y: y,
+      time: time,
+      snappedTime: snappedTime
+    }
+  };
 
   module.exports = Timeline;
 
@@ -6720,7 +6938,6 @@ return /******/ (function(modules) { // webpackBootstrap
       },
       hiddenDates: [],
       util: {
-        snap: null, // will be specified after TimeAxis is created
         toScreen: me._toScreen.bind(me),
         toGlobalScreen: me._toGlobalScreen.bind(me), // this refers to the root.width
         toTime: me._toTime.bind(me),
@@ -6736,7 +6953,7 @@ return /******/ (function(modules) { // webpackBootstrap
     // time axis
     this.timeAxis = new TimeAxis(this.body);
     this.components.push(this.timeAxis);
-    this.body.util.snap = this.timeAxis.snap.bind(this.timeAxis);
+    //this.body.util.snap = this.timeAxis.snap.bind(this.timeAxis);
 
     // current time bar
     this.currentTime = new CurrentTime(this.body);
@@ -6754,6 +6971,16 @@ return /******/ (function(modules) { // webpackBootstrap
     this.itemsData = null;      // DataSet
     this.groupsData = null;     // DataSet
 
+    this.on('tap', function (event) {
+      me.emit('click', me.getEventProperties(event))
+    });
+    this.on('doubletap', function (event) {
+      me.emit('doubleClick', me.getEventProperties(event))
+    });
+    this.dom.root.oncontextmenu = function (event) {
+      me.emit('contextmenu', me.getEventProperties(event))
+    };
+
     // apply options
     if (options) {
       this.setOptions(options);
@@ -6769,7 +6996,7 @@ return /******/ (function(modules) { // webpackBootstrap
       this.setItems(items);
     }
     else {
-      this.redraw();
+      this._redraw();
     }
   }
 
@@ -6855,7 +7082,7 @@ return /******/ (function(modules) { // webpackBootstrap
     else {
       return "cannot find group:" +  groupId;
     }
-  }
+  };
 
   /**
    * This checks if the visible option of the supplied group (by ID) is true or false.
@@ -6869,7 +7096,7 @@ return /******/ (function(modules) { // webpackBootstrap
     else {
       return false;
     }
-  }
+  };
 
 
   /**
@@ -6902,6 +7129,53 @@ return /******/ (function(modules) { // webpackBootstrap
     };
   };
 
+
+  /**
+   * Generate Timeline related information from an event
+   * @param {Event} event
+   * @return {Object} An object with related information, like on which area
+   *                  The event happened, whether clicked on an item, etc.
+   */
+  Graph2d.prototype.getEventProperties = function (event) {
+    var pageX = event.gesture ? event.gesture.center.pageX : event.pageX;
+    var pageY = event.gesture ? event.gesture.center.pageY : event.pageY;
+    var x = pageX - util.getAbsoluteLeft(this.dom.centerContainer);
+    var y = pageY - util.getAbsoluteTop(this.dom.centerContainer);
+    var time = this._toTime(x);
+
+    var element = util.getTarget(event);
+    var what = null;
+    if (util.hasParent(element, this.timeAxis.dom.foreground))              {what = 'axis';}
+    else if (this.timeAxis2 && util.hasParent(element, this.timeAxis2.dom.foreground)) {what = 'axis';}
+    else if (util.hasParent(element, this.linegraph.yAxisLeft.dom.frame))   {what = 'data-axis';}
+    else if (util.hasParent(element, this.linegraph.yAxisRight.dom.frame))  {what = 'data-axis';}
+    else if (util.hasParent(element, this.linegraph.legendLeft.dom.frame))  {what = 'legend';}
+    else if (util.hasParent(element, this.linegraph.legendRight.dom.frame)) {what = 'legend';}
+    else if (util.hasParent(element, this.customTime.bar))                  {what = 'custom-time';} // TODO: fix for multiple custom time bars
+    else if (util.hasParent(element, this.currentTime.bar))                 {what = 'current-time';}
+    else if (util.hasParent(element, this.dom.center))                      {what = 'background';}
+
+    var value = [];
+    var yAxisLeft = this.linegraph.yAxisLeft;
+    var yAxisRight = this.linegraph.yAxisRight;
+    if (!yAxisLeft.hidden) {
+      value.push(yAxisLeft.screenToValue(y));
+    }
+    if (!yAxisRight.hidden) {
+      value.push(yAxisRight.screenToValue(y));
+    }
+
+    return {
+      event: event,
+      what: what,
+      pageX: pageX,
+      pageY: pageY,
+      x: x,
+      y: y,
+      time: time,
+      value: value
+    }
+  };
 
 
   module.exports = Graph2d;
@@ -7634,18 +7908,6 @@ return /******/ (function(modules) { // webpackBootstrap
     return toPrecision;
   };
 
-
-
-  /**
-   * Snap a date to a rounded value.
-   * The snap intervals are dependent on the current scale and step.
-   * @param {Date} date   the date to be snapped.
-   * @return {Date} snappedDate
-   */
-  DataStep.prototype.snap = function(date) {
-
-  };
-
   /**
    * Check if the current value is a major value (for example when the step
    * is DAY, a major value is each first day of the MONTH)
@@ -7821,7 +8083,7 @@ return /******/ (function(modules) { // webpackBootstrap
             me.animateTimer = setTimeout(next, 20);
           }
         }
-      }
+      };
 
       return next();
     }
@@ -7915,7 +8177,7 @@ return /******/ (function(modules) { // webpackBootstrap
         zoomMin = 0;
       }
       if ((newEnd - newStart) < zoomMin) {
-        if ((this.end - this.start) === zoomMin) {
+        if ((this.end - this.start) === zoomMin && newStart > this.start && newEnd < this.end) {
           // ignore this action, we are already zoomed to the minimum
           newStart = this.start;
           newEnd = this.end;
@@ -7935,8 +8197,9 @@ return /******/ (function(modules) { // webpackBootstrap
       if (zoomMax < 0) {
         zoomMax = 0;
       }
+
       if ((newEnd - newStart) > zoomMax) {
-        if ((this.end - this.start) === zoomMax) {
+        if ((this.end - this.start) === zoomMax && newStart < this.start && newEnd > this.end) {
           // ignore this action, we are already zoomed to the maximum
           newStart = this.start;
           newEnd = this.end;
@@ -7952,7 +8215,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
     var changed = (this.start != newStart || this.end != newEnd);
 
-    // if the new range does NOT overlap with the old range, emit checkRangedItems to avoid not showing ranged items (ranged meaning has end time, not neccesarily of type Range)
+    // if the new range does NOT overlap with the old range, emit checkRangedItems to avoid not showing ranged items (ranged meaning has end time, not necessarily of type Range)
     if (!((newStart >= this.start && newStart   <= this.end) || (newEnd   >= this.start && newEnd   <= this.end)) &&
         !((this.start >= newStart && this.start <= newEnd)   || (this.end >= newStart   && this.end <= newEnd) )) {
       this.body.emitter.emit('checkRangedItems');
@@ -8720,23 +8983,22 @@ return /******/ (function(modules) { // webpackBootstrap
 
   /**
    * Set a custom scale. Autoscaling will be disabled.
-   * For example setScale(SCALE.MINUTES, 5) will result
+   * For example setScale('minute', 5) will result
    * in minor steps of 5 minutes, and major steps of an hour.
    *
-   * @param {string} newScale
-   *                               A scale. Choose from 'millisecond, 'second,
-   *                               'minute', 'hour', 'weekday, 'day, 'month, 'year'.
-   * @param {Number}     newStep   A step size, by default 1. Choose for
-   *                               example 1, 2, 5, or 10.
+   * @param {{scale: string, step: number}} params
+   *                               An object containing two properties:
+   *                               - A string 'scale'. Choose from 'millisecond', 'second',
+   *                                 'minute', 'hour', 'weekday, 'day, 'month, 'year'.
+   *                               - A number 'step'. A step size, by default 1.
+   *                                 Choose for example 1, 2, 5, or 10.
    */
-  TimeStep.prototype.setScale = function(newScale, newStep) {
-    this.scale = newScale;
-
-    if (newStep > 0) {
-      this.step = newStep;
+  TimeStep.prototype.setScale = function(params) {
+    if (params && typeof params.scale == 'string') {
+      this.scale = params.scale;
+      this.step = params.step > 0 ? params.step : 1;
+      this.autoScale = false;
     }
-
-    this.autoScale = false;
   };
 
   /**
@@ -8802,15 +9064,19 @@ return /******/ (function(modules) { // webpackBootstrap
   /**
    * Snap a date to a rounded value.
    * The snap intervals are dependent on the current scale and step.
-   * @param {Date} date   the date to be snapped.
+   * Static function
+   * @param {Date} date    the date to be snapped.
+   * @param {string} scale Current scale, can be 'millisecond', 'second',
+   *                       'minute', 'hour', 'weekday, 'day, 'month, 'year'.
+   * @param {number} step  Current step (1, 2, 4, 5, ...
    * @return {Date} snappedDate
    */
-  TimeStep.prototype.snap = function(date) {
+  TimeStep.snap = function(date, scale, step) {
     var clone = new Date(date.valueOf());
 
-    if (this.scale == 'year') {
+    if (scale == 'year') {
       var year = clone.getFullYear() + Math.round(clone.getMonth() / 12);
-      clone.setFullYear(Math.round(year / this.step) * this.step);
+      clone.setFullYear(Math.round(year / step) * step);
       clone.setMonth(0);
       clone.setDate(0);
       clone.setHours(0);
@@ -8818,7 +9084,7 @@ return /******/ (function(modules) { // webpackBootstrap
       clone.setSeconds(0);
       clone.setMilliseconds(0);
     }
-    else if (this.scale == 'month') {
+    else if (scale == 'month') {
       if (clone.getDate() > 15) {
         clone.setDate(1);
         clone.setMonth(clone.getMonth() + 1);
@@ -8833,9 +9099,9 @@ return /******/ (function(modules) { // webpackBootstrap
       clone.setSeconds(0);
       clone.setMilliseconds(0);
     }
-    else if (this.scale == 'day') {
+    else if (scale == 'day') {
       //noinspection FallthroughInSwitchStatementJS
-      switch (this.step) {
+      switch (step) {
         case 5:
         case 2:
           clone.setHours(Math.round(clone.getHours() / 24) * 24); break;
@@ -8846,9 +9112,9 @@ return /******/ (function(modules) { // webpackBootstrap
       clone.setSeconds(0);
       clone.setMilliseconds(0);
     }
-    else if (this.scale == 'weekday') {
+    else if (scale == 'weekday') {
       //noinspection FallthroughInSwitchStatementJS
-      switch (this.step) {
+      switch (step) {
         case 5:
         case 2:
           clone.setHours(Math.round(clone.getHours() / 12) * 12); break;
@@ -8859,8 +9125,8 @@ return /******/ (function(modules) { // webpackBootstrap
       clone.setSeconds(0);
       clone.setMilliseconds(0);
     }
-    else if (this.scale == 'hour') {
-      switch (this.step) {
+    else if (scale == 'hour') {
+      switch (step) {
         case 4:
           clone.setMinutes(Math.round(clone.getMinutes() / 60) * 60); break;
         default:
@@ -8868,9 +9134,9 @@ return /******/ (function(modules) { // webpackBootstrap
       }
       clone.setSeconds(0);
       clone.setMilliseconds(0);
-    } else if (this.scale == 'minute') {
+    } else if (scale == 'minute') {
       //noinspection FallthroughInSwitchStatementJS
-      switch (this.step) {
+      switch (step) {
         case 15:
         case 10:
           clone.setMinutes(Math.round(clone.getMinutes() / 5) * 5);
@@ -8883,9 +9149,9 @@ return /******/ (function(modules) { // webpackBootstrap
       }
       clone.setMilliseconds(0);
     }
-    else if (this.scale == 'second') {
+    else if (scale == 'second') {
       //noinspection FallthroughInSwitchStatementJS
-      switch (this.step) {
+      switch (step) {
         case 15:
         case 10:
           clone.setSeconds(Math.round(clone.getSeconds() / 5) * 5);
@@ -8897,9 +9163,9 @@ return /******/ (function(modules) { // webpackBootstrap
           clone.setMilliseconds(Math.round(clone.getMilliseconds() / 500) * 500); break;
       }
     }
-    else if (this.scale == 'millisecond') {
-      var step = this.step > 5 ? this.step / 2 : 1;
-      clone.setMilliseconds(Math.round(clone.getMilliseconds() / step) * step);
+    else if (scale == 'millisecond') {
+      var _step = step > 5 ? step / 2 : 1;
+      clone.setMilliseconds(Math.round(clone.getMilliseconds() / _step) * _step);
     }
     
     return clone;
@@ -9500,6 +9766,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
     // special positioning for subgroups
     if (this.data.subgroup !== undefined) {
+      // TODO: instead of calculating the top position of the subgroups here for every BackgroundItem, calculate the top of the subgroup once in Itemset
+
       var itemSubgroup = this.data.subgroup;
       var subgroups = this.parent.subgroups;
       var subgroupIndex = subgroups[itemSubgroup].index;
@@ -9525,15 +9793,20 @@ return /******/ (function(modules) { // webpackBootstrap
       // and when the orientation is bottom:
       else {
         var newTop = this.parent.top;
+        var totalHeight = 0;
         for (var subgroup in subgroups) {
           if (subgroups.hasOwnProperty(subgroup)) {
-            if (subgroups[subgroup].visible == true && subgroups[subgroup].index > subgroupIndex) {
-              newTop += subgroups[subgroup].height + margin.item.vertical;
+            if (subgroups[subgroup].visible == true) {
+              var newHeight = subgroups[subgroup].height + margin.item.vertical;
+              totalHeight += newHeight;
+              if (subgroups[subgroup].index > subgroupIndex) {
+                newTop += newHeight;
+              }
             }
           }
         }
         height = this.parent.subgroups[itemSubgroup].height + margin.item.vertical;
-        this.dom.box.style.top = newTop + 'px';
+        this.dom.box.style.top = (this.parent.height - totalHeight + newTop) + 'px';
         this.dom.box.style.bottom = '';
       }
     }
@@ -9718,9 +9991,6 @@ return /******/ (function(modules) { // webpackBootstrap
       if (dom.line.parentNode)  dom.line.parentNode.removeChild(dom.line);
       if (dom.dot.parentNode)   dom.dot.parentNode.removeChild(dom.dot);
 
-      this.top = null;
-      this.left = null;
-
       this.displayed = false;
     }
   };
@@ -9733,9 +10003,6 @@ return /******/ (function(modules) { // webpackBootstrap
     var start = this.conversion.toScreen(this.data.start);
     var align = this.options.align;
     var left;
-    var box = this.dom.box;
-    var line = this.dom.line;
-    var dot = this.dom.dot;
 
     // calculate left position of the box
     if (align == 'right') {
@@ -9750,13 +10017,13 @@ return /******/ (function(modules) { // webpackBootstrap
     }
 
     // reposition box
-    box.style.left = this.left + 'px';
+    this.dom.box.style.left = this.left + 'px';
 
     // reposition line
-    line.style.left = (start - this.props.line.width / 2) + 'px';
+    this.dom.line.style.left = (start - this.props.line.width / 2) + 'px';
 
     // reposition dot
-    dot.style.left = (start - this.props.dot.width / 2) + 'px';
+    this.dom.dot.style.left = (start - this.props.dot.width / 2) + 'px';
   };
 
   /**
@@ -9941,9 +10208,6 @@ return /******/ (function(modules) { // webpackBootstrap
         this.dom.point.parentNode.removeChild(this.dom.point);
       }
 
-      this.top = null;
-      this.left = null;
-
       this.displayed = false;
     }
   };
@@ -10126,30 +10390,34 @@ return /******/ (function(modules) { // webpackBootstrap
         box.parentNode.removeChild(box);
       }
 
-      this.top = null;
-      this.left = null;
-
       this.displayed = false;
     }
   };
 
   /**
    * Reposition the item horizontally
+   * @param {boolean} [limitSize=true] If true (default), the width of the range
+   *                                   item will be limited, as the browser cannot
+   *                                   display very wide divs. This means though
+   *                                   that the applied left and width may
+   *                                   not correspond to the ranges start and end
    * @Override
    */
-  RangeItem.prototype.repositionX = function() {
+  RangeItem.prototype.repositionX = function(limitSize) {
     var parentWidth = this.parent.width;
     var start = this.conversion.toScreen(this.data.start);
     var end = this.conversion.toScreen(this.data.end);
     var contentLeft;
     var contentWidth;
 
-    // limit the width of the this, as browsers cannot draw very wide divs
-    if (start < -parentWidth) {
-      start = -parentWidth;
-    }
-    if (end > 2 * parentWidth) {
-      end = 2 * parentWidth;
+    // limit the width of the range, as browsers cannot draw very wide divs
+    if (limitSize === undefined || limitSize === true) {
+      if (start < -parentWidth) {
+        start = -parentWidth;
+      }
+      if (end > 2 * parentWidth) {
+        end = 2 * parentWidth;
+      }
     }
     var boxWidth = Math.max(end - start, 1);
 
@@ -10542,11 +10810,17 @@ return /******/ (function(modules) { // webpackBootstrap
     this.defaultOptions = {
       showCustomTime: false,
       locales: locales,
-      locale: 'en'
+      locale: 'en',
+      id: 0
     };
     this.options = util.extend({}, this.defaultOptions);
 
-    this.customTime = new Date();
+    if (options && options.time) {
+      this.customTime = options.time;
+    } else {
+      this.customTime = new Date();  
+    }
+    
     this.eventParams = {}; // stores state parameters while dragging the bar
 
     // create the DOM
@@ -10565,7 +10839,12 @@ return /******/ (function(modules) { // webpackBootstrap
   CustomTime.prototype.setOptions = function(options) {
     if (options) {
       // copy all options that we know
-      util.selectiveExtend(['showCustomTime', 'locale', 'locales'], this.options, options);
+      util.selectiveExtend(['showCustomTime', 'locale', 'locales', 'id'], this.options, options);
+
+      // Triggered by addCustomTimeBar, redraw to add new bar
+      if (this.options.id) {
+        this.redraw();
+      }
     }
   };
 
@@ -10691,6 +10970,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
     // fire a timechange event
     this.body.emitter.emit('timechange', {
+      id: this.options.id,
       time: new Date(this.customTime.valueOf())
     });
 
@@ -10708,6 +10988,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
     // fire a timechanged event
     this.body.emitter.emit('timechanged', {
+      id: this.options.id,
       time: new Date(this.customTime.valueOf())
     });
 
@@ -11208,6 +11489,10 @@ return /******/ (function(modules) { // webpackBootstrap
     return convertedValue;
   };
 
+  DataAxis.prototype.screenToValue = function (x) {
+    return this.valueAtZero - (x / this.conversionFactor);
+  };
+
   /**
    * Create a label for the axis at position x
    * @private
@@ -11348,16 +11633,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
       this.dom.frame.removeChild(measureCharTitle);
     }
-  };
-
-  /**
-   * Snap a date to a rounded value.
-   * The snap intervals are dependent on the current scale and step.
-   * @param {Date} date   the date to be snapped.
-   * @return {Date} snappedDate
-   */
-  DataAxis.prototype.snap = function(date) {
-    return this.step.snap(date);
   };
 
   module.exports = DataAxis;
@@ -11722,8 +11997,6 @@ return /******/ (function(modules) { // webpackBootstrap
   Group.prototype.redraw = function(range, margin, restack) {
     var resized = false;
 
-    this.visibleItems = this._updateVisibleItems(this.orderedItems, this.visibleItems, range);
-
     // force recalculation of the height of the items when the marker height changed
     // (due to the Timeline being attached to the DOM or changed from display:none to visible)
     var markerHeight = this.dom.marker.clientHeight;
@@ -11739,11 +12012,42 @@ return /******/ (function(modules) { // webpackBootstrap
     }
 
     // reposition visible items vertically
-    if (this.itemSet.options.stack) { // TODO: ugly way to access options...
-      stack.stack(this.visibleItems, margin, restack);
+    if (typeof this.itemSet.options.order === 'function') {
+      // a custom order function
+
+      if (restack) {
+        // brute force restack of all items
+
+        // show all items
+        var me = this;
+        var limitSize = false;
+        util.forEach(this.items, function (item) {
+          if (!item.displayed) {
+            item.redraw();
+            me.visibleItems.push(item);
+          }
+          item.repositionX(limitSize);
+        });
+
+        // order all items and force a restacking
+        var customOrderedItems = this.orderedItems.byStart.slice().sort(function (a, b) {
+          return me.itemSet.options.order(a.data, b.data);
+        });
+        stack.stack(customOrderedItems, margin, true /* restack=true */);
+      }
+
+      this.visibleItems = this._updateVisibleItems(this.orderedItems, this.visibleItems, range);
     }
-    else { // no stacking
-      stack.nostack(this.visibleItems, margin, this.subgroups);
+    else {
+      // no custom order function, lazy stacking
+      this.visibleItems = this._updateVisibleItems(this.orderedItems, this.visibleItems, range);
+
+      if (this.itemSet.options.stack) { // TODO: ugly way to access options...
+        stack.stack(this.visibleItems, margin, restack);
+      }
+      else { // no stacking
+        stack.nostack(this.visibleItems, margin, this.subgroups);
+      }
     }
 
     // recalculate the height of the group
@@ -12214,6 +12518,7 @@ return /******/ (function(modules) { // webpackBootstrap
   var util = __webpack_require__(1);
   var DataSet = __webpack_require__(3);
   var DataView = __webpack_require__(4);
+  var TimeStep = __webpack_require__(19);
   var Component = __webpack_require__(25);
   var Group = __webpack_require__(30);
   var BackgroundGroup = __webpack_require__(31);
@@ -12252,6 +12557,8 @@ return /******/ (function(modules) { // webpackBootstrap
         add: false,
         remove: false
       },
+
+      snap:  TimeStep.snap,
 
       onAdd: function (item, callback) {
         callback(item);
@@ -12483,7 +12790,7 @@ return /******/ (function(modules) { // webpackBootstrap
   ItemSet.prototype.setOptions = function(options) {
     if (options) {
       // copy all options that we know
-      var fields = ['type', 'align', 'orientation', 'padding', 'stack', 'selectable', 'groupOrder', 'dataAttributes', 'template','hide'];
+      var fields = ['type', 'align', 'orientation', 'order', 'padding', 'stack', 'selectable', 'groupOrder', 'dataAttributes', 'template','hide', 'snap'];
       util.selectiveExtend(fields, this.options, options);
 
       if ('margin' in options) {
@@ -12536,11 +12843,20 @@ return /******/ (function(modules) { // webpackBootstrap
   };
 
   /**
-   * Mark the ItemSet dirty so it will refresh everything with next redraw
+   * Mark the ItemSet dirty so it will refresh everything with next redraw.
+   * Optionally, all items can be marked as dirty and be refreshed.
+   * @param {{refreshItems: boolean}} [options]
    */
-  ItemSet.prototype.markDirty = function() {
+  ItemSet.prototype.markDirty = function(options) {
     this.groupIds = [];
     this.stackDirty = true;
+
+    if (options && options.refreshItems) {
+      util.forEach(this.items, function (item) {
+        item.dirty = true;
+        if (item.displayed) item.redraw();
+      });
+    }
   };
 
   /**
@@ -13282,7 +13598,7 @@ return /******/ (function(modules) { // webpackBootstrap
    */
   ItemSet.prototype._onTouch = function (event) {
     // store the touched item, used in _onDragStart
-    this.touchParams.item = ItemSet.itemFromTarget(event);
+    this.touchParams.item = this.itemFromTarget(event);
   };
 
   /**
@@ -13342,8 +13658,15 @@ return /******/ (function(modules) { // webpackBootstrap
           };
 
           if (me.options.editable.updateTime) {
-            if ('start' in item.data) props.start = item.data.start.valueOf();
-            if ('end' in item.data)   props.end = item.data.end.valueOf();
+            if ('start' in item.data) {
+              props.start = item.data.start.valueOf();
+
+              if ('end' in item.data) {
+                // we store a duration here in order not to change the width
+                // of the item when moving it.
+                props.duration = item.data.end.valueOf() - props.start;
+              }
+            }
           }
           if (me.options.editable.updateGroup) {
             if ('group' in item.data) props.group = item.data.group;
@@ -13355,6 +13678,54 @@ return /******/ (function(modules) { // webpackBootstrap
 
       event.stopPropagation();
     }
+    else if (this.options.editable.add && event.gesture.srcEvent.ctrlKey) {
+      // create a new range item when dragging with ctrl key down
+      this._onDragStartAddItem(event);
+    }
+  };
+
+  /**
+   * Start creating a new range item by dragging.
+   * @param {Event} event
+   * @private
+   */
+  ItemSet.prototype._onDragStartAddItem = function (event) {
+    var snap = this.options.snap || null;
+    var xAbs = util.getAbsoluteLeft(this.dom.frame);
+    var x = event.gesture.center.pageX - xAbs - 10;  // minus 10 to compensate for the drag starting as soon as you've moved 10px
+    var time = this.body.util.toTime(x);
+    var scale = this.body.util.getScale();
+    var step = this.body.util.getStep();
+    var start = snap ? snap(time, scale, step) : start;
+    var end = start;
+
+    var itemData = {
+      type: 'range',
+      start: start,
+      end: end,
+      content: 'new item'
+    };
+
+    var id = util.randomUUID();
+    itemData[this.itemsData._fieldId] = id;
+
+    var group = this.groupFromTarget(event);
+    if (group) {
+      itemData.group = group.groupId;
+    }
+
+    var newItem = new RangeItem(itemData, this.conversion, this.options);
+    newItem.id = id; // TODO: not so nice setting id afterwards
+    this._addItem(newItem);
+
+    var props = {
+      item: newItem,
+      end: end.valueOf(),
+      initialX: event.gesture.center.clientX
+    };
+    this.touchParams.itemProps = [props];
+
+    event.stopPropagation();
   };
 
   /**
@@ -13363,12 +13734,14 @@ return /******/ (function(modules) { // webpackBootstrap
    * @private
    */
   ItemSet.prototype._onDrag = function (event) {
-    event.preventDefault()
+    event.preventDefault();
 
     if (this.touchParams.itemProps) {
       var me = this;
-      var snap = this.body.util.snap || null;
+      var snap = this.options.snap || null;
       var xOffset = this.body.dom.root.offsetLeft + this.body.domProps.left.width;
+      var scale = this.body.util.getScale();
+      var step = this.body.util.getStep();
 
       // move
       this.touchParams.itemProps.forEach(function (props) {
@@ -13379,17 +13752,20 @@ return /******/ (function(modules) { // webpackBootstrap
 
         if ('start' in props) {
           var start = new Date(props.start + offset);
-          newProps.start = snap ? snap(start) : start;
+          newProps.start = snap ? snap(start, scale, step) : start;
         }
 
         if ('end' in props) {
           var end = new Date(props.end + offset);
-          newProps.end = snap ? snap(end) : end;
+          newProps.end = snap ? snap(end, scale, step) : end;
+        }
+        else if ('duration' in props) {
+          newProps.end = new Date(newProps.start.valueOf() + props.duration);
         }
 
         if ('group' in props) {
           // drag from one group to another
-          var group = ItemSet.groupFromTarget(event);
+          var group = me.groupFromTarget(event);
           newProps.group = group && group.groupId;
         }
 
@@ -13417,8 +13793,15 @@ return /******/ (function(modules) { // webpackBootstrap
    */
   ItemSet.prototype._updateItemProps = function(item, props) {
     // TODO: copy all properties from props to item? (also new ones)
-    if ('start' in props) item.data.start = props.start;
-    if ('end' in props)   item.data.end   = props.end;
+    if ('start' in props) {
+      item.data.start = props.start;
+    }
+    if ('end' in props) {
+      item.data.end = props.end;
+    }
+    else if ('duration' in props) {
+      item.data.end = new Date(props.start.valueOf() + props.duration);
+    }
     if ('group' in props && item.data.group != props.group) {
       this._moveToGroup(item, props.group)
     }
@@ -13453,48 +13836,64 @@ return /******/ (function(modules) { // webpackBootstrap
 
     if (this.touchParams.itemProps) {
       // prepare a change set for the changed items
-      var changes = [],
-          me = this,
-          dataset = this.itemsData.getDataSet();
+      var changes = [];
+      var me = this;
+      var dataset = this.itemsData.getDataSet();
 
       var itemProps = this.touchParams.itemProps ;
       this.touchParams.itemProps = null;
       itemProps.forEach(function (props) {
-        var id = props.item.id,
-            itemData = me.itemsData.get(id, me.itemOptions);
+        var id = props.item.id;
+        var itemData = me.itemsData.get(id, me.itemOptions);
 
-        var changed = false;
-        if ('start' in props.item.data) {
-          changed = (props.start != props.item.data.start.valueOf());
-          itemData.start = util.convert(props.item.data.start,
-                  dataset._options.type && dataset._options.type.start || 'Date');
-        }
-        if ('end' in props.item.data) {
-          changed = changed  || (props.end != props.item.data.end.valueOf());
-          itemData.end = util.convert(props.item.data.end,
-                  dataset._options.type && dataset._options.type.end || 'Date');
-        }
-        if ('group' in props.item.data) {
-          changed = changed  || (props.group != props.item.data.group);
-          itemData.group = props.item.data.group;
-        }
-
-        // only apply changes when start or end is actually changed
-        if (changed) {
-          me.options.onMove(itemData, function (itemData) {
+        if (!itemData) {
+          // add a new item
+          me.options.onAdd(props.item.data, function (itemData) {
+            me._removeItem(props.item); // remove temporary item
             if (itemData) {
-              // apply changes
-              itemData[dataset._fieldId] = id; // ensure the item contains its id (can be undefined)
-              changes.push(itemData);
+              me.itemsData.getDataSet().add(itemData);
             }
-            else {
-              // restore original values
-              me._updateItemProps(props.item, props);
 
-              me.stackDirty = true; // force re-stacking of all items next redraw
-              me.body.emitter.emit('change');
-            }
+            // force re-stacking of all items next redraw
+            me.stackDirty = true;
+            me.body.emitter.emit('change');
           });
+        }
+        else {
+          // update existing item
+          var changed = false;
+          if ('start' in props.item.data) {
+            changed = (props.start != props.item.data.start.valueOf());
+            itemData.start = util.convert(props.item.data.start,
+                dataset._options.type && dataset._options.type.start || 'Date');
+          }
+          if ('end' in props.item.data) {
+            changed = changed  || (props.end != props.item.data.end.valueOf());
+            itemData.end = util.convert(props.item.data.end,
+                dataset._options.type && dataset._options.type.end || 'Date');
+          }
+          if ('group' in props.item.data) {
+            changed = changed  || (props.group != props.item.data.group);
+            itemData.group = props.item.data.group;
+          }
+
+          // only apply changes when start or end is actually changed
+          if (changed) {
+            me.options.onMove(itemData, function (itemData) {
+              if (itemData) {
+                // apply changes
+                itemData[dataset._fieldId] = id; // ensure the item contains its id (can be undefined)
+                changes.push(itemData);
+              }
+              else {
+                // restore original values
+                me._updateItemProps(props.item, props);
+
+                me.stackDirty = true; // force re-stacking of all items next redraw
+                me.body.emitter.emit('change');
+              }
+            });
+          }
         }
       });
 
@@ -13524,7 +13923,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
     var oldSelection = this.getSelection();
 
-    var item = ItemSet.itemFromTarget(event);
+    var item = this.itemFromTarget(event);
     var selection = item ? [item.id] : [];
     this.setSelection(selection);
 
@@ -13549,8 +13948,8 @@ return /******/ (function(modules) { // webpackBootstrap
     if (!this.options.editable.add) return;
 
     var me = this,
-        snap = this.body.util.snap || null,
-        item = ItemSet.itemFromTarget(event);
+        snap = this.options.snap || null,
+        item = this.itemFromTarget(event);
 
     if (item) {
       // update item
@@ -13568,20 +13967,23 @@ return /******/ (function(modules) { // webpackBootstrap
       var xAbs = util.getAbsoluteLeft(this.dom.frame);
       var x = event.gesture.center.pageX - xAbs;
       var start = this.body.util.toTime(x);
+      var scale = this.body.util.getScale();
+      var step = this.body.util.getStep();
+
       var newItem = {
-        start: snap ? snap(start) : start,
+        start: snap ? snap(start, scale, step) : start,
         content: 'new item'
       };
 
       // when default type is a range, add a default end date to the new item
       if (this.options.type === 'range') {
         var end = this.body.util.toTime(x + this.props.width / 5);
-        newItem.end = snap ? snap(end) : end;
+        newItem.end = snap ? snap(end, scale, step) : end;
       }
 
       newItem[this.itemsData._fieldId] = util.randomUUID();
 
-      var group = ItemSet.groupFromTarget(event);
+      var group = this.groupFromTarget(event);
       if (group) {
         newItem.group = group.groupId;
       }
@@ -13605,7 +14007,7 @@ return /******/ (function(modules) { // webpackBootstrap
     if (!this.options.selectable) return;
 
     var selection,
-        item = ItemSet.itemFromTarget(event);
+        item = this.itemFromTarget(event);
 
     if (item) {
       // multi select items
@@ -13693,7 +14095,7 @@ return /******/ (function(modules) { // webpackBootstrap
    * @param {Event} event
    * @return {Item | null} item
    */
-  ItemSet.itemFromTarget = function(event) {
+  ItemSet.prototype.itemFromTarget = function(event) {
     var target = event.target;
     while (target) {
       if (target.hasOwnProperty('timeline-item')) {
@@ -13711,13 +14113,27 @@ return /******/ (function(modules) { // webpackBootstrap
    * @param {Event} event
    * @return {Group | null} group
    */
-  ItemSet.groupFromTarget = function(event) {
-    var target = event.target;
-    while (target) {
-      if (target.hasOwnProperty('timeline-group')) {
-        return target['timeline-group'];
+  ItemSet.prototype.groupFromTarget = function(event) {
+    var clientY = event.gesture ? event.gesture.center.clientY : event.clientY;
+    for (var i = 0; i < this.groupIds.length; i++) {
+      var groupId = this.groupIds[i];
+      var group = this.groups[groupId];
+      var foreground = group.dom.foreground;
+      var top = util.getAbsoluteTop(foreground);
+      if (clientY > top && clientY < top + foreground.offsetHeight) {
+        return group;
       }
-      target = target.parentNode;
+
+      if (this.options.orientation === 'top') {
+        if (i === this.groupIds.length - 1 && clientY > top) {
+          return group;
+        }
+      }
+      else {
+        if (i === 0 && clientY < top + foreground.offset) {
+          return group;
+        }
+      }
     }
 
     return null;
@@ -14941,9 +15357,17 @@ return /******/ (function(modules) { // webpackBootstrap
     }
 
     for (var i = 0; i < datapoints.length; i++) {
+      var labelValue;
+      //if (datapoints[i].label) {
+      //    labelValue = datapoints[i].label;
+      //}
+      //else {
+      //  labelValue = null;
+      //}
+      labelValue = datapoints[i].label ? datapoints[i].label : null; 
       xValue = toScreen(datapoints[i].x) + this.props.width;
       yValue = Math.round(axis.convertValue(datapoints[i].y));
-      extractedData.push({x: xValue, y: yValue});
+      extractedData.push({x: xValue, y: yValue, label:labelValue});
     }
 
     group.setZeroPosition(Math.min(svgHeight, axis.convertValue(0)));
@@ -14999,7 +15423,8 @@ return /******/ (function(modules) { // webpackBootstrap
       // TODO: implement timeaxis orientations 'left' and 'right'
       showMinorLabels: true,
       showMajorLabels: true,
-      format: null
+      format: null,
+      timeAxis: null
     };
     this.options = util.extend({}, this.defaultOptions);
 
@@ -15029,7 +15454,8 @@ return /******/ (function(modules) { // webpackBootstrap
         'showMinorLabels',
         'showMajorLabels',
         'hiddenDates',
-        'format'
+        'format',
+        'timeAxis'
       ], this.options, options);
 
       // apply locale to moment.js
@@ -15150,6 +15576,9 @@ return /******/ (function(modules) { // webpackBootstrap
     var step = new TimeStep(new Date(start), new Date(end), minimumStep, this.body.hiddenDates);
     if (this.options.format) {
       step.setFormat(this.options.format);
+    }
+    if (this.options.timeAxis) {
+      step.setScale(this.options.timeAxis);
     }
     this.step = step;
 
@@ -15389,16 +15818,6 @@ return /******/ (function(modules) { // webpackBootstrap
     this.props.majorCharWidth = this.dom.measureCharMajor.clientWidth;
   };
 
-  /**
-   * Snap a date to a rounded value.
-   * The snap intervals are dependent on the current scale and step.
-   * @param {Date} date   the date to be snapped.
-   * @return {Date} snappedDate
-   */
-  TimeAxis.prototype.snap = function(date) {
-    return this.step.snap(date);
-  };
-
   module.exports = TimeAxis;
 
 
@@ -15461,9 +15880,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
     this.triggerFunctions = {add:null,edit:null,editEdge:null,connect:null,del:null};
 
+    var customScalingFunction = function (min,max,total,value) {
+      if (max == min) {
+        return 0.5;
+      }
+      else {
+        var scale = 1 / (max - min);
+        return Math.max(0,(value - min)*scale);
+      }
+    };
     // set constant values
     this.defaultOptions = {
       nodes: {
+        customScalingFunction: customScalingFunction,
         mass: 1,
         radiusMin: 10,
         radiusMax: 30,
@@ -15477,7 +15906,12 @@ return /******/ (function(modules) { // webpackBootstrap
         fontFace: 'verdana',
         fontFill: undefined,
         fontStrokeWidth: 0, // px
-        fontStrokeColor: 'white',
+        fontStrokeColor: '#ffffff',
+        fontDrawThreshold: 3,
+        scaleFontWithValue: false,
+        fontSizeMin: 14,
+        fontSizeMax: 30,
+        fontSizeMaxVisible: 30,
         level: -1,
         color: {
             border: '#2B7CE9',
@@ -15496,6 +15930,7 @@ return /******/ (function(modules) { // webpackBootstrap
         borderWidthSelected: undefined
       },
       edges: {
+        customScalingFunction: customScalingFunction,
         widthMin: 1, //
         widthMax: 15,//
         width: 1,
@@ -15507,6 +15942,7 @@ return /******/ (function(modules) { // webpackBootstrap
           highlight:'#848484',
           hover: '#848484'
         },
+        opacity:1.0,
         fontColor: '#343434',
         fontSize: 14, // px
         fontFace: 'arial',
@@ -15520,7 +15956,8 @@ return /******/ (function(modules) { // webpackBootstrap
           gap: 5,
           altLength: undefined
         },
-        inheritColor: "from" // to, from, false, true (== from)
+        inheritColor: "from", // to, from, false, true (== from)
+        useGradients: false // release in 4.0
       },
       configurePhysics:false,
       physics: {
@@ -15571,15 +16008,17 @@ return /******/ (function(modules) { // webpackBootstrap
                       height: 1,      // (px PNiC)             | growth of the height per node in cluster.
                       radius: 1},     // (px PNiC)             | growth of the radius per node in cluster.
         maxNodeSizeIncrements: 600,   // (# increments)        | max growth of the width  per node in cluster.
-        activeAreaBoxSize: 80,       // (px)                  | box area around the curser where clusters are popped open.
-        clusterLevelDifference: 2
+        activeAreaBoxSize: 80,        // (px)                  | box area around the curser where clusters are popped open.
+        clusterLevelDifference: 2,    // used for normalization of the cluster levels
+        clusterByZoom: true           // enable clustering through zooming in and out
       },
       navigation: {
         enabled: false
       },
       keyboard: {
         enabled: false,
-        speed: {x: 10, y: 10, zoom: 0.02}
+        speed: {x: 10, y: 10, zoom: 0.02},
+        bindToWindow: true
       },
       dataManipulation: {
         enabled: false,
@@ -15599,7 +16038,7 @@ return /******/ (function(modules) { // webpackBootstrap
         type: "continuous",
         roundness: 0.5
       },
-      maxVelocity:  30,
+      maxVelocity:  50,
       minVelocity:  0.1,   // px/s
       stabilize: true,  // stabilize before displaying the network
       stabilizationIterations: 1000,  // maximum number of iteration to stabilize
@@ -15624,7 +16063,8 @@ return /******/ (function(modules) { // webpackBootstrap
       hideNodesOnDrag: false,
       width : '100%',
       height : '100%',
-      selectable: true
+      selectable: true,
+      useDefaultGroups: true
     };
     this.constants = util.extend({}, this.defaultOptions);
     this.pixelRatio = 1;
@@ -15632,7 +16072,8 @@ return /******/ (function(modules) { // webpackBootstrap
     
     this.hoverObj = {nodes:{},edges:{}};
     this.controlNodesActive = false;
-    this.navigationHammers = {existing:[], _new: []};
+    this.navigationHammers = [];
+    this.manipulationHammers = [];
 
     // animation properties
     this.animationSpeed = 1/this.renderRefreshRate;
@@ -15646,13 +16087,14 @@ return /******/ (function(modules) { // webpackBootstrap
     this.lockedOnNodeId = null;
     this.lockedOnNodeOffset = null;
     this.touchTime = 0;
+    this.redrawRequested = false;
 
     // Node variables
     var network = this;
     this.groups = new Groups(); // object with groups
     this.images = new Images(); // object with images
     this.images.setOnloadCallback(function (status) {
-      network._redraw();
+      network._requestRedraw();
     });
 
     // keyboard navigation variables
@@ -15681,7 +16123,7 @@ return /******/ (function(modules) { // webpackBootstrap
     this.setOptions(options);
 
     // other vars
-    this.freezeSimulation = false;// freeze the simulation
+    this.freezeSimulationEnabled = false;// freeze the simulation
     this.cachedFunctions = {};
     this.startedStabilization = false;
     this.stabilized = false;
@@ -15714,7 +16156,7 @@ return /******/ (function(modules) { // webpackBootstrap
         network.start();
       },
       'update': function (event, params) {
-        network._updateNodes(params.items, params.data);
+        network._updateNodes(params.items);
         network.start();
       },
       'remove': function (event, params) {
@@ -15752,7 +16194,7 @@ return /******/ (function(modules) { // webpackBootstrap
     else {
       // zoom so all data will fit on the screen, if clustering is enabled, we do not want start to be called here.
       if (this.constants.stabilize == false) {
-        this.zoomExtent(undefined, true,this.constants.clustering.enabled);
+        this.zoomExtent({duration:0}, true, this.constants.clustering.enabled);
       }
     }
 
@@ -15812,17 +16254,45 @@ return /******/ (function(modules) { // webpackBootstrap
    * Find the center position of the network
    * @private
    */
-  Network.prototype._getRange = function() {
+  Network.prototype._getRange = function(specificNodes) {
     var minY = 1e9, maxY = -1e9, minX = 1e9, maxX = -1e9, node;
-    for (var nodeId in this.nodes) {
-      if (this.nodes.hasOwnProperty(nodeId)) {
-        node = this.nodes[nodeId];
-        if (minX > (node.boundingBox.left)) {minX = node.boundingBox.left;}
-        if (maxX < (node.boundingBox.right)) {maxX = node.boundingBox.right;}
-        if (minY > (node.boundingBox.bottom)) {minY = node.boundingBox.top;} // top is negative, bottom is positive
-        if (maxY < (node.boundingBox.top)) {maxY = node.boundingBox.bottom;} // top is negative, bottom is positive
+    if (specificNodes.length > 0) {
+      for (var i = 0; i < specificNodes.length; i++) {
+        node = this.nodes[specificNodes[i]];
+        if (minX > (node.boundingBox.left)) {
+          minX = node.boundingBox.left;
+        }
+        if (maxX < (node.boundingBox.right)) {
+          maxX = node.boundingBox.right;
+        }
+        if (minY > (node.boundingBox.bottom)) {
+          minY = node.boundingBox.top;
+        } // top is negative, bottom is positive
+        if (maxY < (node.boundingBox.top)) {
+          maxY = node.boundingBox.bottom;
+        } // top is negative, bottom is positive
       }
     }
+    else {
+      for (var nodeId in this.nodes) {
+        if (this.nodes.hasOwnProperty(nodeId)) {
+          node = this.nodes[nodeId];
+          if (minX > (node.boundingBox.left)) {
+            minX = node.boundingBox.left;
+          }
+          if (maxX < (node.boundingBox.right)) {
+            maxX = node.boundingBox.right;
+          }
+          if (minY > (node.boundingBox.bottom)) {
+            minY = node.boundingBox.top;
+          } // top is negative, bottom is positive
+          if (maxY < (node.boundingBox.top)) {
+            maxY = node.boundingBox.bottom;
+          } // top is negative, bottom is positive
+        }
+      }
+    }
+
     if (minX == 1e9 && maxX == -1e9 && minY == 1e9 && maxY == -1e9) {
       minY = 0, maxY = 0, minX = 0, maxX = 0;
     }
@@ -15847,17 +16317,37 @@ return /******/ (function(modules) { // webpackBootstrap
    * @param {Boolean} [initialZoom]  | zoom based on fitted formula or range, true = fitted, default = false;
    * @param {Boolean} [disableStart] | If true, start is not called.
    */
-  Network.prototype.zoomExtent = function(animationOptions, initialZoom, disableStart) {
+  Network.prototype.zoomExtent = function(options, initialZoom, disableStart) {
     this._redraw(true);
 
     if (initialZoom      === undefined) {initialZoom = false;}
     if (disableStart     === undefined) {disableStart = false;}
-    if (animationOptions === undefined) {animationOptions = false;}
+    if (options === undefined) {options = {nodes:[]};}
+    if (options.nodes === undefined) {
+      options.nodes = [];
+    }
 
-    var range = this._getRange();
+    var range;
     var zoomLevel;
 
     if (initialZoom == true) {
+      // check if more than half of the nodes have a predefined position. If so, we use the range, not the approximation.
+      var positionDefined = 0;
+      for (var nodeId in this.nodes) {
+        if (this.nodes.hasOwnProperty(nodeId)) {
+          var node = this.nodes[nodeId];
+          if (node.predefinedPosition == true) {
+            positionDefined += 1;
+          }
+        }
+      }
+      if (positionDefined > 0.5 * this.nodeIndices.length) {
+        this.zoomExtent(options,false,disableStart);
+        return;
+      }
+
+      range = this._getRange(options.nodes);
+
       var numberOfNodes = this.nodeIndices.length;
       if (this.constants.smoothCurves == true) {
         if (this.constants.clustering.enabled == true &&
@@ -15883,6 +16373,7 @@ return /******/ (function(modules) { // webpackBootstrap
       zoomLevel *= factor;
     }
     else {
+      range = this._getRange(options.nodes);
       var xDistance = Math.abs(range.maxX - range.minX) * 1.1;
       var yDistance = Math.abs(range.maxY - range.minY) * 1.1;
 
@@ -15898,7 +16389,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
     var center = this._findCenter(range);
     if (disableStart == false) {
-      var options = {position: center, scale: zoomLevel, animation: animationOptions};
+      var options = {position: center, scale: zoomLevel, animation: options};
       this.moveTo(options);
       this.moving = true;
       this.start();
@@ -15943,6 +16434,10 @@ return /******/ (function(modules) { // webpackBootstrap
     if (disableStart === undefined) {
       disableStart = false;
     }
+
+    // unselect all to ensure no selections from old data are carried over.
+    this._unselectAll(true);
+
     // we set initializing to true to ensure that the hierarchical layout is not performed until both nodes and edges are added.
     this.initializing = true;
 
@@ -15987,7 +16482,7 @@ return /******/ (function(modules) { // webpackBootstrap
       }
       else {
         // find a stable position or start animating to a stable position
-        if (this.constants.stabilize) {
+        if (this.constants.stabilize == true) {
           this._stabilize();
         }
       }
@@ -16011,6 +16506,7 @@ return /******/ (function(modules) { // webpackBootstrap
       util.selectiveNotDeepExtend(['color'],this.constants.nodes, options.nodes);
       util.selectiveNotDeepExtend(['color','length'],this.constants.edges, options.edges);
 
+      this.groups.useDefaultGroups = this.constants.useDefaultGroups;
       if (options.physics) {
         util.mergeOptions(this.constants.physics, options.physics,'barnesHut');
         util.mergeOptions(this.constants.physics, options.physics,'repulsion');
@@ -16138,9 +16634,13 @@ return /******/ (function(modules) { // webpackBootstrap
       // bind keys. If disabled, this will not do anything;
       this._createKeyBinds();
 
-
+      this._markAllEdgesAsDirty();
       this.setSize(this.constants.width, this.constants.height);
       this.moving = true;
+      if (this.constants.hierarchicalLayout.enabled == true && this.initializing == false) {
+        this._resetLevels();
+        this._setupHierarchicalLayout();
+      }
       this.start();
     }
   };
@@ -16164,6 +16664,7 @@ return /******/ (function(modules) { // webpackBootstrap
     this.frame.className = 'vis network-frame';
     this.frame.style.position = 'relative';
     this.frame.style.overflow = 'hidden';
+    this.frame.tabIndex = 900;
 
 
   //////////////////////////////////////////////////////////////////
@@ -16188,6 +16689,7 @@ return /******/ (function(modules) { // webpackBootstrap
                 ctx.oBackingStorePixelRatio ||
                 ctx.backingStorePixelRatio || 1);
 
+      //this.pixelRatio = Math.max(1,this.pixelRatio); // this is to account for browser zooming out. The pixel ratio is ment to switch between 1 and 2 for HD screens.
       this.frame.canvas.getContext("2d").setTransform(this.pixelRatio, 0, 0, this.pixelRatio, 0, 0);
     }
 
@@ -16243,7 +16745,13 @@ return /******/ (function(modules) { // webpackBootstrap
     if (this.keycharm !== undefined) {
       this.keycharm.destroy();
     }
-    this.keycharm = keycharm();
+
+    if (this.constants.keyboard.bindToWindow == true) {
+      this.keycharm = keycharm({container: window, preventDefault: false});
+    }
+    else {
+      this.keycharm = keycharm({container: this.frame, preventDefault: false});
+    }
 
     this.keycharm.reset();
 
@@ -16682,25 +17190,40 @@ return /******/ (function(modules) { // webpackBootstrap
   Network.prototype._onMouseMoveTitle = function (event) {
     var gesture = hammerUtil.fakeGesture(this, event);
     var pointer = this._getPointer(gesture.center);
+    var popupVisible = false;
 
     // check if the previously selected node is still selected
-    if (this.popupObj) {
-      this._checkHidePopup(pointer);
+    if (this.popup !== undefined) {
+      if (this.popup.hidden === false) {
+        this._checkHidePopup(pointer);
+      }
+
+      // if the popup was not hidden above
+      if (this.popup.hidden === false) {
+        popupVisible = true;
+        this.popup.setPosition(pointer.x + 3,pointer.y - 5)
+        this.popup.show();
+      }
     }
 
-    // start a timeout that will check if the mouse is positioned above
-    // an element
-    var me = this;
-    var checkShow = function() {
-      me._checkShowPopup(pointer);
-    };
-    if (this.popupTimer) {
-      clearInterval(this.popupTimer); // stop any running calculationTimer
-    }
-    if (!this.drag.dragging) {
-      this.popupTimer = setTimeout(checkShow, this.constants.tooltip.delay);
+    // if we bind the keyboard to the div, we have to highlight it to use it. This highlights it on mouse over
+    if (this.constants.keyboard.bindToWindow == false && this.constants.keyboard.enabled == true) {
+      this.frame.focus();
     }
 
+    // start a timeout that will check if the mouse is positioned above an element
+    if (popupVisible === false) {
+      var me = this;
+      var checkShow = function () {
+        me._checkShowPopup(pointer);
+      };
+      if (this.popupTimer) {
+        clearInterval(this.popupTimer); // stop any running calculationTimer
+      }
+      if (!this.drag.dragging) {
+        this.popupTimer = setTimeout(checkShow, this.constants.tooltip.delay);
+      }
+    }
 
     /**
      * Adding hover highlights
@@ -16753,8 +17276,9 @@ return /******/ (function(modules) { // webpackBootstrap
     };
 
     var id;
-    var lastPopupNode = this.popupObj;
+    var previousPopupObjId = this.popupObj === undefined ? "" : this.popupObj.id;
     var nodeUnderCursor = false;
+    var popupType = "node";
 
     if (this.popupObj == undefined) {
       // search the nodes for overlap, select the top one in case of multiple nodes
@@ -16796,23 +17320,26 @@ return /******/ (function(modules) { // webpackBootstrap
 
       if (overlappingEdges.length > 0) {
         this.popupObj = this.edges[overlappingEdges[overlappingEdges.length - 1]];
+        popupType = "edge";
       }
     }
 
     if (this.popupObj) {
       // show popup message window
-      if (this.popupObj != lastPopupNode) {
-        var me = this;
-        if (!me.popup) {
-          me.popup = new Popup(me.frame, me.constants.tooltip);
+      if (this.popupObj.id != previousPopupObjId) {
+        if (this.popup === undefined) {
+          this.popup = new Popup(this.frame, this.constants.tooltip);
         }
+
+        this.popup.popupTargetType = popupType;
+        this.popup.popupTargetId = this.popupObj.id;
 
         // adjust a small offset such that the mouse cursor is located in the
         // bottom left location of the popup, and you can easily move over the
         // popup area
-        me.popup.setPosition(pointer.x - 3, pointer.y - 3);
-        me.popup.setText(me.popupObj.getTitle());
-        me.popup.show();
+        this.popup.setPosition(pointer.x + 3, pointer.y - 5);
+        this.popup.setText(this.popupObj.getTitle());
+        this.popup.show();
       }
     }
     else {
@@ -16824,17 +17351,37 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
   /**
-   * Check if the popup must be hided, which is the case when the mouse is no
+   * Check if the popup must be hidden, which is the case when the mouse is no
    * longer hovering on the object
    * @param {{x:Number, y:Number}} pointer
    * @private
    */
   Network.prototype._checkHidePopup = function (pointer) {
-    if (!this.popupObj || !this._getNodeAt(pointer) ) {
-      this.popupObj = undefined;
-      if (this.popup) {
-        this.popup.hide();
+    var pointerObj = {
+      left:   this._XconvertDOMtoCanvas(pointer.x),
+      top:    this._YconvertDOMtoCanvas(pointer.y),
+      right:  this._XconvertDOMtoCanvas(pointer.x),
+      bottom: this._YconvertDOMtoCanvas(pointer.y)
+    };
+
+    var stillOnObj = false;
+    if (this.popup.popupTargetType == 'node') {
+      stillOnObj = this.nodes[this.popup.popupTargetId].isOverlappingWith(pointerObj);
+      if (stillOnObj === true) {
+        var overNode = this._getNodeAt(pointer);
+        stillOnObj = overNode.id == this.popup.popupTargetId;
       }
+    }
+    else {
+      if (this._getNodeAt(pointer) === null) {
+        stillOnObj = this.edges[this.popup.popupTargetId].isOverlappingWith(pointerObj);
+      }
+    }
+
+
+    if (stillOnObj === false) {
+      this.popupObj = undefined;
+      this.popup.hide();
     }
   };
 
@@ -16967,12 +17514,14 @@ return /******/ (function(modules) { // webpackBootstrap
    * @param {Number[] | String[]} ids
    * @private
    */
-  Network.prototype._updateNodes = function(ids,changedData) {
+  Network.prototype._updateNodes = function(ids) {
+    var nodesData = this.nodesData.get(ids);
     var nodes = this.nodes;
+
     for (var i = 0, len = ids.length; i < len; i++) {
       var id = ids[i];
       var node = nodes[id];
-      var data = changedData[i];
+      var data = nodesData[i];
       if (node) {
         // update node
         node.setProperties(data, this.constants);
@@ -16990,7 +17539,15 @@ return /******/ (function(modules) { // webpackBootstrap
     }
     this._updateNodeIndexList();
     this._updateValueRange(nodes);
+    this._markAllEdgesAsDirty();
   };
+
+
+  Network.prototype._markAllEdgesAsDirty = function() {
+    for (var edgeId in this.edges) {
+      this.edges[edgeId].colorDirty = true;
+    }
+  }
 
   /**
    * Remove existing nodes. If nodes do not exist, the method will just ignore it.
@@ -16999,10 +17556,22 @@ return /******/ (function(modules) { // webpackBootstrap
    */
   Network.prototype._removeNodes = function(ids) {
     var nodes = this.nodes;
+
+    // remove from selection
+    for (var i = 0, len = ids.length; i < len; i++) {
+      if (this.selectionObj.nodes[ids[i]] !== undefined) {
+        this.nodes[ids[i]].unselect();
+        this._removeFromSelection(this.nodes[ids[i]]);
+      }
+    }
+
     for (var i = 0, len = ids.length; i < len; i++) {
       var id = ids[i];
       delete nodes[id];
     }
+
+
+
     this._updateNodeIndexList();
     if (this.constants.hierarchicalLayout.enabled == true && this.initializing == false) {
       this._resetLevels();
@@ -17134,6 +17703,15 @@ return /******/ (function(modules) { // webpackBootstrap
    */
   Network.prototype._removeEdges = function (ids) {
     var edges = this.edges;
+
+    // remove from selection
+    for (var i = 0, len = ids.length; i < len; i++) {
+      if (this.selectionObj.edges[ids[i]] !== undefined) {
+        edges[ids[i]].unselect();
+        this._removeFromSelection(edges[ids[i]]);
+      }
+    }
+
     for (var i = 0, len = ids.length; i < len; i++) {
       var id = ids[i];
       var edge = edges[id];
@@ -17194,12 +17772,14 @@ return /******/ (function(modules) { // webpackBootstrap
     // determine the range of the objects
     var valueMin = undefined;
     var valueMax = undefined;
+    var valueTotal = 0;
     for (id in obj) {
       if (obj.hasOwnProperty(id)) {
         var value = obj[id].getValue();
         if (value !== undefined) {
           valueMin = (valueMin === undefined) ? value : Math.min(value, valueMin);
           valueMax = (valueMax === undefined) ? value : Math.max(value, valueMax);
+          valueTotal += value;
         }
       }
     }
@@ -17208,7 +17788,7 @@ return /******/ (function(modules) { // webpackBootstrap
     if (valueMin !== undefined && valueMax !== undefined) {
       for (id in obj) {
         if (obj.hasOwnProperty(id)) {
-          obj[id].setValueRange(valueMin, valueMax);
+          obj[id].setValueRange(valueMin, valueMax, valueTotal);
         }
       }
     }
@@ -17228,14 +17808,30 @@ return /******/ (function(modules) { // webpackBootstrap
    * @param hidden | used to get the first estimate of the node sizes. only the nodes are drawn after which they are quickly drawn over.
    * @private
    */
-  Network.prototype._redraw = function(hidden) {
+  Network.prototype._requestRedraw = function(hidden) {
+    if (this.redrawRequested !== true) {
+      this.redrawRequested = true;
+      if (this.requiresTimeout === true) {
+        window.setTimeout(this._redraw.bind(this, hidden),0);
+      }
+      else {
+        window.requestAnimationFrame(this._redraw.bind(this, hidden, true));
+      }
+    }
+  };
+
+  Network.prototype._redraw = function(hidden, requested) {
+    if (hidden === undefined) {
+      hidden = false;
+    }
+    this.redrawRequested = false;
     var ctx = this.frame.canvas.getContext('2d');
 
     ctx.setTransform(this.pixelRatio, 0, 0, this.pixelRatio, 0, 0);
 
     // clear the canvas
-    var w = this.frame.canvas.width  * this.pixelRatio;
-    var h = this.frame.canvas.height  * this.pixelRatio;
+    var w = this.frame.canvas.clientWidth;
+    var h = this.frame.canvas.clientHeight;
     ctx.clearRect(0, 0, w, h);
 
     // set scaling and translation
@@ -17248,11 +17844,11 @@ return /******/ (function(modules) { // webpackBootstrap
       "y": this._YconvertDOMtoCanvas(0)
     };
     this.canvasBottomRight = {
-      "x": this._XconvertDOMtoCanvas(this.frame.canvas.clientWidth * this.pixelRatio),
-      "y": this._YconvertDOMtoCanvas(this.frame.canvas.clientHeight * this.pixelRatio)
+      "x": this._XconvertDOMtoCanvas(this.frame.canvas.clientWidth),
+      "y": this._YconvertDOMtoCanvas(this.frame.canvas.clientHeight)
     };
 
-    if (!(hidden == true)) {
+    if (hidden === false) {
       this._doInAllSectors("_drawAllSectorNodes", ctx);
       if (this.drag.dragging == false || this.drag.dragging === undefined || this.constants.hideEdgesOnDrag == false) {
         this._doInAllSectors("_drawEdges", ctx);
@@ -17263,7 +17859,7 @@ return /******/ (function(modules) { // webpackBootstrap
       this._doInAllSectors("_drawNodes",ctx,false);
     }
 
-    if (!(hidden == true)) {
+    if (hidden === false) {
       if (this.controlNodesActive == true) {
         this._doInAllSectors("_drawControlNodes", ctx);
       }
@@ -17275,10 +17871,10 @@ return /******/ (function(modules) { // webpackBootstrap
     // restore original scaling and translation
     ctx.restore();
 
-    if (hidden == true) {
+    if (hidden === true) {
       ctx.clearRect(0, 0, w, h);
     }
-  };
+  }
 
   /**
    * Set the translation of the network
@@ -17487,13 +18083,16 @@ return /******/ (function(modules) { // webpackBootstrap
       count++;
     }
 
+
     if (this.constants.zoomExtentOnStabilize == true) {
-      this.zoomExtent(undefined, false, true);
+      this.zoomExtent({duration:0}, false, true);
     }
 
     if (this.constants.freezeForStabilization == true) {
       this._restoreFrozenNodes();
     }
+
+    this.emit("stabilizationIterationsDone");
   };
 
   /**
@@ -17543,8 +18142,10 @@ return /******/ (function(modules) { // webpackBootstrap
   Network.prototype._isMoving = function(vmin) {
     var nodes = this.nodes;
     for (var id in nodes) {
-      if (nodes.hasOwnProperty(id) && nodes[id].isMoving(vmin)) {
-        return true;
+      if (nodes[id] !== undefined) {
+        if (nodes[id].isMoving(vmin) == true) {
+          return true;
+        }
       }
     }
     return false;
@@ -17615,7 +18216,7 @@ return /******/ (function(modules) { // webpackBootstrap
    * @private
    */
   Network.prototype._physicsTick = function() {
-    if (!this.freezeSimulation) {
+    if (!this.freezeSimulationEnabled) {
       if (this.moving == true) {
         var mainMovingStatus = false;
         var supportMovingStatus = false;
@@ -17627,11 +18228,12 @@ return /******/ (function(modules) { // webpackBootstrap
         }
 
         // gather movement data from all sectors, if one moves, we are NOT stabilzied
-        for (var i = 0; i < mainMoving.length; i++) {mainMovingStatus = mainMoving[0] || mainMovingStatus;}
+        for (var i = 0; i < mainMoving.length; i++) {
+          mainMovingStatus = mainMoving[i] || mainMovingStatus;
+        }
 
         // determine if the network has stabilzied
         this.moving = mainMovingStatus || supportMovingStatus;
-
         if (this.moving == false) {
           this._revertPhysicsTick();
         }
@@ -17659,6 +18261,11 @@ return /******/ (function(modules) { // webpackBootstrap
     // reset the timer so a new scheduled animation step can be set
     this.timer = undefined;
 
+    if (this.requiresTimeout == true) {
+      // this schedules a new animation step
+      this.start();
+    }
+
     // handle the keyboad movement
     this._handleNavigation();
 
@@ -17683,8 +18290,10 @@ return /******/ (function(modules) { // webpackBootstrap
     this._redraw();
     this.renderTime = Date.now() - renderStartTime;
 
-    // this schedules a new animation step
-    this.start();
+    if (this.requiresTimeout == false) {
+      // this schedules a new animation step
+      this.start();
+    }
   };
 
   if (typeof window !== 'undefined') {
@@ -17696,6 +18305,9 @@ return /******/ (function(modules) { // webpackBootstrap
    * Schedule a animation step with the refreshrate interval.
    */
   Network.prototype.start = function() {
+    if (this.freezeSimulationEnabled == true) {
+      this.moving = false;
+    }
     if (this.moving == true || this.xIncrement != 0 || this.yIncrement != 0 || this.zoomIncrement != 0 || this.animating == true) {
       if (!this.timer) {
         if (this.requiresTimeout == true) {
@@ -17707,7 +18319,7 @@ return /******/ (function(modules) { // webpackBootstrap
       }
     }
     else {
-      this._redraw();
+      this._requestRedraw();
       // this check is to ensure that the network does not emit these events if it was already stabilized and setOptions is called (setting moving to true and calling start())
       if (this.stabilizationIterations > 1) {
         // trigger the "stabilized" event.
@@ -17754,12 +18366,14 @@ return /******/ (function(modules) { // webpackBootstrap
   /**
    *  Freeze the _animationStep
    */
-  Network.prototype.toggleFreeze = function() {
-    if (this.freezeSimulation == false) {
-      this.freezeSimulation = true;
+  Network.prototype.freezeSimulation = function(freeze) {
+    if (freeze == true) {
+      this.freezeSimulationEnabled = true;
+      this.moving = false;
     }
     else {
-      this.freezeSimulation = false;
+      this.freezeSimulationEnabled = false;
+      this.moving = true;
       this.start();
     }
   };
@@ -18132,6 +18746,47 @@ return /******/ (function(modules) { // webpackBootstrap
     }
   }
 
+  Network.prototype.getConnectedNodes = function(nodeId) {
+    var nodeList = [];
+    if (this.nodes[nodeId] !== undefined) {
+      var node = this.nodes[nodeId];
+      var nodeObj = {nodeId : true}; // used to quickly check if node already exists
+      for (var i = 0; i < node.edges.length; i++) {
+        var edge = node.edges[i];
+        if (edge.toId == nodeId) {
+          if (nodeObj[edge.fromId] === undefined) {
+            nodeList.push(edge.fromId);
+            nodeObj[edge.fromId] = true;
+          }
+        }
+        else if (edge.fromId == nodeId) {
+          if (nodeObj[edge.toId] === undefined) {
+            nodeList.push(edge.toId)
+            nodeObj[edge.toId] = true;
+          }
+        }
+      }
+    }
+    return nodeList;
+  }
+
+
+  Network.prototype.getEdgesFromNode = function(nodeId) {
+    var edgesList = [];
+    if (this.nodes[nodeId] !== undefined) {
+      var node = this.nodes[nodeId];
+      for (var i = 0; i < node.edges.length; i++) {
+        edgesList.push(node.edges[i].id);
+      }
+    }
+    return edgesList;
+  }
+
+  Network.prototype.generateColorObject = function(color) {
+    return util.parseColor(color);
+
+  }
+
   module.exports = Network;
 
 
@@ -18181,6 +18836,7 @@ return /******/ (function(modules) { // webpackBootstrap
     this.hover = false;
     this.labelDimensions = {top:0,left:0,width:0,height:0,yLine:0}; // could be cached
     this.dirtyLabel = true;
+    this.colorDirty = true;
 
     this.from = null;   // a node
     this.to = null;     // a node
@@ -18212,12 +18868,14 @@ return /******/ (function(modules) { // webpackBootstrap
    * @param {Object} constants   and object with default, global properties
    */
   Edge.prototype.setProperties = function(properties) {
+    this.colorDirty = true;
     if (!properties) {
       return;
     }
 
     var fields = ['style','fontSize','fontFace','fontColor','fontFill','fontStrokeWidth','fontStrokeColor','width',
-      'widthSelectionMultiplier','hoverWidth','arrowScaleFactor','dash','inheritColor','labelAlignment'
+      'widthSelectionMultiplier','hoverWidth','arrowScaleFactor','dash','inheritColor','labelAlignment', 'opacity',
+      'customScalingFunction','useGradients'
     ];
     util.selectiveDeepExtend(fields, this.options, properties);
 
@@ -18244,7 +18902,9 @@ return /******/ (function(modules) { // webpackBootstrap
       }
     }
 
-    // A node is connected when it has a from and to node.
+
+
+      // A node is connected when it has a from and to node.
     this.connect();
 
     this.widthFixed = this.widthFixed || (properties.width !== undefined);
@@ -18260,8 +18920,8 @@ return /******/ (function(modules) { // webpackBootstrap
       case 'dash-line':     this.draw = this._drawDashLine; break;
       default:              this.draw = this._drawLine; break;
     }
-    
   };
+
 
   /**
    * Connect an edge to its nodes
@@ -18327,10 +18987,11 @@ return /******/ (function(modules) { // webpackBootstrap
    * @param {Number} min
    * @param {Number} max
    */
-  Edge.prototype.setValueRange = function(min, max) {
+  Edge.prototype.setValueRange = function(min, max, total) {
     if (!this.widthFixed && this.value !== undefined) {
-      var scale = (this.options.widthMax - this.options.widthMin) / (max - min);
-      this.options.width= (this.value - min) * scale + this.options.widthMin;
+      var scale = this.options.customScalingFunction(min, max, total, this.value);
+      var widthDiff = this.options.widthMax - this.options.widthMin;
+      this.options.width = this.options.widthMin + scale * widthDiff;
       this.widthSelected = this.options.width* this.options.widthSelectionMultiplier;
     }
   };
@@ -18369,22 +19030,50 @@ return /******/ (function(modules) { // webpackBootstrap
     }
   };
 
-  Edge.prototype._getColor = function() {
+  Edge.prototype._getColor = function(ctx) {
     var colorObj = this.options.color;
-    if (this.options.inheritColor == "to") {
-      colorObj = {
-        highlight: this.to.options.color.highlight.border,
-        hover: this.to.options.color.hover.border,
-        color: this.to.options.color.border
-      };
+    if (this.options.useGradients == true) {
+      var grd = ctx.createLinearGradient(this.from.x, this.from.y, this.to.x, this.to.y);
+      var fromColor, toColor;
+      fromColor = this.from.options.color.highlight.border;
+      toColor = this.to.options.color.highlight.border;
+
+
+      if (this.from.selected == false && this.to.selected == false) {
+        fromColor = util.overrideOpacity(this.from.options.color.border, this.options.opacity);
+        toColor = util.overrideOpacity(this.to.options.color.border, this.options.opacity);
+      }
+      else if (this.from.selected == true && this.to.selected == false) {
+        toColor = this.to.options.color.border;
+      }
+      else if (this.from.selected == false && this.to.selected == true) {
+        fromColor = this.from.options.color.border;
+      }
+      grd.addColorStop(0, fromColor);
+      grd.addColorStop(1, toColor);
+      return grd;
     }
-    else if (this.options.inheritColor == "from" || this.options.inheritColor == true) {
-      colorObj = {
-        highlight: this.from.options.color.highlight.border,
-        hover: this.from.options.color.hover.border,
-        color: this.from.options.color.border
-      };
+
+    if (this.colorDirty === true) {
+      if (this.options.inheritColor == "to") {
+        colorObj = {
+          highlight: this.to.options.color.highlight.border,
+          hover: this.to.options.color.hover.border,
+          color: util.overrideOpacity(this.from.options.color.border, this.options.opacity)
+        };
+      }
+      else if (this.options.inheritColor == "from" || this.options.inheritColor == true) {
+        colorObj = {
+          highlight: this.from.options.color.highlight.border,
+          hover: this.from.options.color.hover.border,
+          color: util.overrideOpacity(this.from.options.color.border, this.options.opacity)
+        };
+      }
+      this.options.color = colorObj;
+      this.colorDirty = false;
     }
+
+
 
     if (this.selected == true)   {return colorObj.highlight;}
     else if (this.hover == true) {return colorObj.hover;}
@@ -18401,7 +19090,7 @@ return /******/ (function(modules) { // webpackBootstrap
    */
   Edge.prototype._drawLine = function(ctx) {
     // set style
-    ctx.strokeStyle = this._getColor();
+    ctx.strokeStyle = this._getColor(ctx);
     ctx.lineWidth   = this._getLineWidth();
 
     if (this.from != this.to) {
@@ -18475,7 +19164,6 @@ return /******/ (function(modules) { // webpackBootstrap
       var yVia = null;
       var factor = this.options.smoothCurves.roundness;
       var type = this.options.smoothCurves.type;
-
       var dx = Math.abs(this.from.x - this.to.x);
       var dy = Math.abs(this.from.y - this.to.y);
       if (type == 'discrete' || type == 'diagonalCross') {
@@ -18568,17 +19256,39 @@ return /******/ (function(modules) { // webpackBootstrap
           yVia = this.to.y + (1 - factor) * dy;
         }
       }
+      else if (type == 'curvedCW') {
+        var dx = this.to.x - this.from.x;
+        var dy = this.from.y - this.to.y;
+        var radius = Math.sqrt(dx*dx + dy*dy);
+        var pi = Math.PI;
+
+        var originalAngle = Math.atan2(dy,dx);
+        var myAngle = (originalAngle + ((factor * 0.5) + 0.5) * pi) % (2 * pi);
+
+        xVia = this.from.x + (factor*0.5 + 0.5)*radius*Math.sin(myAngle);
+        yVia = this.from.y + (factor*0.5 + 0.5)*radius*Math.cos(myAngle);
+      }
+      else if (type == 'curvedCCW') {
+        var dx = this.to.x - this.from.x;
+        var dy = this.from.y - this.to.y;
+        var radius = Math.sqrt(dx*dx + dy*dy);
+        var pi = Math.PI;
+
+        var originalAngle = Math.atan2(dy,dx);
+        var myAngle = (originalAngle + ((-factor * 0.5) + 0.5) * pi) % (2 * pi);
+
+        xVia = this.from.x + (factor*0.5 + 0.5)*radius*Math.sin(myAngle);
+        yVia = this.from.y + (factor*0.5 + 0.5)*radius*Math.cos(myAngle);
+      }
       else { // continuous
         if (Math.abs(this.from.x - this.to.x) < Math.abs(this.from.y - this.to.y)) {
           if (this.from.y > this.to.y) {
             if (this.from.x < this.to.x) {
-  //          console.log(1)
               xVia = this.from.x + factor * dy;
               yVia = this.from.y - factor * dy;
               xVia = this.to.x < xVia ? this.to.x : xVia;
             }
             else if (this.from.x > this.to.x) {
-  //          console.log(2)
               xVia = this.from.x - factor * dy;
               yVia = this.from.y - factor * dy;
               xVia = this.to.x > xVia ? this.to.x : xVia;
@@ -18586,13 +19296,11 @@ return /******/ (function(modules) { // webpackBootstrap
           }
           else if (this.from.y < this.to.y) {
             if (this.from.x < this.to.x) {
-  //          console.log(3)
               xVia = this.from.x + factor * dy;
               yVia = this.from.y + factor * dy;
               xVia = this.to.x < xVia ? this.to.x : xVia;
             }
             else if (this.from.x > this.to.x) {
-  //          console.log(4, this.from.x, this.to.x)
               xVia = this.from.x - factor * dy;
               yVia = this.from.y + factor * dy;
               xVia = this.to.x > xVia ? this.to.x : xVia;
@@ -18602,13 +19310,11 @@ return /******/ (function(modules) { // webpackBootstrap
         else if (Math.abs(this.from.x - this.to.x) > Math.abs(this.from.y - this.to.y)) {
           if (this.from.y > this.to.y) {
             if (this.from.x < this.to.x) {
-  //          console.log(5)
               xVia = this.from.x + factor * dx;
               yVia = this.from.y - factor * dx;
               yVia = this.to.y > yVia ? this.to.y : yVia;
             }
             else if (this.from.x > this.to.x) {
-  //          console.log(6)
               xVia = this.from.x - factor * dx;
               yVia = this.from.y - factor * dx;
               yVia = this.to.y > yVia ? this.to.y : yVia;
@@ -18616,13 +19322,11 @@ return /******/ (function(modules) { // webpackBootstrap
           }
           else if (this.from.y < this.to.y) {
             if (this.from.x < this.to.x) {
-  //          console.log(7)
               xVia = this.from.x + factor * dx;
               yVia = this.from.y + factor * dx;
               yVia = this.to.y < yVia ? this.to.y : yVia;
             }
             else if (this.from.x > this.to.x) {
-  //          console.log(8)
               xVia = this.from.x - factor * dx;
               yVia = this.from.y + factor * dx;
               yVia = this.to.y < yVia ? this.to.y : yVia;
@@ -18658,6 +19362,8 @@ return /******/ (function(modules) { // webpackBootstrap
   //        this.via.y = via.y;
           ctx.quadraticCurveTo(via.x,via.y,this.to.x, this.to.y);
           ctx.stroke();
+          //ctx.circle(via.x,via.y,2)
+          //ctx.stroke();
           return via;
         }
       }
@@ -18846,7 +19552,7 @@ return /******/ (function(modules) { // webpackBootstrap
    */
   Edge.prototype._drawDashLine = function(ctx) {
     // set style
-    ctx.strokeStyle = this._getColor();
+    ctx.strokeStyle = this._getColor(ctx);
     ctx.lineWidth = this._getLineWidth();
 
     var via = null;
@@ -18951,7 +19657,7 @@ return /******/ (function(modules) { // webpackBootstrap
   Edge.prototype._drawArrowCenter = function(ctx) {
     var point;
     // set style
-    ctx.strokeStyle = this._getColor();
+    ctx.strokeStyle = this._getColor(ctx);
     ctx.fillStyle = ctx.strokeStyle;
     ctx.lineWidth = this._getLineWidth();
 
@@ -19087,7 +19793,7 @@ return /******/ (function(modules) { // webpackBootstrap
    */
   Edge.prototype._drawArrow = function(ctx) {
     // set style
-    ctx.strokeStyle = this._getColor();
+    ctx.strokeStyle = this._getColor(ctx);
     ctx.fillStyle = ctx.strokeStyle;
     ctx.lineWidth = this._getLineWidth();
 
@@ -19504,6 +20210,9 @@ return /******/ (function(modules) { // webpackBootstrap
   function Groups() {
     this.clear();
     this.defaultIndex = 0;
+    this.groupsArray = [];
+    this.groupIndex = 0;
+    this.useDefaultGroups = true;
   }
 
 
@@ -19511,16 +20220,29 @@ return /******/ (function(modules) { // webpackBootstrap
    * default constants for group colors
    */
   Groups.DEFAULT = [
-    {border: "#2B7CE9", background: "#97C2FC", highlight: {border: "#2B7CE9", background: "#D2E5FF"}, hover: {border: "#2B7CE9", background: "#D2E5FF"}}, // blue
-    {border: "#FFA500", background: "#FFFF00", highlight: {border: "#FFA500", background: "#FFFFA3"}, hover: {border: "#FFA500", background: "#FFFFA3"}}, // yellow
-    {border: "#FA0A10", background: "#FB7E81", highlight: {border: "#FA0A10", background: "#FFAFB1"}, hover: {border: "#FA0A10", background: "#FFAFB1"}}, // red
-    {border: "#41A906", background: "#7BE141", highlight: {border: "#41A906", background: "#A1EC76"}, hover: {border: "#41A906", background: "#A1EC76"}}, // green
-    {border: "#E129F0", background: "#EB7DF4", highlight: {border: "#E129F0", background: "#F0B3F5"}, hover: {border: "#E129F0", background: "#F0B3F5"}}, // magenta
-    {border: "#7C29F0", background: "#AD85E4", highlight: {border: "#7C29F0", background: "#D3BDF0"}, hover: {border: "#7C29F0", background: "#D3BDF0"}}, // purple
-    {border: "#C37F00", background: "#FFA807", highlight: {border: "#C37F00", background: "#FFCA66"}, hover: {border: "#C37F00", background: "#FFCA66"}}, // orange
-    {border: "#4220FB", background: "#6E6EFD", highlight: {border: "#4220FB", background: "#9B9BFD"}, hover: {border: "#4220FB", background: "#9B9BFD"}}, // darkblue
-    {border: "#FD5A77", background: "#FFC0CB", highlight: {border: "#FD5A77", background: "#FFD1D9"}, hover: {border: "#FD5A77", background: "#FFD1D9"}}, // pink
-    {border: "#4AD63A", background: "#C2FABC", highlight: {border: "#4AD63A", background: "#E6FFE3"}, hover: {border: "#4AD63A", background: "#E6FFE3"}}  // mint
+    {border: "#2B7CE9", background: "#97C2FC", highlight: {border: "#2B7CE9", background: "#D2E5FF"}, hover: {border: "#2B7CE9", background: "#D2E5FF"}}, // 0: blue
+    {border: "#FFA500", background: "#FFFF00", highlight: {border: "#FFA500", background: "#FFFFA3"}, hover: {border: "#FFA500", background: "#FFFFA3"}}, // 1: yellow
+    {border: "#FA0A10", background: "#FB7E81", highlight: {border: "#FA0A10", background: "#FFAFB1"}, hover: {border: "#FA0A10", background: "#FFAFB1"}}, // 2: red
+    {border: "#41A906", background: "#7BE141", highlight: {border: "#41A906", background: "#A1EC76"}, hover: {border: "#41A906", background: "#A1EC76"}}, // 3: green
+    {border: "#E129F0", background: "#EB7DF4", highlight: {border: "#E129F0", background: "#F0B3F5"}, hover: {border: "#E129F0", background: "#F0B3F5"}}, // 4: magenta
+    {border: "#7C29F0", background: "#AD85E4", highlight: {border: "#7C29F0", background: "#D3BDF0"}, hover: {border: "#7C29F0", background: "#D3BDF0"}}, // 5: purple
+    {border: "#C37F00", background: "#FFA807", highlight: {border: "#C37F00", background: "#FFCA66"}, hover: {border: "#C37F00", background: "#FFCA66"}}, // 6: orange
+    {border: "#4220FB", background: "#6E6EFD", highlight: {border: "#4220FB", background: "#9B9BFD"}, hover: {border: "#4220FB", background: "#9B9BFD"}}, // 7: darkblue
+    {border: "#FD5A77", background: "#FFC0CB", highlight: {border: "#FD5A77", background: "#FFD1D9"}, hover: {border: "#FD5A77", background: "#FFD1D9"}}, // 8: pink
+    {border: "#4AD63A", background: "#C2FABC", highlight: {border: "#4AD63A", background: "#E6FFE3"}, hover: {border: "#4AD63A", background: "#E6FFE3"}}, // 9: mint
+
+    {border: "#990000", background: "#EE0000", highlight: {border: "#BB0000", background: "#FF3333"}, hover: {border: "#BB0000", background: "#FF3333"}}, // 10:bright red
+
+    {border: "#FF6000", background: "#FF6000", highlight: {border: "#FF6000", background: "#FF6000"}, hover: {border: "#FF6000", background: "#FF6000"}}, // 12: real orange
+    {border: "#97C2FC", background: "#2B7CE9", highlight: {border: "#D2E5FF", background: "#2B7CE9"}, hover: {border: "#D2E5FF", background: "#2B7CE9"}}, // 13: blue
+    {border: "#399605", background: "#255C03", highlight: {border: "#399605", background: "#255C03"}, hover: {border: "#399605", background: "#255C03"}}, // 14: green
+    {border: "#B70054", background: "#FF007E", highlight: {border: "#B70054", background: "#FF007E"}, hover: {border: "#B70054", background: "#FF007E"}}, // 15: magenta
+    {border: "#AD85E4", background: "#7C29F0", highlight: {border: "#D3BDF0", background: "#7C29F0"}, hover: {border: "#D3BDF0", background: "#7C29F0"}}, // 16: purple
+    {border: "#4557FA", background: "#000EA1", highlight: {border: "#6E6EFD", background: "#000EA1"}, hover: {border: "#6E6EFD", background: "#000EA1"}}, // 17: darkblue
+    {border: "#FFC0CB", background: "#FD5A77", highlight: {border: "#FFD1D9", background: "#FD5A77"}, hover: {border: "#FFD1D9", background: "#FD5A77"}}, // 18: pink
+    {border: "#C2FABC", background: "#74D66A", highlight: {border: "#E6FFE3", background: "#74D66A"}, hover: {border: "#E6FFE3", background: "#74D66A"}}, // 19: mint
+
+    {border: "#EE0000", background: "#990000", highlight: {border: "#FF3333", background: "#BB0000"}, hover: {border: "#FF3333", background: "#BB0000"}}, // 20:bright red
   ];
 
 
@@ -19551,12 +20273,22 @@ return /******/ (function(modules) { // webpackBootstrap
   Groups.prototype.get = function (groupname) {
     var group = this.groups[groupname];
     if (group == undefined) {
-      // create new group
-      var index = this.defaultIndex % Groups.DEFAULT.length;
-      this.defaultIndex++;
-      group = {};
-      group.color = Groups.DEFAULT[index];
-      this.groups[groupname] = group;
+      if (this.useDefaultGroups === false && this.groupsArray.length > 0) {
+        // create new group
+        var index = this.groupIndex % this.groupsArray.length;
+        this.groupIndex++;
+        group = {};
+        group.color = this.groups[this.groupsArray[index]];
+        this.groups[groupname] = group;
+      }
+      else {
+        // create new group
+        var index = this.defaultIndex % Groups.DEFAULT.length;
+        this.defaultIndex++;
+        group = {};
+        group.color = Groups.DEFAULT[index];
+        this.groups[groupname] = group;
+      }
     }
 
     return group;
@@ -19564,13 +20296,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
   /**
    * Add a custom group style
-   * @param {String} groupname
+   * @param {String} groupName
    * @param {Object} style       An object containing borderColor,
    *                             backgroundColor, etc.
    * @return {Object} group      The created group object
    */
-  Groups.prototype.add = function (groupname, style) {
-    this.groups[groupname] = style;
+  Groups.prototype.add = function (groupName, style) {
+    this.groups[groupName] = style;
+    this.groupsArray.push(groupName);
     return style;
   };
 
@@ -19635,16 +20368,25 @@ return /******/ (function(modules) { // webpackBootstrap
             me.callback(this);
           }
         }
-        else if (me.imageBroken[url] === true) {
-          console.error("Could not load brokenImage:", brokenUrl);
-          delete this.src;
-          if (me.callback) {
-            me.callback(this);
-          }
-        }
         else {
-          this.src = brokenUrl;
-          me.imageBroken[url] = true;
+          if (me.imageBroken[url] === true) {
+            if (this.src == brokenUrl) {
+              console.error("Could not load brokenImage:", brokenUrl);
+              delete this.src;
+              if (me.callback) {
+                me.callback(this);
+              }
+            }
+            else {
+              console.error("Could not load image:", url);
+              this.src = brokenUrl;
+            }
+          }
+          else {
+            console.error("Could not load image:", url);
+            this.src = brokenUrl;
+            me.imageBroken[url] = true;
+          }
         }
       };
 
@@ -19676,7 +20418,7 @@ return /******/ (function(modules) { // webpackBootstrap
    *                                              "database", "circle", "ellipse",
    *                                              "box", "image", "text", "dot",
    *                                              "star", "triangle", "triangleDown",
-   *                                              "square"
+   *                                              "square", "icon"
    *                              {string} image  An image url
    *                              {string} title  An title text, can be HTML
    *                              {anytype} group A group name or number
@@ -19698,8 +20440,6 @@ return /******/ (function(modules) { // webpackBootstrap
     this.edges = []; // all edges connected to this node
     this.dynamicEdges = [];
     this.reroutedEdges = {};
-
-    this.fontDrawThreshold = 3;
 
     // set defaults for the properties
     this.id = undefined;
@@ -19727,6 +20467,7 @@ return /******/ (function(modules) { // webpackBootstrap
     this.vy = 0.0;  // velocity y
     this.x = null;
     this.y = null;
+    this.predefinedPosition = false; // used to check if initial zoomExtent should just take the range or approximate
 
     // used for reverting to previous position on stabilization
     this.previousState = {vx:0,vy:0,x:0,y:0};
@@ -19738,12 +20479,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
     // creating the variables for clustering
     this.resetCluster();
-    this.dynamicEdgesLength = 0;
     this.clusterSession = 0;
     this.clusterSizeWidthFactor  = networkConstants.clustering.nodeScaling.width;
     this.clusterSizeHeightFactor = networkConstants.clustering.nodeScaling.height;
     this.clusterSizeRadiusFactor = networkConstants.clustering.nodeScaling.radius;
-    this.maxNodeSizeIncrements = networkConstants.clustering.maxNodeSizeIncrements;
+    this.maxNodeSizeIncrements   = networkConstants.clustering.maxNodeSizeIncrements;
     this.growthIndicator = 0;
 
     // variables to tell the node about the network.
@@ -19789,7 +20529,6 @@ return /******/ (function(modules) { // webpackBootstrap
     if (this.dynamicEdges.indexOf(edge) == -1) {
       this.dynamicEdges.push(edge);
     }
-    this.dynamicEdgesLength = this.dynamicEdges.length;
   };
 
   /**
@@ -19805,7 +20544,6 @@ return /******/ (function(modules) { // webpackBootstrap
     if (index != -1) {
       this.dynamicEdges.splice(index, 1);
     }
-    this.dynamicEdgesLength = this.dynamicEdges.length;
   };
 
 
@@ -19820,7 +20558,8 @@ return /******/ (function(modules) { // webpackBootstrap
     }
 
     var fields = ['borderWidth','borderWidthSelected','shape','image','brokenImage','radius','fontColor',
-      'fontSize','fontFace','fontFill','fontStrokeWidth','fontStrokeColor','group','mass'
+      'fontSize','fontFace','fontFill','fontStrokeWidth','fontStrokeColor','group','mass','fontDrawThreshold',
+      'scaleFontWithValue','fontSizeMaxVisible','customScalingFunction','iconFontFace', 'icon', 'iconColor', 'iconSize'
     ];
     util.selectiveDeepExtend(fields, this.options, properties);
 
@@ -19828,8 +20567,8 @@ return /******/ (function(modules) { // webpackBootstrap
     if (properties.id !== undefined)        {this.id = properties.id;}
     if (properties.label !== undefined)     {this.label = properties.label; this.originalLabel = properties.label;}
     if (properties.title !== undefined)     {this.title = properties.title;}
-    if (properties.x !== undefined)         {this.x = properties.x;}
-    if (properties.y !== undefined)         {this.y = properties.y;}
+    if (properties.x !== undefined)         {this.x = properties.x; this.predefinedPosition = true;}
+    if (properties.y !== undefined)         {this.y = properties.y; this.predefinedPosition = true;}
     if (properties.value !== undefined)     {this.value = properties.value;}
     if (properties.level !== undefined)     {this.level = properties.level; this.preassignedLevel = true;}
 
@@ -19901,6 +20640,7 @@ return /******/ (function(modules) { // webpackBootstrap
       case 'triangle':      this.draw = this._drawTriangle; this.resize = this._resizeShape; break;
       case 'triangleDown':  this.draw = this._drawTriangleDown; this.resize = this._resizeShape; break;
       case 'star':          this.draw = this._drawStar; this.resize = this._resizeShape; break;
+      case 'icon':          this.draw = this._drawIcon; this.resize = this._resizeIcon; break;
       default:              this.draw = this._drawEllipse; this.resize = this._resizeEllipse; break;
     }
     // reset the size of the node, this can be changed
@@ -20145,16 +20885,17 @@ return /******/ (function(modules) { // webpackBootstrap
    * @param {Number} min
    * @param {Number} max
    */
-  Node.prototype.setValueRange = function(min, max) {
+  Node.prototype.setValueRange = function(min, max, total) {
     if (!this.radiusFixed && this.value !== undefined) {
-      if (max == min) {
-        this.options.radius= (this.options.radiusMin + this.options.radiusMax) / 2;
+      var scale = this.options.customScalingFunction(min, max, total, this.value);
+      var radiusDiff = this.options.radiusMax - this.options.radiusMin;
+      if (this.options.scaleFontWithValue == true) {
+        var fontDiff = this.options.fontSizeMax - this.options.fontSizeMin;
+        this.options.fontSize = this.options.fontSizeMin + scale * fontDiff;
       }
-      else {
-        var scale = (this.options.radiusMax - this.options.radiusMin) / (max - min);
-        this.options.radius= (this.value - min) * scale + this.options.radiusMin;
-      }
+      this.options.radius = this.options.radiusMin + scale * radiusDiff;
     }
+
     this.baseRadiusValue = this.options.radius;
   };
 
@@ -20676,14 +21417,91 @@ return /******/ (function(modules) { // webpackBootstrap
     this.boundingBox.bottom = this.top + this.height;
   };
 
+  Node.prototype._resizeIcon = function (ctx) {
+    if (!this.width) {
+      var margin = 5;
+      var iconSize =
+      {
+        width: Number(this.options.iconSize),
+        height: Number(this.options.iconSize)
+      };
+      this.width = iconSize.width + 2 * margin;
+      this.height = iconSize.height + 2 * margin;
 
+      // scaling used for clustering
+      this.width += Math.min(this.clusterSize - 1, this.maxNodeSizeIncrements) * this.clusterSizeWidthFactor;
+      this.height += Math.min(this.clusterSize - 1, this.maxNodeSizeIncrements) * this.clusterSizeHeightFactor;
+      this.options.radius += Math.min(this.clusterSize - 1, this.maxNodeSizeIncrements) * this.clusterSizeRadiusFactor;
+      this.growthIndicator = this.width - (iconSize.width + 2 * margin);
+    }
+  };
+
+  Node.prototype._drawIcon = function (ctx) {
+    this._resizeIcon(ctx);
+
+    this.options.iconSize = this.options.iconSize || 50;
+
+    this.left = this.x - this.width / 2;
+    this.top = this.y - this.height / 2;
+    this._icon(ctx);
+
+
+    this.boundingBox.top = this.y - this.options.iconSize/2;
+    this.boundingBox.left = this.x - this.options.iconSize/2;
+    this.boundingBox.right = this.x + this.options.iconSize/2;
+    this.boundingBox.bottom = this.y + this.options.iconSize/2;
+
+    if (this.label) {
+      var iconTextSpacing = 5;
+      this._label(ctx, this.label, this.x, this.y + this.height / 2 + iconTextSpacing, 'top', true);
+
+      this.boundingBox.left = Math.min(this.boundingBox.left, this.labelDimensions.left);
+      this.boundingBox.right = Math.max(this.boundingBox.right, this.labelDimensions.left + this.labelDimensions.width);
+      this.boundingBox.bottom = Math.max(this.boundingBox.bottom, this.boundingBox.bottom + this.labelDimensions.height);
+    }
+  };
+
+  Node.prototype._icon = function (ctx) {
+    var relativeIconSize = Number(this.options.iconSize) * this.networkScale;
+    
+    if (this.options.icon && relativeIconSize > this.options.fontDrawThreshold - 1) {
+
+        var iconSize = Number(this.options.iconSize);
+
+        ctx.font = (this.selected ? "bold " : "") + iconSize + "px " + this.options.iconFontFace;
+
+        // draw icon
+        ctx.fillStyle = this.options.iconColor || "black";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(this.options.icon, this.x, this.y);
+    }
+  };
+    
   Node.prototype._label = function (ctx, text, x, y, align, baseline, labelUnderNode) {
-    if (text && Number(this.options.fontSize) * this.networkScale > this.fontDrawThreshold) {
-      ctx.font = (this.selected ? "bold " : "") + this.options.fontSize + "px " + this.options.fontFace;
+    var relativeFontSize = Number(this.options.fontSize) * this.networkScale;
+    if (text && relativeFontSize >= this.options.fontDrawThreshold - 1) {
+      var fontSize = Number(this.options.fontSize);
+
+      // this ensures that there will not be HUGE letters on screen by setting an upper limit on the visible text size (regardless of zoomLevel)
+      if (relativeFontSize >= this.options.fontSizeMaxVisible) {
+        fontSize = Number(this.options.fontSizeMaxVisible) * this.networkScaleInv;
+      }
+
+      // fade in when relative scale is between threshold and threshold - 1
+      var fontColor = this.options.fontColor || "#000000";
+      var strokecolor = this.options.fontStrokeColor;
+      if (relativeFontSize <= this.options.fontDrawThreshold) {
+        var opacity = Math.max(0,Math.min(1,1 - (this.options.fontDrawThreshold - relativeFontSize)));
+        fontColor   = util.overrideOpacity(fontColor,   opacity);
+        strokecolor = util.overrideOpacity(strokecolor, opacity);
+
+      }
+
+      ctx.font = (this.selected ? "bold " : "") + fontSize + "px " + this.options.fontFace;
 
       var lines = text.split('\n');
       var lineCount = lines.length;
-      var fontSize = Number(this.options.fontSize);
       var yLine = y + (1 - lineCount) / 2 * fontSize;
       if (labelUnderNode == true) {
         yLine = y + (1 - lineCount) / (2 * fontSize);
@@ -20695,7 +21513,7 @@ return /******/ (function(modules) { // webpackBootstrap
         var lineWidth = ctx.measureText(lines[i]).width;
         width = lineWidth > width ? lineWidth : width;
       }
-      var height = this.options.fontSize * lineCount;
+      var height = fontSize * lineCount;
       var left = x - width / 2;
       var top = y - height / 2;
       if (baseline == "hanging") {
@@ -20712,12 +21530,12 @@ return /******/ (function(modules) { // webpackBootstrap
       }
 
       // draw text
-      ctx.fillStyle = this.options.fontColor || "black";
+      ctx.fillStyle = fontColor;
       ctx.textAlign = align || "center";
       ctx.textBaseline = baseline || "middle";
       if (this.options.fontStrokeWidth > 0){
         ctx.lineWidth   = this.options.fontStrokeWidth;
-        ctx.strokeStyle = this.options.fontStrokeColor;
+        ctx.strokeStyle = strokecolor;
         ctx.lineJoin    = 'round';
       }
       for (var i = 0; i < lineCount; i++) {
@@ -20733,10 +21551,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
   Node.prototype.getTextSize = function(ctx) {
     if (this.label !== undefined) {
-      ctx.font = (this.selected ? "bold " : "") + this.options.fontSize + "px " + this.options.fontFace;
+      var fontSize = Number(this.options.fontSize);
+      if (fontSize * this.networkScale > this.options.fontSizeMaxVisible) {
+        fontSize = Number(this.options.fontSizeMaxVisible) * this.networkScaleInv;
+      }
+      ctx.font = (this.selected ? "bold " : "") + fontSize + "px " + this.options.fontFace;
 
       var lines = this.label.split('\n'),
-          height = (Number(this.options.fontSize) + 4) * lines.length,
+          height = (fontSize + 4) * lines.length,
           width = 0;
 
       for (var i = 0, iMax = lines.length; i < iMax; i++) {
@@ -20879,8 +21701,9 @@ return /******/ (function(modules) { // webpackBootstrap
     this.x = 0;
     this.y = 0;
     this.padding = 5;
+    this.hidden = false;
 
-    if (x !== undefined && y !== undefined ) {
+    if (x !== undefined && y !== undefined) {
       this.setPosition(x, y);
     }
     if (text !== undefined) {
@@ -20888,21 +21711,13 @@ return /******/ (function(modules) { // webpackBootstrap
     }
 
     // create the frame
-    this.frame = document.createElement("div");
-    var styleAttr = this.frame.style;
-    styleAttr.position = "absolute";
-    styleAttr.visibility = "hidden";
-    styleAttr.border = "1px solid " + style.color.border;
-    styleAttr.color = style.fontColor;
-    styleAttr.fontSize = style.fontSize + "px";
-    styleAttr.fontFamily = style.fontFace;
-    styleAttr.padding = this.padding + "px";
-    styleAttr.backgroundColor = style.color.background;
-    styleAttr.borderRadius = "3px";
-    styleAttr.MozBorderRadius = "3px";
-    styleAttr.WebkitBorderRadius = "3px";
-    styleAttr.boxShadow = "3px 3px 10px rgba(128, 128, 128, 0.5)";
-    styleAttr.whiteSpace = "nowrap";
+    this.frame = document.createElement('div');
+    this.frame.className = 'network-tooltip';
+    this.frame.style.color           = style.fontColor;
+    this.frame.style.backgroundColor = style.color.background;
+    this.frame.style.borderColor     = style.color.border;
+    this.frame.style.fontSize        = style.fontSize + 'px';
+    this.frame.style.fontFamily      = style.fontFace;
     this.container.appendChild(this.frame);
   }
 
@@ -20963,6 +21778,7 @@ return /******/ (function(modules) { // webpackBootstrap
       this.frame.style.left = left + "px";
       this.frame.style.top = top + "px";
       this.frame.style.visibility = "visible";
+      this.hidden = false;
     }
     else {
       this.hide();
@@ -20973,6 +21789,7 @@ return /******/ (function(modules) { // webpackBootstrap
    * Hide the popup window
    */
   Popup.prototype.hide = function () {
+    this.hidden = true;
     this.frame.style.visibility = "hidden";
   };
 
@@ -21912,8 +22729,10 @@ return /******/ (function(modules) { // webpackBootstrap
   var DataView = __webpack_require__(4);
   var Range = __webpack_require__(17);
   var ItemSet = __webpack_require__(32);
+  var TimeAxis = __webpack_require__(35);
   var Activator = __webpack_require__(53);
   var DateUtil = __webpack_require__(15);
+  var CustomTime = __webpack_require__(27);
 
   /**
    * Create a timeline visualization
@@ -21932,7 +22751,7 @@ return /******/ (function(modules) { // webpackBootstrap
    * top, bottom, content, and background panel.
    * @param {Element} container  The container element where the Core will
    *                             be attached.
-   * @private
+   * @protected
    */
   Core.prototype._create = function (container) {
     this.dom = {};
@@ -21960,7 +22779,7 @@ return /******/ (function(modules) { // webpackBootstrap
     this.dom.background.className           = 'vispanel background';
     this.dom.backgroundVertical.className   = 'vispanel background vertical';
     this.dom.backgroundHorizontal.className = 'vispanel background horizontal';
-    this.dom.centerContainer.className      = 'vispanel center';
+    this.dom.centerContainer.className      = 'vispanel center jooo';
     this.dom.leftContainer.className        = 'vispanel left';
     this.dom.rightContainer.className       = 'vispanel right';
     this.dom.top.className                  = 'vispanel top';
@@ -21995,7 +22814,7 @@ return /******/ (function(modules) { // webpackBootstrap
     this.dom.rightContainer.appendChild(this.dom.shadowTopRight);
     this.dom.rightContainer.appendChild(this.dom.shadowBottomRight);
 
-    this.on('rangechange', this.redraw.bind(this));
+    this.on('rangechange', this._redraw.bind(this));
     this.on('touch', this._onTouch.bind(this));
     this.on('pinch', this._onPinch.bind(this));
     this.on('dragstart', this._onDragStart.bind(this));
@@ -22008,13 +22827,13 @@ return /******/ (function(modules) { // webpackBootstrap
         if (!me._redrawTimer) {
           me._redrawTimer = setTimeout(function () {
             me._redrawTimer = null;
-            me.redraw();
+            me._redraw();
           }, 0)
         }
       }
       else {
         // redraw immediately
-        me.redraw();
+        me._redraw();
       }
     });
 
@@ -22098,6 +22917,28 @@ return /******/ (function(modules) { // webpackBootstrap
       var fields = ['width', 'height', 'minHeight', 'maxHeight', 'autoResize', 'start', 'end', 'orientation', 'clickToUse', 'dataAttributes', 'hiddenDates'];
       util.selectiveExtend(fields, this.options, options);
 
+      if (this.options.orientation === 'both') {
+        if (!this.timeAxis2) {
+          var timeAxis2 = this.timeAxis2 = new TimeAxis(this.body);
+          timeAxis2.setOptions = function (options) {
+            var _options = options ? util.extend({}, options) : {};
+            _options.orientation = 'top'; // override the orientation option, always top
+            TimeAxis.prototype.setOptions.call(timeAxis2, _options);
+          };
+          this.components.push(timeAxis2);
+        }
+      }
+      else {
+        if (this.timeAxis2) {
+          var index = this.components.indexOf(this.timeAxis2);
+          if (index !== -1) {
+            this.components.splice(index, 1);
+          }
+          this.timeAxis2.destroy();
+          this.timeAxis2 = null;
+        }
+      }
+
       if ('hiddenDates' in this.options) {
         DateUtil.convertHiddenOptions(this.body, this.options.hiddenDates);
       }
@@ -22125,13 +22966,8 @@ return /******/ (function(modules) { // webpackBootstrap
       component.setOptions(options);
     });
 
-    // TODO: remove deprecation error one day (deprecated since version 0.8.0)
-    if (options && options.order) {
-      throw new Error('Option order is deprecated. There is no replacement for this feature.');
-    }
-
     // redraw everything
-    this.redraw();
+    this._redraw();
   };
 
   /**
@@ -22188,25 +23024,123 @@ return /******/ (function(modules) { // webpackBootstrap
   /**
    * Set a custom time bar
    * @param {Date} time
+   * @param {int} id
    */
-  Core.prototype.setCustomTime = function (time) {
+  Core.prototype.setCustomTime = function (time, id) {
     if (!this.customTime) {
       throw new Error('Cannot get custom time: Custom time bar is not enabled');
     }
 
-    this.customTime.setCustomTime(time);
+    var barId = id || 0;
+
+    this.components.forEach(function (element, index, components) {
+      if (element instanceof CustomTime && element.options.id === barId) {
+        element.setCustomTime(time);
+      }
+    });
   };
 
   /**
    * Retrieve the current custom time.
    * @return {Date} customTime
+   * @param {int} id
    */
-  Core.prototype.getCustomTime = function() {
+  Core.prototype.getCustomTime = function(id) {
     if (!this.customTime) {
       throw new Error('Cannot get custom time: Custom time bar is not enabled');
     }
 
-    return this.customTime.getCustomTime();
+    var barId = id || 0,
+        customTime = this.customTime.getCustomTime();
+
+    this.components.forEach(function (element, index, components) {
+      if (element instanceof CustomTime && element.options.id === barId) {
+        customTime = element.getCustomTime();
+      }
+    });
+
+    return customTime;
+  };
+
+  /**
+   * Add custom vertical bar
+   * @param {Date | String | Number} time  A Date, unix timestamp, or
+   *                                      ISO date string. Time point where the new bar should be placed
+   * @param {Number | String} ID of the new bar
+   * @return {Number | String} ID of the new bar
+   */
+  Core.prototype.addCustomTime = function (time, id) {
+    if (!this.currentTime) {
+      throw new Error('Option showCurrentTime must be true');
+    }
+
+    if (time === undefined) {
+      throw new Error('Time parameter for the custom bar must be provided');
+    }
+
+    var ts = util.convert(time, 'Date').valueOf(),
+        numIds, customTime, customBarId;
+
+    // All bar IDs are kept in 1 array, mixed types
+    // Bar with ID 0 is the default bar.
+    if (!this.customBarIds || this.customBarIds.constructor !== Array) {
+      this.customBarIds = [0];
+    }
+
+    // If the ID is not provided, generate one, otherwise just use it
+    if (id === undefined) {
+
+      numIds = this.customBarIds.filter(function (element) {
+        return util.isNumber(element);
+      });
+
+      customBarId = numIds.length > 0 ? Math.max.apply(null, numIds) + 1 : 1;
+
+    } else {
+      
+      // Check for duplicates
+      this.customBarIds.forEach(function (element) {
+        if (element === id) {
+          throw new Error('Custom time ID already exists');
+        }
+      });
+
+      customBarId = id;
+    }
+
+    this.customBarIds.push(customBarId);
+
+    customTime = new CustomTime(this.body, {
+      showCustomTime : true,
+      time : ts,
+      id : customBarId
+    });
+
+    this.components.push(customTime);
+    this.redraw();
+
+    return customBarId;
+  };
+
+  /**
+   * Remove previously added custom bar
+   * @param {int} id ID of the custom bar to be removed
+   * @return {boolean} True if the bar exists and is removed, false otherwise
+   */
+  Core.prototype.removeCustomTime = function (id) {
+
+    var me = this;
+
+    this.components.forEach(function (bar, index, components) {
+      if (bar instanceof CustomTime && bar.options.id === id) {
+        // Only the lines added by the user will be removed
+        if (bar.options.id !== 0) {
+          me.customBarIds.splice(me.customBarIds.indexOf(id), 1);
+          components.splice(index, 1);
+          bar.destroy();
+        }
+      }
+    });
   };
 
 
@@ -22305,6 +23239,7 @@ return /******/ (function(modules) { // webpackBootstrap
    * start or only end. Syntax:
    *
    *     TimeLine.setWindow(start, end)
+   *     TimeLine.setWindow(start, end, options)
    *     TimeLine.setWindow(range)
    *
    * Where start and end can be a Date, number, or string, and range is an
@@ -22320,12 +23255,14 @@ return /******/ (function(modules) { // webpackBootstrap
    *                                 for the animation. Default duration is 500 ms.
    */
   Core.prototype.setWindow = function(start, end, options) {
-    var animate = (options && options.animate !== undefined) ? options.animate : true;
+    var animate;
     if (arguments.length == 1) {
       var range = arguments[0];
+      animate = (range.animate !== undefined) ? range.animate : true;
       this.range.setRange(range.start, range.end, animate);
     }
     else {
+      animate = (options && options.animate !== undefined) ? options.animate : true;
       this.range.setRange(start, end, animate);
     }
   };
@@ -22364,10 +23301,18 @@ return /******/ (function(modules) { // webpackBootstrap
   };
 
   /**
-   * Force a redraw of the Core. Can be useful to manually redraw when
-   * option autoResize=false
+   * Force a redraw. Can be overridden by implementations of Core
    */
   Core.prototype.redraw = function() {
+    this._redraw();
+  };
+
+  /**
+   * Redraw for internal use. Redraws all components. See also the public
+   * method redraw.
+   * @protected
+   */
+  Core.prototype._redraw = function() {
     var resized = false;
     var options = this.options;
     var props = this.props;
@@ -22518,7 +23463,7 @@ return /******/ (function(modules) { // webpackBootstrap
       var MAX_REDRAWS = 3; // maximum number of consecutive redraws
       if (this.redrawCount < MAX_REDRAWS) {
         this.redrawCount++;
-        this.redraw();
+        this._redraw();
       }
       else {
         console.log('WARNING: infinite loop in redraw?');
@@ -22566,7 +23511,7 @@ return /******/ (function(modules) { // webpackBootstrap
    * Convert a position on screen (pixels) to a datetime
    * @param {int}     x    Position on the screen in pixels
    * @return {Date}   time The datetime the corresponds with given position x
-   * @private
+   * @protected
    */
   // TODO: move this function to Range
   Core.prototype._toTime = function(x) {
@@ -22577,7 +23522,7 @@ return /******/ (function(modules) { // webpackBootstrap
    * Convert a position on the global screen (pixels) to a datetime
    * @param {int}     x    Position on the screen in pixels
    * @return {Date}   time The datetime the corresponds with given position x
-   * @private
+   * @protected
    */
   // TODO: move this function to Range
   Core.prototype._toGlobalTime = function(x) {
@@ -22591,7 +23536,7 @@ return /******/ (function(modules) { // webpackBootstrap
    * @param {Date}   time A date
    * @return {int}   x    The position on the screen in pixels which corresponds
    *                      with the given date.
-   * @private
+   * @protected
    */
   // TODO: move this function to Range
   Core.prototype._toScreen = function(time) {
@@ -22606,7 +23551,7 @@ return /******/ (function(modules) { // webpackBootstrap
    * @param {Date}   time A date
    * @return {int}   x    The position on root in pixels which corresponds
    *                      with the given date.
-   * @private
+   * @protected
    */
   // TODO: move this function to Range
   Core.prototype._toGlobalScreen = function(time) {
@@ -22726,7 +23671,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
     if (newScrollTop != oldScrollTop) {
-      this.redraw(); // TODO: this causes two redraws when dragging, the other is triggered by rangechange already
+      this._redraw(); // TODO: this causes two redraws when dragging, the other is triggered by rangechange already
       this.emit("verticalDrag");
     }
   };
@@ -23333,7 +24278,7 @@ return /******/ (function(modules) { // webpackBootstrap
   Points.draw = function (dataset, group, framework, offset) {
     if (offset === undefined) {offset = 0;}
     for (var i = 0; i < dataset.length; i++) {
-      DOMutil.drawPoint(dataset[i].x + offset, dataset[i].y, group, framework.svgElements, framework.svg);
+      DOMutil.drawPoint(dataset[i].x + offset, dataset[i].y, group, framework.svgElements, framework.svg, dataset[i].label);
     }
   };
 
@@ -27389,7 +28334,7 @@ return /******/ (function(modules) { // webpackBootstrap
           makeGlobal();
       }
   }).call(this);
-  
+
   /* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(71)(module)))
 
 /***/ },
@@ -29890,6 +30835,9 @@ return /******/ (function(modules) { // webpackBootstrap
       this.backupConstants = {};
       util.deepExtend(this.backupConstants,this.constants);
 
+      var maxGravitational = Math.max(20000, (-1 * this.constants.physics.barnesHut.gravitationalConstant) * 10);
+      var maxSpring = Math.min(0.05, this.constants.physics.barnesHut.springConstant * 10)
+
       var hierarchicalLayoutDirections = ["LR", "RL", "UD", "DU"];
       this.physicsConfiguration = document.createElement('div');
       this.physicsConfiguration.className = "PhysicsConfiguration";
@@ -29904,16 +30852,16 @@ return /******/ (function(modules) { // webpackBootstrap
         '<table id="graph_BH_table" style="display:none">' +
         '<tr><td><b>Barnes Hut</b></td></tr>' +
         '<tr>' +
-        '<td width="150px">gravitationalConstant</td><td>0</td><td><input type="range" min="0" max="20000" value="' + (-1 * this.constants.physics.barnesHut.gravitationalConstant) + '" step="25" style="width:300px" id="graph_BH_gc"></td><td  width="50px">-20000</td><td><input value="' + (-1 * this.constants.physics.barnesHut.gravitationalConstant) + '" id="graph_BH_gc_value" style="width:60px"></td>' +
+        '<td width="150px">gravitationalConstant</td><td>0</td><td><input type="range" min="0" max="'+maxGravitational+'" value="' + (-1 * this.constants.physics.barnesHut.gravitationalConstant) + '" step="25" style="width:300px" id="graph_BH_gc"></td><td  width="50px">-'+maxGravitational+'</td><td><input value="' + (this.constants.physics.barnesHut.gravitationalConstant) + '" id="graph_BH_gc_value" style="width:60px"></td>' +
         '</tr>' +
         '<tr>' +
-        '<td width="150px">centralGravity</td><td>0</td><td><input type="range" min="0" max="3"  value="' + this.constants.physics.barnesHut.centralGravity + '" step="0.05"  style="width:300px" id="graph_BH_cg"></td><td>3</td><td><input value="' + this.constants.physics.barnesHut.centralGravity + '" id="graph_BH_cg_value" style="width:60px"></td>' +
+        '<td width="150px">centralGravity</td><td>0</td><td><input type="range" min="0" max="6"  value="' + this.constants.physics.barnesHut.centralGravity + '" step="0.05"  style="width:300px" id="graph_BH_cg"></td><td>3</td><td><input value="' + this.constants.physics.barnesHut.centralGravity + '" id="graph_BH_cg_value" style="width:60px"></td>' +
         '</tr>' +
         '<tr>' +
         '<td width="150px">springLength</td><td>0</td><td><input type="range" min="0" max="500" value="' + this.constants.physics.barnesHut.springLength + '" step="1" style="width:300px" id="graph_BH_sl"></td><td>500</td><td><input value="' + this.constants.physics.barnesHut.springLength + '" id="graph_BH_sl_value" style="width:60px"></td>' +
         '</tr>' +
         '<tr>' +
-        '<td width="150px">springConstant</td><td>0</td><td><input type="range" min="0" max="0.5" value="' + this.constants.physics.barnesHut.springConstant + '" step="0.001" style="width:300px" id="graph_BH_sc"></td><td>0.5</td><td><input value="' + this.constants.physics.barnesHut.springConstant + '" id="graph_BH_sc_value" style="width:60px"></td>' +
+        '<td width="150px">springConstant</td><td>0</td><td><input type="range" min="0" max="'+maxSpring+'" value="' + this.constants.physics.barnesHut.springConstant + '" step="0.0001" style="width:300px" id="graph_BH_sc"></td><td>'+maxSpring+'</td><td><input value="' + this.constants.physics.barnesHut.springConstant + '" id="graph_BH_sc_value" style="width:60px"></td>' +
         '</tr>' +
         '<tr>' +
         '<td width="150px">damping</td><td>0</td><td><input type="range" min="0" max="0.3" value="' + this.constants.physics.barnesHut.damping + '" step="0.005" style="width:300px" id="graph_BH_damp"></td><td>0.3</td><td><input value="' + this.constants.physics.barnesHut.damping + '" id="graph_BH_damp_value" style="width:60px"></td>' +
@@ -30309,7 +31257,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
    // this is called here because if clusterin is disabled, the start and stabilize are called in
    // the setData function.
-   if (this.stabilize) {
+   if (this.constants.stabilize == true) {
      this._stabilize();
    }
    this.start();
@@ -30329,14 +31277,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
     // we first cluster the hubs, then we pull in the outliers, repeat
     while (numberOfNodes > maxNumberOfNodes && level < maxLevels) {
-      if (level % 3 == 0) {
+      if (level % 3 == 0.0) {
         this.forceAggregateHubs(true);
         this.normalizeClusterLevels();
       }
       else {
         this.increaseClusterLevel(); // this also includes a cluster normalization
       }
-
+      this.forceAggregateHubs(true);
       numberOfNodes = this.nodeIndices.length;
       level += 1;
     }
@@ -30349,7 +31297,7 @@ return /******/ (function(modules) { // webpackBootstrap
   };
 
   /**
-   * This function can be called to open up a specific cluster. It is only called by
+   * This function can be called to open up a specific cluster.
    * It will unpack the cluster back one level.
    *
    * @param node    | Node object: cluster to open.
@@ -30372,9 +31320,8 @@ return /******/ (function(modules) { // webpackBootstrap
     else {
       this._expandClusterNode(node,false,true);
 
-      // update the index list, dynamic edges and labels
+      // update the index list and labels
       this._updateNodeIndexList();
-      this._updateDynamicEdges();
       this._updateCalculationNodes();
       this.updateLabels();
     }
@@ -30390,7 +31337,7 @@ return /******/ (function(modules) { // webpackBootstrap
    * This calls the updateClustes with default arguments
    */
   exports.updateClustersDefault = function() {
-    if (this.constants.clustering.enabled == true) {
+    if (this.constants.clustering.enabled == true && this.constants.clustering.clusterByZoom == true) {
       this.updateClusters(0,false,false);
     }
   };
@@ -30432,18 +31379,21 @@ return /******/ (function(modules) { // webpackBootstrap
     var isMovingBeforeClustering = this.moving;
     var amountOfNodes = this.nodeIndices.length;
 
+    var detectedZoomingIn = (this.previousScale < this.scale && zoomDirection == 0);
+    var detectedZoomingOut = (this.previousScale > this.scale && zoomDirection == 0);
+
     // on zoom out collapse the sector if the scale is at the level the sector was made
-    if (this.previousScale > this.scale && zoomDirection == 0) {
+    if (detectedZoomingOut == true) {
       this._collapseSector();
     }
 
     // check if we zoom in or out
-    if (this.previousScale > this.scale || zoomDirection == -1) { // zoom out
+    if (detectedZoomingOut == true || zoomDirection == -1) { // zoom out
       // forming clusters when forced pulls outliers in. When not forced, the edge length of the
       // outer nodes determines if it is being clustered
       this._formClusters(force);
     }
-    else if (this.previousScale < this.scale || zoomDirection == 1) { // zoom in
+    else if (detectedZoomingIn == true || zoomDirection == 1) { // zoom in
       if (force == true) {
         // _openClusters checks for each node if the formationScale of the cluster is smaller than
         // the current scale and if so, declusters. When forced, all clusters are reduced by one step
@@ -30451,27 +31401,27 @@ return /******/ (function(modules) { // webpackBootstrap
       }
       else {
         // if a cluster takes up a set percentage of the active window
-        this._openClustersBySize();
+        //this._openClustersBySize();
+        this._openClusters(recursive, false);
       }
     }
     this._updateNodeIndexList();
 
     // if a cluster was NOT formed and the user zoomed out, we try clustering by hubs
-    if (this.nodeIndices.length == amountOfNodes && (this.previousScale > this.scale || zoomDirection == -1))  {
+    if (this.nodeIndices.length == amountOfNodes && (detectedZoomingOut == true || zoomDirection == -1))  {
       this._aggregateHubs(force);
       this._updateNodeIndexList();
     }
 
     // we now reduce chains.
-    if (this.previousScale > this.scale || zoomDirection == -1) { // zoom out
+    if (detectedZoomingOut == true || zoomDirection == -1) { // zoom out
       this.handleChains();
       this._updateNodeIndexList();
     }
 
     this.previousScale = this.scale;
 
-    // rest of the update the index list, dynamic edges and labels
-    this._updateDynamicEdges();
+    // update labels
     this.updateLabels();
 
     // if a cluster was formed, we increase the clusterSession
@@ -30516,7 +31466,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
   /**
-   * This function is fired by keypress. It forces hubs to form.
+   * This function forces hubs to form.
    *
    */
   exports.forceAggregateHubs = function(doNotStart) {
@@ -30527,8 +31477,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
     // update the index list, dynamic edges and labels
     this._updateNodeIndexList();
-    this._updateDynamicEdges();
     this.updateLabels();
+
+    this._updateCalculationNodes();
 
     // if a cluster was formed, we increase the clusterSession
     if (this.nodeIndices.length != amountOfNodes) {
@@ -30549,13 +31500,15 @@ return /******/ (function(modules) { // webpackBootstrap
    * @private
    */
   exports._openClustersBySize = function() {
-    for (var nodeId in this.nodes) {
-      if (this.nodes.hasOwnProperty(nodeId)) {
-        var node = this.nodes[nodeId];
-        if (node.inView() == true) {
-          if ((node.width*this.scale > this.constants.clustering.screenSizeThreshold * this.frame.canvas.clientWidth) ||
-              (node.height*this.scale > this.constants.clustering.screenSizeThreshold * this.frame.canvas.clientHeight)) {
-            this.openCluster(node);
+    if (this.constants.clustering.clusterByZoom == true) {
+      for (var nodeId in this.nodes) {
+        if (this.nodes.hasOwnProperty(nodeId)) {
+          var node = this.nodes[nodeId];
+          if (node.inView() == true) {
+            if ((node.width * this.scale > this.constants.clustering.screenSizeThreshold * this.frame.canvas.clientWidth) ||
+              (node.height * this.scale > this.constants.clustering.screenSizeThreshold * this.frame.canvas.clientHeight)) {
+              this.openCluster(node);
+            }
           }
         }
       }
@@ -30591,12 +31544,12 @@ return /******/ (function(modules) { // webpackBootstrap
   exports._expandClusterNode = function(parentNode, recursive, force, openAll) {
     // first check if node is a cluster
     if (parentNode.clusterSize > 1) {
-      // this means that on a double tap event or a zoom event, the cluster fully unpacks if it is smaller than 20
-      if (parentNode.clusterSize < this.constants.clustering.sectorThreshold) {
-        openAll = true;
+      if (openAll === undefined) {
+        openAll = false;
       }
-      recursive = openAll ? true : recursive;
+      // this means that on a double tap event or a zoom event, the cluster fully unpacks if it is smaller than 20
 
+      recursive = openAll || recursive;
       // if the last child has been added on a smaller scale than current scale decluster
       if (parentNode.formationScale < this.scale || force == true) {
         // we will check if any of the contained child nodes should be removed from the cluster
@@ -30639,7 +31592,7 @@ return /******/ (function(modules) { // webpackBootstrap
    * @private
    */
   exports._expelChildFromParent = function(parentNode, containedNodeId, recursive, force, openAll) {
-    var childNode = parentNode.containedNodes[containedNodeId];
+    var childNode = parentNode.containedNodes[containedNodeId]
 
     // if child node has been added on smaller scale than current, kick out
     if (childNode.formationScale < this.scale || force == true) {
@@ -30662,7 +31615,6 @@ return /******/ (function(modules) { // webpackBootstrap
       parentNode.options.mass -= childNode.options.mass;
       parentNode.clusterSize -= childNode.clusterSize;
       parentNode.options.fontSize = Math.min(this.constants.clustering.maxFontSize, this.constants.nodes.fontSize + this.constants.clustering.fontSizeMultiplier*(parentNode.clusterSize-1));
-      parentNode.dynamicEdgesLength = parentNode.dynamicEdges.length;
 
       // place the child node near the parent, not at the exact same location to avoid chaos in the system
       childNode.x = parentNode.x + parentNode.growthIndicator * (0.5 - Math.random());
@@ -30730,7 +31682,9 @@ return /******/ (function(modules) { // webpackBootstrap
    */
   exports._formClusters = function(force) {
     if (force == false) {
-      this._formClustersByZoom();
+      if (this.constants.clustering.clusterByZoom == true) {
+        this._formClustersByZoom();
+      }
     }
     else {
       this._forceClustersByZoom();
@@ -30744,8 +31698,8 @@ return /******/ (function(modules) { // webpackBootstrap
    * @private
    */
   exports._formClustersByZoom = function() {
-    var dx,dy,length,
-        minLength = this.constants.clustering.clusterEdgeThreshold/this.scale;
+    var dx,dy,length;
+    var minLength = this.constants.clustering.clusterEdgeThreshold/this.scale;
 
     // check if any edges are shorter than minLength and start the clustering
     // the clustering favours the node with the larger mass
@@ -30768,10 +31722,10 @@ return /******/ (function(modules) { // webpackBootstrap
                 childNode = edge.from;
               }
 
-              if (childNode.dynamicEdgesLength == 1) {
+              if (childNode.dynamicEdges.length == 1) {
                 this._addToCluster(parentNode,childNode,false);
               }
-              else if (parentNode.dynamicEdgesLength == 1) {
+              else if (parentNode.dynamicEdges.length == 1) {
                 this._addToCluster(childNode,parentNode,false);
               }
             }
@@ -30794,10 +31748,9 @@ return /******/ (function(modules) { // webpackBootstrap
         var childNode = this.nodes[nodeId];
 
         // the edges can be swallowed by another decrease
-        if (childNode.dynamicEdgesLength == 1 && childNode.dynamicEdges.length != 0) {
+        if (childNode.dynamicEdges.length == 1) {
           var edge = childNode.dynamicEdges[0];
           var parentNode = (edge.toId == childNode.id) ? this.nodes[edge.fromId] : this.nodes[edge.toId];
-
           // group to the largest node
           if (childNode.id != parentNode.id) {
             if (parentNode.options.mass > childNode.options.mass) {
@@ -30877,9 +31830,13 @@ return /******/ (function(modules) { // webpackBootstrap
     if (absorptionSizeOffset === undefined) {
       absorptionSizeOffset = 0;
     }
+    //this.hubThreshold = 43
+    //if (hubNode.dynamicEdgesLength < 0) {
+    // console.error(hubNode.dynamicEdgesLength, this.hubThreshold, onlyEqual)
+    //}
     // we decide if the node is a hub
-    if ((hubNode.dynamicEdgesLength >= this.hubThreshold && onlyEqual == false) ||
-      (hubNode.dynamicEdgesLength == this.hubThreshold && onlyEqual == true)) {
+    if ((hubNode.dynamicEdges.length >= this.hubThreshold && onlyEqual == false) ||
+      (hubNode.dynamicEdges.length == this.hubThreshold && onlyEqual == true)) {
       // initialize variables
       var dx,dy,length;
       var minLength = this.constants.clustering.clusterEdgeThreshold/this.scale;
@@ -30892,7 +31849,7 @@ return /******/ (function(modules) { // webpackBootstrap
         edgesIdarray.push(hubNode.dynamicEdges[j].id);
       }
 
-      // if the hub clustering is not forces, we check if one of the edges connected
+      // if the hub clustering is not forced, we check if one of the edges connected
       // to a cluster is small enough based on the constants.clustering.clusterEdgeThreshold
       if (force == false) {
         allowCluster = false;
@@ -30917,19 +31874,31 @@ return /******/ (function(modules) { // webpackBootstrap
 
       // start the clustering if allowed
       if ((!force && allowCluster) || force) {
-        // we loop over all edges INITIALLY connected to this hub
+        var children = [];
+        var childrenIds = {};
+        // we loop over all edges INITIALLY connected to this hub to get a list of the childNodes
         for (j = 0; j < amountOfInitialEdges; j++) {
           edge = this.edges[edgesIdarray[j]];
-          // the edge can be clustered by this function in a previous loop
-          if (edge !== undefined) {
-            var childNode = this.nodes[(edge.fromId == hubNode.id) ? edge.toId : edge.fromId];
-            // we do not want hubs to merge with other hubs nor do we want to cluster itself.
-            if ((childNode.dynamicEdges.length <= (this.hubThreshold + absorptionSizeOffset)) &&
-                (childNode.id != hubNode.id)) {
-              this._addToCluster(hubNode,childNode,force);
-            }
+          var childNode = this.nodes[(edge.fromId == hubNode.id) ? edge.toId : edge.fromId];
+          if (childrenIds[childNode.id] === undefined) {
+            childrenIds[childNode.id] = true;
+            children.push(childNode);
           }
         }
+
+        for (j = 0; j < children.length; j++) {
+          var childNode = children[j];
+          // we do not want hubs to merge with other hubs nor do we want to cluster itself.
+          if ((childNode.dynamicEdges.length <= (this.hubThreshold + absorptionSizeOffset)) &&
+            (childNode.id != hubNode.id)) {
+            this._addToCluster(hubNode,childNode,force);
+
+          }
+          else {
+            //console.log("WILL NOT MERGE:",childNode.dynamicEdges.length , (this.hubThreshold + absorptionSizeOffset))
+          }
+        }
+
       }
     }
   };
@@ -30947,14 +31916,16 @@ return /******/ (function(modules) { // webpackBootstrap
   exports._addToCluster = function(parentNode, childNode, force) {
     // join child node in the parent node
     parentNode.containedNodes[childNode.id] = childNode;
-
+    //console.log(parentNode.id, childNode.id)
     // manage all the edges connected to the child and parent nodes
     for (var i = 0; i < childNode.dynamicEdges.length; i++) {
       var edge = childNode.dynamicEdges[i];
       if (edge.toId == parentNode.id || edge.fromId == parentNode.id) { // edge connected to parentNode
+        //console.log("COLLECT",parentNode.id, childNode.id, edge.toId, edge.fromId)
         this._addToContainedEdges(parentNode,childNode,edge);
       }
       else {
+        //console.log("REWIRE",parentNode.id, childNode.id, edge.toId, edge.fromId)
         this._connectEdgeToCluster(parentNode,childNode,edge);
       }
     }
@@ -30982,7 +31953,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
     // forced clusters only open from screen size and double tap
     if (force == true) {
-      // parentNode.formationScale = Math.pow(1 - (1.0/11.0),this.clusterSession+3);
       parentNode.formationScale = 0;
     }
     else {
@@ -31007,36 +31977,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
   /**
-   * This function will apply the changes made to the remainingEdges during the formation of the clusters.
-   * This is a seperate function to allow for level-wise collapsing of the node barnesHutTree.
-   * It has to be called if a level is collapsed. It is called by _formClusters().
-   * @private
-   */
-  exports._updateDynamicEdges = function() {
-    for (var i = 0; i < this.nodeIndices.length; i++) {
-      var node = this.nodes[this.nodeIndices[i]];
-      node.dynamicEdgesLength = node.dynamicEdges.length;
-
-      // this corrects for multiple edges pointing at the same other node
-      var correction = 0;
-      if (node.dynamicEdgesLength > 1) {
-        for (var j = 0; j < node.dynamicEdgesLength - 1; j++) {
-          var edgeToId = node.dynamicEdges[j].toId;
-          var edgeFromId = node.dynamicEdges[j].fromId;
-          for (var k = j+1; k < node.dynamicEdgesLength; k++) {
-            if ((node.dynamicEdges[k].toId == edgeToId && node.dynamicEdges[k].fromId == edgeFromId) ||
-                (node.dynamicEdges[k].fromId == edgeToId && node.dynamicEdges[k].toId == edgeFromId)) {
-              correction += 1;
-            }
-          }
-        }
-      }
-      node.dynamicEdgesLength -= correction;
-    }
-  };
-
-
-  /**
    * This adds an edge from the childNode to the contained edges of the parent node
    *
    * @param parentNode    | Node object
@@ -31046,7 +31986,7 @@ return /******/ (function(modules) { // webpackBootstrap
    */
   exports._addToContainedEdges = function(parentNode, childNode, edge) {
     // create an array object if it does not yet exist for this childNode
-    if (!(parentNode.containedEdges.hasOwnProperty(childNode.id))) {
+    if (parentNode.containedEdges[childNode.id] === undefined) {
       parentNode.containedEdges[childNode.id] = []
     }
     // add this edge to the list
@@ -31085,7 +32025,6 @@ return /******/ (function(modules) { // webpackBootstrap
         edge.toId = parentNode.id;
       }
       else {          // edge connected to other node with the "from" side
-
         edge.originalFromId.push(childNode.id);
         edge.from = parentNode;
         edge.fromId = parentNode.id;
@@ -31186,12 +32125,14 @@ return /******/ (function(modules) { // webpackBootstrap
    * @private
    */
   exports._validateEdges = function(parentNode) {
+    var dynamicEdges = []
     for (var i = 0; i < parentNode.dynamicEdges.length; i++) {
       var edge = parentNode.dynamicEdges[i];
-      if (parentNode.id != edge.toId && parentNode.id != edge.fromId) {
-        parentNode.dynamicEdges.splice(i,1);
+      if (parentNode.id == edge.toId || parentNode.id == edge.fromId) {
+        dynamicEdges.push(edge);
       }
     }
+    parentNode.dynamicEdges = dynamicEdges;
   };
 
 
@@ -31259,7 +32200,7 @@ return /******/ (function(modules) { // webpackBootstrap
   //    for (nodeId in this.nodes) {
   //      if (this.nodes.hasOwnProperty(nodeId)) {
   //        node = this.nodes[nodeId];
-  //        node.label = String(node.level);
+  //        node.label = String(node.clusterSize + ":" + node.dynamicEdges.length);
   //      }
   //    }
 
@@ -31299,7 +32240,6 @@ return /******/ (function(modules) { // webpackBootstrap
         }
       }
       this._updateNodeIndexList();
-      this._updateDynamicEdges();
       // if a cluster was formed, we increase the clusterSession
       if (this.nodeIndices.length != amountOfNodes) {
         this.clusterSession += 1;
@@ -31360,11 +32300,11 @@ return /******/ (function(modules) { // webpackBootstrap
     for (var i = 0; i < this.nodeIndices.length; i++) {
 
       var node = this.nodes[this.nodeIndices[i]];
-      if (node.dynamicEdgesLength > largestHub) {
-        largestHub = node.dynamicEdgesLength;
+      if (node.dynamicEdges.length > largestHub) {
+        largestHub = node.dynamicEdges.length;
       }
-      average += node.dynamicEdgesLength;
-      averageSquared += Math.pow(node.dynamicEdgesLength,2);
+      average += node.dynamicEdges.length;
+      averageSquared += Math.pow(node.dynamicEdges.length,2);
       hubCounter += 1;
     }
     average = average / hubCounter;
@@ -31398,7 +32338,7 @@ return /******/ (function(modules) { // webpackBootstrap
     var reduceAmount = Math.floor(this.nodeIndices.length * fraction);
     for (var nodeId in this.nodes) {
       if (this.nodes.hasOwnProperty(nodeId)) {
-        if (this.nodes[nodeId].dynamicEdgesLength == 2 && this.nodes[nodeId].dynamicEdges.length >= 2) {
+        if (this.nodes[nodeId].dynamicEdges.length == 2) {
           if (reduceAmount > 0) {
             this._formClusterFromHub(this.nodes[nodeId],true,true,1);
             reduceAmount -= 1;
@@ -31419,7 +32359,7 @@ return /******/ (function(modules) { // webpackBootstrap
     var total = 0;
     for (var nodeId in this.nodes) {
       if (this.nodes.hasOwnProperty(nodeId)) {
-        if (this.nodes[nodeId].dynamicEdgesLength == 2 && this.nodes[nodeId].dynamicEdges.length >= 2) {
+        if (this.nodes[nodeId].dynamicEdges.length == 2) {
           chains += 1;
         }
         total += 1;
@@ -32506,7 +33446,7 @@ return /******/ (function(modules) { // webpackBootstrap
       canvas: {x: this._XconvertDOMtoCanvas(pointer.x), y: this._YconvertDOMtoCanvas(pointer.y)}
     }
     this.emit("click", properties);
-    this._redraw();
+    this._requestRedraw();
   };
 
 
@@ -32550,7 +33490,7 @@ return /******/ (function(modules) { // webpackBootstrap
         this._selectObject(edge,true);
       }
     }
-    this._redraw();
+    this._requestRedraw();
   };
 
 
@@ -32709,6 +33649,7 @@ return /******/ (function(modules) { // webpackBootstrap
   var util = __webpack_require__(1);
   var Node = __webpack_require__(40);
   var Edge = __webpack_require__(37);
+  var Hammer = __webpack_require__(45);
 
   /**
    * clears the toolbar div element of children
@@ -32719,11 +33660,24 @@ return /******/ (function(modules) { // webpackBootstrap
     this._recursiveDOMDelete(this.manipulationDiv);
     this.manipulationDOM = {};
 
+    this._cleanManipulatorHammers();
+
     this._manipulationReleaseOverload = function () {};
     delete this.sectors['support']['nodes']['targetNode'];
     delete this.sectors['support']['nodes']['targetViaNode'];
     this.controlNodesActive = false;
-    this.freezeSimulation = false;
+    this.freezeSimulation(false);
+  };
+
+
+  exports._cleanManipulatorHammers = function() {
+    // clean hammer bindings
+    if (this.manipulationHammers.length != 0) {
+      for (var i = 0; i < this.manipulationHammers.length; i++) {
+        this.manipulationHammers[i].dispose();
+      }
+      this.manipulationHammers = [];
+    }
   };
 
   /**
@@ -32756,13 +33710,12 @@ return /******/ (function(modules) { // webpackBootstrap
       toolbar.style.display="block";
       closeDiv.style.display="block";
       editModeDiv.style.display="none";
-      closeDiv.onclick = this._toggleEditMode.bind(this);
+      this._bindHammerToDiv(closeDiv,'_toggleEditMode');
     }
     else {
       toolbar.style.display="none";
       closeDiv.style.display="none";
       editModeDiv.style.display="block";
-      closeDiv.onclick = null;
     }
     this._createManipulatorBar()
   };
@@ -32778,6 +33731,8 @@ return /******/ (function(modules) { // webpackBootstrap
       this.off('select', this.boundFunction);
     }
 
+    this._cleanManipulatorHammers();
+
     var locale = this.constants.locales[this.constants.locale];
 
     if (this.edgeBeingEdited !== undefined) {
@@ -32792,7 +33747,7 @@ return /******/ (function(modules) { // webpackBootstrap
     this._restoreOverloadedFunctions();
 
     // resume calculation
-    this.freezeSimulation = false;
+    this.freezeSimulation(false);
 
     // reset global variables
     this.blockConnectingEdgeSelection = false;
@@ -32804,9 +33759,10 @@ return /******/ (function(modules) { // webpackBootstrap
         this.manipulationDiv.removeChild(this.manipulationDiv.firstChild);
       }
 
-      this.manipulationDOM['addNodeSpan'] = document.createElement('span');
+      this.manipulationDOM['addNodeSpan'] = document.createElement('div');
       this.manipulationDOM['addNodeSpan'].className = 'network-manipulationUI add';
-      this.manipulationDOM['addNodeLabelSpan'] = document.createElement('span');
+
+      this.manipulationDOM['addNodeLabelSpan'] = document.createElement('div');
       this.manipulationDOM['addNodeLabelSpan'].className = 'network-manipulationLabel';
       this.manipulationDOM['addNodeLabelSpan'].innerHTML = locale['addNode'];
       this.manipulationDOM['addNodeSpan'].appendChild(this.manipulationDOM['addNodeLabelSpan']);
@@ -32814,9 +33770,9 @@ return /******/ (function(modules) { // webpackBootstrap
       this.manipulationDOM['seperatorLineDiv1'] = document.createElement('div');
       this.manipulationDOM['seperatorLineDiv1'].className = 'network-seperatorLine';
 
-      this.manipulationDOM['addEdgeSpan'] = document.createElement('span');
+      this.manipulationDOM['addEdgeSpan'] = document.createElement('div');
       this.manipulationDOM['addEdgeSpan'].className = 'network-manipulationUI connect';
-      this.manipulationDOM['addEdgeLabelSpan'] = document.createElement('span');
+      this.manipulationDOM['addEdgeLabelSpan'] = document.createElement('div');
       this.manipulationDOM['addEdgeLabelSpan'].className = 'network-manipulationLabel';
       this.manipulationDOM['addEdgeLabelSpan'].innerHTML = locale['addEdge'];
       this.manipulationDOM['addEdgeSpan'].appendChild(this.manipulationDOM['addEdgeLabelSpan']);
@@ -32829,9 +33785,9 @@ return /******/ (function(modules) { // webpackBootstrap
         this.manipulationDOM['seperatorLineDiv2'] = document.createElement('div');
         this.manipulationDOM['seperatorLineDiv2'].className = 'network-seperatorLine';
 
-        this.manipulationDOM['editNodeSpan'] = document.createElement('span');
-        this.manipulationDOM['editNodeSpan'].className = 'network-manipulationUI edit';
-        this.manipulationDOM['editNodeLabelSpan'] = document.createElement('span');
+        this.manipulationDOM['editNodeSpan'] = document.createElement('div');
+        this.manipulationDOM['editNodeSpan'].className = 'network-manipulationUI edit node';
+        this.manipulationDOM['editNodeLabelSpan'] = document.createElement('div');
         this.manipulationDOM['editNodeLabelSpan'].className = 'network-manipulationLabel';
         this.manipulationDOM['editNodeLabelSpan'].innerHTML = locale['editNode'];
         this.manipulationDOM['editNodeSpan'].appendChild(this.manipulationDOM['editNodeLabelSpan']);
@@ -32843,9 +33799,9 @@ return /******/ (function(modules) { // webpackBootstrap
         this.manipulationDOM['seperatorLineDiv3'] = document.createElement('div');
         this.manipulationDOM['seperatorLineDiv3'].className = 'network-seperatorLine';
 
-        this.manipulationDOM['editEdgeSpan'] = document.createElement('span');
-        this.manipulationDOM['editEdgeSpan'].className = 'network-manipulationUI edit';
-        this.manipulationDOM['editEdgeLabelSpan'] = document.createElement('span');
+        this.manipulationDOM['editEdgeSpan'] = document.createElement('div');
+        this.manipulationDOM['editEdgeSpan'].className = 'network-manipulationUI edit edge';
+        this.manipulationDOM['editEdgeLabelSpan'] = document.createElement('div');
         this.manipulationDOM['editEdgeLabelSpan'].className = 'network-manipulationLabel';
         this.manipulationDOM['editEdgeLabelSpan'].innerHTML = locale['editEdge'];
         this.manipulationDOM['editEdgeSpan'].appendChild(this.manipulationDOM['editEdgeLabelSpan']);
@@ -32857,9 +33813,9 @@ return /******/ (function(modules) { // webpackBootstrap
         this.manipulationDOM['seperatorLineDiv4'] = document.createElement('div');
         this.manipulationDOM['seperatorLineDiv4'].className = 'network-seperatorLine';
 
-        this.manipulationDOM['deleteSpan'] = document.createElement('span');
+        this.manipulationDOM['deleteSpan'] = document.createElement('div');
         this.manipulationDOM['deleteSpan'].className = 'network-manipulationUI delete';
-        this.manipulationDOM['deleteLabelSpan'] = document.createElement('span');
+        this.manipulationDOM['deleteLabelSpan'] = document.createElement('div');
         this.manipulationDOM['deleteLabelSpan'].className = 'network-manipulationLabel';
         this.manipulationDOM['deleteLabelSpan'].innerHTML = locale['del'];
         this.manipulationDOM['deleteSpan'].appendChild(this.manipulationDOM['deleteLabelSpan']);
@@ -32868,20 +33824,20 @@ return /******/ (function(modules) { // webpackBootstrap
         this.manipulationDiv.appendChild(this.manipulationDOM['deleteSpan']);
       }
 
-
       // bind the icons
-      this.manipulationDOM['addNodeSpan'].onclick = this._createAddNodeToolbar.bind(this);
-      this.manipulationDOM['addEdgeSpan'].onclick = this._createAddEdgeToolbar.bind(this);
+      this._bindHammerToDiv(this.manipulationDOM['addNodeSpan'],'_createAddNodeToolbar');
+      this._bindHammerToDiv(this.manipulationDOM['addEdgeSpan'],'_createAddEdgeToolbar');
+      this._bindHammerToDiv(this.closeDiv,'_toggleEditMode');
+
       if (this._getSelectedNodeCount() == 1 && this.triggerFunctions.edit) {
-        this.manipulationDOM['editNodeSpan'].onclick = this._editNode.bind(this);
+        this._bindHammerToDiv(this.manipulationDOM['editNodeSpan'],'_editNode');
       }
       else if (this._getSelectedEdgeCount() == 1 && this._getSelectedNodeCount() == 0) {
-        this.manipulationDOM['editEdgeSpan'].onclick = this._createEditEdgeToolbar.bind(this);
+        this._bindHammerToDiv(this.manipulationDOM['editEdgeSpan'],'_createEditEdgeToolbar');
       }
       if (this._selectionIsEmpty() == false) {
-        this.manipulationDOM['deleteSpan'].onclick = this._deleteSelected.bind(this);
+        this._bindHammerToDiv(this.manipulationDOM['deleteSpan'],'_deleteSelected');
       }
-      this.closeDiv.onclick = this._toggleEditMode.bind(this);
 
       var me = this;
       this.boundFunction = me._createManipulatorBar;
@@ -32892,19 +33848,25 @@ return /******/ (function(modules) { // webpackBootstrap
         this.editModeDiv.removeChild(this.editModeDiv.firstChild);
       }
 
-      this.manipulationDOM['editModeSpan'] = document.createElement('span');
+      this.manipulationDOM['editModeSpan'] = document.createElement('div');
       this.manipulationDOM['editModeSpan'].className = 'network-manipulationUI edit editmode';
-      this.manipulationDOM['editModeLabelSpan'] = document.createElement('span');
+      this.manipulationDOM['editModeLabelSpan'] = document.createElement('div');
       this.manipulationDOM['editModeLabelSpan'].className = 'network-manipulationLabel';
       this.manipulationDOM['editModeLabelSpan'].innerHTML = locale['edit'];
       this.manipulationDOM['editModeSpan'].appendChild(this.manipulationDOM['editModeLabelSpan']);
 
       this.editModeDiv.appendChild(this.manipulationDOM['editModeSpan']);
 
-      this.manipulationDOM['editModeSpan'].onclick = this._toggleEditMode.bind(this);
+      this._bindHammerToDiv(this.manipulationDOM['editModeSpan'],'_toggleEditMode');
     }
   };
 
+
+  exports._bindHammerToDiv = function(domElement, funct) {
+    var hammer = Hammer(domElement, {prevent_default: true});
+    hammer.on('touch', this[funct].bind(this));
+    this.manipulationHammers.push(hammer);
+  }
 
 
   /**
@@ -32922,9 +33884,9 @@ return /******/ (function(modules) { // webpackBootstrap
     var locale = this.constants.locales[this.constants.locale];
 
     this.manipulationDOM = {};
-    this.manipulationDOM['backSpan'] = document.createElement('span');
+    this.manipulationDOM['backSpan'] = document.createElement('div');
     this.manipulationDOM['backSpan'].className = 'network-manipulationUI back';
-    this.manipulationDOM['backLabelSpan'] = document.createElement('span');
+    this.manipulationDOM['backLabelSpan'] = document.createElement('div');
     this.manipulationDOM['backLabelSpan'].className = 'network-manipulationLabel';
     this.manipulationDOM['backLabelSpan'].innerHTML = locale['back'];
     this.manipulationDOM['backSpan'].appendChild(this.manipulationDOM['backLabelSpan']);
@@ -32932,9 +33894,9 @@ return /******/ (function(modules) { // webpackBootstrap
     this.manipulationDOM['seperatorLineDiv1'] = document.createElement('div');
     this.manipulationDOM['seperatorLineDiv1'].className = 'network-seperatorLine';
 
-    this.manipulationDOM['descriptionSpan'] = document.createElement('span');
+    this.manipulationDOM['descriptionSpan'] = document.createElement('div');
     this.manipulationDOM['descriptionSpan'].className = 'network-manipulationUI none';
-    this.manipulationDOM['descriptionLabelSpan'] = document.createElement('span');
+    this.manipulationDOM['descriptionLabelSpan'] = document.createElement('div');
     this.manipulationDOM['descriptionLabelSpan'].className = 'network-manipulationLabel';
     this.manipulationDOM['descriptionLabelSpan'].innerHTML = locale['addDescription'];
     this.manipulationDOM['descriptionSpan'].appendChild(this.manipulationDOM['descriptionLabelSpan']);
@@ -32944,7 +33906,7 @@ return /******/ (function(modules) { // webpackBootstrap
     this.manipulationDiv.appendChild(this.manipulationDOM['descriptionSpan']);
 
     // bind the icon
-    this.manipulationDOM['backSpan'].onclick = this._createManipulatorBar.bind(this);
+    this._bindHammerToDiv(this.manipulationDOM['backSpan'],'_createManipulatorBar');
 
     // we use the boundFunction so we can reference it when we unbind it from the "select" event.
     var me = this;
@@ -32962,7 +33924,7 @@ return /******/ (function(modules) { // webpackBootstrap
     // clear the toolbar
     this._clearManipulatorBar();
     this._unselectAll(true);
-    this.freezeSimulation = true;
+    this.freezeSimulation(true);
 
     if (this.boundFunction) {
       this.off('select', this.boundFunction);
@@ -32975,9 +33937,9 @@ return /******/ (function(modules) { // webpackBootstrap
     this.blockConnectingEdgeSelection = true;
 
     this.manipulationDOM = {};
-    this.manipulationDOM['backSpan'] = document.createElement('span');
+    this.manipulationDOM['backSpan'] = document.createElement('div');
     this.manipulationDOM['backSpan'].className = 'network-manipulationUI back';
-    this.manipulationDOM['backLabelSpan'] = document.createElement('span');
+    this.manipulationDOM['backLabelSpan'] = document.createElement('div');
     this.manipulationDOM['backLabelSpan'].className = 'network-manipulationLabel';
     this.manipulationDOM['backLabelSpan'].innerHTML = locale['back'];
     this.manipulationDOM['backSpan'].appendChild(this.manipulationDOM['backLabelSpan']);
@@ -32985,9 +33947,9 @@ return /******/ (function(modules) { // webpackBootstrap
     this.manipulationDOM['seperatorLineDiv1'] = document.createElement('div');
     this.manipulationDOM['seperatorLineDiv1'].className = 'network-seperatorLine';
 
-    this.manipulationDOM['descriptionSpan'] = document.createElement('span');
+    this.manipulationDOM['descriptionSpan'] = document.createElement('div');
     this.manipulationDOM['descriptionSpan'].className = 'network-manipulationUI none';
-    this.manipulationDOM['descriptionLabelSpan'] = document.createElement('span');
+    this.manipulationDOM['descriptionLabelSpan'] = document.createElement('div');
     this.manipulationDOM['descriptionLabelSpan'].className = 'network-manipulationLabel';
     this.manipulationDOM['descriptionLabelSpan'].innerHTML = locale['edgeDescription'];
     this.manipulationDOM['descriptionSpan'].appendChild(this.manipulationDOM['descriptionLabelSpan']);
@@ -32997,7 +33959,7 @@ return /******/ (function(modules) { // webpackBootstrap
     this.manipulationDiv.appendChild(this.manipulationDOM['descriptionSpan']);
 
     // bind the icon
-    this.manipulationDOM['backSpan'].onclick = this._createManipulatorBar.bind(this);
+    this._bindHammerToDiv(this.manipulationDOM['backSpan'],'_createManipulatorBar');
 
     // we use the boundFunction so we can reference it when we unbind it from the "select" event.
     var me = this;
@@ -33009,10 +33971,12 @@ return /******/ (function(modules) { // webpackBootstrap
     this.cachedFunctions["_manipulationReleaseOverload"] = this._manipulationReleaseOverload;
     this.cachedFunctions["_handleDragStart"] = this._handleDragStart;
     this.cachedFunctions["_handleDragEnd"] = this._handleDragEnd;
+    this.cachedFunctions["_handleOnHold"] = this._handleOnHold;
     this._handleTouch = this._handleConnect;
     this._manipulationReleaseOverload = function () {};
+    this._handleOnHold    = function () {};
     this._handleDragStart = function () {};
-    this._handleDragEnd = this._finishConnect;
+    this._handleDragEnd   = this._finishConnect;
 
     // redraw to show the unselect
     this._redraw();
@@ -33038,9 +34002,9 @@ return /******/ (function(modules) { // webpackBootstrap
     var locale = this.constants.locales[this.constants.locale];
 
     this.manipulationDOM = {};
-    this.manipulationDOM['backSpan'] = document.createElement('span');
+    this.manipulationDOM['backSpan'] = document.createElement('div');
     this.manipulationDOM['backSpan'].className = 'network-manipulationUI back';
-    this.manipulationDOM['backLabelSpan'] = document.createElement('span');
+    this.manipulationDOM['backLabelSpan'] = document.createElement('div');
     this.manipulationDOM['backLabelSpan'].className = 'network-manipulationLabel';
     this.manipulationDOM['backLabelSpan'].innerHTML = locale['back'];
     this.manipulationDOM['backSpan'].appendChild(this.manipulationDOM['backLabelSpan']);
@@ -33048,9 +34012,9 @@ return /******/ (function(modules) { // webpackBootstrap
     this.manipulationDOM['seperatorLineDiv1'] = document.createElement('div');
     this.manipulationDOM['seperatorLineDiv1'].className = 'network-seperatorLine';
 
-    this.manipulationDOM['descriptionSpan'] = document.createElement('span');
+    this.manipulationDOM['descriptionSpan'] = document.createElement('div');
     this.manipulationDOM['descriptionSpan'].className = 'network-manipulationUI none';
-    this.manipulationDOM['descriptionLabelSpan'] = document.createElement('span');
+    this.manipulationDOM['descriptionLabelSpan'] = document.createElement('div');
     this.manipulationDOM['descriptionLabelSpan'].className = 'network-manipulationLabel';
     this.manipulationDOM['descriptionLabelSpan'].innerHTML = locale['editEdgeDescription'];
     this.manipulationDOM['descriptionSpan'].appendChild(this.manipulationDOM['descriptionLabelSpan']);
@@ -33060,7 +34024,7 @@ return /******/ (function(modules) { // webpackBootstrap
     this.manipulationDiv.appendChild(this.manipulationDOM['descriptionSpan']);
 
     // bind the icon
-    this.manipulationDOM['backSpan'].onclick = this._createManipulatorBar.bind(this);
+    this._bindHammerToDiv(this.manipulationDOM['backSpan'],'_createManipulatorBar');
 
     // temporarily overload functions
     this.cachedFunctions["_handleTouch"]      = this._handleTouch;
@@ -33091,7 +34055,7 @@ return /******/ (function(modules) { // webpackBootstrap
     this.selectedControlNode = this.edgeBeingEdited._getSelectedControlNode(this._XconvertDOMtoCanvas(pointer.x),this._YconvertDOMtoCanvas(pointer.y));
     if (this.selectedControlNode !== null) {
       this.selectedControlNode.select();
-      this.freezeSimulation = true;
+      this.freezeSimulation(true);
     }
     this._redraw();
   };
@@ -33135,7 +34099,7 @@ return /******/ (function(modules) { // webpackBootstrap
     else {
       this.edgeBeingEdited._restoreControlNodes();
     }
-    this.freezeSimulation = false;
+    this.freezeSimulation(false);
     this._redraw();
   };
 
@@ -33177,11 +34141,13 @@ return /******/ (function(modules) { // webpackBootstrap
           connectionEdge.to = targetNode;
 
           this.cachedFunctions["_handleOnDrag"] = this._handleOnDrag;
+          var me = this;
           this._handleOnDrag = function(event) {
             var pointer = this._getPointer(event.gesture.center);
-            var connectionEdge = this.edges['connectionEdge'];
-            connectionEdge.to.x = this._XconvertDOMtoCanvas(pointer.x);
-            connectionEdge.to.y = this._YconvertDOMtoCanvas(pointer.y);
+            var connectionEdge = me.edges['connectionEdge'];
+            connectionEdge.to.x = me._XconvertDOMtoCanvas(pointer.x);
+            connectionEdge.to.y = me._YconvertDOMtoCanvas(pointer.y);
+            me._redraw();
           };
 
           this.moving = true;
@@ -33408,18 +34374,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
   exports._cleanNavigation = function() {
     // clean hammer bindings
-    if (this.navigationHammers.existing.length != 0) {
-      for (var i = 0; i < this.navigationHammers.existing.length; i++) {
-        this.navigationHammers.existing[i].dispose();
+    if (this.navigationHammers.length != 0) {
+      for (var i = 0; i < this.navigationHammers.length; i++) {
+        this.navigationHammers[i].dispose();
       }
-      this.navigationHammers.existing = [];
+      this.navigationHammers = [];
     }
 
     this._navigationReleaseOverload = function () {};
 
     // clean up previous navigation items
-    if (this.navigationDivs && this.navigationDivs['wrapper'] && this.navigationDivs['wrapper'].parentNode) {
-      this.navigationDivs['wrapper'].parentNode.removeChild(this.navigationDivs['wrapper']);
+    if (this.navigationDOM && this.navigationDOM['wrapper'] && this.navigationDOM['wrapper'].parentNode) {
+      this.navigationDOM['wrapper'].parentNode.removeChild(this.navigationDOM['wrapper']);
     }
   };
 
@@ -33434,26 +34400,25 @@ return /******/ (function(modules) { // webpackBootstrap
   exports._loadNavigationElements = function() {
     this._cleanNavigation();
 
-    this.navigationDivs = {};
+    this.navigationDOM = {};
     var navigationDivs = ['up','down','left','right','zoomIn','zoomOut','zoomExtends'];
     var navigationDivActions = ['_moveUp','_moveDown','_moveLeft','_moveRight','_zoomIn','_zoomOut','_zoomExtent'];
 
-    this.navigationDivs['wrapper'] = document.createElement('div');
-    this.frame.appendChild(this.navigationDivs['wrapper']);
+    this.navigationDOM['wrapper'] = document.createElement('div');
+    this.frame.appendChild(this.navigationDOM['wrapper']);
 
     for (var i = 0; i < navigationDivs.length; i++) {
-      this.navigationDivs[navigationDivs[i]] = document.createElement('div');
-      this.navigationDivs[navigationDivs[i]].className = 'network-navigation ' + navigationDivs[i];
-      this.navigationDivs['wrapper'].appendChild(this.navigationDivs[navigationDivs[i]]);
+      this.navigationDOM[navigationDivs[i]] = document.createElement('div');
+      this.navigationDOM[navigationDivs[i]].className = 'network-navigation ' + navigationDivs[i];
+      this.navigationDOM['wrapper'].appendChild(this.navigationDOM[navigationDivs[i]]);
 
-      var hammer = Hammer(this.navigationDivs[navigationDivs[i]], {prevent_default: true});
+      var hammer = Hammer(this.navigationDOM[navigationDivs[i]], {prevent_default: true});
       hammer.on('touch', this[navigationDivActions[i]].bind(this));
-      this.navigationHammers._new.push(hammer);
+      this.navigationHammers.push(hammer);
     }
 
     this._navigationReleaseOverload = this._stopMovement;
 
-    this.navigationHammers.existing = this.navigationHammers._new;
   };
 
 
@@ -33627,7 +34592,7 @@ return /******/ (function(modules) { // webpackBootstrap
       // if the user defined some levels but not all, alert and run without hierarchical layout
       if (undefinedLevel == true && definedLevel == true) {
         throw new Error("To use the hierarchical layout, nodes require either no predefined levels or levels have to be defined for all nodes.");
-        this.zoomExtent(undefined,true,this.constants.clustering.enabled);
+        this.zoomExtent({duration:0},true,this.constants.clustering.enabled);
         if (!this.constants.clustering.enabled) {
           this.start();
         }
@@ -34650,3 +35615,4 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ }
 /******/ ])
 });
+;
