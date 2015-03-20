@@ -26,7 +26,7 @@ the changes on the server side will not greatly impact the client.
 Features
 ========
 * **Responsive**. Should work well on all devices. Of course some functions may be removed or be difficult to use on small devices (eg the graphical rule editor).
-* **Theme-able**. Multiple themes are available - take your pick (currently 3 themes).
+* **Theme-able**. Multiple themes are available - take your pick (currently 3 themes). If you want a different look, we're using [bootswatch](http://www.bootswatch.com) themes - vote for your favourite by [raising an issue](https://github.com/cdjackson/HABmin2/issues/new).
 * **Internal support**. OpenHAB is a multinational community - so the software should support your language and country.
 * **Charting**. Modern, fast charting of historical data.
 * **Graphical rule editor**. No need to learn rule syntax.
