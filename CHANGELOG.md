@@ -1,3 +1,39 @@
+<a name="0.0.9"></a>
+### 0.0.9 (2015-03-20)
+
+
+#### Bug Fixes
+
+* **OpenHAB1:**
+  * Fixed error loading binding information ([eeebdd88](git@github.com:cdjackson/HABmin2/commit/eeebdd88d9a8959254310bd0d8da699ce8efcd31))
+* **Rules:**
+  * Fix error loading rules if service not supported ([e2e7db9f](git@github.com:cdjackson/HABmin2/commit/e2e7db9fcdca6578259642a914836558ab0ffbc0))
+  * Fix rendering of rule source when changing tab ([8936684b](git@github.com:cdjackson/HABmin2/commit/8936684b616c4eac4fb658bbbd6c6bf642db63f7))
+* **Sitemap:**
+  * Fixed rendering of groups with only one widget ([69394fe7](git@github.com:cdjackson/HABmin2/commit/69394fe79be5f5f8739ca8fb26396ec139499111))
+
+
+#### Features
+
+* **Chart:**
+  * Add localisation for chart times ([56c882a4](git@github.com:cdjackson/HABmin2/commit/56c882a4f110d489f847d39cee4e348112da0f36))
+  * Add support for bar graph ([f516340b](git@github.com:cdjackson/HABmin2/commit/f516340bc6d12e6bd771dd53e5bc7df807ec4b4e))
+  * Add chart name to notification messages ([b391dcd2](git@github.com:cdjackson/HABmin2/commit/b391dcd256b143cf9e9b90d9744cc43ec4ed3f6f))
+* **OpenHAB2:**
+  * Handle enable/disable of channels ([dfff0c83](git@github.com:cdjackson/HABmin2/commit/dfff0c83b16c5ef95ef137f9c4a9f463ffe68961))
+  * Add support for editing things ([2fcef047](git@github.com:cdjackson/HABmin2/commit/2fcef0478df05e369ef751bcc59c25157d9a6b5e))
+  * Added discovery inbox handler ([7eb81163](git@github.com:cdjackson/HABmin2/commit/7eb811638c7184636fc74bf577a3ed753330addd))
+  * Add binding and discovery service detection ([4a7655f0](git@github.com:cdjackson/HABmin2/commit/4a7655f0bda4a88a82bc04842a824d61f5a54f9c))
+* **UI:**
+  * Update to latest PAPER theme ([3a4a1f94](git@github.com:cdjackson/HABmin2/commit/3a4a1f94c140b5848149281990e38e6436fcf66e))
+  * Change time-ago to use moment.js. Support for French localisation ([c715ad96](git@github.com:cdjackson/HABmin2/commit/c715ad9662bc582f11ffa6b184774a7f888469c9))
+  * Add browser icon ([277d5c67](git@github.com:cdjackson/HABmin2/commit/277d5c6727ace100cacc71b8ae81dba921caed40))
+  * Added French language ([c836ef2](git@github.com:cdjackson/HABmin2/commit/c836ef230c2f623c3397208fce3d45c98337e6f7))
+  * Added German language option in user settings ([5f47dae9](git@github.com:cdjackson/HABmin2/commit/5f47dae93f92acd82ae8023bf70545a262189d11))
+  * Added hierarchical incremental localisation ([c5d2c26a](git@github.com:cdjackson/HABmin2/commit/c5d2c26ae5e5029cba826e1464154431b4dba005))
+  * Add support for user language selection ([1ec2a8c4](git@github.com:cdjackson/HABmin2/commit/1ec2a8c40e2ca0779f8098b491a2ef1c7b69e75c))
+
+
 <a name="0.0.8"></a>
 ### 0.0.8 (2015-03-08)
 
