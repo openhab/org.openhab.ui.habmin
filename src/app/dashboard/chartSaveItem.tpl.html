@@ -15,11 +15,21 @@
     </div>
 
     <div class="form-group">
-            <label for="inputAxis" class="control-label" i18n="habmin.chartSaveItemAxes"></label>
+        <label for="inputAxis" class="control-label" i18n="habmin.chartSaveItemAxes"></label>
         <div>
             <select ng-model="model.axis" class="form-control" id="inputAxis">
                 <option value="left" i18n="habmin.chartItemLeftAxis"></option>
                 <option value="right" i18n="habmin.chartItemRightAxis"></option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="inputStyle" class="control-label" i18n="habmin.chartSaveItemStyle"></label>
+        <div>
+            <select ng-model="model.chart" class="form-control" id="inputStyle">
+                <option value="line" i18n="habmin.chartSaveItemStyleLine"></option>
+                <option value="bar" i18n="habmin.chartSaveItemStyleBar"></option>
             </select>
         </div>
     </div>

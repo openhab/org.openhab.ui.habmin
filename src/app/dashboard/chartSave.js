@@ -79,7 +79,7 @@ angular.module('HABmin.chartSave', [
                         itemModel.axis = 'left';
                     }
                     itemModel.item = item.item;
-                    itemModel.label = item.label.title;
+                    itemModel.label = item.label;
                     itemModel.format = item.format;
                     itemModel.fill = item.fill;
                     itemModel.fillColor = item.fillColor;
@@ -89,6 +89,7 @@ angular.module('HABmin.chartSave', [
                     itemModel.repeatTime = Number(item.repeatTime);
                     itemModel.points = Number(item.points);
                     itemModel.pointsSize = Number(item.pointsSize);
+                    itemModel.chart = item.chart;
 
                     scope.items.push(itemModel);
                 });
@@ -160,13 +161,16 @@ angular.module('HABmin.chartSave', [
                         query.items = [];
                         angular.forEach([].concat(scope.items), function (item) {
                             var newItem = {};
-
+                            
                             newItem.item = item.item;
                             if (item.label != null) {
                                 newItem.label = item.label;
                             }
                             if (item.lineColor != null) {
                                 newItem.lineColor = item.lineColor;
+                            }
+                            if (item.chart != null) {
+                                newItem.chart = item.chart;
                             }
                             if (item.lineStyle != null) {
                                 newItem.lineStyle = item.lineStyle;

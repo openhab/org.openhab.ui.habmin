@@ -188,7 +188,7 @@ angular.module('HABmin.chart', [
                 if (item.selected === true) {
                     var newItem = {};
                     newItem.item = item.name;
-                    newItem.label = item.label;
+                    newItem.label = item.label.title;
                     chart.items.push(newItem);
                 }
             });
@@ -706,7 +706,7 @@ angular.module('HABmin.chart', [
                 }
             }
 
-            dataGroups.add({
+            var options = {
                 id: itemRef,
                 content: itemCfg.label,
                 style: style,
@@ -718,7 +718,13 @@ angular.module('HABmin.chart', [
                     //    },
                     shaded: shaded
                 }
-            });
+            };
+
+            if(["bar","line"].indexOf(itemCfg.chart) != -1) {
+                options.options.style = itemCfg.chart;
+            }
+
+            dataGroups.add(options);
 
             newChart = addSeries(newChart, data, itemCfg.repeatTime, itemRef);
 
