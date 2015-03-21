@@ -23,7 +23,7 @@
     "fontawesome": "~4.3.0",
     "angular-gridster": "latest",
     "angular-ui-calendar": "latest",
-    "weather-icons": "~0.0.1",
+    "weather-icons": "latest",
     "jquery-ui": "~1.11.1",
     "angular-dialgauge": "~0.1.2",
     "tinycolor": "latest",
