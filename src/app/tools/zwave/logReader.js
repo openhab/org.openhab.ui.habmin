@@ -5,7 +5,7 @@
  * This software is copyright of Chris Jackson under the GPL license.
  * Note that this licence may be changed at a later date.
  *
- * (c) 2014 Chris Jackson (chris@cd-jackson.com)
+ * (c) 2014-2015 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('ZWaveLogViewer', [
     'ZWaveLogReader',
@@ -58,17 +58,20 @@ angular.module('ZWaveLogViewer', [
             }, 0);
 
             if (panel == "NODES") {
-                ZWaveLogReader.processDeviceInformation();
             }
         };
 
         $scope.selectedNode = {};
         $scope.showOption = "LIST";
-        $scope.processFilter = ['Start', 'RXPacket', 'TXPacket', 'Wakeup', 'Timeout', 'SendAbort'];
+        $scope.processFilter = ['Info', 'Cmd', 'Start', 'RXPacket', 'TXPacket', 'Wakeup', 'Timeout', 'SendAbort'];
         $scope.processFilterOptions = [
             {
                 ref: 'Info',
                 name: 'Binding Information'
+            },
+            {
+                ref: 'Cmd',
+                name: 'Commands'
             },
             {
                 ref: 'RXPacket',

@@ -40,6 +40,7 @@ function Edge (properties, network, networkConstants) {
   this.hover = false;
   this.labelDimensions = {top:0,left:0,width:0,height:0,yLine:0}; // could be cached
   this.dirtyLabel = true;
+  this.colorDirty = true;
 
   this.from = null;   // a node
   this.to = null;     // a node
@@ -71,12 +72,14 @@ function Edge (properties, network, networkConstants) {
  * @param {Object} constants   and object with default, global properties
  */
 Edge.prototype.setProperties = function(properties) {
+  this.colorDirty = true;
   if (!properties) {
     return;
   }
 
-  var fields = ['style','fontSize','fontFace','fontColor','fontFill','width',
-    'widthSelectionMultiplier','hoverWidth','arrowScaleFactor','dash','inheritColor'
+  var fields = ['style','fontSize','fontFace','fontColor','fontFill','fontStrokeWidth','fontStrokeColor','width',
+    'widthSelectionMultiplier','hoverWidth','arrowScaleFactor','dash','inheritColor','labelAlignment', 'opacity',
+    'customScalingFunction','useGradients'
   ];
   util.selectiveDeepExtend(fields, this.options, properties);
 
@@ -103,7 +106,9 @@ Edge.prototype.setProperties = function(properties) {
     }
   }
 
-  // A node is connected when it has a from and to node.
+
+
+    // A node is connected when it has a from and to node.
   this.connect();
 
   this.widthFixed = this.widthFixed || (properties.width !== undefined);
@@ -120,6 +125,7 @@ Edge.prototype.setProperties = function(properties) {
     default:              this.draw = this._drawLine; break;
   }
 };
+
 
 /**
  * Connect an edge to its nodes
@@ -185,10 +191,11 @@ Edge.prototype.getValue = function() {
  * @param {Number} min
  * @param {Number} max
  */
-Edge.prototype.setValueRange = function(min, max) {
+Edge.prototype.setValueRange = function(min, max, total) {
   if (!this.widthFixed && this.value !== undefined) {
-    var scale = (this.options.widthMax - this.options.widthMin) / (max - min);
-    this.options.width= (this.value - min) * scale + this.options.widthMin;
+    var scale = this.options.customScalingFunction(min, max, total, this.value);
+    var widthDiff = this.options.widthMax - this.options.widthMin;
+    this.options.width = this.options.widthMin + scale * widthDiff;
     this.widthSelected = this.options.width* this.options.widthSelectionMultiplier;
   }
 };
@@ -227,22 +234,50 @@ Edge.prototype.isOverlappingWith = function(obj) {
   }
 };
 
-Edge.prototype._getColor = function() {
+Edge.prototype._getColor = function(ctx) {
   var colorObj = this.options.color;
-  if (this.options.inheritColor == "to") {
-    colorObj = {
-      highlight: this.to.options.color.highlight.border,
-      hover: this.to.options.color.hover.border,
-      color: this.to.options.color.border
-    };
+  if (this.options.useGradients == true) {
+    var grd = ctx.createLinearGradient(this.from.x, this.from.y, this.to.x, this.to.y);
+    var fromColor, toColor;
+    fromColor = this.from.options.color.highlight.border;
+    toColor = this.to.options.color.highlight.border;
+
+
+    if (this.from.selected == false && this.to.selected == false) {
+      fromColor = util.overrideOpacity(this.from.options.color.border, this.options.opacity);
+      toColor = util.overrideOpacity(this.to.options.color.border, this.options.opacity);
+    }
+    else if (this.from.selected == true && this.to.selected == false) {
+      toColor = this.to.options.color.border;
+    }
+    else if (this.from.selected == false && this.to.selected == true) {
+      fromColor = this.from.options.color.border;
+    }
+    grd.addColorStop(0, fromColor);
+    grd.addColorStop(1, toColor);
+    return grd;
   }
-  else if (this.options.inheritColor == "from" || this.options.inheritColor == true) {
-    colorObj = {
-      highlight: this.from.options.color.highlight.border,
-      hover: this.from.options.color.hover.border,
-      color: this.from.options.color.border
-    };
+
+  if (this.colorDirty === true) {
+    if (this.options.inheritColor == "to") {
+      colorObj = {
+        highlight: this.to.options.color.highlight.border,
+        hover: this.to.options.color.hover.border,
+        color: util.overrideOpacity(this.from.options.color.border, this.options.opacity)
+      };
+    }
+    else if (this.options.inheritColor == "from" || this.options.inheritColor == true) {
+      colorObj = {
+        highlight: this.from.options.color.highlight.border,
+        hover: this.from.options.color.hover.border,
+        color: util.overrideOpacity(this.from.options.color.border, this.options.opacity)
+      };
+    }
+    this.options.color = colorObj;
+    this.colorDirty = false;
   }
+
+
 
   if (this.selected == true)   {return colorObj.highlight;}
   else if (this.hover == true) {return colorObj.hover;}
@@ -259,7 +294,7 @@ Edge.prototype._getColor = function() {
  */
 Edge.prototype._drawLine = function(ctx) {
   // set style
-  ctx.strokeStyle = this._getColor();
+  ctx.strokeStyle = this._getColor(ctx);
   ctx.lineWidth   = this._getLineWidth();
 
   if (this.from != this.to) {
@@ -322,168 +357,191 @@ Edge.prototype._getLineWidth = function() {
 };
 
 Edge.prototype._getViaCoordinates = function () {
-  var xVia = null;
-  var yVia = null;
-  var factor = this.options.smoothCurves.roundness;
-  var type = this.options.smoothCurves.type;
-
-  var dx = Math.abs(this.from.x - this.to.x);
-  var dy = Math.abs(this.from.y - this.to.y);
-  if (type == 'discrete' || type == 'diagonalCross') {
-    if (Math.abs(this.from.x - this.to.x) < Math.abs(this.from.y - this.to.y)) {
-      if (this.from.y > this.to.y) {
-        if (this.from.x < this.to.x) {
-          xVia = this.from.x + factor * dy;
-          yVia = this.from.y - factor * dy;
-        }
-        else if (this.from.x > this.to.x) {
-          xVia = this.from.x - factor * dy;
-          yVia = this.from.y - factor * dy;
-        }
-      }
-      else if (this.from.y < this.to.y) {
-        if (this.from.x < this.to.x) {
-          xVia = this.from.x + factor * dy;
-          yVia = this.from.y + factor * dy;
-        }
-        else if (this.from.x > this.to.x) {
-          xVia = this.from.x - factor * dy;
-          yVia = this.from.y + factor * dy;
-        }
-      }
-      if (type == "discrete") {
-        xVia = dx < factor * dy ? this.from.x : xVia;
-      }
-    }
-    else if (Math.abs(this.from.x - this.to.x) > Math.abs(this.from.y - this.to.y)) {
-      if (this.from.y > this.to.y) {
-        if (this.from.x < this.to.x) {
-          xVia = this.from.x + factor * dx;
-          yVia = this.from.y - factor * dx;
-        }
-        else if (this.from.x > this.to.x) {
-          xVia = this.from.x - factor * dx;
-          yVia = this.from.y - factor * dx;
-        }
-      }
-      else if (this.from.y < this.to.y) {
-        if (this.from.x < this.to.x) {
-          xVia = this.from.x + factor * dx;
-          yVia = this.from.y + factor * dx;
-        }
-        else if (this.from.x > this.to.x) {
-          xVia = this.from.x - factor * dx;
-          yVia = this.from.y + factor * dx;
-        }
-      }
-      if (type == "discrete") {
-        yVia = dy < factor * dx ? this.from.y : yVia;
-      }
-    }
+  if (this.options.smoothCurves.dynamic == true && this.options.smoothCurves.enabled == true ) {
+    return this.via;
   }
-  else if (type == "straightCross") {
-    if (Math.abs(this.from.x - this.to.x) < Math.abs(this.from.y - this.to.y)) {  // up - down
-      xVia = this.from.x;
-      if (this.from.y < this.to.y) {
-        yVia = this.to.y - (1-factor) * dy;
+  else if (this.options.smoothCurves.enabled == false) {
+    return {x:0,y:0};
+  }
+  else {
+    var xVia = null;
+    var yVia = null;
+    var factor = this.options.smoothCurves.roundness;
+    var type = this.options.smoothCurves.type;
+    var dx = Math.abs(this.from.x - this.to.x);
+    var dy = Math.abs(this.from.y - this.to.y);
+    if (type == 'discrete' || type == 'diagonalCross') {
+      if (Math.abs(this.from.x - this.to.x) < Math.abs(this.from.y - this.to.y)) {
+        if (this.from.y > this.to.y) {
+          if (this.from.x < this.to.x) {
+            xVia = this.from.x + factor * dy;
+            yVia = this.from.y - factor * dy;
+          }
+          else if (this.from.x > this.to.x) {
+            xVia = this.from.x - factor * dy;
+            yVia = this.from.y - factor * dy;
+          }
+        }
+        else if (this.from.y < this.to.y) {
+          if (this.from.x < this.to.x) {
+            xVia = this.from.x + factor * dy;
+            yVia = this.from.y + factor * dy;
+          }
+          else if (this.from.x > this.to.x) {
+            xVia = this.from.x - factor * dy;
+            yVia = this.from.y + factor * dy;
+          }
+        }
+        if (type == "discrete") {
+          xVia = dx < factor * dy ? this.from.x : xVia;
+        }
       }
-      else {
-        yVia = this.to.y + (1-factor) * dy;
+      else if (Math.abs(this.from.x - this.to.x) > Math.abs(this.from.y - this.to.y)) {
+        if (this.from.y > this.to.y) {
+          if (this.from.x < this.to.x) {
+            xVia = this.from.x + factor * dx;
+            yVia = this.from.y - factor * dx;
+          }
+          else if (this.from.x > this.to.x) {
+            xVia = this.from.x - factor * dx;
+            yVia = this.from.y - factor * dx;
+          }
+        }
+        else if (this.from.y < this.to.y) {
+          if (this.from.x < this.to.x) {
+            xVia = this.from.x + factor * dx;
+            yVia = this.from.y + factor * dx;
+          }
+          else if (this.from.x > this.to.x) {
+            xVia = this.from.x - factor * dx;
+            yVia = this.from.y + factor * dx;
+          }
+        }
+        if (type == "discrete") {
+          yVia = dy < factor * dx ? this.from.y : yVia;
+        }
       }
     }
-    else if (Math.abs(this.from.x - this.to.x) > Math.abs(this.from.y - this.to.y)) { // left - right
+    else if (type == "straightCross") {
+      if (Math.abs(this.from.x - this.to.x) < Math.abs(this.from.y - this.to.y)) {  // up - down
+        xVia = this.from.x;
+        if (this.from.y < this.to.y) {
+          yVia = this.to.y - (1 - factor) * dy;
+        }
+        else {
+          yVia = this.to.y + (1 - factor) * dy;
+        }
+      }
+      else if (Math.abs(this.from.x - this.to.x) > Math.abs(this.from.y - this.to.y)) { // left - right
+        if (this.from.x < this.to.x) {
+          xVia = this.to.x - (1 - factor) * dx;
+        }
+        else {
+          xVia = this.to.x + (1 - factor) * dx;
+        }
+        yVia = this.from.y;
+      }
+    }
+    else if (type == 'horizontal') {
       if (this.from.x < this.to.x) {
-        xVia = this.to.x - (1-factor) * dx;
+        xVia = this.to.x - (1 - factor) * dx;
       }
       else {
-        xVia = this.to.x + (1-factor) * dx;
+        xVia = this.to.x + (1 - factor) * dx;
       }
       yVia = this.from.y;
     }
-  }
-  else if (type == 'horizontal') {
-    if (this.from.x < this.to.x) {
-      xVia = this.to.x - (1-factor) * dx;
-    }
-    else {
-      xVia = this.to.x + (1-factor) * dx;
-    }
-    yVia = this.from.y;
-  }
-  else if (type == 'vertical') {
-    xVia = this.from.x;
-    if (this.from.y < this.to.y) {
-      yVia = this.to.y - (1-factor) * dy;
-    }
-    else {
-      yVia = this.to.y + (1-factor) * dy;
-    }
-  }
-  else { // continuous
-    if (Math.abs(this.from.x - this.to.x) < Math.abs(this.from.y - this.to.y)) {
-      if (this.from.y > this.to.y) {
-        if (this.from.x < this.to.x) {
-//          console.log(1)
-          xVia = this.from.x + factor * dy;
-          yVia = this.from.y - factor * dy;
-          xVia = this.to.x < xVia ? this.to.x : xVia;
-        }
-        else if (this.from.x > this.to.x) {
-//          console.log(2)
-          xVia = this.from.x - factor * dy;
-          yVia = this.from.y - factor * dy;
-          xVia = this.to.x > xVia ? this.to.x :xVia;
-        }
+    else if (type == 'vertical') {
+      xVia = this.from.x;
+      if (this.from.y < this.to.y) {
+        yVia = this.to.y - (1 - factor) * dy;
       }
-      else if (this.from.y < this.to.y) {
-        if (this.from.x < this.to.x) {
-//          console.log(3)
-          xVia = this.from.x + factor * dy;
-          yVia = this.from.y + factor * dy;
-          xVia = this.to.x < xVia ? this.to.x : xVia;
-        }
-        else if (this.from.x > this.to.x) {
-//          console.log(4, this.from.x, this.to.x)
-          xVia = this.from.x - factor * dy;
-          yVia = this.from.y + factor * dy;
-          xVia = this.to.x > xVia ? this.to.x : xVia;
-        }
+      else {
+        yVia = this.to.y + (1 - factor) * dy;
       }
     }
-    else if (Math.abs(this.from.x - this.to.x) > Math.abs(this.from.y - this.to.y)) {
-      if (this.from.y > this.to.y) {
-        if (this.from.x < this.to.x) {
-//          console.log(5)
-          xVia = this.from.x + factor * dx;
-          yVia = this.from.y - factor * dx;
-          yVia = this.to.y > yVia ? this.to.y : yVia;
+    else if (type == 'curvedCW') {
+      var dx = this.to.x - this.from.x;
+      var dy = this.from.y - this.to.y;
+      var radius = Math.sqrt(dx*dx + dy*dy);
+      var pi = Math.PI;
+
+      var originalAngle = Math.atan2(dy,dx);
+      var myAngle = (originalAngle + ((factor * 0.5) + 0.5) * pi) % (2 * pi);
+
+      xVia = this.from.x + (factor*0.5 + 0.5)*radius*Math.sin(myAngle);
+      yVia = this.from.y + (factor*0.5 + 0.5)*radius*Math.cos(myAngle);
+    }
+    else if (type == 'curvedCCW') {
+      var dx = this.to.x - this.from.x;
+      var dy = this.from.y - this.to.y;
+      var radius = Math.sqrt(dx*dx + dy*dy);
+      var pi = Math.PI;
+
+      var originalAngle = Math.atan2(dy,dx);
+      var myAngle = (originalAngle + ((-factor * 0.5) + 0.5) * pi) % (2 * pi);
+
+      xVia = this.from.x + (factor*0.5 + 0.5)*radius*Math.sin(myAngle);
+      yVia = this.from.y + (factor*0.5 + 0.5)*radius*Math.cos(myAngle);
+    }
+    else { // continuous
+      if (Math.abs(this.from.x - this.to.x) < Math.abs(this.from.y - this.to.y)) {
+        if (this.from.y > this.to.y) {
+          if (this.from.x < this.to.x) {
+            xVia = this.from.x + factor * dy;
+            yVia = this.from.y - factor * dy;
+            xVia = this.to.x < xVia ? this.to.x : xVia;
+          }
+          else if (this.from.x > this.to.x) {
+            xVia = this.from.x - factor * dy;
+            yVia = this.from.y - factor * dy;
+            xVia = this.to.x > xVia ? this.to.x : xVia;
+          }
         }
-        else if (this.from.x > this.to.x) {
-//          console.log(6)
-          xVia = this.from.x - factor * dx;
-          yVia = this.from.y - factor * dx;
-          yVia = this.to.y > yVia ? this.to.y : yVia;
+        else if (this.from.y < this.to.y) {
+          if (this.from.x < this.to.x) {
+            xVia = this.from.x + factor * dy;
+            yVia = this.from.y + factor * dy;
+            xVia = this.to.x < xVia ? this.to.x : xVia;
+          }
+          else if (this.from.x > this.to.x) {
+            xVia = this.from.x - factor * dy;
+            yVia = this.from.y + factor * dy;
+            xVia = this.to.x > xVia ? this.to.x : xVia;
+          }
         }
       }
-      else if (this.from.y < this.to.y) {
-        if (this.from.x < this.to.x) {
-//          console.log(7)
-          xVia = this.from.x + factor * dx;
-          yVia = this.from.y + factor * dx;
-          yVia = this.to.y < yVia ? this.to.y : yVia;
+      else if (Math.abs(this.from.x - this.to.x) > Math.abs(this.from.y - this.to.y)) {
+        if (this.from.y > this.to.y) {
+          if (this.from.x < this.to.x) {
+            xVia = this.from.x + factor * dx;
+            yVia = this.from.y - factor * dx;
+            yVia = this.to.y > yVia ? this.to.y : yVia;
+          }
+          else if (this.from.x > this.to.x) {
+            xVia = this.from.x - factor * dx;
+            yVia = this.from.y - factor * dx;
+            yVia = this.to.y > yVia ? this.to.y : yVia;
+          }
         }
-        else if (this.from.x > this.to.x) {
-//          console.log(8)
-          xVia = this.from.x - factor * dx;
-          yVia = this.from.y + factor * dx;
-          yVia = this.to.y < yVia ? this.to.y : yVia;
+        else if (this.from.y < this.to.y) {
+          if (this.from.x < this.to.x) {
+            xVia = this.from.x + factor * dx;
+            yVia = this.from.y + factor * dx;
+            yVia = this.to.y < yVia ? this.to.y : yVia;
+          }
+          else if (this.from.x > this.to.x) {
+            xVia = this.from.x - factor * dx;
+            yVia = this.from.y + factor * dx;
+            yVia = this.to.y < yVia ? this.to.y : yVia;
+          }
         }
       }
     }
-  }
 
 
-  return {x:xVia, y:yVia};
+    return {x: xVia, y: yVia};
+  }
 };
 
 /**
@@ -508,6 +566,8 @@ Edge.prototype._line = function (ctx) {
 //        this.via.y = via.y;
         ctx.quadraticCurveTo(via.x,via.y,this.to.x, this.to.y);
         ctx.stroke();
+        //ctx.circle(via.x,via.y,2)
+        //ctx.stroke();
         return via;
       }
     }
@@ -556,7 +616,7 @@ Edge.prototype._label = function (ctx, text, x, y) {
     if (this.dirtyLabel == true) {
       var lines = String(text).split('\n');
       var lineCount = lines.length;
-      var fontSize = (Number(this.options.fontSize) + 4);
+      var fontSize = Number(this.options.fontSize);
       yLine = y + (1 - lineCount) / 2 * fontSize;
 
       var width = ctx.measureText(lines[0]).width;
@@ -572,25 +632,117 @@ Edge.prototype._label = function (ctx, text, x, y) {
       this.labelDimensions = {top:top,left:left,width:width,height:height,yLine:yLine};
     }
 
+	var yLine = this.labelDimensions.yLine;
+	
+	ctx.save();
+	
+	if (this.options.labelAlignment != "horizontal"){
+		ctx.translate(x, yLine);
+		this._rotateForLabelAlignment(ctx);
+		x = 0;
+		yLine = 0;
+	}
 
-    if (this.options.fontFill !== undefined && this.options.fontFill !== null && this.options.fontFill !== "none") {
-      ctx.fillStyle = this.options.fontFill;
-      ctx.fillRect(this.labelDimensions.left,
-        this.labelDimensions.top,
-        this.labelDimensions.width,
-        this.labelDimensions.height);
+	
+	this._drawLabelRect(ctx);
+	this._drawLabelText(ctx,x,yLine, lines, lineCount, fontSize);
+	
+	ctx.restore();
+  }
+};
+
+/**
+ * Rotates the canvas so the text is most readable
+ * @param {CanvasRenderingContext2D} ctx
+ * @private
+ */
+Edge.prototype._rotateForLabelAlignment = function(ctx) {
+	var dy = this.from.y - this.to.y;
+	var dx = this.from.x - this.to.x;
+	var angleInDegrees = Math.atan2(dy, dx);
+
+	// rotate so label it is readable
+	if((angleInDegrees < -1 && dx < 0) || (angleInDegrees > 0 && dx < 0)){
+		angleInDegrees = angleInDegrees + Math.PI;
+	}
+	
+	ctx.rotate(angleInDegrees);
+};
+
+/**
+ * Draws the label rectangle 
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {String} labelAlignment
+ * @private
+ */
+Edge.prototype._drawLabelRect = function(ctx) {
+	if (this.options.fontFill !== undefined && this.options.fontFill !== null && this.options.fontFill !== "none") {
+		ctx.fillStyle = this.options.fontFill;
+		
+		var lineMargin = 2;
+
+    if (this.options.labelAlignment == 'line-center') {
+      ctx.fillRect(-this.labelDimensions.width * 0.5, -this.labelDimensions.height * 0.5, this.labelDimensions.width, this.labelDimensions.height);
     }
-
-    // draw text
-    ctx.fillStyle = this.options.fontColor || "black";
-    ctx.textAlign = "center";
-    ctx.textBaseline =  "middle";
-    yLine = this.labelDimensions.yLine;
-    for (var i = 0; i < lineCount; i++) {
-      ctx.fillText(lines[i], x, yLine);
-      yLine += fontSize;
+    else if (this.options.labelAlignment == 'line-above') {
+      ctx.fillRect(-this.labelDimensions.width * 0.5, -(this.labelDimensions.height + lineMargin), this.labelDimensions.width, this.labelDimensions.height);
+    }
+    else if (this.options.labelAlignment == 'line-below') {
+      ctx.fillRect(-this.labelDimensions.width * 0.5, lineMargin, this.labelDimensions.width, this.labelDimensions.height);
+    }
+    else {
+      ctx.fillRect(this.labelDimensions.left, this.labelDimensions.top, this.labelDimensions.width, this.labelDimensions.height);
     }
   }
+};
+
+/**
+ * Draws the label text 
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {Number} x
+ * @param {Number} yLine
+ * @param {Array} lines
+ * @param {Number} lineCount
+ * @param {Number} fontSize
+ * @private
+ */
+Edge.prototype._drawLabelText = function(ctx, x, yLine, lines, lineCount, fontSize) {
+	// draw text
+	ctx.fillStyle = this.options.fontColor || "black";
+	ctx.textAlign = "center";
+
+  // check for label alignment
+  if (this.options.labelAlignment != 'horizontal') {
+    var lineMargin = 2;
+    if (this.options.labelAlignment == 'line-above') {
+      ctx.textBaseline = "alphabetic";
+      yLine -= 2 * lineMargin; // distance from edge, required because we use alphabetic. Alphabetic has less difference between browsers
+    }
+    else if (this.options.labelAlignment == 'line-below') {
+      ctx.textBaseline = "hanging";
+      yLine += 2 * lineMargin;// distance from edge, required because we use hanging. Hanging has less difference between browsers
+    }
+    else {
+      ctx.textBaseline = "middle";
+    }
+  }
+  else {
+    ctx.textBaseline = "middle";
+  }
+
+  // check for strokeWidth
+  if (this.options.fontStrokeWidth > 0){
+    ctx.lineWidth   = this.options.fontStrokeWidth;
+    ctx.strokeStyle = this.options.fontStrokeColor;
+    ctx.lineJoin    = 'round';
+  }
+	for (var i = 0; i < lineCount; i++) {
+    if(this.options.fontStrokeWidth > 0){
+      ctx.strokeText(lines[i], x, yLine);
+    }
+		ctx.fillText(lines[i], x, yLine);
+		yLine += fontSize;
+	}
 };
 
 /**
@@ -604,12 +756,13 @@ Edge.prototype._label = function (ctx, text, x, y) {
  */
 Edge.prototype._drawDashLine = function(ctx) {
   // set style
-  ctx.strokeStyle = this._getColor();
+  ctx.strokeStyle = this._getColor(ctx);
   ctx.lineWidth = this._getLineWidth();
 
   var via = null;
   // only firefox and chrome support this method, else we use the legacy one.
-  if (ctx.mozDash !== undefined || ctx.setLineDash !== undefined) {
+  if (ctx.setLineDash !== undefined) {
+    ctx.save();
     // configure the dash pattern
     var pattern = [0];
     if (this.options.dash.length !== undefined && this.options.dash.gap !== undefined) {
@@ -620,27 +773,16 @@ Edge.prototype._drawDashLine = function(ctx) {
     }
 
     // set dash settings for chrome or firefox
-    if (typeof ctx.setLineDash !== 'undefined') { //Chrome
-      ctx.setLineDash(pattern);
-      ctx.lineDashOffset = 0;
-
-    } else { //Firefox
-      ctx.mozDash = pattern;
-      ctx.mozDashOffset = 0;
-    }
+    ctx.setLineDash(pattern);
+    ctx.lineDashOffset = 0;
 
     // draw the line
     via = this._line(ctx);
 
     // restore the dash settings.
-    if (typeof ctx.setLineDash !== 'undefined') { //Chrome
-      ctx.setLineDash([0]);
-      ctx.lineDashOffset = 0;
-
-    } else { //Firefox
-      ctx.mozDash = [0];
-      ctx.mozDashOffset = 0;
-    }
+    ctx.setLineDash([0]);
+    ctx.lineDashOffset = 0;
+    ctx.restore();
   }
   else { // unsupporting smooth lines
     // draw dashed line
@@ -719,7 +861,7 @@ Edge.prototype._pointOnCircle = function (x, y, radius, percentage) {
 Edge.prototype._drawArrowCenter = function(ctx) {
   var point;
   // set style
-  ctx.strokeStyle = this._getColor();
+  ctx.strokeStyle = this._getColor(ctx);
   ctx.fillStyle = ctx.strokeStyle;
   ctx.lineWidth = this._getLineWidth();
 
@@ -782,7 +924,69 @@ Edge.prototype._drawArrowCenter = function(ctx) {
   }
 };
 
+Edge.prototype._pointOnBezier = function(t) {
+  var via = this._getViaCoordinates();
 
+  var x = Math.pow(1-t,2)*this.from.x + (2*t*(1 - t))*via.x + Math.pow(t,2)*this.to.x;
+  var y = Math.pow(1-t,2)*this.from.y + (2*t*(1 - t))*via.y + Math.pow(t,2)*this.to.y;
+
+  return {x:x,y:y};
+}
+
+/**
+ * This function uses binary search to look for the point where the bezier curve crosses the border of the node.
+ *
+ * @param from
+ * @param ctx
+ * @returns {*}
+ * @private
+ */
+Edge.prototype._findBorderPosition = function(from,ctx) {
+  var maxIterations = 10;
+  var iteration = 0;
+  var low = 0;
+  var high = 1;
+  var pos,angle,distanceToBorder, distanceToNodes, difference;
+  var threshold = 0.2;
+  var node = this.to;
+  if (from == true) {
+    node = this.from;
+  }
+
+  while (low <= high && iteration < maxIterations) {
+    var middle = (low + high) * 0.5;
+
+    pos = this._pointOnBezier(middle);
+    angle = Math.atan2((node.y - pos.y), (node.x - pos.x));
+    distanceToBorder = node.distanceToBorder(ctx,angle);
+    distanceToNodes = Math.sqrt(Math.pow(pos.x-node.x,2) + Math.pow(pos.y-node.y,2));
+    difference = distanceToBorder - distanceToNodes;
+    if (Math.abs(difference) < threshold) {
+      break; // found
+    }
+    else if (difference < 0) { // distance to nodes is larger than distance to border --> t needs to be bigger if we're looking at the to node.
+      if (from == false) {
+        low = middle;
+      }
+      else {
+        high = middle;
+      }
+    }
+    else {
+      if (from == false) {
+        high = middle;
+      }
+      else {
+        low = middle;
+      }
+    }
+
+    iteration++;
+  }
+  pos.t = middle;
+
+  return pos;
+};
 
 /**
  * Redraw a edge as a line with an arrow
@@ -793,63 +997,41 @@ Edge.prototype._drawArrowCenter = function(ctx) {
  */
 Edge.prototype._drawArrow = function(ctx) {
   // set style
-  ctx.strokeStyle = this._getColor();
+  ctx.strokeStyle = this._getColor(ctx);
   ctx.fillStyle = ctx.strokeStyle;
   ctx.lineWidth = this._getLineWidth();
 
-  var angle, length;
-  //draw a line
+  // set vars
+  var angle, length, arrowPos;
+
+  // if not connected to itself
   if (this.from != this.to) {
-    angle = Math.atan2((this.to.y - this.from.y), (this.to.x - this.from.x));
-    var dx = (this.to.x - this.from.x);
-    var dy = (this.to.y - this.from.y);
-    var edgeSegmentLength = Math.sqrt(dx * dx + dy * dy);
+    // draw line
+    this._line(ctx);
 
-    var fromBorderDist = this.from.distanceToBorder(ctx, angle + Math.PI);
-    var fromBorderPoint = (edgeSegmentLength - fromBorderDist) / edgeSegmentLength;
-    var xFrom = (fromBorderPoint) * this.from.x + (1 - fromBorderPoint) * this.to.x;
-    var yFrom = (fromBorderPoint) * this.from.y + (1 - fromBorderPoint) * this.to.y;
-
-    var via;
-    if (this.options.smoothCurves.dynamic == true && this.options.smoothCurves.enabled == true ) {
-      via = this.via;
-    }
-    else if (this.options.smoothCurves.enabled == true) {
-      via = this._getViaCoordinates();
-    }
-
-    if (this.options.smoothCurves.enabled == true && via.x != null) {
-      angle = Math.atan2((this.to.y - via.y), (this.to.x - via.x));
-      dx = (this.to.x - via.x);
-      dy = (this.to.y - via.y);
-      edgeSegmentLength = Math.sqrt(dx * dx + dy * dy);
-    }
-    var toBorderDist = this.to.distanceToBorder(ctx, angle);
-    var toBorderPoint = (edgeSegmentLength - toBorderDist) / edgeSegmentLength;
-
-    var xTo,yTo;
-    if (this.options.smoothCurves.enabled == true && via.x != null) {
-     xTo = (1 - toBorderPoint) * via.x + toBorderPoint * this.to.x;
-     yTo = (1 - toBorderPoint) * via.y + toBorderPoint * this.to.y;
+    // draw arrow head
+    if (this.options.smoothCurves.enabled == true) {
+      var via = this._getViaCoordinates();
+      arrowPos = this._findBorderPosition(false, ctx);
+      var guidePos = this._pointOnBezier(Math.max(0.0, arrowPos.t - 0.1))
+      angle = Math.atan2((arrowPos.y - guidePos.y), (arrowPos.x - guidePos.x));
     }
     else {
-      xTo = (1 - toBorderPoint) * this.from.x + toBorderPoint * this.to.x;
-      yTo = (1 - toBorderPoint) * this.from.y + toBorderPoint * this.to.y;
-    }
+      angle = Math.atan2((this.to.y - this.from.y), (this.to.x - this.from.x));
+      var dx = (this.to.x - this.from.x);
+      var dy = (this.to.y - this.from.y);
+      var edgeSegmentLength = Math.sqrt(dx * dx + dy * dy);
+      var toBorderDist = this.to.distanceToBorder(ctx, angle);
+      var toBorderPoint = (edgeSegmentLength - toBorderDist) / edgeSegmentLength;
 
-    ctx.beginPath();
-    ctx.moveTo(xFrom,yFrom);
-    if (this.options.smoothCurves.enabled == true && via.x != null) {
-      ctx.quadraticCurveTo(via.x,via.y,xTo, yTo);
+      arrowPos = {};
+      arrowPos.x = (1 - toBorderPoint) * this.from.x + toBorderPoint * this.to.x;
+      arrowPos.y = (1 - toBorderPoint) * this.from.y + toBorderPoint * this.to.y;
     }
-    else {
-      ctx.lineTo(xTo, yTo);
-    }
-    ctx.stroke();
 
     // draw arrow at the end of the line
     length = (10 + 5 * this.options.width) * this.options.arrowScaleFactor;
-    ctx.arrow(xTo, yTo, angle, length);
+    ctx.arrow(arrowPos.x,arrowPos.y, angle, length);
     ctx.fill();
     ctx.stroke();
 
@@ -857,9 +1039,7 @@ Edge.prototype._drawArrow = function(ctx) {
     if (this.label) {
       var point;
       if (this.options.smoothCurves.enabled == true && via != null) {
-        var midpointX = 0.5*(0.5*(this.from.x + via.x) + 0.5*(this.to.x + via.x));
-        var midpointY = 0.5*(0.5*(this.from.y + via.y) + 0.5*(this.to.y + via.y));
-        point = {x:midpointX, y:midpointY};
+        point = this._pointOnBezier(0.5);
       }
       else {
         point = this._pointOnLine(0.5);
@@ -911,8 +1091,6 @@ Edge.prototype._drawArrow = function(ctx) {
     }
   }
 };
-
-
 
 /**
  * Calculate the distance between a point (x3,y3) and a line segment from
@@ -1037,6 +1215,10 @@ Edge.prototype.positionBezierNode = function() {
     this.via.x = 0.5 * (this.from.x + this.to.x);
     this.via.y = 0.5 * (this.from.y + this.to.y);
   }
+  else if (this.via !== null) {
+    this.via.x = 0;
+    this.via.y = 0;
+  }
 };
 
 /**
@@ -1050,26 +1232,30 @@ Edge.prototype._drawControlNodes = function(ctx) {
       var nodeIdFrom = "edgeIdFrom:".concat(this.id);
       var nodeIdTo = "edgeIdTo:".concat(this.id);
       var constants = {
-                      nodes:{group:'', radius:8},
+                      nodes:{group:'', radius:7, borderWidth:2, borderWidthSelected: 2},
                       physics:{damping:0},
                       clustering: {maxNodeSizeIncrements: 0 ,nodeScaling: {width:0, height: 0, radius:0}}
                       };
       this.controlNodes.from = new Node(
         {id:nodeIdFrom,
           shape:'dot',
-            color:{background:'#ff4e00', border:'#3c3c3c', highlight: {background:'#07f968'}}
+            color:{background:'#ff0000', border:'#3c3c3c', highlight: {background:'#07f968'}}
         },{},{},constants);
       this.controlNodes.to = new Node(
         {id:nodeIdTo,
           shape:'dot',
-          color:{background:'#ff4e00', border:'#3c3c3c', highlight: {background:'#07f968'}}
+          color:{background:'#ff0000', border:'#3c3c3c', highlight: {background:'#07f968'}}
         },{},{},constants);
     }
 
-    if (this.controlNodes.from.selected == false && this.controlNodes.to.selected == false) {
-      this.controlNodes.positions = this.getControlNodePositions(ctx);
+    this.controlNodes.positions = {};
+    if (this.controlNodes.from.selected == false) {
+      this.controlNodes.positions.from = this.getControlNodeFromPosition(ctx);
       this.controlNodes.from.x = this.controlNodes.positions.from.x;
       this.controlNodes.from.y = this.controlNodes.positions.from.y;
+    }
+    if (this.controlNodes.to.selected == false) {
+      this.controlNodes.positions.to = this.getControlNodeToPosition(ctx);
       this.controlNodes.to.x = this.controlNodes.positions.to.x;
       this.controlNodes.to.y = this.controlNodes.positions.to.y;
     }
@@ -1161,46 +1347,56 @@ Edge.prototype._restoreControlNodes = function() {
  * this calculates the position of the control nodes on the edges of the parent nodes.
  *
  * @param ctx
- * @returns {{from: {x: number, y: number}, to: {x: *, y: *}}}
+ * @returns {x: *, y: *}
  */
-Edge.prototype.getControlNodePositions = function(ctx) {
-  var angle = Math.atan2((this.to.y - this.from.y), (this.to.x - this.from.x));
-  var dx = (this.to.x - this.from.x);
-  var dy = (this.to.y - this.from.y);
-  var edgeSegmentLength = Math.sqrt(dx * dx + dy * dy);
-  var fromBorderDist = this.from.distanceToBorder(ctx, angle + Math.PI);
-  var fromBorderPoint = (edgeSegmentLength - fromBorderDist) / edgeSegmentLength;
-  var xFrom = (fromBorderPoint) * this.from.x + (1 - fromBorderPoint) * this.to.x;
-  var yFrom = (fromBorderPoint) * this.from.y + (1 - fromBorderPoint) * this.to.y;
-
-  var via;
-  if (this.options.smoothCurves.dynamic == true && this.options.smoothCurves.enabled == true) {
-    via = this.via;
-  }
-  else if (this.options.smoothCurves.enabled == true) {
-    via = this._getViaCoordinates();
-  }
-
-  if (this.options.smoothCurves.enabled == true && via.x != null) {
-    angle = Math.atan2((this.to.y - via.y), (this.to.x - via.x));
-    dx = (this.to.x - via.x);
-    dy = (this.to.y - via.y);
-    edgeSegmentLength = Math.sqrt(dx * dx + dy * dy);
-  }
-  var toBorderDist = this.to.distanceToBorder(ctx, angle);
-  var toBorderPoint = (edgeSegmentLength - toBorderDist) / edgeSegmentLength;
-
-  var xTo,yTo;
-  if (this.options.smoothCurves.enabled == true && via.x != null) {
-    xTo = (1 - toBorderPoint) * via.x + toBorderPoint * this.to.x;
-    yTo = (1 - toBorderPoint) * via.y + toBorderPoint * this.to.y;
+Edge.prototype.getControlNodeFromPosition = function(ctx) {
+  // draw arrow head
+  var controlnodeFromPos;
+  if (this.options.smoothCurves.enabled == true) {
+    controlnodeFromPos = this._findBorderPosition(true, ctx);
   }
   else {
-    xTo = (1 - toBorderPoint) * this.from.x + toBorderPoint * this.to.x;
-    yTo = (1 - toBorderPoint) * this.from.y + toBorderPoint * this.to.y;
+    var angle = Math.atan2((this.to.y - this.from.y), (this.to.x - this.from.x));
+    var dx = (this.to.x - this.from.x);
+    var dy = (this.to.y - this.from.y);
+    var edgeSegmentLength = Math.sqrt(dx * dx + dy * dy);
+
+    var fromBorderDist = this.from.distanceToBorder(ctx, angle + Math.PI);
+    var fromBorderPoint = (edgeSegmentLength - fromBorderDist) / edgeSegmentLength;
+    controlnodeFromPos = {};
+    controlnodeFromPos.x = (fromBorderPoint) * this.from.x + (1 - fromBorderPoint) * this.to.x;
+    controlnodeFromPos.y = (fromBorderPoint) * this.from.y + (1 - fromBorderPoint) * this.to.y;
   }
 
-  return {from:{x:xFrom,y:yFrom},to:{x:xTo,y:yTo}};
+  return controlnodeFromPos;
+};
+
+/**
+ * this calculates the position of the control nodes on the edges of the parent nodes.
+ *
+ * @param ctx
+ * @returns {{from: {x: number, y: number}, to: {x: *, y: *}}}
+ */
+Edge.prototype.getControlNodeToPosition = function(ctx) {
+  // draw arrow head
+  var controlnodeFromPos,controlnodeToPos;
+  if (this.options.smoothCurves.enabled == true) {
+    controlnodeToPos = this._findBorderPosition(false, ctx);
+  }
+  else {
+    var angle = Math.atan2((this.to.y - this.from.y), (this.to.x - this.from.x));
+    var dx = (this.to.x - this.from.x);
+    var dy = (this.to.y - this.from.y);
+    var edgeSegmentLength = Math.sqrt(dx * dx + dy * dy);
+    var toBorderDist = this.to.distanceToBorder(ctx, angle);
+    var toBorderPoint = (edgeSegmentLength - toBorderDist) / edgeSegmentLength;
+
+    controlnodeToPos = {};
+    controlnodeToPos.x = (1 - toBorderPoint) * this.from.x + toBorderPoint * this.to.x;
+    controlnodeToPos.y = (1 - toBorderPoint) * this.from.y + toBorderPoint * this.to.y;
+  }
+
+  return controlnodeToPos;
 };
 
 module.exports = Edge;

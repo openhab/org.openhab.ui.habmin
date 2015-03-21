@@ -5,6 +5,9 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <link rel="shortcut icon" href="assets/favicon.ico" />
+
+
     <% if(buildtype == 'cordova') { %>
     <!-- Include PhoneGap -->
     <script type="text/javascript" src="cordova.js"></script>
@@ -239,11 +242,23 @@
                         </a>
                         <ul class="dropdown-menu" role="menu">
                             <li>
-                                <a ui-sref="rules">
-                                    <span class="fa fa-fw fa-wifi"></span>
-                                    <span i181n="habmin.mainZWave">Items</span>
+                                <a ui-sref="things">
+                                    <span class="fa fa-fw fa-share-alt"></span>
+                                    <span i18n="habmin.mainThings"></span>
                                 </a>
                             </li>
+                            <li>
+                                <a ui-sref="discovery">
+                                    <span class="fa fa-fw fa-paper-plane"></span>
+                                    <span i18n="habmin.mainDiscovery"></span>
+                                </a>
+                            </li>
+                            <li>
+                            <a ui-sref="rules">
+                                <span class="fa fa-fw fa-wifi"></span>
+                                <span i181n="habmin.mainZWave">Items</span>
+                            </a>
+                        </li>
                             <li role="presentation" class="divider"></li>
                             <li ng-repeat="choice in bindings" ng-class="{'disabled': choice.disabled}">
                                 <a ui-sref="binding/zwave" ui-sref="choice.link">
@@ -307,6 +322,17 @@
                             <span class="fa fa-fw fa-user"></span>
                             <span class="hidden-sm" i18n="habmin.mainLogin"></span>
                         </a>
+                    </li>
+
+                    <!-- NOTIFICATION AREA -->
+                    <li class="navbar-notification">
+                        <p class="no-padding" ng-if="notificationCnt"
+                           popup-show="templates/notifications/summary.tpl.html" popup-placement="left"
+                           popup-class="zwave-logreader-popover">
+                            <span class="badge">
+                                {{notificationCnt}}
+                            </span>
+                        </p>
                     </li>
                 </ul>
             </div>

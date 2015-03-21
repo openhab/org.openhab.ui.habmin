@@ -1,3 +1,99 @@
+<a name="0.0.9"></a>
+### 0.0.9 (2015-03-20)
+
+
+#### Bug Fixes
+
+* **OpenHAB1:**
+  * Fixed error loading binding information ([eeebdd88](git@github.com:cdjackson/HABmin2/commit/eeebdd88d9a8959254310bd0d8da699ce8efcd31))
+* **Rules:**
+  * Fix error loading rules if service not supported ([e2e7db9f](git@github.com:cdjackson/HABmin2/commit/e2e7db9fcdca6578259642a914836558ab0ffbc0))
+  * Fix rendering of rule source when changing tab ([8936684b](git@github.com:cdjackson/HABmin2/commit/8936684b616c4eac4fb658bbbd6c6bf642db63f7))
+* **Sitemap:**
+  * Fixed rendering of groups with only one widget ([69394fe7](git@github.com:cdjackson/HABmin2/commit/69394fe79be5f5f8739ca8fb26396ec139499111))
+
+
+#### Features
+
+* **Chart:**
+  * Add localisation for chart times ([56c882a4](git@github.com:cdjackson/HABmin2/commit/56c882a4f110d489f847d39cee4e348112da0f36))
+  * Add support for bar graph ([f516340b](git@github.com:cdjackson/HABmin2/commit/f516340bc6d12e6bd771dd53e5bc7df807ec4b4e))
+  * Add chart name to notification messages ([b391dcd2](git@github.com:cdjackson/HABmin2/commit/b391dcd256b143cf9e9b90d9744cc43ec4ed3f6f))
+* **OpenHAB2:**
+  * Handle enable/disable of channels ([dfff0c83](git@github.com:cdjackson/HABmin2/commit/dfff0c83b16c5ef95ef137f9c4a9f463ffe68961))
+  * Add support for editing things ([2fcef047](git@github.com:cdjackson/HABmin2/commit/2fcef0478df05e369ef751bcc59c25157d9a6b5e))
+  * Added discovery inbox handler ([7eb81163](git@github.com:cdjackson/HABmin2/commit/7eb811638c7184636fc74bf577a3ed753330addd))
+  * Add binding and discovery service detection ([4a7655f0](git@github.com:cdjackson/HABmin2/commit/4a7655f0bda4a88a82bc04842a824d61f5a54f9c))
+* **UI:**
+  * Update to latest PAPER theme ([3a4a1f94](git@github.com:cdjackson/HABmin2/commit/3a4a1f94c140b5848149281990e38e6436fcf66e))
+  * Change time-ago to use moment.js. Support for French localisation ([c715ad96](git@github.com:cdjackson/HABmin2/commit/c715ad9662bc582f11ffa6b184774a7f888469c9))
+  * Add browser icon ([277d5c67](git@github.com:cdjackson/HABmin2/commit/277d5c6727ace100cacc71b8ae81dba921caed40))
+  * Added French language ([c836ef2](git@github.com:cdjackson/HABmin2/commit/c836ef230c2f623c3397208fce3d45c98337e6f7))
+  * Added German language option in user settings ([5f47dae9](git@github.com:cdjackson/HABmin2/commit/5f47dae93f92acd82ae8023bf70545a262189d11))
+  * Added hierarchical incremental localisation ([c5d2c26a](git@github.com:cdjackson/HABmin2/commit/c5d2c26ae5e5029cba826e1464154431b4dba005))
+  * Add support for user language selection ([1ec2a8c4](git@github.com:cdjackson/HABmin2/commit/1ec2a8c40e2ca0779f8098b491a2ef1c7b69e75c))
+
+
+<a name="0.0.8"></a>
+### 0.0.8 (2015-03-08)
+
+
+#### Bug Fixes
+
+* **UI:**
+  * Fixed display of things if no things are actually listed ([97273001](git@github.com:cdjackson/HABmin2/commit/97273001c254f3fa7c996406a070b5d55695fd64))
+  * Improved handling of inbox popup ([cb670829](git@github.com:cdjackson/HABmin2/commit/cb670829e7020949dc5218d3d7be0abee9b90e73))
+  * Fix error messages when saving chart ([8c4accca](git@github.com:cdjackson/HABmin2/commit/8c4accca07cac6219baacc442fb03a34ec75e47c))
+  * Fixed updating rule list following save ([40302911](git@github.com:cdjackson/HABmin2/commit/403029110e3944763170ba918731e0672ad982d6))
+  * Fixed inbox popup template to color code lines ([f4fcf4c7](git@github.com:cdjackson/HABmin2/commit/f4fcf4c744d25a5e5c8fe28b376219e94873ef39))
+  * Fix default username entry when not previously set ([bd90b906](git@github.com:cdjackson/HABmin2/commit/bd90b9064c410edeb0c4b98e6632ef8a1ba4ca24))
+  * Fixed error handling if no rules are returned ([109f1c52](git@github.com:cdjackson/HABmin2/commit/109f1c5236bc6f051f9765981247ee289eba5d82))
+
+
+#### Features
+
+* **Rules:**
+  * Add support for editing rule files in openHAB2 ([bd5d8736](git@github.com:cdjackson/HABmin2/commit/bd5d87360b0ed2e93e9a3e418d57647997ee6931))
+* **UI:**
+  * Login box is now displayed if no login has been completed ([bbafd881](git@github.com:cdjackson/HABmin2/commit/bbafd8819debe6fee8e3c133c9f3bbf169152d7a))
+  * Fix error deleting chart in OH2 ([9022ae15](git@github.com:cdjackson/HABmin2/commit/9022ae1528ea8838e4d63f7375bcb00327bf9a5c))
+  * Handle chart items for both OH1 and OH2 interfaces ([82921d0f](git@github.com:cdjackson/HABmin2/commit/82921d0ff9df57efa91f4a1d414cbed1eebef13a))
+  * Handle differences between OH1 and OH2 sitemaps ([444d0ac4](git@github.com:cdjackson/HABmin2/commit/444d0ac42bdbd85d0ef3934b0b0f14980cc5dd79))
+  * Add support for openhab inbox for new device notifications ([c8a91430](git@github.com:cdjackson/HABmin2/commit/c8a91430049f7d80bc0c6cb04d76478f23c1c5d4))
+  * Display rule type icon in rule list ([2dd31189](git@github.com:cdjackson/HABmin2/commit/2dd3118953de1089be63f6f0f5b48a186d29b584))
+* **ZWave:**
+  * Log Reader - display security command class ([de5b9f0f](git@github.com:cdjackson/HABmin2/commit/de5b9f0f29dabcf67496ad7ac6925d6ecbcbfe46))
+
+
+<a name="0.0.7"></a>
+### 0.0.7 (2015-02-22)
+
+
+#### Bug Fixes
+
+* **UI:**
+  * Fixed selection of persistence service ([03fa03fb](git@github.com:cdjackson/HABmin2/commit/03fa03fb815ffae1ca67d389b1eb661e8e5268e4))
+  * Fix error saving password to local cache ([c10ce94c](git@github.com:cdjackson/HABmin2/commit/c10ce94cde7b99e4f1adb7a0d22353be88b128b9))
+* **ZWave:**
+  * Log Reader - fix error formatting command class if command id unknown ([8f4e760e](git@github.com:cdjackson/HABmin2/commit/8f4e760ef57c0b2f0f3fc67e01837d873f5c0fdc))
+  * Log Reader - avoid duplicate item definitions ([303312d5](git@github.com:cdjackson/HABmin2/commit/303312d5c08106c07a361da1192d93d4318dc29f))
+  * Log Reader - fixed handling of sensor alarm types ([c4193f6a](git@github.com:cdjackson/HABmin2/commit/c4193f6a24773a6d7c5c5f796a495579fecdfcdd))
+
+
+#### Features
+
+* **ZWave:**
+  * Log Reader - added general packet statistics information ([9f92a281](git@github.com:cdjackson/HABmin2/commit/9f92a281604eb6515d84d5e80bec1e1027674600))
+  * Log Reader - add processing of CONFIGURATION class ([5c75e2de](git@github.com:cdjackson/HABmin2/commit/5c75e2dea0a2c2b0d4bc602fbf427bdff1d6ceea))
+  * Log Reader - process sensor packets ([0a072b50](git@github.com:cdjackson/HABmin2/commit/0a072b5078a8a2aa9e165747bbd3a594d2235678))
+  * Log Reader - show commands in log ([ded27845](git@github.com:cdjackson/HABmin2/commit/ded27845faf6e774ccd10690ecf440338bc23aa6))
+  * Log Reader - default to showing binding info ([6e7c5b47](git@github.com:cdjackson/HABmin2/commit/6e7c5b47d63da8db682c0a6c0d16e95593c3e959))
+  * Log Reader - add processing of endpoints and endpoint classes ([383e7aae](git@github.com:cdjackson/HABmin2/commit/383e7aaeceb03e66aaaa1f6a4f920dcc00754724))
+  * Log Reader - decode and display control classes ([16ffb3b5](git@github.com:cdjackson/HABmin2/commit/16ffb3b5a49e6832980458dede209863decb6638))
+  * Display information on device class ([5ae8be74](git@github.com:cdjackson/HABmin2/commit/5ae8be7476ee75b9c22f505805a5178d336c2473))
+  * Log Reader - Process the association group report ([82a767df](git@github.com:cdjackson/HABmin2/commit/82a767dfe968d588a2a0c0111945ecc8df880b1b))
+
+
 <a name="0.0.6"></a>
 ### 0.0.6 (2015-02-01)
 

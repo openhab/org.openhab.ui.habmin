@@ -13,7 +13,7 @@ var util = require('../util');
  *                                              "database", "circle", "ellipse",
  *                                              "box", "image", "text", "dot",
  *                                              "star", "triangle", "triangleDown",
- *                                              "square"
+ *                                              "square", "icon"
  *                              {string} image  An image url
  *                              {string} title  An title text, can be HTML
  *                              {anytype} group A group name or number
@@ -36,12 +36,8 @@ function Node(properties, imagelist, grouplist, networkConstants) {
   this.dynamicEdges = [];
   this.reroutedEdges = {};
 
-  this.fontDrawThreshold = 3;
-
   // set defaults for the properties
   this.id = undefined;
-  this.x = null;
-  this.y = null;
   this.allowedToMoveX = false;
   this.allowedToMoveY = false;
   this.xFixed = false;
@@ -53,8 +49,8 @@ function Node(properties, imagelist, grouplist, networkConstants) {
   this.level = -1;
   this.preassignedLevel = false;
   this.hierarchyEnumerated = false;
-  this.labelDimensions = {top:0,left:0,width:0,height:0,yLine:0}; // could be cached
-
+  this.labelDimensions = {top:0, left:0, width:0, height:0, yLine:0}; // could be cached
+  this.boundingBox = {top:0, left:0, right:0, bottom:0};
 
   this.imagelist = imagelist;
   this.grouplist = grouplist;
@@ -64,6 +60,13 @@ function Node(properties, imagelist, grouplist, networkConstants) {
   this.fy = 0.0;  // external force y
   this.vx = 0.0;  // velocity x
   this.vy = 0.0;  // velocity y
+  this.x = null;
+  this.y = null;
+  this.predefinedPosition = false; // used to check if initial zoomExtent should just take the range or approximate
+
+  // used for reverting to previous position on stabilization
+  this.previousState = {vx:0,vy:0,x:0,y:0};
+
   this.damping = networkConstants.physics.damping; // written every time gravity is calculated
   this.fixedData = {x:null,y:null};
 
@@ -71,12 +74,11 @@ function Node(properties, imagelist, grouplist, networkConstants) {
 
   // creating the variables for clustering
   this.resetCluster();
-  this.dynamicEdgesLength = 0;
   this.clusterSession = 0;
   this.clusterSizeWidthFactor  = networkConstants.clustering.nodeScaling.width;
   this.clusterSizeHeightFactor = networkConstants.clustering.nodeScaling.height;
   this.clusterSizeRadiusFactor = networkConstants.clustering.nodeScaling.radius;
-  this.maxNodeSizeIncrements = networkConstants.clustering.maxNodeSizeIncrements;
+  this.maxNodeSizeIncrements   = networkConstants.clustering.maxNodeSizeIncrements;
   this.growthIndicator = 0;
 
   // variables to tell the node about the network.
@@ -86,6 +88,18 @@ function Node(properties, imagelist, grouplist, networkConstants) {
   this.canvasBottomRight = {"x":  300, "y":  300};
   this.parentEdgeId = null;
 }
+
+
+/**
+ *  Revert the position and velocity of the previous step.
+ */
+Node.prototype.revertPosition = function() {
+  this.x = this.previousState.x;
+  this.y = this.previousState.y;
+  this.vx = this.previousState.vx;
+  this.vy = this.previousState.vy;
+}
+
 
 /**
  * (re)setting the clustering variables and objects
@@ -110,7 +124,6 @@ Node.prototype.attachEdge = function(edge) {
   if (this.dynamicEdges.indexOf(edge) == -1) {
     this.dynamicEdges.push(edge);
   }
-  this.dynamicEdgesLength = this.dynamicEdges.length;
 };
 
 /**
@@ -126,7 +139,6 @@ Node.prototype.detachEdge = function(edge) {
   if (index != -1) {
     this.dynamicEdges.splice(index, 1);
   }
-  this.dynamicEdgesLength = this.dynamicEdges.length;
 };
 
 
@@ -141,7 +153,8 @@ Node.prototype.setProperties = function(properties, constants) {
   }
 
   var fields = ['borderWidth','borderWidthSelected','shape','image','brokenImage','radius','fontColor',
-    'fontSize','fontFace','fontFill','group','mass'
+    'fontSize','fontFace','fontFill','fontStrokeWidth','fontStrokeColor','group','mass','fontDrawThreshold',
+    'scaleFontWithValue','fontSizeMaxVisible','customScalingFunction','iconFontFace', 'icon', 'iconColor', 'iconSize'
   ];
   util.selectiveDeepExtend(fields, this.options, properties);
 
@@ -149,8 +162,8 @@ Node.prototype.setProperties = function(properties, constants) {
   if (properties.id !== undefined)        {this.id = properties.id;}
   if (properties.label !== undefined)     {this.label = properties.label; this.originalLabel = properties.label;}
   if (properties.title !== undefined)     {this.title = properties.title;}
-  if (properties.x !== undefined)         {this.x = properties.x;}
-  if (properties.y !== undefined)         {this.y = properties.y;}
+  if (properties.x !== undefined)         {this.x = properties.x; this.predefinedPosition = true;}
+  if (properties.y !== undefined)         {this.y = properties.y; this.predefinedPosition = true;}
   if (properties.value !== undefined)     {this.value = properties.value;}
   if (properties.level !== undefined)     {this.level = properties.level; this.preassignedLevel = true;}
 
@@ -164,21 +177,17 @@ Node.prototype.setProperties = function(properties, constants) {
   }
 
   // copy group properties
-  if (typeof this.options.group === 'number' || (typeof this.options.group === 'string' && this.options.group != '')) {
-    var groupObj = this.grouplist.get(this.options.group);
-    for (var prop in groupObj) {
-      if (groupObj.hasOwnProperty(prop)) {
-        this.options[prop] = groupObj[prop];
-      }
-    }
+  if (typeof properties.group === 'number' || (typeof properties.group === 'string' && properties.group != '')) {
+    var groupObj = this.grouplist.get(properties.group);
+    util.deepExtend(this.options, groupObj);
+    // the color object needs to be completely defined. Since groups can partially overwrite the colors, we parse it again, just in case.
+    this.options.color = util.parseColor(this.options.color);
   }
-
-
   // individual shape properties
   if (properties.radius !== undefined)         {this.baseRadiusValue = this.options.radius;}
   if (properties.color !== undefined)          {this.options.color = util.parseColor(properties.color);}
 
-  if (this.options.image!== undefined && this.options.image!= "") {
+  if (this.options.image !== undefined && this.options.image!= "") {
     if (this.imagelist) {
       this.imageObj = this.imagelist.load(this.options.image, this.options.brokenImage);
     }
@@ -206,12 +215,10 @@ Node.prototype.setProperties = function(properties, constants) {
 
   this.radiusFixed = this.radiusFixed || (properties.radius !== undefined);
 
-  if (this.options.shape == 'image') {
+  if (this.options.shape === 'image' || this.options.shape === 'circularImage') {
     this.options.radiusMin = constants.nodes.widthMin;
     this.options.radiusMax = constants.nodes.widthMax;
   }
-
-
 
   // choose draw method depending on the shape
   switch (this.options.shape) {
@@ -221,12 +228,14 @@ Node.prototype.setProperties = function(properties, constants) {
     case 'ellipse':       this.draw = this._drawEllipse; this.resize = this._resizeEllipse; break;
     // TODO: add diamond shape
     case 'image':         this.draw = this._drawImage; this.resize = this._resizeImage; break;
+    case 'circularImage': this.draw = this._drawCircularImage; this.resize = this._resizeCircularImage; break;
     case 'text':          this.draw = this._drawText; this.resize = this._resizeText; break;
     case 'dot':           this.draw = this._drawDot; this.resize = this._resizeShape; break;
     case 'square':        this.draw = this._drawSquare; this.resize = this._resizeShape; break;
     case 'triangle':      this.draw = this._drawTriangle; this.resize = this._resizeShape; break;
     case 'triangleDown':  this.draw = this._drawTriangleDown; this.resize = this._resizeShape; break;
     case 'star':          this.draw = this._drawStar; this.resize = this._resizeShape; break;
+    case 'icon':          this.draw = this._drawIcon; this.resize = this._resizeIcon; break;
     default:              this.draw = this._drawEllipse; this.resize = this._resizeEllipse; break;
   }
   // reset the size of the node, this can be changed
@@ -345,10 +354,21 @@ Node.prototype._addForce = function(fx, fy) {
 };
 
 /**
+ * Store the state before the next step
+ */
+Node.prototype.storeState = function() {
+  this.previousState.x = this.x;
+  this.previousState.y = this.y;
+  this.previousState.vx = this.vx;
+  this.previousState.vy = this.vy;
+}
+
+/**
  * Perform one discrete step for the node
  * @param {number} interval    Time interval in seconds
  */
 Node.prototype.discreteStep = function(interval) {
+  this.storeState();
   if (!this.xFixed) {
     var dx   = this.damping * this.vx;     // damping force
     var ax   = (this.fx - dx) / this.options.mass;  // acceleration
@@ -380,6 +400,7 @@ Node.prototype.discreteStep = function(interval) {
  * @param {number} maxVelocity The speed limit imposed on the velocity
  */
 Node.prototype.discreteStepLimited = function(interval, maxVelocity) {
+  this.storeState();
   if (!this.xFixed) {
     var dx   = this.damping * this.vx;     // damping force
     var ax   = (this.fx - dx) / this.options.mass;  // acceleration
@@ -459,16 +480,17 @@ Node.prototype.getDistance = function(x, y) {
  * @param {Number} min
  * @param {Number} max
  */
-Node.prototype.setValueRange = function(min, max) {
+Node.prototype.setValueRange = function(min, max, total) {
   if (!this.radiusFixed && this.value !== undefined) {
-    if (max == min) {
-      this.options.radius= (this.options.radiusMin + this.options.radiusMax) / 2;
+    var scale = this.options.customScalingFunction(min, max, total, this.value);
+    var radiusDiff = this.options.radiusMax - this.options.radiusMin;
+    if (this.options.scaleFontWithValue == true) {
+      var fontDiff = this.options.fontSizeMax - this.options.fontSizeMin;
+      this.options.fontSize = this.options.fontSizeMin + scale * fontDiff;
     }
-    else {
-      var scale = (this.options.radiusMax - this.options.radiusMin) / (max - min);
-      this.options.radius= (this.value - min) * scale + this.options.radiusMin;
-    }
+    this.options.radius = this.options.radiusMin + scale * radiusDiff;
   }
+
   this.baseRadiusValue = this.options.radius;
 };
 
@@ -534,16 +556,9 @@ Node.prototype._resizeImage = function (ctx) {
       this.growthIndicator = this.width - width;
     }
   }
-
 };
 
-Node.prototype._drawImage = function (ctx) {
-  this._resizeImage(ctx);
-
-  this.left   = this.x - this.width / 2;
-  this.top    = this.y - this.height / 2;
-
-  var yLabel;
+Node.prototype._drawImageAtPosition = function (ctx) {
   if (this.imageObj.width != 0 ) {
     // draw the shade
     if (this.clusterSize > 1) {
@@ -558,16 +573,104 @@ Node.prototype._drawImage = function (ctx) {
     // draw the image
     ctx.globalAlpha = 1.0;
     ctx.drawImage(this.imageObj, this.left, this.top, this.width, this.height);
-    yLabel = this.y + this.height / 2;
   }
-  else {
-    // image still loading... just draw the label for now
-    yLabel = this.y;
-  }
-
-  this._label(ctx, this.label, this.x, yLabel, undefined, "top");
 };
 
+Node.prototype._drawImageLabel = function (ctx) {
+  var yLabel;
+  var offset = 0;
+  
+  if (this.height){
+    offset = this.height / 2;
+    var labelDimensions = this.getTextSize(ctx);
+      
+    if (labelDimensions.lineCount >= 1){
+      offset += labelDimensions.height / 2;
+      offset += 3;
+    }
+  }
+  
+  yLabel = this.y + offset;
+
+  this._label(ctx, this.label, this.x, yLabel, undefined);
+};
+
+Node.prototype._drawImage = function (ctx) {
+  this._resizeImage(ctx);
+  this.left   = this.x - this.width / 2;
+  this.top    = this.y - this.height / 2;
+
+  this._drawImageAtPosition(ctx);
+
+  this.boundingBox.top = this.top;
+  this.boundingBox.left = this.left;
+  this.boundingBox.right = this.left + this.width;
+  this.boundingBox.bottom = this.top + this.height;
+
+  this._drawImageLabel(ctx);
+  this.boundingBox.left = Math.min(this.boundingBox.left, this.labelDimensions.left);
+  this.boundingBox.right = Math.max(this.boundingBox.right, this.labelDimensions.left + this.labelDimensions.width);
+  this.boundingBox.bottom = Math.max(this.boundingBox.bottom, this.boundingBox.bottom + this.labelDimensions.height);
+};
+
+Node.prototype._resizeCircularImage = function (ctx) {
+  if(!this.imageObj.src || !this.imageObj.width || !this.imageObj.height){
+    if (!this.width) {
+      var diameter = this.options.radius * 2;
+      this.width = diameter;
+      this.height = diameter;
+
+      // scaling used for clustering
+      //this.width  += Math.min(this.clusterSize - 1, this.maxNodeSizeIncrements) * 0.5 * this.clusterSizeWidthFactor;
+      //this.height += Math.min(this.clusterSize - 1, this.maxNodeSizeIncrements) * 0.5 * this.clusterSizeHeightFactor;
+      this.options.radius += Math.min(this.clusterSize - 1, this.maxNodeSizeIncrements) * 0.5 * this.clusterSizeRadiusFactor;
+      this.growthIndicator = this.options.radius- 0.5*diameter;
+      this._swapToImageResizeWhenImageLoaded = true;
+    }
+  }
+  else {
+    if (this._swapToImageResizeWhenImageLoaded) {
+      this.width = 0;
+      this.height = 0;
+      delete this._swapToImageResizeWhenImageLoaded;
+    }
+    this._resizeImage(ctx);
+  }
+
+};
+
+Node.prototype._drawCircularImage = function (ctx) {
+  this._resizeCircularImage(ctx);
+
+  this.left   = this.x - this.width / 2;
+  this.top    = this.y - this.height / 2;
+  
+  var centerX = this.left + (this.width / 2);
+  var centerY = this.top + (this.height / 2);
+  var radius = Math.abs(this.height / 2);
+
+  this._drawRawCircle(ctx, centerX, centerY, radius);
+
+  ctx.save();
+  ctx.circle(this.x, this.y, radius);
+  ctx.stroke();
+  ctx.clip();
+
+  this._drawImageAtPosition(ctx);
+
+  ctx.restore();
+
+  this.boundingBox.top = this.y - this.options.radius;
+  this.boundingBox.left = this.x - this.options.radius;
+  this.boundingBox.right = this.x + this.options.radius;
+  this.boundingBox.bottom = this.y + this.options.radius;
+
+  this._drawImageLabel(ctx); 
+  
+  this.boundingBox.left = Math.min(this.boundingBox.left, this.labelDimensions.left);
+  this.boundingBox.right = Math.max(this.boundingBox.right, this.labelDimensions.left + this.labelDimensions.width);
+  this.boundingBox.bottom = Math.max(this.boundingBox.bottom, this.boundingBox.bottom + this.labelDimensions.height);
+};
 
 Node.prototype._resizeBox = function (ctx) {
   if (!this.width) {
@@ -609,11 +712,16 @@ Node.prototype._drawBox = function (ctx) {
   ctx.lineWidth *= this.networkScaleInv;
   ctx.lineWidth = Math.min(this.width,ctx.lineWidth);
 
-  ctx.fillStyle = this.selected ? this.options.color.highlight.background : this.options.color.background;
+  ctx.fillStyle = this.selected ? this.options.color.highlight.background : this.hover ? this.options.color.hover.background : this.options.color.background;
 
   ctx.roundRect(this.left, this.top, this.width, this.height, this.options.radius);
   ctx.fill();
   ctx.stroke();
+
+  this.boundingBox.top = this.top;
+  this.boundingBox.left = this.left;
+  this.boundingBox.right = this.left + this.width;
+  this.boundingBox.bottom = this.top + this.height;
 
   this._label(ctx, this.label, this.x, this.y);
 };
@@ -664,6 +772,11 @@ Node.prototype._drawDatabase = function (ctx) {
   ctx.fill();
   ctx.stroke();
 
+  this.boundingBox.top = this.top;
+  this.boundingBox.left = this.left;
+  this.boundingBox.right = this.left + this.width;
+  this.boundingBox.bottom = this.top + this.height;
+
   this._label(ctx, this.label, this.x, this.y);
 };
 
@@ -686,15 +799,11 @@ Node.prototype._resizeCircle = function (ctx) {
   }
 };
 
-Node.prototype._drawCircle = function (ctx) {
-  this._resizeCircle(ctx);
-  this.left = this.x - this.width / 2;
-  this.top = this.y - this.height / 2;
-
+Node.prototype._drawRawCircle = function (ctx, x, y, radius) {
   var clusterLineWidth = 2.5;
   var borderWidth = this.options.borderWidth;
   var selectionLineWidth = this.options.borderWidthSelected || 2 * this.options.borderWidth;
-
+    
   ctx.strokeStyle = this.selected ? this.options.color.highlight.border : this.hover ? this.options.color.hover.border : this.options.color.border;
 
   // draw the outer border
@@ -703,7 +812,7 @@ Node.prototype._drawCircle = function (ctx) {
     ctx.lineWidth *= this.networkScaleInv;
     ctx.lineWidth = Math.min(this.width,ctx.lineWidth);
 
-    ctx.circle(this.x, this.y, this.options.radius+2*ctx.lineWidth);
+    ctx.circle(x, y, radius+2*ctx.lineWidth);
     ctx.stroke();
   }
   ctx.lineWidth = (this.selected ? selectionLineWidth : borderWidth) + ((this.clusterSize > 1) ? clusterLineWidth : 0.0);
@@ -711,9 +820,22 @@ Node.prototype._drawCircle = function (ctx) {
   ctx.lineWidth = Math.min(this.width,ctx.lineWidth);
 
   ctx.fillStyle = this.selected ? this.options.color.highlight.background : this.hover ? this.options.color.hover.background : this.options.color.background;
-  ctx.circle(this.x, this.y, this.options.radius);
+  ctx.circle(this.x, this.y, radius);
   ctx.fill();
   ctx.stroke();
+};
+
+Node.prototype._drawCircle = function (ctx) {
+  this._resizeCircle(ctx);
+  this.left = this.x - this.width / 2;
+  this.top = this.y - this.height / 2;
+
+  this._drawRawCircle(ctx, this.x, this.y, this.options.radius);
+
+  this.boundingBox.top = this.y - this.options.radius;
+  this.boundingBox.left = this.x - this.options.radius;
+  this.boundingBox.right = this.x + this.options.radius;
+  this.boundingBox.bottom = this.y + this.options.radius;
 
   this._label(ctx, this.label, this.x, this.y);
 };
@@ -766,6 +888,12 @@ Node.prototype._drawEllipse = function (ctx) {
   ctx.ellipse(this.left, this.top, this.width, this.height);
   ctx.fill();
   ctx.stroke();
+
+  this.boundingBox.top = this.top;
+  this.boundingBox.left = this.left;
+  this.boundingBox.right = this.left + this.width;
+  this.boundingBox.bottom = this.top + this.height;
+
   this._label(ctx, this.label, this.x, this.y);
 };
 
@@ -843,8 +971,16 @@ Node.prototype._drawShape = function (ctx, shape) {
   ctx.fill();
   ctx.stroke();
 
+  this.boundingBox.top = this.y - this.options.radius;
+  this.boundingBox.left = this.x - this.options.radius;
+  this.boundingBox.right = this.x + this.options.radius;
+  this.boundingBox.bottom = this.y + this.options.radius;
+
   if (this.label) {
-    this._label(ctx, this.label, this.x, this.y + this.height / 2, undefined, 'top',true);
+    this._label(ctx, this.label, this.x, this.y + this.height / 2, undefined, 'hanging',true);
+    this.boundingBox.left = Math.min(this.boundingBox.left, this.labelDimensions.left);
+    this.boundingBox.right = Math.max(this.boundingBox.right, this.labelDimensions.left + this.labelDimensions.width);
+    this.boundingBox.bottom = Math.max(this.boundingBox.bottom, this.boundingBox.bottom + this.labelDimensions.height);
   }
 };
 
@@ -869,16 +1005,98 @@ Node.prototype._drawText = function (ctx) {
   this.top = this.y - this.height / 2;
 
   this._label(ctx, this.label, this.x, this.y);
+
+  this.boundingBox.top = this.top;
+  this.boundingBox.left = this.left;
+  this.boundingBox.right = this.left + this.width;
+  this.boundingBox.bottom = this.top + this.height;
 };
 
+Node.prototype._resizeIcon = function (ctx) {
+  if (!this.width) {
+    var margin = 5;
+    var iconSize =
+    {
+      width: Number(this.options.iconSize),
+      height: Number(this.options.iconSize)
+    };
+    this.width = iconSize.width + 2 * margin;
+    this.height = iconSize.height + 2 * margin;
 
+    // scaling used for clustering
+    this.width += Math.min(this.clusterSize - 1, this.maxNodeSizeIncrements) * this.clusterSizeWidthFactor;
+    this.height += Math.min(this.clusterSize - 1, this.maxNodeSizeIncrements) * this.clusterSizeHeightFactor;
+    this.options.radius += Math.min(this.clusterSize - 1, this.maxNodeSizeIncrements) * this.clusterSizeRadiusFactor;
+    this.growthIndicator = this.width - (iconSize.width + 2 * margin);
+  }
+};
+
+Node.prototype._drawIcon = function (ctx) {
+  this._resizeIcon(ctx);
+
+  this.options.iconSize = this.options.iconSize || 50;
+
+  this.left = this.x - this.width / 2;
+  this.top = this.y - this.height / 2;
+  this._icon(ctx);
+
+
+  this.boundingBox.top = this.y - this.options.iconSize/2;
+  this.boundingBox.left = this.x - this.options.iconSize/2;
+  this.boundingBox.right = this.x + this.options.iconSize/2;
+  this.boundingBox.bottom = this.y + this.options.iconSize/2;
+
+  if (this.label) {
+    var iconTextSpacing = 5;
+    this._label(ctx, this.label, this.x, this.y + this.height / 2 + iconTextSpacing, 'top', true);
+
+    this.boundingBox.left = Math.min(this.boundingBox.left, this.labelDimensions.left);
+    this.boundingBox.right = Math.max(this.boundingBox.right, this.labelDimensions.left + this.labelDimensions.width);
+    this.boundingBox.bottom = Math.max(this.boundingBox.bottom, this.boundingBox.bottom + this.labelDimensions.height);
+  }
+};
+
+Node.prototype._icon = function (ctx) {
+  var relativeIconSize = Number(this.options.iconSize) * this.networkScale;
+  
+  if (this.options.icon && relativeIconSize > this.options.fontDrawThreshold - 1) {
+
+      var iconSize = Number(this.options.iconSize);
+
+      ctx.font = (this.selected ? "bold " : "") + iconSize + "px " + this.options.iconFontFace;
+
+      // draw icon
+      ctx.fillStyle = this.options.iconColor || "black";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(this.options.icon, this.x, this.y);
+  }
+};
+  
 Node.prototype._label = function (ctx, text, x, y, align, baseline, labelUnderNode) {
-  if (text && Number(this.options.fontSize) * this.networkScale > this.fontDrawThreshold) {
-    ctx.font = (this.selected ? "bold " : "") + this.options.fontSize + "px " + this.options.fontFace;
+  var relativeFontSize = Number(this.options.fontSize) * this.networkScale;
+  if (text && relativeFontSize >= this.options.fontDrawThreshold - 1) {
+    var fontSize = Number(this.options.fontSize);
+
+    // this ensures that there will not be HUGE letters on screen by setting an upper limit on the visible text size (regardless of zoomLevel)
+    if (relativeFontSize >= this.options.fontSizeMaxVisible) {
+      fontSize = Number(this.options.fontSizeMaxVisible) * this.networkScaleInv;
+    }
+
+    // fade in when relative scale is between threshold and threshold - 1
+    var fontColor = this.options.fontColor || "#000000";
+    var strokecolor = this.options.fontStrokeColor;
+    if (relativeFontSize <= this.options.fontDrawThreshold) {
+      var opacity = Math.max(0,Math.min(1,1 - (this.options.fontDrawThreshold - relativeFontSize)));
+      fontColor   = util.overrideOpacity(fontColor,   opacity);
+      strokecolor = util.overrideOpacity(strokecolor, opacity);
+
+    }
+
+    ctx.font = (this.selected ? "bold " : "") + fontSize + "px " + this.options.fontFace;
 
     var lines = text.split('\n');
     var lineCount = lines.length;
-    var fontSize = (Number(this.options.fontSize) + 4); // TODO: why is this +4 ?
     var yLine = y + (1 - lineCount) / 2 * fontSize;
     if (labelUnderNode == true) {
       yLine = y + (1 - lineCount) / (2 * fontSize);
@@ -890,11 +1108,13 @@ Node.prototype._label = function (ctx, text, x, y, align, baseline, labelUnderNo
       var lineWidth = ctx.measureText(lines[i]).width;
       width = lineWidth > width ? lineWidth : width;
     }
-    var height = this.options.fontSize * lineCount;
+    var height = fontSize * lineCount;
     var left = x - width / 2;
     var top = y - height / 2;
-    if (baseline == "top") {
+    if (baseline == "hanging") {
       top += 0.5 * fontSize;
+      top += 4;   // distance from node, required because we use hanging. Hanging has less difference between browsers
+      yLine += 4; // distance from node
     }
     this.labelDimensions = {top:top,left:left,width:width,height:height,yLine:yLine};
 
@@ -905,10 +1125,18 @@ Node.prototype._label = function (ctx, text, x, y, align, baseline, labelUnderNo
     }
 
     // draw text
-    ctx.fillStyle = this.options.fontColor || "black";
+    ctx.fillStyle = fontColor;
     ctx.textAlign = align || "center";
     ctx.textBaseline = baseline || "middle";
+    if (this.options.fontStrokeWidth > 0){
+      ctx.lineWidth   = this.options.fontStrokeWidth;
+      ctx.strokeStyle = strokecolor;
+      ctx.lineJoin    = 'round';
+    }
     for (var i = 0; i < lineCount; i++) {
+      if(this.options.fontStrokeWidth){
+        ctx.strokeText(lines[i], x, yLine);
+      }
       ctx.fillText(lines[i], x, yLine);
       yLine += fontSize;
     }
@@ -918,20 +1146,24 @@ Node.prototype._label = function (ctx, text, x, y, align, baseline, labelUnderNo
 
 Node.prototype.getTextSize = function(ctx) {
   if (this.label !== undefined) {
-    ctx.font = (this.selected ? "bold " : "") + this.options.fontSize + "px " + this.options.fontFace;
+    var fontSize = Number(this.options.fontSize);
+    if (fontSize * this.networkScale > this.options.fontSizeMaxVisible) {
+      fontSize = Number(this.options.fontSizeMaxVisible) * this.networkScaleInv;
+    }
+    ctx.font = (this.selected ? "bold " : "") + fontSize + "px " + this.options.fontFace;
 
     var lines = this.label.split('\n'),
-        height = (Number(this.options.fontSize) + 4) * lines.length,
+        height = (fontSize + 4) * lines.length,
         width = 0;
 
     for (var i = 0, iMax = lines.length; i < iMax; i++) {
       width = Math.max(width, ctx.measureText(lines[i]).width);
     }
 
-    return {"width": width, "height": height};
+    return {"width": width, "height": height, lineCount: lines.length};
   }
   else {
-    return {"width": 0, "height": 0};
+    return {"width": 0, "height": 0, lineCount: 0};
   }
 };
 

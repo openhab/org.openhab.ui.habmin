@@ -15,14 +15,12 @@ var moment = require('../../module/moment');
 function TimeAxis (body, options) {
   this.dom = {
     foreground: null,
-    majorLines: [],
+    lines: [],
     majorTexts: [],
-    minorLines: [],
     minorTexts: [],
     redundant: {
-      majorLines: [],
+      lines: [],
       majorTexts: [],
-      minorLines: [],
       minorTexts: []
     }
   };
@@ -39,7 +37,9 @@ function TimeAxis (body, options) {
     orientation: 'bottom',  // supported: 'top', 'bottom'
     // TODO: implement timeaxis orientations 'left' and 'right'
     showMinorLabels: true,
-    showMajorLabels: true
+    showMajorLabels: true,
+    format: null,
+    timeAxis: null
   };
   this.options = util.extend({}, this.defaultOptions);
 
@@ -64,7 +64,14 @@ TimeAxis.prototype = new Component();
 TimeAxis.prototype.setOptions = function(options) {
   if (options) {
     // copy all options that we know
-    util.selectiveExtend(['orientation', 'showMinorLabels', 'showMajorLabels','hiddenDates'], this.options, options);
+    util.selectiveExtend([
+      'orientation',
+      'showMinorLabels',
+      'showMajorLabels',
+      'hiddenDates',
+      'format',
+      'timeAxis'
+    ], this.options, options);
 
     // apply locale to moment.js
     // TODO: not so nice, this is applied globally to moment.js
@@ -181,37 +188,53 @@ TimeAxis.prototype._repaintLabels = function () {
   var minimumStep = timeLabelsize - DateUtil.getHiddenDurationBefore(this.body.hiddenDates, this.body.range, timeLabelsize);
   minimumStep -= this.body.util.toTime(0).valueOf();
 
-
   var step = new TimeStep(new Date(start), new Date(end), minimumStep, this.body.hiddenDates);
+  if (this.options.format) {
+    step.setFormat(this.options.format);
+  }
+  if (this.options.timeAxis) {
+    step.setScale(this.options.timeAxis);
+  }
   this.step = step;
 
   // Move all DOM elements to a "redundant" list, where they
   // can be picked for re-use, and clear the lists with lines and texts.
   // At the end of the function _repaintLabels, left over elements will be cleaned up
   var dom = this.dom;
-  dom.redundant.majorLines = dom.majorLines;
+  dom.redundant.lines = dom.lines;
   dom.redundant.majorTexts = dom.majorTexts;
-  dom.redundant.minorLines = dom.minorLines;
   dom.redundant.minorTexts = dom.minorTexts;
-  dom.majorLines = [];
+  dom.lines = [];
   dom.majorTexts = [];
-  dom.minorLines = [];
   dom.minorTexts = [];
 
-  step.first();
+  var cur;
+  var x = 0;
+  var isMajor;
+  var xPrev = 0;
+  var width = 0;
+  var prevLine;
   var xFirstMajorLabel = undefined;
   var max = 0;
+  var className;
+
+  step.first();
   while (step.hasNext() && max < 1000) {
     max++;
-    var cur = step.getCurrent();
-    var x = this.body.util.toScreen(cur);
-    var isMajor = step.isMajor();
 
+    cur = step.getCurrent();
+    isMajor = step.isMajor();
+    className = step.getClassName();
 
-    // TODO: lines must have a width, such that we can create css backgrounds
+    xPrev = x;
+    x = this.body.util.toScreen(cur);
+    width = x - xPrev;
+    if (prevLine) {
+      prevLine.style.width = width + 'px';
+    }
 
     if (this.options.showMinorLabels) {
-      this._repaintMinorText(x, step.getLabelMinor(), orientation);
+      this._repaintMinorText(x, step.getLabelMinor(), orientation, className);
     }
 
     if (isMajor && this.options.showMajorLabels) {
@@ -219,12 +242,12 @@ TimeAxis.prototype._repaintLabels = function () {
         if (xFirstMajorLabel == undefined) {
           xFirstMajorLabel = x;
         }
-        this._repaintMajorText(x, step.getLabelMajor(), orientation);
+        this._repaintMajorText(x, step.getLabelMajor(), orientation, className);
       }
-      this._repaintMajorLine(x, orientation);
+      prevLine = this._repaintMajorLine(x, orientation, className);
     }
     else {
-      this._repaintMinorLine(x, orientation);
+      prevLine = this._repaintMinorLine(x, orientation, className);
     }
 
     step.next();
@@ -237,7 +260,7 @@ TimeAxis.prototype._repaintLabels = function () {
         widthText = leftText.length * (this.props.majorCharWidth || 10) + 10; // upper bound estimation
 
     if (xFirstMajorLabel == undefined || widthText < xFirstMajorLabel) {
-      this._repaintMajorText(0, leftText, orientation);
+      this._repaintMajorText(0, leftText, orientation, className);
     }
   }
 
@@ -257,9 +280,10 @@ TimeAxis.prototype._repaintLabels = function () {
  * @param {Number} x
  * @param {String} text
  * @param {String} orientation   "top" or "bottom" (default)
+ * @param {String} className
  * @private
  */
-TimeAxis.prototype._repaintMinorText = function (x, text, orientation) {
+TimeAxis.prototype._repaintMinorText = function (x, text, orientation, className) {
   // reuse redundant label
   var label = this.dom.redundant.minorTexts.shift();
 
@@ -268,7 +292,6 @@ TimeAxis.prototype._repaintMinorText = function (x, text, orientation) {
     var content = document.createTextNode('');
     label = document.createElement('div');
     label.appendChild(content);
-    label.className = 'text minor';
     this.dom.foreground.appendChild(label);
   }
   this.dom.minorTexts.push(label);
@@ -277,6 +300,7 @@ TimeAxis.prototype._repaintMinorText = function (x, text, orientation) {
 
   label.style.top = (orientation == 'top') ? (this.props.majorLabelHeight + 'px') : '0';
   label.style.left = x + 'px';
+  label.className = 'text minor ' + className;
   //label.title = title;  // TODO: this is a heavy operation
 };
 
@@ -285,9 +309,10 @@ TimeAxis.prototype._repaintMinorText = function (x, text, orientation) {
  * @param {Number} x
  * @param {String} text
  * @param {String} orientation   "top" or "bottom" (default)
+ * @param {String} className
  * @private
  */
-TimeAxis.prototype._repaintMajorText = function (x, text, orientation) {
+TimeAxis.prototype._repaintMajorText = function (x, text, orientation, className) {
   // reuse redundant label
   var label = this.dom.redundant.majorTexts.shift();
 
@@ -295,13 +320,13 @@ TimeAxis.prototype._repaintMajorText = function (x, text, orientation) {
     // create label
     var content = document.createTextNode(text);
     label = document.createElement('div');
-    label.className = 'text major';
     label.appendChild(content);
     this.dom.foreground.appendChild(label);
   }
   this.dom.majorTexts.push(label);
 
   label.childNodes[0].nodeValue = text;
+  label.className = 'text major ' + className;
   //label.title = title; // TODO: this is a heavy operation
 
   label.style.top = (orientation == 'top') ? '0' : (this.props.minorLabelHeight  + 'px');
@@ -312,19 +337,19 @@ TimeAxis.prototype._repaintMajorText = function (x, text, orientation) {
  * Create a minor line for the axis at position x
  * @param {Number} x
  * @param {String} orientation   "top" or "bottom" (default)
+ * @param {String} className
+ * @return {Element} Returns the created line
  * @private
  */
-TimeAxis.prototype._repaintMinorLine = function (x, orientation) {
+TimeAxis.prototype._repaintMinorLine = function (x, orientation, className) {
   // reuse redundant line
-  var line = this.dom.redundant.minorLines.shift();
-
+  var line = this.dom.redundant.lines.shift();
   if (!line) {
     // create vertical line
     line = document.createElement('div');
-    line.className = 'grid vertical minor';
     this.dom.background.appendChild(line);
   }
-  this.dom.minorLines.push(line);
+  this.dom.lines.push(line);
 
   var props = this.props;
   if (orientation == 'top') {
@@ -335,25 +360,29 @@ TimeAxis.prototype._repaintMinorLine = function (x, orientation) {
   }
   line.style.height = props.minorLineHeight + 'px';
   line.style.left = (x - props.minorLineWidth / 2) + 'px';
+
+  line.className = 'grid vertical minor ' + className;
+
+  return line;
 };
 
 /**
  * Create a Major line for the axis at position x
  * @param {Number} x
  * @param {String} orientation   "top" or "bottom" (default)
+ * @param {String} className
+ * @return {Element} Returns the created line
  * @private
  */
-TimeAxis.prototype._repaintMajorLine = function (x, orientation) {
+TimeAxis.prototype._repaintMajorLine = function (x, orientation, className) {
   // reuse redundant line
-  var line = this.dom.redundant.majorLines.shift();
-
+  var line = this.dom.redundant.lines.shift();
   if (!line) {
     // create vertical line
-    line = document.createElement('DIV');
-    line.className = 'grid vertical major';
+    line = document.createElement('div');
     this.dom.background.appendChild(line);
   }
-  this.dom.majorLines.push(line);
+  this.dom.lines.push(line);
 
   var props = this.props;
   if (orientation == 'top') {
@@ -364,6 +393,10 @@ TimeAxis.prototype._repaintMajorLine = function (x, orientation) {
   }
   line.style.left = (x - props.majorLineWidth / 2) + 'px';
   line.style.height = props.majorLineHeight + 'px';
+
+  line.className = 'grid vertical major ' + className;
+
+  return line;
 };
 
 /**
@@ -398,16 +431,6 @@ TimeAxis.prototype._calculateCharSize = function () {
   }
   this.props.majorCharHeight = this.dom.measureCharMajor.clientHeight;
   this.props.majorCharWidth = this.dom.measureCharMajor.clientWidth;
-};
-
-/**
- * Snap a date to a rounded value.
- * The snap intervals are dependent on the current scale and step.
- * @param {Date} date   the date to be snapped.
- * @return {Date} snappedDate
- */
-TimeAxis.prototype.snap = function(date) {
-  return this.step.snap(date);
 };
 
 module.exports = TimeAxis;

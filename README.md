@@ -1,32 +1,53 @@
 HABmin2
 =======
 
-HABmin version2 - ultimately targeted toward openHAB2, however currently only working with openHAB1. The goal of HABmin2 is to provide a modern, professional and portable user interface for openHAB, providing both user and administrative functions (eg sitemaps for users, and configuration utilities to aid setup). It is written in such a way that it can be compiled as a native application for mobile devices using [Apache Cordova](http://cordova.apache.org/). This provides a portable application that with a small amount of work should run as a native application on a diverse range of devices.
+HABmin version2 - ultimately targeted toward openHAB2.
 
-To get a feel for the interface, check out an online version [here](http://cdjackson.github.io/HABmin2/#/home). Note that this is a static site, so there will be errors, and dynamic content such as graphs etc won't work.
+An **openHAB2** bundle is now available with initial support for charting and some OH2 features such
+as listing the newly discovered devices. I hope to keep a single source base that supports as many
+OH1 and OH2 features as possible while OH2 is being developped.
 
-HABmin is intended as a complete GUI for the openHAB Home Automation system. It is in early and [active development](https://github.com/cdjackson/HABmin2/blob/master/CHANGELOG.md), and as the ultimate target is openHAB2, which is also being actively developped, features are varied. In general, I'm focussing on features that I don't anticipate will change in OH2, or where the changes on the server side will not greatly impact the client.
+The goal of HABmin2 is to provide a modern, professional and portable user interface for openHAB,
+providing both user and administrative functions (eg sitemaps for users, and configuration utilities
+to aid setup). It is written in such a way that it can be compiled as a native application for mobile
+devices using [Apache Cordova](http://cordova.apache.org/). This provides a portable application that
+with a small amount of work should run as a native application on a diverse range of devices.
+
+To get a feel for the interface, check out an online version [here](http://cdjackson.github.io/HABmin2/#/home).
+Note that this is a static site, so there will be errors, and dynamic content such as graphs etc won't work.
+
+HABmin is intended as a complete GUI for the openHAB Home Automation system. It is in early and
+[active development](https://github.com/cdjackson/HABmin2/blob/master/CHANGELOG.md), and as the
+ultimate target is openHAB2, which is also being actively developed, features are varied.
+In general, I'm focusing on features that I don't anticipate will change too much in OH2, or where
+the changes on the server side will not greatly impact the client.
 
 
 Features
 ========
 * **Responsive**. Should work well on all devices. Of course some functions may be removed or be difficult to use on small devices (eg the graphical rule editor).
-* **Theme-able**. Multiple themes are available - take your pick.
+* **Theme-able**. Multiple themes are available - take your pick (currently 3 themes). If you want a different look, we're using [bootswatch](http://www.bootswatch.com) themes - vote for your favourite by [raising an issue](https://github.com/cdjackson/HABmin2/issues/new).
+* **Internal support**. OpenHAB is a multinational community - so the software should support your language and country.
 * **Charting**. Modern, fast charting of historical data.
 * **Graphical rule editor**. No need to learn rule syntax.
+* **International support**. Currently translated in English, Deutsch, Français. Add support for your language...
 * Available as native app for **Android**.
+
 
 Installation
 ============
 
-To test, you need to install the [HABmin JAR](https://github.com/cdjackson/HABmin/blob/master/addons/org.openhab.io.habmin-1.7.0-SNAPSHOT.jar?raw=true) **AND** the [ZWave JAR](https://github.com/cdjackson/HABmin/blob/master/addons/org.openhab.binding.zwave-1.7.0-SNAPSHOT.jar?raw=true) from the [HABmin repository](https://github.com/cdjackson/HABmin) and add them to your openHAB ```addons``` folder  (note that you can use any other recent zwave binding if you prefer). These files are needed no matter what installation you choose next - if you don't install these files, some things may work, but most won't (eg sitemaps might work, but charting etc won't). Note that the zwave binding is needed even if you don't have zwave installed - it won't do anything, but is needed to resolve some dependancies - this will be removed in openHAB2.  You also (currently) need to install HABmin version 1 since the HABmin JAR is using a few files in this repository (I know this is bad - I should remove this dependancy soon).
+### OpenHAB-2
+For openHAB-2, simply add the _org.openhab.ui.habmin_ JAR file to your addons folder. Then open your browser at http://openhab server/habmin/index.html.
+
+### OpenHAB-1
+You need to install the [HABmin JAR](https://github.com/cdjackson/HABmin/blob/master/addons/org.openhab.io.habmin-1.7.0-SNAPSHOT.jar?raw=true) **AND** the [ZWave JAR](https://github.com/cdjackson/HABmin/blob/master/addons/org.openhab.binding.zwave-1.7.0-SNAPSHOT.jar?raw=true) from the [HABmin-1 repository](https://github.com/cdjackson/HABmin) and add them to your openHAB ```addons``` folder  (note that you can use any other recent zwave binding if you prefer). These files are needed no matter what installation you choose next - if you don't install these files, some things may work, but most won't (eg sitemaps might work, but charting etc won't). Note that the zwave binding is needed even if you don't have zwave installed - it won't do anything, but is needed to resolve some dependancies - this will be removed in openHAB2.  You also (currently) need to install HABmin version 1 since the HABmin JAR is using a few files in this repository (I know this is bad - I should remove this dependancy soon).
 
 Packages are available for easy install - either for a web server (ie. installation into openHAB so you can use a browser), or as an Android app.
 
 * You can download either the release version - grab the latest from the [releases folder](https://github.com/cdjackson/HABmin2/releases).
 * Or, if you want the latest snapshot, grab it from the [working folder](https://github.com/cdjackson/HABmin2/tree/master/output).
 
-### Web interface
 Then grab the appropriate ZIP file from the [releases folder](https://github.com/cdjackson/HABmin2/releases) or the latest snapshot from the [working folder](https://github.com/cdjackson/HABmin2/tree/master/output). Generally the ```-release``` version, however a ```-debug``` version is also supplied.  Unzip the file into a folder webapps/habmin2 in your openhab installation folder.
 
 Then open the browser at http://openhab server/habmin2.
@@ -77,8 +98,12 @@ Sitemaps (mobile view using *yeti* theme)...
 
 Contributing
 ============
-Clone the repository to your computer.
-install ```npm``` (node package manager) and run ```npm install``` to install all the development dependencies.
+There are a number of ways you can contribute - obviously code additions to add new features or correct bugs
+are very welcome, but it would also be great to get some translations to support other languages.
+
+## Development Environment Setup
+To set up a development environment, clone the repository to your computer.
+Install ```npm``` (node package manager) and run ```npm install``` to install all the development dependencies.
 
 For mobile app compilation, you need to install ```cordova``` and ```ant``` and the android developers kits and set paths appropriately.
 
@@ -89,6 +114,45 @@ To compile for mobile releases (currently only Android supported), run ```grunt 
 
 To compile for release, run ```grunt compile```. This will generate a minified version in the ```bin``` folder
 and also put a zipped ```debug``` and ```release``` versions into the ```output``` folder.
+
+## Language Translations
+If you want to add a translation for your language, then you need to copy the files in ```/src/app/languages```
+and copy the folder ```en-GB``` and rename it to your language (eg ```de-DE```). The folder name is
+```language-country``` and you should be able find the
+[language](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) and
+[country](https://en.wikipedia.org/wiki/ISO_3166-1) codes from these links.
+
+The language translation files accept special characters in UTF-8 format.
+
+In ```app.js```, you should then add your language to the list of supported locales in the ```localeSupported``` array.
+
+```javascript
+    .value('localeSupported', {
+        'en-GB': "English (United Kingdom)"
+    })
+```
+
+The idea is that languages are hierarchical. So we might have ```de-CH```
+for Swiss German, and strings defined for this locale will use Swiss localisation as first priority.
+If no string is available, then it should fall back to the default German localisation, and if no string
+is found here, it will fall back to the default localisation - English.
+
+Note that in the above special characters aren't supported natively as they are embedded in the code.
+To provide support use the sequence below. (note that the ```escape``` function is deprecated in javascript so
+if anyone knows of a better way to do this, please update the code).
+```javascript
+    decodeURIComponent(escape("Français (France)"))
+```
+
+This should allow regional overrides of specific strings without having to override the whole file. Overrides are
+defined in the ```localeFallbacks``` array.
+
+```javascript
+    .value('localeFallbacks', {
+        'en': 'en-GB'
+    })
+```
+
 
 ## Commit Messages
 I am using the conventional changelog, and this requires that commit messages be in a certain format for them to be used to generate the change log.

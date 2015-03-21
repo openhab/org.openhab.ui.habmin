@@ -5,7 +5,7 @@
  * This software is copyright of Chris Jackson under the GPL license.
  * Note that this licence may be changed at a later date.
  *
- * (c) 2014 Chris Jackson (chris@cd-jackson.com)
+ * (c) 2014-2015 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('Binding.zwave', [
     'ui.router',
@@ -14,7 +14,6 @@ angular.module('Binding.zwave', [
     'HABmin.userModel',
     'angular-growl',
     'Binding.config',
-    'yaru22.angular-timeago',
     'ngVis',
     'ResizePanel',
     'SidepanelService'
@@ -40,7 +39,7 @@ angular.module('Binding.zwave', [
     })
 
     .controller('ZwaveBindingCtrl',
-    function ZwaveBindingCtrl($scope, locale, growl, $timeout, $window, $http, timeAgo, $interval, UserService, SidepanelService) {
+    function ZwaveBindingCtrl($scope, locale, growl, $timeout, $window, $http, $interval, UserService, SidepanelService) {
         var url = UserService.getServer() + '/services/habmin/zwave/';
 
         var deviceClassIcons = {
@@ -92,7 +91,7 @@ angular.module('Binding.zwave', [
             var t = moment(node.lastReceived);
             var lastTime = node.lastReceived;
             if (t.isValid()) {
-                lastTime = timeAgo.inWords(t - moment());
+                lastTime = t.fromNow();
             }
             else if(node.lastReceived == "NEVER") {
                 lastTime = locale.getString("zwave.zwaveNeverReceived", node.retryRate);
@@ -152,7 +151,7 @@ angular.module('Binding.zwave', [
             // otherwise just show what the server gave us!
             var t = moment(node.healTime);
             if (node.healTime !== undefined && t.isValid()) {
-                t = timeAgo.inWords(t - moment());
+                t = t.fromNow();
             }
             else {
                 t = "@" + node.healTime;

@@ -112,9 +112,13 @@ function validateDirection (direction) {
  *                                               If animate is a number, the
  *                                               number is taken as duration
  *                                               Default duration is 500 ms.
+ * @param {Boolean} [byUser=false]
  *
  */
-Range.prototype.setRange = function(start, end, animate) {
+Range.prototype.setRange = function(start, end, animate, byUser) {
+  if (byUser !== true) {
+    byUser = false;
+  }
   var _start = start != undefined ? util.convert(start, 'Date').valueOf() : null;
   var _end   = end != undefined   ? util.convert(end, 'Date').valueOf()   : null;
   this._cancelAnimation();
@@ -139,12 +143,12 @@ Range.prototype.setRange = function(start, end, animate) {
         DateUtil.updateHiddenDates(me.body, me.options.hiddenDates);
         anyChanged = anyChanged || changed;
         if (changed) {
-          me.body.emitter.emit('rangechange', {start: new Date(me.start), end: new Date(me.end)});
+          me.body.emitter.emit('rangechange', {start: new Date(me.start), end: new Date(me.end), byUser:byUser});
         }
 
         if (done) {
           if (anyChanged) {
-            me.body.emitter.emit('rangechanged', {start: new Date(me.start), end: new Date(me.end)});
+            me.body.emitter.emit('rangechanged', {start: new Date(me.start), end: new Date(me.end), byUser:byUser});
           }
         }
         else {
@@ -153,7 +157,7 @@ Range.prototype.setRange = function(start, end, animate) {
           me.animateTimer = setTimeout(next, 20);
         }
       }
-    }
+    };
 
     return next();
   }
@@ -161,7 +165,7 @@ Range.prototype.setRange = function(start, end, animate) {
     var changed = this._applyRange(_start, _end);
     DateUtil.updateHiddenDates(this.body, this.options.hiddenDates);
     if (changed) {
-      var params = {start: new Date(this.start), end: new Date(this.end)};
+      var params = {start: new Date(this.start), end: new Date(this.end), byUser:byUser};
       this.body.emitter.emit('rangechange', params);
       this.body.emitter.emit('rangechanged', params);
     }
@@ -247,7 +251,7 @@ Range.prototype._applyRange = function(start, end) {
       zoomMin = 0;
     }
     if ((newEnd - newStart) < zoomMin) {
-      if ((this.end - this.start) === zoomMin) {
+      if ((this.end - this.start) === zoomMin && newStart > this.start && newEnd < this.end) {
         // ignore this action, we are already zoomed to the minimum
         newStart = this.start;
         newEnd = this.end;
@@ -267,8 +271,9 @@ Range.prototype._applyRange = function(start, end) {
     if (zoomMax < 0) {
       zoomMax = 0;
     }
+
     if ((newEnd - newStart) > zoomMax) {
-      if ((this.end - this.start) === zoomMax) {
+      if ((this.end - this.start) === zoomMax && newStart < this.start && newEnd > this.end) {
         // ignore this action, we are already zoomed to the maximum
         newStart = this.start;
         newEnd = this.end;
@@ -284,7 +289,7 @@ Range.prototype._applyRange = function(start, end) {
 
   var changed = (this.start != newStart || this.end != newEnd);
 
-  // if the new range does NOT overlap with the old range, emit checkRangedItems to avoid not showing ranged items (ranged meaning has end time, not neccesarily of type Range)
+  // if the new range does NOT overlap with the old range, emit checkRangedItems to avoid not showing ranged items (ranged meaning has end time, not necessarily of type Range)
   if (!((newStart >= this.start && newStart   <= this.end) || (newEnd   >= this.start && newEnd   <= this.end)) &&
       !((this.start >= newStart && this.start <= newEnd)   || (this.end >= newStart   && this.end <= newEnd) )) {
     this.body.emitter.emit('checkRangedItems');
@@ -412,7 +417,8 @@ Range.prototype._onDrag = function (event) {
   // fire a rangechange event
   this.body.emitter.emit('rangechange', {
     start: new Date(this.start),
-    end:   new Date(this.end)
+    end:   new Date(this.end),
+    byUser: true
   });
 };
 
@@ -437,7 +443,8 @@ Range.prototype._onDragEnd = function (event) {
   // fire a rangechanged event
   this.body.emitter.emit('rangechanged', {
     start: new Date(this.start),
-    end:   new Date(this.end)
+    end:   new Date(this.end),
+    byUser: true
   });
 };
 
@@ -552,7 +559,7 @@ Range.prototype._onPinch = function (event) {
       newEnd = safeEnd;
     }
 
-    this.setRange(newStart, newEnd);
+    this.setRange(newStart, newEnd, false, true);
 
     this.startToFront = false; // revert to default
     this.endToFront = true; // revert to default
@@ -629,7 +636,7 @@ Range.prototype.zoom = function(scale, center, delta) {
     newEnd = safeEnd;
   }
 
-  this.setRange(newStart, newEnd);
+  this.setRange(newStart, newEnd, false, true);
 
   this.startToFront = false; // revert to default
   this.endToFront = true; // revert to default

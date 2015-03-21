@@ -4,7 +4,7 @@
 <div class="modal-body">
     <form class="form-horizontal" role="form">
         <div class="form-group">
-            <label for="inputTheme" class="col-sm-3 control-label">Theme</label>
+            <label for="inputTheme" class="col-sm-3 control-label"i18n="habmin.userTheme"></label>
 
             <div class="col-sm-9">
                 <select class="form-control" id="inputTheme" ng-model="model.theme">
@@ -16,33 +16,39 @@
         </div>
 
         <div class="form-group">
-            <label for="inputEmail2" class="col-sm-3 control-label">Name</label>
+            <label for="inputTheme" class="col-sm-3 control-label" i18n="habmin.userLanguage"></label>
+
+            <div class="col-sm-9">
+                <select class="form-control" id="inputLanguage"
+                        ng-model="model.language"
+                        ng-options="key as value for (key , value) in model.languages">
+                </select>
+            </div>
+        </div>
+
+        <!--
+        <div class="form-group">
+            <label for="inputEmail2" class="col-sm-3 control-label" i18n="habmin.userName"></label>
 
             <div class="col-sm-9">
                 <input type="email" class="form-control" id="inputEmail2" placeholder="Name">
             </div>
         </div>
         <div class="form-group">
-            <label for="inputEmail3" class="col-sm-3 control-label">Email</label>
+            <label for="inputEmail3" class="col-sm-3 control-label" i18n="habmin.userEmail">Email</label>
 
             <div class="col-sm-9">
                 <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
             </div>
         </div>
         <div class="form-group">
-            <label for="inputPassword3" class="col-sm-3 control-label">Password</label>
+            <label for="inputPassword3" class="col-sm-3 control-label" i18n="habmin.userPassword">Password</label>
 
             <div class="col-sm-9">
                 <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
             </div>
         </div>
-        <div class="form-group">
-            <label for="inputMobile" class="col-sm-3 control-label">Mobile</label>
-
-            <div class="col-sm-9">
-                <input type="password" class="form-control" id="inputMobile" placeholder="Phone">
-            </div>
-        </div>
+        -->
     </form>
 
 </div>

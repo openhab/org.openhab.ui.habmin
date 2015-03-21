@@ -13,8 +13,8 @@ var ItemSet = require('./component/ItemSet');
 /**
  * Create a timeline visualization
  * @param {HTMLElement} container
- * @param {vis.DataSet | Array | google.visualization.DataTable} [items]
- * @param {vis.DataSet | Array | google.visualization.DataTable} [groups]
+ * @param {vis.DataSet | vis.DataView | Array | google.visualization.DataTable} [items]
+ * @param {vis.DataSet | vis.DataView | Array | google.visualization.DataTable} [groups]
  * @param {Object} [options]  See Timeline.setOptions for the available options.
  * @constructor
  * @extends Core
@@ -25,7 +25,7 @@ function Timeline (container, items, groups, options) {
   }
 
   // if the third element is options, the forth is groups (optionally);
-  if (!(Array.isArray(groups) || groups instanceof DataSet) && groups instanceof Object) {
+  if (!(Array.isArray(groups) || groups instanceof DataSet || groups instanceof DataView) && groups instanceof Object) {
     var forthArgument = options;
     options = groups;
     groups = forthArgument;
@@ -38,7 +38,7 @@ function Timeline (container, items, groups, options) {
 
     autoResize: true,
 
-    orientation: 'bottom',
+    orientation: 'bottom', // 'bottom', 'top', or 'both'
     width: null,
     height: null,
     maxHeight: null,
@@ -62,7 +62,13 @@ function Timeline (container, items, groups, options) {
     },
     hiddenDates: [],
     util: {
-      snap: null, // will be specified after TimeAxis is created
+      getScale: function () {
+        return me.timeAxis.step.scale;
+      },
+      getStep: function () {
+        return me.timeAxis.step.step;
+      },
+
       toScreen: me._toScreen.bind(me),
       toGlobalScreen: me._toGlobalScreen.bind(me), // this refers to the root.width
       toTime: me._toTime.bind(me),
@@ -77,8 +83,8 @@ function Timeline (container, items, groups, options) {
 
   // time axis
   this.timeAxis = new TimeAxis(this.body);
+  this.timeAxis2 = null; // used in case of orientation option 'both'
   this.components.push(this.timeAxis);
-  this.body.util.snap = this.timeAxis.snap.bind(this.timeAxis);
 
   // current time bar
   this.currentTime = new CurrentTime(this.body);
@@ -96,6 +102,16 @@ function Timeline (container, items, groups, options) {
   this.itemsData = null;      // DataSet
   this.groupsData = null;     // DataSet
 
+  this.on('tap', function (event) {
+    me.emit('click', me.getEventProperties(event))
+  });
+  this.on('doubletap', function (event) {
+    me.emit('doubleClick', me.getEventProperties(event))
+  });
+  this.dom.root.oncontextmenu = function (event) {
+    me.emit('contextmenu', me.getEventProperties(event))
+  };
+
   // apply options
   if (options) {
     this.setOptions(options);
@@ -111,12 +127,22 @@ function Timeline (container, items, groups, options) {
     this.setItems(items);
   }
   else {
-    this.redraw();
+    this._redraw();
   }
 }
 
 // Extend the functionality from Core
 Timeline.prototype = new Core();
+
+/**
+ * Force a redraw. The size of all items will be recalculated.
+ * Can be useful to manually redraw when option autoResize=false and the window
+ * has been resized, or when the items CSS has been changed.
+ */
+Timeline.prototype.redraw = function() {
+  this.itemSet && this.itemSet.markDirty({refreshItems: true});
+  this._redraw();
+};
 
 /**
  * Set items
@@ -310,5 +336,48 @@ Timeline.prototype.getItemRange = function() {
   };
 };
 
+/**
+ * Generate Timeline related information from an event
+ * @param {Event} event
+ * @return {Object} An object with related information, like on which area
+ *                  The event happened, whether clicked on an item, etc.
+ */
+Timeline.prototype.getEventProperties = function (event) {
+  var item  = this.itemSet.itemFromTarget(event);
+  var group = this.itemSet.groupFromTarget(event);
+  var pageX = event.gesture ? event.gesture.center.pageX : event.pageX;
+  var pageY = event.gesture ? event.gesture.center.pageY : event.pageY;
+  var x = pageX - util.getAbsoluteLeft(this.dom.centerContainer);
+  var y = pageY - util.getAbsoluteTop(this.dom.centerContainer);
+
+  var snap = this.itemSet.options.snap || null;
+  var scale = this.body.util.getScale();
+  var step = this.body.util.getStep();
+  var time = this._toTime(x);
+  var snappedTime = snap ? snap(time, scale, step) : time;
+
+  var element = util.getTarget(event);
+  var what = null;
+  if (item != null)                                                    {what = 'item';}
+  else if (util.hasParent(element, this.timeAxis.dom.foreground))      {what = 'axis';}
+  else if (this.timeAxis2 && util.hasParent(element, this.timeAxis2.dom.foreground)) {what = 'axis';}
+  else if (util.hasParent(element, this.itemSet.dom.labelSet))         {what = 'group-label';}
+  else if (util.hasParent(element, this.customTime.bar))               {what = 'custom-time';} // TODO: fix for multiple custom time bars
+  else if (util.hasParent(element, this.currentTime.bar))              {what = 'current-time';}
+  else if (util.hasParent(element, this.dom.center))                   {what = 'background';}
+
+  return {
+    event: event,
+    item: item ? item.id : null,
+    group: group ? group.groupId : null,
+    what: what,
+    pageX: pageX,
+    pageY: pageY,
+    x: x,
+    y: y,
+    time: time,
+    snappedTime: snappedTime
+  }
+};
 
 module.exports = Timeline;

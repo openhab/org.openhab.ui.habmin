@@ -189,7 +189,10 @@ DataStep.prototype.previous = function() {
  * @return {String}  current The current date
  */
 DataStep.prototype.getCurrent = function(decimals) {
-  var toPrecision = '' + Number(this.current).toPrecision(5);
+  // prevent round-off errors when close to zero
+  var current = (Math.abs(this.current) < this.step / 2) ? 0 : this.current;
+  var toPrecision = '' + Number(current).toPrecision(5);
+
   // If decimals is specified, then limit or extend the string as required
   if(decimals !== undefined && !isNaN(Number(decimals))) {
     // If string includes exponent, then we need to add it to the end
@@ -246,18 +249,6 @@ DataStep.prototype.getCurrent = function(decimals) {
   }
 
   return toPrecision;
-};
-
-
-
-/**
- * Snap a date to a rounded value.
- * The snap intervals are dependent on the current scale and step.
- * @param {Date} date   the date to be snapped.
- * @return {Date} snappedDate
- */
-DataStep.prototype.snap = function(date) {
-
 };
 
 /**

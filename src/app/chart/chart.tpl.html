@@ -50,10 +50,16 @@
                         <span class="fa fa-cog"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li ng-repeat="choice in services">
+                        <li ng-if="services.length" ng-repeat="choice in services">
                             <a role="presentation" ng-click="selectService(choice)">
                                 <span>{{choice.name}}</span>
                                 <span ng-if="choice.selected" class="pull-right fa fa-check-square-o"></span>
+                            </a>
+                        </li>
+                        <li ng-if="!services.length" class="disabled">
+                            <a>
+                                <span class="fa fa-exclamation-triangle text-warning"></span>
+                                <span i18n="habmin.chartNoPersistenceServices"></span>
                             </a>
                         </li>
                         <li role="presentation" class="divider"></li>
@@ -69,8 +75,7 @@
                         </li>
                         <li ng-if="selectCharts" ng-class="{'disabled': !selectedChart}">
                             <a ng-confirm-click="deleteChart()"
-                               data-i18n-attr="{'ngConfirmMessage': 'habmin.chartDeleteChartCheck','ngConfirmTitle': 'habmin.chartDeleteChart','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
-                               chartname="{{selectedChart.name}}">
+                               i18n-attr="{'ngConfirmMessage': 'habmin.chartDeleteChartCheck','ngConfirmTitle': 'habmin.chartDeleteChart','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes' }">
                                 <span i18n="habmin.chartDeleteChart"></span>
                             </a>
                         </li>
@@ -89,14 +94,14 @@
 
         <!-- Display the list of items -->
         <div id="itemList" class="list-group habmin-list" ng-if="!selectCharts" resize-panel>
-            <div ng-if="itemsTotal>0" ng-repeat="choice in items | filter:filterFunction">
-                <a role="presentation" ng-hide="choice.filter"
-                   ng-class="{'list-group-item': true, 'active':choice.selected}"
-                   ng-click="selectItem(choice)">
-                    <habmin-icon class="icon-lg" icon="{{choice.icon}}"></habmin-icon>
-                    <span>{{choice.label}}</span>
+            <div ng-if="itemsTotal>0" ng-repeat="item in items | filter:filterFunction">
+                <a role="presentation" ng-if="item.label.title" ng-hide="item.filter"
+                   ng-class="{'list-group-item': true, 'active':item.selected}"
+                   ng-click="selectItem(item)">
+                    <habmin-icon class="icon-lg" icon="{{item.icon}}"></habmin-icon>
+                    <span>{{item.label.title}}</span>
                     <span class="pull-right">
-                        <span ng-if="choice.selected" class="fa fa-check-square-o"></span>
+                        <span ng-if="item.selected" class="fa fa-check-square-o"></span>
                     </span>
                 </a>
             </div>

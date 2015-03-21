@@ -5,7 +5,7 @@
  * This software is copyright of Chris Jackson under the GPL license.
  * Note that this licence may be changed at a later date.
  *
- * (c) 2014 Chris Jackson (chris@cd-jackson.com)
+ * (c) 2014-2015 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('HABmin.sitemap', [
     'ui.router',
@@ -203,13 +203,22 @@ angular.module('HABmin.sitemap', [
 
                     var title = processWidgetLabel(pageDef.title);
 
+                    // Handle differences between OH1 and OH2
+                    var widgets;
+                    if(pageDef.widget != null) {
+                        widgets = [].concat(pageDef.widget);
+                    }
+                    else {
+                        widgets = [].concat(pageDef.widgets);
+                    }
+
                     pageTpl += '<span class="sitemap-title-icon">';
                     pageTpl += '<habmin-icon class="icon" icon="' + pageDef.icon + '"></habmin-icon>';
                     pageTpl += '</span>';
                     pageTpl += '<span>' + title.label + '</span>';
                     pageTpl += '<span class="pull-right">' + title.value + '</span></div></div>';
                     pageTpl += '<div class="sitemap-body">';
-                    pageTpl += processWidget([].concat(pageDef.widget)) + "</div>";
+                    pageTpl += processWidget(widgets) + "</div>";
 
                     return pageTpl;
                 }
@@ -256,8 +265,12 @@ angular.module('HABmin.sitemap', [
                         }
 
                         // Process children
+                        // Handle differences between OH1 and OH2
                         var children = "";
-                        if (widget.widget != null) {
+                        if (widget.widgets != null && [].concat(widget.widgets).length > 0) {
+                            children = "<div>" + processWidget([].concat(widget.widgets)) + "</div>";
+                        }
+                        else if (widget.widget != null && [].concat(widget.widget).length > 0) {
                             children = "<div>" + processWidget([].concat(widget.widget)) + "</div>";
                         }
                         else {
@@ -265,9 +278,13 @@ angular.module('HABmin.sitemap', [
                         }
 
                         // Generate the directive definition
-                        output +=
-                            '<div class="' + widgetClass.join(" ") +
-                            '" id="' + widget.widgetId + '"' + link + '>' +
+                        output += '<div ';
+
+                        if(widgetClass.length > 0) {
+                            output += 'class ="' + widgetClass.join(" ");
+                        }
+
+                        output += '" id="' + widget.widgetId + '"' + link + '>' +
                             '<' + widgetMap[widget.type].directive +
                             ' widget="w' + widget.widgetId + '"' +
                             ' item-model="m' + widget.widgetId + '"' +

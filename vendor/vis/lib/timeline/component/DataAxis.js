@@ -257,7 +257,7 @@ DataAxis.prototype.setRange = function (start, end) {
  * @return {boolean} Returns true if the component is resized
  */
 DataAxis.prototype.redraw = function () {
-  var changeCalled = false;
+  var resized = false;
   var activeGroups = 0;
   
   // Make sure the line container adheres to the vertical scrolling.
@@ -310,6 +310,8 @@ DataAxis.prototype.redraw = function () {
       frame.style.bottom = '';
       frame.style.width = this.width + 'px';
       frame.style.height = this.height + "px";
+      this.props.width = this.body.domProps.left.width;
+      this.props.height = this.body.domProps.left.height;
     }
     else { // right
       frame.style.top = '';
@@ -317,8 +319,12 @@ DataAxis.prototype.redraw = function () {
       frame.style.left = '0';
       frame.style.width = this.width + 'px';
       frame.style.height = this.height + "px";
+      this.props.width = this.body.domProps.right.width;
+      this.props.height = this.body.domProps.right.height;
     }
-    changeCalled = this._redrawLabels();
+
+    resized = this._redrawLabels();
+    resized = this._isResized() || resized;
 
     if (this.options.icons == true) {
       this._redrawGroupIcons();
@@ -329,7 +335,7 @@ DataAxis.prototype.redraw = function () {
 
     this._redrawTitle(orientation);
   }
-  return changeCalled;
+  return resized;
 };
 
 /**
@@ -337,6 +343,7 @@ DataAxis.prototype.redraw = function () {
  * @private
  */
 DataAxis.prototype._redrawLabels = function () {
+  var resized = false;
   DOMutil.prepareElements(this.DOMelements.lines);
   DOMutil.prepareElements(this.DOMelements.labels);
 
@@ -451,7 +458,7 @@ DataAxis.prototype._redrawLabels = function () {
     DOMutil.cleanupElements(this.DOMelements.lines);
     DOMutil.cleanupElements(this.DOMelements.labels);
     this.redraw();
-    return true;
+    resized = true;
   }
   // this will resize the yAxis if it is too big for the labels.
   else if (this.maxLabelSize < (this.width - offset) && this.options.visible == true && this.width > this.minWidth) {
@@ -460,19 +467,25 @@ DataAxis.prototype._redrawLabels = function () {
     DOMutil.cleanupElements(this.DOMelements.lines);
     DOMutil.cleanupElements(this.DOMelements.labels);
     this.redraw();
-    return true;
+    resized = true;
   }
   else {
     DOMutil.cleanupElements(this.DOMelements.lines);
     DOMutil.cleanupElements(this.DOMelements.labels);
-    return false;
+    resized = false;
   }
+
+  return resized;
 };
 
 DataAxis.prototype.convertValue = function (value) {
   var invertedValue = this.valueAtZero - value;
   var convertedValue = invertedValue * this.conversionFactor;
   return convertedValue;
+};
+
+DataAxis.prototype.screenToValue = function (x) {
+  return this.valueAtZero - (x / this.conversionFactor);
 };
 
 /**
@@ -615,16 +628,6 @@ DataAxis.prototype._calculateCharSize = function () {
 
     this.dom.frame.removeChild(measureCharTitle);
   }
-};
-
-/**
- * Snap a date to a rounded value.
- * The snap intervals are dependent on the current scale and step.
- * @param {Date} date   the date to be snapped.
- * @return {Date} snappedDate
- */
-DataAxis.prototype.snap = function(date) {
-  return this.step.snap(date);
 };
 
 module.exports = DataAxis;

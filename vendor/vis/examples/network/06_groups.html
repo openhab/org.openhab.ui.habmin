@@ -8,9 +8,10 @@
       font: 10pt arial;
     }
     #mynetwork {
-      width: 600px;
-      height: 600px;
+      width: 1900px;
+      height: 900px;
       border: 1px solid lightgray;
+      background-color:#222222;
     }
   </style>
 
@@ -22,14 +23,24 @@
     var nodes = null;
     var edges = null;
     var network = null;
+    var nodesData = null;
 
     google.load('visualization', '1');
 
     // Set callback to run when API is loaded
     google.setOnLoadCallback(draw);
 
+    function destroy() {
+      if (network !== null) {
+        network.destroy();
+        network = null;
+      }
+    }
+
     // Called when the Visualization API is loaded.
     function draw() {
+      destroy();
+
       var from, to;
 
       nodes = [];
@@ -121,35 +132,38 @@
         nodeOffset += nodeCount;
         group++;
       }
-
+      nodesData = new vis.DataSet(nodes);
       // create a network
       var container = document.getElementById('mynetwork');
       var data = {
-        nodes: nodes,
+        nodes: nodesData,
         edges: edges
       };
       var options = {
-        stabilize: false,
+        stabilize: true,
         nodes: {
-          shape: 'dot'
+          shape: 'dot',
+            radius:30,
+            fontColor:'#ffffff',
+            borderWidth:2
         },
-        physics: {barnesHut:{springLength: 200}}
+        physics: {barnesHut:{springLength: 100}}
       };
       network = new vis.Network(container, data, options);
     }
+
   </script>
 </head>
 
 <body onload="draw()">
 <form onsubmit= "javascript: draw(); return false;">
   Number of groups:
-  <input type="text" value="6" id="groupCount" style="width: 50px;">
+  <input type="text" value="20" id="groupCount" style="width: 50px;">
   Number of nodes per group:
-  <input type="text" value="7" id="nodeCount" style="width: 50px;">
+  <input type="text" value="1" id="nodeCount" style="width: 50px;">
   <input type="submit" value="Go">
 </form>
 <br>
-
 <div id="mynetwork"></div>
 
 </body>

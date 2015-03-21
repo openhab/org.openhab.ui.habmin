@@ -5,7 +5,7 @@
  * This software is copyright of Chris Jackson under the GPL license.
  * Note that this licence may be changed at a later date.
  *
- * (c) 2014 Chris Jackson (chris@cd-jackson.com)
+ * (c) 2014-2015 Chris Jackson (chris@cd-jackson.com)
  *
  */
 
@@ -30,7 +30,7 @@ angular.module('HABmin.iconModel', [
             "fan_level_1": {class: "oa-vent_ventilation_level_1"},
             "fan_level_2": {class: "oa-vent_ventilation_level_2"},
             "fan_level_3": {class: "oa-vent_ventilation_level_3"},
-            "fire": {class: "fa fire"},
+            "fire": {class: "fa fa-fire"},
             "frontdoor": {class: "oa-fts_door_open"},
             "garage": {class: "oa-fts_garage"},
             "garagedoor": {class: "oa-fts_garage_door_100"},
@@ -63,7 +63,8 @@ angular.module('HABmin.iconModel', [
             "scene_sleeping": {class: "oa-scene_sleeping"},
             "slider": {class: "fa fa-sliders"},
             "socket": {class: "oa-message_socket"},
-            "sun_clouds": {class: "wi-day-cloudy"},
+            "soundcloud": {class: "fa fa-soundcloud"},
+            "sun_clouds": {class: "wi wi-day-cloudy"},
             "switch": {class: "oa-message_socket_on_off"},
             "temperature": {class: "oa-temp_temperature"},
             "temperature_setpoint": {class: "oa-temp_control"},
@@ -75,14 +76,14 @@ angular.module('HABmin.iconModel', [
             "weather": {class: "oa-weather_cloudy"},
             "wifi": {class: "oa-it_wifi"},
             "wind": {class: "oa-weather_wind"},
-            "wind_dir-0": {class: "wi-wind-default._0-deg"},
-            "wind_dir-45": {class: "wi-wind-default._45-deg"},
-            "wind_dir-90": {class: "wi-wind-default._90-deg"},
-            "wind_dir-135": {class: "wi-wind-default._135-deg"},
-            "wind_dir-180": {class: "wi-wind-default._180-deg"},
-            "wind_dir-225": {class: "wi-wind-default._225-deg"},
-            "wind_dir-270": {class: "wi-wind-default._270-deg"},
-            "wind_dir-315": {class: "wi-wind-default._315-deg"},
+            "wind_dir-0": {class: "wi wi-wind-default._0-deg"},
+            "wind_dir-45": {class: "wi wi-wind-default._45-deg"},
+            "wind_dir-90": {class: "wi wi-wind-default._90-deg"},
+            "wind_dir-135": {class: "wi wi-wind-default._135-deg"},
+            "wind_dir-180": {class: "wi wi-wind-default._180-deg"},
+            "wind_dir-225": {class: "wi wi-wind-default._225-deg"},
+            "wind_dir-270": {class: "wi wi-wind-default._270-deg"},
+            "wind_dir-315": {class: "wi wi-wind-default._315-deg"},
             "zwave": {class: "oa-it_wireless_dcf77"}
         };
 
@@ -120,5 +121,3 @@ angular.module('HABmin.iconModel', [
         };
     })
 ;
-
-

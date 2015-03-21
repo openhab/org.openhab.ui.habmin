@@ -35,6 +35,7 @@ function Network (container, data, options) {
     throw new SyntaxError('Constructor must be called with the new operator');
   }
 
+  this._determineBrowserMethod();
   this._initializeMixinLoaders();
 
   // create variables and set default values
@@ -43,17 +44,28 @@ function Network (container, data, options) {
   // render and calculation settings
   this.renderRefreshRate = 60;                         // hz (fps)
   this.renderTimestep = 1000 / this.renderRefreshRate; // ms -- saves calculation later on
-  this.renderTime = 0.5 * this.renderTimestep;         // measured time it takes to render a frame
-  this.maxPhysicsTicksPerRender = 3;                   // max amount of physics ticks per render step.
+  this.renderTime = 0;                                 // measured time it takes to render a frame
+  this.physicsTime = 0;                                // measured time it takes to render a frame
+  this.runDoubleSpeed = false;
   this.physicsDiscreteStepsize = 0.50;                 // discrete stepsize of the simulation
 
   this.initializing = true;
 
   this.triggerFunctions = {add:null,edit:null,editEdge:null,connect:null,del:null};
 
+  var customScalingFunction = function (min,max,total,value) {
+    if (max == min) {
+      return 0.5;
+    }
+    else {
+      var scale = 1 / (max - min);
+      return Math.max(0,(value - min)*scale);
+    }
+  };
   // set constant values
   this.defaultOptions = {
     nodes: {
+      customScalingFunction: customScalingFunction,
       mass: 1,
       radiusMin: 10,
       radiusMax: 30,
@@ -66,6 +78,13 @@ function Network (container, data, options) {
       fontSize: 14, // px
       fontFace: 'verdana',
       fontFill: undefined,
+      fontStrokeWidth: 0, // px
+      fontStrokeColor: '#ffffff',
+      fontDrawThreshold: 3,
+      scaleFontWithValue: false,
+      fontSizeMin: 14,
+      fontSizeMax: 30,
+      fontSizeMaxVisible: 30,
       level: -1,
       color: {
           border: '#2B7CE9',
@@ -79,14 +98,12 @@ function Network (container, data, options) {
           background: '#D2E5FF'
         }
       },
-      borderColor: '#2B7CE9',
-      backgroundColor: '#97C2FC',
-      highlightColor: '#D2E5FF',
       group: undefined,
       borderWidth: 1,
       borderWidthSelected: undefined
     },
     edges: {
+      customScalingFunction: customScalingFunction,
       widthMin: 1, //
       widthMax: 15,//
       width: 1,
@@ -98,23 +115,28 @@ function Network (container, data, options) {
         highlight:'#848484',
         hover: '#848484'
       },
+      opacity:1.0,
       fontColor: '#343434',
       fontSize: 14, // px
       fontFace: 'arial',
       fontFill: 'white',
+      fontStrokeWidth: 0, // px
+      fontStrokeColor: 'white',
+      labelAlignment:'horizontal',
       arrowScaleFactor: 1,
       dash: {
         length: 10,
         gap: 5,
         altLength: undefined
       },
-      inheritColor: "from" // to, from, false, true (== from)
+      inheritColor: "from", // to, from, false, true (== from)
+      useGradients: false // release in 4.0
     },
     configurePhysics:false,
     physics: {
       barnesHut: {
         enabled: true,
-        theta: 1 / 0.6, // inverted to save time during calculation
+        thetaInverted: 1 / 0.5, // inverted to save time during calculation
         gravitationalConstant: -2000,
         centralGravity: 0.3,
         springLength: 95,
@@ -159,15 +181,17 @@ function Network (container, data, options) {
                     height: 1,      // (px PNiC)             | growth of the height per node in cluster.
                     radius: 1},     // (px PNiC)             | growth of the radius per node in cluster.
       maxNodeSizeIncrements: 600,   // (# increments)        | max growth of the width  per node in cluster.
-      activeAreaBoxSize: 80,       // (px)                  | box area around the curser where clusters are popped open.
-      clusterLevelDifference: 2
+      activeAreaBoxSize: 80,        // (px)                  | box area around the curser where clusters are popped open.
+      clusterLevelDifference: 2,    // used for normalization of the cluster levels
+      clusterByZoom: true           // enable clustering through zooming in and out
     },
     navigation: {
       enabled: false
     },
     keyboard: {
       enabled: false,
-      speed: {x: 10, y: 10, zoom: 0.02}
+      speed: {x: 10, y: 10, zoom: 0.02},
+      bindToWindow: true
     },
     dataManipulation: {
       enabled: false,
@@ -187,10 +211,11 @@ function Network (container, data, options) {
       type: "continuous",
       roundness: 0.5
     },
-    maxVelocity:  30,
+    maxVelocity:  50,
     minVelocity:  0.1,   // px/s
     stabilize: true,  // stabilize before displaying the network
     stabilizationIterations: 1000,  // maximum number of iteration to stabilize
+    zoomExtentOnStabilize: true,
     locale: 'en',
     locales: locales,
     tooltip: {
@@ -211,7 +236,8 @@ function Network (container, data, options) {
     hideNodesOnDrag: false,
     width : '100%',
     height : '100%',
-    selectable: true
+    selectable: true,
+    useDefaultGroups: true
   };
   this.constants = util.extend({}, this.defaultOptions);
   this.pixelRatio = 1;
@@ -219,11 +245,13 @@ function Network (container, data, options) {
   
   this.hoverObj = {nodes:{},edges:{}};
   this.controlNodesActive = false;
-  this.navigationHammers = {existing:[], _new: []};
+  this.navigationHammers = [];
+  this.manipulationHammers = [];
 
   // animation properties
   this.animationSpeed = 1/this.renderRefreshRate;
   this.animationEasingFunction = "easeInOutQuint";
+  this.animating = false;
   this.easingTime = 0;
   this.sourceScale = 0;
   this.targetScale = 0;
@@ -232,13 +260,14 @@ function Network (container, data, options) {
   this.lockedOnNodeId = null;
   this.lockedOnNodeOffset = null;
   this.touchTime = 0;
+  this.redrawRequested = false;
 
   // Node variables
   var network = this;
   this.groups = new Groups(); // object with groups
   this.images = new Images(); // object with images
-  this.images.setOnloadCallback(function () {
-    network._redraw();
+  this.images.setOnloadCallback(function (status) {
+    network._requestRedraw();
   });
 
   // keyboard navigation variables
@@ -267,7 +296,7 @@ function Network (container, data, options) {
   this.setOptions(options);
 
   // other vars
-  this.freezeSimulation = false;// freeze the simulation
+  this.freezeSimulationEnabled = false;// freeze the simulation
   this.cachedFunctions = {};
   this.startedStabilization = false;
   this.stabilized = false;
@@ -300,7 +329,7 @@ function Network (container, data, options) {
       network.start();
     },
     'update': function (event, params) {
-      network._updateNodes(params.items, params.data);
+      network._updateNodes(params.items);
       network.start();
     },
     'remove': function (event, params) {
@@ -338,7 +367,7 @@ function Network (container, data, options) {
   else {
     // zoom so all data will fit on the screen, if clustering is enabled, we do not want start to be called here.
     if (this.constants.stabilize == false) {
-      this.zoomExtent(undefined, true,this.constants.clustering.enabled);
+      this.zoomExtent({duration:0}, true, this.constants.clustering.enabled);
     }
   }
 
@@ -350,6 +379,25 @@ function Network (container, data, options) {
 
 // Extend Network with an Emitter mixin
 Emitter(Network.prototype);
+
+/**
+ * Determine if the browser requires a setTimeout or a requestAnimationFrame. This was required because
+ * some implementations (safari and IE9) did not support requestAnimationFrame
+ * @private
+ */
+Network.prototype._determineBrowserMethod = function() {
+  var browserType = navigator.userAgent.toLowerCase();
+  this.requiresTimeout = false;
+  if (browserType.indexOf('msie 9.0') != -1) { // IE 9
+    this.requiresTimeout = true;
+  }
+  else if (browserType.indexOf('safari') != -1) {  // safari
+    if (browserType.indexOf('chrome') <= -1) {
+      this.requiresTimeout = true;
+    }
+  }
+}
+
 
 /**
  * Get the script path where the vis.js library is located
@@ -379,17 +427,45 @@ Network.prototype._getScriptPath = function() {
  * Find the center position of the network
  * @private
  */
-Network.prototype._getRange = function() {
+Network.prototype._getRange = function(specificNodes) {
   var minY = 1e9, maxY = -1e9, minX = 1e9, maxX = -1e9, node;
-  for (var nodeId in this.nodes) {
-    if (this.nodes.hasOwnProperty(nodeId)) {
-      node = this.nodes[nodeId];
-      if (minX > (node.x)) {minX = node.x;}
-      if (maxX < (node.x)) {maxX = node.x;}
-      if (minY > (node.y)) {minY = node.y;}
-      if (maxY < (node.y)) {maxY = node.y;}
+  if (specificNodes.length > 0) {
+    for (var i = 0; i < specificNodes.length; i++) {
+      node = this.nodes[specificNodes[i]];
+      if (minX > (node.boundingBox.left)) {
+        minX = node.boundingBox.left;
+      }
+      if (maxX < (node.boundingBox.right)) {
+        maxX = node.boundingBox.right;
+      }
+      if (minY > (node.boundingBox.bottom)) {
+        minY = node.boundingBox.top;
+      } // top is negative, bottom is positive
+      if (maxY < (node.boundingBox.top)) {
+        maxY = node.boundingBox.bottom;
+      } // top is negative, bottom is positive
     }
   }
+  else {
+    for (var nodeId in this.nodes) {
+      if (this.nodes.hasOwnProperty(nodeId)) {
+        node = this.nodes[nodeId];
+        if (minX > (node.boundingBox.left)) {
+          minX = node.boundingBox.left;
+        }
+        if (maxX < (node.boundingBox.right)) {
+          maxX = node.boundingBox.right;
+        }
+        if (minY > (node.boundingBox.bottom)) {
+          minY = node.boundingBox.top;
+        } // top is negative, bottom is positive
+        if (maxY < (node.boundingBox.top)) {
+          maxY = node.boundingBox.bottom;
+        } // top is negative, bottom is positive
+      }
+    }
+  }
+
   if (minX == 1e9 && maxX == -1e9 && minY == 1e9 && maxY == -1e9) {
     minY = 0, maxY = 0, minX = 0, maxX = 0;
   }
@@ -414,21 +490,37 @@ Network.prototype._findCenter = function(range) {
  * @param {Boolean} [initialZoom]  | zoom based on fitted formula or range, true = fitted, default = false;
  * @param {Boolean} [disableStart] | If true, start is not called.
  */
-Network.prototype.zoomExtent = function(animationOptions, initialZoom, disableStart) {
-  if (initialZoom === undefined) {
-    initialZoom = false;
-  }
-  if (disableStart === undefined) {
-    disableStart = false;
-  }
-  if (animationOptions === undefined) {
-    animationOptions = false;
+Network.prototype.zoomExtent = function(options, initialZoom, disableStart) {
+  this._redraw(true);
+
+  if (initialZoom      === undefined) {initialZoom = false;}
+  if (disableStart     === undefined) {disableStart = false;}
+  if (options === undefined) {options = {nodes:[]};}
+  if (options.nodes === undefined) {
+    options.nodes = [];
   }
 
-  var range = this._getRange();
+  var range;
   var zoomLevel;
 
   if (initialZoom == true) {
+    // check if more than half of the nodes have a predefined position. If so, we use the range, not the approximation.
+    var positionDefined = 0;
+    for (var nodeId in this.nodes) {
+      if (this.nodes.hasOwnProperty(nodeId)) {
+        var node = this.nodes[nodeId];
+        if (node.predefinedPosition == true) {
+          positionDefined += 1;
+        }
+      }
+    }
+    if (positionDefined > 0.5 * this.nodeIndices.length) {
+      this.zoomExtent(options,false,disableStart);
+      return;
+    }
+
+    range = this._getRange(options.nodes);
+
     var numberOfNodes = this.nodeIndices.length;
     if (this.constants.smoothCurves == true) {
       if (this.constants.clustering.enabled == true &&
@@ -454,12 +546,12 @@ Network.prototype.zoomExtent = function(animationOptions, initialZoom, disableSt
     zoomLevel *= factor;
   }
   else {
+    range = this._getRange(options.nodes);
     var xDistance = Math.abs(range.maxX - range.minX) * 1.1;
     var yDistance = Math.abs(range.maxY - range.minY) * 1.1;
 
     var xZoomLevel = this.frame.canvas.clientWidth  / xDistance;
     var yZoomLevel = this.frame.canvas.clientHeight / yDistance;
-
     zoomLevel = (xZoomLevel <= yZoomLevel) ? xZoomLevel : yZoomLevel;
   }
 
@@ -470,7 +562,7 @@ Network.prototype.zoomExtent = function(animationOptions, initialZoom, disableSt
 
   var center = this._findCenter(range);
   if (disableStart == false) {
-    var options = {position: center, scale: zoomLevel, animation: animationOptions};
+    var options = {position: center, scale: zoomLevel, animation: options};
     this.moveTo(options);
     this.moving = true;
     this.start();
@@ -515,12 +607,21 @@ Network.prototype.setData = function(data, disableStart) {
   if (disableStart === undefined) {
     disableStart = false;
   }
+
+  // unselect all to ensure no selections from old data are carried over.
+  this._unselectAll(true);
+
   // we set initializing to true to ensure that the hierarchical layout is not performed until both nodes and edges are added.
   this.initializing = true;
 
   if (data && data.dot && (data.nodes || data.edges)) {
     throw new SyntaxError('Data must contain either parameter "dot" or ' +
         ' parameter pair "nodes" and "edges", but not both.');
+  }
+
+  // clean up in case there is anyone in an active mode of the manipulation. This is the same option as bound to the escape button.
+  if (this.constants.dataManipulation.enabled == true) {
+    this._createManipulatorBar();
   }
 
   // set options
@@ -554,7 +655,7 @@ Network.prototype.setData = function(data, disableStart) {
     }
     else {
       // find a stable position or start animating to a stable position
-      if (this.constants.stabilize) {
+      if (this.constants.stabilize == true) {
         this._stabilize();
       }
     }
@@ -570,7 +671,6 @@ Network.prototype.setData = function(data, disableStart) {
 Network.prototype.setOptions = function (options) {
   if (options) {
     var prop;
-
     var fields = ['nodes','edges','smoothCurves','hierarchicalLayout','clustering','navigation',
       'keyboard','dataManipulation','onAdd','onEdit','onEditEdge','onConnect','onDelete','clickToUse'
     ];
@@ -579,6 +679,7 @@ Network.prototype.setOptions = function (options) {
     util.selectiveNotDeepExtend(['color'],this.constants.nodes, options.nodes);
     util.selectiveNotDeepExtend(['color','length'],this.constants.edges, options.edges);
 
+    this.groups.useDefaultGroups = this.constants.useDefaultGroups;
     if (options.physics) {
       util.mergeOptions(this.constants.physics, options.physics,'barnesHut');
       util.mergeOptions(this.constants.physics, options.physics,'repulsion');
@@ -628,6 +729,7 @@ Network.prototype.setOptions = function (options) {
           if (options.edges.color.highlight !== undefined) {this.constants.edges.color.highlight = options.edges.color.highlight;}
           if (options.edges.color.hover !== undefined)     {this.constants.edges.color.hover = options.edges.color.hover;}
         }
+        this.constants.edges.inheritColor = false;
       }
 
       if (!options.edges.fontColor) {
@@ -671,8 +773,10 @@ Network.prototype.setOptions = function (options) {
 
     if ('clickToUse' in options) {
       if (options.clickToUse) {
-        this.activator = new Activator(this.frame);
-        this.activator.on('change', this._createKeyBinds.bind(this));
+        if (!this.activator) {
+          this.activator = new Activator(this.frame);
+          this.activator.on('change', this._createKeyBinds.bind(this));
+        }
       }
       else {
         if (this.activator) {
@@ -685,24 +789,33 @@ Network.prototype.setOptions = function (options) {
     if (options.labels) {
       throw new Error('Option "labels" is deprecated. Use options "locale" and "locales" instead.');
     }
+
+
+    // (Re)loading the mixins that can be enabled or disabled in the options.
+    // load the force calculation functions, grouped under the physics system.
+    this._loadPhysicsSystem();
+    // load the navigation system.
+    this._loadNavigationControls();
+    // load the data manipulation system
+    this._loadManipulationSystem();
+    // configure the smooth curves
+    this._configureSmoothCurves();
+
+    // bind hammer
+    this._bindHammer();
+
+    // bind keys. If disabled, this will not do anything;
+    this._createKeyBinds();
+
+    this._markAllEdgesAsDirty();
+    this.setSize(this.constants.width, this.constants.height);
+    this.moving = true;
+    if (this.constants.hierarchicalLayout.enabled == true && this.initializing == false) {
+      this._resetLevels();
+      this._setupHierarchicalLayout();
+    }
+    this.start();
   }
-
-  // (Re)loading the mixins that can be enabled or disabled in the options.
-  // load the force calculation functions, grouped under the physics system.
-  this._loadPhysicsSystem();
-  // load the navigation system.
-  this._loadNavigationControls();
-  // load the data manipulation system
-  this._loadManipulationSystem();
-  // configure the smooth curves
-  this._configureSmoothCurves();
-
-
-  // bind keys. If disabled, this will not do anything;
-  this._createKeyBinds();
-  this.setSize(this.constants.width, this.constants.height);
-  this.moving = true;
-  this.start();
 };
 
 
@@ -724,15 +837,14 @@ Network.prototype._create = function () {
   this.frame.className = 'vis network-frame';
   this.frame.style.position = 'relative';
   this.frame.style.overflow = 'hidden';
+  this.frame.tabIndex = 900;
 
 
 //////////////////////////////////////////////////////////////////
 
   this.frame.canvas = document.createElement("canvas");
-
   this.frame.canvas.style.position = 'relative';
   this.frame.appendChild(this.frame.canvas);
-
 
   if (!this.frame.canvas.getContext) {
     var noCanvas = document.createElement( 'DIV' );
@@ -743,24 +855,30 @@ Network.prototype._create = function () {
     this.frame.canvas.appendChild(noCanvas);
   }
   else {
-
     var ctx = this.frame.canvas.getContext("2d");
-
     this.pixelRatio = (window.devicePixelRatio || 1) / (ctx.webkitBackingStorePixelRatio ||
               ctx.mozBackingStorePixelRatio ||
               ctx.msBackingStorePixelRatio ||
               ctx.oBackingStorePixelRatio ||
               ctx.backingStorePixelRatio || 1);
 
-
-
+    //this.pixelRatio = Math.max(1,this.pixelRatio); // this is to account for browser zooming out. The pixel ratio is ment to switch between 1 and 2 for HD screens.
     this.frame.canvas.getContext("2d").setTransform(this.pixelRatio, 0, 0, this.pixelRatio, 0, 0);
   }
 
-//////////////////////////////////////////////////////////////////
+  this._bindHammer();
+};
 
 
+/**
+ * This function binds hammer, it can be repeated over and over due to the uniqueness check.
+ * @private
+ */
+Network.prototype._bindHammer = function() {
   var me = this;
+  if (this.hammer !== undefined) {
+    this.hammer.dispose();
+  }
   this.drag = {};
   this.pinch = {};
   this.hammer = Hammer(this.frame.canvas, {
@@ -769,25 +887,27 @@ Network.prototype._create = function () {
   this.hammer.on('tap',       me._onTap.bind(me) );
   this.hammer.on('doubletap', me._onDoubleTap.bind(me) );
   this.hammer.on('hold',      me._onHold.bind(me) );
-  this.hammer.on('pinch',     me._onPinch.bind(me) );
   this.hammer.on('touch',     me._onTouch.bind(me) );
   this.hammer.on('dragstart', me._onDragStart.bind(me) );
   this.hammer.on('drag',      me._onDrag.bind(me) );
   this.hammer.on('dragend',   me._onDragEnd.bind(me) );
-  this.hammer.on('mousewheel',me._onMouseWheel.bind(me) );
-  this.hammer.on('DOMMouseScroll',me._onMouseWheel.bind(me) ); // for FF
+
+  if (this.constants.zoomable == true) {
+    this.hammer.on('mousewheel',      me._onMouseWheel.bind(me));
+    this.hammer.on('DOMMouseScroll',  me._onMouseWheel.bind(me)); // for FF
+    this.hammer.on('pinch',           me._onPinch.bind(me) );
+  }
+
   this.hammer.on('mousemove', me._onMouseMoveTitle.bind(me) );
 
   this.hammerFrame = Hammer(this.frame, {
     prevent_default: true
   });
-  this.hammerFrame.on('release',   me._onRelease.bind(me) );
+  this.hammerFrame.on('release', me._onRelease.bind(me) );
 
   // add the frame to the container element
   this.containerElement.appendChild(this.frame);
-
-};
-
+}
 
 /**
  * Binding the keys for keyboard navigation. These functions are defined in the NavigationMixin
@@ -798,7 +918,13 @@ Network.prototype._createKeyBinds = function() {
   if (this.keycharm !== undefined) {
     this.keycharm.destroy();
   }
-  this.keycharm = keycharm();
+
+  if (this.constants.keyboard.bindToWindow == true) {
+    this.keycharm = keycharm({container: window, preventDefault: false});
+  }
+  else {
+    this.keycharm = keycharm({container: this.frame, preventDefault: false});
+  }
 
   this.keycharm.reset();
 
@@ -836,6 +962,39 @@ Network.prototype._createKeyBinds = function() {
 };
 
 /**
+ * Cleans up all bindings of the network, removing it fully from the memory IF the variable is set to null after calling this function.
+ * var network = new vis.Network(..);
+ * network.destroy();
+ * network = null;
+ */
+Network.prototype.destroy = function() {
+  this.start = function () {};
+  this.redraw = function () {};
+  this.timer = false;
+
+  // cleanup physicsConfiguration if it exists
+  this._cleanupPhysicsConfiguration();
+
+  // remove keybindings
+  this.keycharm.reset();
+
+  // clear hammer bindings
+  this.hammer.dispose();
+
+  // clear events
+  this.off();
+
+  this._recursiveDOMDelete(this.containerElement);
+}
+
+Network.prototype._recursiveDOMDelete = function(DOMobject) {
+  while (DOMobject.hasChildNodes() == true) {
+    this._recursiveDOMDelete(DOMobject.firstChild);
+    DOMobject.removeChild(DOMobject.firstChild);
+  }
+}
+
+/**
  * Get the pointer location from a touch location
  * @param {{pageX: Number, pageY: Number}} touch
  * @return {{x: Number, y: Number}} pointer
@@ -870,8 +1029,8 @@ Network.prototype._onTouch = function (event) {
  * handle drag start event
  * @private
  */
-Network.prototype._onDragStart = function () {
-  this._handleDragStart();
+Network.prototype._onDragStart = function (event) {
+  this._handleDragStart(event);
 };
 
 
@@ -881,20 +1040,24 @@ Network.prototype._onDragStart = function () {
  *
  * @private
  */
-Network.prototype._handleDragStart = function() {
-  var drag = this.drag;
-  var node = this._getNodeAt(drag.pointer);
+Network.prototype._handleDragStart = function(event) {
+  // in case the touch event was triggered on an external div, do the initial touch now.
+  if (this.drag.pointer === undefined) {
+    this._onTouch(event);
+  }
+
+  var node = this._getNodeAt(this.drag.pointer);
   // note: drag.pointer is set in _onTouch to get the initial touch location
 
-  drag.dragging = true;
-  drag.selection = [];
-  drag.translation = this._getTranslation();
-  drag.nodeId = null;
+  this.drag.dragging = true;
+  this.drag.selection = [];
+  this.drag.translation = this._getTranslation();
+  this.drag.nodeId = null;
   this.draggingNodes = false;
 
   if (node != null && this.constants.dragNodes == true) {
     this.draggingNodes = true;
-    drag.nodeId = node.id;
+    this.drag.nodeId = node.id;
     // select the clicked node if not yet selected
     if (!node.isSelected()) {
       this._selectObject(node,false);
@@ -920,7 +1083,7 @@ Network.prototype._handleDragStart = function() {
         object.xFixed = true;
         object.yFixed = true;
 
-        drag.selection.push(s);
+        this.drag.selection.push(s);
       }
     }
   }
@@ -980,8 +1143,13 @@ Network.prototype._handleOnDrag = function(event) {
     }
   }
   else {
+    // move the network
     if (this.constants.dragNetwork == true) {
-      // move the network
+      // if the drag was not started properly because the click started outside the network div, start it now.
+      if (this.drag.pointer === undefined) {
+        this._handleDragStart(event);
+        return;
+      }
       var diffX = pointer.x - this.drag.pointer.x;
       var diffY = pointer.y - this.drag.pointer.y;
 
@@ -990,8 +1158,6 @@ Network.prototype._handleOnDrag = function(event) {
         this.drag.translation.y + diffY
       );
       this._redraw();
-//      this.moving = true;
-//      this.start();
     }
   }
 };
@@ -1197,25 +1363,40 @@ Network.prototype._onMouseWheel = function(event) {
 Network.prototype._onMouseMoveTitle = function (event) {
   var gesture = hammerUtil.fakeGesture(this, event);
   var pointer = this._getPointer(gesture.center);
+  var popupVisible = false;
 
   // check if the previously selected node is still selected
-  if (this.popupObj) {
-    this._checkHidePopup(pointer);
+  if (this.popup !== undefined) {
+    if (this.popup.hidden === false) {
+      this._checkHidePopup(pointer);
+    }
+
+    // if the popup was not hidden above
+    if (this.popup.hidden === false) {
+      popupVisible = true;
+      this.popup.setPosition(pointer.x + 3,pointer.y - 5)
+      this.popup.show();
+    }
   }
 
-  // start a timeout that will check if the mouse is positioned above
-  // an element
-  var me = this;
-  var checkShow = function() {
-    me._checkShowPopup(pointer);
-  };
-  if (this.popupTimer) {
-    clearInterval(this.popupTimer); // stop any running calculationTimer
-  }
-  if (!this.drag.dragging) {
-    this.popupTimer = setTimeout(checkShow, this.constants.tooltip.delay);
+  // if we bind the keyboard to the div, we have to highlight it to use it. This highlights it on mouse over
+  if (this.constants.keyboard.bindToWindow == false && this.constants.keyboard.enabled == true) {
+    this.frame.focus();
   }
 
+  // start a timeout that will check if the mouse is positioned above an element
+  if (popupVisible === false) {
+    var me = this;
+    var checkShow = function () {
+      me._checkShowPopup(pointer);
+    };
+    if (this.popupTimer) {
+      clearInterval(this.popupTimer); // stop any running calculationTimer
+    }
+    if (!this.drag.dragging) {
+      this.popupTimer = setTimeout(checkShow, this.constants.tooltip.delay);
+    }
+  }
 
   /**
    * Adding hover highlights
@@ -1268,51 +1449,70 @@ Network.prototype._checkShowPopup = function (pointer) {
   };
 
   var id;
-  var lastPopupNode = this.popupObj;
+  var previousPopupObjId = this.popupObj === undefined ? "" : this.popupObj.id;
+  var nodeUnderCursor = false;
+  var popupType = "node";
 
   if (this.popupObj == undefined) {
     // search the nodes for overlap, select the top one in case of multiple nodes
     var nodes = this.nodes;
+    var overlappingNodes = [];
     for (id in nodes) {
       if (nodes.hasOwnProperty(id)) {
         var node = nodes[id];
-        if (node.getTitle() !== undefined && node.isOverlappingWith(obj)) {
-          this.popupObj = node;
-          break;
+        if (node.isOverlappingWith(obj)) {
+          if (node.getTitle() !== undefined) {
+            overlappingNodes.push(id);
+          }
         }
       }
     }
+
+    if (overlappingNodes.length > 0) {
+      // if there are overlapping nodes, select the last one, this is the
+      // one which is drawn on top of the others
+      this.popupObj = this.nodes[overlappingNodes[overlappingNodes.length - 1]];
+      // if you hover over a node, the title of the edge is not supposed to be shown.
+      nodeUnderCursor = true;
+    }
   }
 
-  if (this.popupObj === undefined) {
+  if (this.popupObj === undefined && nodeUnderCursor == false) {
     // search the edges for overlap
     var edges = this.edges;
+    var overlappingEdges = [];
     for (id in edges) {
       if (edges.hasOwnProperty(id)) {
         var edge = edges[id];
         if (edge.connected && (edge.getTitle() !== undefined) &&
             edge.isOverlappingWith(obj)) {
-          this.popupObj = edge;
-          break;
+          overlappingEdges.push(id);
         }
       }
+    }
+
+    if (overlappingEdges.length > 0) {
+      this.popupObj = this.edges[overlappingEdges[overlappingEdges.length - 1]];
+      popupType = "edge";
     }
   }
 
   if (this.popupObj) {
     // show popup message window
-    if (this.popupObj != lastPopupNode) {
-      var me = this;
-      if (!me.popup) {
-        me.popup = new Popup(me.frame, me.constants.tooltip);
+    if (this.popupObj.id != previousPopupObjId) {
+      if (this.popup === undefined) {
+        this.popup = new Popup(this.frame, this.constants.tooltip);
       }
+
+      this.popup.popupTargetType = popupType;
+      this.popup.popupTargetId = this.popupObj.id;
 
       // adjust a small offset such that the mouse cursor is located in the
       // bottom left location of the popup, and you can easily move over the
       // popup area
-      me.popup.setPosition(pointer.x - 3, pointer.y - 3);
-      me.popup.setText(me.popupObj.getTitle());
-      me.popup.show();
+      this.popup.setPosition(pointer.x + 3, pointer.y - 5);
+      this.popup.setText(this.popupObj.getTitle());
+      this.popup.show();
     }
   }
   else {
@@ -1324,17 +1524,37 @@ Network.prototype._checkShowPopup = function (pointer) {
 
 
 /**
- * Check if the popup must be hided, which is the case when the mouse is no
+ * Check if the popup must be hidden, which is the case when the mouse is no
  * longer hovering on the object
  * @param {{x:Number, y:Number}} pointer
  * @private
  */
 Network.prototype._checkHidePopup = function (pointer) {
-  if (!this.popupObj || !this._getNodeAt(pointer) ) {
-    this.popupObj = undefined;
-    if (this.popup) {
-      this.popup.hide();
+  var pointerObj = {
+    left:   this._XconvertDOMtoCanvas(pointer.x),
+    top:    this._YconvertDOMtoCanvas(pointer.y),
+    right:  this._XconvertDOMtoCanvas(pointer.x),
+    bottom: this._YconvertDOMtoCanvas(pointer.y)
+  };
+
+  var stillOnObj = false;
+  if (this.popup.popupTargetType == 'node') {
+    stillOnObj = this.nodes[this.popup.popupTargetId].isOverlappingWith(pointerObj);
+    if (stillOnObj === true) {
+      var overNode = this._getNodeAt(pointer);
+      stillOnObj = overNode.id == this.popup.popupTargetId;
     }
+  }
+  else {
+    if (this._getNodeAt(pointer) === null) {
+      stillOnObj = this.edges[this.popup.popupTargetId].isOverlappingWith(pointerObj);
+    }
+  }
+
+
+  if (stillOnObj === false) {
+    this.popupObj = undefined;
+    this.popup.hide();
   }
 };
 
@@ -1467,12 +1687,14 @@ Network.prototype._addNodes = function(ids) {
  * @param {Number[] | String[]} ids
  * @private
  */
-Network.prototype._updateNodes = function(ids,changedData) {
+Network.prototype._updateNodes = function(ids) {
+  var nodesData = this.nodesData.get(ids);
   var nodes = this.nodes;
+
   for (var i = 0, len = ids.length; i < len; i++) {
     var id = ids[i];
     var node = nodes[id];
-    var data = changedData[i];
+    var data = nodesData[i];
     if (node) {
       // update node
       node.setProperties(data, this.constants);
@@ -1490,7 +1712,15 @@ Network.prototype._updateNodes = function(ids,changedData) {
   }
   this._updateNodeIndexList();
   this._updateValueRange(nodes);
+  this._markAllEdgesAsDirty();
 };
+
+
+Network.prototype._markAllEdgesAsDirty = function() {
+  for (var edgeId in this.edges) {
+    this.edges[edgeId].colorDirty = true;
+  }
+}
 
 /**
  * Remove existing nodes. If nodes do not exist, the method will just ignore it.
@@ -1499,10 +1729,22 @@ Network.prototype._updateNodes = function(ids,changedData) {
  */
 Network.prototype._removeNodes = function(ids) {
   var nodes = this.nodes;
+
+  // remove from selection
+  for (var i = 0, len = ids.length; i < len; i++) {
+    if (this.selectionObj.nodes[ids[i]] !== undefined) {
+      this.nodes[ids[i]].unselect();
+      this._removeFromSelection(this.nodes[ids[i]]);
+    }
+  }
+
   for (var i = 0, len = ids.length; i < len; i++) {
     var id = ids[i];
     delete nodes[id];
   }
+
+
+
   this._updateNodeIndexList();
   if (this.constants.hierarchicalLayout.enabled == true && this.initializing == false) {
     this._resetLevels();
@@ -1634,6 +1876,15 @@ Network.prototype._updateEdges = function (ids) {
  */
 Network.prototype._removeEdges = function (ids) {
   var edges = this.edges;
+
+  // remove from selection
+  for (var i = 0, len = ids.length; i < len; i++) {
+    if (this.selectionObj.edges[ids[i]] !== undefined) {
+      edges[ids[i]].unselect();
+      this._removeFromSelection(edges[ids[i]]);
+    }
+  }
+
   for (var i = 0, len = ids.length; i < len; i++) {
     var id = ids[i];
     var edge = edges[id];
@@ -1694,12 +1945,14 @@ Network.prototype._updateValueRange = function(obj) {
   // determine the range of the objects
   var valueMin = undefined;
   var valueMax = undefined;
+  var valueTotal = 0;
   for (id in obj) {
     if (obj.hasOwnProperty(id)) {
       var value = obj[id].getValue();
       if (value !== undefined) {
         valueMin = (valueMin === undefined) ? value : Math.min(value, valueMin);
         valueMax = (valueMax === undefined) ? value : Math.max(value, valueMax);
+        valueTotal += value;
       }
     }
   }
@@ -1708,7 +1961,7 @@ Network.prototype._updateValueRange = function(obj) {
   if (valueMin !== undefined && valueMax !== undefined) {
     for (id in obj) {
       if (obj.hasOwnProperty(id)) {
-        obj[id].setValueRange(valueMin, valueMax);
+        obj[id].setValueRange(valueMin, valueMax, valueTotal);
       }
     }
   }
@@ -1725,16 +1978,33 @@ Network.prototype.redraw = function() {
 
 /**
  * Redraw the network with the current data
+ * @param hidden | used to get the first estimate of the node sizes. only the nodes are drawn after which they are quickly drawn over.
  * @private
  */
-Network.prototype._redraw = function() {
+Network.prototype._requestRedraw = function(hidden) {
+  if (this.redrawRequested !== true) {
+    this.redrawRequested = true;
+    if (this.requiresTimeout === true) {
+      window.setTimeout(this._redraw.bind(this, hidden),0);
+    }
+    else {
+      window.requestAnimationFrame(this._redraw.bind(this, hidden, true));
+    }
+  }
+};
+
+Network.prototype._redraw = function(hidden, requested) {
+  if (hidden === undefined) {
+    hidden = false;
+  }
+  this.redrawRequested = false;
   var ctx = this.frame.canvas.getContext('2d');
 
   ctx.setTransform(this.pixelRatio, 0, 0, this.pixelRatio, 0, 0);
 
   // clear the canvas
-  var w = this.frame.canvas.width  * this.pixelRatio;
-  var h = this.frame.canvas.height  * this.pixelRatio;
+  var w = this.frame.canvas.clientWidth;
+  var h = this.frame.canvas.clientHeight;
   ctx.clearRect(0, 0, w, h);
 
   // set scaling and translation
@@ -1747,22 +2017,25 @@ Network.prototype._redraw = function() {
     "y": this._YconvertDOMtoCanvas(0)
   };
   this.canvasBottomRight = {
-    "x": this._XconvertDOMtoCanvas(this.frame.canvas.clientWidth * this.pixelRatio),
-    "y": this._YconvertDOMtoCanvas(this.frame.canvas.clientHeight * this.pixelRatio)
+    "x": this._XconvertDOMtoCanvas(this.frame.canvas.clientWidth),
+    "y": this._YconvertDOMtoCanvas(this.frame.canvas.clientHeight)
   };
 
-
-  this._doInAllSectors("_drawAllSectorNodes",ctx);
-  if (this.drag.dragging == false || this.drag.dragging === undefined || this.constants.hideEdgesOnDrag == false) {
-    this._doInAllSectors("_drawEdges",ctx);
+  if (hidden === false) {
+    this._doInAllSectors("_drawAllSectorNodes", ctx);
+    if (this.drag.dragging == false || this.drag.dragging === undefined || this.constants.hideEdgesOnDrag == false) {
+      this._doInAllSectors("_drawEdges", ctx);
+    }
   }
 
   if (this.drag.dragging == false || this.drag.dragging === undefined || this.constants.hideNodesOnDrag == false) {
     this._doInAllSectors("_drawNodes",ctx,false);
   }
 
-  if (this.controlNodesActive == true) {
-    this._doInAllSectors("_drawControlNodes",ctx);
+  if (hidden === false) {
+    if (this.controlNodesActive == true) {
+      this._doInAllSectors("_drawControlNodes", ctx);
+    }
   }
 
 //  this._doInSupportSector("_drawNodes",ctx,true);
@@ -1770,7 +2043,11 @@ Network.prototype._redraw = function() {
 
   // restore original scaling and translation
   ctx.restore();
-};
+
+  if (hidden === true) {
+    ctx.clearRect(0, 0, w, h);
+  }
+}
 
 /**
  * Set the translation of the network
@@ -1978,10 +2255,17 @@ Network.prototype._stabilize = function() {
     this._physicsTick();
     count++;
   }
-  this.zoomExtent(undefined,false,true);
+
+
+  if (this.constants.zoomExtentOnStabilize == true) {
+    this.zoomExtent({duration:0}, false, true);
+  }
+
   if (this.constants.freezeForStabilization == true) {
     this._restoreFrozenNodes();
   }
+
+  this.emit("stabilizationIterationsDone");
 };
 
 /**
@@ -2031,8 +2315,10 @@ Network.prototype._restoreFrozenNodes = function() {
 Network.prototype._isMoving = function(vmin) {
   var nodes = this.nodes;
   for (var id in nodes) {
-    if (nodes.hasOwnProperty(id) && nodes[id].isMoving(vmin)) {
-      return true;
+    if (nodes[id] !== undefined) {
+      if (nodes[id].isMoving(vmin) == true) {
+        return true;
+      }
     }
   }
   return false;
@@ -2080,13 +2366,30 @@ Network.prototype._discreteStepNodes = function() {
   return false;
 };
 
+
+Network.prototype._revertPhysicsState = function() {
+  var nodes = this.nodes;
+  for (var nodeId in nodes) {
+    if (nodes.hasOwnProperty(nodeId)) {
+      nodes[nodeId].revertPosition();
+    }
+  }
+}
+
+Network.prototype._revertPhysicsTick = function() {
+  this._doInAllActiveSectors("_revertPhysicsState");
+  if (this.constants.smoothCurves.enabled == true && this.constants.smoothCurves.dynamic == true) {
+    this._doInSupportSector("_revertPhysicsState");
+  }
+}
+
 /**
  * A single simulation step (or "tick") in the physics simulation
  *
  * @private
  */
 Network.prototype._physicsTick = function() {
-  if (!this.freezeSimulation) {
+  if (!this.freezeSimulationEnabled) {
     if (this.moving == true) {
       var mainMovingStatus = false;
       var supportMovingStatus = false;
@@ -2096,11 +2399,24 @@ Network.prototype._physicsTick = function() {
       if (this.constants.smoothCurves.enabled == true && this.constants.smoothCurves.dynamic == true) {
         supportMovingStatus = this._doInSupportSector("_discreteStepNodes");
       }
+
       // gather movement data from all sectors, if one moves, we are NOT stabilzied
-      for (var i = 0; i < mainMoving.length; i++) {mainMovingStatus = mainMoving[0] || mainMovingStatus;}
+      for (var i = 0; i < mainMoving.length; i++) {
+        mainMovingStatus = mainMoving[i] || mainMovingStatus;
+      }
 
       // determine if the network has stabilzied
       this.moving = mainMovingStatus || supportMovingStatus;
+      if (this.moving == false) {
+        this._revertPhysicsTick();
+      }
+      else {
+        // this is here to ensure that there is no start event when the network is already stable.
+        if (this.startedStabilization == false) {
+          this.emit("startStabilization");
+          this.startedStabilization = true;
+        }
+      }
 
       this.stabilizationIterations++;
     }
@@ -2117,26 +2433,40 @@ Network.prototype._physicsTick = function() {
 Network.prototype._animationStep = function() {
   // reset the timer so a new scheduled animation step can be set
   this.timer = undefined;
+
+  if (this.requiresTimeout == true) {
+    // this schedules a new animation step
+    this.start();
+  }
+
   // handle the keyboad movement
   this._handleNavigation();
 
-  // this schedules a new animation step
-  this.start();
-
-  // start the physics simulation
-  var calculationTime = Date.now();
-  var maxSteps = 1;
-  this._physicsTick();
-  var timeRequired = Date.now() - calculationTime;
-  while (timeRequired < 0.9*(this.renderTimestep - this.renderTime) && maxSteps < this.maxPhysicsTicksPerRender) {
+  // check if the physics have settled
+  if (this.moving == true) {
+    var startTime = Date.now();
     this._physicsTick();
-    timeRequired = Date.now() - calculationTime;
-    maxSteps++;
+    var physicsTime = Date.now() - startTime;
+
+    // run double speed if it is a little graph
+    if ((this.renderTimestep - this.renderTime > 2 * physicsTime || this.runDoubleSpeed == true) && this.moving == true) {
+      this._physicsTick();
+
+      // this makes sure there is no jitter. The decision is taken once to run it at double speed.
+      if (this.renderTime != 0) {
+        this.runDoubleSpeed = true
+      }
+    }
   }
-  // start the rendering process
-  var renderTime = Date.now();
+
+  var renderStartTime = Date.now();
   this._redraw();
-  this.renderTime = Date.now() - renderTime;
+  this.renderTime = Date.now() - renderStartTime;
+
+  if (this.requiresTimeout == false) {
+    // this schedules a new animation step
+    this.start();
+  }
 };
 
 if (typeof window !== 'undefined') {
@@ -2148,36 +2478,23 @@ if (typeof window !== 'undefined') {
  * Schedule a animation step with the refreshrate interval.
  */
 Network.prototype.start = function() {
-  if (this.moving == true || this.xIncrement != 0 || this.yIncrement != 0 || this.zoomIncrement != 0) {
-    if (this.startedStabilization == false) {
-      this.emit("startStabilization");
-      this.startedStabilization = true;
-    }
-
+  if (this.freezeSimulationEnabled == true) {
+    this.moving = false;
+  }
+  if (this.moving == true || this.xIncrement != 0 || this.yIncrement != 0 || this.zoomIncrement != 0 || this.animating == true) {
     if (!this.timer) {
-      var ua = navigator.userAgent.toLowerCase();
-
-      var requiresTimeout = false;
-      if (ua.indexOf('msie 9.0') != -1) { // IE 9
-        requiresTimeout = true;
-      }
-      else if (ua.indexOf('safari') != -1) {  // safari
-        if (ua.indexOf('chrome') <= -1) {
-          requiresTimeout = true;
-        }
-      }
-
-      if (requiresTimeout == true) {
+      if (this.requiresTimeout == true) {
         this.timer = window.setTimeout(this._animationStep.bind(this), this.renderTimestep); // wait this.renderTimeStep milliseconds and perform the animation step function
       }
-      else{
-        this.timer = window.requestAnimationFrame(this._animationStep.bind(this), this.renderTimestep); // wait this.renderTimeStep milliseconds and perform the animation step function
+      else {
+        this.timer = window.requestAnimationFrame(this._animationStep.bind(this)); // wait this.renderTimeStep milliseconds and perform the animation step function
       }
     }
   }
   else {
-    this._redraw();
-    if (this.stabilizationIterations > 0) {
+    this._requestRedraw();
+    // this check is to ensure that the network does not emit these events if it was already stabilized and setOptions is called (setting moving to true and calling start())
+    if (this.stabilizationIterations > 1) {
       // trigger the "stabilized" event.
       // The event is triggered on the next tick, to prevent the case that
       // it is fired while initializing the Network, in which case you would not
@@ -2186,11 +2503,14 @@ Network.prototype.start = function() {
       var params = {
         iterations: me.stabilizationIterations
       };
-      me.stabilizationIterations = 0;
-      me.startedStabilization = false;
+      this.stabilizationIterations = 0;
+      this.startedStabilization = false;
       setTimeout(function () {
         me.emit("stabilized", params);
       }, 0);
+    }
+    else {
+      this.stabilizationIterations = 0;
     }
   }
 };
@@ -2219,12 +2539,14 @@ Network.prototype._handleNavigation = function() {
 /**
  *  Freeze the _animationStep
  */
-Network.prototype.toggleFreeze = function() {
-  if (this.freezeSimulation == false) {
-    this.freezeSimulation = true;
+Network.prototype.freezeSimulation = function(freeze) {
+  if (freeze == true) {
+    this.freezeSimulationEnabled = true;
+    this.moving = false;
   }
   else {
-    this.freezeSimulation = false;
+    this.freezeSimulationEnabled = false;
+    this.moving = true;
     this.start();
   }
 };
@@ -2479,17 +2801,20 @@ Network.prototype.animateView = function (options) {
     }
   }
   else {
+    this.animating = true;
     this.animationSpeed = 1 / (this.renderRefreshRate * options.animation.duration * 0.001) || 1 / this.renderRefreshRate;
     this.animationEasingFunction = options.animation.easingFunction;
     this._classicRedraw = this._redraw;
     this._redraw = this._transitionRedraw;
     this._redraw();
-    this.moving = true;
     this.start();
   }
 };
 
-
+/**
+ * used to animate smoothly by hijacking the redraw function.
+ * @private
+ */
 Network.prototype._lockedRedraw = function () {
   var nodePosition = {x: this.nodes[this.lockedOnNodeId].x, y: this.nodes[this.lockedOnNodeId].y};
   var viewCenter = this.DOMtoCanvas({x: 0.5 * this.frame.canvas.clientWidth, y: 0.5 * this.frame.canvas.clientHeight});
@@ -2533,10 +2858,10 @@ Network.prototype._transitionRedraw = function (easingTime) {
   );
 
   this._classicRedraw();
-  this.moving = true;
 
   // cleanup
   if (this.easingTime >= 1.0) {
+    this.animating = false;
     this.easingTime = 0;
     if (this.lockedOnNodeId != null) {
       this._redraw = this._lockedRedraw;
@@ -2586,5 +2911,53 @@ Network.prototype.getScale = function () {
 Network.prototype.getCenterCoordinates = function () {
   return this.DOMtoCanvas({x: 0.5 * this.frame.canvas.clientWidth, y: 0.5 * this.frame.canvas.clientHeight});
 };
+
+
+Network.prototype.getBoundingBox = function(nodeId) {
+  if (this.nodes[nodeId] !== undefined) {
+    return this.nodes[nodeId].boundingBox;
+  }
+}
+
+Network.prototype.getConnectedNodes = function(nodeId) {
+  var nodeList = [];
+  if (this.nodes[nodeId] !== undefined) {
+    var node = this.nodes[nodeId];
+    var nodeObj = {nodeId : true}; // used to quickly check if node already exists
+    for (var i = 0; i < node.edges.length; i++) {
+      var edge = node.edges[i];
+      if (edge.toId == nodeId) {
+        if (nodeObj[edge.fromId] === undefined) {
+          nodeList.push(edge.fromId);
+          nodeObj[edge.fromId] = true;
+        }
+      }
+      else if (edge.fromId == nodeId) {
+        if (nodeObj[edge.toId] === undefined) {
+          nodeList.push(edge.toId)
+          nodeObj[edge.toId] = true;
+        }
+      }
+    }
+  }
+  return nodeList;
+}
+
+
+Network.prototype.getEdgesFromNode = function(nodeId) {
+  var edgesList = [];
+  if (this.nodes[nodeId] !== undefined) {
+    var node = this.nodes[nodeId];
+    for (var i = 0; i < node.edges.length; i++) {
+      edgesList.push(node.edges[i].id);
+    }
+  }
+  return edgesList;
+}
+
+Network.prototype.generateColorObject = function(color) {
+  return util.parseColor(color);
+
+}
 
 module.exports = Network;

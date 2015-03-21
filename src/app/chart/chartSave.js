@@ -5,7 +5,7 @@
  * This software is copyright of Chris Jackson under the GPL license.
  * Note that this licence may be changed at a later date.
  *
- * (c) 2014 Chris Jackson (chris@cd-jackson.com)
+ * (c) 2014-2015 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('HABmin.chartSave', [
     'ui.bootstrap',
@@ -99,6 +99,7 @@ angular.module('HABmin.chartSave', [
                     itemModel.repeatTime = Number(item.repeatTime);
                     itemModel.points = Number(item.points);
                     itemModel.pointsSize = Number(item.pointsSize);
+                    itemModel.chart = item.chart;
 
                     scope.items.push(itemModel);
                 });
@@ -175,36 +176,39 @@ angular.module('HABmin.chartSave', [
                         query.items = [];
                         angular.forEach([].concat(scope.items), function (item) {
                             var newItem = {};
-
+                            
                             newItem.item = item.item;
-                            if (item.label !== undefined) {
+                            if (item.label != null) {
                                 newItem.label = item.label;
                             }
-                            if (item.lineColor !== undefined) {
+                            if (item.lineColor != null) {
                                 newItem.lineColor = item.lineColor;
                             }
-                            if (item.lineStyle !== undefined) {
+                            if (item.chart != null) {
+                                newItem.chart = item.chart;
+                            }
+                            if (item.lineStyle != null) {
                                 newItem.lineStyle = item.lineStyle;
                             }
-                            if (item.lineWidth !== undefined) {
+                            if (!isNaN(item.lineWidth)) {
                                 newItem.lineWidth = item.lineWidth;
                             }
                             if (!isNaN(item.repeatTime)) {
                                 newItem.repeatTime = item.repeatTime;
                             }
-                            if (item.axis !== undefined) {
+                            if (item.axis != null) {
                                 newItem.axis = item.axis;
                             }
-                            if (item.fill !== undefined) {
+                            if (item.fill != null) {
                                 newItem.fill = item.fill;
                             }
-                            if (item.fillColor !== undefined) {
+                            if (item.fillColor != null) {
                                 newItem.fillColor = item.fillColor;
                             }
-                            if (item.points !== undefined) {
+                            if (!isNaN(item.points)) {
                                 newItem.points = item.points;
                             }
-                            if (item.pointsSize !== undefined) {
+                            if (!isNaN(item.pointsSize)) {
                                 newItem.pointsSize = item.pointsSize;
                             }
 
@@ -216,11 +220,10 @@ angular.module('HABmin.chartSave', [
 
                     ChartListModel.putChart(query).then(
                         function () {
-                            growl.success(locale.getString('habmin.chartSaveSuccess', query.name));
+                            growl.success(locale.getString('habmin.chartSaveSuccess', {chartName: query.name}));
                         },
                         function (error) {
-                            growl.warning(locale.getString('habmin.chartSaveError', query.name, error));
-
+                            growl.warning(locale.getString('habmin.chartSaveError', {chartName: query.name, error: error}));
                         });
 
                     $modalInstance.close(result);

@@ -1,14 +1,22 @@
 angular.module('rt.popup', [])
     .factory('Popup', ["$window", "$document", "$timeout", "$compile", "$parse", function ($window, $document, $timeout, $compile, $parse) {
         var openedPopup = null;
+        var mouseDownInsidePopup = null;
         var template = '<div class="popover"><div ng-include="popupView" onload="$reposition()"></div></div>';
 
         // Padding towards edges of screen.
         var padding = 10;
 
         function loseFocus(e) {
-            if (openedPopup && !$.contains(openedPopup.el[0], e.target)) {
+            if ( (mouseDownInsidePopup === null || mouseDownInsidePopup === false) && openedPopup && !$.contains(openedPopup.el[0], e.target)) {
+                mouseDownInsidePopup = null;
                 hidePopup();
+            }
+        }
+
+        function checkMouseDown(e) {
+            if (openedPopup) {
+                mouseDownInsidePopup = $.contains(openedPopup.el[0], e.target);
             }
         }
 
@@ -25,6 +33,7 @@ angular.module('rt.popup', [])
 
                 popup.el.hide().remove();
                 $document.off('click', loseFocus);
+                $document.off('mousedown', checkMouseDown);
             });
         }
 
@@ -70,7 +79,6 @@ angular.module('rt.popup', [])
             var anchorGeom = offset(anchor);
 
             var placement = options.popupPlacement;
-            var extra_class = options.popupClass;
 
             var maxHeight = $window.innerHeight - 2 * padding;
 
@@ -90,6 +98,7 @@ angular.module('rt.popup', [])
 
                 // Clamp for edge of screen
                 popupPosition.top = Math.max(padding, popupPosition.top);
+                maxHeight -= popupPosition.top;
 
                 arrowPosition = {
                     top: anchorPoint.top - popupPosition.top
@@ -102,11 +111,12 @@ angular.module('rt.popup', [])
 
                 popupPosition = {
                     top: anchorPoint.top - element.height() / 2,
-                    left: anchorPoint.left - element.width()
+                    right: $window.innerWidth - anchorPoint.left
                 };
 
                 // Clamp for edge of screen
                 popupPosition.top = Math.max(padding, popupPosition.top);
+                maxHeight -= popupPosition.top;
 
                 arrowPosition = {
                     top: anchorPoint.top - popupPosition.top
@@ -143,6 +153,8 @@ angular.module('rt.popup', [])
                 // Clamp for edge of screen
                 popupPosition.left = Math.max(padding, popupPosition.left);
                 maxHeight -= popupPosition.top;
+
+                // Update placement so we get the class name
                 placement = 'bottom';
 
                 arrowPosition = {
@@ -172,12 +184,10 @@ angular.module('rt.popup', [])
 
             element.removeClass('left right bottom top');
             element.addClass(placement);
-            if (extra_class) {
-                element.addClass(extra_class);
-            }
             element.css({
-                top: popupPosition.top + 'px',
-                left: popupPosition.left + 'px',
+                top: popupPosition.top !== undefined ? popupPosition.top + 'px' : 'initial',
+                left: popupPosition.left !== undefined ? popupPosition.left + 'px' : 'initial',
+                right: popupPosition.right !== undefined ? popupPosition.right + 'px' : 'initial',
                 display: 'block',
                 maxHeight: maxHeight
             });
@@ -197,6 +207,7 @@ angular.module('rt.popup', [])
 
             element.removeClass('hide');
 
+            $document.on('mousedown', checkMouseDown);
             $document.on('click', loseFocus);
 
             $parse(options.popupShown)(scope);
@@ -219,6 +230,12 @@ angular.module('rt.popup', [])
             element.append(arrow);
 
             scope.$reposition = function () {
+                // add extra class here, to ensure that the width calculation takes this into account
+                var extra_class = options.popupClass;
+                if (extra_class) {
+                    element.addClass(extra_class);
+                }
+
                 $timeout(function () {
                     fixPosition(scope, anchor, element, arrow, options);
                 });

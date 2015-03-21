@@ -5,7 +5,7 @@
  * This software is copyright of Chris Jackson under the GPL license.
  * Note that this licence may be changed at a later date.
  *
- * (c) 2014 Chris Jackson (chris@cd-jackson.com)
+ * (c) 2014-2015 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('ZWaveLogReader', [])
 
@@ -26,6 +26,11 @@ angular.module('ZWaveLogReader', [])
         var lastSendData = {};
         var lastPacketRx = null;
         var lastPacketTx = null;
+        var txQueueLen = 0;
+
+        var packetsSent = 0;
+        var packetsRecv = 0;
+        var timeStart;
 
         var countLines = 0;
         var countEntries = 0;
@@ -53,6 +58,11 @@ angular.module('ZWaveLogReader', [])
          * Process the node information looking for errors etc
          */
         function processDeviceInformation() {
+            // Calculate some overall statistics
+            addNodeInfo(255, "Frames Sent", packetsSent);
+            addNodeInfo(255, "Frames Received", packetsRecv);
+            addNodeInfo(255, "Frame Period", Math.floor((logTime - timeStart) / (packetsRecv + packetsSent)));
+
             angular.forEach(nodes, function (node) {
                 if (node.responseTimeMin < 0) {
                     node.responseTimeMin = 0;
@@ -133,10 +143,10 @@ angular.module('ZWaveLogReader', [])
                 }
 
                 if (node.responseTimeAvg > 1000) {
-                    node.errors.push("Average response time is very high (" + node.responseTimeAvg + ")");
+                    node.errors.push("Average response time is very high (" + node.responseTimeAvg + "mS)");
                 }
                 else if (node.responseTimeAvg > 500) {
-                    node.warnings.push("Average response time is high (" + node.responseTimeAvg + ")");
+                    node.warnings.push("Average response time is high (" + node.responseTimeAvg + "mS)");
                 }
 
                 if (node.messagesSent > 40 && node.retryPercent > 15) {
@@ -283,7 +293,8 @@ angular.module('ZWaveLogReader', [])
                 name: "REMOTE_SWITCH_2",
                 specific: {
                     1: "SWITCH_REMOTE2_MULTILEVEL"
-                }
+                },
+                class: "SWITCH_MULTILEVEL"
             },
             0x20: {
                 name: "BINARY_SENSOR",
@@ -355,7 +366,7 @@ angular.module('ZWaveLogReader', [])
                 devClass = basic + ":";
             }
             if (deviceClass[generic] != null) {
-                if (deviceClass[generic].specific[specific] != null) {
+                if (deviceClass[generic].specific != null && deviceClass[generic].specific[specific] != null) {
                     devClass += deviceClass[generic].specific[specific];
                 }
                 else {
@@ -596,7 +607,8 @@ angular.module('ZWaveLogReader', [])
                     3: {
                         name: "SENSOR_BINARY_REPORT"
                     }
-                }
+                },
+                processor: processSensorBinary
             },
             49: {
                 name: "SENSOR_MULTILEVEL",
@@ -634,7 +646,8 @@ angular.module('ZWaveLogReader', [])
                     5: {
                         name: "METER_RESET"
                     }
-                }
+                },
+                processor: processMeter
             },
             64: {
                 name: "THERMOSTAT_MODE",
@@ -731,15 +744,16 @@ angular.module('ZWaveLogReader', [])
                 name: "CONFIGURATION",
                 commands: {
                     4: {
-                        name: "SWITCH_BINARY_GET"
+                        name: "CONFIGURATION_SET"
                     },
                     5: {
-                        name: "SWITCH_BINARY_SET"
+                        name: "CONFIGURATION_GET"
                     },
                     6: {
-                        name: "SWITCH_BINARY_REPORT"
+                        name: "CONFIGURATION_REPORT"
                     }
-                }
+                },
+                processor: processConfiguration
             },
             113: {
                 name: "ALARM",
@@ -862,10 +876,17 @@ angular.module('ZWaveLogReader', [])
             },
             143: {
                 name: "MULTI_CMD",
-                processor: null
+                commands: {
+                    1: {
+                        name: "MULTI_COMMMAND_ENCAP"
+                    }
+                }
             },
             145: {
                 name: "MANUFACTURER_PROPRIETARY"
+            },
+            152: {
+                name: "SECURITY"
             },
             156: {
                 name: "SENSOR_ALARM",
@@ -911,6 +932,11 @@ angular.module('ZWaveLogReader', [])
                 string: "Error deserializing from file",
                 ref: "Info",
                 processor: processDeserialiserError
+            },
+            {
+                string: "internalReceiveCommand",
+                ref: "Cmd",
+                processor: processCommand
             },
             {
                 string: "Receive Message = ",
@@ -980,6 +1006,10 @@ angular.module('ZWaveLogReader', [])
                 processor: processHealState
             },
             {
+                string: "Took message from queue for sending",
+                processor: processTxQueueLength
+            },
+            {
                 string: "(CAN)",
                 error: "Message cancelled by controller",
                 processor: processTxMessageError,
@@ -998,6 +1028,15 @@ angular.module('ZWaveLogReader', [])
                 status: ERROR
             }
         ];
+
+        function getCommandClassName(cmdCls, cmdCmd) {
+            if (commandClasses[cmdCls].commands[cmdCmd] == null) {
+                return commandClasses[cmdCls].name + "[" + cmdCmd + "]";
+            }
+            else {
+                return commandClasses[cmdCls].commands[cmdCmd].name;
+            }
+        }
 
         // Array of node information
         var nodes = {};
@@ -1086,6 +1125,10 @@ angular.module('ZWaveLogReader', [])
             if (item != null) {
                 msg += "," + item;
             }
+            // Check if the item exists
+            if(nodes[id].items.indexOf(msg) != -1) {
+                return;
+            }
             nodes[id].items.push(msg);
         }
 
@@ -1165,6 +1208,15 @@ angular.module('ZWaveLogReader', [])
             }
         }
 
+        function processCommand(node, process, message) {
+            var data = {
+                result: INFO
+            };
+            data.content = "Incoming Command: Item '" + message.slice(message.indexOf("itemname = ") + 11, message.indexOf(',')) +
+                "' to '" + message.slice(message.indexOf("Command = ") + 10, -1) + "'";
+            return data;
+        }
+
         function processBindingStart(node, process, message) {
             var data = {
                 result: INFO
@@ -1208,6 +1260,10 @@ angular.module('ZWaveLogReader', [])
                 setStatus(lastPacketRx, process.status);
                 lastPacketRx = null;
             }
+        }
+
+        function processTxQueueLength(node, process, message) {
+            txQueueLen = parseInt(message.substr(message.indexOf("Queue length = ") + 15), 10);
         }
 
         function processTxMessageError(node, process, message) {
@@ -1331,11 +1387,20 @@ angular.module('ZWaveLogReader', [])
             switch (cmdCmd) {
                 case 2:             // ASSOCIATIONCMD_GET
                     var groupGet = HEX2DEC(bytes[2]);
-                    data.content += " Group " + groupGet;
+                    data.content += " Group:" + groupGet;
                     break;
                 case 3:             // ASSOCIATIONCMD_REPORT
                     var groupReport = HEX2DEC(bytes[2]);
-                    data.content += " Group " + groupReport;
+                    var maxNodes = HEX2DEC(bytes[3]);
+                    var following = HEX2DEC(bytes[4]);
+                    data.content += " Group:" + groupReport + " Max:" + maxNodes + " [";
+                    for(var a = 5; a < bytes.length; a++) {
+                        if(a != 5) {
+                            data.content += ",";
+                        }
+                        data.content += HEX2DEC(bytes[a]);
+                    }
+                    data.content += "]";
                     break;
                 case 6:             // ASSOCIATIONCMD_GROUPINGSREPORT
                     var groupCnt = HEX2DEC(bytes[2]);
@@ -1416,6 +1481,129 @@ angular.module('ZWaveLogReader', [])
             return data;
         }
 
+        var binarySensors = {
+            0: "Unknown",
+            1: "General",
+            2: "Smoke",
+            3: "Carbon Monoxide",
+            4: "Carbon Dioxide",
+            5: "Heat",
+            6: "Water",
+            7: "Freeze",
+            8: "Tamper",
+            9: "Aux",
+            10: "Door/Window",
+            11: "Tilt",
+            12: "Motion",
+            13: "Glass Break"
+        };
+
+        function processSensorBinary(node, endpoint, bytes) {
+            var data = {result: SUCCESS};
+
+            var cmdCls = HEX2DEC(bytes[0]);
+            var cmdCmd = HEX2DEC(bytes[1]);
+            data.content = getCommandClassName(cmdCls, cmdCmd);
+            switch (cmdCmd) {
+                case 2:				// SENSOR_BINARY_GET
+                    if (bytes.length >= 3) {
+                        var typeGet = HEX2DEC(bytes[2]);
+                        if (binarySensors[typeGet] == null) {
+                            data.content += "::" + typeGet;
+                        }
+                        else {
+                            data.content += "::" + binarySensors[typeGet];
+                        }
+                    }
+                    break;
+                case 3:				// SENSOR_BINARY_REPORT
+                    if(bytes.length > 3) {
+                        var typeReport = HEX2DEC(bytes[2]);
+                        var scale = HEX2DEC(bytes[3]);
+                        var value = HEX2DEC(bytes[4]);
+                        var name = "";
+                        if (binarySensors[typeReport] == null) {
+                            data.content += "::" + typeReport + "(" + scale + ") = " + value;
+                            name = commandClasses[cmdCls].name + " " + typeReport;
+                        }
+                        else {
+                            data.content += "::" + binarySensors[typeReport] + "(" + scale + ") = " + value;
+                            name = commandClasses[cmdCls].name + " " + binarySensors[typeReport];
+                        }
+                        addNodeItem(node, endpoint, name, commandClasses[cmdCls].name, "sensor_type=" + typeReport);
+                    }
+                    else {
+                        var value = HEX2DEC(bytes[2]);
+                        data.content += "=" + value;
+                        addNodeItem(node, endpoint, name, commandClasses[cmdCls].name);
+                    }
+                    break;
+            }
+
+            return data;
+        }
+
+        var meterSensors = {
+            0: "Unknown",
+            1: "Electric",
+            2: "Gas",
+            3: "Water"
+        };
+
+        function processMeter(node, endpoint, bytes) {
+            var data = {result: SUCCESS};
+
+            var cmdCls = HEX2DEC(bytes[0]);
+            var cmdCmd = HEX2DEC(bytes[1]);
+            data.content = getCommandClassName(cmdCls, cmdCmd);
+            switch (cmdCmd) {
+                case 4:             // METER_SUPPORTED_REPORT
+                    for (var i = 0; i < bytes.length - 3; ++i) {
+                        var a = HEX2DEC(bytes[i + 2]);
+                        for (var bit = 0; bit < 8; ++bit) {
+                            if ((a & (1 << bit) ) === 0) {
+                                continue;
+                            }
+                            var index = (i * 8 ) + bit + 1;
+
+                            var name = "UNKNOWN!";
+                            if (meterSensors[index] != null) {
+                                name = meterSensors[index];
+                            }
+
+                            // Add to list of supported sensors
+                            addNodeItem(node, endpoint, name, commandClasses[cmdCls].name,
+                                "meter_type=" + index);
+                        }
+                    }
+                    break;
+                case 1:				// METER_GET
+                    if (bytes.length >= 3) {
+                        var typeGet = HEX2DEC(bytes[2]);
+                        if (meterSensors[typeGet] == null) {
+                            data.content += "::" + typeGet;
+                        }
+                        else {
+                            data.content += "::" + meterSensors[typeGet];
+                        }
+                    }
+                    break;
+                case 2:				// METER_REPORT
+                    var typeReport = HEX2DEC(bytes[2]);
+                    var scale = HEX2DEC(bytes[3]);
+                    if (meterSensors[typeReport] == null) {
+                        data.content += "::" + typeReport + "=" + scale;
+                    }
+                    else {
+                        data.content += "::" + meterSensors[typeReport] + "=" + scale;
+                    }
+                    addNodeItem(node, endpoint, name, commandClasses[cmdCls].name, "sensor_type=" + typeReport);
+                    break;
+            }
+
+            return data;
+        }
+
         var multilevelSensors = {
             1: "Temperature",
             2: "General",
@@ -1456,7 +1644,7 @@ angular.module('ZWaveLogReader', [])
 
             var cmdCls = HEX2DEC(bytes[0]);
             var cmdCmd = HEX2DEC(bytes[1]);
-            data.content = commandClasses[cmdCls].commands[cmdCmd].name;
+            data.content = getCommandClassName(cmdCls, cmdCmd);
             switch (cmdCmd) {
                 case 2:             // SENSOR_MULTI_LEVEL_SUPPORTED_REPORT 
                     for (var i = 0; i < bytes.length - 3; ++i) {
@@ -1481,7 +1669,7 @@ angular.module('ZWaveLogReader', [])
                 case 4:				// SENSOR_MULTI_LEVEL_GET
                     if (bytes.length >= 3) {
                         var typeGet = HEX2DEC(bytes[2]);
-                        if (multilevelSensors[type] == null) {
+                        if (multilevelSensors[typeGet] == null) {
                             data.content += "::" + typeGet;
                         }
                         else {
@@ -1498,6 +1686,61 @@ angular.module('ZWaveLogReader', [])
                     else {
                         data.content += "::" + multilevelSensors[typeReport] + "=" + scale;
                     }
+                    addNodeItem(node, endpoint, name, commandClasses[cmdCls].name, "sensor_type=" + typeReport);
+                    break;
+            }
+
+            return data;
+        }
+
+        function processMultilevelSensor(node, endpoint, bytes) {
+            var data = {result: SUCCESS};
+
+            var cmdCls = HEX2DEC(bytes[0]);
+            var cmdCmd = HEX2DEC(bytes[1]);
+            data.content = getCommandClassName(cmdCls, cmdCmd);
+            switch (cmdCmd) {
+                case 2:             // SENSOR_MULTI_LEVEL_SUPPORTED_REPORT
+                    for (var i = 0; i < bytes.length - 3; ++i) {
+                        var a = HEX2DEC(bytes[i + 2]);
+                        for (var bit = 0; bit < 8; ++bit) {
+                            if ((a & (1 << bit) ) === 0) {
+                                continue;
+                            }
+                            var index = (i * 8 ) + bit + 1;
+
+                            var name = "UNKNOWN!";
+                            if (multilevelSensors[index] != null) {
+                                name = multilevelSensors[index];
+                            }
+
+                            // Add to list of supported sensors
+                            addNodeItem(node, endpoint, name, commandClasses[cmdCls].name,
+                                "sensor_type=" + index);
+                        }
+                    }
+                    break;
+                case 4:				// SENSOR_MULTI_LEVEL_GET
+                    if (bytes.length >= 3) {
+                        var typeGet = HEX2DEC(bytes[2]);
+                        if (multilevelSensors[typeGet] == null) {
+                            data.content += "::" + typeGet;
+                        }
+                        else {
+                            data.content += "::" + multilevelSensors[typeGet];
+                        }
+                    }
+                    break;
+                case 5:				// SENSOR_MULTI_LEVEL_REPORT
+                    var typeReport = HEX2DEC(bytes[2]);
+                    var scale = HEX2DEC(bytes[3]);
+                    if (multilevelSensors[typeReport] == null) {
+                        data.content += "::" + typeReport + "=" + scale;
+                    }
+                    else {
+                        data.content += "::" + multilevelSensors[typeReport] + "=" + scale;
+                    }
+                    addNodeItem(node, endpoint, name, commandClasses[cmdCls].name, "sensor_type=" + typeReport);
                     break;
             }
 
@@ -1511,7 +1754,7 @@ angular.module('ZWaveLogReader', [])
             var cmdCmd = HEX2DEC(bytes[1]);
             var cmdPrm = HEX2DEC(bytes[2]);
 
-            data.content = commandClasses[cmdCls].commands[cmdCmd].name;
+            data.content = getCommandClassName(cmdCls, cmdCmd);
             switch (cmdCmd) {
                 case 19:
                     data.content += " (" + commandClasses[cmdPrm].name + ")";
@@ -1520,6 +1763,26 @@ angular.module('ZWaveLogReader', [])
                     var version = HEX2DEC(bytes[3]);
                     data.content += " (" + commandClasses[cmdPrm].name + "=V" + version + ")";
                     break;
+            }
+
+            return data;
+        }
+
+        function processConfiguration(node, endpoint, bytes) {
+            var data = {result: SUCCESS};
+
+            var cmdCls = HEX2DEC(bytes[0]);
+            var cmdCmd = HEX2DEC(bytes[1]);
+            var cmdCfg = HEX2DEC(bytes[2]);
+
+            data.content = getCommandClassName(cmdCls, cmdCmd);
+            data.content += "::" + cmdCfg;
+
+            if(cmdCmd == 4) {       // SET
+            }
+            else if(cmdCmd == 5) {  // GET
+            }
+            else if(cmdCmd == 6) {  // REPORT
             }
 
             return data;
@@ -1534,6 +1797,17 @@ angular.module('ZWaveLogReader', [])
             getNodeInfo(node, "deviceType") + ":" + getNodeInfo(node, "deviceID");
 
             return data;
+        }
+
+        function processSwitchBinary(node, endpoint, bytes) {
+            var cmdCls = HEX2DEC(bytes[0]);
+            var cmdCmd = HEX2DEC(bytes[1]);
+
+            if(cmdCmd == 6) {       // REPORT
+                addNodeItem(node, endpoint, "SWITCH", commandClasses[cmdCls].name);
+            }
+
+            return {result: SUCCESS};
         }
 
         function processMultiChannelReport(node, endpoint, bytes) {
@@ -2106,11 +2380,14 @@ angular.module('ZWaveLogReader', [])
         }
 
         function processPacketTX(node, process, message) {
+            packetsSent++;
             lastPacketTx = processPacket("TX", node, process, message);
+            lastPacketTx.queueLen = txQueueLen;
             return lastPacketTx;
         }
 
         function processPacketRX(node, process, message) {
+            packetsRecv++;
             var data = processPacket("RX", node, process, message);
             // Check for duplicates
             if (lastPacketRx != null) {
@@ -2193,6 +2470,10 @@ angular.module('ZWaveLogReader', [])
 
             logTime = time.valueOf();
 
+            if(timeStart == 0) {
+                timeStart = logTime;
+            }
+
             // See if this line includes a node ID
             var nodeOffset = line.indexOf("- NODE ");
             if (nodeOffset !== -1) {
@@ -2260,6 +2541,11 @@ angular.module('ZWaveLogReader', [])
             nodeInfoProcessed = false;
             countLines = 0;
             countEntries = 0;
+            txQueueLen = 0;
+            packetsSent = 0;
+            packetsRecv = 0;
+            timeStart = 0;
+
             data = [];
             nodes = [];
 

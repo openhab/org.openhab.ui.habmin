@@ -6,14 +6,14 @@
             <button type="button" class="btn btn-default"
                     ng-confirm-click="newRule()" ng-confirm-if="isDirty"
                     data-i18n-attr="{'ngConfirmMessage': 'habmin.ruleUnsavedChangesCheck','ngConfirmTitle': 'habmin.ruleUnsavedChangesTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
-                    rulename={{selectedRule.name}}">
+                    data-rulename="{{selectedRule.name}}">
                 <span class="fa fa-plus"></span>
                 <span i18n="common.new"></span>
             </button>
             <button type="button" ng-confirm-click="deleteRule()"
                     ng-class="{'btn btn-default':true, 'disabled':!selectedRule}"
                     data-i18n-attr="{'ngConfirmMessage': 'habmin.ruleDeleteRuleCheck','ngConfirmTitle': 'habmin.ruleDeleteRuleTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
-                    rulename={{selectedRule.name}}">
+                    data-rulename="{{selectedRule.name}}">
                 <span class="fa fa-trash-o"></span>
                 <span i18n="common.delete"></span>
             </button>
@@ -21,11 +21,22 @@
 
         <!-- Body -->
         <div class="list-group" resize-panel>
-            <div ng-repeat="choice in rules">
-                <a role="presentation" ng-class="{'list-group-item':true, 'active':choice.id==selectedRule.id}"
+            <div ng-repeat="choice in blockRules">
+                <a role="presentation" ng-class="{'list-group-item':true, 'active':choice==selectedRule}"
+                   ng-confirm-click="selectBlock(choice)" ng-confirm-if="$parent.isDirty"
+                   data-i18n-attr="{'ngConfirmMessage': 'habmin.ruleUnsavedChangesCheck','ngConfirmTitle': 'habmin.ruleUnsavedChangesTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
+                   data-rulename={{selectedRule.name}}">
+                    <span class="fa fa-fw fa-puzzle-piece"></span>
+                    <span>{{choice.name}}</span>
+                </a>
+            </div>
+
+            <div ng-repeat="choice in codeRules">
+                <a role="presentation" ng-class="{'list-group-item':true, 'active':choice==selectedRule}"
                    ng-confirm-click="selectRule(choice)" ng-confirm-if="$parent.isDirty"
                    data-i18n-attr="{'ngConfirmMessage': 'habmin.ruleUnsavedChangesCheck','ngConfirmTitle': 'habmin.ruleUnsavedChangesTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
                    rulename={{selectedRule.name}}">
+                    <span class="fa fa-fw fa-code"></span>
                     <span>{{choice.name}}</span>
                 </a>
             </div>
@@ -36,7 +47,7 @@
                 <span i18n="common.loading"></span>
             </div>
             <div ng-if="rulesTotal==0" class="list-group-item text-center">
-                <span class="fa fa-exclamation-triangle"></span>
+                <span class="fa fa-exclamation-triangle text-warning"></span>
                 <span i18n="habmin.ruleNoRules"></span>
             </div>
         </div>
@@ -63,11 +74,13 @@
             </button>
 
             <div class="pull-right">
-                <button type="button" ng-class="{'btn btn-sm btn-default':true, 'active':editSource==false}" ng-click="showRule()">
+                <button type="button" ng-class="{'btn btn-sm btn-default':true, 'active':editSource==false, 'disabled':selectedRule.type=='code'}"
+                        ng-click="showRule()">
                     <span class="fa fa-puzzle-piece"></span>
                     <span i18n="habmin.ruleRule"></span>
                 </button>
-                <button type="button" ng-class="{'btn btn-sm btn-default':true, 'active':editSource==true}" ng-click="showSource()">
+                <button type="button" ng-class="{'btn btn-sm btn-default':true, 'active':editSource==true}"
+                        ng-click="showSource()">
                     <span class="fa fa-code"></span>
                     <span i18n="habmin.ruleSource"></span>
                 </button>
@@ -79,7 +92,7 @@
             <ng-blockly ng-show="!editSource">
             </ng-blockly>
 
-            <div style="height:100%" ng-show="editSource" ng-model="codeEditor" ui-ace="aceOptions">
+            <div style="height:100%" ng-if="editSource" ng-model="codeEditor" ui-ace="aceOptions">
             </div>
         </div>
 
