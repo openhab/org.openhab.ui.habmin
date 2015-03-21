@@ -5,7 +5,7 @@
  * This software is copyright of Chris Jackson under the GPL license.
  * Note that this licence may be changed at a later date.
  *
- * (c) 2014 Chris Jackson (chris@cd-jackson.com)
+ * (c) 2014-2015 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('HABmin.chart', [
     'ui.router',
@@ -14,6 +14,7 @@ angular.module('HABmin.chart', [
     'ngLocalize',
     'angular-growl',
     'HABmin.persistenceModel',
+    'HABmin.itemModel',
     'HABmin.chartModel',
     'HABmin.chartSave',
     'HABmin.iconModel',
@@ -29,8 +30,8 @@ angular.module('HABmin.chart', [
             url: '/chart',
             views: {
                 "main": {
-                    controller: 'DashboardChartCtrl',
-                    templateUrl: 'chart.tpl.html'
+                    controller: 'ChartCtrl',
+                    templateUrl: 'chart/chart.tpl.html'
                 }
             },
             data: {pageTitle: 'Charting'},
@@ -43,8 +44,8 @@ angular.module('HABmin.chart', [
         });
     })
 
-    .controller('DashboardChartCtrl',
-    function DashboardChartCtrl($scope, locale, PersistenceItemModel, PersistenceServiceModel, PersistenceDataModel, ChartListModel, ChartSave, SidepanelService, growl, VisDataSet, $interval, $timeout) {
+    .controller('ChartCtrl',
+    function ChartCtrl($scope, locale, ItemModel, PersistenceServiceModel, PersistenceItemModel, PersistenceDataModel, ChartListModel, ChartSave, SidepanelService, growl, VisDataSet, $interval, $timeout) {
         var itemsLoaded = 0;
         var itemsLoading = 0;
         var newChart;
@@ -75,6 +76,23 @@ angular.module('HABmin.chart', [
         // Load the list of items
         PersistenceItemModel.get().then(
             function (items) {
+                if (items == null) {
+                    ItemModel.getList().then(
+                        function (items) {
+                            $scope.items = items;
+                            if ($scope.items != null) {
+                                $scope.itemsTotal = $scope.items.length;
+                            }
+                        },
+                        function (reason) {
+                            // handle failure
+                            growl.warning(locale.getString('habmin.chartErrorGettingItems'));
+                        }
+                    );
+
+                    return
+                }
+
                 $scope.items = items;
                 if ($scope.items != null) {
                     $scope.itemsTotal = $scope.items.length;
@@ -102,9 +120,9 @@ angular.module('HABmin.chart', [
         );
 
         // Load the list of persistence services
-        PersistenceServiceModel.query().$promise.then(
+        PersistenceServiceModel.getList().then(
             function (data) {
-                $scope.services = [].concat(data.services);
+                $scope.services = [].concat(data);
                 $scope.services[0].selected = true;
                 $scope.selectedService = $scope.services[0].name;
             },
@@ -174,7 +192,14 @@ angular.module('HABmin.chart', [
                 return;
             }
 
-            ChartListModel.deleteChart($scope.selectedChart);
+            ChartListModel.deleteChart($scope.selectedChart.id).then(
+                function () {
+                    growl.success(locale.getString('habmin.chartDeleteOk', {name: $scope.selectedChart.name}));
+                },
+                function () {
+                    growl.warning(locale.getString('habmin.chartDeleteError', {name: $scope.selectedChart.name}));
+                }
+            )
         };
 
         $scope.selectItem = function (parm) {
@@ -225,6 +250,7 @@ angular.module('HABmin.chart', [
                     service.selected = false;
                 }
             });
+            $scope.selectedService = sel.name;
         };
 
         $scope.onLoaded = function (graphRef) {
@@ -233,14 +259,14 @@ angular.module('HABmin.chart', [
             console.log("graph loaded callback", graphRef);
             graph2d = graphRef;
             graph2d.setWindow($scope.startTime, $scope.stopTime);
-            if($scope.selectedChart != null) {
+            if ($scope.selectedChart != null) {
                 $scope.selectedChart.selected = "yes";
             }
         };
 
         $scope.filterDefaultString = locale.getString('common.filter');
 
-        // This is what we will bind the filter to
+// This is what we will bind the filter to
         $scope.filter = {text: ''};
         $scope.filterFunction = function (element) {
             if ($scope.filter.text === "") {

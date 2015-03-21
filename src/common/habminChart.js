@@ -5,17 +5,18 @@
  * This software is copyright of Chris Jackson under the GPL license.
  * Note that this licence may be changed at a later date.
  *
- * (c) 2014 Chris Jackson (chris@cd-jackson.com)
+ * (c) 2014-2015 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('habminChart', [
     'ngLocalize',
     'HABmin.persistenceModel',
     'HABmin.chartModel',
+    'HABmin.userModel',
     'ngVis',
     'angular-growl'
 ])
 
-    .directive('habminChart', function (PersistenceItemModel, PersistenceDataModel, ChartListModel, VisDataSet, growl) {
+    .directive('habminChart', function (PersistenceItemModel, PersistenceDataModel, ChartListModel, UserService, VisDataSet, growl) {
         return {
             restrict: 'E',
             scope: {
@@ -64,7 +65,8 @@ angular.module('habminChart', [
                     },
                     showCurrentTime: false,
                     legend: true,
-                    zoomMin: 60000
+                    zoomMin: 60000,
+                    locale: UserService.getLanguage()
                 };
 
                 $scope.graphOptions = chartOptions;
@@ -193,7 +195,7 @@ angular.module('habminChart', [
                         }
                     }
 
-                    dataGroups.add({
+                    var options = {
                         id: itemRef,
                         content: itemCfg.label,
                         style: style,
@@ -205,7 +207,13 @@ angular.module('habminChart', [
                             //    },
                             shaded: shaded
                         }
-                    });
+                    };
+
+                    if(["bar","line"].indexOf(itemCfg.chart) != -1) {
+                        options.options.style = itemCfg.chart;
+                    }
+
+                    dataGroups.add(options);
 
                     newChart = addSeries(newChart, data, itemCfg.repeatTime, itemRef);
 
