@@ -94,6 +94,7 @@
   "dashboardEndEdit": "End Edit",
   "dashboardClearTitle": "Clear Dashboard",
   "dashboardClearText": "Are you sure you want to remove all widgets from the dashboard?",
+  "dashboardWidgetEditTitle": "Edit Widget Properties",
 
   "thingNew": "New",
   "thingIgnored": "Ignored",

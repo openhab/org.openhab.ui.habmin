@@ -8,33 +8,34 @@
  * (c) 2014-2015 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('HABmin.dashboard', [
+    'ui.router',
     'gridster',
-    'angular-dialgauge'
+    'dashboardChartWidget',
+    'dashboardWidgetProperties'
 ])
     .config(function config($stateProvider) {
         $stateProvider.state('dashboard', {
-            url: '/dashboard',
+            url: '/dashboard/:dashName/:dashPage?edit',
             views: {
                 "main": {
                     controller: 'DashboardCtrl',
                     templateUrl: 'dashboard/dashboard.tpl.html'
                 }
             },
-            data: { pageTitle: 'Dashboard' }
+            data: {pageTitle: 'Dashboard'}
         });
     })
 
     .controller('DashboardCtrl',
-    function ($scope, $timeout) {
-        $scope.editMode = true;
+    function ($scope, $timeout, $state, $stateParams) {
+        $scope.editMode = $stateParams.edit == "true";
 
         $scope.gridsterOptions = {
             outerMargin: false,
             margins: [10, 10],
-            columns: 8,
-            draggable: {
-                handle: '.box-header'
-            }
+            columns: 12,
+            draggable: false,
+            resizable: false
         };
 
         $scope.dashboards = {
@@ -45,69 +46,73 @@ angular.module('HABmin.dashboard', [
                     {
                         col: 0,
                         row: 0,
-                        sizeY: 1,
-                        sizeX: 1,
-                        name: "Widget 1",
-                        value: 65,
+                        sizeY: 3,
+                        sizeX: 6,
+                        type: 'Chart',
                         options: {
-                            scaleMin: 25,
-                            scaleMax: 75,
-                            borderWidth: 0,
-                            ngModel: "gauge1",
-                            barColor: "pink",
-                            barWidth: "6",
-                            units: "%",
-                            angle: 135,
-                            rotate: 180,
-                            lineCap: "round"
+                            serviceId: 'mysql',
+                            chartId: '20'
                         }
                     },
+
                     {
-                        col: 2,
-                        row: 1,
-                        sizeY: 1,
-                        sizeX: 1,
-                        name: "Widget 2",
-                        value:93
+                        col: 4,
+                        row: 0,
+                        sizeY: 3,
+                        sizeX: 6,
+                        type: 'Chart',
+                        options: {
+                            serviceId: 'mysql',
+                            chartId: '22'
+                        }
                     }
                 ]
             }
         };
 
-        $scope.clear = function () {
-            $scope.dashboard.widgets = [];
-        };
-
         $scope.editStart = function () {
             $scope.gridsterOptions.resizable = {
                 enabled: true,
-                handles: 'n, e, s, w, ne, se, sw, nw',
-                stop: function(event, uiWidget, $element) {
+                handles: ['n', 'e', 's', 'w', 'ne', 'se', 'sw', 'nw'],
+                stop: function (event, uiWidget, $element) {
                     console.log("Resize done", uiWidget, $element);
-                    console.log("Resize to", $element[0].getBoundingClientRect());
-                    console.log("Resize to", uiWidget.element[0].getBoundingClientRect());
+//                    console.log("Resize to", $element[0].getBoundingClientRect());
+//                    console.log("Resize to", uiWidget.element[0].getBoundingClientRect());
 //                    console.log("Parent", $element[0].parent());
-                    $element.on(whichTransitionEvent(), function(){
+                    $element.on(whichTransitionEvent(), function () {
                         console.log("Transition event");
-                        $scope.$apply(function(){
+                        $scope.$apply(function () {
                             console.log("Transition event apply");
                             $scope.$broadcast('gridster-item-resized');
                         });
                     });
                 }
             };
+            $scope.gridsterOptions.draggable = {
+                handle: '.box-header'
+            };
         };
 
-        $scope.editEnd = function () {
+        $scope.clearEdit = function () {
+            $scope.dashboard.widgets = [];
+        };
+
+        $scope.endEdit = function () {
             $scope.editMode = false;
             $scope.gridsterOptions.resizable = false;
+            $scope.gridsterOptions.draggable = false;
+            //    $state;//.transitionTo($)
         };
 
-        $scope.addWidget = function () {
+        $scope.saveEdit = function () {
+
+        };
+
+        $scope.addWidget = function (type) {
             $scope.dashboard.widgets.push({
-                name: "New Widget",
-                sizeX: 1,
-                sizeY: 1
+                type: type,
+                sizeX: 4,
+                sizeY: 2
             });
         };
 
@@ -118,7 +123,6 @@ angular.module('HABmin.dashboard', [
                 $scope.dashboard = $scope.dashboards[1];
             }
         });
-
 
 
         /* From Modernizr */
@@ -138,18 +142,40 @@ angular.module('HABmin.dashboard', [
         }
 
 
+        function updateDashboard(dashboardDef) {
+            // Sanity check
+            if (dashboardDef === null || dashboardDef.widget === undefined) {
+                return "";
+            }
+
+            // Loop through all widgets on the page
+            // If the widget model isn't in the $scope, then we assume this is new
+            processWidgetUpdate(dashboardDef.widget);
+            $scope.$digest();
+
+            function processWidgetUpdate(widgetArray) {
+                // Sanity check
+                if (widgetArray == null) {
+                    return;
+                }
+
+                angular.forEach(widgetArray, function (widget) {
+                    // Sanity check
+                    if (widget == null) {
+                        return;
+                    }
+                });
+            }
+        }
 
 
-
-
-
-        $scope.$on('gridster-resized', function(event, newSizes){
+        $scope.$on('gridster-resized', function (event, newSizes) {
             console.log("Grid resized", newSizes);
 //            var newWidth = sizes[0];
- //           var newHeight = sizes[1];
+            //           var newHeight = sizes[1];
         });
 
-        $scope.$watch('dashboard.widgets', function(items){
+        $scope.$watch('dashboard.widgets', function (items) {
             console.log("Items updated", items);
             // one of the items changed
         }, true);
@@ -157,8 +183,9 @@ angular.module('HABmin.dashboard', [
         // init dashboard
         $scope.selectedDashboardId = '1';
 
-        $scope.editStart();
-
+        if ($scope.editMode) {
+            $scope.editStart();
+        }
 
 
     })
@@ -231,14 +258,31 @@ angular.module('HABmin.dashboard', [
         };
     })
 
-// helper code
-    .filter('object2Array', function () {
-        return function (input) {
-            var out = [];
-            for (var i in input) {
-                out.push(input[i]);
+    .directive('dashboardWidget', ['$compile', function ($compile) {
+        return {
+            restrict: 'AE',
+            scope: {
+                widget: '='
+            },
+            link: function (scope, element, attrs) {
+                var widgetMap = {
+                    Chart: {
+                        directive: "dashboard-chart"
+                    }
+                };
+
+                var build = function (widget) {
+                    var html = '<' + widgetMap[widget.type].directive + ' options="widget.options"></' + widgetMap[widget.type].directive + '>';
+                    element.empty().append($compile(html)(scope));
+                };
+                scope.$watch('widget', function (newValue, oldValue) {
+                    if (newValue) {
+//                        scope.options = newValue.options;
+                        build(newValue);
+                    }
+                });
             }
-            return out;
         };
-    })
+    }])
 ;
+

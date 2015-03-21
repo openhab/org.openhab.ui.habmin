@@ -18,6 +18,11 @@ angular.module('HABmin.chartSave', [
 ])
     .service('ChartSave',
     function ($modal, $rootScope, ChartListModel, growl, locale, UserService) {
+        /**
+         * Edits a chart given it's chart id.
+         * First it loads the chart from the server, then calls the editor
+         * @param chartId
+         */
         this.editChart = function (chartId) {
             var me = this;
 
@@ -26,6 +31,11 @@ angular.module('HABmin.chartSave', [
             });
         };
 
+        /**
+         * Edits the chart properties
+         * @param chart
+         * @returns {*}
+         */
         this.saveChart = function (chart) {
             var scope = $rootScope.$new();
             scope.showTab = 0;
@@ -95,6 +105,11 @@ angular.module('HABmin.chartSave', [
                 });
             }
 
+            /**
+             * Controller functions get called when the modal closes
+             * @param $scope
+             * @param $modalInstance
+             */
             var controller = function ($scope, $modalInstance) {
                 $scope.ok = function (result) {
                     var query = {};
@@ -223,7 +238,7 @@ angular.module('HABmin.chartSave', [
                 keyboard: true,
                 modalFade: true,
                 size: 'lg',
-                templateUrl: 'dashboard/chartSave.tpl.html',
+                templateUrl: 'chart/chartSave.tpl.html',
                 controller: controller,
                 windowClass: UserService.getTheme(),
                 scope: scope
@@ -237,7 +252,7 @@ angular.module('HABmin.chartSave', [
             scope: { // Isolate scope
                 model: '='
             },
-            templateUrl: 'dashboard/chartSaveGeneral.tpl.html',
+            templateUrl: 'chart/chartSaveGeneral.tpl.html',
             link: function ($scope, $element, $state) {
             }
         };
@@ -249,7 +264,7 @@ angular.module('HABmin.chartSave', [
             scope: { // Isolate scope
                 model: '='
             },
-            templateUrl: 'dashboard/chartSaveItem.tpl.html',
+            templateUrl: 'chart/chartSaveItem.tpl.html',
             link: function ($scope, $element, $state) {
             }
         };
@@ -261,7 +276,7 @@ angular.module('HABmin.chartSave', [
             scope: { // Isolate scope
                 model: '='
             },
-            templateUrl: 'dashboard/chartSaveAxis.tpl.html',
+            templateUrl: 'chart/chartSaveAxis.tpl.html',
             link: function ($scope, $element, $state) {
             }
         };

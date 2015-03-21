@@ -17,6 +17,7 @@ angular.module('HABmin.sitemap', [
     'sitemapSwitchWidget',
     'sitemapSetpointWidget',
     'sitemapTextWidget',
+    'sitemapChartWidget',
     'ui.bootstrap.tooltip'
 ])
 
@@ -37,8 +38,8 @@ angular.module('HABmin.sitemap', [
                 console.log("Sitemap parameters:", params);
 //                $scope.title = params.getData()
             }
-        });
-        $stateProvider.state('sitemap.view', {
+        })
+        .state('sitemap.view', {
             url: '/view/:sitemapName/:sitemapPage',
             //           views: {
             //             "main": {
@@ -69,7 +70,7 @@ angular.module('HABmin.sitemap', [
                         directive: "sitemap-text"
                     },
                     Chart: {
-                        directive: "sitemap-text"
+                        directive: "sitemap-chart"
                     },
                     Frame: {
                         directive: "sitemap-frame"

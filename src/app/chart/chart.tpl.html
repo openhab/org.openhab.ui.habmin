@@ -235,7 +235,9 @@
 
         <!-- Graph -->
         <div class="panel-body" style="padding:3px;" resize-panel>
-            <vis-graph2d ng-show="graphLoaded" data="graphData" options="graphOptions" events="graphEvents"></vis-graph2d>
+            <habmin-chart ng-show="true" style="display:inline-block;height:100%;width:100%"
+                          items="graphItems" chart="selectedChart.id" service="selectedService" events="graphEvents">
+            </habmin-chart>
         </div>
         <div ng-show="chartLoading==true" class="chart-loading"><span class="fa fa-spin fa-circle-o-notch"></span></div>
 
@@ -244,3 +246,7 @@
         </div>
     </div>
 </div>
+
+
+
+
