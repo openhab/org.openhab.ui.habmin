@@ -16,7 +16,7 @@ angular.module('habminChart', [
     'angular-growl'
 ])
 
-    .directive('habminChart', function (PersistenceItemModel, PersistenceDataModel, ChartListModel, UserService, VisDataSet, growl) {
+    .directive('habminChart', function (PersistenceItemModel, PersistenceDataModel, ChartModel, UserService, VisDataSet, growl, locale) {
         return {
             restrict: 'E',
             scope: {
@@ -93,7 +93,7 @@ angular.module('habminChart', [
                 }
 
                 function _displayChart(id) {
-                    ChartListModel.getChart(id).then(
+                    ChartModel.getChart(id).then(
                         function (chart) {
                             $scope.stopTime = Math.floor((new Date()).getTime());
                             $scope.startTime = $scope.stopTime - (chart.period * 1000);

@@ -12,7 +12,7 @@ angular.module('HABmin.chartModel', [
     'HABmin.restModel'
 ])
 
-    .service('ChartListModel', function ($http, $q, UserService, RestService) {
+    .service('ChartModel', function ($http, $q, UserService, RestService) {
         var svcName = "habmin/charts";
         var chartList = [];
 

@@ -11,11 +11,12 @@ angular.module('HABmin.dashboard', [
     'ui.router',
     'gridster',
     'dashboardChartWidget',
+    'dashboardGaugeWidget',
     'dashboardWidgetProperties'
 ])
     .config(function config($stateProvider) {
         $stateProvider.state('dashboard', {
-            url: '/dashboard/:dashName/:dashPage?edit',
+            url: '/dashboard/:dashName',
             views: {
                 "main": {
                     controller: 'DashboardCtrl',
@@ -27,47 +28,42 @@ angular.module('HABmin.dashboard', [
     })
 
     .controller('DashboardCtrl',
-    function ($scope, $timeout, $state, $stateParams) {
-        $scope.editMode = $stateParams.edit == "true";
-
+    function ($scope, $timeout, $state, $stateParams, dashboardWidgetProperties) {
         $scope.gridsterOptions = {
             outerMargin: false,
             margins: [10, 10],
             columns: 12,
-            draggable: false,
-            resizable: false
+            draggable: {enabled: false},
+            resizable: {enabled: false}
         };
 
-        $scope.dashboards = {
-            '1': {
-                id: '1',
-                name: 'Home',
-                widgets: [
-                    {
-                        col: 0,
-                        row: 0,
-                        sizeY: 3,
-                        sizeX: 6,
-                        type: 'Chart',
-                        options: {
-                            serviceId: 'mysql',
-                            chartId: '20'
-                        }
-                    },
-
-                    {
-                        col: 4,
-                        row: 0,
-                        sizeY: 3,
-                        sizeX: 6,
-                        type: 'Chart',
-                        options: {
-                            serviceId: 'mysql',
-                            chartId: '22'
-                        }
+        $scope.dashboard = {
+            id: '1',
+            name: 'Home',
+            widgets: [
+                {
+                    col: 0,
+                    row: 0,
+                    sizeY: 3,
+                    sizeX: 6,
+                    type: 'Chart',
+                    options: {
+                        serviceId: 'mysql',
+                        chartId: '3'
                     }
-                ]
-            }
+                },
+                {
+                    col: 4,
+                    row: 0,
+                    sizeY: 3,
+                    sizeX: 6,
+                    type: 'Chart',
+                    options: {
+                        serviceId: 'mysql',
+                        chartId: '22'
+                    }
+                }
+            ]
         };
 
         $scope.editStart = function () {
@@ -89,6 +85,7 @@ angular.module('HABmin.dashboard', [
                 }
             };
             $scope.gridsterOptions.draggable = {
+                enabled: true,
                 handle: '.box-header'
             };
         };
@@ -99,8 +96,8 @@ angular.module('HABmin.dashboard', [
 
         $scope.endEdit = function () {
             $scope.editMode = false;
-            $scope.gridsterOptions.resizable = false;
-            $scope.gridsterOptions.draggable = false;
+            $scope.gridsterOptions.resizable = {enabled: false};
+            $scope.gridsterOptions.draggable = {enabled: false};
             //    $state;//.transitionTo($)
         };
 
@@ -115,15 +112,6 @@ angular.module('HABmin.dashboard', [
                 sizeY: 2
             });
         };
-
-        $scope.$watch('selectedDashboardId', function (newVal, oldVal) {
-            if (newVal !== oldVal) {
-                $scope.dashboard = $scope.dashboards[newVal];
-            } else {
-                $scope.dashboard = $scope.dashboards[1];
-            }
-        });
-
 
         /* From Modernizr */
         function whichTransitionEvent() {
@@ -140,7 +128,6 @@ angular.module('HABmin.dashboard', [
                 }
             }
         }
-
 
         function updateDashboard(dashboardDef) {
             // Sanity check
@@ -168,6 +155,25 @@ angular.module('HABmin.dashboard', [
             }
         }
 
+        // Handle the event update from the main menu to enable edit mode
+        $scope.$on("dashboardEdit", function () {
+            $scope.editMode = !$scope.editMode;
+
+            if ($scope.editMode == true) {
+                $scope.editStart();
+            }
+            else {
+                $scope.endEdit()
+            }
+        });
+
+        $scope.removeWidget = function (widget) {
+            $scope.dashboard.widgets.splice($scope.dashboard.widgets.indexOf(widget), 1);
+        };
+
+        $scope.configWidget = function (widget) {
+            dashboardWidgetProperties.editOptions(widget);
+        };
 
         $scope.$on('gridster-resized', function (event, newSizes) {
             console.log("Grid resized", newSizes);
@@ -180,82 +186,7 @@ angular.module('HABmin.dashboard', [
             // one of the items changed
         }, true);
 
-        // init dashboard
-        $scope.selectedDashboardId = '1';
 
-        if ($scope.editMode) {
-            $scope.editStart();
-        }
-
-
-    })
-
-    .controller('CustomWidgetCtrl',
-    function ($scope, $modal) {
-
-        $scope.remove = function (widget) {
-            $scope.dashboard.widgets.splice($scope.dashboard.widgets.indexOf(widget), 1);
-        };
-
-        $scope.openSettings = function (widget) {
-            $modal.open({
-                scope: $scope,
-                templateUrl: 'demo/dashboard/widget_settings.html',
-                controller: 'WidgetSettingsCtrl',
-                resolve: {
-                    widget: function () {
-                        return widget;
-                    }
-                }
-            });
-        };
-    })
-
-    .controller('WidgetSettingsCtrl',
-    function ($scope, $timeout, $rootScope, $modalInstance, widget) {
-        $scope.widget = widget;
-
-        $scope.form = {
-            name: widget.name,
-            sizeX: widget.sizeX,
-            sizeY: widget.sizeY,
-            col: widget.col,
-            row: widget.row
-        };
-
-        $scope.sizeOptions = [
-            {
-                id: '1',
-                name: '1'
-            },
-            {
-                id: '2',
-                name: '2'
-            },
-            {
-                id: '3',
-                name: '3'
-            },
-            {
-                id: '4',
-                name: '4'
-            }
-        ];
-
-        $scope.dismiss = function () {
-            $modalInstance.dismiss();
-        };
-
-        $scope.remove = function () {
-            $scope.dashboard.widgets.splice($scope.dashboard.widgets.indexOf(widget), 1);
-            $modalInstance.close();
-        };
-
-        $scope.submit = function () {
-            angular.extend(widget, $scope.form);
-
-            $modalInstance.close(widget);
-        };
     })
 
     .directive('dashboardWidget', ['$compile', function ($compile) {
@@ -268,11 +199,15 @@ angular.module('HABmin.dashboard', [
                 var widgetMap = {
                     Chart: {
                         directive: "dashboard-chart"
+                    },
+                    Gauge: {
+                        directive: "dashboard-gauge"
                     }
                 };
 
                 var build = function (widget) {
-                    var html = '<' + widgetMap[widget.type].directive + ' options="widget.options"></' + widgetMap[widget.type].directive + '>';
+                    var html = '<' + widgetMap[widget.type].directive + ' options="widget.options"></' +
+                        widgetMap[widget.type].directive + '>';
                     element.empty().append($compile(html)(scope));
                 };
                 scope.$watch('widget', function (newValue, oldValue) {

@@ -160,7 +160,7 @@ angular.module('HABmin', [
     ])
 
     .controller('HABminCtrl',
-    function HABminCtrl($scope, $location, $window, $timeout, $interval, locale, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, InboxModel, SidepanelService, RestService) {
+    function HABminCtrl($scope, $location, $window, $timeout, $interval, $rootScope, locale, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, InboxModel, SidepanelService, RestService) {
         $scope.isLoggedIn = UserService.isLoggedIn;
 
         // List of current themes
@@ -373,6 +373,10 @@ angular.module('HABmin', [
         };
         $scope.showUserGeneralPrefs = function () {
             UserGeneralPrefs.showModal();
+        };
+
+        $scope.dashboardEdit = function () {
+            $rootScope.$broadcast("dashboardEdit");
         };
 
         // Swipe handler - mainly for handling small screens where we split the panels

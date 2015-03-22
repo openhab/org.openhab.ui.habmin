@@ -45,15 +45,13 @@ angular.module('HABmin.chart', [
     })
 
     .controller('ChartCtrl',
-    function ChartCtrl($scope, locale, ItemModel, PersistenceServiceModel, PersistenceItemModel, PersistenceDataModel, ChartListModel, ChartSave, SidepanelService, growl, VisDataSet, $interval, $timeout) {
+    function ChartCtrl($scope, locale, ItemModel, PersistenceServiceModel, PersistenceItemModel, PersistenceDataModel, ChartModel, ChartSave, SidepanelService, growl, VisDataSet, $interval, $timeout) {
         var itemsLoaded = 0;
         var itemsLoading = 0;
         var newChart;
         var chartDef;
 
         var graph2d;
-
-        var roundingTime = 1000;
 
         $scope.graphLoaded = false;
 
@@ -90,7 +88,7 @@ angular.module('HABmin.chart', [
                         }
                     );
 
-                    return
+                    return;
                 }
 
                 $scope.items = items;
@@ -105,7 +103,7 @@ angular.module('HABmin.chart', [
         );
 
         // Load the list of charts
-        ChartListModel.getList().then(
+        ChartModel.getList().then(
             function (charts) {
                 $scope.charts = charts;
                 if ($scope.charts != null) {
@@ -200,7 +198,7 @@ angular.module('HABmin.chart', [
                 return;
             }
 
-            ChartListModel.deleteChart($scope.selectedChart.id).then(
+            ChartModel.deleteChart($scope.selectedChart.id).then(
                 function () {
                     growl.success(locale.getString('habmin.chartDeleteOk', {name: $scope.selectedChart.name}));
                 },

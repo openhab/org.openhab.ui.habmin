@@ -17,7 +17,7 @@ angular.module('HABmin.chartSave', [
     'HABmin.userModel'
 ])
     .service('ChartSave',
-    function ($modal, $rootScope, ChartListModel, growl, locale, UserService) {
+    function ($modal, $rootScope, ChartModel, growl, locale, UserService) {
         /**
          * Edits a chart given it's chart id.
          * First it loads the chart from the server, then calls the editor
@@ -26,7 +26,7 @@ angular.module('HABmin.chartSave', [
         this.editChart = function (chartId) {
             var me = this;
 
-            ChartListModel.getChart(chartId).then(function (chart) {
+            ChartModel.getChart(chartId).then(function (chart) {
                 me.saveChart(chart);
             });
         };
@@ -220,12 +220,13 @@ angular.module('HABmin.chartSave', [
 
                     console.log("Saving query", query);
 
-                    ChartListModel.putChart(query).then(
+                    ChartModel.putChart(query).then(
                         function () {
                             growl.success(locale.getString('habmin.chartSaveSuccess', {chartName: query.name}));
                         },
                         function (error) {
-                            growl.warning(locale.getString('habmin.chartSaveError', {chartName: query.name, error: error}));
+                            growl.warning(locale.getString('habmin.chartSaveError',
+                                {chartName: query.name, error: error}));
                         });
 
                     $modalInstance.close(result);
@@ -291,16 +292,16 @@ angular.module('HABmin.chartSave', [
                 ngModel: '='
             },
             template: '' +
-                '<div class="line-selector dropdown"><a class="dropdown-toggle" data-toggle="dropdown">' +
-                '<span class="selected" ng-bind-html="getSelected()">' +
-                '</span>' +
-                '</a>' +
-                '<ul class="dropdown-menu" role="menu">' +
-                '<li ng-repeat="choice in styles"><a ng-click="setStyle(choice)">' +
-                '<span ng-bind-html="getStyle(choice)"></span>' +
-                '</a></li>' +
-                '</ul>' +
-                '</div>',
+            '<div class="line-selector dropdown"><a class="dropdown-toggle" data-toggle="dropdown">' +
+            '<span class="selected" ng-bind-html="getSelected()">' +
+            '</span>' +
+            '</a>' +
+            '<ul class="dropdown-menu" role="menu">' +
+            '<li ng-repeat="choice in styles"><a ng-click="setStyle(choice)">' +
+            '<span ng-bind-html="getStyle(choice)"></span>' +
+            '</a></li>' +
+            '</ul>' +
+            '</div>',
             link: function ($scope, $element, $state) {
                 // Define the array of line styles
                 $scope.styles = [
@@ -333,7 +334,7 @@ angular.module('HABmin.chartSave', [
                 // Return a trusted HTML for the styles
                 $scope.getStyle = function (style) {
                     return $sce.trustAsHtml('<svg width="100%" height="10px"><line x1="0" x2="426" y1="5" y2="5" stroke-width="2" stroke-linecap="butt" stroke-dasharray="' +
-                        style.array.join(",") + '"/></svg>');
+                    style.array.join(",") + '"/></svg>');
                 };
 
                 // Sets the style when the user selects from the menu
@@ -345,7 +346,7 @@ angular.module('HABmin.chartSave', [
                 // Gets the selected style as trusted HTML
                 $scope.getSelected = function () {
                     return $sce.trustAsHtml('<svg width="100%" height="10px"><line x1="0" x2="426" y1="5" y2="5" stroke-width="2" stroke-linecap="butt" stroke-dasharray="' +
-                        $scope.selected.array.join(",") + '"/></svg>');
+                    $scope.selected.array.join(",") + '"/></svg>');
                 };
             }
         };

@@ -1,6 +1,6 @@
 <div class="btn-group btn-group-sm" role="group" ng-if="editMode" class="page-header">
     <button class="btn btn-sm btn-primary" ng-click="saveEdit()"><i class="fa fa-save"></i> <span i18n="common.save"></span></button>
-    <button class="btn btn-sm btn-primary" ng-click="endEdit()"><i class="fa fa-check-square"></i> <span i18n="habmin.dashboardEndEdit"></button>
+    <button class="btn btn-sm btn-primary" ng-click="endEdit()"><i class="fa fa-check-square"></i> <span i18n="habmin.dashboardEndEdit"></span></button>
     <div class="dashboard-toolbar btn-group dropdown">
         <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
             <span class="fa fa-plus-square-o"></span> <span i18n="habmin.dashboardAddWidget"></span>
@@ -10,8 +10,14 @@
         <ul class="dropdown-menu" role="menu">
             <li>
                 <a ng-click="addWidget('Chart')">
-                    <span class="fa fa-list-alt"></span>
+                    <span class="fa fa-fw fa-area-chart"></span>
                     <span i18nx="habmin.chartItemList"><span i18n="habmin.dashboardAddChart"></span></span>
+                </a>
+            </li>
+            <li>
+                <a ng-click="addWidget('Gauge')">
+                    <span class="fa fa-fw fa-dashboard"></span>
+                    <span i18nx="habmin.chartItemList"><span i18n="habmin.dashboardAddGauge"></span></span>
                 </a>
             </li>
         </ul>
@@ -25,11 +31,11 @@
 <div gridster="gridsterOptions">
     <ul>
         <li gridster-item="widget" ng-repeat="widget in dashboard.widgets">
-            <div ng-class="{'dashboard':true, 'dashboard-edit':editMode}" ng-controller="CustomWidgetCtrl">
+            <div ng-class="{'dashboard':true, 'dashboard-edit':editMode}">
                 <div ng-if="editMode" class="dashboard-header">
                     <div class="dashboard-header-btns pull-right">
-                        <a title="settings" ng-click="openSettings(widget)"><span class="fa fa-cog"></span></a>
-                        <a title="Remove widget" ng-click="remove(widget)"><span class="fa fa-trash"></span></a>
+                        <a title="settings" ng-click="configWidget(widget)"><span class="fa fa-cog"></span></a>
+                        <a title="Remove widget" ng-click="removeWidget(widget)"><span class="fa fa-trash"></span></a>
                     </div>
                 </div>
 

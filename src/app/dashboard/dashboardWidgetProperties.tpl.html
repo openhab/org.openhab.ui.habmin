@@ -8,33 +8,30 @@
             <ul class="nav nav-pills nav-stacked">
                 <li ng-class="{'active':showTab==0}">
                     <a ng-click="showTab=0">
-                        <span i18n="habmin.chartSaveGeneral"></span>
+                        <span i18n="habmin.dashboardWidgetConfigGeneral"></span>
                     </a>
                 </li>
-                <li ng-class="{'active':showTab==1}"><a ng-click="showTab=1">
-                    <span i18n="habmin.chartSaveLeftAxis"></span>
-                </a>
-                </li>
-                <li ng-class="{'active':showTab==2}">
-                    <a ng-click="showTab=2">
-                        <span i18n="habmin.chartSaveRightAxis"></span>
+
+                <li ng-show="widget.type=='Chart'"
+                    ng-class="{'active':showTab==1}">
+                    <a ng-click="showTab=1">
+                        <span i18n="habmin.dashboardWidgetConfigChart"></span>
                     </a>
                 </li>
-                <li ng-class="{'active':showTab==choice.item}" ng-repeat="choice in items">
-                    <a ng-click="$parent.showTab=choice.item">
-                        <span></span>
-                        <span>{{choice.item}}</span>
+                <li ng-show="widget.type=='Gauge'"
+                    ng-class="{'active':showTab==1}">
+                    <a ng-click="showTab=1">
+                        <span i18n="habmin.dashboardWidgetConfigGauge"></span>
                     </a>
                 </li>
+
             </ul>
         </div>
 
         <div class="col-xs-6">
             <chart-save-general ng-show="showTab==0" model="general"></chart-save-general>
-            <chart-save-axis ng-show="showTab==1" model="leftaxis"></chart-save-axis>
-            <chart-save-axis ng-show="showTab==2" model="rightaxis"></chart-save-axis>
-            <chart-save-item ng-repeat="choice in items" model="choice"
-                             ng-show="showTab==choice.item"></chart-save-item>
+            <dashboard-chart-properties ng-if="widget.type=='Chart' && showTab==1" widget="widget"></dashboard-chart-properties>
+            <dashboard-gauge-properties ng-if="widget.type=='Gauge'" ng-show="showTab==1" model="leftaxis"></dashboard-gauge-properties>
         </div>
     </div>
 </div>
