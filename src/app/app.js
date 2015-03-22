@@ -163,7 +163,16 @@ angular.module('HABmin', [
     function HABminCtrl($scope, $location, $window, $timeout, $interval, locale, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, InboxModel, SidepanelService, RestService) {
         $scope.isLoggedIn = UserService.isLoggedIn;
 
+        // List of current themes
+        // TODO: Consolidate this with the user selection
+        var themes = ['yeti', 'paper', 'slate'];
         $scope.setTheme = function (theme) {
+            // Make sure the theme exists!
+            // Setting an invalid theme will completely screw the presentation
+            if(themes.indexOf(theme.toLowerCase()) == -1) {
+                return;
+            }
+
             $('html').removeClass();
             $('html').addClass(theme);
         };
