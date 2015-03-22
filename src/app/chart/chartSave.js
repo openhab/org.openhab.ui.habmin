@@ -43,7 +43,8 @@ angular.module('HABmin.chartSave', [
                 name: chart.name,
                 title: chart.title,
                 icon: chart.icon,
-                period: chart.period
+                period: chart.period,
+                legend: chart.legend
             };
             scope.leftaxis = {};
             scope.rightaxis = {};
@@ -123,6 +124,7 @@ angular.module('HABmin.chartSave', [
                     }
                     query.icon = scope.general.icon;
                     query.period = scope.general.period;
+                    query.legend = scope.general.legend;
 
                     query.axis = [];
                     if (scope.leftaxis !== undefined) {
@@ -176,7 +178,7 @@ angular.module('HABmin.chartSave', [
                         query.items = [];
                         angular.forEach([].concat(scope.items), function (item) {
                             var newItem = {};
-                            
+
                             newItem.item = item.item;
                             if (item.label != null) {
                                 newItem.label = item.label;
