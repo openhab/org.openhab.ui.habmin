@@ -111,6 +111,14 @@ angular.module('HABmin.chart', [
                 if ($scope.charts != null) {
                     $scope.chartsTotal = $scope.charts.length;
                 }
+                else {
+                    $scope.charts = 0;
+                }
+
+                // If there's no predefined charts, change to items view
+                if($scope.charts == 0) {
+                    $scope.selectCharts = false;
+                }
             },
             function (reason) {
                 // handle failure
