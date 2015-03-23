@@ -129,8 +129,10 @@ angular.module('HABmin.chart', [
         PersistenceServiceModel.getList().then(
             function (data) {
                 $scope.services = [].concat(data);
-                $scope.services[0].selected = true;
-                $scope.selectedService = $scope.services[0].name;
+                if($scope.services.length > 0) {
+                    $scope.services[0].selected = true;
+                    $scope.selectedService = $scope.services[0].name;
+                }
             },
             function (reason) {
                 // handle failure
