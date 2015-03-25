@@ -41,7 +41,7 @@ angular.module('angular-dialgauge', [
                 options: '=?'
             },
             template: '' +
-                '<div style="width:100%" ng-bind-html="gauge"</div>',
+            '<div style="width:100%" ng-bind-html="gauge"</div>',
             //         link: function ($scope, $element, $state) {
             controller: function ($scope, $element) {
                 // Define variables for this gauge
@@ -99,7 +99,7 @@ angular.module('angular-dialgauge', [
 
                 $scope.getElementDimensions = function () {
                     var rect = $element[0].getBoundingClientRect();
-                    return { 'h': rect.height, 'w': rect.width };
+                    return {'h': rect.height, 'w': rect.width};
                 };
 
                 $scope.$watch($scope.getElementDimensions, function (newValue, oldValue) {
@@ -114,6 +114,16 @@ angular.module('angular-dialgauge', [
                     }
                 }, true);
 
+
+                // Add a watch on the options structure.
+                // If anything changes, update the static path
+                $scope.$watch('options', function() {
+                    parseParameters($scope.options);
+
+                    // Update the static path for the gauge
+                    staticPath = createStaticPath();
+                    updateBar(currentValue);
+                });
 
                 // Add a watch on all configuration variables.
                 // If anything changes, update the static path
@@ -141,19 +151,14 @@ angular.module('angular-dialgauge', [
                     'borderWidth',
                     'borderOffset',
                     'borderColor',
-                    'units',
-                    'options'
+                    'units'
                 ], function () {
-                    if($scope.options !== undefined) {
-                        parseParameters($scope.options);
-                    }
-                    else {
-                        parseParameters($scope);
-                    }
+                    parseParameters($scope);
 
                     // Update the static path for the gauge
                     staticPath = createStaticPath();
-                }, true);
+                    updateBar(currentValue);
+                });
 
                 // Set a watch on the model so we can update the dynamic part of the gauge
                 $scope.$watch("ngModel", function (value) {
@@ -219,19 +224,21 @@ angular.module('angular-dialgauge', [
                     // This accounts for the actual scale from the user, the rotation angle,
                     // and the conversion to radians
                     valueScale = cfg.scaleMax / (cfg.scaleMax - cfg.scaleMin) * cfg.angle /
-                        radDeg;
+                    radDeg;
 
                     // Keep all the static parts of the path separately cached
                     var path = "";
 
                     // Draw the BORDER
                     if (cfg.borderWidth != 0) {
+                        radius -= Math.ceil(cfg.borderWidth / 2);
+
                         // This is currently a full circle - maybe it should be an arc?
                         path += '<circle cx="' + center + '" cy="' + center + '" r="' + radius + '" ' +
-                            'style="stroke:' + cfg.borderColor + ';' +
-                            'stroke-width:' + cfg.borderWidth + ';' +
-                            'fill:transparent;' +
-                            '"/>';
+                        'style="stroke:' + cfg.borderColor + ';' +
+                        'stroke-width:' + cfg.borderWidth + ';' +
+                        'fill:transparent;' +
+                        '"/>';
 
                         radius -= Math.ceil(cfg.borderWidth / 2);
                         radius -= cfg.borderOffset;
@@ -267,8 +274,8 @@ angular.module('angular-dialgauge', [
 
                         path += '" ';
                         path += 'stroke="' + cfg.scaleMinorColor + '" ' +
-                            'stroke-width="' + cfg.scaleMinorWidth + '" ' +
-                            '/>';
+                        'stroke-width="' + cfg.scaleMinorWidth + '" ' +
+                        '/>';
                     }
 
                     // Draw the major scale
@@ -295,8 +302,8 @@ angular.module('angular-dialgauge', [
 
                         path += '" ';
                         path += 'stroke="' + cfg.scaleMajorColor + '" ' +
-                            'stroke-width="' + cfg.scaleMajorWidth + '" ' +
-                            '/>';
+                        'stroke-width="' + cfg.scaleMajorWidth + '" ' +
+                        '/>';
                     }
 
                     // Alter the radius to account for the scale
@@ -314,15 +321,15 @@ angular.module('angular-dialgauge', [
                         path +=
                             ' A ' + radius + ' ' + radius + ',0,' + arc.dir + ',1,' + arc.eX + ' ' + arc.eY + '" ';
                         path += 'stroke="' + cfg.trackColor + '" ' +
-                            'stroke-linecap="' + cfg.lineCap + '" ' +
-                            'stroke-width="' + cfg.barWidth + '" ' +
-                            'fill="transparent"' +
-                            '/>';
+                        'stroke-linecap="' + cfg.lineCap + '" ' +
+                        'stroke-width="' + cfg.barWidth + '" ' +
+                        'fill="transparent"' +
+                        '/>';
                     }
 
                     if (cfg.title) {
                         path += '<text text-anchor="middle" x="' + center + '" y="' + (center + 20) +
-                            '" class="dialgauge-title">' + cfg.title + '</text>';
+                        '" class="dialgauge-title">' + cfg.title + '</text>';
                     }
 
                     return path;
@@ -377,15 +384,15 @@ angular.module('angular-dialgauge', [
 
                     var color;
                     // Calculate the bar color
-                    if(typeof cfg.barColor === "string") {
+                    if (typeof cfg.barColor === "string") {
                         color = cfg.barColor;
                     }
                     else {
                         var A = color2rgb(cfg.barColor[0]);
                         var B = color2rgb(cfg.barColor[1]);
                         var gradient = [];
-                        for (var c = 0; c <3; c++) {
-                            gradient[c] = A[c] + (B[c]-A[c]) * newValue / 100;
+                        for (var c = 0; c < 3; c++) {
+                            gradient[c] = A[c] + (B[c] - A[c]) * newValue / 100;
                         }
 
                         color = rgb2color(gradient);
@@ -398,24 +405,24 @@ angular.module('angular-dialgauge', [
                     path +=
                         ' A ' + pathRadius + ' ' + pathRadius + ',0,' + arc.dir + ',1,' + arc.eX + ' ' + arc.eY + '" ';
                     path += 'stroke="' + color + '" ' +
-                        'stroke-linecap="' + cfg.lineCap + '" ' +
-                        'stroke-width="' + cfg.barWidth + '" ' +
-                        'fill="transparent"' +
-                        '/>';
+                    'stroke-linecap="' + cfg.lineCap + '" ' +
+                    'stroke-width="' + cfg.barWidth + '" ' +
+                    'fill="transparent"' +
+                    '/>';
 
                     if (newValue !== undefined) {
                         path += '<text text-anchor="middle" x="' + center + '" y="' + center + '">' +
-                            '<tspan class="dialgauge-value">' + Math.floor(newValue) + '</tspan>';
+                        '<tspan class="dialgauge-value">' + Math.floor(newValue) + '</tspan>';
                     }
 
                     if (cfg.units != undefined) {
                         path += '<tspan dx="3" class="dialgauge-unit">' + cfg.units + '</tspan>';
                     }
                     path += '</text>';
-//path="";
+
                     $scope.gauge =
                         $sce.trustAsHtml('<svg width="' + width + 'pt" height="' + height + 'pt">' + staticPath + path +
-                            '</svg>');
+                        '</svg>');
                 }
 
                 // Calculate the start and end positions
@@ -452,12 +459,15 @@ angular.module('angular-dialgauge', [
                             cfg[key] = defaults[key];
                         }
                         // Convert any numerics into numbers!
-                        if (typeof cfg[key] === 'number') {
+                        if (typeof defaults[key] === 'number') {
                             cfg[key] = Number(cfg[key]);
+                            if (isNaN(cfg[key])) {
+                                cfg[key] = 0;
+                            }
                         }
                     }
 
-                    if(cfg.barColorEnd.length !== 0) {
+                    if (cfg.barColorEnd.length !== 0) {
                         var color = [];
                         color[0] = cfg.barColor;
                         color[1] = cfg.barColorEnd;
@@ -473,8 +483,7 @@ angular.module('angular-dialgauge', [
                 }
 
                 // Color #FF00FF format to Array(255,0,255)
-                function color2rgb(color)
-                {
+                function color2rgb(color) {
                     var r = parseInt(color.substr(1, 2), 16);
                     var g = parseInt(color.substr(3, 2), 16);
                     var b = parseInt(color.substr(5, 2), 16);
@@ -482,11 +491,9 @@ angular.module('angular-dialgauge', [
                 }
 
                 // The color of Array (255,0255) format to#FF00FF
-                function rgb2color(rgb)
-                {
+                function rgb2color(rgb) {
                     var s = "#";
-                    for (var i = 0; i <3; i++)
-                    {
+                    for (var i = 0; i < 3; i++) {
                         var c = Math.round(rgb[i]).toString(16);
                         if (c.length == 1)
                             c = '0' + c;

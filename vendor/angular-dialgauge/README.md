@@ -5,7 +5,7 @@ AngularJS directive for a dial gauge. This uses SVG and will automatically size 
 have a size.
 
 The following options are possible. These can either be set as separate configuration items, or a configuration object
-called ```config``` can be set to provide a single configuration object. 
+called ```options``` can be set to provide a single configuration object.
 
 Option              | Description
 --------------------| -----------
