@@ -101,7 +101,7 @@
   "dashboardWidgetConfigChart": "Chart Properties",
   "dashboardWidgetConfigGauge": "Gauge Properties",
   "dashboardChartName": "Chart Name",
-  "dashboardChartService": "Service",
+  "dashboardChartService": "Persistence Service",
   "dashboardGaugeLabel": "Label",
   "dashboardGaugeItem": "Item",
   "dashboardGaugeBarWidth": "Bar Width",

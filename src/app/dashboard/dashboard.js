@@ -46,10 +46,10 @@ angular.module('HABmin.dashboard', [
                     row: 0,
                     sizeY: 3,
                     sizeX: 6,
-                    type: 'Chart',
+                    type: 'Gauge',
                     options: {
-                        serviceId: 'mysql',
-                        chartId: '3'
+                        borderWidth: 4,
+                        rotate: '90'
                     }
                 },
                 {
@@ -75,13 +75,13 @@ angular.module('HABmin.dashboard', [
 //                    console.log("Resize to", $element[0].getBoundingClientRect());
 //                    console.log("Resize to", uiWidget.element[0].getBoundingClientRect());
 //                    console.log("Parent", $element[0].parent());
-                    $element.on(whichTransitionEvent(), function () {
-                        console.log("Transition event");
-                        $scope.$apply(function () {
-                            console.log("Transition event apply");
-                            $scope.$broadcast('gridster-item-resized');
-                        });
-                    });
+//                    $element.on(whichTransitionEvent(), function () {
+//                        console.log("Transition event");
+//                        $scope.$apply(function () {
+//                            console.log("Transition event apply");
+//                            $scope.$broadcast('gridster-item-resized');
+//                        });
+//                    });
                 }
             };
             $scope.gridsterOptions.draggable = {
@@ -191,7 +191,7 @@ angular.module('HABmin.dashboard', [
 
     .directive('dashboardWidget', ['$compile', function ($compile) {
         return {
-            restrict: 'AE',
+            restrict: 'E',
             scope: {
                 widget: '='
             },
@@ -206,6 +206,10 @@ angular.module('HABmin.dashboard', [
                 };
 
                 var build = function (widget) {
+                    if(widget.options == null) {
+                        widget.options = {};
+                    }
+
                     var html = '<' + widgetMap[widget.type].directive + ' options="widget.options"></' +
                         widgetMap[widget.type].directive + '>';
                     element.empty().append($compile(html)(scope));

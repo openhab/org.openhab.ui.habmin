@@ -13,20 +13,24 @@
                     <span class="sr-only">Dropdown</span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a ng-click="setType(true)">
-                        <span class="fa fa-pie-chart"></span>
-                        <span i18n="habmin.chartChartList"></span>
+                    <li ng-disabled="!selectedChart">
+                        <a ng-click="setType(true)">
+                            <span class="fa fa-pie-chart"></span>
+                            <span i18n="habmin.chartChartList"></span>
                             <span class="pull-right">
                                 <span ng-if="selectCharts" class="fa fa-check-square-o"></span>
                             </span>
-                    </a></li>
-                    <li><a ng-click="setType(false)">
-                        <span class="fa fa-list-alt"></span>
-                        <span i18n="habmin.chartItemList"></span>
+                        </a>
+                    </li>
+                    <li ng-disabled="!selectedChart">
+                        <a ng-click="setType(false)">
+                            <span class="fa fa-list-alt"></span>
+                            <span i18n="habmin.chartItemList"></span>
                             <span class="pull-right">
                                 <span ng-if="!selectCharts" class="fa fa-check-square-o"></span>
                             </span>
-                    </a></li>
+                        </a>
+                    </li>
                 </ul>
             </div>
 

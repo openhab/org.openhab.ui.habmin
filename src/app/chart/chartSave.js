@@ -46,6 +46,11 @@ angular.module('HABmin.chartSave', [
                 period: chart.period,
                 legend: chart.legend
             };
+
+            if(scope.general.legend != 'false' && scope.general.legend != false) {
+                scope.general.legend = 'true';
+            }
+
             scope.leftaxis = {};
             scope.rightaxis = {};
             if (chart.axis !== undefined) {

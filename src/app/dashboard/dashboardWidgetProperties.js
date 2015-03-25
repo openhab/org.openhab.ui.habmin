@@ -18,7 +18,6 @@ angular.module('dashboardWidgetProperties', [
         this.editOptions = function (widget) {
             var scope = $rootScope.$new();
             scope.showTab = 0;
-
             scope.widget = angular.copy(widget);
 
             /**
@@ -29,18 +28,6 @@ angular.module('dashboardWidgetProperties', [
             var controller = function ($scope, $modalInstance) {
                 $scope.ok = function (result) {
                     widget.options = scope.widget.options;
-//                    var query = {};
-
-                    // Make sure to set the ID
-//                    query.id = chart.id;
-
-//                    query.name = scope.general.name;
-//                    if (scope.general.title !== undefined) {
-//                        query.title = scope.general.title;
-//                    }
-//                    query.icon = scope.general.icon;
- //                   query.period = scope.general.period;
-
 
                     $modalInstance.close(result);
                 };
@@ -61,4 +48,17 @@ angular.module('dashboardWidgetProperties', [
             }).result;
         };
     })
+
+    .directive('dashboardGeneralProperties', function ($window) {
+        return {
+            restrict: 'E', // Use as element
+            scope: { // Isolate scope
+                model: '='
+            },
+            templateUrl: 'dashboard/dashboardGeneralProperties.tpl.html',
+            link: function ($scope, $element, $state) {
+            }
+        };
+    })
+
 ;

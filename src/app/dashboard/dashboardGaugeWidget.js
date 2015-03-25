@@ -16,16 +16,21 @@ angular.module('dashboardGaugeWidget', [
     .directive('dashboardGauge', function () {
         return {
             restrict: 'E',
-            template: '<ng-dial-gauge scale-min="0" scale-max="100" border-width="0" ng-model="gauge5" ' +
-            'bar-color="#ff0000" bar-color-end="#00ff00" bar-width="30" angle="315"' +
-            ' rotate="180" scale-minor-length="0" scale-major-length="0" line-cap="butt"' +
-            ' style="display:inline-block;height:100%;width:100%;stroke:blue;font-weight:100;"></ng-dial-gauge>',
+            template: '<ng-dial-gauge options="options" scale-min="0" scale-max="100" border-width="options.borderWidth" ng-model="value" ' +
+            'bar-color="#ff0000" bar-color-end="#00ff00" bar-width="30" angle="315" ' +
+            'rotate="180" scale-minor-length="0" scale-major-length="0" line-cap="butt" ' +
+            'style="display:inline-block;height:100%;width:100%;"></ng-dial-gauge>',
             scope: {
                 options: "="
             },
-            link: function ($scope, element, attrs, controller) {
-//                $scope.chartId = $scope.options.chartId;
-//                $scope.serviceId = $scope.options.serviceId;
+            link: function ($scope) {
+//                $scope.borderWidth = $scope.options.borderWidth;
+                $scope.value = 56;
+                $scope.$watch("options", function(newOptions) {
+//                    $scope.value++;
+//                    $scope.options = {borderWidth:4};
+//                    $scope.borderWidth = $scope.options.borderWidth;
+                });
             }
         };
     })
@@ -34,10 +39,18 @@ angular.module('dashboardGaugeWidget', [
         return {
             restrict: 'E', // Use as element
             scope: { // Isolate scope
-                model: '='
+                options: '='
             },
             templateUrl: 'dashboard/dashboardGaugeProperties.tpl.html',
             link: function ($scope, $element, $state) {
+                $scope.removeNull = function (item) {
+                    if (item == null || item.label == null || item.label.title == null ||
+                        item.label.title.length == 0) {
+                        return false;
+                    }
+                    return true;
+                };
+
                 // Load the list of items
                 PersistenceItemModel.get().then(
                     function (items) {
