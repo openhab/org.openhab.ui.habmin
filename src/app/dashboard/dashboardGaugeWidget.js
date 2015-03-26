@@ -16,9 +16,7 @@ angular.module('dashboardGaugeWidget', [
     .directive('dashboardGauge', function () {
         return {
             restrict: 'E',
-            template: '<ng-dial-gauge options="options" scale-min="0" scale-max="100" border-width="options.borderWidth" ng-model="value" ' +
-            'bar-color="#ff0000" bar-color-end="#00ff00" bar-width="30" angle="315" ' +
-            'rotate="180" scale-minor-length="0" scale-major-length="0" line-cap="butt" ' +
+            template: '<ng-dial-gauge options="options" ng-model="value" ' +
             'style="display:inline-block;height:100%;width:100%;"></ng-dial-gauge>',
             scope: {
                 options: "="

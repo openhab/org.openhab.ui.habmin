@@ -10,13 +10,15 @@
 angular.module('HABmin.dashboard', [
     'ui.router',
     'gridster',
+    'HABmin.dashboardModel',
     'dashboardChartWidget',
     'dashboardGaugeWidget',
-    'dashboardWidgetProperties'
+    'dashboardWidgetProperties',
+    'angular-growl'
 ])
     .config(function config($stateProvider) {
         $stateProvider.state('dashboard', {
-            url: '/dashboard/:dashName',
+            url: '/dashboard/:dashboardId',
             views: {
                 "main": {
                     controller: 'DashboardCtrl',
@@ -28,7 +30,7 @@ angular.module('HABmin.dashboard', [
     })
 
     .controller('DashboardCtrl',
-    function ($scope, $timeout, $state, $stateParams, dashboardWidgetProperties) {
+    function ($scope, $timeout, $state, $stateParams, growl, dashboardWidgetProperties, DashboardModel) {
         $scope.gridsterOptions = {
             outerMargin: false,
             margins: [10, 10],
@@ -38,50 +40,18 @@ angular.module('HABmin.dashboard', [
         };
 
         $scope.dashboard = {
-            id: '1',
-            name: 'Home',
-            widgets: [
-                {
-                    col: 0,
-                    row: 0,
-                    sizeY: 3,
-                    sizeX: 6,
-                    type: 'Gauge',
-                    options: {
-                        borderWidth: 4,
-                        rotate: '90'
-                    }
-                },
-                {
-                    col: 4,
-                    row: 0,
-                    sizeY: 3,
-                    sizeX: 6,
-                    type: 'Chart',
-                    options: {
-                        serviceId: 'mysql',
-                        chartId: '22'
-                    }
-                }
-            ]
+            name: '',
+            widgets: []
         };
 
         $scope.editStart = function () {
+            $scope.editMode = true;
+
             $scope.gridsterOptions.resizable = {
                 enabled: true,
                 handles: ['n', 'e', 's', 'w', 'ne', 'se', 'sw', 'nw'],
                 stop: function (event, uiWidget, $element) {
                     console.log("Resize done", uiWidget, $element);
-//                    console.log("Resize to", $element[0].getBoundingClientRect());
-//                    console.log("Resize to", uiWidget.element[0].getBoundingClientRect());
-//                    console.log("Parent", $element[0].parent());
-//                    $element.on(whichTransitionEvent(), function () {
-//                        console.log("Transition event");
-//                        $scope.$apply(function () {
-//                            console.log("Transition event apply");
-//                            $scope.$broadcast('gridster-item-resized');
-//                        });
-//                    });
                 }
             };
             $scope.gridsterOptions.draggable = {
@@ -90,25 +60,43 @@ angular.module('HABmin.dashboard', [
             };
         };
 
-        $scope.clearEdit = function () {
+        $scope.clearDashboard = function () {
             $scope.dashboard.widgets = [];
         };
 
         $scope.endEdit = function () {
             $scope.editMode = false;
+            
             $scope.gridsterOptions.resizable = {enabled: false};
             $scope.gridsterOptions.draggable = {enabled: false};
-            //    $state;//.transitionTo($)
         };
 
-        $scope.saveEdit = function () {
+        $scope.saveDashboard = function () {
+            DashboardModel.saveDashboard($scope.dashboard).then(
+                function() {
 
+                },
+                function() {
+
+                }
+            );
+        };
+
+        $scope.deleteDashboard = function () {
+            DashboardModel.deleteDashboard($scope.dashboard).then(
+                function() {
+                    $scope.clearDashboard();
+                },
+                function() {
+
+                }
+            );
         };
 
         $scope.addWidget = function (type) {
             $scope.dashboard.widgets.push({
                 type: type,
-                sizeX: 4,
+                sizeX: 2,
                 sizeY: 2
             });
         };
@@ -186,6 +174,10 @@ angular.module('HABmin.dashboard', [
             // one of the items changed
         }, true);
 
+        var dashboardId = $stateParams.dashboardId;
+        if(dashboardId == null || dashboardId.length == 0) {
+            $scope.editStart();
+        }
 
     })
 
@@ -206,7 +198,7 @@ angular.module('HABmin.dashboard', [
                 };
 
                 var build = function (widget) {
-                    if(widget.options == null) {
+                    if (widget.options == null) {
                         widget.options = {};
                     }
 
