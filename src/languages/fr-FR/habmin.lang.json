@@ -84,7 +84,6 @@
 "chartSaveError":"Erreur de sauvegarde du graphique <i>{chartName}</i>:<BR><b><i>{error}</i></b>.",
 "dashboardAddWidget":"Ajouter Widget",
 "dashboardAddChart":"Graphique",
-"dashboardEndEdit":"Terminer édition",
 "dashboardClearTitle":"Effacer Dashboard",
 "dashboardClearText":"Etes-vous sur de vouloir effacer tous les widgets du dashboard?",
 "thingNew":"Nouveau",

@@ -108,6 +108,7 @@ angular.module('habminChart', [
                         },
                         function (reason) {
                             // TODO: Should notify the user...
+                            $scope.events.onload(null);
                         }
                     );
                 }

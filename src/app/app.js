@@ -19,6 +19,7 @@ angular.module('HABmin', [
     'HABmin.restModel',
     'HABmin.sitemapModel',
     'HABmin.bindingModel',
+    'HABmin.dashboardModel',
     'HABmin.inboxModel',
     'HABmin.dashboard',
     'HABmin.scheduler',
@@ -160,7 +161,7 @@ angular.module('HABmin', [
     ])
 
     .controller('HABminCtrl',
-    function HABminCtrl($scope, $location, $window, $timeout, $interval, $rootScope, locale, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, InboxModel, SidepanelService, RestService) {
+    function HABminCtrl($scope, $location, $window, $timeout, $interval, $rootScope, locale, DashboardModel, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, InboxModel, SidepanelService, RestService) {
         $scope.isLoggedIn = UserService.isLoggedIn;
 
         // List of current themes
@@ -227,6 +228,16 @@ angular.module('HABmin', [
                         function (reason) {
                             // Handle failure
                             growl.warning(locale.getString('habmin.mainErrorLoadingInbox'));
+                        }
+                    );
+
+                    DashboardModel.getList().then(
+                        function (data) {
+                            $scope.dashboards = data;
+                        },
+                        function (reason) {
+                            // Handle failure
+                            growl.warning(locale.getString('habmin.mainErrorLoadingDashboards'));
                         }
                     );
 

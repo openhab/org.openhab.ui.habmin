@@ -13,7 +13,7 @@ angular.module('HABmin.dashboardModel', [
 ])
 
     .service('DashboardModel', function ($http, $q, UserService, RestService) {
-        var svcName = "habmin/dashboard";
+        var svcName = "habmin/dashboards";
         var dashboardList = [];
 
         this.getList = function () {
@@ -22,6 +22,11 @@ angular.module('HABmin.dashboardModel', [
 
             RestService.getService(svcName).then(
                 function (url) {
+                    if (url == null) {
+                        deferred.resolve(false);
+                        return;
+                    }
+
                     $http.get(url)
                         .success(function (data) {
                             console.log("Fetch completed in", new Date().getTime() - tStart);
@@ -29,11 +34,9 @@ angular.module('HABmin.dashboardModel', [
                             // Keep a local copy.
                             // This allows us to update the data later and keeps the GUI in sync.
                             if(data.entries) {
-                                dashboardList = data.entries;
+                                data = data.entries;
                             }
-                            else {
-                                dashboardList = data.chart;
-                            }
+                            dashboardList = [].concat(data);
                             console.log("Processing completed in", new Date().getTime() - tStart);
 
                             deferred.resolve(dashboardList);
@@ -57,12 +60,28 @@ angular.module('HABmin.dashboardModel', [
 
             RestService.getService(svcName).then(
                 function (url) {
+                    if (url == null) {
+                        deferred.resolve(false);
+                        return;
+                    }
+
                     $http.get(url + "/" + id)
                         .success(function (data) {
                             console.log("Fetch completed in", new Date().getTime() - tStart);
 
                             console.log("Store completed in", new Date().getTime() - tStart);
 
+                            // Make sure widgets is an array
+                            data.widgets = [].concat(data.widgets);
+
+                            // Handle the correct types.
+                            // Especially important for gridster
+                            angular.forEach(data.widgets, function(widget) {
+                                widget.row = Number(widget.row);
+                                widget.col = Number(widget.col);
+                                widget.sizeX = Number(widget.sizeX);
+                                widget.sizeY = Number(widget.sizeY);
+                            });
                             deferred.resolve(data);
                         })
                         .error(function (data, status) {
@@ -79,12 +98,17 @@ angular.module('HABmin.dashboardModel', [
         };
 
 
-        this.putDashboard = function (dashboard) {
+        this.saveDashboard = function (dashboard) {
             var tStart = new Date().getTime();
             var deferred = $q.defer();
 
             RestService.getService(svcName).then(
                 function (url) {
+                    if (url == null) {
+                        deferred.resolve(false);
+                        return;
+                    }
+
                     if (dashboard.id !== undefined && Number(dashboard.id) > 0) {
                         // This is an existing dashboard - use PUT
                         $http.put(url + "/" + dashboard.id, dashboard)
@@ -98,7 +122,9 @@ angular.module('HABmin.dashboardModel', [
                                     }
                                 });
 
-                                deferred.resolve(data);
+                                // Make sure widgets is an array
+                                data.widgets = [].concat(data.widgets);
+                                deferred.resolve(data.id);
                             })
                             .error(function (data, status) {
                                 deferred.reject(data);
@@ -115,7 +141,7 @@ angular.module('HABmin.dashboardModel', [
                                 deferred.resolve(data);
                             })
                             .error(function (data, status) {
-                                deferred.reject(data);
+                                deferred.reject(data.id);
                             });
                     }
 
@@ -135,6 +161,11 @@ angular.module('HABmin.dashboardModel', [
 
             RestService.getService(svcName).then(
                 function (url) {
+                    if (url == null) {
+                        deferred.resolve(false);
+                        return;
+                    }
+
                     if (id !== undefined && Number(id) > 0) {
                         $http['delete'](url + "/" + id)
                             .success(function (data) {

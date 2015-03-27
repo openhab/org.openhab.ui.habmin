@@ -5,7 +5,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="shortcut icon" href="assets/favicon.ico" />
+    <link rel="shortcut icon" href="assets/favicon.ico"/>
 
 
     <% if(buildtype == 'cordova') { %>
@@ -25,21 +25,25 @@
         document.HABminVersionString = "<%= version %>";
         document.HABminVersionDate = "<%= grunt.template.today('yyyy-mm-dd\'T\'HH:MM:ss') %>";
 
-        <% if(buildtype == 'cordova') { %>
-        <!-- Handle application startup for Cordova -->
-        document.HABminCordova = true;
-        $(document).ready(function() {
-            document.addEventListener("deviceready", function onDeviceReady() {
+        <%
+        if (buildtype == 'cordova') { %>
+            <!-- Handle application startup for Cordova -->
+            document.HABminCordova = true;
+            $(document).ready(function () {
+                document.addEventListener("deviceready", function onDeviceReady() {
+                    angular.bootstrap(document, ['HABmin']);
+                }, true);
+            });
+        <%
+        } else { %>
+            <!-- Handle application startup within browser -->
+            document.HABminCordova = false;
+            $(document).ready(function () {
                 angular.bootstrap(document, ['HABmin']);
-            }, true);
-        });
-        <% } else { %>
-        <!-- Handle application startup within browser -->
-        document.HABminCordova = false;
-        $(document).ready(function() {
-            angular.bootstrap(document, ['HABmin']);
-        });
-        <% } %>
+            });
+        <%
+        }
+        %>
     </script>
 </head>
 <body>
@@ -55,7 +59,8 @@
                 <div class="panel-body">
                     <form name="form">
                         <!-- SERVER -->
-                        <div class="form-group" ng-show="showServer" ng-class="{'has-error': form.server.$invalid && submitted}">
+                        <div class="form-group" ng-show="showServer"
+                             ng-class="{'has-error': form.server.$invalid && submitted}">
                             <label for="server" class="control-label"><span i18n="habmin.loginServer"></span></label>
 
                             <div class="input-group">
@@ -92,7 +97,8 @@
 
                         <!-- PASSWORD -->
                         <div class="form-group" ng-class="{'has-error': form.password.$invalid && submitted}">
-                            <label for="password" class="control-label"><span i18n="habmin.loginPassword"></span></label>
+                            <label for="password" class="control-label"><span
+                                    i18n="habmin.loginPassword"></span></label>
 
                             <div class="input-group">
                                 <span class="input-group-addon"><span class="fa fa-lock"></span></span>
@@ -107,13 +113,16 @@
                                         required>
                             </div>
                         </div>
-                        <button type="submit" ng-click="submit()" class="btn btn-primary btn-block"><span i18n="habmin.loginSubmit"></span></button>
+                        <button type="submit" ng-click="submit()" class="btn btn-primary btn-block"><span
+                                i18n="habmin.loginSubmit"></span></button>
                     </form>
                 </div>
                 <div class="panel-footer">
-                    <div class="text-center"><small>
-                        <span i18n="habmin.loginVersion"></span>&nbsp;<span>{{HABminVersion}}</span>,&nbsp;<span>{{HABminDate}}</span>
-                    </small></div>
+                    <div class="text-center">
+                        <small>
+                            <span i18n="habmin.loginVersion"></span>&nbsp;<span>{{HABminVersion}}</span>,&nbsp;<span>{{HABminDate}}</span>
+                        </small>
+                    </div>
                 </div>
             </div>
         </div>
@@ -127,6 +136,7 @@
                 <button type="button" class="navbar-toggle pull-left"
                         sidepanel-toggle="side,main" ng-show="sidepanelEnabled">
                     <span class="sr-only">Toggle panels</span>
+
                     <div class="nav-expand-bar">
                         <span class="icon-bar nav-expand-bar"></span>
                         <span class="icon-bar nav-expand-bar"></span>
@@ -163,8 +173,17 @@
                                     <span i18n="habmin.mainCharts"></span>
                                 </a>
                             </li>
+                            <li ng-if="dashboards" role="presentation" class="divider"></li>
+                            <li ng-repeat="dashboard in dashboards">
+                                <a ui-sref="dashboard({dashboardId:'{{dashboard.id}}'})"
+                                   ui-sref-opts="{ reload: true }">
+                                    <habmin-icon class="" icon="{{dashboard.icon}}"></habmin-icon>
+                                    <span>{{dashboard.name}}</span>
+                                </a>
+                            </li>
                             <li role="presentation" class="divider"></li>
-                            <li ui-sref="dashboard">
+                            <li ui-sref="dashboard({dashboardId:''})"
+                                ui-sref-opts="{ reload: true }">
                                 <a>
                                     <span class="fa fa-fw fa-th"></span>
                                     <span i18n="habmin.mainDashboardNew"></span>
@@ -197,6 +216,12 @@
                                 <a>
                                     <span class="fa fa-fw fa-clock-o"></span>
                                     <span i18n="habmin.mainScheduler"></span>
+                                </a>
+                            </li>
+                            <li ui-sref="scheduler" ng-disabled="true">
+                                <a>
+                                    <span class="fa fa-fw fa-at"></span>
+                                    <span i18n="habmin.mainNotifications"></span>
                                 </a>
                             </li>
                         </ul>
@@ -254,11 +279,11 @@
                                 </a>
                             </li>
                             <li>
-                            <a ui-sref="rules">
-                                <span class="fa fa-fw fa-wifi"></span>
-                                <span i181n="habmin.mainZWave">Items</span>
-                            </a>
-                        </li>
+                                <a ui-sref="rules">
+                                    <span class="fa fa-fw fa-wifi"></span>
+                                    <span i181n="habmin.mainZWave">Items</span>
+                                </a>
+                            </li>
                             <li role="presentation" class="divider"></li>
                             <li ng-repeat="choice in bindings" ng-class="{'disabled': choice.disabled}">
                                 <a ui-sref="binding/zwave" ui-sref="choice.link">

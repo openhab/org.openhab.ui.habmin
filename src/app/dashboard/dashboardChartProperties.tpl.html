@@ -13,7 +13,7 @@
         <div>
             <select class="form-control" id="inputServices"
                     ng-model="widget.options.serviceId"
-                    ng-options="service.name for service in services">
+                    ng-options="service.name as service.name for service in services">
             </select>
         </div>
     </div>

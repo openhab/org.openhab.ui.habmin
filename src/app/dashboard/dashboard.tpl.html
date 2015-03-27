@@ -1,37 +1,49 @@
-<div class="btn-group btn-group-sm" role="group" ng-if="editMode" class="page-header">
-    <button class="btn btn-sm btn-primary" ng-click="saveDashboard()"><i class="fa fa-save"></i> <span
-            i18n="common.save"></span></button>
-    <button class="btn btn-sm btn-primary" ng-click="endEdit()"><i class="fa fa-check-square"></i> <span
-            i18n="habmin.dashboardEndEdit"></span></button>
-    <div class="dashboard-toolbar btn-group dropdown">
-        <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
-            <span class="fa fa-plus-square-o"></span> <span i18n="habmin.dashboardAddWidget"></span>
-            <span class="caret"></span>
-            <span class="sr-only">Dropdown</span>
-        </button>
-        <ul class="dropdown-menu" role="menu">
-            <li>
-                <a ng-click="addWidget('Chart')">
-                    <span class="fa fa-fw fa-area-chart"></span>
-                    <span i18n="habmin.dashboardAddChart"></span>
-                </a>
-            </li>
-            <li>
-                <a ng-click="addWidget('Gauge')">
-                    <span class="fa fa-fw fa-dashboard"></span>
-                    <span i18n="habmin.dashboardAddGauge"></span>
-                </a>
-            </li>
-        </ul>
+<div ng-if="editMode" class="page-header">
+    <div class="btn-group btn-group-sm" role="group">
+        <button class="btn btn-sm btn-primary" ng-click="dashboardProperties()"><i class="fa fa-bookmark-o"></i> <span
+                i18n="common.properties"></span></button>
+        <div class="dashboard-toolbar btn-group dropdown">
+            <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
+                <span class="fa fa-plus-square-o"></span> <span i18n="habmin.dashboardAddWidget"></span>
+                <span class="caret"></span>
+                <span class="sr-only">Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li>
+                    <a ng-click="addWidget('Chart')">
+                        <span class="fa fa-fw fa-area-chart"></span>
+                        <span i18n="habmin.dashboardAddChart"></span>
+                    </a>
+                </li>
+                <li>
+                    <a ng-click="addWidget('Gauge')">
+                        <span class="fa fa-fw fa-dashboard"></span>
+                        <span i18n="habmin.dashboardAddGauge"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
-    <button class="btn btn-sm btn-warning" ng-confirm-click="clearDashboard()"
-            i18n-attr="{'ngConfirmMessage': 'habmin.dashboardClearText','ngConfirmTitle': 'habmin.dashboardClearTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}">
-        <i class="fa fa-file-o"></i> <span i18n="common.clear"></span>
-    </button>
-    <button class="btn btn-sm btn-warning" ng-confirm-click="deleteDashboard()"
-            i18n-attr="{'ngConfirmMessage': 'habmin.dashboardDeleteText','ngConfirmTitle': 'habmin.dashboardDeleteTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}">
-        <i class="fa fa-trash-o"></i> <span i18n="common.delete"></span>
-    </button>
+
+    <div class="btn-group btn-group-sm pull-right" role="group">
+        <button class="btn btn-sm btn-primary" ng-click="saveDashboard()"
+                ng-disabled="isDirty==false">
+            <span class="fa fa-save"></span> <span i18n="common.save"></span>
+        </button>
+        <button class="btn btn-sm btn-primary" ng-click="endEdit()">
+            <span class="fa fa-check-square"></span> <span i18n="common.close"></span>
+        </button>
+        <button class="btn btn-sm btn-warning" ng-confirm-click="clearDashboard()"
+                ng-disabled="dashboard.widgets.length==0"
+                i18n-attr="{'ngConfirmMessage': 'habmin.dashboardClearText','ngConfirmTitle': 'habmin.dashboardClearTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}">
+            <span class="fa fa-file-o"></span> <span i18n="common.clear"></span>
+        </button>
+        <button class="btn btn-sm btn-warning" ng-confirm-click="deleteDashboard()"
+                ng-disabled="dashboard.id==0"
+                i18n-attr="{'ngConfirmMessage': 'habmin.dashboardDeleteText','ngConfirmTitle': 'habmin.dashboardDeleteTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}">
+            <span class="fa fa-trash-o"></span> <span i18n="common.delete"></span>
+        </button>
+    </div>
 </div>
 
 <div gridster="gridsterOptions">

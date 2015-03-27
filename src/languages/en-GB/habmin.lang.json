@@ -12,6 +12,7 @@
   "mainDiscovery": "Thing Discovery",
   "mainSitemaps": "Sitemaps",
   "mainAutomation": "Automation",
+  "mainNotifications": "Notifications",
   "mainNoSitemaps": "No Sitemaps Available",
   "mainNewSitemap": "Create New Sitemap",
   "mainConfiguration": "Configuration",
@@ -20,17 +21,16 @@
   "mainChartPreferences": "Chart Defaults",
   "mainGeneralPreferences": "General Settings",
   "mainErrorLoadingSitemaps": "Error loading sitemap list!",
+  "mainErrorLoadingDashboards": "Error loading dashboard list!",
   "mainErrorLoadingInbox": "Error loading inbox!",
   "mainErrorGettingBindings": "Error loading list of bindings!",
   "mainOpenHABOffline": "OpenHAB is offline!",
-
   "loginFormTitle": "Login Required",
   "loginVersion": "HABmin version",
   "loginServer": "Server",
   "loginUser": "Username",
   "loginPassword": "Password",
   "loginSubmit": "Login",
-
   "chartItemList": "Items",
   "chartChartList": "Charts",
   "chartNoItems": "No Items To Chart",
@@ -89,11 +89,11 @@
   "chartSaveLegend": "Display Legend",
   "chartSaveSuccess": "Chart <i>{chartName}</i> saved successfully.",
   "chartSaveError": "Error saving chart <i>{chartName}</i>:<BR><b><i>{error}</i></b>.",
-
   "dashboardAddWidget": "Add Widget",
   "dashboardAddChart": "Chart",
   "dashboardAddGauge": "Gauge",
-  "dashboardEndEdit": "End Edit",
+  "dashboardDeleteTitle": "Delete Dashboard",
+  "dashboardDeleteText": "Are you sure you want to delete this dashboard? It will not be possible to restore!",
   "dashboardClearTitle": "Clear Dashboard",
   "dashboardClearText": "Are you sure you want to remove all widgets from the dashboard?",
   "dashboardWidgetEditTitle": "Edit Widget Properties",
@@ -114,7 +114,12 @@
   "dashboardGaugeScaleAngle": "Scale Angle",
   "dashboardGaugeMinimum": "Minimum Value",
   "dashboardGaugeMaximum": "Maximum Value",
-
+  "dashboardSaveOk": "Dashboard <b><i>{name}</i></b> saved successfully",
+  "dashboardSaveError": "Error saving dashboard <b><i>{name}</i></b>",
+  "dashboardDeleteOk": "Dashboard <b><i>{name}</i></b> deleted successfully",
+  "dashboardDeleteError": "Error deleting dashboard <b><i>{name}</i></b>",
+  "dashboardPropertiesTitle": "Dashboard Properties",
+  "dashboardPropertiesName": "Name",
   "thingNew": "New",
   "thingIgnored": "Ignored",
   "thingOnline": "Online",
@@ -133,7 +138,6 @@
   "thingChannelEnabledError": "Error enabling channel <b><i>{thing}</i></b> on  <b><i>{channel}</i></b>",
   "thingChannelDisabledOk": "Channel <b><i>{thing}</i></b> on  <b><i>{channel}</i></b> disabled successfully",
   "thingChannelDisabledError": "Error disabling channel <b><i>{thing}</i></b> on  <b><i>{channel}</i></b>",
-
   "discoveryStartOk": "Discovery started for binding <b><i>{name}</i></b>",
   "discoveryStartFail": "Discovery failed for binding <b><i>{name}</i></b>",
   "discoveryIgnoreFail": "Failed to ignore <b><i>{name}</i></b>",
@@ -142,7 +146,6 @@
   "discoveryIgnoreConfirmMsg": "Are you sure you want to ignore the thing in the inbox?",
   "discoveryIgnoreConfirmTitle": "Ignore Thing In Inbox",
   "discoveryNewThing": "New thing discovered <b><i>{name}</i></b>.",
-
   "errorLoadingSitemaps": "Error loading the sitemap list!",
   "period1Second": "1 Second",
   "period5Seconds": "5 Seconds",
@@ -179,7 +182,6 @@
   "period6Months": "6 Months",
   "period9Months": "9 Months",
   "period1Year": "1 Year",
-
   "ruleRule": "Rule",
   "ruleSource": "Source",
   "ruleValue": "Value",
@@ -191,15 +193,12 @@
   "ruleDeleteRuleCheck": "Are you sure you want to delete rule '{{selectedRule.name}}'?",
   "ruleUnsavedChangesTitle": "Warning: Unsaved Changes",
   "ruleUnsavedChangesCheck": "There are unsaved changes in rule '{rulename}'. Are you sure you wish to continue - if you click Yes your changes will be lost!",
-
   "userChartPrefTitle": "Chart Settings",
   "userChartPeriod": "Chart Period",
   "userChartLegend": "Show Legend",
   "userGeneralPrefTitle": "General Settings",
-
   "userName": "Name",
   "userTheme": "Theme",
   "userLanguage": "Language",
-
   "ruleNoDevices": "No Devices"
 }
