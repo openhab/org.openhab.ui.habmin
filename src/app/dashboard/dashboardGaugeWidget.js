@@ -13,7 +13,7 @@ angular.module('dashboardGaugeWidget', [
     'HABmin.itemModel',
     'HABmin.persistenceModel'
 ])
-    .directive('dashboardGauge', function () {
+    .directive('dashboardGauge', function (ItemModel) {
         return {
             restrict: 'E',
             template: '<ng-dial-gauge options="options" ng-model="value" ' +
@@ -23,11 +23,25 @@ angular.module('dashboardGaugeWidget', [
             },
             link: function ($scope) {
 //                $scope.borderWidth = $scope.options.borderWidth;
-                $scope.value = 56;
-                $scope.$watch("options", function(newOptions) {
+                $scope.$watch("options", function (newOptions) {
 //                    $scope.value++;
 //                    $scope.options = {borderWidth:4};
 //                    $scope.borderWidth = $scope.options.borderWidth;
+                });
+            },
+            controller: function ($scope) {
+                // First poll the current value
+                ItemModel.getItem($scope.options.itemId).then(
+                    function (item) {
+                        $scope.value = item.state;
+                    }
+                );
+
+                // and then watch for changes
+                $scope.$on('openhab:smarthome/update', function (event) {
+                    if (event == null) {
+                        $scope.value = 0;
+                    }
                 });
             }
         };

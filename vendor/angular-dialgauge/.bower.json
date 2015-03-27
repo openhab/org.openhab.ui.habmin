@@ -27,6 +27,6 @@
     "commit": "9243211bd5db0622ae6e6687c7f863895ac3023b"
   },
   "_source": "git://github.com/cdjackson/angular-dialgauge.git",
-  "_target": "~0.1.2",
+  "_target": "~0.1.4",
   "_originalSource": "angular-dialgauge"
 }

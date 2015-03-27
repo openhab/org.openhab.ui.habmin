@@ -83,4 +83,28 @@ angular.module('HABmin.itemModel', [
             );
             return deferred.promise;
         };
+
+        this.getItem = function (itemName) {
+            var tStart = new Date().getTime();
+            var deferred = $q.defer();
+
+            RestService.getService(svcName).then(
+                function (url) {
+                    $http.get(url + "/" + itemName)
+                        .success(function (data) {
+                            console.log("Fetch completed in", new Date().getTime() - tStart);
+
+                            deferred.resolve(data);
+                        })
+                        .error(function (data, status) {
+                            deferred.reject(data);
+                        });
+                },
+                function () {
+                    deferred.reject(null);
+                }
+            );
+            return deferred.promise;
+        };
+
     });

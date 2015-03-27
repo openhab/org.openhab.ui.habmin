@@ -103,6 +103,7 @@
   "dashboardChartName": "Chart Name",
   "dashboardChartService": "Persistence Service",
   "dashboardGaugeLabel": "Label",
+  "dashboardGaugeUnits": "Units",
   "dashboardGaugeItem": "Item",
   "dashboardGaugeBarWidth": "Bar Width",
   "dashboardGaugeBorderWidth": "Border Width",
