@@ -268,7 +268,12 @@ angular.module('HABmin.chart', [
             graph2d = graphRef;
             graph2d.setWindow($scope.startTime, $scope.stopTime);
             if ($scope.selectedChart != null) {
-                $scope.selectedChart.selected = "yes";
+                if(graphRef == null) {
+                    $scope.selectedChart.selected = null;
+                }
+                else {
+                    $scope.selectedChart.selected = "yes";
+                }
             }
         };
 
