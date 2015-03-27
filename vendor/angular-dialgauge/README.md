@@ -32,6 +32,7 @@ dialWidth           |
 borderWidth         | Sets the width of the border
 borderOffset        | Sets the number of pixels between the border and the scale
 borderColor         | Sets the border color used to create a circle around the outside of the gauge
+title               | Sets the title string
 units               | Sets the text to be used for the units
 
 

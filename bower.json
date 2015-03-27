@@ -25,7 +25,7 @@
     "angular-ui-calendar": "latest",
     "weather-icons": "latest",
     "jquery-ui": "~1.11.1",
-    "angular-dialgauge": "~0.1.2",
+    "angular-dialgauge": "~0.1.4",
     "tinycolor": "latest",
     "vis": "latest",
     "angular-http-auth": "~1.2.1",

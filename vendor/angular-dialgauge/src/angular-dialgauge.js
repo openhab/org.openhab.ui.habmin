@@ -41,7 +41,7 @@ angular.module('angular-dialgauge', [
                 options: '=?'
             },
             template: '' +
-            '<div style="width:100%" ng-bind-html="gauge"</div>',
+            '<div style="width:100%;height:100%;" ng-bind-html="gauge"</div>',
             //         link: function ($scope, $element, $state) {
             controller: function ($scope, $element) {
                 // Define variables for this gauge
@@ -151,7 +151,8 @@ angular.module('angular-dialgauge', [
                     'borderWidth',
                     'borderOffset',
                     'borderColor',
-                    'units'
+                    'units',
+                    'title'
                 ], function () {
                     parseParameters($scope);
 
@@ -421,7 +422,8 @@ angular.module('angular-dialgauge', [
                     path += '</text>';
 
                     $scope.gauge =
-                        $sce.trustAsHtml('<svg width="' + width + 'pt" height="' + height + 'pt">' + staticPath + path +
+//                        $sce.trustAsHtml('<svg width="' + width + 'pt" height="' + height + 'pt">' + staticPath + path +
+                        $sce.trustAsHtml('<svg width="100%" height="100%">' + staticPath + path +
                         '</svg>');
                 }
 
