@@ -79,6 +79,11 @@ Editing rules (text editor)...
 ![rules-source](https://github.com/cdjackson/HABmin2/wiki/screenshots/rules-source.png)
 
 
+Dashboard view (Paper theme, French localisation)...
+
+![dashboard](https://github.com/cdjackson/HABmin2/wiki/screenshots/dashboard.png)
+
+
 ZWave device configuration...
 
 ![zwave-config](https://github.com/cdjackson/HABmin2/wiki/screenshots/zwave-config.png)
