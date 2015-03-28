@@ -4,7 +4,7 @@
     <div class="panel panel-default">
         <!-- Header -->
         <div class="panel-heading">
-            <!-- List filter -->
+            <!-- FILTER BUTTON -->
             <div class="btn-group dropdown">
                 <button type="button" class="btn btn-default dropdown-toggle" ng-disabledx="logState!='loaded'"
                         ng-init="filterOpen=false" ng-click="filterOpen=!filterOpen">
@@ -25,11 +25,30 @@
                         <span i18n="habmin.thingOffline"></span>
                     </a></li>
                     <li role="presentation" class="divider"></li>
-                    <li ng-repeat="choice in bindings" ng-class="{'disabled': choice.disabled}">
+                    <li ng-repeat="binding in bindings" ng-class="{'disabled': binding.disabled}">
                         <a>
                             <span class="fa-fw fa fa-check-square-o"></span>
-                            <habmin-icon class="fa-fw" icon="{{choice.icon}}"></habmin-icon>
-                            <span>{{choice.name}}</span>
+                            <habmin-icon class="fa fa-fw" icon="{{binding.icon}}"></habmin-icon>
+                            <span>{{binding.name}}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- ADD BUTTON -->
+            <div class="btn-group dropdown pull-right">
+                <button type="button" class="btn btn-default dropdown-toggle" ng-disabledx="logState!='loaded'"
+                        ng-init="filterOpen=false" ng-click="filterOpen=!filterOpen">
+                    <span class="fa fa-plus-circle"></span>
+                    <span i18n="common.add"></span>
+                    <span class="caret"></span>
+                    <span class="sr-only">Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li ng-repeat="binding in bindings" ng-class="{'disabled': binding.disabled}">
+                        <a ng-click="newThing(binding)">
+                            <habmin-icon class="fa fa-fw" icon="{{binding.icon}}"></habmin-icon>
+                            <span>{{binding.name}}</span>
                         </a>
                     </li>
                 </ul>
@@ -38,7 +57,8 @@
 
         <!-- Body -->
         <div class="list-group habmin-list" resize-panel>
-            <div ng-if="thingCnt!=-1" ng-repeat="thing in things | filter:filterFunction">
+            <!-- THING LIST -->
+            <div ng-if="thingCnt!=-1 && insertMode==false" ng-repeat="thing in things | filter:filterFunction">
                 <a role="presentation" ng-class="{'list-group-item':true, 'active': thing.UID==thingSelected.UID}"
                    ng-click="selectThing(thing)" sidepanel-click="main">
                     <table style="background-color: transparent">
@@ -55,6 +75,25 @@
                         </tr>
                         <tr>
                             <td class="text-muted small">{{thing.UID}}</td>
+                        </tr>
+                    </table>
+                </a>
+            </div>
+
+            <!-- NEW THING LIST -->
+            <div ng-if="insertMode==true" ng-repeat="thing in newThings">
+                <a role="presentation" ng-class="{'list-group-item':true, 'active': thing.UID==thingSelected.UID}"
+                   ng-click="selectNewThing(thing)" sidepanel-click="main">
+                    <table style="background-color: transparent">
+                        <tr>
+                            <td class="text-large" rowspan="2">
+                            </td>
+                            <td>
+                                <span>{{thing.label}}&nbsp;</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted small">{{thing.description}}</td>
                         </tr>
                     </table>
                 </a>
@@ -166,7 +205,7 @@
                                    ng-dirty ng-required="{{config.required}}"
                                    id="CONFIGLABEL{{$index+1}}"
                                    ng-model="thingSelected.configuration[config.name]">
-                            <span class="help-block">{{config.description}}</span>
+                            <span class="help-block"><span class="text-muted">{{config.description}}</span></span>
                             <!--
                                                     <span class="fa fa-check form-control-feedback" aria-hidden="true"></span>
                                                     <span id="CONFIGLABEL{{$index+1}}STATUS" class="sr-only">(error)</span>
@@ -175,13 +214,13 @@
                     </div>
                 </div>
 
-
                 <!-- CHANNELS -->
                 <div>
                     <a role="presentation" ng-class="{'list-group-item':true, 'active': panelDisplayed=='CHANNELS'}"
-                       ng-click="panelDisplayed='CHANNELS'">
+                       ng-click="panelDisplayed='CHANNELS'"
+                       ng-disabled="thingType.channels==null || thingType.channels.length==0">
                         <span class="fa fa-fw fa-navicon"></span>
-                        <span i18n="habmin.thingChannels"></span>
+                        <span i18n="habmin.thingChannels"></span> xx={{thingType.channels.length}}
                     </a>
                 </div>
                 <div collapse="panelDisplayed!='CHANNELS'"
