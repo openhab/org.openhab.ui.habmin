@@ -20,7 +20,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
     grunt.loadNpmTasks('grunt-bootlint');
     grunt.loadNpmTasks('grunt-contrib-compress');
-    grunt.loadNpmTasks('grunt-run-java');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-shell');
 
@@ -98,7 +97,8 @@ module.exports = function (grunt) {
                 '<%= build_dir %>',
                 '<%= compile_dir %>',
                 '<%= cordova_dir %>/www',
-                '<%= output_dir %>'
+                '<%= output_dir %>',
+                '<%= bundle_dir %>'
             ],
             css: {
                 src: '<%= compile_dir %>/assets/<%= pkg.name %>-*-<%= pkg.version %>.css'
@@ -222,6 +222,16 @@ module.exports = function (grunt) {
                         src: ['<%= cordova_dir %>/platforms/android/ant-build/CordovaApp-debug.apk'],
                         dest: '<%= output_dir %>/<%= pkg.name %>-<%= pkg.version %>.apk',
                         cwd: '.'
+                    }
+                ]
+            },
+            jar_debug: {
+                files: [
+                    {
+                        src: ['**'],
+                        dest: '<%= bundle_dir %>',
+                        cwd: '<%= build_dir %>',
+                        expand: true
                     }
                 ]
             }
@@ -617,36 +627,6 @@ module.exports = function (grunt) {
         },
 
         /**
-         * Run java
-         */
-        run_java: {
-            options: {
-                // Task-specific options go here.
-            },
-            your_target: {
-                // Target-specific details go here.
-                execOptions:{
-                    cwd: "/your/current/working/directory/"
-                },
-                command: "",      //java ,javac, jarsigner, jar
-                jarName: "",      //used for java, jar and jarsigner
-                className: "",    //used for java
-                javaArgs : "",    //used for java
-                sourceFiles: [""],//used for javac
-                javaOptions: {    //used for java and javac
-                    "classpath": [""]
-                }
-            },
-            manifestName: "", //used for jar
-            dir: "",          //used for jar
-            files: "",        //used for jar
-            jarOptions : {    //used for jar and jarsigner
-                "keystore": ""
-            },
-            alias: ""         //used for jarsigner
-        },
-
-        /**
          * Minify the index html file
          */
         htmlmin: {
@@ -762,7 +742,7 @@ module.exports = function (grunt) {
     grunt.registerTask('build', [
         'clean:init', 'html2js',
         'copy:build_vendorcss', 'copy:build_app_assets', 'copy:build_app_languages', 'copy:build_vendor_assets',
-        'copy:build_appjs', 'copy:build_vendorjs', 'themes_build', 'index:build'
+        'copy:build_appjs', 'copy:build_vendorjs', 'themes_build', 'index:build', 'copy:jar_debug'
     ]);
 
     /**
