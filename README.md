@@ -158,6 +158,18 @@ defined in the ```localeFallbacks``` array.
     })
 ```
 
+## OpenHAB-2 Bundle
+The HABmin JAR for OpenHAB-2 is included in this repository.
+
+To develop HABmin in Eclipse as part of the OpenHAB-2 development environment, you need to import the project
+into your OpenHAB-2 environment using the ```File | Import``` menu, then selecting ```Existing Projects into Workspace```.
+Select the ```HABmin2/openhab2``` folder and in the ```Projects``` list you should see a single project listed (if you see
+two, then you've probably selectd the HABmin2 root folder, and it will then pick up the Android development environment
+as well - you don't want this!). Click ```Finish``` and the project should be imported.
+
+Note that git will not consider HABmin as part of openHAB, so when you commit changes, it won't commit anything
+to HABmin. You need to commit HABmin changes separately into your HABmin2 repository.
+
 
 ## Commit Messages
 I am using the conventional changelog, and this requires that commit messages be in a certain format for them to be used to generate the change log.
