@@ -5,5 +5,7 @@ cordova/platforms
 cordova/www
 bin/
 build/
+openhab2/org.openhab.ui.habmin/web
+openhab2/org.openhab.ui.habmin/target
 .idea/
 
