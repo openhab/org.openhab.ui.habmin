@@ -201,7 +201,7 @@ angular.module('HABmin.userModel', [
 
     .controller('LoginController', function ($scope, $http, $base64, authService, UserService) {
         $scope.user = localStorage.getItem('Auth-user');
-        if ($scope.user == null) {
+        if ($scope.user == null || $scope.user == 'null') {
             $scope.user = "";
         }
         $scope.period = localStorage.getItem('Auth-period');
@@ -224,9 +224,15 @@ angular.module('HABmin.userModel', [
 
             UserService.setServer($scope.server);
 
+            if($scope.user == null || $scope.user == 'null') {
+                $scope.user = "";
+            }
+            if($scope.password == null || $scope.password == 'null') {
+                $scope.password = "";
+            }
+
             var pass = "";
-            if ($scope.user == null || $scope.user.length === 0 ||
-                $scope.password == null || $scope.password.length === 0) {
+            if ($scope.user == "" || $scope.password == "") {
                 // No authentication used
                 $http.defaults.headers.common['Authorization'] = null;
             }
@@ -236,7 +242,7 @@ angular.module('HABmin.userModel', [
                 $http.defaults.headers.common['Authorization'] = 'Basic ' + pass;
             }
 
-            console.log("Login credentials: ", $scope.password, $scope.user, pass);
+            console.log("Login credentials: ", $scope.password, $scope.user, pass)
             localStorage.setItem('Auth-user', $scope.user);
             localStorage.setItem('Auth-pass', pass);
             localStorage.setItem('Auth-time', $scope.period * 1000 + new Date().getTime());

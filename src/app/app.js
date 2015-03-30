@@ -55,7 +55,7 @@ angular.module('HABmin', [
     .value('localeSupported', {
         'en-GB': "English (United Kingdom)",
         'de-DE': "Deutsch (Deutschland)",
-        'fr-FR': decodeURIComponent(escape("Français (France)"))
+        'fr-FR': "Francais (France)"
     })
     .value('localeFallbacks', {
         'en': 'en-GB',
