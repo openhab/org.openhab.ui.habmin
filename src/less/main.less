@@ -90,13 +90,13 @@
    * Typography
    */
 
-  @font-face {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 400;
-    src: local('Roboto Regular'), local('Roboto-Regular'), url(fonts/Roboto-Regular.woff) format('woff');
-  }
-
+//  @font-face {
+//    font-family: 'Roboto';
+//    font-style: normal;
+//    font-weight: 400;
+//    src: local('Roboto Regular'), local('Roboto-Regular'), url(fonts/Roboto-Regular.woff) format('woff');
+//  }
+/*
   code, pre, .pre {
     padding: 5px;
     margin: 10px 0;
@@ -121,7 +121,7 @@
 
   .text-large {
     font-size: @font-size-base * 2;
-  }
+  }*/
 
   /**
    * For smaller screens, reduce the padding on the side of the screen
@@ -703,7 +703,8 @@
 
   // Gauge stype
   .dialgauge-title {
-    font-family: 'Roboto';
+    letter-spacing: 1px;
+    font-family: @font-family-base;
     font-style: normal;
     font-size:@font-size-small;
     font-weight:100;
@@ -712,7 +713,8 @@
   }
 
   .dialgauge-value {
-    font-family: 'Roboto';
+    font-family: @font-family-base;
+    letter-spacing: 1px;
     font-style: normal;
     font-size:@font-size-base;
     font-weight:100;
@@ -721,7 +723,8 @@
   }
 
   .dialgauge-unit {
-    font-family: 'Roboto';
+    font-family: @font-family-base;
+    letter-spacing: 1px;
     font-style: normal;
     font-size:@font-size-small;
     font-weight:100;
