@@ -37,6 +37,14 @@
                         <span class="fa fa-fw fa-copy fa-fw"></span>
                         <span i18n="zwave.zwaveNetworkReplicate"></span>
                     </a></li>
+                    <li role="presentation" class="divider"></li>
+                    <li><a ng-confirm-click="zwaveAction('binding/network', 'HardReset')"
+                           ng-confirm-icon="danger"
+                           i18n-attr="{'ngConfirmMessage': 'zwave.zwaveHardResetConfirmMessage','ngConfirmTitle': 'zwave.zwaveHardResetConfirmTitle','ngConfirmNoBtn': 'common.cancel', 'ngConfirmYesBtn': 'common.ok'}"
+                            >
+                        <span class="fa fa-fw fa-exclamation-triangle"></span>
+                        <span i18n="zwave.zwaveNetworkDefault"></span>
+                    </a></li>
                 </ul>
             </div>
         </div>
