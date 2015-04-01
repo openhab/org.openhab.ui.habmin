@@ -285,10 +285,10 @@ angular.module('HABmin.chart', [
             if ($scope.filter.text === "") {
                 return true;
             }
-            if (element.label == null) {
+            if (element.label == null || element.label.title == null) {
                 return false;
             }
-            return element.label.toLowerCase().indexOf($scope.filter.text.toLowerCase()) !== -1 ? true : false;
+            return element.label.title.toLowerCase().indexOf($scope.filter.text.toLowerCase()) !== -1 ? true : false;
         };
 
         $scope.setWindow = function (window) {
