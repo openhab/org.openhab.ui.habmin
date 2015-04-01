@@ -62,8 +62,10 @@ angular.module('ngConfirmClick', [
                         };
                     };
 
-                    newScope.alert = '<span class="text-large "></span>';
-
+                    if(icon) {
+                        newScope.alert = '<span class="text-large ' + icon + '"></span>';
+                    }
+                    
                     return $modal.open({
                         scope: newScope,
                         backdrop: 'static',
