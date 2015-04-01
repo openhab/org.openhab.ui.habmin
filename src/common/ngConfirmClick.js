@@ -8,9 +8,10 @@
  * (c) 2014-2015 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('ngConfirmClick', [
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'ngSanitize'
 ])
-    .directive('ngConfirmClick', function ($window, $modal, $rootScope, $timeout, $parse) {
+    .directive('ngConfirmClick', function ($window, $modal, $rootScope, $timeout, $parse, $sce) {
         return {
             restrict: 'A',
 
@@ -30,6 +31,24 @@ angular.module('ngConfirmClick', [
                     newScope.yesMsg = attrs.ngConfirmYesBtn || "Yes";
                     newScope.noMsg = attrs.ngConfirmNoBtn || "No";
 
+                    var icon = "";
+                    if(attrs.ngConfirmIcon != null) {
+                        switch (attrs.ngConfirmIcon.toLowerCase()) {
+                            case 'danger':
+                                icon = "text-danger fa fa-exclamation";
+                                break;
+                            case 'warning':
+                                icon = "text-warning fa fa-exclamation-triangle";
+                                break;
+                            case 'question':
+                                icon = "text-success fa fa-question";
+                                break;
+                            case 'info':
+                                icon = "text-info fa fa-info";
+                                break;
+                        }
+                    }
+
                     var controller = function ($scope, $modalInstance) {
                         $scope.ok = function (result) {
                             $modalInstance.close(result);
@@ -43,13 +62,19 @@ angular.module('ngConfirmClick', [
                         };
                     };
 
+                    newScope.alert = '<span class="text-large "></span>';
+
                     return $modal.open({
                         scope: newScope,
                         backdrop: 'static',
                         keyboard: true,
                         modalFade: true,
                         template: '<div class="modal-header"><h3 class="modal-title">{{titleMsg}}</h3></div>' +
-                        '<div class="modal-body">{{message}}</div>' +
+                        '<div class="modal-body">' +
+                        '<table><tr>' +
+                        '<td ng-if="alert" style="padding-right:10px;" ng-bind-html="alert"></td>' +
+                        '<td ng-bind-html="message"></td>' +
+                        '</table></div>' +
                         '<div class="modal-footer">' +
                         '<button class="btn btn-primary" ng-click="ok()">{{yesMsg}}</button>' +
                         '<button class="btn btn-warning" ng-click="cancel()">{{noMsg}}</button>' +
