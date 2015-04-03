@@ -38,7 +38,10 @@ Installation
 ============
 
 ### OpenHAB-2
-For openHAB-2, simply add the _org.openhab.ui.habmin_ JAR file to your addons folder. Then open your browser at http://openhab server/habmin/index.html.
+For openHAB-2, simply download the _org.openhab.ui.habmin_ JAR file from either the
+[releases folder](https://github.com/cdjackson/HABmin2/releases) or you can use the latest snapshot in the
+the [working folder](https://github.com/cdjackson/HABmin2/tree/master/output).
+Then open your browser at http://openhab server/habmin/index.html or follow the link from the OpenHAB dashboard.
 
 ### OpenHAB-1
 You need to install the [HABmin JAR](https://github.com/cdjackson/HABmin/blob/master/addons/org.openhab.io.habmin-1.7.0-SNAPSHOT.jar?raw=true) **AND** the [ZWave JAR](https://github.com/cdjackson/HABmin/blob/master/addons/org.openhab.binding.zwave-1.7.0-SNAPSHOT.jar?raw=true) from the [HABmin-1 repository](https://github.com/cdjackson/HABmin) and add them to your openHAB ```addons``` folder  (note that you can use any other recent zwave binding if you prefer). These files are needed no matter what installation you choose next - if you don't install these files, some things may work, but most won't (eg sitemaps might work, but charting etc won't). Note that the zwave binding is needed even if you don't have zwave installed - it won't do anything, but is needed to resolve some dependancies - this will be removed in openHAB2.  You also (currently) need to install HABmin version 1 since the HABmin JAR is using a few files in this repository (I know this is bad - I should remove this dependancy soon).
