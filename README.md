@@ -3,7 +3,7 @@ HABmin2
 
 HABmin version2 - ultimately targeted toward openHAB2.
 
-An **openHAB2** bundle is now available with initial support for charting and some OH2 features such
+An **OpenHAB2** bundle is now available with initial support for charting and some OH2 features such
 as listing the newly discovered devices. I hope to keep a single source base that supports as many
 OH1 and OH2 features as possible while OH2 is being developped.
 
