@@ -11,7 +11,8 @@ angular.module('dashboardGaugeWidget', [
     "angular-dialgauge",
     'angular-growl',
     'HABmin.itemModel',
-    'HABmin.persistenceModel'
+    'HABmin.persistenceModel',
+    'ui.select'
 ])
     .directive('dashboardGauge', function (ItemModel) {
         return {
