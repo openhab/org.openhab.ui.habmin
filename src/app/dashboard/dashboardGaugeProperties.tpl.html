@@ -2,7 +2,15 @@
     <div class="form-group">
         <label for="inputItem" class="control-label" i18n="habmin.dashboardGaugeItem"></label>
         <div>
-
+            <ui-select class="form-control" id="inputItem"
+                    ng-model="options.itemId"
+                    sortable="true"
+                    title="choose?">
+                    <ui-select-match placeholder="Select item...">{{$item}}</ui-select-match>
+                    <ui-select-choices repeat="item in items | filter:$select.search">
+                        {{item.label.title}}
+                    </ui-select-choices>
+            </ui-select>
         </div>
     </div>
     <div class="form-group">
