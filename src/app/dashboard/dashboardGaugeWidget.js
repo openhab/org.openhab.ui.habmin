@@ -55,6 +55,21 @@ angular.module('dashboardGaugeWidget', [
             },
             templateUrl: 'dashboard/dashboardGaugeProperties.tpl.html',
             link: function ($scope, $element, $state) {
+                if($scope.options.barWidth != null) {
+                    $scope.options.barWidth = Number($scope.options.barWidth);
+                }
+                if($scope.options.borderWidth != null) {
+                    $scope.options.borderWidth = Number($scope.options.borderWidth);
+                }
+                if($scope.options.angle != null) {
+                    $scope.options.angle = Number($scope.options.angle);
+                }
+                if($scope.options.rotate != null) {
+                    $scope.options.rotate = Number($scope.options.rotate);
+                }
+                if($scope.options.barAngle != null) {
+                    $scope.options.barAngle = Number($scope.options.barAngle);
+                }
                 $scope.removeNull = function (item) {
                     if (item == null || item.label == null || item.label.title == null ||
                         item.label.title.length == 0) {
