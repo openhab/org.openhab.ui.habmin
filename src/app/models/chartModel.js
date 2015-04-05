@@ -28,10 +28,7 @@ angular.module('HABmin.chartModel', [
 
                             // Keep a local copy.
                             // This allows us to update the data later and keeps the GUI in sync.
-                            if(data.entries) {
-                                chartList = data.entries;
-                            }
-                            else {
+                            if(data.chart != null) {
                                 chartList = data.chart;
                             }
                             console.log("Processing completed in", new Date().getTime() - tStart);

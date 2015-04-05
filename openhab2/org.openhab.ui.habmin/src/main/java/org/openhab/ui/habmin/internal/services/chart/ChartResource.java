@@ -15,6 +15,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
@@ -35,6 +37,7 @@ import org.eclipse.smarthome.core.items.ItemRegistry;
 import org.eclipse.smarthome.io.rest.RESTResource;
 import org.eclipse.smarthome.ui.items.ItemUIRegistry;
 import org.openhab.ui.habmin.HABminConstants;
+import org.openhab.ui.habmin.internal.services.dashboard.DashboardConfigBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -87,17 +90,17 @@ public class ChartResource implements RESTResource {
 
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response httpGetPersistenceCharts(@Context HttpHeaders headers,
+	public Response httpGetCharts(@Context HttpHeaders headers,
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
 		logger.trace("Received HTTP GET request at '{}'.", uriInfo.getPath());
 
-		Object responseObject = getPersistenceChartList();
+		Object responseObject = getChartList();
 		return Response.ok(responseObject).build();
 	}
 
 	@POST
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response httpPostPersistenceCharts(@Context HttpHeaders headers,
+	public Response httpPostCharts(@Context HttpHeaders headers,
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback, ChartConfigBean chart) {
 		logger.trace("Received HTTP POST request at '{}'.", uriInfo.getPath());
 
@@ -108,7 +111,7 @@ public class ChartResource implements RESTResource {
 	@PUT
 	@Path("/{chartid: [a-zA-Z_0-9]*}")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response httpPutPersistenceCharts(@Context HttpHeaders headers,
+	public Response httpPutCharts(@Context HttpHeaders headers,
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback,
 			@PathParam("chartid") Integer chartId, ChartConfigBean chart) {
 		logger.trace("Received HTTP PUT request at '{}'.", uriInfo.getPath());
@@ -120,7 +123,7 @@ public class ChartResource implements RESTResource {
 	@DELETE
 	@Path("/{chartid: [a-zA-Z_0-9]*}")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response httpDeletePersistenceCharts(@Context HttpHeaders headers, @QueryParam("type") String type,
+	public Response httpDeleteCharts(@Context HttpHeaders headers, @QueryParam("type") String type,
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback, @PathParam("chartid") Integer chartId) {
 		logger.trace("Received HTTP DELETE request at '{}'.", uriInfo.getPath());
 
@@ -131,7 +134,7 @@ public class ChartResource implements RESTResource {
 	@GET
 	@Path("/{chartid: [a-zA-Z_0-9]*}")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response httpGetPersistenceCharts(@Context HttpHeaders headers,
+	public Response httpGetCharts(@Context HttpHeaders headers,
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback, @PathParam("chartid") Integer chartId) {
 		logger.trace("Received HTTP GET request at '{}'.", uriInfo.getPath());
 
@@ -194,9 +197,10 @@ public class ChartResource implements RESTResource {
 		return bean;
 	}
 
-	private ChartListBean getPersistenceChartList() {
+	private List<ChartConfigBean> getChartList() {
 		ChartListBean charts = loadCharts();
-		ChartListBean newList = new ChartListBean();
+//		ChartListBean newList = new ChartListBean();
+		List<ChartConfigBean> list = new ArrayList<ChartConfigBean>();
 
 		// We only want to return the id and name
 		for (ChartConfigBean i : charts.entries) {
@@ -205,10 +209,10 @@ public class ChartResource implements RESTResource {
 			newChart.name = i.name;
 			newChart.icon = i.icon;
 
-			newList.entries.add(newChart);
+			list.add(newChart);
 		}
 
-		return newList;
+		return list;
 	}
 
 	private ChartConfigBean getChart(Integer chartRef) {
@@ -222,7 +226,7 @@ public class ChartResource implements RESTResource {
 		return null;
 	}
 
-	private ChartListBean deleteChart(Integer chartRef) {
+	private List<ChartConfigBean> deleteChart(Integer chartRef) {
 		ChartListBean charts = loadCharts();
 
 		ChartConfigBean foundChart = null;
@@ -241,7 +245,7 @@ public class ChartResource implements RESTResource {
 
 		saveCharts(charts);
 
-		return getPersistenceChartList();
+		return getChartList();
 	}
 
 	private boolean saveCharts(ChartListBean chart) {
