@@ -33,8 +33,8 @@ angular.module('HABmin.dashboardModel', [
 
                             // Keep a local copy.
                             // This allows us to update the data later and keeps the GUI in sync.
-                            if(data.entries) {
-                                data = data.entries;
+                            if(data.dashboard != null) {
+                                data = data.dashboard;
                             }
                             dashboardList = [].concat(data);
                             console.log("Processing completed in", new Date().getTime() - tStart);
