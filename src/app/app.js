@@ -30,6 +30,7 @@ angular.module('HABmin', [
     'UserGeneralPrefs',
     'ui.router',
     'ui.bootstrap',
+    'ui.select',
     'ngLocalize',
     'ngLocalize.Config',
     'ngLocalize.Events',
@@ -37,7 +38,6 @@ angular.module('HABmin', [
     'pickAColor',
     'angular-blockly',
     'Binding.zwave',
-    'angular-bootstrap-select',
     'SidepanelService',
     'ngAnimate',
     'ngTouch'
@@ -63,7 +63,7 @@ angular.module('HABmin', [
         'fr': 'fr-FR'
     })
 
-    .config(function myAppConfig($stateProvider, $urlRouterProvider, growlProvider, pickAColorProvider, ngBlocklyProvider) {
+    .config(function myAppConfig($stateProvider, $urlRouterProvider, growlProvider, pickAColorProvider, ngBlocklyProvider, uiSelectConfig) {
         $urlRouterProvider.otherwise('/home');
         growlProvider.globalTimeToLive({
             success: 2000,
@@ -77,6 +77,9 @@ angular.module('HABmin', [
         pickAColorProvider.setOptions({
             inlineDropdown: true
         });
+
+        uiSelectConfig.theme = 'select2';
+
         ngBlocklyProvider.setOptions({
             path: "assets/",
             trashcan: true,
