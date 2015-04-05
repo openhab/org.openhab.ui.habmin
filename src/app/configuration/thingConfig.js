@@ -52,6 +52,9 @@ angular.module('Config.Things', [
             }
         );
 
+        $scope.newThings = [];
+
+        $scope.insertMode = false;
         $scope.listOnline = true;
         $scope.listOffline = true;
 
@@ -103,9 +106,9 @@ angular.module('Config.Things', [
         };
 
         $scope.channelEnable = function (channel) {
-            if($scope.channelEnabled(channel)) {
+            if ($scope.channelEnabled(channel)) {
                 ThingModel.disableChannel($scope.thingSelected.UID + ":" + channel.id).then(
-                    function() {
+                    function () {
                         growl.success(locale.getString("habmin.thingChannelDisabledOk",
                             {thing: $scope.thingSelected.item.label, channel: channel.label}));
 
@@ -123,7 +126,7 @@ angular.module('Config.Things', [
             }
             else {
                 ThingModel.enableChannel($scope.thingSelected.UID + ":" + channel.id).then(
-                    function() {
+                    function () {
                         growl.success(locale.getString("habmin.thingChannelDisabledOk",
                             {thing: $scope.thingSelected.item.label, channel: channel.label}));
 
@@ -170,6 +173,43 @@ angular.module('Config.Things', [
                         {name: $scope.thingSelected.item.label}));
                 }
             )
+        };
+
+        $scope.newThing = function (binding) {
+            $scope.insertMode = true;
+            $scope.newThings = binding.thingTypes;
+        };
+
+        $scope.selectNewThing = function (thing) {
+            $scope.insertMode = false;
+            $scope.panelDisplayed = 'PROPERTIES';
+
+            ThingModel.getThingInfo(thing.UID).then(
+                function (type) {
+                    $scope.thingType = type;
+                    $scope.thingSelected = {
+                        UID: type.UID + ":" + new Date().getTime().toString(16),
+                        item: {
+                            label: "",
+                            groupNames: []
+                        },
+                        configuration: {}
+                    };
+
+                    angular.forEach(type.configParameters, function (parameter) {
+                        if(parameter.type == 'BOOLEAN') {
+                            $scope.thingSelected.configuration[parameter.name] = parameter.defaultValue==='true'?true:false;
+                        }
+                        else {
+                            $scope.thingSelected.configuration[parameter.name] = parameter.defaultValue;
+                        }
+                    });
+                },
+                function () {
+                    growl.warning(locale.getString("habmin.thingErrorGettingThing",
+                        {name: thing.item.label}));
+                }
+            );
         };
 
         $scope.categoryIcons = {

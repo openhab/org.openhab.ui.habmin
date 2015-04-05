@@ -55,7 +55,28 @@ angular.module('HABmin.thingModel', [
                 function (url) {
                     $http.get(url + "/" + uid)
                         .success(function (data) {
+                            deferred.resolve(data);
+                        })
+                        .error(function (data, status) {
+                            deferred.reject(data);
+                        });
+                },
+                function () {
+                    deferred.reject(null);
+                }
+            );
 
+            return deferred.promise;
+        };
+
+        this.getThingTypes = function () {
+            var tStart = new Date().getTime();
+            var deferred = $q.defer();
+
+            RestService.getService(svcTypes).then(
+                function (url) {
+                    $http.get(url)
+                        .success(function (data) {
                             deferred.resolve(data);
                         })
                         .error(function (data, status) {

@@ -11,6 +11,7 @@ module.exports = {
     compile_dir: 'bin',
     cordova_dir: 'cordova',
     output_dir: 'output',
+    bundle_dir: 'openhab2/org.openhab.ui.habmin/web',
 
     /**
      * This is a collection of file patterns that refer to our app code (the
