@@ -25,7 +25,7 @@ angular.module('HABmin.sitemapModel', [
             RestService.getService(svcName).then(
                 function (url) {
                     $http.get(url).success(function (data, status) {
-                        if(data.sitemap != null) {
+                        if (data.sitemap != null) {
                             sitemapList = [].concat(data.sitemap);
                         }
                         else {
@@ -76,13 +76,13 @@ angular.module('HABmin.sitemapModel', [
                 disableCaching: true,
                 maxRequest: 256,
                 method: "GET",
-//            fallbackMethod: "GET",
-//            dropHeaders: false,
+            fallbackMethod: "GET",
+            dropHeaders: false,
                 logLevel: 'debug',
 //            force_transport: 'websocket',
 //            fallbackProtocol: 'streaming',
                 transport: 'long-polling',
-//            fallbackTransport: 'polling',
+            fallbackTransport: 'polling',
                 attachHeadersAsQueryString: true,
 //            trackMessageLength: false,
                 reconnectInterval: 5000,
@@ -118,7 +118,11 @@ angular.module('HABmin.sitemapModel', [
 
             request.onMessage = function (response) {
                 console.log("onMessage", response);
-                onData(angular.fromJson(response.responseBody));
+                if (response.responseBody == null || response.responseBody.length < 2) {
+                    return;
+                }
+                var msg = response.responseBody.replace(/http:\/\//g, "-");
+                onData(angular.fromJson(msg));
             };
 
             request.onClose = function (response) {

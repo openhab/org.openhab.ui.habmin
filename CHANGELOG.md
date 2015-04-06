@@ -1,3 +1,49 @@
+<a name="0.0.10"></a>
+### 0.0.10 (2015-04-06)
+
+
+#### Bug Fixes
+
+* **Chart:**
+  * Fix bug filtering item names in chart item list ([f312cb38](git@github.com:cdjackson/HABmin2/commit/f312cb38cae87691aa21d33f5583a7748c74d1c6))
+  * Fixed positioning of chart tools dropdown menu ([4f98b40e](git@github.com:cdjackson/HABmin2/commit/4f98b40eb7605adb4b11b2d1e8e1a0f6d09cddf7))
+  * Remove loading spinner if loading chart fails ([7fd53638](git@github.com:cdjackson/HABmin2/commit/7fd536387618bb1f97b83f7967cbd0d7011dd735))
+  * Fix exception thrown if no persistence services available ([ec844ed6](git@github.com:cdjackson/HABmin2/commit/ec844ed66e17bcd2bb6b404141fe7d442b90eb87))
+* **Dashboard:**
+  * Fixed editing of gauge widget parameters ([fe5dc43a](git@github.com:cdjackson/HABmin2/commit/fe5dc43a6d04e720e6281950df16c4bc210f317e))
+  * Fixed dashboard listing error ([211caaff](git@github.com:cdjackson/HABmin2/commit/211caaffedb35bc61733dad03b23af68d723b3ac))
+  * Update text formatting of gauge ([71f1cba5](git@github.com:cdjackson/HABmin2/commit/71f1cba514928ccb1712c684e165fddaafa9e3da))
+  * Fix default height of chart in dashboard ([c169e9ab](git@github.com:cdjackson/HABmin2/commit/c169e9ab81ef0e1f3583f3a48abdb96ab82d9fca))
+* **Mobile:**
+  * Update server icon in login screen ([02333f62](git@github.com:cdjackson/HABmin2/commit/02333f62ff3749de31f2fd794e8e7e91b27a73b6))
+* **Sitemap:**
+  * Fix asynchronous updating of sitemap data ([fb8578c1](git@github.com:cdjackson/HABmin2/commit/fb8578c149524b7b452d93467f5f61c577de00bb))
+* **UI:**
+  * Update icons in binding menu ([b672df21](git@github.com:cdjackson/HABmin2/commit/b672df219566206d337eca1386a0aace18f8ec67))
+  * Fix coding of UTF-8 language definitions ([1973c6f0](git@github.com:cdjackson/HABmin2/commit/1973c6f05403427a2e1b8cde9be097da6ec22e94))
+  * Improved checking of user credentials in login screen ([9f8055eb](git@github.com:cdjackson/HABmin2/commit/9f8055eb28bf5a2faf0b738f6eb80bd51cdbcd0c))
+  * Fix error setting theme if restored theme is invalid ([bbce5a7e](git@github.com:cdjackson/HABmin2/commit/bbce5a7ec5c6ab066c61ee58579ecc8e99cab936))
+  * Fix resize handles in dashboard panels ([72a2c44b](git@github.com:cdjackson/HABmin2/commit/72a2c44b826b9b9e62289a591b1c4ae57c4d8596))
+  * Fix sitemap setpoint widget buttons ([81133bf4](git@github.com:cdjackson/HABmin2/commit/81133bf43c1a2219f204489027cd1517ea40f438))
+* **ZWave:**
+  * Fixed error listing nodes when only a single node exists ([49a8572f](git@github.com:cdjackson/HABmin2/commit/49a8572f9a61d53913761e031499ea347ae1391f))
+
+
+#### Features
+
+* **Chart:**
+  * Add option to hide legend on chart ([31212479](git@github.com:cdjackson/HABmin2/commit/31212479b46d8f22852a7524e3e499ca7e503f20))
+  * If no charts are defined then default to the items view ([16369a60](git@github.com:cdjackson/HABmin2/commit/16369a60bb5d36dbb6999cf18c9a5a5ded0b3462))
+* **Dashboard:**
+  * Internationalise dashboard ([3fb644b4](git@github.com:cdjackson/HABmin2/commit/3fb644b4d88fbf9e25c937008a12be404b25f01c))
+* **OpenHAB2:**
+  * Add functions to manually add a thing ([deed8f72](git@github.com:cdjackson/HABmin2/commit/deed8f723bada578c064d4a12e64e6d0371fa7d8))
+* **UI:**
+  * Add icons in confirmation dialog boxes ([443376cb](git@github.com:cdjackson/HABmin2/commit/443376cb4ad6795d530f4a28e3e98fa22fbdd33a))
+* **ZWave:**
+  * Add command to hard reset zwave network ([871ebb88](git@github.com:cdjackson/HABmin2/commit/871ebb88268304bb1c9ab6b31db159d4e9c95884))
+
+
 <a name="0.0.9"></a>
 ### 0.0.9 (2015-03-20)
 
