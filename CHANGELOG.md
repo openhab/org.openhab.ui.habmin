@@ -26,7 +26,7 @@
   * Fix resize handles in dashboard panels ([72a2c44b](git@github.com:cdjackson/HABmin2/commit/72a2c44b826b9b9e62289a591b1c4ae57c4d8596))
   * Fix sitemap setpoint widget buttons ([81133bf4](git@github.com:cdjackson/HABmin2/commit/81133bf43c1a2219f204489027cd1517ea40f438))
 * **ZWave:**
-  *Fixed error listing nodes when only a single node exists ([49a8572f](git@github.com:cdjackson/HABmin2/commit/49a8572f9a61d53913761e031499ea347ae1391f))
+  * Fixed error listing nodes when only a single node exists ([49a8572f](git@github.com:cdjackson/HABmin2/commit/49a8572f9a61d53913761e031499ea347ae1391f))
 
 
 #### Features
