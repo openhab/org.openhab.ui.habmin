@@ -289,6 +289,9 @@ angular.module('Binding.zwave', [
 
                     var stillEditing = false;
 
+                    // Make sure the list is an array!
+                    data.records = [].concat(data.records);
+
                     // Loop through all devices and add any new ones
                     angular.forEach(data.records, function (device) {
                         var domain = device.domain.split('/');
