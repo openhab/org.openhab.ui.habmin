@@ -30,6 +30,7 @@ angular.module('HABmin', [
     'UserGeneralPrefs',
     'ui.router',
     'ui.bootstrap',
+    'ui.select',
     'ngLocalize',
     'ngLocalize.Config',
     'ngLocalize.Events',
@@ -37,7 +38,6 @@ angular.module('HABmin', [
     'pickAColor',
     'angular-blockly',
     'Binding.zwave',
-    'angular-bootstrap-select',
     'SidepanelService',
     'ngAnimate',
     'ngTouch'
@@ -53,9 +53,9 @@ angular.module('HABmin', [
         delimiter: '::'
     })
     .value('localeSupported', {
-        'en-GB': "English (United Kingdom)",
-        'de-DE': "Deutsch (Deutschland)",
-        'fr-FR': "Francais (France)"
+        'en-GB': {name: "English", desc: "United Kingdom"},
+        'de-DE': {name: "Deutsch", desc: "Deutschland"},
+        'fr-FR': {name: "Francais", desc: "France"}
     })
     .value('localeFallbacks', {
         'en': 'en-GB',
@@ -63,7 +63,7 @@ angular.module('HABmin', [
         'fr': 'fr-FR'
     })
 
-    .config(function myAppConfig($stateProvider, $urlRouterProvider, growlProvider, pickAColorProvider, ngBlocklyProvider) {
+    .config(function myAppConfig($stateProvider, $urlRouterProvider, growlProvider, pickAColorProvider, ngBlocklyProvider, uiSelectConfig) {
         $urlRouterProvider.otherwise('/home');
         growlProvider.globalTimeToLive({
             success: 2000,
@@ -77,6 +77,9 @@ angular.module('HABmin', [
         pickAColorProvider.setOptions({
             inlineDropdown: true
         });
+
+        uiSelectConfig.theme = 'bootstrap';
+
         ngBlocklyProvider.setOptions({
             path: "assets/",
             trashcan: true,
@@ -170,7 +173,7 @@ angular.module('HABmin', [
         $scope.setTheme = function (theme) {
             // Make sure the theme exists!
             // Setting an invalid theme will completely screw the presentation
-            if(themes.indexOf(theme.toLowerCase()) == -1) {
+            if (themes.indexOf(theme.toLowerCase()) == -1) {
                 return;
             }
 
@@ -195,16 +198,16 @@ angular.module('HABmin', [
         // Get the inbox.
         // If there are any changes, then count the number of NEW messages
         $scope.inbox = InboxModel.getInbox();
-        $scope.$watch('inbox', function() {
+        $scope.$watch('inbox', function () {
             $scope.notificationCnt = 0;
-            angular.forEach($scope.inbox, function(msg) {
-                if(msg.flag == "NEW") {
+            angular.forEach($scope.inbox, function (msg) {
+                if (msg.flag == "NEW") {
                     $scope.notificationCnt++;
                 }
             });
         }, true);
 
-        $scope.updateRestServices = function() {
+        $scope.updateRestServices = function () {
             RestService.updateServices();
         };
 
@@ -254,26 +257,26 @@ angular.module('HABmin', [
                     BindingModel.getList().then(
                         function (bindings) {
 //                            var bindings = [];
-/*                            angular.forEach(data, function (binding) {
-                                // Only show bindings that have defined names
-                                if (binding.name === undefined) {
-                                    return;
-                                }
-                                var info = BindingModel.getBinding(binding.pid);
-                                var newBinding = {};
-                                newBinding.name = binding.name;
+                            /*                            angular.forEach(data, function (binding) {
+                             // Only show bindings that have defined names
+                             if (binding.name === undefined) {
+                             return;
+                             }
+                             var info = BindingModel.getBinding(binding.pid);
+                             var newBinding = {};
+                             newBinding.name = binding.name;
 
-                                if (info === undefined) {
-                                    newBinding.disabled = true;
-                                }
-                                else {
-                                    newBinding.disabled = false;
-                                    newBinding.icon = info.icon;
-                                    newBinding.link = info.link;
-                                }
+                             if (info === undefined) {
+                             newBinding.disabled = true;
+                             }
+                             else {
+                             newBinding.disabled = false;
+                             newBinding.icon = info.icon;
+                             newBinding.link = info.link;
+                             }
 
-                                bindings.push(newBinding);
-                            });*/
+                             bindings.push(newBinding);
+                             });*/
                             $scope.bindings = bindings;
                         },
                         function (reason) {
@@ -343,6 +346,7 @@ angular.module('HABmin', [
                 }
             }
         }
+
         checkPanelConfiguration();
 
         // Use the resize event to detect if the navbar is collapsed

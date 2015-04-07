@@ -2,10 +2,15 @@
     <div class="form-group">
         <label for="inputItem" class="control-label" i18n="habmin.dashboardGaugeItem"></label>
         <div>
-            <select class="form-control" id="inputItem"
+            <ui-select id="inputItem"
                     ng-model="options.itemId"
-                    ng-options="item.name as item.label.title for item in items | filter:removeNull">
-            </select>
+                    theme="bootstrap"
+                    >
+                <ui-select-match i18n-attr="{placeholder: 'habmin.mainThings'}">{{$select.selected.label.title}}</ui-select-match>
+                <ui-select-choices repeat="item.name as item in items | filter: {label: { title: $select.search }}">
+                    {{item.label.title}}
+                </ui-select-choices>
+            </ui-select>
         </div>
     </div>
     <div class="form-group">

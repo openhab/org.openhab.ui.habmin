@@ -1,4 +1,10 @@
 {
+  "themePaperName": "Paper",
+  "themePaperDesc": "Material is the metaphor",
+  "themeYetiName": "Yeti",
+  "themeYetiDesc": "A friendly foundation",
+  "themeSlateName": "Slate",
+  "themeSlateDesc": "Shades of gunmetal gray",
   "mainLogin": "Login",
   "mainLogout": "Logout",
   "mainUserPreferences": "User Preferences",
@@ -200,6 +206,8 @@
   "userGeneralPrefTitle": "General Settings",
   "userName": "Name",
   "userTheme": "Theme",
+  "userThemeSelect": "Select your theme...",
   "userLanguage": "Language",
+  "userLanguageSelect": "Select your language...",
   "ruleNoDevices": "No Devices"
 }

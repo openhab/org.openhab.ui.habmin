@@ -8,7 +8,7 @@
  * (c) 2014-2015 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('Binding.config', [
-    'angular-bootstrap-select',
+//    'angular-bootstrap-select',
     'ngSanitize'
 ])
     .run([

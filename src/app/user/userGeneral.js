@@ -13,14 +13,38 @@ angular.module('UserGeneralPrefs', [
     'ngLocalize'
 ])
     .service('UserGeneralPrefs',
-    function ($modal, $rootScope, UserService, localeSupported) {
+    function ($modal, $rootScope, UserService, localeSupported, locale) {
         this.showModal = function () {
             var scope = $rootScope.$new();
             scope.model = {};
             scope.model.theme = UserService.getTheme();
+            scope.model.themes = [
+                {
+                    id: "slate",
+                    name: locale.getString("habmin.themeSlateName"),
+                    desc: locale.getString("habmin.themeSlateDesc")
+                },
+                {
+                    id: "yeti",
+                    name: locale.getString("habmin.themeYetiName"),
+                    desc: locale.getString("habmin.themeYetiDesc")
+                },
+                {
+                    id: "paper",
+                    name: locale.getString("habmin.themePaperName"),
+                    desc: locale.getString("habmin.themePaperDesc")
+                }
+            ];
             scope.model.language = UserService.getLanguage();
-
-            scope.model.languages = localeSupported;
+            scope.model.languages = [];
+            angular.forEach(localeSupported, function (loc, key) {
+                scope.model.languages.push({
+                    id: key,
+                    flag: key.split('-')[1],
+                    name: loc.name,
+                    desc: loc.desc
+                });
+            });
 
             var controller = function ($scope, $modalInstance) {
                 $scope.ok = function (result) {

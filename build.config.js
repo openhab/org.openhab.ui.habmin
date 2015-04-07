@@ -105,12 +105,10 @@ module.exports = {
             'vendor/angular-timeago/src/timeAgo.js',
             'vendor/vis/dist/vis.js',
             'vendor/angular-base64/angular-base64.js',
-            'vendor/angular-bootstrap-datetimepicker/src/js/datetimepicker.js',
-            'vendor/bootstrap-select/bootstrap-select.js',
-            'vendor/angular-bootstrap-select/build/angular-bootstrap-select.js',
             'vendor/angular-visjs/angular-vis.js',
             'vendor/checklist-model/checklist-model.js',
-            'vendor/angular-rt-popup/dist/angular-rt-popup.js'
+            'vendor/angular-rt-popup/dist/angular-rt-popup.js',
+            'vendor/angular-ui-select/dist/select.js'
         ],
         css: [
             'vendor/angular-growl-v2/build/angular-growl.css',
@@ -122,9 +120,7 @@ module.exports = {
             'vendor/fontawesome/css/font-awesome.css',
             'vendor/weather-icons/css/weather-icons.css',
             'vendor/fullcalendar/fullcalendar.css',
-            'vendor/vis/dist/vis.css',
-            'vendor/angular-bootstrap-datetimepicker/src/css/datetimepicker.css',
-            'vendor/bootstrap-select/bootstrap-select.css'
+            'vendor/vis/dist/vis.css'
         ],
         assets: [
             'vendor/oa-font/fonts/*',

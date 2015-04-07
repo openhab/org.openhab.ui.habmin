@@ -8,7 +8,7 @@
  * (c) 2014 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('UserChartPrefs', [
-    'angular-bootstrap-select',
+//    'angular-bootstrap-select',
     'ngLocalize',
     'HABmin.userModel'
 ])
