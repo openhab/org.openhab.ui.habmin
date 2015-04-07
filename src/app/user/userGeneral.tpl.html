@@ -4,14 +4,21 @@
 <div class="modal-body">
     <form class="form-horizontal" role="form">
         <div class="form-group">
-            <label for="inputTheme" class="col-sm-3 control-label"i18n="habmin.userTheme"></label>
+            <label for="inputTheme" class="col-sm-3 control-label" i18n="habmin.userTheme"></label>
 
             <div class="col-sm-9">
-                <select class="form-control" id="inputTheme" ng-model="model.theme">
-                    <option value="slate">Slate</option>
-                    <option value="paper">Paper</option>
-                    <option value="yeti">Yeti</option>
-                </select>
+                <ui-select id="inputTheme"
+                           ng-model="model.theme"
+                           theme="bootstrap"
+                           search-enabled="false"
+                        >
+                    <ui-select-match i18n-attr="{placeholder: 'habmin.userThemeSelect'}">{{$select.selected.name}}
+                    </ui-select-match>
+                    <ui-select-choices repeat="theme.id as theme in model.themes">
+                        <div>{{theme.name}}</div>
+                        <span class="small">&nbsp;{{theme.desc}}</span>
+                    </ui-select-choices>
+                </ui-select>
             </div>
         </div>
 
@@ -19,10 +26,18 @@
             <label for="inputTheme" class="col-sm-3 control-label" i18n="habmin.userLanguage"></label>
 
             <div class="col-sm-9">
-                <select class="form-control" id="inputLanguage"
-                        ng-model="model.language"
-                        ng-options="key as value for (key , value) in model.languages">
-                </select>
+                <ui-select id="inputLanguage"
+                           ng-model="model.language"
+                           theme="bootstrap"
+                           search-enabled="false"
+                        >
+                    <ui-select-match i18n-attr="{placeholder: 'habmin.userLanguageSelect'}">{{$select.selected.name}}
+                    </ui-select-match>
+                    <ui-select-choices repeat="language.id as language in model.languages | orderBy: 'name'">
+                        <div>{{language.name}}</div>
+                        <span class="small">&nbsp;{{language.desc}}</span>
+                    </ui-select-choices>
+                </ui-select>
             </div>
         </div>
 

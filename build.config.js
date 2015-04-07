@@ -120,8 +120,7 @@ module.exports = {
             'vendor/fontawesome/css/font-awesome.css',
             'vendor/weather-icons/css/weather-icons.css',
             'vendor/fullcalendar/fullcalendar.css',
-            'vendor/vis/dist/vis.css',
-            'vendor/angular-ui-select/dist/select.css'
+            'vendor/vis/dist/vis.css'
         ],
         assets: [
             'vendor/oa-font/fonts/*',
