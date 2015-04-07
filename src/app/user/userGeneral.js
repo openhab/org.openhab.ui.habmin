@@ -40,7 +40,7 @@ angular.module('UserGeneralPrefs', [
             angular.forEach(localeSupported, function (loc, key) {
                 scope.model.languages.push({
                     id: key,
-                    flag: key.split('-')[1],
+                    flag: key.split('-')[1].toLowerCase(),
                     name: loc.name,
                     desc: loc.desc
                 });

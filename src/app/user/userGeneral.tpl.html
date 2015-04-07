@@ -34,8 +34,15 @@
                     <ui-select-match i18n-attr="{placeholder: 'habmin.userLanguageSelect'}">{{$select.selected.name}}
                     </ui-select-match>
                     <ui-select-choices repeat="language.id as language in model.languages | orderBy: 'name'">
-                        <div>{{language.name}}</div>
-                        <span class="small">&nbsp;{{language.desc}}</span>
+                        <table>
+                            <tr>
+                                <td style="width:35px;"><img ng-src="assets/{{language.flag}}.svg" height="20" /></td>
+                                <td>
+                                    <div>{{language.name}}</div>
+                                    <span class="small">&nbsp;{{language.desc}}</span>
+                                </td>
+                            </tr>
+                        </table>
                     </ui-select-choices>
                 </ui-select>
             </div>

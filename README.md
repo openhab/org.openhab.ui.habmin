@@ -112,6 +112,8 @@ are very welcome, but it would also be great to get some translations to support
 ## Development Environment Setup
 To set up a development environment, clone the repository to your computer.
 Install ```npm``` (node package manager) and run ```npm install``` to install all the development dependencies.
+Note that  I am currently keeping the dependancies in the repository. This is because in some cases I've modified them
+so I think it's easier/safer to store everything used to generate the code.
 
 For mobile app compilation, you need to install ```cordova``` and ```ant``` and the android developers kits and set paths appropriately.
 

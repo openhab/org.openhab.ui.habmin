@@ -127,7 +127,10 @@ module.exports = {
             'vendor/fontawesome/fonts/*',
             'vendor/weather-icons/font/*',
             'vendor/bootstrap/fonts/*',
-            'vendor/angular-blockly/media/*'
+            'vendor/angular-blockly/media/*',
+            'vendor/flag-icon-css/flags/4x3/de.svg',
+            'vendor/flag-icon-css/flags/4x3/fr.svg',
+            'vendor/flag-icon-css/flags/4x3/gb.svg'
         ]
     },
 
