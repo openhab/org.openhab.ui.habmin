@@ -6,7 +6,7 @@
                     ng-model="options.itemId"
                     theme="bootstrap"
                     >
-                <ui-select-match i18n-attr="{placeholder: 'habmin.mainThings'}">{{$select.selected.label.title}}</ui-select-match>
+                <ui-select-match i18n-attr="{placeholder: 'habmin.dashboardGaugeItemPlaceholder'}">{{$select.selected.label.title}}</ui-select-match>
                 <ui-select-choices repeat="item.name as item in items | filter: {label: { title: $select.search }}">
                     {{item.label.title}}
                 </ui-select-choices>

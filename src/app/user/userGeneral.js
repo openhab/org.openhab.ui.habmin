@@ -10,6 +10,7 @@
 angular.module('UserGeneralPrefs', [
     'ngLocalize',
     'HABmin.userModel',
+    'ui.select',
     'ngLocalize'
 ])
     .service('UserGeneralPrefs',

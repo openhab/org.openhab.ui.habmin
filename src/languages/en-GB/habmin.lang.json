@@ -111,6 +111,7 @@
   "dashboardGaugeLabel": "Label",
   "dashboardGaugeUnits": "Units",
   "dashboardGaugeItem": "Item",
+  "dashboardGaugeItemPlaceholder": "Select the item...",
   "dashboardGaugeBarWidth": "Bar Width",
   "dashboardGaugeBorderWidth": "Border Width",
   "dashboardGaugeZeroPosition": "Zero Position",
