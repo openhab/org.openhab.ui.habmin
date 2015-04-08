@@ -16,6 +16,7 @@ angular.module('HABmin.bindingModel', [
         var svcBind = "bindings";
         var svcDisc = "discovery";
         var bindingList = {
+            astro: {icon: "moon"},
             sonos: {icon: "soundcloud"},
             yahooweather: {icon: "weather"},
             zwave: {icon: "zwave"}

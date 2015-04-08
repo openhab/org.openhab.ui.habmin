@@ -54,6 +54,7 @@ angular.module('HABmin.iconModel', [
             "light-80": {class: "oa-light_light_dim_80"},
             "light-90": {class: "oa-light_light_dim_90"},
             "light-100": {class: "oa-light_light_dim_100"},
+            "moon": {class: "fa fa-moon-o"},
             "motionsensor": {class: "oa-message_presence"},
             "motionsensor_disabled": {class: "oa-message_presence_disabled"},
             "network": {class: "oa-it_router"},

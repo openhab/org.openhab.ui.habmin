@@ -12,6 +12,7 @@ angular.module('Binding.zwave', [
     'ui.bootstrap',
     'ngLocalize',
     'HABmin.userModel',
+    'HABmin.restModel',
     'angular-growl',
     'Binding.config',
     'ngVis',
@@ -39,8 +40,8 @@ angular.module('Binding.zwave', [
     })
 
     .controller('ZwaveBindingCtrl',
-    function ZwaveBindingCtrl($scope, locale, growl, $timeout, $window, $http, $interval, UserService, SidepanelService) {
-        var url = UserService.getServer() + '/services/habmin/zwave/';
+    function ZwaveBindingCtrl($scope, locale, growl, $timeout, $window, $http, $interval, UserService, RestService, SidepanelService) {
+        $scope.url = UserService.getServer() + '/services/habmin/zwave';
 
         var deviceClassIcons = {
             "PC_CONTROLLER": "desktop-computer",
@@ -181,7 +182,7 @@ angular.module('Binding.zwave', [
         };
 
         $scope.zwaveAction = function (domain, action) {
-            $http.put(url + 'action/' + domain, action)
+            $http.put($scope.url + '/action/' + domain, action)
                 .success(function (data) {
                     growl.success(locale.getString('zwave.zwaveActionOk'));
                 })
@@ -197,7 +198,7 @@ angular.module('Binding.zwave', [
 
         function saveDomain(domain, value) {
             console.log("Saving domain:", domain, value);
-            $http.put(url + "set/" + domain, value)
+            $http.put($scope.url + "/set/" + domain, value)
                 .success(function (data) {
                 })
                 .error(function (data, status) {
@@ -279,7 +280,7 @@ angular.module('Binding.zwave', [
         $scope.updateNodes = function () {
             // Get the list of nodes. Then for each node, get the static state (/info)
             // and the dynamic status (/status)
-            $http.get(url + 'nodes/')
+            $http.get($scope.url + '/nodes/')
                 .success(function (data) {
                     // This function creates a new list each time through
                     // I'm not sure this is the best way, but it seems the easiest
@@ -359,7 +360,7 @@ angular.module('Binding.zwave', [
         };
 
         function updateStatus(id) {
-            $http.get(url + "nodes/" + id + '/status/')
+            $http.get($scope.url + "/nodes/" + id + '/status/')
                 .success(function (data) {
                     if (data.records === undefined) {
                         return;
@@ -444,7 +445,7 @@ angular.module('Binding.zwave', [
         function updateInfo(id) {
             // Currently, we need to get some information from the root node
             // Change this for openHAB2!!!
-            $http.get(url + "nodes/" + id + '/')
+            $http.get($scope.url + "/nodes/" + id + '/')
                 .success(function (data) {
                     if (data.records === undefined) {
                         return;
@@ -471,7 +472,7 @@ angular.module('Binding.zwave', [
                     $scope.devEdit.information = undefined;
                 });
 
-            $http.get(url + "nodes/" + id + '/info/')
+            $http.get($scope.url + "/nodes/" + id + '/info/')
                 .success(function (data) {
                     if (data.records === undefined) {
                         return;
@@ -561,7 +562,7 @@ angular.module('Binding.zwave', [
         }
 
         function updateConfig(id) {
-            $http.get(url + 'nodes/' + id + '/parameters/')
+            $http.get($scope.url + '/nodes/' + id + '/parameters/')
                 .success(function (data) {
                     if (data.records === undefined || data.records.length === 0) {
                         $scope.devEdit.configuration = undefined;
@@ -576,7 +577,7 @@ angular.module('Binding.zwave', [
         }
 
         function updateAssociations(id) {
-            $http.get(url + 'nodes/' + id + '/associations/')
+            $http.get($scope.url + '/nodes/' + id + '/associations/')
                 .success(function (data) {
                     if (data.records === undefined || data.records.length === 0) {
                         $scope.devEdit.associations = undefined;
@@ -595,7 +596,7 @@ angular.module('Binding.zwave', [
         }
 
         function updateWakeup(id) {
-            $http.get(url + 'nodes/' + id + '/wakeup/')
+            $http.get($scope.url + '/nodes/' + id + '/wakeup/')
                 .success(function (data) {
                     if (data.records === undefined || data.records.length === 0) {
                         $scope.devEdit.wakeup = undefined;
@@ -611,7 +612,7 @@ angular.module('Binding.zwave', [
         }
 
         function updateAssociationGroup(association) {
-            $http.get(url + association.domain)
+            $http.get($scope.url + "/" + association.domain)
                 .success(function (data) {
                     if (data.records === undefined || data.records.length === 0) {
 //                        $scope.devEdit.associations = undefined;
@@ -628,7 +629,7 @@ angular.module('Binding.zwave', [
         }
 
         function updateNeighbors(id) {
-            $http.get(url + 'nodes/' + id + '/neighbors/')
+            $http.get($scope.url + '/nodes/' + id + '/neighbors/')
                 .success(function (data) {
                     if (data.records === undefined) {
                         return;
@@ -651,7 +652,20 @@ angular.module('Binding.zwave', [
         }
 
         // Kickstart the system and get all the nodes...
-        $scope.updateNodes();
+        RestService.getService('habmin/zwave').then(
+            function (url) {
+                if (url == null) {
+                    return;
+                }
+
+                $scope.url = url;
+
+                $scope.updateNodes();
+            },
+            function () {
+
+            }
+        );
 
         // Create a poll timer to update the data every 5 seconds
         var pollTimer = $interval(function () {
