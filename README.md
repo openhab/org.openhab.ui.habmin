@@ -3,6 +3,9 @@ HABmin2
 
 HABmin version2 - ultimately targeted toward openHAB2.
 
+**BREAKING CHANGE:** I've now added ZWave support for the OpenHAB1 binding and therefore until there is a native
+OpenHAB2 ZWave binding, the OpenHAB1 ZWave binding must be installed for HABmin2 to work under OpenHAB2.
+
 An **OpenHAB2** bundle is now available with initial support for charting and some OH2 features such
 as listing the newly discovered devices. I hope to keep a single source base that supports as many
 OH1 and OH2 features as possible while OH2 is being developped.
@@ -38,9 +41,14 @@ Installation
 ============
 
 ### OpenHAB-2
-For openHAB-2, simply download the _org.openhab.ui.habmin_ JAR file from either the
+For openHAB-2, download the _org.openhab.ui.habmin_ JAR file from either the
 [releases folder](https://github.com/cdjackson/HABmin2/releases) or you can use the latest snapshot in the
-the [working folder](https://github.com/cdjackson/HABmin2/tree/master/output).
+the [working folder](https://github.com/cdjackson/HABmin2/tree/master/output) and place it in the ```addons``` folder.
+
+**NOTE**. Currently HABmin2 supports a backward compatible mode for the OpenHAB1 ZWave binding. Therefore
+  you must also install the OpenHAB1 zwave JAR into the ```addons``` folder. As soon as a OpenHAB2 ZWave binding
+  is available, this dependency will be removed.
+
 Then open your browser at http://openhab server/habmin/index.html or follow the link from the OpenHAB dashboard.
 
 ### OpenHAB-1
