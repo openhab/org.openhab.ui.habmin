@@ -38,8 +38,8 @@
                             <tr>
                                 <td style="width:35px;"><img ng-src="assets/{{language.flag}}.svg" height="20" /></td>
                                 <td>
-                                    <div>{{language.name}}</div>
-                                    <span class="small">&nbsp;{{language.desc}}</span>
+                                    <div ng-bind-html="language.name"></div>
+                                    <span style="padding-left:10px;" class="small" ng-bind-html="language.desc"></span>
                                 </td>
                             </tr>
                         </table>

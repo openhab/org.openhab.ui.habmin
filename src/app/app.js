@@ -52,10 +52,13 @@ angular.module('HABmin', [
         observableAttrs: new RegExp('^data-(?!ng-|i18n)'),
         delimiter: '::'
     })
+    // Specify the locale names here.
+    // These strings will be treated as HTML so special HTML character codes can be used
+    // to support international character sets.
     .value('localeSupported', {
         'en-GB': {name: "English", desc: "United Kingdom"},
         'de-DE': {name: "Deutsch", desc: "Deutschland"},
-        'fr-FR': {name: "Francais", desc: "France"}
+        'fr-FR': {name: "Fran&ccedil;ais", desc: "France"}
     })
     .value('localeFallbacks', {
         'en': 'en-GB',
