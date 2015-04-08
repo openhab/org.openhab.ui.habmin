@@ -279,10 +279,17 @@
                                 </a>
                             </li>
                             <li role="presentation" class="divider"></li>
-                            <li ng-repeat="choice in bindings" ng-class="{'disabled': choice.disabled}">
-                                <a ui-sref="binding/zwave" ui-sref="choice.link">
+                            <li ng-repeat="choice in bindings" ng-disabled="choice.disabled">
+                                <a class="disabled">
                                     <habmin-icon class="fa fa-fw" icon="{{choice.icon}}"></habmin-icon>
                                     <span>{{choice.name}}</span>
+                                </a>
+                            </li>
+                            <li role="presentation" class="divider"></li>
+                            <li>
+                                <a ui-sref="binding/zwave" ui-sref="choice.link">
+                                    <habmin-icon class="fa fa-fw" icon="zwave"></habmin-icon>
+                                    <span>ZWave</span>
                                 </a>
                             </li>
                         </ul>
