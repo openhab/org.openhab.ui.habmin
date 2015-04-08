@@ -4,9 +4,9 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-//import org.openhab.binding.zwave.internal.config.OpenHABConfigurationRecord;
+import org.openhab.binding.zwave.internal.config.OpenHABConfigurationRecord;
 
 @XmlRootElement(name="record")
 public class ConfigServiceListBean {
-//	public List<OpenHABConfigurationRecord> records;
+	public List<OpenHABConfigurationRecord> records;
 }

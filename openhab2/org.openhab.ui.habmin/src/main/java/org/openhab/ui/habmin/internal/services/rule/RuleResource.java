@@ -67,7 +67,7 @@ public class RuleResource implements RESTResource {
 	UriInfo uriInfo;
 
 	@GET
-	@Produces({ MediaType.WILDCARD })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response httpGetModelList(@Context HttpHeaders headers,
 			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
 		logger.debug("Received HTTP GET request at '{}'", uriInfo.getPath());

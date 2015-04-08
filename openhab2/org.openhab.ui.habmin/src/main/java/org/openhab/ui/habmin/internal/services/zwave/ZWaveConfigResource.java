@@ -12,22 +12,19 @@ package org.openhab.ui.habmin.internal.services.zwave;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-
 import org.eclipse.smarthome.io.rest.RESTResource;
-//import org.openhab.binding.zwave.internal.config.OpenHABConfigurationService;
+import org.openhab.binding.zwave.internal.config.OpenHABConfigurationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,13 +40,13 @@ import org.slf4j.LoggerFactory;
  * @author Chris Jackson
  * @since 1.4.0
  */
-//@Path(ZWaveConfigResource.PATH)
+@Path(ZWaveConfigResource.PATH)
 public class ZWaveConfigResource implements RESTResource {
-/*
+
 	private static final Logger logger = LoggerFactory.getLogger(ZWaveConfigResource.class); 
 	
 	// The URI path to this resource
-    public static final String PATH = "zwave";
+    public static final String PATH = "habmin/zwave";
 
     static private Map<String, OpenHABConfigurationService> configurationServices = new HashMap<String, OpenHABConfigurationService>();
     
@@ -68,18 +65,17 @@ public class ZWaveConfigResource implements RESTResource {
 	@Context UriInfo uriInfo;
 	@GET
 	@Path("{domain: .+}")
-    @Produces( { MediaType.WILDCARD })
+    @Produces( { MediaType.APPLICATION_JSON })
     public Response getConfig(
     		@Context HttpHeaders headers,
-    		@QueryParam("type") String type,
-    		@PathParam("domain") String domain,
-    		@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
+    		@PathParam("domain") String domain) {
 		logger.trace("Received HTTP GET request at '{}'.", uriInfo.getPath());
 
 		OpenHABConfigurationService cfg = getConfigurationServices().get("ZWave");
 
-		if(cfg == null)
+		if(cfg == null) {
 			return Response.notAcceptable(null).build();
+		}
 
 		ConfigServiceListBean cfgList = new ConfigServiceListBean();
 		cfgList.records = cfg.getConfiguration(domain);
@@ -90,18 +86,17 @@ public class ZWaveConfigResource implements RESTResource {
 
 	@PUT
 	@Path("action/{domain: .+}")
-    @Produces( { MediaType.WILDCARD })
+    @Produces( { MediaType.APPLICATION_JSON })
     public Response putAction(
     		@Context HttpHeaders headers,
-    		@QueryParam("type") String type,
-    		@PathParam("domain") String domain,
-    		@QueryParam("jsoncallback") @DefaultValue("callback") String callback, String action) {
+    		@PathParam("domain") String domain, String action) {
 		logger.trace("Received HTTP PUT request at '{}'.", uriInfo.getPath());
 
 		OpenHABConfigurationService cfg = getConfigurationServices().get("ZWave");
 
-		if(cfg == null)
+		if(cfg == null) {
 			return Response.notAcceptable(null).build();
+		}
 
 		cfg.doAction(domain, action);
 		
@@ -113,18 +108,17 @@ public class ZWaveConfigResource implements RESTResource {
 
 	@PUT
 	@Path("set/{domain: .+}")
-    @Produces( { MediaType.WILDCARD })
+    @Produces( { MediaType.APPLICATION_JSON })
     public Response putSet(
     		@Context HttpHeaders headers,
-    		@QueryParam("type") String type,
-    		@PathParam("domain") String domain,
-    		@QueryParam("jsoncallback") @DefaultValue("callback") String callback, String set) {
+    		@PathParam("domain") String domain, String set) {
 		logger.trace("Received HTTP PUT request at '{}'.", uriInfo.getPath());
 
 		OpenHABConfigurationService cfg = getConfigurationServices().get("ZWave");
 
-		if(cfg == null)
+		if(cfg == null) {
 			return Response.notAcceptable(null).build();
+		}
 
 		cfg.doSet(domain, set);
 		
@@ -133,6 +127,4 @@ public class ZWaveConfigResource implements RESTResource {
     	Object responseObject = cfgList;
     	return Response.ok(responseObject).build();
     }
-	
-	*/
 }
