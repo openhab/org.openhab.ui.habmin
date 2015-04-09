@@ -3,12 +3,28 @@
         <label for="inputItem" class="control-label" i18n="habmin.dashboardGaugeItem"></label>
         <div>
             <ui-select id="inputItem"
-                    ng-model="options.itemId"
-                    theme="bootstrap"
+                       ng-model="options.itemId"
+                       theme="bootstrap"
                     >
                 <ui-select-match i18n-attr="{placeholder: 'habmin.dashboardGaugeItemPlaceholder'}">{{$select.selected.label.title}}</ui-select-match>
                 <ui-select-choices repeat="item.name as item in items | filter: {label: { title: $select.search }}">
                     {{item.label.title}}
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="inputTheme" class="control-label" i18nx="habmin.dashboardGaugeItem">Theme</label>
+        <div>
+            <ui-select id="inputTheme"
+                       ng-model="gaugeTheme"
+                       theme="bootstrap"
+                       search-enabled="false"
+                       on-select="selectTheme($item)"
+                    >
+                <ui-select-match i18n-attr="{placeholder: 'habmin.dashboardGaugeItemPlaceholder'}">{{$select.selected.name}}</ui-select-match>
+                <ui-select-choices repeat="theme.id as theme in gaugeThemes">
+                    <ng-dial-gauge options="theme.options" ng-model="75" style="display:inline-block;height:100px;width:100px;"></ng-dial-gauge>
                 </ui-select-choices>
             </ui-select>
         </div>
@@ -23,6 +39,18 @@
         <label for="inputUnits" class="control-label" i18n="habmin.dashboardGaugeUnits"></label>
         <div>
             <input type="text" ng-model="options.units" class="form-control" id="inputUnits" placeholder="Label">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="inputMinimum" class="control-label" i18n="habmin.dashboardGaugeMinimum"></label>
+        <div>
+            <input type="number" ng-model="options.scaleMin" class="form-control" id="inputMinimum" placeholder="Label">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="inputMaximum" class="control-label" i18n="habmin.dashboardGaugeMaximum"></label>
+        <div>
+            <input type="number" ng-model="model.scaleMax" class="form-control" id="inputMaximum" placeholder="Label">
         </div>
     </div>
     <div class="form-group">
@@ -59,23 +87,15 @@
     <div class="form-group">
         <label for="inputEndCap" class="control-label" i18n="habmin.dashboardGaugeEndCap"></label>
         <div>
-            <select class="form-control" id="inputEndCap"
-                    ng-model="options.lineCap">
-                <option value="round" i18n="habmin.dashboardGaugeEndCapRound"></option>
-                <option value="butt" i18n="habmin.dashboardGaugeEndCapSquare"></option>
-            </select>
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="inputMinimum" class="control-label" i18n="habmin.dashboardGaugeMinimum"></label>
-        <div>
-            <input type="number" ng-model="options.scaleMin" class="form-control" id="inputMinimum" placeholder="Label">
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="inputMaximum" class="control-label" i18n="habmin.dashboardGaugeMaximum"></label>
-        <div>
-            <input type="number" ng-model="model.scaleMax" class="form-control" id="inputMaximum" placeholder="Label">
+            <ui-select id="inputEndCap"
+                       ng-model="options.lineCap"
+                       theme="bootstrap"
+                    >
+                <ui-select-match i18n-attr="{placeholder: 'habmin.dashboardGaugeEndCap'}">{{$select.selected.name}}</ui-select-match>
+                <ui-select-choices repeat="cap.id as cap in endCaps">
+                    {{cap.name}}
+                </ui-select-choices>
+            </ui-select>
         </div>
     </div>
 </form>

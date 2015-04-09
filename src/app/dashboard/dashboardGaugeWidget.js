@@ -12,6 +12,7 @@ angular.module('dashboardGaugeWidget', [
     'angular-growl',
     'HABmin.itemModel',
     'HABmin.persistenceModel',
+    'ngLocalize',
     'ui.select'
 ])
     .directive('dashboardGauge', function (ItemModel) {
@@ -23,6 +24,7 @@ angular.module('dashboardGaugeWidget', [
                 options: "="
             },
             link: function ($scope) {
+                $scope.options.percent = true;
 //                $scope.borderWidth = $scope.options.borderWidth;
                 $scope.$watch("options", function (newOptions) {
 //                    $scope.value++;
@@ -48,7 +50,7 @@ angular.module('dashboardGaugeWidget', [
         };
     })
 
-    .directive('dashboardGaugeProperties', function ($window, growl, ItemModel, PersistenceItemModel) {
+    .directive('dashboardGaugeProperties', function ($window, growl, locale, ItemModel, PersistenceItemModel) {
         return {
             restrict: 'E', // Use as element
             scope: { // Isolate scope
@@ -56,6 +58,37 @@ angular.module('dashboardGaugeWidget', [
             },
             templateUrl: 'dashboard/dashboardGaugeProperties.tpl.html',
             link: function ($scope, $element, $state) {
+                $scope.gaugeThemes = [
+                    {
+                        name: "",
+                        desc: "",
+                        options: {
+                            barWidth:20,
+                            borderWidth: 0,
+                            angle: 315,
+                            rotate: 180,
+                            barAngle: 0,
+                            lineCap: 'butt',
+                            percent: true
+                        }
+                    }
+                ];
+                $scope.endCaps = [
+                    {id: "round", name: locale.getString("habmin.dashboardGaugeEndCapRound")},
+                    {id: "butt", name: locale.getString("habmin.dashboardGaugeEndCapSquare")},
+                ];
+
+                $scope.selectTheme = function (theme) {
+                    if(theme == null || theme.options == null) {
+                        return;
+                    }
+                    $scope.options.barWidth = theme.options.barWidth;
+                    $scope.options.borderWidth = theme.options.borderWidth;
+                    $scope.options.angle = theme.options.angle;
+                    $scope.options.rotate = theme.options.rotate;
+                    $scope.options.barAngle = theme.options.barAngle;
+                };
+
                 if($scope.options.barWidth != null) {
                     $scope.options.barWidth = Number($scope.options.barWidth);
                 }
