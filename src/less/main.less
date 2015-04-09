@@ -32,32 +32,32 @@
 
   // Components
   @import "../../vendor/bootstrap/less/component-animations.less";
-//  @import "../../vendor/bootstrap/less/glyphicons.less";
+  //  @import "../../vendor/bootstrap/less/glyphicons.less";
   @import "../../vendor/bootstrap/less/dropdowns.less";
   @import "../../vendor/bootstrap/less/button-groups.less";
   @import "../../vendor/bootstrap/less/input-groups.less";
   @import "../../vendor/bootstrap/less/navs.less";
   @import "../../vendor/bootstrap/less/navbar.less";
-//  @import "../../vendor/bootstrap/less/breadcrumbs.less";
-//  @import "../../vendor/bootstrap/less/pagination.less";
-//  @import "../../vendor/bootstrap/less/pager.less";
+  //  @import "../../vendor/bootstrap/less/breadcrumbs.less";
+  //  @import "../../vendor/bootstrap/less/pagination.less";
+  //  @import "../../vendor/bootstrap/less/pager.less";
   @import "../../vendor/bootstrap/less/labels.less";
   @import "../../vendor/bootstrap/less/badges.less";
   @import "../../vendor/bootstrap/less/jumbotron.less";
   @import "../../vendor/bootstrap/less/thumbnails.less";
   @import "../../vendor/bootstrap/less/alerts.less";
   @import "../../vendor/bootstrap/less/progress-bars.less";
-//  @import "../../vendor/bootstrap/less/media.less";
+  //  @import "../../vendor/bootstrap/less/media.less";
   @import "../../vendor/bootstrap/less/list-group.less";
   @import "../../vendor/bootstrap/less/panels.less";
-//  @import "../../vendor/bootstrap/less/wells.less";
+  @import "../../vendor/bootstrap/less/wells.less";
   @import "../../vendor/bootstrap/less/close.less";
 
   // Components w/ JavaScript
   @import "../../vendor/bootstrap/less/modals.less";
   @import "../../vendor/bootstrap/less/tooltip.less";
   @import "../../vendor/bootstrap/less/popovers.less";
-//  @import "../../vendor/bootstrap/less/carousel.less";
+  //  @import "../../vendor/bootstrap/less/carousel.less";
 
   // Utility classes
   @import "../../vendor/bootstrap/less/utilities.less";
@@ -92,35 +92,35 @@
    * Typography
    */
 
-//  @font-face {
-//    font-family: 'Roboto';
-//    font-style: normal;
-//    font-weight: 400;
-//    src: local('Roboto Regular'), local('Roboto-Regular'), url(fonts/Roboto-Regular.woff) format('woff');
-//  }
-/*
-  code, pre, .pre {
-    padding: 5px;
-    margin: 10px 0;
-    background-color: #EFEFEF;
-    border: 1px solid #DADADA;
-    border-radius: 3px;
-  }
+  //  @font-face {
+  //    font-family: 'Roboto';
+  //    font-style: normal;
+  //    font-weight: 400;
+  //    src: local('Roboto Regular'), local('Roboto-Regular'), url(fonts/Roboto-Regular.woff) format('woff');
+  //  }
+  /*
+    code, pre, .pre {
+      padding: 5px;
+      margin: 10px 0;
+      background-color: #EFEFEF;
+      border: 1px solid #DADADA;
+      border-radius: 3px;
+    }
 
-  code {
-    padding: 0 3px;
-  }
+    code {
+      padding: 0 3px;
+    }
 
-  pre {
-    margin: 10px 0;
-    padding: 5px;
-  }
+    pre {
+      margin: 10px 0;
+      padding: 5px;
+    }
 
-  h2 {
-    margin: 20px 0;
-    color: #666;
-  }
-*/
+    h2 {
+      margin: 20px 0;
+      color: #666;
+    }
+  */
   .text-large {
     font-size: @font-size-base * 2;
   }
@@ -301,8 +301,8 @@
   .sitemap-row {
     width: 100%;
     display: inline-block;
-//    float: left;
-//    vertical-align: middle;
+    //    float: left;
+    //    vertical-align: middle;
     font-size: 16px;
     line-height: 1.6;
     margin-bottom: 10px;
@@ -334,7 +334,6 @@
   .sitemap-frame {
     margin-bottom: 20px;
   }
-
 
   .sitemap-item-text {
     vertical-align: middle;
@@ -398,10 +397,10 @@
   }
 
   .dashboard-edit {
-    box-shadow: 0 0 10px rgba(0,0,0,0.6);
-    -moz-box-shadow: 0 0 10px rgba(0,0,0,0.6);
-    -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.6);
-    -o-box-shadow: 0 0 10px rgba(0,0,0,0.6);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+    -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+    -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+    -o-box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
   }
 
   .dashboard-header {
@@ -582,7 +581,6 @@
     cursor: pointer;
   }
 
-
   // Range Slider styling
   /* Webkit */
   .safari input[type=range],
@@ -646,7 +644,6 @@
     cursor: pointer;
   }
 
-
   // File input styling
   .btn-file {
     position: relative;
@@ -668,13 +665,10 @@
     display: block;
   }
 
-
-
-
   // ZWAVE LOGREADER Styles
   .zwave-logreader {
-    height:100%;
-    overflow:auto;
+    height: 100%;
+    overflow: auto;
 
     table-layout: fixed;
     border-collapse: collapse;
@@ -683,8 +677,8 @@
   .fixed-headers {
     thead {
       tr {
-//        display: block;
-//        position: relative;
+        //        display: block;
+        //        position: relative;
       }
     }
     tbody {
@@ -700,7 +694,7 @@
   }
 
   .category-icon {
-    width:40px;
+    width: 40px;
   }
 
   // Gauge stype
@@ -708,8 +702,8 @@
     letter-spacing: 1px;
     font-family: @font-family-base;
     font-style: normal;
-    font-size:@font-size-small;
-    font-weight:100;
+    font-size: @font-size-small;
+    font-weight: 100;
     fill: @text-color;
     stroke: @text-color;
   }
@@ -718,8 +712,8 @@
     font-family: @font-family-base;
     letter-spacing: 1px;
     font-style: normal;
-    font-size:@font-size-base;
-    font-weight:100;
+    font-size: @font-size-base;
+    font-weight: 100;
     fill: @text-color;
     stroke: @text-color;
   }
@@ -728,10 +722,30 @@
     font-family: @font-family-base;
     letter-spacing: 1px;
     font-style: normal;
-    font-size:@font-size-small;
-    font-weight:100;
+    font-size: @font-size-small;
+    font-weight: 100;
     fill: @text-color;
     stroke: @text-color;
+  }
+
+  // TODO: This needs styling to account of themes
+  .habmin-info {
+    padding: 10px 25px;
+
+    label {
+      font-size: 12px;
+      font-weight: bold;
+      color: #bbb;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  }
+
+  .language-select {
+    padding-left: 40px;
+    background-size: 30px 24px;
+    background-repeat: no-repeat;
+    background-position: left;
   }
 
   @import '@{HABminTheme}/habmin.less';

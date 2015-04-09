@@ -220,7 +220,7 @@
                        ng-click="panelDisplayed='CHANNELS'"
                        ng-disabled="thingType.channels==null || thingType.channels.length==0">
                         <span class="fa fa-fw fa-navicon"></span>
-                        <span i18n="habmin.thingChannels"></span> xx={{thingType.channels.length}}
+                        <span i18n="habmin.thingChannels"></span> {{thingType.channels.length}}
                     </a>
                 </div>
                 <div collapse="panelDisplayed!='CHANNELS'"
@@ -239,14 +239,14 @@
                                        value="{{channel.description}}"
                                        placeholder="{{channel.category}}">
 
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" ng-click="channelEnable(channel)">
-                                    <span ng-if="channelEnabled(channel)"
-                                          class="fa fa-check-circle text-success"></span>
-                                    <span ng-if="!channelEnabled(channel)"
-                                          class="fa fa-times-circle text-danger"></span>
-                                </button>
-                            </span>
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" ng-click="channelEnable(channel)">
+                                        <span ng-if="channelEnabled(channel)"
+                                              class="fa fa-check-circle text-success"></span>
+                                        <span ng-if="!channelEnabled(channel)"
+                                              class="fa fa-times-circle text-danger"></span>
+                                    </button>
+                                </span>
                             </div>
                         </div>
                     </div>

@@ -38,8 +38,6 @@ angular.module('HABmin.bindingModel', [
                         .success(function (data) {
                             console.log("Fetch completed in", new Date().getTime() - tStart);
 
-                            var newList = {};
-
                             // OH1 detection
                             if (data.binding != null) {
                                 data = data.binding;
@@ -48,21 +46,12 @@ angular.module('HABmin.bindingModel', [
                             // Keep a local copy.
                             // This allows us to update the data later and keeps the GUI in sync.
                             angular.forEach(data, function (binding) {
-                                // OH1 detection
-                                if (binding.pid != null) {
-                                    binding.id = binding.pid;
-                                }
-
                                 if (bindingList[binding.id] != null) {
                                     binding.icon = bindingList[binding.id].icon;
                                     binding.discovery = bindingList[binding.id].discovery;
                                 }
-
-                                if (binding.id !== undefined) {
-                                    newList[binding.id] = binding;
-                                }
                             });
-                            bindingList = newList;
+                            bindingList = data;
 
                             console.log("Processing completed in", new Date().getTime() - tStart);
 

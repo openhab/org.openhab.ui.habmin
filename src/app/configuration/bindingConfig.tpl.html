@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!-- Device List -->
+<div class="col-sm-4" sidepanel-pane="side">
+    <div class="panel panel-default">
+        <!-- Header -->
+        <div class="panel-heading">
+Installed Bindings
+        </div>
+
+        <!-- Body -->
+        <div class="list-group habmin-list" resize-panel>
+            <!-- BINDING LIST -->
+            <div ng-if="bindingsCnt>0" ng-repeat="binding in bindings">
+                <a role="presentation" ng-class="{'list-group-item':true, 'active': binding==selectedBinding}"
+                   ng-click="selectBinding(binding)" sidepanel-click="main">
+                    <table style="background-color: transparent">
+                        <tr>
+                            <td class="text-large" rowspan="2">
+                                <habmin-icon class="fa fa-fw" icon="{{binding.icon}}"></habmin-icon>
+                            </td>
+                            <td>
+                                <span>{{binding.name}}&nbsp;</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted small">{{binding.author}}</td>
+                        </tr>
+                    </table>
+                </a>
+            </div>
+
+            <!-- Cover options for loading, and no devices -->
+            <div ng-if="bindingsCnt==-1" class="list-group-item text-center">
+                <span class="fa fa-spin fa-refresh"></span>
+                <span i18n="common.loading"></span>
+            </div>
+            <div ng-if="bindingsCnt==0" class="list-group-item text-center">
+                <span class="fa fa-exclamation-triangle text-warning"></span>
+                <span i18n="habmin.bindingNoneFound"></span>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="panel-footer panel-footer-none">
+        </div>
+    </div>
+</div>
+
+<!-- Binding Information / Configuration -->
+<div class="col-sm-8" sidepanel-pane="main">
+    <div class="panel panel-default">
+        <!-- Header -->
+        <div class="panel-heading">
+            Binding Information: <i>{{selectedBinding.name}}</i>
+        </div>
+
+        <!-- Body -->
+        <div class="list-group habmin-list" resize-panel>
+            <div class="habmin-info">
+                <label>Author</label>
+                <div class="well well-sm">
+                    {{selectedBinding.author}}
+                </div>
+            </div>
+
+            <div class="habmin-info">
+                <label>Description</label>
+                <div class="well well-sm">
+                    {{selectedBinding.description}}
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="panel-footer panel-footer-none">
+        </div>
+    </div>
+</div>
