@@ -12,6 +12,7 @@ module.exports = {
     cordova_dir: 'cordova',
     output_dir: 'output',
     bundle_dir: 'openhab2/org.openhab.ui.habmin/web',
+    language_dir: 'src/languages',
 
     /**
      * This is a collection of file patterns that refer to our app code (the
@@ -143,5 +144,13 @@ module.exports = {
         'paper',
         'slate',
         'yeti'
+    ],
+
+    /**
+     * The list of languages we support
+     */
+    languages: [
+        'en-GB',
+        'fr-FR'
     ]
 };

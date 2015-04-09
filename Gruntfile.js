@@ -243,9 +243,9 @@ module.exports = function (grunt) {
         cssmin: {
             target: {
                 options: {
-// The following lines may be useful for debugging if there are problems with the minification
-//                    keepBreaks: true,
-//                    aggressiveMerging: false
+                    // The following lines may be useful for debugging if there are problems with the minification
+                    //                    keepBreaks: true,
+                    //                    aggressiveMerging: false
                 },
                 files: [{
                     src: [
@@ -548,7 +548,7 @@ module.exports = function (grunt) {
                 files: [
                     '<%= app_files.js %>'
                 ],
-                tasks: [ 'jshint:src', 'karma:unit:run', 'copy:build_appjs' ]
+                tasks: ['jshint:src', 'karma:unit:run', 'copy:build_appjs']
             },
 
             /**
@@ -637,8 +637,8 @@ module.exports = function (grunt) {
                 },
                 files: [
                     {
-                    src: '<%= compile_dir %>/index.html',
-                    dest: '<%= compile_dir %>/index.html'
+                        src: '<%= compile_dir %>/index.html',
+                        dest: '<%= compile_dir %>/index.html'
                     }
                 ]
             }
@@ -688,8 +688,8 @@ module.exports = function (grunt) {
     var themeTasksBuild = [];
     var themeTasksCompile = [];
     taskConfig.less = {};
-    userConfig.themes.forEach(function(theme) {
-        var theme_css = '<%= build_dir %>/assets/<%= pkg.name %>-' + theme +'-<%= pkg.version %>.css';
+    userConfig.themes.forEach(function (theme) {
+        var theme_css = '<%= build_dir %>/assets/<%= pkg.name %>-' + theme + '-<%= pkg.version %>.css';
         taskConfig.less[theme] = {
             files: {},
             options: {
@@ -713,13 +713,41 @@ module.exports = function (grunt) {
         };
         taskConfig.less[theme + '_compile'].files[theme_css] = '<%= app_files.less %>';
         themeTasksCompile.push('less:' + theme + '_compile');
-//        taskConfig.concat.build_css.src.push('<%= build_dir %>/assets/<%= pkg.name %>-' + theme + '-<%= pkg.version %>.css');
     });
 
     grunt.registerTask('themes_build', themeTasksBuild);
     grunt.registerTask('themes_compile', themeTasksCompile);
 
     grunt.initConfig(grunt.util._.extend(taskConfig, userConfig));
+
+    grunt.registerTask('check_languages', 'Check the completeness of translations', function () {
+        grunt.file.recurse(userConfig.language_dir + "/en-GB", function (abspath, rootdir, subdir, filename) {
+            grunt.log.writeln('Checking "' + filename + '"');
+            var baseLanguage = grunt.file.readJSON(abspath);
+            userConfig.languages.forEach(function (language) {
+                if(language == "en-GB") {
+                    return;
+                }
+                var testLanguage = grunt.file.readJSON(userConfig.language_dir + '/' + language + '/' + filename);
+                var cntTotal = 0;
+                var cntTrans = 0;
+                for(var key in baseLanguage) {
+                    cntTotal++;
+                    if(testLanguage[key] != null) {
+                        cntTrans++;
+                    }
+                    else {
+                    }
+                }
+                if(cntTrans == cntTotal) {
+                    grunt.log.oklns(language + ': ' + cntTrans + '/' + cntTotal);
+                }
+                else {
+                    grunt.log.errorlns(language + ': ' + cntTrans + '/' + cntTotal);
+                }
+            });
+        });
+    });
 
     /**
      * In order to make it safe to just compile or copy *only* what was changed,
@@ -729,12 +757,12 @@ module.exports = function (grunt) {
      * before watching for changes.
      */
     grunt.renameTask('watch', 'delta');
-    grunt.registerTask('watch', [ 'build', 'karma:unit', 'delta' ]);
+    grunt.registerTask('watch', ['build', 'karma:unit', 'delta']);
 
     /**
      * The default task is to build.
      */
-    grunt.registerTask('default', [ 'build' ]);
+    grunt.registerTask('default', ['build']);
 
     /**
      * The `build` task gets your app ready to run for development and testing.
@@ -779,6 +807,7 @@ module.exports = function (grunt) {
      * It starts
      */
     grunt.registerTask('compile', [
+        'check_languages',
         'clean:changelog', 'changelog',
         'build',
         'copy:compile_assets', 'copy:compile_languages', 'clean:css', 'cssmin', 'json-minify',
