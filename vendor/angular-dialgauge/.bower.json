@@ -1,6 +1,6 @@
 {
   "name": "angular-dialgauge",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "homepage": "https://github.com/cdjackson/angular-dialgauge",
   "authors": [
     "Chris Jackson <chris@cd-jackson.com>"
@@ -20,11 +20,11 @@
     "test",
     "tests"
   ],
-  "_release": "0.1.4",
+  "_release": "0.1.5",
   "_resolution": {
     "type": "version",
-    "tag": "0.1.4",
-    "commit": "9243211bd5db0622ae6e6687c7f863895ac3023b"
+    "tag": "0.1.5",
+    "commit": "5c1199cc059e30482659025a345a20d96444c216"
   },
   "_source": "git://github.com/cdjackson/angular-dialgauge.git",
   "_target": "~0.1.4",

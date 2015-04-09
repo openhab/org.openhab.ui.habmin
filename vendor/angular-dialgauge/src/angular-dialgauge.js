@@ -38,11 +38,11 @@ angular.module('angular-dialgauge', [
                 scaleMajorWidth: '@',
                 scaleMajorLength: '@',
                 scaleMajorSteps: '@',
+                percent: '@',
                 options: '=?'
             },
             template: '' +
             '<div style="width:100%;height:100%;" ng-bind-html="gauge"</div>',
-            //         link: function ($scope, $element, $state) {
             controller: function ($scope, $element) {
                 // Define variables for this gauge
                 var radDeg = 180 / Math.PI;
@@ -59,6 +59,9 @@ angular.module('angular-dialgauge', [
                 var timer = null;
                 var height;
                 var width;
+                var relative = false;
+                var scaling = '';
+
 
                 var defaults = {                     // Default settings
                     scaleMin: 0,
@@ -85,7 +88,8 @@ angular.module('angular-dialgauge', [
                     scaleMajorColor: '#c0c0c0',
                     scaleMajorWidth: 1,
                     scaleMajorLength: 5,
-                    scaleMajorSteps: 9
+                    scaleMajorSteps: 9,
+                    percent: false
                 };
 
                 // Set default configuration
@@ -103,12 +107,21 @@ angular.module('angular-dialgauge', [
                 };
 
                 $scope.$watch($scope.getElementDimensions, function (newValue, oldValue) {
+                    if(newValue == null) {
+                        return;
+                    }
+
                     var c = Math.floor(Math.min(newValue.w, newValue.h) / 2);
 
                     // Update the static path for the gauge if it's changed
                     if (c != center) {
                         center = c;
                         height = width = center * 2;
+
+                        if(relative) {
+                            center = 50;
+                            scaling = 'transform="scale(' + (height / 100) + ')"';
+                        }
                         staticPath = createStaticPath();
                         updateBar(currentValue);
                     }
@@ -152,6 +165,7 @@ angular.module('angular-dialgauge', [
                     'borderOffset',
                     'borderColor',
                     'units',
+                    'percent',
                     'title'
                 ], function () {
                     parseParameters($scope);
@@ -197,11 +211,11 @@ angular.module('angular-dialgauge', [
                         return;
                     }
 
-                    console.log("Centre", center, cfg.dialWidth);
+//                    console.log("Centre", center, cfg.dialWidth);
                     var radius = center - cfg.dialWidth;
-                    console.log("Radius", radius);
+//                    console.log("Radius", radius);
 
-                    console.log("This is", this);
+//                    console.log("This is", this);
 
                     // Sanitise the rotation
                     // Rotation should start at the top, so we need to subtract 90 degrees
@@ -421,10 +435,10 @@ angular.module('angular-dialgauge', [
                     }
                     path += '</text>';
 
+
                     $scope.gauge =
-//                        $sce.trustAsHtml('<svg width="' + width + 'pt" height="' + height + 'pt">' + staticPath + path +
-                        $sce.trustAsHtml('<svg width="100%" height="100%">' + staticPath + path +
-                        '</svg>');
+                        $sce.trustAsHtml('<svg width="100%" height="100%"><g ' + scaling +'>' + staticPath + path +
+                        '</g></svg>');
                 }
 
                 // Calculate the start and end positions
@@ -451,6 +465,10 @@ angular.module('angular-dialgauge', [
                 }
 
                 function parseParameters(cfgObject) {
+                    if(cfgObject == null) {
+                        return;
+                    }
+
                     for (var key in defaults) {
                         console.log("Checking ", key);
 
@@ -467,6 +485,9 @@ angular.module('angular-dialgauge', [
                                 cfg[key] = 0;
                             }
                         }
+                        else if (typeof defaults[key] === 'boolean' &&  typeof cfg[key] !== 'boolean') {
+                            cfg[key] = cfg[key] === 'true' ? true : false;
+                        }
                     }
 
                     if (cfg.barColorEnd.length !== 0) {
@@ -474,6 +495,11 @@ angular.module('angular-dialgauge', [
                         color[0] = cfg.barColor;
                         color[1] = cfg.barColorEnd;
                         cfg.barColor = color;
+                    }
+
+                    relative = cfg.percent;
+                    if(relative == true) {
+
                     }
 
                     knobAngle = cfg.barAngle / radDeg / 2;
