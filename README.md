@@ -171,6 +171,11 @@ defined in the ```localeFallbacks``` array.
     })
 ```
 
+There is a Grunt task to check how complete the translations are - as HABmin is evolving, and new strings are continually being added, it's worth checking this periodically.
+
+To run the check, run ```grunt check_languages```. This will print the number of translations compared to the number of strings in the ```en-GB``` file.
+
+
 ## OpenHAB-2 Bundle
 The HABmin JAR for OpenHAB-2 is included in this repository.
 
