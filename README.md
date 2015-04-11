@@ -146,7 +146,9 @@ In ```app.js```, you should then add your language to the list of supported loca
 
 ```javascript
     .value('localeSupported', {
-        'en-GB': "English (United Kingdom)"
+        'en-GB': {name: "English", desc: "United Kingdom"},
+        'de-DE': {name: "Deutsch", desc: "Deutschland"},
+        'fr-FR': {name: "Fran&ccedil;ais", desc: "France"}
     })
 ```
 
@@ -156,11 +158,7 @@ If no string is available, then it should fall back to the default German locali
 is found here, it will fall back to the default localisation - English.
 
 Note that in the above special characters aren't supported natively as they are embedded in the code.
-To provide support use the sequence below. (note that the ```escape``` function is deprecated in javascript so
-if anyone knows of a better way to do this, please update the code).
-```javascript
-    decodeURIComponent(escape("Français (France)"))
-```
+To provide support for this, these strings will be treated as HTML, so you can use the html character escape codes as seen above for French.
 
 This should allow regional overrides of specific strings without having to override the whole file. Overrides are
 defined in the ```localeFallbacks``` array.
@@ -174,6 +172,7 @@ defined in the ```localeFallbacks``` array.
 There is a Grunt task to check how complete the translations are - as HABmin is evolving, and new strings are continually being added, it's worth checking this periodically.
 
 To run the check, run ```grunt check_languages```. This will print the number of translations compared to the number of strings in the ```en-GB``` file.
+If you add the option ```--lang=<language>``` (eg ```grunt check_languages --lang=de-DE```) then the system will list all missing strings for the specified language.
 
 
 ## OpenHAB-2 Bundle
