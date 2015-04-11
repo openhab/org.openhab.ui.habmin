@@ -150,6 +150,7 @@ module.exports = {
      * The list of languages we support
      */
     languages: [
+        'de-DE',
         'en-GB',
         'fr-FR'
     ]

@@ -736,8 +736,10 @@ module.exports = function (grunt) {
                     if(testLanguage[key] != null) {
                         cntTrans++;
                     }
-                    else {
+                    else if(grunt.option('lang') == language) {
+                        grunt.log.errorlns("Missing translation: \"" + key + "\"");
                     }
+
                 }
                 if(cntTrans == cntTotal) {
                     grunt.log.oklns(language + ': ' + cntTrans + '/' + cntTotal);
