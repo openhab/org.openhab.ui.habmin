@@ -1,5 +1,3 @@
-zwave.lang.json
-
 {
   "zwaveNode": "Node",
   "zwaveErrorLoadingDevices": "Netzwerkfehler beim Laden der ZWave Geräteliste.",
@@ -11,7 +9,7 @@ zwave.lang.json
   "zwaveNetworkUpdate": "Sekundärcontroller aktualisieren",
   "zwaveNetworkReset": "Controller zurücksetzen (Soft reset)",
   "zwaveNetworkHeal": "Netzwerk heilen",
-  "zwaveNetworkReplicate": "Netzwerk vom Primärcontroller replizieren,
+  "zwaveNetworkReplicate": "Netzwerk vom Primärcontroller replizieren",
   "zwaveActionOk": "Anforderung erfolgreich an den Server gesendet",
   "zwaveActionError": "Fehler bei während der Anforderung an den Server",
   "zwaveMainsPower": "Gerät wird mit Netzspannung versorgt.",
