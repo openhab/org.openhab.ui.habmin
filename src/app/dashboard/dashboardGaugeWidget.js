@@ -75,7 +75,7 @@ angular.module('dashboardGaugeWidget', [
                 ];
                 $scope.endCaps = [
                     {id: "round", name: locale.getString("habmin.dashboardGaugeEndCapRound")},
-                    {id: "butt", name: locale.getString("habmin.dashboardGaugeEndCapSquare")},
+                    {id: "butt", name: locale.getString("habmin.dashboardGaugeEndCapSquare")}
                 ];
 
                 $scope.selectTheme = function (theme) {

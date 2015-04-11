@@ -284,11 +284,10 @@
                                     <span i18n="habmin.mainDiscovery"></span>
                                 </a>
                             </li>
-                            <li role="presentation" class="divider"></li>
-                            <li ng-repeat="choice in bindings" ng-disabled="choice.disabled">
-                                <a class="disabled">
-                                    <habmin-icon class="fa fa-fw" icon="{{choice.icon}}"></habmin-icon>
-                                    <span>{{choice.name}}</span>
+                            <li>
+                                <a ui-sref="items">
+                                    <span class="fa fa-fw fa-paper-plane"></span>
+                                    <span i18n="habmin.mainItems"></span>
                                 </a>
                             </li>
                             <li role="presentation" class="divider"></li>

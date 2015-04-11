@@ -26,6 +26,7 @@ angular.module('HABmin', [
     'ZWaveLogViewer',
     'Config.Bindings',
     'Config.Things',
+    'Config.Items',
     'Config.Discovery',
     'UserChartPrefs',
     'UserGeneralPrefs',

@@ -17,6 +17,7 @@
   "mainBindings": "Bindings",
   "mainThings": "Thing Configuration",
   "mainDiscovery": "Thing Discovery",
+  "mainItems": "Items",
   "mainSitemaps": "Sitemaps",
   "mainAutomation": "Automation",
   "mainNotifications": "Notifications",
