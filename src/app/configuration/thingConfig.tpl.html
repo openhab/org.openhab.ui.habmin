@@ -206,10 +206,6 @@
                                    id="CONFIGLABEL{{$index+1}}"
                                    ng-model="thingSelected.configuration[config.name]">
                             <span class="help-block"><span class="text-muted">{{config.description}}</span></span>
-                            <!--
-                                                    <span class="fa fa-check form-control-feedback" aria-hidden="true"></span>
-                                                    <span id="CONFIGLABEL{{$index+1}}STATUS" class="sr-only">(error)</span>
-                            -->
                         </div>
                     </div>
                 </div>
@@ -217,10 +213,9 @@
                 <!-- CHANNELS -->
                 <div>
                     <a role="presentation" ng-class="{'list-group-item':true, 'active': panelDisplayed=='CHANNELS'}"
-                       ng-click="panelDisplayed='CHANNELS'"
-                       ng-disabled="thingType.channels==null || thingType.channels.length==0">
+                        ng-click="panelDisplayed='CHANNELS'">
                         <span class="fa fa-fw fa-navicon"></span>
-                        <span i18n="habmin.thingChannels"></span> {{thingType.channels.length}}
+                        <span i18n="habmin.thingChannels"></span> <span ng-if="thingType.channels.length">[{{thingType.channels.length}}]</span>
                     </a>
                 </div>
                 <div collapse="panelDisplayed!='CHANNELS'"

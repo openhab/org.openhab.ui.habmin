@@ -52,11 +52,14 @@ angular.module('HABmin.itemModel', [
                             else {
                                 itemList = [].concat(data);
                             }
+                            // Remove the formatting part off the end.
+                            // For OH2 we should ultimately use the stateDescription
                             angular.forEach(itemList, function (item) {
                                 if (item.label == null) {
-                                    item.label = {
-                                        title: ""
-                                    };
+//                                    item.stateDescription = {
+//                                        pattern: ""
+//                                    };
+                                    item.label = item.name;
                                     return;
                                 }
                                 var title = item.label;
@@ -65,9 +68,7 @@ angular.module('HABmin.itemModel', [
                                     title = item.label.substr(0, pntStart).trim();
                                     //    var pntFinish = item.label.lastIndexOf("]");
                                 }
-                                item.label = {
-                                    title: title
-                                };
+                                item.label = title;
                             });
                             console.log("Processing completed in", new Date().getTime() - tStart);
 

@@ -127,7 +127,7 @@ angular.module('Config.Things', [
             else {
                 ThingModel.enableChannel($scope.thingSelected.UID + ":" + channel.id).then(
                     function () {
-                        growl.success(locale.getString("habmin.thingChannelDisabledOk",
+                        growl.success(locale.getString("habmin.thingChannelEnabledOk",
                             {thing: $scope.thingSelected.item.label, channel: channel.label}));
 
                         ThingModel.getThing($scope.thingSelected.UID).then(
@@ -213,8 +213,38 @@ angular.module('Config.Things', [
         };
 
         $scope.categoryIcons = {
+            Alarm: 'oa-secur_alarm',
+            Battery: 'oa-measure_battery_100',
+            Blinds: 'oa-fts_sunblind',
+            ColorLight: 'fa fa-lightbulb-o',
+            Contact: '',
+            DimmableLight: 'oa-light_light_dim_70',
+            CarbonDioxide: '',
+            Door: 'oa-fts_door_open',
+            Energy: 'oa-measure_power_meter',
+            Fan: 'oa-vent_ventilation',
+            Fire: 'fa fa-fire',
+            Flow: '',
+            GarageDoor: 'oa-fts_garage',
+            Gas: '',
+            Humidity: 'oa-weather_humidity',
+            Light: 'fa fa-lightbulb-o',
+            Motion: 'oa-message_presence',
+            MoveControl: '',
+            Player: 'fa fa-play',
+            PowerOutlet: 'oa-message_socket',
             Pressure: 'oa-weather_barometric_pressure',
-            Temperature: 'oa-temp_temperature'
+            QualityOfService: '',
+            Rain: 'oa-weather_rain_gauge',
+            Recorder: '',
+            Smoke: 'oa-secur_smoke_detector',
+            SoundVolume: 'fa fa-volume-up',
+            Switch: '',
+            Temperature: 'oa-temp_temperature',
+            Water: 'oa-sani_water_tap',
+            Wind: 'oa-weather_wind',
+            Window: 'oa-fts_window_2w_open',
+            Zoom: 'fa fa-search'
         };
     })
 

@@ -98,11 +98,11 @@
         <!-- Display the list of items -->
         <div id="itemList" class="list-group habmin-list" ng-if="!selectCharts" resize-panel>
             <div ng-if="itemsTotal>0" ng-repeat="item in items | filter:filterFunction">
-                <a role="presentation" ng-if="item.label.title" ng-hide="item.filter"
+                <a role="presentation" ng-if="item.label" ng-hide="item.filter"
                    ng-class="{'list-group-item': true, 'active':item.selected}"
                    ng-click="selectItem(item)">
                     <habmin-icon class="icon-lg" icon="{{item.icon}}"></habmin-icon>
-                    <span>{{item.label.title}}</span>
+                    <span>{{item.label}}</span>
                     <span class="pull-right">
                         <span ng-if="item.selected" class="fa fa-check-square-o"></span>
                     </span>

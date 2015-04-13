@@ -258,14 +258,14 @@ angular.module('HABmin.persistenceModel', [
                             itemList = [].concat(data.items);
                             angular.forEach(itemList, function (item) {
                                 if (item.label == null) {
-                                    item.label = {
-                                        title: ""
+                                    item.stateDescription = {
+                                        pattern: ""
                                     };
+                                    item.label = item.name;
                                     return;
                                 }
-                                item.label = {
-                                    title: item.label,
-                                    format: item.format
+                                item.stateDescription = {
+                                    pattern: item.format
                                 };
                             });
 
