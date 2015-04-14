@@ -1,3 +1,31 @@
+<a name="0.0.11"></a>
+### 0.0.11 (2015-04-13)
+
+
+#### Bug Fixes
+
+* **Chart:**
+  * Fixed restore of saved chart list in OH2 ([b89de089](git@github.com:cdjackson/HABmin2/commit/b89de0890ed27f3b8ae80a51624f517ec579ba03))
+
+
+#### Features
+
+* **Bindings:**
+  * Initial implementation of binding properties for OH2 ([f1670902](git@github.com:cdjackson/HABmin2/commit/f1670902f9458a60350b3f120131d72c7449f519))
+* **Dashboard:**
+  * Add theme concept for predefined gauge types ([aae60191](git@github.com:cdjackson/HABmin2/commit/aae60191be0fc62a78907a5dfa88eed084ef5d6e))
+* **Items:**
+  * Add initial item information display interface ([9470caaa](git@github.com:cdjackson/HABmin2/commit/9470caaabd9358d26f0fbf5fa3c0d01ad9c68fc2))
+* **OpenHAB2:**
+  * Added more icons for channel categories ([45f8e6d6](git@github.com:cdjackson/HABmin2/commit/45f8e6d6005ce5f4777363354421a1a718decb19))
+  * Added support for OpenHAB1 ZWave binding configuration ([a95cfa00](git@github.com:cdjackson/HABmin2/commit/a95cfa0008a1590604babb876bc99e7aa1ed720e))
+* **UI:**
+  * Add initial German translation ([c2913bbe](git@github.com:cdjackson/HABmin2/commit/c2913bbec9b296da529e7862b249d2cac77b6415))
+  * Add support for international characters in locale names ([1f28b113](git@github.com:cdjackson/HABmin2/commit/1f28b1130b1ed1317000bc65750490e4b70b2460))
+  * Add country flags in language selection list ([bf4d61c4](git@github.com:cdjackson/HABmin2/commit/bf4d61c4bc354251862b6603992d2bf6cbb3253b))
+  * Incorporate native Bootstrap select box ([5b4c1250](git@github.com:cdjackson/HABmin2/commit/5b4c12506749d50304b2399d61f4a7e4b3050801))
+
+
 <a name="0.0.10"></a>
 ### 0.0.10 (2015-04-06)
 
