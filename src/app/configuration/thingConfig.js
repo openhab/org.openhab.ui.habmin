@@ -12,14 +12,14 @@ angular.module('Config.Things', [
     'ui.bootstrap',
     'ngLocalize',
     'HABmin.userModel',
+    'HABmin.itemModel',
     'HABmin.thingModel',
     'HABmin.bindingModel',
     'Config.parameter',
     'angular-growl',
     'Binding.config',
     'ngVis',
-    'ResizePanel',
-    'SidepanelService'
+    'ResizePanel'
 ])
 
     .config(function config($stateProvider) {
@@ -42,13 +42,19 @@ angular.module('Config.Things', [
     })
 
     .controller('ThingConfigCtrl',
-    function ThingConfigCtrl($scope, locale, growl, $timeout, $window, $http, $interval, UserService, ThingModel, BindingModel, SidepanelService) {
+    function ThingConfigCtrl($scope, locale, growl, $timeout, $window, $http, $interval, UserService, ThingModel, BindingModel, ItemModel) {
         $scope.panelDisplayed = 'CHANNELS';
         $scope.thingCnt = -1;
         ThingModel.getList().then(
             function (list) {
                 $scope.things = list;
                 $scope.thingCnt = $scope.things.length;
+            }
+        );
+
+        ItemModel.getList().then(
+            function (list) {
+                $scope.items = list;
             }
         );
 
@@ -103,6 +109,28 @@ angular.module('Config.Things', [
                         {name: thing.item.label}));
                 }
             );
+        };
+
+        $scope.getChannelItems = function (channel) {
+            if ($scope.thingSelected == null) {
+                return false;
+            }
+
+            for (var i = 0; i < $scope.thingSelected.channels.length; i++) {
+                if ($scope.thingSelected.channels[i].id == channel.id) {
+                    return $scope.thingSelected.channels[i].linkedItems;
+                }
+            }
+            return [];
+        };
+
+        $scope.getItem = function (itemName) {
+            for (var i = 0; i < $scope.items.length; i++) {
+                if ($scope.items[i].name == itemName) {
+                    return $scope.items[i];
+                }
+            }
+            return {};
         };
 
         $scope.channelEnable = function (channel) {
@@ -197,8 +225,9 @@ angular.module('Config.Things', [
                     };
 
                     angular.forEach(type.configParameters, function (parameter) {
-                        if(parameter.type == 'BOOLEAN') {
-                            $scope.thingSelected.configuration[parameter.name] = parameter.defaultValue==='true'?true:false;
+                        if (parameter.type == 'BOOLEAN') {
+                            $scope.thingSelected.configuration[parameter.name] =
+                                parameter.defaultValue === 'true' ? true : false;
                         }
                         else {
                             $scope.thingSelected.configuration[parameter.name] = parameter.defaultValue;

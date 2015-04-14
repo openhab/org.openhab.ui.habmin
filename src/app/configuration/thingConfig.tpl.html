@@ -243,6 +243,18 @@
                                     </button>
                                 </span>
                             </div>
+
+                            <div class="thing-items small well well-sm">
+                                <div ng-if="getChannelItems(channel).length==0" i18n="habmin.thingChannelNoItems"></div>
+                                <div ng-if="getChannelItems(channel).length!=0">
+                                    <div class="thing-items-title text-uppercase"><strong i18n="habmin.thingChannelItems"></strong></div>
+                                    <div>
+                                        <div ng-repeat="item in getChannelItems(channel)" class="thing-items-list">
+                                            {{getItem(item).label}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

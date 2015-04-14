@@ -142,6 +142,8 @@
   "thingProperties": "Properties",
   "thingConfiguration": "Configuration",
   "thingChannels": "Channels",
+  "thingChannelItems": "Associated Items:",
+  "thingChannelNoItems": "Channel has no associated items",
   "thingSuccessSavingThing": "Thing <b><i>{name}</i></b> saved successfully",
   "thingErrorSavingThing": "Error saving thing <b><i>{name}</i></b>",
   "thingErrorGettingThing": "Error loading thing <b><i>{name}</i></b>",
