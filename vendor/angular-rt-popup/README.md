@@ -64,6 +64,23 @@ You can control the placement of the popup by adding a `popup-placement` attribu
 
 Supported values: `right`, `left`, `bottom`, `bottom-left`, `top`.
 
+### `popup-placement-fn`
+
+A function that can control the placement of a popup based on the given screen location. It receives an anchor object and should return `right`, `left`, `bottom`, `bottom-left` or `top`.
+
+The anchor object has the following properties: `top`, `left`, `width`, `height`.
+
+If this function is defined it will override the placement attribute.
+
+```html
+<a popup-show="popup.html" popup-placement-fn="placement">Show popup!</a>
+```
+
+```javascript
+scope.placement = function (anchor) {
+    return anchor.left < $window.width / 2 ? "right" : "left";
+};
+```
 
 ### `popup-if`
 

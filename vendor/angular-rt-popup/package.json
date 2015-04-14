@@ -1,6 +1,6 @@
 {
   "name": "angular-rt-popup",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "A better version of the Bootstrap popover, for Angular.JS",
   "main": "dist/angular-rt-popup.js",
   "directories": {

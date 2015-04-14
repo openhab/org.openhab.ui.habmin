@@ -48,10 +48,11 @@ angular.module('rt.popup', [])
         function showPopup(anchor, scope, attrs) {
             extend(attrs, {
                 popupPlacement: 'right',
+                popupPlacementFn: null,
                 popupClass: '',
                 popupShown: '',
                 popupHidden: '',
-                popupOverlap: 5 // Overlap with anchor element
+                popupOverlap: '5' // Overlap with anchor element
             });
 
             scope.popupView = attrs.popupShow;
@@ -80,9 +81,14 @@ angular.module('rt.popup', [])
 
             var placement = options.popupPlacement;
 
+            var fn = options.popupPlacementFn ? $parse(options.popupPlacementFn)(scope) : null;
+            if (angular.isFunction(fn)) {
+                placement = fn(anchorGeom);
+            }
+
             var maxHeight = $window.innerHeight - 2 * padding;
 
-            var overlap = options.popupOverlap;
+            var overlap = +options.popupOverlap;
 
             // Calculate popup position
             if (placement === 'right') {
