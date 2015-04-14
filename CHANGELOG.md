@@ -16,8 +16,9 @@
   * Add theme concept for predefined gauge types ([aae60191](git@github.com:cdjackson/HABmin2/commit/aae60191be0fc62a78907a5dfa88eed084ef5d6e))
 * **Items:**
   * Add initial item information display interface ([9470caaa](git@github.com:cdjackson/HABmin2/commit/9470caaabd9358d26f0fbf5fa3c0d01ad9c68fc2))
-* **OpenHAB2:**
+* **Things:**
   * Added more icons for channel categories ([45f8e6d6](git@github.com:cdjackson/HABmin2/commit/45f8e6d6005ce5f4777363354421a1a718decb19))
+* **ZWave:**
   * Added support for OpenHAB1 ZWave binding configuration ([a95cfa00](git@github.com:cdjackson/HABmin2/commit/a95cfa0008a1590604babb876bc99e7aa1ed720e))
 * **UI:**
   * Add initial German translation ([c2913bbe](git@github.com:cdjackson/HABmin2/commit/c2913bbec9b296da529e7862b249d2cac77b6415))
