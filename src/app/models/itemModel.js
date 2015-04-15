@@ -15,27 +15,49 @@ angular.module('HABmin.itemModel', [
         var svcName = "items";
         var itemList = [];
         var url = UserService.getServer() + '/rest/items';
+        var eventSrc;
 
-        var socket = null;
-        this.sendCommand = function (item, value) {
-            console.log("Sending command", item, value);
-            var deferred = $q.defer();
-            $http.post(url + "/" + item, value, {
-                    headers: {'Content-Type': 'text/plain'}
+        var me = this;
+
+        this.listen = function () {
+            eventSrc = new EventSource("/rest/events?topics=smarthome/items/*");
+
+            eventSrc.addEventListener('message', function (event) {
+                console.log(event.type);
+                console.log(event.data);
+
+                var evt = angular.fromJson(event.data);
+                var item = evt.object[0];
+
+                if (evt.topic.indexOf("smarthome/items/added") == 0) {
+                    itemList.push(item);
                 }
-            ).success(function (data, status) {
-                    // Some extra manipulation on data if you want...
-                    deferred.resolve([].concat(data));
-                }).error(function (data, status) {
-                    deferred.reject(data);
-                });
-
-            return deferred.promise;
+                else if (evt.topic.indexOf("smarthome/items/removed") == 0) {
+                    for (var i = 0; i < itemList.length; i++) {
+                        if (itemList[i].name == item.name) {
+                            itemList.splice(i, 1);
+                            break;
+                        }
+                    }
+                }
+                else if (evt.topic.indexOf("smarthome/items/updated") == 0) {
+                    for (var i = 0; i < itemList.length; i++) {
+                        if (itemList[i].name == item.name) {
+                            itemList[i] = item;
+                            break;
+                        }
+                    }
+                }
+            });
         };
 
         this.getList = function () {
             var tStart = new Date().getTime();
             var deferred = $q.defer();
+
+            if (eventSrc == null) {
+                me.listen();
+            }
 
             RestService.getService(svcName).then(
                 function (url) {
@@ -105,6 +127,22 @@ angular.module('HABmin.itemModel', [
                     deferred.reject(null);
                 }
             );
+            return deferred.promise;
+        };
+
+        this.sendCommand = function (item, value) {
+            console.log("Sending command", item, value);
+            var deferred = $q.defer();
+            $http.post(url + "/" + item, value, {
+                    headers: {'Content-Type': 'text/plain'}
+                }
+            ).success(function (data, status) {
+                    // Some extra manipulation on data if you want...
+                    deferred.resolve([].concat(data));
+                }).error(function (data, status) {
+                    deferred.reject(data);
+                });
+
             return deferred.promise;
         };
 

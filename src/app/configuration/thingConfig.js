@@ -54,7 +54,7 @@ angular.module('Config.Things', [
 
         ItemModel.getList().then(
             function (list) {
-                $scope.items = list;
+                $scope.itemList = list;
             }
         );
 
@@ -125,12 +125,12 @@ angular.module('Config.Things', [
         };
 
         $scope.getItem = function (itemName) {
-            for (var i = 0; i < $scope.items.length; i++) {
-                if ($scope.items[i].name == itemName) {
-                    return $scope.items[i];
+            for (var i = 0; i < $scope.itemList.length; i++) {
+                if ($scope.itemList[i].name == itemName) {
+                    return $scope.itemList[i];
                 }
             }
-            return {};
+            return {label: itemName};
         };
 
         $scope.channelEnable = function (channel) {
