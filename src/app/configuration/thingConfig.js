@@ -16,6 +16,7 @@ angular.module('Config.Things', [
     'HABmin.thingModel',
     'HABmin.bindingModel',
     'Config.parameter',
+    'Config.ItemEdit',
     'angular-growl',
     'Binding.config',
     'ngVis',
@@ -42,7 +43,7 @@ angular.module('Config.Things', [
     })
 
     .controller('ThingConfigCtrl',
-    function ThingConfigCtrl($scope, locale, growl, $timeout, $window, $http, $interval, UserService, ThingModel, BindingModel, ItemModel) {
+    function ThingConfigCtrl($scope, locale, growl, $timeout, $window, $http, $interval, UserService, ThingModel, BindingModel, ItemModel, itemEdit) {
         $scope.panelDisplayed = 'CHANNELS';
         $scope.thingCnt = -1;
         ThingModel.getList().then(
@@ -122,6 +123,26 @@ angular.module('Config.Things', [
                 }
             }
             return [];
+        };
+
+        $scope.editItem = function (itemName) {
+            for (var i = 0; i < $scope.itemList.length; i++) {
+                if ($scope.itemList[i].name == itemName) {
+                    itemEdit.edit($scope.itemList[i]).then(
+                        function(item) {
+                            ItemModel.putItem(item).then(
+                                function() {
+
+                                },
+                                function() {
+                                    growl.warning(locale.getString("habmin.itemSaveFailed",
+                                        {name: item.label}));
+                                }
+                            )
+                        }
+                    );
+                }
+            }
         };
 
         $scope.getItem = function (itemName) {

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<div class="modal-header">
+    <h3 class="modal-title" i18n="habmin.itemEditTitle"></h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" role="form">
+
+        <div class="form-group">
+            <label for="inputLabel" class="control-label" i18n="habmin.itemEditLabel"></label>
+            <div>
+                <input type="text" ng-model="item.label" class="form-control" id="inputLabel" placeholder="Label">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="inputFormat" class="control-label" i18n="habmin.itemEditFormat"></label>
+            <div>
+                <input type="text" ng-model="item.stateDescription.format" class="form-control" id="inputFormat" placeholder="Label">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="inputType" class="control-label" i18n="habmin.itemEditType"></label>
+            <div>
+                <input type="text" ng-model="item.type" class="form-control" id="inputType" placeholder="Label">
+            </div>
+        </div>
+
+    </form>
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" ng-click="ok()" i18n="common.save"></button>
+    <button type="button" class="btn btn-warning" ng-click="cancel()" i18n="common.cancel"></button>
+</div>

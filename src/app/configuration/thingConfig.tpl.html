@@ -244,12 +244,15 @@
                                 </span>
                             </div>
 
-                            <div class="thing-items small well well-sm">
-                                <div ng-if="getChannelItems(channel).length==0" i18n="habmin.thingChannelNoItems"></div>
-                                <div ng-if="getChannelItems(channel).length!=0">
-                                    <div class="thing-items-title text-uppercase"><strong i18n="habmin.thingChannelItems"></strong></div>
+                            <div class="thing-items well well-sm" ng-switch="getChannelItems(channel).length">
+                                <div ng-switch-when="0" i18n="habmin.thingChannelNoItems"></div>
+                                <div ng-switch-default>
+                                    <div class="thing-items-title text-muted"><strong i18n="habmin.thingChannelItems"></strong></div>
                                     <div>
                                         <div ng-repeat="item in getChannelItems(channel)" class="thing-items-list">
+                                            <button type="button" class="btn btn-primary btn-xs" ng-click="editItem(item)">
+                                                <span class="fa fa-edit" i18n="common.Edit"></span>
+                                            </button>
                                             {{getItem(item).label}}
                                         </div>
                                     </div>

@@ -130,6 +130,25 @@ angular.module('HABmin.itemModel', [
             return deferred.promise;
         };
 
+        this.putItem = function (item) {
+            var deferred = $q.defer();
+            RestService.getService(svcName).then(
+                function (url) {
+                    $http.post(url + "/" + item.name, item)
+                        .success(function (data) {
+                            deferred.resolve(data);
+                        })
+                        .error(function (data, status) {
+                            deferred.reject(data);
+                        });
+                    },
+                function () {
+                    deferred.reject(null);
+                }
+            );
+            return deferred.promise;
+        };
+
         this.sendCommand = function (item, value) {
             console.log("Sending command", item, value);
             var deferred = $q.defer();
