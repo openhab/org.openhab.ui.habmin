@@ -134,7 +134,7 @@ angular.module('HABmin.itemModel', [
             var deferred = $q.defer();
             RestService.getService(svcName).then(
                 function (url) {
-                    $http.post(url + "/" + item.name, item)
+                    $http.put(url + "/" + item.name, item)
                         .success(function (data) {
                             deferred.resolve(data);
                         })

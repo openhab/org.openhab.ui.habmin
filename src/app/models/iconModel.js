@@ -88,6 +88,41 @@ angular.module('HABmin.iconModel', [
             "zwave": {class: "oa-it_wireless_dcf77"}
         };
 
+        this.categoryIcons = {
+            Alarm: 'oa-secur_alarm',
+            Battery: 'oa-measure_battery_100',
+            Blinds: 'oa-fts_sunblind',
+            ColorLight: 'fa fa-lightbulb-o',
+            Contact: '',
+            DimmableLight: 'oa-light_light_dim_70',
+            CarbonDioxide: '',
+            Door: 'oa-fts_door_open',
+            Energy: 'oa-measure_power_meter',
+            Fan: 'oa-vent_ventilation',
+            Fire: 'fa fa-fire',
+            Flow: '',
+            GarageDoor: 'oa-fts_garage',
+            Gas: '',
+            Humidity: 'oa-weather_humidity',
+            Light: 'fa fa-lightbulb-o',
+            Motion: 'oa-message_presence',
+            MoveControl: '',
+            Player: 'fa fa-play',
+            PowerOutlet: 'oa-message_socket',
+            Pressure: 'oa-weather_barometric_pressure',
+            QualityOfService: '',
+            Rain: 'oa-weather_rain_gauge',
+            Recorder: '',
+            Smoke: 'oa-secur_smoke_detector',
+            SoundVolume: 'fa fa-volume-up',
+            Switch: '',
+            Temperature: 'oa-temp_temperature',
+            Water: 'oa-sani_water_tap',
+            Wind: 'oa-weather_wind',
+            Window: 'oa-fts_window_2w_open',
+            Zoom: 'fa fa-search'
+        };
+
         this.lookupImage = function (src) {
             if(src === undefined || src === "") {
                 return "";
@@ -97,6 +132,17 @@ angular.module('HABmin.iconModel', [
                 return "";
             }
             return this._lookupTable[src].class;
+        };
+
+        this.lookupCategory = function (src) {
+            if(src === undefined || src === "") {
+                return "";
+            }
+            if (this.categoryIcons[src] === undefined || this.categoryIcons[src] === "") {
+                console.log("Unknown category icon", src);
+                return "";
+            }
+            return this.categoryIcons[src];
         };
     })
 
@@ -109,15 +155,32 @@ angular.module('HABmin.iconModel', [
                 if(css !== undefined && css.length !== 0) {
                     css += ' ';
                 }
-                var data = "<span class='" + css + ImgFactory.lookupImage(attrs.icon) + "'></span>";
-                element.append(data);
+                else {
+                    css = "";
+                }
 
+                var cssIcon;
                 var el = element;
-                attrs.$observe('icon', function (val) {
-                    var data = "<span class='" + css + ImgFactory.lookupImage(val) + "'></span>";
-                    var newEl = el.find('span');
-                    newEl.replaceWith(data);
-                });
+                if(attrs.icon != null) {
+                    attrs.$observe('icon', function (val) {
+                        var data = "<span class='" + css + ImgFactory.lookupImage(val) + "'></span>";
+                        var newEl = el.find('span');
+                        newEl.replaceWith(data);
+                    });
+
+                    cssIcon = ImgFactory.lookupImage(attrs.icon);
+                }
+                else if(attrs.category != null) {
+                    attrs.$observe('category', function (val) {
+                        var data = "<span class='" + css + ImgFactory.lookupCategory(val) + "'></span>";
+                        var newEl = el.find('span');
+                        newEl.replaceWith(data);
+                    });
+
+                    cssIcon = ImgFactory.lookupCategory(attrs.category);
+                }
+                var data = "<span class='" + css + cssIcon + "'></span>";
+                element.append(data);
             }
         };
     })

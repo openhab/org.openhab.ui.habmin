@@ -163,6 +163,7 @@
   "itemEditLabel": "Label",
   "itemEditFormat": "Format",
   "itemEditType": "Item Type",
+  "itemEditCategory": "Category",
   "itemSaveFailed": "Error saving item <b><i>{name}</i></b>.",
   "errorLoadingSitemaps": "Error loading the sitemap list!",
   "period1Second": "1 Second",
