@@ -33,6 +33,10 @@ angular.module('HABmin.thingModel', [
                             thingList = [].concat(data);
                             console.log("Processing completed in", new Date().getTime() - tStart);
 
+                            // Derive the binding ID so we can use this to filter things
+                            angular.forEach(thingList, function(thing) {
+                                thing.binding = thing.UID.split(":")[0];
+                            });
                             deferred.resolve(thingList);
                         })
                         .error(function (data, status) {

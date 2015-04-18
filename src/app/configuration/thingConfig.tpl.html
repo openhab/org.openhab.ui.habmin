@@ -14,20 +14,24 @@
                     <span class="sr-only">Dropdown</span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a ng-click="listOnline=!listOnline">
-                        <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': listOnline}"></span>
-                        <span class="fa fa-fw fa-check-circle text-success"></span>
-                        <span i18n="habmin.thingOnline"></span>
-                    </a></li>
-                    <li><a ng-click="listOffline=!listOffline">
-                        <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': listOffline}"></span>
-                        <span class="fa fa-fw fa-times-circle text-danger"></span>
-                        <span i18n="habmin.thingOffline"></span>
-                    </a></li>
+                    <li>
+                        <a ng-click="listOnline=!listOnline">
+                            <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': listOnline}"></span>
+                            <span class="fa fa-fw fa-check-circle text-success"></span>
+                            <span i18n="habmin.thingOnline"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a ng-click="listOffline=!listOffline">
+                            <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': listOffline}"></span>
+                            <span class="fa fa-fw fa-times-circle text-danger"></span>
+                            <span i18n="habmin.thingOffline"></span>
+                        </a>
+                    </li>
                     <li role="presentation" class="divider"></li>
                     <li ng-repeat="binding in bindings" ng-class="{'disabled': binding.disabled}">
-                        <a>
-                            <span class="fa-fw fa fa-check-square-o"></span>
+                        <a ng-click="toggleFilter(binding)">
+                            <span ng-class="{'fa-fw fa': true, 'fa-check-square-o': filterBindings.indexOf(binding.id)!=-1}"></span>
                             <habmin-icon class="fa fa-fw" icon="{{binding.icon}}"></habmin-icon>
                             <span>{{binding.name}}</span>
                         </a>
@@ -254,6 +258,7 @@
                                             <button type="button" class="btn btn-primary btn-xs" ng-click="editItem(item)">
                                                 <span class="fa fa-edit" i18n="common.Edit"></span>
                                             </button>
+                                            <habmin-icon class="fa fa-fw" itemtype="{{getItem(item).type}}"></habmin-icon>
                                             {{getItem(item).label}}
                                         </div>
                                     </div>

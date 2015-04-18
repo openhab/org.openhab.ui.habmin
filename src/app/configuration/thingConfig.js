@@ -46,6 +46,15 @@ angular.module('Config.Things', [
     function ThingConfigCtrl($scope, locale, growl, $timeout, $window, $http, $interval, UserService, ThingModel, BindingModel, ItemModel, itemEdit) {
         $scope.panelDisplayed = 'CHANNELS';
         $scope.thingCnt = -1;
+
+        $scope.newThings = [];
+
+        $scope.insertMode = false;
+        $scope.listOnline = true;
+        $scope.listOffline = true;
+
+        $scope.filterBindings = [];
+
         ThingModel.getList().then(
             function (list) {
                 $scope.things = list;
@@ -59,31 +68,43 @@ angular.module('Config.Things', [
             }
         );
 
-        $scope.newThings = [];
-
-        $scope.insertMode = false;
-        $scope.listOnline = true;
-        $scope.listOffline = true;
-
-        $scope.filterFunction = function (element) {
-            if (element.status == "ONLINE" && $scope.listOnline) {
-                return true;
-            }
-            if (element.status == "OFFLINE" && $scope.listOffline) {
-                return true;
-            }
-            return false;
-        };
-
         BindingModel.getList().then(
             function (bindings) {
                 $scope.bindings = bindings;
+                // Add all bindings into the filter for starters...
+                angular.forEach($scope.bindings, function (binding) {
+                    $scope.filterBindings.push(binding.id);
+                });
             },
             function (reason) {
                 // Handle failure
                 growl.warning(locale.getString("habmin.mainErrorGettingBindings"));
             }
         );
+
+        $scope.filterFunction = function (element) {
+            if ($scope.filterBindings.indexOf(element.binding) == -1) {
+                return false;
+            }
+            if (element.status == "ONLINE" && $scope.listOnline) {
+                return true;
+            }
+            if (element.status == "OFFLINE" && $scope.listOffline) {
+                return true;
+            }
+
+            return false;
+        };
+
+        $scope.toggleFilter = function (binding) {
+            var p = $scope.filterBindings.indexOf(binding.id);
+            if (p == -1) {
+                $scope.filterBindings.push(binding.id);
+            }
+            else {
+                $scope.filterBindings.splice(p, 1);
+            }
+        };
 
         $scope.selectThing = function (thing) {
             $scope.thingSelected = null;
@@ -128,19 +149,7 @@ angular.module('Config.Things', [
         $scope.editItem = function (itemName) {
             for (var i = 0; i < $scope.itemList.length; i++) {
                 if ($scope.itemList[i].name == itemName) {
-                    itemEdit.edit($scope.itemList[i]).then(
-                        function(item) {
-                            ItemModel.putItem(item).then(
-                                function() {
-
-                                },
-                                function() {
-                                    growl.warning(locale.getString("habmin.itemSaveFailed",
-                                        {name: item.label}));
-                                }
-                            )
-                        }
-                    );
+                    itemEdit.edit($scope.itemList[i]);
                 }
             }
         };
