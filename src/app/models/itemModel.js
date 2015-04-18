@@ -41,6 +41,7 @@ angular.module('HABmin.itemModel', [
                     }
                 }
                 else if (evt.topic.indexOf("smarthome/items/updated") == 0) {
+                    var item = evt.object[1];
                     for (var i = 0; i < itemList.length; i++) {
                         if (itemList[i].name == item.name) {
                             itemList[i] = item;
