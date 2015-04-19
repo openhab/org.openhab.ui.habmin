@@ -12,7 +12,7 @@
 angular.module('HABmin.iconModel', [
 ])
     .service("ImgFactory", function ($resource) {
-        this._lookupTable = {
+        this.generalIcons = {
             "alarm": {class: "oa-message_presence"},
             "baramoter": {class: "oa-weather_barometric_pressure"},
             "bath": {class: "oa-scene_bath"},
@@ -93,7 +93,7 @@ angular.module('HABmin.iconModel', [
             Battery: 'oa-measure_battery_100',
             Blinds: 'oa-fts_sunblind',
             ColorLight: 'fa fa-lightbulb-o',
-            Contact: 'oa-fts_door_open',
+            Contact: 'fa fa-dot-circle-o',
             DimmableLight: 'oa-light_light_dim_70',
             CarbonDioxide: 'fa fa-ambulance',
             Door: 'oa-fts_door_open',
@@ -123,15 +123,31 @@ angular.module('HABmin.iconModel', [
             Zoom: 'fa fa-search'
         };
 
-        this.lookupImage = function (src) {
+        this.itemIcons = {
+            CallItem: 'fa fa-phone',
+            ColorItem: 'fa fa-paint-brush',
+            ContactItem: 'fa fa-dot-circle-o',
+            DateTimeItem: 'fa fa-clock-o',
+            DimmerItem: 'fa fa-sliders',
+            GroupItem: 'fa fa-group',
+            ImageItem: 'fa fa-image',
+            LocationItem: 'fa fa-street-view',
+            NumberItem: 'fa fa-sort-numeric-asc',
+            PlayerItem: 'fa fa-youtube-play',
+            RollershutterItem: 'fa fa-arrows-v',
+            StringItem: 'fa fa-paragraph',
+            SwitchItem: 'fa fa-power-off'
+        };
+
+        this.lookupIcon = function (src) {
             if(src === undefined || src === "") {
                 return "";
             }
-            if (this._lookupTable[src] === undefined || this._lookupTable[src].class === "") {
+            if (this.generalIcons[src] === undefined || this.generalIcons[src].class === "") {
                 console.log("Unknown icon", src);
                 return "";
             }
-            return this._lookupTable[src].class;
+            return this.generalIcons[src].class;
         };
 
         this.lookupCategory = function (src) {
@@ -143,6 +159,17 @@ angular.module('HABmin.iconModel', [
                 return "";
             }
             return this.categoryIcons[src];
+        };
+
+        this.lookupItem = function (src) {
+            if(src === undefined || src === "") {
+                return "";
+            }
+            if (this.itemIcons[src] === undefined || this.itemIcons[src] === "") {
+                console.log("Unknown itemtype icon", src);
+                return "";
+            }
+            return this.itemIcons[src];
         };
     })
 
@@ -163,12 +190,12 @@ angular.module('HABmin.iconModel', [
                 var el = element;
                 if(attrs.icon != null) {
                     attrs.$observe('icon', function (val) {
-                        var data = "<span class='" + css + ImgFactory.lookupImage(val) + "'></span>";
+                        var data = "<span class='" + css + ImgFactory.lookupIcon(val) + "'></span>";
                         var newEl = el.find('span');
                         newEl.replaceWith(data);
                     });
 
-                    cssIcon = ImgFactory.lookupImage(attrs.icon);
+                    cssIcon = ImgFactory.lookupIcon(attrs.icon);
                 }
                 else if(attrs.category != null) {
                     attrs.$observe('category', function (val) {
@@ -178,6 +205,15 @@ angular.module('HABmin.iconModel', [
                     });
 
                     cssIcon = ImgFactory.lookupCategory(attrs.category);
+                }
+                else if(attrs.itemtype != null) {
+                    attrs.$observe('itemtype', function (val) {
+                        var data = "<span class='" + css + ImgFactory.lookupItem(val) + "'></span>";
+                        var newEl = el.find('span');
+                        newEl.replaceWith(data);
+                    });
+
+                    cssIcon = ImgFactory.lookupItem(attrs.itemtype);
                 }
                 var data = "<span class='" + css + cssIcon + "'></span>";
                 element.append(data);
