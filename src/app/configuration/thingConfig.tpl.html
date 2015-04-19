@@ -139,6 +139,13 @@
                 <span class="fa fa-times"></span>
                 <span class="hidden-xs hidden-sm" i18n="common.cancel"></span>
             </button>
+            <button type="button"
+                    class="btn btn-default"
+                    ng-confirm-click="thingDelete()" ng-confirm-icon="warning"
+                    i18n-attr="{'ngConfirmMessage': 'habmin.thingDeleteCheck','ngConfirmTitle': 'habmin.thingDelete','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes' }">
+                <span class="fa fa-trash"></span>
+                <span class="hidden-xs hidden-sm" i18n="common.delete"></span>
+            </button>
 
             <div ng-hidex="!devEdit.label" class="btn-group">
                 <div>{{thingType.label}}</div>
@@ -179,7 +186,7 @@
                     </a>
                 </div>
                 <div ng-showx="devEdit.information" collapse="panelDisplayed!='PROPERTIES'"
-                     class="panel-form form-horizontal">
+                     class="panel-form">
                     <div class="form-group">
                         <label for="inputThingLabel" class="control-label" i18n="habmin.thingLabel"></label>
                         <input type="text"
@@ -200,7 +207,7 @@
                     </a>
                 </div>
                 <div collapse="panelDisplayed!='CONFIG'"
-                     class="panel-form form-horizontal">
+                     class="panel-form">
                     <div ng-repeat="config in thingType.configParameters">
                         <div class="form-group">
                             <label for="CONFIGLABEL{{$index+1}}" class="control-label">{{config.label}}</label>
@@ -209,7 +216,7 @@
                                    ng-dirty ng-required="{{config.required}}"
                                    id="CONFIGLABEL{{$index+1}}"
                                    ng-model="thingSelected.configuration[config.name]">
-                            <span class="help-block"><span class="text-muted">{{config.description}}</span></span>
+                            <p class="help-block"><span class="text-muted" ng-bind-html="config.description"></span></p>
                         </div>
                     </div>
                 </div>
@@ -223,7 +230,7 @@
                     </a>
                 </div>
                 <div collapse="panelDisplayed!='CHANNELS'"
-                     class="panel-form form-horizontal">
+                     class="panel-form">
                     <div ng-repeat="channel in thingType.channels">
                         <div class="form-group">
                             <label for="CHANNELLABEL{{$index+1}}" class="control-label">{{channel.label}}</label>
@@ -252,16 +259,39 @@
                             <div class="thing-items well well-sm" ng-switch="getChannelItems(channel).length">
                                 <div ng-switch-when="0" i18n="habmin.thingChannelNoItems"></div>
                                 <div ng-switch-default>
-                                    <div class="thing-items-title text-muted"><strong i18n="habmin.thingChannelItems"></strong></div>
-                                    <div>
-                                        <div ng-repeat="item in getChannelItems(channel)" class="thing-items-list">
-                                            <button type="button" class="btn btn-primary btn-xs" ng-click="editItem(item)">
-                                                <span class="fa fa-edit" i18n="common.Edit"></span>
-                                            </button>
-                                            <habmin-icon class="fa fa-fw" itemtype="{{getItem(item).type}}"></habmin-icon>
-                                            {{getItem(item).label}}
-                                        </div>
-                                    </div>
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <td class="thing-items-title text-muted">
+                                                <strong i18n="habmin.thingChannelItems"></strong>
+                                            </td>
+                                            <td>
+                                                <div class="pull-right">
+                                                    <button type="button" class="btn btn-primary btn-xs" ng-click="editItem(item)">
+                                                        <span class="fa fa-plus-circle"></span> <span i18n="common.add"></span>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="item in getChannelItems(channel)">
+                                                <td>
+                                                    <habmin-icon class="fa fa-fw" itemtype="{{getItem(item).type}}"></habmin-icon>
+                                                    {{getItem(item).label}}
+                                                </td>
+                                                <td>
+                                                    <div class="pull-right">
+                                                        <button type="button" class="btn btn-primary btn-xs" ng-click="editItem(item)">
+                                                            <span class="fa fa-edit"></span> <span i18n="common.Edit"></span>
+                                                        </button>
+                                                        <button type="button" class="btn btn-primary btn-xs" ng-click="editItem(item)">
+                                                            <span class="fa fa-trash"></span> <span i18n="common.delete"></span>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>

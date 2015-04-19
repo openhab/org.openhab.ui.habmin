@@ -138,6 +138,10 @@ angular.module('Config.Things', [
                 return false;
             }
 
+            if($scope.thingSelected.channels == null) {
+                return [];
+            }
+
             for (var i = 0; i < $scope.thingSelected.channels.length; i++) {
                 if ($scope.thingSelected.channels[i].id == channel.id) {
                     return $scope.thingSelected.channels[i].linkedItems;
@@ -203,7 +207,7 @@ angular.module('Config.Things', [
         };
 
         $scope.channelEnabled = function (channel) {
-            if ($scope.thingSelected == null) {
+            if ($scope.thingSelected == null || $scope.thingSelected.channels == null) {
                 return false;
             }
 
@@ -223,12 +227,42 @@ angular.module('Config.Things', [
         $scope.thingSave = function () {
             ThingModel.putThing($scope.thingSelected).then(
                 function () {
+                    var name = "";
+                    if($scope.thingSelected.item != null) {
+                        name = $scope.thingSelected.item.label;
+                    }
                     growl.success(locale.getString("habmin.thingSuccessSavingThing",
-                        {name: $scope.thingSelected.item.label}));
+                        {name: name}));
                 },
                 function () {
+                    var name = "";
+                    if($scope.thingSelected.item != null) {
+                        name = $scope.thingSelected.item.label;
+                    }
                     growl.error(locale.getString("habmin.thingErrorSavingThing",
-                        {name: $scope.thingSelected.item.label}));
+                        {name: name}));
+                }
+            )
+        };
+
+        $scope.thingDelete = function () {
+            ThingModel.deleteThing($scope.thingSelected).then(
+                function () {
+                    var name = "";
+                    if($scope.thingSelected.item != null) {
+                        name = $scope.thingSelected.item.label;
+                    }
+                    growl.success(locale.getString("habmin.thingSuccessDeletingThing",
+                        {name: name}));
+                    $scope.thingSelected = null;
+                },
+                function () {
+                    var name = "";
+                    if($scope.thingSelected.item != null) {
+                        name = $scope.thingSelected.item.label;
+                    }
+                    growl.error(locale.getString("habmin.thingErrorDeletingThing",
+                        {name: name}));
                 }
             )
         };
@@ -246,7 +280,7 @@ angular.module('Config.Things', [
                 function (type) {
                     $scope.thingType = type;
                     $scope.thingSelected = {
-                        UID: type.UID + ":" + new Date().getTime().toString(16),
+                        UID: type.UID + ":",
                         item: {
                             label: "",
                             groupNames: []

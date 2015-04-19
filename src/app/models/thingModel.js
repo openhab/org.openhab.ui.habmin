@@ -17,10 +17,51 @@ angular.module('HABmin.thingModel', [
         var svcName = "things";
         var svcSetup = "setup";
         var svcTypes = "thing-types";
+        var eventSrc;
+
+        var me = this;
+
+        this.listen = function () {
+            eventSrc = new EventSource("/rest/events?topics=smarthome/things/*");
+
+            eventSrc.addEventListener('message', function (event) {
+                console.log(event.type);
+                console.log(event.data);
+
+                var evt = angular.fromJson(event.data);
+                var thing = evt.object[0];
+
+                if (evt.topic.indexOf("smarthome/things/added") == 0) {
+                    thing.binding = thing.UID.split(":")[0];
+                    thingList.push(thing);
+                }
+                else if (evt.topic.indexOf("smarthome/things/removed") == 0) {
+                    for (var i = 0; i < thingList.length; i++) {
+                        if (thingList[i].UID == thing.UID) {
+                            thingList.splice(i, 1);
+                            break;
+                        }
+                    }
+                }
+                else if (evt.topic.indexOf("smarthome/things/updated") == 0) {
+                    thing = evt.object[1];
+                    for (var i = 0; i < thingList.length; i++) {
+                        if (thingList[i].UID == thing.UID) {
+                            thingList[i] = thing;
+                            break;
+                        }
+                    }
+                }
+            });
+        };
 
         this.getList = function () {
             var tStart = new Date().getTime();
             var deferred = $q.defer();
+
+            if (eventSrc == null) {
+                me.listen();
+            }
 
             RestService.getService(svcName).then(
                 function (url) {
@@ -123,7 +164,42 @@ angular.module('HABmin.thingModel', [
 
             RestService.getService(svcSetup).then(
                 function (url) {
-                    $http.put(url + "/things", thing)
+                    // If the UID ends with a colon, then it's new
+                    if(thing.UID.slice(-1) == ':') {
+                        thing.UID += new Date().getTime().toString(16);
+                        $http.post(url + "/things", thing)
+                            .success(function (data) {
+                                deferred.resolve(data);
+                            })
+                            .error(function (data, status) {
+                                deferred.reject(data);
+                            });
+                    }
+                    else {
+                        $http.put(url + "/things", thing)
+                            .success(function (data) {
+                                deferred.resolve(data);
+                            })
+                            .error(function (data, status) {
+                                deferred.reject(data);
+                            });
+                    }
+                },
+                function () {
+                    deferred.reject(null);
+                }
+            );
+
+            return deferred.promise;
+        };
+
+        this.deleteThing = function (thing) {
+            var tStart = new Date().getTime();
+            var deferred = $q.defer();
+
+            RestService.getService(svcName).then(
+                function (url) {
+                    $http.delete(url + "/" + thing.UID)
                         .success(function (data) {
                             deferred.resolve(data);
                         })

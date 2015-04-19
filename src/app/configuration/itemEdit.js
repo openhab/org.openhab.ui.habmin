@@ -11,22 +11,27 @@ angular.module('Config.ItemEdit', [
     'ui.bootstrap',
     'ngSanitize',
     'angular-growl',
+    'HABmin.itemModel',
     'ngLocalize'
 ])
     .service('itemEdit',
-    function ($modal, $rootScope, growl, locale, UserService) {
+    function ($modal, $rootScope, growl, locale, UserService, ItemModel) {
         this.edit = function (item) {
             var scope = $rootScope.$new();
             scope.item = angular.copy(item);
             locale.ready('smarthome').then(
                 function () {
-                    scope.types = [
+                    scope.itemtypes = [
+//                        {id: 'CallItem', name: locale.getString("smarthome.itemCallItem")},
                         {id: 'ColorItem', name: locale.getString("smarthome.itemColorItem")},
                         {id: 'ContactItem', name: locale.getString("smarthome.itemContactItem")},
                         {id: 'DateTimeItem', name: locale.getString("smarthome.itemDateTimeItem")},
                         {id: 'DimmerItem', name: locale.getString("smarthome.itemDimmerItem")},
                         {id: 'GroupItem', name: locale.getString("smarthome.itemGroupItem")},
+                        {id: 'ImageItem', name: locale.getString("smarthome.itemImageItem")},
+                        {id: 'LocationItem', name: locale.getString("smarthome.itemLocationItem")},
                         {id: 'NumberItem', name: locale.getString("smarthome.itemNumberItem")},
+                        {id: 'PlayerItem', name: locale.getString("smarthome.itemPlayerItem")},
                         {id: 'RollershutterItem', name: locale.getString("smarthome.itemRollershutterItem")},
                         {id: 'StringItem', name: locale.getString("smarthome.itemStringItem")},
                         {id: 'SwitchItem', name: locale.getString("smarthome.itemSwitchItem")}
@@ -67,6 +72,13 @@ angular.module('Config.ItemEdit', [
                     ];
                 });
 
+            scope.items = [];
+            ItemModel.getList().then(
+                function (list) {
+                    scope.items = list;
+                }
+            );
+
             /**
              * Controller functions get called when the modal closes
              * @param $scope
@@ -74,7 +86,16 @@ angular.module('Config.ItemEdit', [
              */
             var controller = function ($scope, $modalInstance) {
                 $scope.ok = function (result) {
-                    $modalInstance.close(scope.item);
+                    scope.item.groupNames = [].concat(scope.item.groupNames);
+                    ItemModel.putItem(item).then(
+                        function() {
+                            $modalInstance.close(scope.item);
+                        },
+                        function() {
+                            growl.warning(locale.getString("habmin.itemSaveFailed",
+                                {name: item.label}));
+                        }
+                    );
                 };
                 $scope.cancel = function (result) {
                     $modalInstance.dismiss('cancel');

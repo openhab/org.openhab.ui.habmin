@@ -41,7 +41,7 @@ angular.module('HABmin.itemModel', [
                     }
                 }
                 else if (evt.topic.indexOf("smarthome/items/updated") == 0) {
-                    var item = evt.object[1];
+                    item = evt.object[1];
                     for (var i = 0; i < itemList.length; i++) {
                         if (itemList[i].name == item.name) {
                             itemList[i] = item;
@@ -147,6 +147,28 @@ angular.module('HABmin.itemModel', [
                     deferred.reject(null);
                 }
             );
+            return deferred.promise;
+        };
+
+        this.deleteItem = function (item) {
+            var tStart = new Date().getTime();
+            var deferred = $q.defer();
+
+            RestService.getService(svcName).then(
+                function (url) {
+                    $http.delete(url + "/", item.name)
+                        .success(function (data) {
+                            deferred.resolve(data);
+                        })
+                        .error(function (data, status) {
+                            deferred.reject(data);
+                        });
+                },
+                function () {
+                    deferred.reject(null);
+                }
+            );
+
             return deferred.promise;
         };
 
