@@ -10,7 +10,7 @@
 angular.module('SidepanelService', [
     'ngAnimate'
 ])
-    .service("SidepanelService", function ($resource, $rootScope) {
+    .service("SidepanelService", function ($rootScope) {
         var currentPanel = "";
 
         this.getPanel = function () {

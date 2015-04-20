@@ -23,6 +23,7 @@ angular.module('HABmin', [
     'HABmin.inboxModel',
     'HABmin.dashboard',
     'HABmin.scheduler',
+    'HABmin.updateService',
     'ZWaveLogViewer',
     'Config.Bindings',
     'Config.Things',
@@ -169,7 +170,7 @@ angular.module('HABmin', [
     ])
 
     .controller('HABminCtrl',
-    function HABminCtrl($scope, $location, $window, $timeout, $interval, $rootScope, locale, DashboardModel, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, InboxModel, SidepanelService, RestService) {
+    function HABminCtrl($scope, $location, $window, $timeout, $interval, $rootScope, locale, DashboardModel, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, InboxModel, SidepanelService, RestService, UpdateService) {
         $scope.isLoggedIn = UserService.isLoggedIn;
 
         // List of current themes
@@ -416,6 +417,9 @@ angular.module('HABmin', [
                 SidepanelService.showPanel('side');
             }
         };
+
+        // Check if there's a newer version available
+        UpdateService.checkForUpdates();
     })
 
     .filter('orderObjectBy', function () {
