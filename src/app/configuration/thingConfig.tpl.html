@@ -15,17 +15,24 @@
                 </button>
                 <ul class="dropdown-menu" role="menu">
                     <li>
-                        <a ng-click="listOnline=!listOnline">
-                            <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': listOnline}"></span>
+                        <a ng-click="toggleStatusFilter('ONLINE')">
+                            <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': filterStatus.indexOf('ONLINE')!=-1}"></span>
                             <span class="fa fa-fw fa-check-circle text-success"></span>
-                            <span i18n="habmin.thingOnline"></span>
+                            <span i18n="habmin.thingStatusOnline"></span>
                         </a>
                     </li>
                     <li>
-                        <a ng-click="listOffline=!listOffline">
-                            <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': listOffline}"></span>
+                        <a ng-click="toggleStatusFilter('OFFLINE')">
+                            <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': filterStatus.indexOf('OFFLINE')!=-1}"></span>
                             <span class="fa fa-fw fa-times-circle text-danger"></span>
-                            <span i18n="habmin.thingOffline"></span>
+                            <span i18n="habmin.thingStatusOffline"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a ng-click="toggleStatusFilter('INITIALIZING')">
+                            <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': filterStatus.indexOf('INITIALIZING')!=-1}"></span>
+                            <span class="fa fa-fw fa-question-circle text-muted"></span>
+                            <span i18n="habmin.thingStatusInitialising"></span>
                         </a>
                     </li>
                     <li role="presentation" class="divider"></li>
@@ -68,10 +75,14 @@
                     <table style="background-color: transparent">
                         <tr>
                             <td class="text-large" rowspan="2">
-                                <span ng-if="thing.status=='ONLINE'"
-                                      class="fa fa-fw fa-check-circle text-success"></span>
-                                <span ng-if="thing.status=='OFFLINE'"
-                                      class="fa fa-fw fa-times-circle text-danger"></span>
+                                <span ng-switch="thing.statusInfo.status">
+                                    <span ng-switch-when="ONLINE"
+                                          class="fa fa-fw fa-check-circle text-success"></span>
+                                    <span ng-switch-when="OFFLINE"
+                                          class="fa fa-fw fa-times-circle text-danger"></span>
+                                    <span ng-switch-default
+                                          class="fa fa-fw fa-question-circle text-muted"></span>
+                                </span>
                             </td>
                             <td>
                                 <span>{{thing.item.label}}&nbsp;</span>

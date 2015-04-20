@@ -50,9 +50,8 @@ angular.module('Config.Things', [
         $scope.newThings = [];
 
         $scope.insertMode = false;
-        $scope.listOnline = true;
-        $scope.listOffline = true;
 
+        $scope.filterStatus = ["INITIALIZING", "ONLINE", "OFFLINE"];
         $scope.filterBindings = [];
 
         ThingModel.getList().then(
@@ -86,17 +85,24 @@ angular.module('Config.Things', [
             if ($scope.filterBindings.indexOf(element.binding) == -1) {
                 return false;
             }
-            if (element.status == "ONLINE" && $scope.listOnline) {
-                return true;
-            }
-            if (element.status == "OFFLINE" && $scope.listOffline) {
-                return true;
+            if ($scope.filterStatus.indexOf(element.statusInfo.status) == -1) {
+                return false;
             }
 
-            return false;
+            return true;
         };
 
-        $scope.toggleFilter = function (binding) {
+        $scope.toggleStatusFilter = function (status) {
+            var p = $scope.filterStatus.indexOf(status);
+            if (p == -1) {
+                $scope.filterStatus.push(status);
+            }
+            else {
+                $scope.filterStatus.splice(p, 1);
+            }
+        };
+
+        $scope.toggleBindingFilter = function (binding) {
             var p = $scope.filterBindings.indexOf(binding.id);
             if (p == -1) {
                 $scope.filterBindings.push(binding.id);
@@ -138,7 +144,7 @@ angular.module('Config.Things', [
                 return false;
             }
 
-            if($scope.thingSelected.channels == null) {
+            if ($scope.thingSelected.channels == null) {
                 return [];
             }
 
@@ -228,7 +234,7 @@ angular.module('Config.Things', [
             ThingModel.putThing($scope.thingSelected).then(
                 function () {
                     var name = "";
-                    if($scope.thingSelected.item != null) {
+                    if ($scope.thingSelected.item != null) {
                         name = $scope.thingSelected.item.label;
                     }
                     growl.success(locale.getString("habmin.thingSuccessSavingThing",
@@ -236,7 +242,7 @@ angular.module('Config.Things', [
                 },
                 function () {
                     var name = "";
-                    if($scope.thingSelected.item != null) {
+                    if ($scope.thingSelected.item != null) {
                         name = $scope.thingSelected.item.label;
                     }
                     growl.error(locale.getString("habmin.thingErrorSavingThing",
@@ -249,7 +255,7 @@ angular.module('Config.Things', [
             ThingModel.deleteThing($scope.thingSelected).then(
                 function () {
                     var name = "";
-                    if($scope.thingSelected.item != null) {
+                    if ($scope.thingSelected.item != null) {
                         name = $scope.thingSelected.item.label;
                     }
                     growl.success(locale.getString("habmin.thingSuccessDeletingThing",
@@ -258,7 +264,7 @@ angular.module('Config.Things', [
                 },
                 function () {
                     var name = "";
-                    if($scope.thingSelected.item != null) {
+                    if ($scope.thingSelected.item != null) {
                         name = $scope.thingSelected.item.label;
                     }
                     growl.error(locale.getString("habmin.thingErrorDeletingThing",
