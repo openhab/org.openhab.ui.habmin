@@ -728,24 +728,26 @@ module.exports = function (grunt) {
                 if(language == "en-GB") {
                     return;
                 }
-                var testLanguage = grunt.file.readJSON(userConfig.language_dir + '/' + language + '/' + filename);
-                var cntTotal = 0;
-                var cntTrans = 0;
-                for(var key in baseLanguage) {
-                    cntTotal++;
-                    if(testLanguage[key] != null) {
-                        cntTrans++;
-                    }
-                    else if(grunt.option('lang') == language) {
-                        grunt.log.errorlns("Missing translation: \"" + key + "\"");
-                    }
+                if(grunt.file.exists(userConfig.language_dir + '/' + language + '/' + filename)) {
+                    var testLanguage = grunt.file.readJSON(userConfig.language_dir + '/' + language + '/' + filename);
+                    var cntTotal = 0;
+                    var cntTrans = 0;
+                    for (var key in baseLanguage) {
+                        cntTotal++;
+                        if (testLanguage[key] != null) {
+                            cntTrans++;
+                        }
+                        else if (grunt.option('lang') == language) {
+                            grunt.log.errorlns("Missing translation: \"" + key + "\"");
+                        }
 
-                }
-                if(cntTrans == cntTotal) {
-                    grunt.log.oklns(language + ': ' + cntTrans + '/' + cntTotal);
-                }
-                else {
-                    grunt.log.errorlns(language + ': ' + cntTrans + '/' + cntTotal);
+                    }
+                    if (cntTrans == cntTotal) {
+                        grunt.log.oklns(language + ': ' + cntTrans + '/' + cntTotal);
+                    }
+                    else {
+                        grunt.log.errorlns(language + ': ' + cntTrans + '/' + cntTotal);
+                    }
                 }
             });
         });
