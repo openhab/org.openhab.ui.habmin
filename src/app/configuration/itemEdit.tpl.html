@@ -8,7 +8,7 @@
         <div class="form-group">
             <label for="inputLabel" class="control-label" i18n="habmin.itemEditLabel"></label>
             <div>
-                <input type="text" ng-model="item.label" class="form-control" id="inputLabel" placeholder="Label">
+                <input type="text" ng-model="item.label" class="form-control" id="inputLabel" i18n-attr="{placeholder: 'habmin.itemSelectLabel'}">
             </div>
         </div>
 
@@ -20,7 +20,7 @@
                            theme="bootstrap"
                            search-enabled="false"
                         >
-                    <ui-select-match i18n-attr="{placeholder: 'habmin.userLanguageSelect'}">
+                    <ui-select-match i18n-attr="{placeholder: 'habmin.itemSelectType'}">
                         <habmin-icon class="fa fa-fw" itemtype="{{$select.selected.id}}"></habmin-icon>
                         {{$select.selected.name}}
                     </ui-select-match>
@@ -40,7 +40,7 @@
                            theme="bootstrap"
                            search-enabled="false"
                         >
-                    <ui-select-match i18n-attr="{placeholder: 'habmin.userLanguageSelect'}">
+                    <ui-select-match i18n-attr="{placeholder: 'habmin.itemSelectCategory'}">
                         <habmin-icon class="fa fa-fw" category="{{$select.selected.id}}"></habmin-icon>
                         {{$select.selected.name}}
                     </ui-select-match>
@@ -61,7 +61,7 @@
                            search-enabled="false"
                            multiple
                         >
-                    <ui-select-match i18n-attr="{placeholder: 'habmin.userLanguageSelect'}">
+                    <ui-select-match i18n-attr="{placeholder: 'habmin.itemSelectGroup'}">
                         <habmin-icon class="fa fa-fw" category="{{$item.category}}"></habmin-icon>
                         {{$item.label}}
                     </ui-select-match>

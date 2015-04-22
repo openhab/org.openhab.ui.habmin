@@ -12,65 +12,16 @@ angular.module('Config.ItemEdit', [
     'ngSanitize',
     'angular-growl',
     'HABmin.itemModel',
+    'HABmin.smarthomeModel',
     'ngLocalize'
 ])
     .service('itemEdit',
-    function ($modal, $rootScope, growl, locale, UserService, ItemModel) {
+    function ($modal, $rootScope, growl, locale, UserService, ItemModel, SmartHomeModel) {
         this.edit = function (item) {
             var scope = $rootScope.$new();
             scope.item = angular.copy(item);
-            locale.ready('smarthome').then(
-                function () {
-                    scope.itemtypes = [
-//                        {id: 'CallItem', name: locale.getString("smarthome.itemCallItem")},
-                        {id: 'ColorItem', name: locale.getString("smarthome.itemColorItem")},
-                        {id: 'ContactItem', name: locale.getString("smarthome.itemContactItem")},
-                        {id: 'DateTimeItem', name: locale.getString("smarthome.itemDateTimeItem")},
-                        {id: 'DimmerItem', name: locale.getString("smarthome.itemDimmerItem")},
-                        {id: 'GroupItem', name: locale.getString("smarthome.itemGroupItem")},
-                        {id: 'ImageItem', name: locale.getString("smarthome.itemImageItem")},
-                        {id: 'LocationItem', name: locale.getString("smarthome.itemLocationItem")},
-                        {id: 'NumberItem', name: locale.getString("smarthome.itemNumberItem")},
-                        {id: 'PlayerItem', name: locale.getString("smarthome.itemPlayerItem")},
-                        {id: 'RollershutterItem', name: locale.getString("smarthome.itemRollershutterItem")},
-                        {id: 'StringItem', name: locale.getString("smarthome.itemStringItem")},
-                        {id: 'SwitchItem', name: locale.getString("smarthome.itemSwitchItem")}
-                    ];
-                    scope.categories = [
-                        {id: 'Alarm', name: locale.getString("smarthome.categoryAlarm")},
-                        {id: 'Battery', name: locale.getString("smarthome.categoryBattery")},
-                        {id: 'Blinds', name: locale.getString("smarthome.categoryBlinds")},
-                        {id: 'CarbonDioxide', name: locale.getString("smarthome.categoryCarbonDioxide")},
-                        {id: 'ColorLight', name: locale.getString("smarthome.categoryColorLight")},
-                        {id: 'Contact', name: locale.getString("smarthome.categoryContact")},
-                        {id: 'DimmableLight', name: locale.getString("smarthome.categoryDimmableLight")},
-                        {id: 'Door', name: locale.getString("smarthome.categoryDoor")},
-                        {id: 'Energy', name: locale.getString("smarthome.categoryEnergy")},
-                        {id: 'Fan', name: locale.getString("smarthome.categoryFan")},
-                        {id: 'Fire', name: locale.getString("smarthome.categoryFire")},
-                        {id: 'Flow', name: locale.getString("smarthome.categoryFlow")},
-                        {id: 'GarageDoor', name: locale.getString("smarthome.categoryGarageDoor")},
-                        {id: 'Gas', name: locale.getString("smarthome.categoryGas")},
-                        {id: 'Humidity', name: locale.getString("smarthome.categoryHumidity")},
-                        {id: 'Light', name: locale.getString("smarthome.categoryLight")},
-                        {id: 'Motion', name: locale.getString("smarthome.categoryMotion")},
-                        {id: 'MoveControl', name: locale.getString("smarthome.categoryMoveControl")},
-                        {id: 'Player', name: locale.getString("smarthome.categoryPlayer")},
-                        {id: 'PowerOutlet', name: locale.getString("smarthome.categoryPowerOutlet")},
-                        {id: 'Pressure', name: locale.getString("smarthome.categoryPressure")},
-                        {id: 'QualityOfService', name: locale.getString("smarthome.categoryQualityOfService")},
-                        {id: 'Rain', name: locale.getString("smarthome.categoryRain")},
-                        {id: 'Recorder', name: locale.getString("smarthome.categoryRecorder")},
-                        {id: 'Smoke', name: locale.getString("smarthome.categorySmoke")},
-                        {id: 'SoundVolume', name: locale.getString("smarthome.categorySoundVolume")},
-                        {id: 'Switch', name: locale.getString("smarthome.categorySwitch")},
-                        {id: 'Temperature', name: locale.getString("smarthome.categoryTemperature")},
-                        {id: 'Water', name: locale.getString("smarthome.categoryWater")},
-                        {id: 'Wind', name: locale.getString("smarthome.categoryWind")},
-                        {id: 'Window', name: locale.getString("smarthome.categoryWindow")},
-                        {id: 'Zoom', name: locale.getString("smarthome.categoryZoom")}
-                    ];
-                });
+            scope.itemtypes = SmartHomeModel.itemtypes;
+            scope.categories = SmartHomeModel.categories;
 
             scope.items = [];
             ItemModel.getList().then(
@@ -86,14 +37,14 @@ angular.module('Config.ItemEdit', [
              */
             var controller = function ($scope, $modalInstance) {
                 $scope.ok = function (result) {
-                    scope.item.groupNames = [].concat(scope.item.groupNames);
-                    ItemModel.putItem(item).then(
+                    $scope.item.groupNames = [].concat($scope.item.groupNames);
+                    ItemModel.putItem($scope.item).then(
                         function() {
-                            $modalInstance.close(scope.item);
+                            $modalInstance.close($scope.item);
                         },
                         function() {
                             growl.warning(locale.getString("habmin.itemSaveFailed",
-                                {name: item.label}));
+                                {name: $scope.item.label}));
                         }
                     );
                 };

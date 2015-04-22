@@ -15,6 +15,7 @@ angular.module('Config.Things', [
     'HABmin.itemModel',
     'HABmin.thingModel',
     'HABmin.bindingModel',
+    'HABmin.smarthomeModel',
     'Config.parameter',
     'Config.ItemEdit',
     'angular-growl',
@@ -35,24 +36,33 @@ angular.module('Config.Things', [
             data: {pageTitle: 'Things'},
             resolve: {
                 // Make sure the localisation files are resolved before the controller runs
-                localisations: function (locale) {
-                    return locale.ready('habmin');
+                localisations: function ($q, locale) {
+                    return $q.all([
+                        locale.ready('habmin'),
+                        locale.ready('smarthome')
+                    ]);
                 }
             }
         });
     })
 
     .controller('ThingConfigCtrl',
-    function ThingConfigCtrl($scope, locale, growl, $timeout, $window, $http, $interval, UserService, ThingModel, BindingModel, ItemModel, itemEdit) {
+    function ThingConfigCtrl($scope, locale, growl, $timeout, $window, $http, $interval, UserService, ThingModel, BindingModel, ItemModel, itemEdit, SmartHomeModel) {
         $scope.panelDisplayed = 'CHANNELS';
         $scope.thingCnt = -1;
 
         $scope.newThings = [];
-
+        $scope.newThing = false;
         $scope.insertMode = false;
 
         $scope.filterStatus = ["INITIALIZING", "ONLINE", "OFFLINE"];
         $scope.filterBindings = [];
+
+        SmartHomeModel.ready().then(
+            function() {
+                $scope.itemtypes = SmartHomeModel.itemtypes;
+                $scope.categories = SmartHomeModel.categories;
+            });
 
         ThingModel.getList().then(
             function (list) {
@@ -85,7 +95,7 @@ angular.module('Config.Things', [
             if ($scope.filterBindings.indexOf(element.binding) == -1) {
                 return false;
             }
-            if ($scope.filterStatus.indexOf(element.statusInfo.status) == -1) {
+            if (element.statusInfo != null && $scope.filterStatus.indexOf(element.statusInfo.status) == -1) {
                 return false;
             }
 
@@ -113,6 +123,7 @@ angular.module('Config.Things', [
         };
 
         $scope.selectThing = function (thing) {
+            $scope.newThing = false;
             $scope.thingSelected = null;
             $scope.panelDisplayed = 'PROPERTIES';
 
@@ -233,6 +244,7 @@ angular.module('Config.Things', [
         $scope.thingSave = function () {
             ThingModel.putThing($scope.thingSelected).then(
                 function () {
+                    $scope.newThing = false;
                     var name = "";
                     if ($scope.thingSelected.item != null) {
                         name = $scope.thingSelected.item.label;
@@ -279,6 +291,7 @@ angular.module('Config.Things', [
         };
 
         $scope.selectNewThing = function (thing) {
+            $scope.newThing = true;
             $scope.insertMode = false;
             $scope.panelDisplayed = 'PROPERTIES';
 

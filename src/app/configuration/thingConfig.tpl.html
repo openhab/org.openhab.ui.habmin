@@ -153,6 +153,7 @@
             <button type="button"
                     class="btn btn-default"
                     ng-confirm-click="thingDelete()" ng-confirm-icon="warning"
+                    ng-disabled="thingSelected==null || newThing==true"
                     i18n-attr="{'ngConfirmMessage': 'habmin.thingDeleteCheck','ngConfirmTitle': 'habmin.thingDelete','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes' }">
                 <span class="fa fa-trash"></span>
                 <span class="hidden-xs hidden-sm" i18n="common.delete"></span>
@@ -204,8 +205,53 @@
                                class="form-control"
                                id="inputThingLabel"
                                ng-model="thingSelected.item.label"
-                               placeholder="format">
+                               i18n-attr="{placeholder: 'habmin.itemSelectLabel'}">
                     </div>
+
+                    <div class="form-group">
+                        <label for="inputCategory" class="control-label" i18n="habmin.itemEditCategory"></label>
+
+                        <div>
+                            <ui-select id="inputCategory"
+                                       ng-model="thingSelected.item.category"
+                                       theme="bootstrap"
+                                       search-enabled="false"
+                                    >
+                                <ui-select-match i18n-attr="{placeholder: 'habmin.itemSelectCategory'}">
+                                    <habmin-icon class="fa fa-fw" category="{{$select.selected.id}}"></habmin-icon>
+                                    {{$select.selected.name}}
+                                </ui-select-match>
+                                <ui-select-choices repeat="category.id as category in categories | orderBy: 'name'">
+                                    <habmin-icon class="fa fa-fw" category="{{category.id}}"></habmin-icon>
+                                    <span>{{category.name}}</span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputGroups" class="control-label" i18n="habmin.itemEditGroups"></label>
+
+                        <div>
+                            <ui-select id="inputGroups"
+                                       ng-model="thingSelected.item.groupNames"
+                                       theme="bootstrap"
+                                       search-enabled="false"
+                                       multiple
+                                    >
+                                <ui-select-match i18n-attr="{placeholder: 'habmin.itemSelectGroup'}">
+                                    <habmin-icon class="fa fa-fw" category="{{$item.category}}"></habmin-icon>
+                                    {{$item.label}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                        repeat="group.name as group in itemList | filter: {type: 'GroupItem'} | orderBy: 'label'">
+                                    <habmin-icon class="fa fa-fw" category="{{group.category}}"></habmin-icon>
+                                    <span>{{group.label}}</span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+
                 </div>
 
                 <!-- CONFIGURATION -->
@@ -227,6 +273,7 @@
                                    ng-dirty ng-required="{{config.required}}"
                                    id="CONFIGLABEL{{$index+1}}"
                                    ng-model="thingSelected.configuration[config.name]">
+
                             <p class="help-block"><span class="text-muted" ng-bind-html="config.description"></span></p>
                         </div>
                     </div>
@@ -235,7 +282,7 @@
                 <!-- CHANNELS -->
                 <div>
                     <a role="presentation" ng-class="{'list-group-item':true, 'active': panelDisplayed=='CHANNELS'}"
-                        ng-click="panelDisplayed='CHANNELS'">
+                       ng-click="panelDisplayed='CHANNELS'">
                         <span class="fa fa-fw fa-navicon"></span>
                         <span i18n="habmin.thingChannels"></span> <span ng-if="thingType.channels.length">[{{thingType.channels.length}}]</span>
                     </a>
@@ -278,29 +325,36 @@
                                             </td>
                                             <td>
                                                 <div class="pull-right">
-                                                    <button type="button" class="btn btn-primary btn-xs" ng-click="editItem(item)">
-                                                        <span class="fa fa-plus-circle"></span> <span i18n="common.add"></span>
+                                                    <button type="button" class="btn btn-primary btn-xs"
+                                                            ng-click="editItem(item)">
+                                                        <span class="fa fa-plus-circle"></span> <span
+                                                            i18n="common.add"></span>
                                                     </button>
                                                 </div>
                                             </td>
                                         </thead>
                                         <tbody>
-                                            <tr ng-repeat="item in getChannelItems(channel)">
-                                                <td>
-                                                    <habmin-icon class="fa fa-fw" itemtype="{{getItem(item).type}}"></habmin-icon>
-                                                    {{getItem(item).label}}
-                                                </td>
-                                                <td>
-                                                    <div class="pull-right">
-                                                        <button type="button" class="btn btn-primary btn-xs" ng-click="editItem(item)">
-                                                            <span class="fa fa-edit"></span> <span i18n="common.Edit"></span>
-                                                        </button>
-                                                        <button type="button" class="btn btn-primary btn-xs" ng-click="editItem(item)">
-                                                            <span class="fa fa-trash"></span> <span i18n="common.delete"></span>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                        <tr ng-repeat="item in getChannelItems(channel)">
+                                            <td>
+                                                <habmin-icon class="fa fa-fw"
+                                                             itemtype="{{getItem(item).type}}"></habmin-icon>
+                                                {{getItem(item).label}}
+                                            </td>
+                                            <td>
+                                                <div class="pull-right">
+                                                    <button type="button" class="btn btn-primary btn-xs"
+                                                            ng-click="editItem(item)">
+                                                        <span class="fa fa-edit"></span> <span
+                                                            i18n="common.Edit"></span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-primary btn-xs"
+                                                            ng-click="editItem(item)">
+                                                        <span class="fa fa-trash"></span> <span
+                                                            i18n="common.delete"></span>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>

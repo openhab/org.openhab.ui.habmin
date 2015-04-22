@@ -9,9 +9,9 @@
  *
  */
 
-angular.module('HABmin.iconModel', [
-])
-    .service("ImgFactory", function ($resource) {
+angular.module('HABmin.iconModel', []
+)
+    .service("ImgFactory", function () {
         this.generalIcons = {
             "alarm": {class: "oa-message_presence"},
             "baramoter": {class: "oa-weather_barometric_pressure"},
