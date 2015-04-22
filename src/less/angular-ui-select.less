@@ -98,7 +98,7 @@ body > .ui-select-bootstrap.open {
 
 .ui-select-multiple.ui-select-bootstrap {
   height: auto;
-  padding: 3px 3px 0 3px;
+  padding: @padding-base-vertical @padding-base-horizontal (@padding-base-vertical/2) @padding-base-horizontal;
 }
 
 .ui-select-multiple.ui-select-bootstrap input.ui-select-search {
@@ -106,7 +106,9 @@ body > .ui-select-bootstrap.open {
   border: none;
   outline: none;
   height: 1.666666em;
-  margin-bottom: 3px;
+  margin-bottom: 2px;
+
+  .placeholder();
 }
 
 .ui-select-multiple.ui-select-bootstrap .ui-select-match .close {
@@ -147,10 +149,22 @@ body > .ui-select-bootstrap.open {
   display: block;
   padding: 3px 20px;
   clear: both;
-  font-weight: normal;
   line-height: @line-height-base;
   color: @input-color;
   white-space: nowrap;
+}
+
+.ui-select-bootstrap .ui-select-placeholder {
+  color: @input-color-placeholder;
+  opacity: 1;
+}
+
+.ui-select-bootstrap .ui-select-placeholder {
+  color: @input-color-placeholder;
+}
+
+.ui-select-bootstrap .ui-select-placeholder {
+  color: @input-color-placeholder;
 }
 
 .ui-select-bootstrap .ui-select-choices-row>a:hover, .ui-select-bootstrap .ui-select-choices-row>a:focus {
