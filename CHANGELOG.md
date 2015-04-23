@@ -1,3 +1,30 @@
+<a name="0.0.12"></a>
+### 0.0.12 (2015-04-22)
+
+
+#### Bug Fixes
+
+* **Things:**
+  * Fixed binding filter in thing list ([f9b147f5](git@github.com:cdjackson/HABmin2/commit/f9b147f51cce01cfe9a711f1b4015300d974cd2a))
+* **UI:**
+  * Add EventSource pollyfill to allow use on IE11 ([30a8f7c6](git@github.com:cdjackson/HABmin2/commit/30a8f7c6ae29fd7b001ad1827c4df5a9bafb682d))
+
+
+#### Features
+
+* **Items:**
+  * Add item edit dialog ([3ab81e95](git@github.com:cdjackson/HABmin2/commit/3ab81e9526937ad838a4efb18b8afb270fccd499))
+* **Thing:**
+  * Updated thing configuration to support extended status ([466f5fe9](git@github.com:cdjackson/HABmin2/commit/466f5fe96a8054037d89c8ec92c47b98f06667e2))
+* **Things:**
+  * Add ability to delete a thing ([10d408fc](git@github.com:cdjackson/HABmin2/commit/10d408fc15883178928229d4526171fe116110bd))
+  * Update items when channels enabled/disabled ([db262970](git@github.com:cdjackson/HABmin2/commit/db262970d0eefcac1438418335ec74147af44775))
+  * Add list of items associated with a channel ([9300568e](git@github.com:cdjackson/HABmin2/commit/9300568e73050f73a4dc589dff9f74718c3b548d))
+* **UI:**
+  * Add icons to represent item types ([9e63bb48](git@github.com:cdjackson/HABmin2/commit/9e63bb48d3f5ece95de4544c26c6ee2de666e3c2))
+  * Add item category icons ([951f9830](git@github.com:cdjackson/HABmin2/commit/951f9830e6e93c21ea52e55c7a8e1a94c6517cef))
+
+
 <a name="0.0.11"></a>
 ### 0.0.11 (2015-04-13)
 
