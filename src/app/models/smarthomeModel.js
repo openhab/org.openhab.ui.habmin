@@ -85,7 +85,7 @@ angular.module('HABmin.smarthomeModel', [
             var deferred = $q.defer();
             if(loaded == true) {
                 deferred.resolve();
-                return;
+                return deferred.promise;
             }
 
             deferredList.push(deferred);
