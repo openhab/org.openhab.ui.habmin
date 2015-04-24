@@ -72,7 +72,7 @@ angular.module('HABmin.updateService', [])
                 .error(function (data, status) {
 
                 });
-        }
+        };
     })
 ;
 

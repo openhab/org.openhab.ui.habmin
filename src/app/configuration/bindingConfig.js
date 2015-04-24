@@ -57,7 +57,7 @@ angular.module('Config.Bindings', [
 
         $scope.selectBinding = function(binding) {
             $scope.selectedBinding = binding;
-        }
+        };
     })
 
 ;

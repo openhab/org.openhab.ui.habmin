@@ -114,7 +114,7 @@ angular.module('HABmin.chart', [
                 }
 
                 // If there's no predefined charts, change to items view
-                if($scope.charts == 0) {
+                if($scope.charts === 0) {
                     $scope.selectCharts = false;
                 }
             },
@@ -207,7 +207,7 @@ angular.module('HABmin.chart', [
                 function () {
                     growl.warning(locale.getString('habmin.chartDeleteError', {name: $scope.selectedChart.name}));
                 }
-            )
+            );
         };
 
         $scope.selectItem = function (parm) {

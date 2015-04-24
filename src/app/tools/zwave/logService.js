@@ -1520,22 +1520,22 @@ angular.module('ZWaveLogReader', [])
                     if(bytes.length > 3) {
                         var typeReport = HEX2DEC(bytes[2]);
                         var scale = HEX2DEC(bytes[3]);
-                        var value = HEX2DEC(bytes[4]);
+                        var val1 = HEX2DEC(bytes[4]);
                         var name = "";
                         if (binarySensors[typeReport] == null) {
-                            data.content += "::" + typeReport + "(" + scale + ") = " + value;
+                            data.content += "::" + typeReport + "(" + scale + ") = " + val1;
                             name = commandClasses[cmdCls].name + " " + typeReport;
                         }
                         else {
-                            data.content += "::" + binarySensors[typeReport] + "(" + scale + ") = " + value;
+                            data.content += "::" + binarySensors[typeReport] + "(" + scale + ") = " + val1;
                             name = commandClasses[cmdCls].name + " " + binarySensors[typeReport];
                         }
                         addNodeItem(node, endpoint, name, commandClasses[cmdCls].name, "sensor_type=" + typeReport);
                     }
                     else {
-                        var value = HEX2DEC(bytes[2]);
-                        data.content += "=" + value;
-                        addNodeItem(node, endpoint, name, commandClasses[cmdCls].name);
+                        var val2 = HEX2DEC(bytes[2]);
+                        data.content += "=" + val2;
+                        addNodeItem(node, endpoint, "??", commandClasses[cmdCls].name);
                     }
                     break;
             }
@@ -1597,7 +1597,7 @@ angular.module('ZWaveLogReader', [])
                     else {
                         data.content += "::" + meterSensors[typeReport] + "=" + scale;
                     }
-                    addNodeItem(node, endpoint, name, commandClasses[cmdCls].name, "sensor_type=" + typeReport);
+                    addNodeItem(node, endpoint, "??", commandClasses[cmdCls].name, "sensor_type=" + typeReport);
                     break;
             }
 
@@ -1686,61 +1686,7 @@ angular.module('ZWaveLogReader', [])
                     else {
                         data.content += "::" + multilevelSensors[typeReport] + "=" + scale;
                     }
-                    addNodeItem(node, endpoint, name, commandClasses[cmdCls].name, "sensor_type=" + typeReport);
-                    break;
-            }
-
-            return data;
-        }
-
-        function processMultilevelSensor(node, endpoint, bytes) {
-            var data = {result: SUCCESS};
-
-            var cmdCls = HEX2DEC(bytes[0]);
-            var cmdCmd = HEX2DEC(bytes[1]);
-            data.content = getCommandClassName(cmdCls, cmdCmd);
-            switch (cmdCmd) {
-                case 2:             // SENSOR_MULTI_LEVEL_SUPPORTED_REPORT
-                    for (var i = 0; i < bytes.length - 3; ++i) {
-                        var a = HEX2DEC(bytes[i + 2]);
-                        for (var bit = 0; bit < 8; ++bit) {
-                            if ((a & (1 << bit) ) === 0) {
-                                continue;
-                            }
-                            var index = (i * 8 ) + bit + 1;
-
-                            var name = "UNKNOWN!";
-                            if (multilevelSensors[index] != null) {
-                                name = multilevelSensors[index];
-                            }
-
-                            // Add to list of supported sensors
-                            addNodeItem(node, endpoint, name, commandClasses[cmdCls].name,
-                                "sensor_type=" + index);
-                        }
-                    }
-                    break;
-                case 4:				// SENSOR_MULTI_LEVEL_GET
-                    if (bytes.length >= 3) {
-                        var typeGet = HEX2DEC(bytes[2]);
-                        if (multilevelSensors[typeGet] == null) {
-                            data.content += "::" + typeGet;
-                        }
-                        else {
-                            data.content += "::" + multilevelSensors[typeGet];
-                        }
-                    }
-                    break;
-                case 5:				// SENSOR_MULTI_LEVEL_REPORT
-                    var typeReport = HEX2DEC(bytes[2]);
-                    var scale = HEX2DEC(bytes[3]);
-                    if (multilevelSensors[typeReport] == null) {
-                        data.content += "::" + typeReport + "=" + scale;
-                    }
-                    else {
-                        data.content += "::" + multilevelSensors[typeReport] + "=" + scale;
-                    }
-                    addNodeItem(node, endpoint, name, commandClasses[cmdCls].name, "sensor_type=" + typeReport);
+                    addNodeItem(node, endpoint, "??", commandClasses[cmdCls].name, "sensor_type=" + typeReport);
                     break;
             }
 
@@ -1957,7 +1903,7 @@ angular.module('ZWaveLogReader', [])
                 else {
                     data.node = lastCmd.node;
 
-                    var basic = HEX2DEC(bytes[3])
+                    var basic = HEX2DEC(bytes[3]);
                     var generic = HEX2DEC(bytes[4]);
                     var specific = HEX2DEC(bytes[5]);
 
@@ -2060,7 +2006,7 @@ angular.module('ZWaveLogReader', [])
                                 if(commandClasses[id] != null) {
                                     id = commandClasses[id].name;
                                 }
-                                if(cntrl == false) {
+                                if(cntrl === false) {
                                     if (nodes[data.node].classes[id] == null) {
                                         nodes[data.node].classes[id] = 0;
                                     }
@@ -2470,7 +2416,7 @@ angular.module('ZWaveLogReader', [])
 
             logTime = time.valueOf();
 
-            if(timeStart == 0) {
+            if(timeStart === 0) {
                 timeStart = logTime;
             }
 

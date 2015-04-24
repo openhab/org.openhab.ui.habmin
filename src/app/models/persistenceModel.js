@@ -46,7 +46,7 @@ angular.module('HABmin.persistenceModel', [
                 }
             );
             return deferred.promise;
-        }
+        };
     })
 
     .service('PersistenceDataModel', function ($http, $q, RestService, UserService) {
@@ -280,6 +280,6 @@ angular.module('HABmin.persistenceModel', [
                 }
             );
             return deferred.promise;
-        }
+        };
     })
 ;

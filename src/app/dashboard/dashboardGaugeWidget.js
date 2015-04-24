@@ -106,7 +106,7 @@ angular.module('dashboardGaugeWidget', [
                 }
                 $scope.removeNull = function (item) {
                     if (item == null || item.label == null || item.label.title == null ||
-                        item.label.title.length == 0) {
+                        item.label.title.length === 0) {
                         return false;
                     }
                     return true;

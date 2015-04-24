@@ -55,7 +55,7 @@ angular.module('HABmin.dashboard', [
             // If this is the first time we've edited this dashboard
             // then we reset the dirty flag here.
             // This allows us to avoid dirty calls during startup.
-            if($scope.firstEdit == false) {
+            if($scope.firstEdit === false) {
                 $scope.firstEdit = true;
                 $scope.isDirty = false;
             }
@@ -75,7 +75,7 @@ angular.module('HABmin.dashboard', [
         };
 
         $scope.clearDashboard = function () {
-            if ($scope.dashboard.widgets.length == 0) {
+            if ($scope.dashboard.widgets.length === 0) {
                 return;
             }
             $scope.isDirty = true;
@@ -91,7 +91,7 @@ angular.module('HABmin.dashboard', [
 
         $scope.saveDashboard = function () {
             // If we don't have a name for this dashboard, open the save dialog first
-            if ($scope.dashboard.name == null || $scope.dashboard.name.length == 0) {
+            if ($scope.dashboard.name == null || $scope.dashboard.name.length === 0) {
                 dashboardProperties.editOptions($scope.dashboard).then(
                     function (dashboard) {
                         $scope.dashboard = dashboard;
@@ -194,11 +194,11 @@ angular.module('HABmin.dashboard', [
         $scope.$on("dashboardEdit", function () {
             $scope.editMode = !$scope.editMode;
 
-            if ($scope.editMode == true) {
+            if ($scope.editMode === true) {
                 $scope.editStart();
             }
             else {
-                $scope.endEdit()
+                $scope.endEdit();
             }
         });
 
@@ -237,7 +237,7 @@ angular.module('HABmin.dashboard', [
         }, true);
 
         var dashboardId = $stateParams.dashboardId;
-        if (dashboardId == null || dashboardId.length == 0) {
+        if (dashboardId == null || dashboardId.length === 0) {
             $scope.editStart();
             $scope.isDirty = false;
             $scope.firstEdit = false;

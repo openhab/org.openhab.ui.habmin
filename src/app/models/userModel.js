@@ -232,7 +232,7 @@ angular.module('HABmin.userModel', [
             }
 
             var pass = "";
-            if ($scope.user == "" || $scope.password == "") {
+            if ($scope.user === "" || $scope.password === "") {
                 // No authentication used
                 $http.defaults.headers.common['Authorization'] = null;
             }
@@ -242,7 +242,7 @@ angular.module('HABmin.userModel', [
                 $http.defaults.headers.common['Authorization'] = 'Basic ' + pass;
             }
 
-            console.log("Login credentials: ", $scope.password, $scope.user, pass)
+            console.log("Login credentials: ", $scope.password, $scope.user, pass);
             localStorage.setItem('Auth-user', $scope.user);
             localStorage.setItem('Auth-pass', pass);
             localStorage.setItem('Auth-time', $scope.period * 1000 + new Date().getTime());

@@ -57,7 +57,7 @@ angular.module('Config.Items', [
 
         $scope.selectItem = function(item) {
             $scope.selectedItem = item;
-        }
+        };
     })
 
 ;

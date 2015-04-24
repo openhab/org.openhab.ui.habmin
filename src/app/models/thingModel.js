@@ -31,23 +31,23 @@ angular.module('HABmin.thingModel', [
                 var evt = angular.fromJson(event.data);
                 var thing = evt.object[0];
 
-                if (evt.topic.indexOf("smarthome/things/added") == 0) {
+                if (evt.topic.indexOf("smarthome/things/added") === 0) {
                     thing.binding = thing.UID.split(":")[0];
                     thingList.push(thing);
                 }
-                else if (evt.topic.indexOf("smarthome/things/removed") == 0) {
-                    for (var i = 0; i < thingList.length; i++) {
-                        if (thingList[i].UID == thing.UID) {
-                            thingList.splice(i, 1);
+                else if (evt.topic.indexOf("smarthome/things/removed") === 0) {
+                    for (var a = 0; a < thingList.length; a++) {
+                        if (thingList[a].UID == thing.UID) {
+                            thingList.splice(a, 1);
                             break;
                         }
                     }
                 }
-                else if (evt.topic.indexOf("smarthome/things/updated") == 0) {
+                else if (evt.topic.indexOf("smarthome/things/updated") === 0) {
                     thing = evt.object[1];
-                    for (var i = 0; i < thingList.length; i++) {
-                        if (thingList[i].UID == thing.UID) {
-                            thingList[i] = thing;
+                    for (var b = 0; b < thingList.length; b++) {
+                        if (thingList[b].UID == thing.UID) {
+                            thingList[b] = thing;
                             break;
                         }
                     }
@@ -122,6 +122,9 @@ angular.module('HABmin.thingModel', [
                 function (url) {
                     $http.get(url)
                         .success(function (data) {
+    //                        angular.forEach(thingList, function(thing) {
+  //                              thing.binding = thing.UID.split(":")[0];
+//                            });
                             deferred.resolve(data);
                         })
                         .error(function (data, status) {
@@ -199,7 +202,7 @@ angular.module('HABmin.thingModel', [
 
             RestService.getService(svcName).then(
                 function (url) {
-                    $http.delete(url + "/" + thing.UID)
+                    $http['delete'](url + "/" + thing.UID)
                         .success(function (data) {
                             deferred.resolve(data);
                         })
@@ -243,7 +246,7 @@ angular.module('HABmin.thingModel', [
 
             RestService.getService(svcSetup).then(
                 function (url) {
-                    $http.delete(url + "/things/channels/" + channel, {channelUID: channel})
+                    $http['delete'](url + "/things/channels/" + channel, {channelUID: channel})
                         .success(function (data) {
                             deferred.resolve(data);
                         })

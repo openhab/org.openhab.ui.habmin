@@ -37,6 +37,7 @@
     "grunt-contrib-compress": "~0.13.0",
     "grunt-run-java": "~0.1.1",
     "grunt-contrib-cssmin": "~0.11.0",
-    "grunt-shell": "~1.1.1"
+    "grunt-shell": "~1.1.1",
+    "karma-chrome-launcher": "~0.1.8"
   }
 }

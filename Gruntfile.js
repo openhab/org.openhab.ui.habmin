@@ -105,6 +105,9 @@ module.exports = function (grunt) {
             },
             changelog: {
                 src: 'CHANGELOG.md'
+            },
+            jar_final: {
+                src: '<%= bundle_dir %>'
             }
         },
 
@@ -231,6 +234,16 @@ module.exports = function (grunt) {
                         src: ['**'],
                         dest: '<%= bundle_dir %>',
                         cwd: '<%= build_dir %>',
+                        expand: true
+                    }
+                ]
+            },
+            jar_final: {
+                files: [
+                    {
+                        src: ['**'],
+                        dest: '<%= bundle_dir %>',
+                        cwd: '<%= compile_dir %>',
                         expand: true
                     }
                 ]
@@ -428,10 +441,10 @@ module.exports = function (grunt) {
          */
         karma: {
             options: {
-                configFile: '<%= build_dir %>/karma-unit.js'
+                configFile: '<%= build_dir %>/karma.conf.js'
             },
             unit: {
-                port: 9019,
+                port: 9876,
                 background: true
             },
             continuous: {
@@ -621,7 +634,13 @@ module.exports = function (grunt) {
         bootlint: {
             options: {
                 stoponerror: false,
-                relaxerror: []
+                relaxerror: [
+                    "W001",
+                    "W002",
+                    "W003",
+                    "W005",
+                    "E001"
+                ]
             },
             files: ['<%= app_files.atpl %>']
         },
@@ -774,7 +793,8 @@ module.exports = function (grunt) {
     grunt.registerTask('build', [
         'clean:init', 'html2js',
         'copy:build_vendorcss', 'copy:build_app_assets', 'copy:build_app_languages', 'copy:build_vendor_assets',
-        'copy:build_appjs', 'copy:build_vendorjs', 'themes_build', 'index:build', 'copy:jar_debug'
+        'copy:build_appjs', 'copy:build_vendorjs', 'themes_build', 'index:build',
+        'clean:jar_final', 'copy:jar_final'
     ]);
 
     /**
@@ -817,7 +837,8 @@ module.exports = function (grunt) {
         'copy:compile_assets', 'copy:compile_languages', 'clean:css', 'cssmin', 'json-minify',
         'concat:compile_js', 'ngAnnotate', 'uglify', 'index:compile', 'htmlmin:compile',
         'compress',
-        'build_cordova'
+        'clean:jar', 'copy:jar_final',
+        'compile_cordova'
     ]);
 
     /**
@@ -877,7 +898,7 @@ module.exports = function (grunt) {
     grunt.registerMultiTask('karmaconfig', 'Process karma config templates', function () {
         var jsFiles = filterForJS(this.filesSrc);
 
-        grunt.file.copy('karma/karma-unit.tpl.js', grunt.config('build_dir') + '/karma-unit.js', {
+        grunt.file.copy('karma/karma.conf.tpl.js', grunt.config('build_dir') + '/karma.conf.js', {
             process: function (contents, path) {
                 return grunt.template.process(contents, {
                     data: {

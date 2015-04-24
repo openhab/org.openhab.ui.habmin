@@ -170,7 +170,7 @@ angular.module('HABmin', [
     ])
 
     .controller('HABminCtrl',
-    function HABminCtrl($scope, $location, $window, $timeout, $interval, $rootScope, locale, DashboardModel, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, InboxModel, SidepanelService, RestService, UpdateService) {
+    function HABminCtrl($scope, $window, $timeout, $interval, $rootScope, locale, DashboardModel, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, InboxModel, SidepanelService, RestService, UpdateService) {
         $scope.isLoggedIn = UserService.isLoggedIn;
 
         // List of current themes

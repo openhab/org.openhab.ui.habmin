@@ -30,22 +30,22 @@ angular.module('HABmin.inboxModel', [
 
                 var evt = angular.fromJson(event.data);
 
-                if (evt.topic.indexOf("smarthome/inbox/added") == 0) {
+                if (evt.topic.indexOf("smarthome/inbox/added") === 0) {
                     inboxContents.push(evt.object);
                     growl.success(locale.getString('habmin.discoveryNewThing', {name: evt.object.label}));
                 }
-                else if (evt.topic.indexOf("smarthome/inbox/removed") == 0) {
-                    for (var i = 0; i < inboxContents.length; i++) {
-                        if (inboxContents[i].thingUID == evt.object.thingUID) {
-                            inboxContents.splice(i, 1);
+                else if (evt.topic.indexOf("smarthome/inbox/removed") === 0) {
+                    for (var a = 0; a < inboxContents.length; a++) {
+                        if (inboxContents[a].thingUID == evt.object.thingUID) {
+                            inboxContents.splice(a, 1);
                             break;
                         }
                     }
                 }
-                else if (evt.topic.indexOf("smarthome/inbox/updated") == 0) {
-                    for (var i = 0; i < inboxContents.length; i++) {
-                        if (inboxContents[i].thingUID == evt.object.thingUID) {
-                            inboxContents[i] = evt.object;
+                else if (evt.topic.indexOf("smarthome/inbox/updated") === 0) {
+                    for (var b = 0; b < inboxContents.length; b++) {
+                        if (inboxContents[b].thingUID == evt.object.thingUID) {
+                            inboxContents[b] = evt.object;
                             break;
                         }
                     }
@@ -54,7 +54,7 @@ angular.module('HABmin.inboxModel', [
         };
 
         this.getInbox = function () {
-            if (inboxContents.length == 0) {
+            if (inboxContents.length === 0) {
                 me.refreshInbox();
             }
             return inboxContents;
@@ -170,7 +170,7 @@ angular.module('HABmin.inboxModel', [
                         return;
                     }
 
-                    $http.delete(url + "/" + uid, {thingUID: uid})
+                    $http['delete'](url + "/" + uid, {thingUID: uid})
                         .success(function (data) {
                             deferred.resolve(true);
                         })

@@ -29,22 +29,22 @@ angular.module('HABmin.itemModel', [
                 var evt = angular.fromJson(event.data);
                 var item = evt.object[0];
 
-                if (evt.topic.indexOf("smarthome/items/added") == 0) {
+                if (evt.topic.indexOf("smarthome/items/added") === 0) {
                     itemList.push(item);
                 }
-                else if (evt.topic.indexOf("smarthome/items/removed") == 0) {
-                    for (var i = 0; i < itemList.length; i++) {
-                        if (itemList[i].name == item.name) {
-                            itemList.splice(i, 1);
+                else if (evt.topic.indexOf("smarthome/items/removed") === 0) {
+                    for (var a = 0; a < itemList.length; a++) {
+                        if (itemList[a].name == item.name) {
+                            itemList.splice(a, 1);
                             break;
                         }
                     }
                 }
-                else if (evt.topic.indexOf("smarthome/items/updated") == 0) {
+                else if (evt.topic.indexOf("smarthome/items/updated") === 0) {
                     item = evt.object[1];
-                    for (var i = 0; i < itemList.length; i++) {
-                        if (itemList[i].name == item.name) {
-                            itemList[i] = item;
+                    for (var b = 0; b < itemList.length; b++) {
+                        if (itemList[b].name == item.name) {
+                            itemList[b] = item;
                             break;
                         }
                     }
@@ -156,7 +156,7 @@ angular.module('HABmin.itemModel', [
 
             RestService.getService(svcName).then(
                 function (url) {
-                    $http.delete(url + "/", item.name)
+                    $http['delete'](url + "/", item.name)
                         .success(function (data) {
                             deferred.resolve(data);
                         })

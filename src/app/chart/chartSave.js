@@ -47,7 +47,7 @@ angular.module('HABmin.chartSave', [
                 legend: chart.legend
             };
 
-            if(scope.general.legend != 'false' && scope.general.legend != false) {
+            if(scope.general.legend !== 'false' && scope.general.legend !== false) {
                 scope.general.legend = 'true';
             }
 
@@ -58,6 +58,7 @@ angular.module('HABmin.chartSave', [
                     if (axis == null) {
                         return;
                     }
+
                     switch (axis.position) {
                         case "left":
                             scope.leftaxis = {

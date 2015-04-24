@@ -33,7 +33,7 @@ angular.module('HABmin.restModel', [
 
         this.isServiceSupported = function (svc) {
             if (serviceList[svc] == null) {
-                return false
+                return false;
             }
             return true;
         };
@@ -103,7 +103,7 @@ angular.module('HABmin.restModel', [
         // Return a url to the requested service
         this.getService = function (svc) {
             var deferred = $q.defer();
-            if (initialised == true) {
+            if (initialised === true) {
                 if (serviceList[svc] == null) {
                     console.log("Request for unknown service", svc);
                     deferred.resolve(null);

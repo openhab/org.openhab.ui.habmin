@@ -1,6 +1,8 @@
 ;(function (global) {
 
-    if ("EventSource" in global) return;
+    if ("EventSource" in global) {
+        return;
+    }
 
     var reTrim = /^(\s|\u00A0)+|(\s|\u00A0)+$/g;
 
@@ -27,7 +29,9 @@
 
         function poll() {
             try { // force hiding of the error message... insane?
-                if (eventsource.readyState == eventsource.CLOSED) return;
+                if (eventsource.readyState == eventsource.CLOSED) {
+                    return;
+                }
 
                 // NOTE: IE7 and upwards support
                 var xhr = new XMLHttpRequest();
@@ -38,7 +42,9 @@
                 // readychange until the server connection is closed
                 xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
-                if (lastEventId != null) xhr.setRequestHeader('Last-Event-ID', lastEventId);
+                if (lastEventId != null) {
+                    xhr.setRequestHeader('Last-Event-ID', lastEventId);
+                }
                 cache = '';
 
                 xhr.timeout = 50000;
@@ -67,18 +73,18 @@
                         // TODO handle 'event' (for buffer name), retry
                         for (; i < parts.length; i++) {
                             line = parts[i].replace(reTrim, '');
-                            if (line.indexOf('event') == 0) {
+                            if (line.indexOf('event') === 0) {
                                 eventType = line.replace(/event:?\s*/, '');
-                            } else if (line.indexOf('retry') == 0) {
-                                retry = parseInt(line.replace(/retry:?\s*/, ''));
+                            } else if (line.indexOf('retry') === 0) {
+                                retry = parseInt(line.replace(/retry:?\s*/, ''),10);
                                 if(!isNaN(retry)) { interval = retry; }
-                            } else if (line.indexOf('data') == 0) {
+                            } else if (line.indexOf('data') === 0) {
                                 data.push(line.replace(/data:?\s*/, ''));
-                            } else if (line.indexOf('id:') == 0) {
+                            } else if (line.indexOf('id:') === 0) {
                                 lastEventId = line.replace(/id:?\s*/, '');
-                            } else if (line.indexOf('id') == 0) { // this resets the id
+                            } else if (line.indexOf('id') === 0) { // this resets the id
                                 lastEventId = null;
-                            } else if (line == '') {
+                            } else if (line === '') {
                                 if (data.length) {
                                     var event = new MessageEvent(data.join('\n'), eventsource.url, lastEventId);
                                     eventsource.dispatchEvent(eventType, event);
@@ -88,7 +94,9 @@
                             }
                         }
 
-                        if (this.readyState == 4) pollAgain(interval);
+                        if (this.readyState == 4) {
+                            pollAgain(interval);
+                        }
                         // don't need to poll again, because we're long-loading
                     } else if (eventsource.readyState !== eventsource.CLOSED) {
                         if (this.readyState == 4) { // and some other status
@@ -96,7 +104,7 @@
                             eventsource.readyState = eventsource.CONNECTING;
                             eventsource.dispatchEvent('error', { type: 'error' });
                             pollAgain(interval);
-                        } else if (this.readyState == 0) { // likely aborted
+                        } else if (this.readyState === 0) { // likely aborted
                             pollAgain(interval);
                         } else {
                         }
@@ -106,7 +114,9 @@
                 xhr.send();
 
                 setTimeout(function () {
-                    if (true || xhr.readyState == 3) xhr.abort();
+                    if (xhr.readyState == 3) {
+                        xhr.abort();
+                    }
                 }, xhr.timeout);
 
                 eventsource._xhr = xhr;
@@ -114,7 +124,7 @@
             } catch (e) { // in an attempt to silence the errors
                 eventsource.dispatchEvent('error', { type: 'error', data: e.message }); // ???
             }
-        };
+        }
 
         poll(); // init now
     };
@@ -180,7 +190,9 @@
         origin: ''
     };
 
-    if ('module' in global) module.exports = EventSource;
+    if ('module' in global) {
+        module.exports = EventSource;
+    }
     global.EventSource = EventSource;
 
 })(this);

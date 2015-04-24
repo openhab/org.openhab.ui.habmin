@@ -46,6 +46,6 @@ angular.module('Config.parameter', [
                         break;
                 }
             }
-        }
+        };
     })
 ;

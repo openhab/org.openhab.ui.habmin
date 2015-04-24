@@ -83,13 +83,13 @@ angular.module('HABmin.smarthomeModel', [
 
         me.ready = function () {
             var deferred = $q.defer();
-            if(loaded == true) {
+            if(loaded === true) {
                 deferred.resolve();
                 return deferred.promise;
             }
 
             deferredList.push(deferred);
             return deferred.promise;
-        }
+        };
     })
 ;
