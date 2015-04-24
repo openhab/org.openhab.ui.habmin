@@ -52,7 +52,9 @@ module.exports = function ( karma ) {
      */
     browsers: [
       'Chrome'
-    ]
+    ],
+
+    singleRun: true
   });
 };
 

@@ -794,7 +794,7 @@ module.exports = function (grunt) {
         'clean:init', 'html2js',
         'copy:build_vendorcss', 'copy:build_app_assets', 'copy:build_app_languages', 'copy:build_vendor_assets',
         'copy:build_appjs', 'copy:build_vendorjs', 'themes_build', 'index:build',
-        'clean:jar_final', 'copy:jar_final'
+        'copy:jar_debug'
     ]);
 
     /**
@@ -837,7 +837,7 @@ module.exports = function (grunt) {
         'copy:compile_assets', 'copy:compile_languages', 'clean:css', 'cssmin', 'json-minify',
         'concat:compile_js', 'ngAnnotate', 'uglify', 'index:compile', 'htmlmin:compile',
         'compress',
-        'clean:jar', 'copy:jar_final',
+        'clean:jar_final', 'copy:jar_final',
         'compile_cordova'
     ]);
 
