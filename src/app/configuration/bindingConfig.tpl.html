@@ -51,24 +51,26 @@
     <div class="panel panel-default">
         <!-- Header -->
         <div class="panel-heading">
-            Binding Information: <i>{{selectedBinding.name}}</i>
+            <span i18n="habmin.bindingInformation"></span><span><i>{{selectedBinding.name}}</i></span>
         </div>
 
         <!-- Body -->
         <div class="list-group habmin-list" resize-panel>
-            <div class="habmin-info">
-                <label>Author</label>
+            <div ng-if="selectedBinding">
+                <div class="habmin-info">
+                    <label i18n="habmin.bindingAuthor"></label>
 
-                <div class="well well-sm">
-                    {{selectedBinding.author}}
+                    <div class="well well-sm">
+                        {{selectedBinding.author}}
+                    </div>
                 </div>
-            </div>
 
-            <div class="habmin-info">
-                <label>Description</label>
+                <div class="habmin-info">
+                    <label i18n="habmin.bindingDescription"></label>
 
-                <div class="well well-sm">
-                    {{selectedBinding.description}}
+                    <div class="well well-sm">
+                        {{selectedBinding.description}}
+                    </div>
                 </div>
             </div>
         </div>

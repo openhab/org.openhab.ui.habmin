@@ -8,7 +8,7 @@
             <div class="btn-group dropdown">
                 <button type="button" class="btn btn-default dropdown-toggle" ng-disabledx="logState!='loaded'"
                         ng-init="filterOpen=false" ng-click="filterOpen=!filterOpen">
-                    <span class="fa fa-filter"></span>
+                    <span ng-class="{'fa fa-filter': true, 'text-warning': filterBindings.length || filterStatus.length}"></span>
                     <span i18n="common.Filter"></span>
                     <span class="caret"></span>
                     <span class="sr-only">Dropdown</span>
@@ -16,43 +16,43 @@
                 <ul class="dropdown-menu" role="menu">
                     <li>
                         <a ng-click="toggleStatusFilter('UNINITIALIZED')">
-                            <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': filterStatus.indexOf('UNINITIALIZED')!=-1}"></span>
+                            <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': filterStatus.indexOf('UNINITIALIZED')==-1}"></span>
                             <span class="fa fa-fw fa-question-circle text-muted"></span>
                             <span i18n="habmin.thingStatusUninitialised"></span>
                         </a>
                     </li>
                     <li>
                         <a ng-click="toggleStatusFilter('INITIALIZING')">
-                            <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': filterStatus.indexOf('INITIALIZING')!=-1}"></span>
+                            <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': filterStatus.indexOf('INITIALIZING')==-1}"></span>
                             <span class="fa fa-fw fa-caret-square-o-up text-info"></span>
                             <span i18n="habmin.thingStatusInitialising"></span>
                         </a>
                     </li>
                     <li>
                         <a ng-click="toggleStatusFilter('ONLINE')">
-                            <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': filterStatus.indexOf('ONLINE')!=-1}"></span>
+                            <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': filterStatus.indexOf('ONLINE')==-1}"></span>
                             <span class="fa fa-fw fa-check-circle text-success"></span>
                             <span i18n="habmin.thingStatusOnline"></span>
                         </a>
                     </li>
                     <li>
                         <a ng-click="toggleStatusFilter('OFFLINE')">
-                            <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': filterStatus.indexOf('OFFLINE')!=-1}"></span>
+                            <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': filterStatus.indexOf('OFFLINE')==-1}"></span>
                             <span class="fa fa-fw fa-times-circle text-danger"></span>
                             <span i18n="habmin.thingStatusOffline"></span>
                         </a>
                     </li>
                     <li>
                         <a ng-click="toggleStatusFilter('REMOVING');toggleStatusFilter('REMOVED')">
-                            <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': filterStatus.indexOf('REMOVING')!=-1 || filterStatus.indexOf('REMOVED')!=-1}"></span>
+                            <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': filterStatus.indexOf('REMOVING')==-1 || filterStatus.indexOf('REMOVED')!=-1}"></span>
                             <span class="fa fa-fw fa-warning text-warning"></span>
                             <span i18n="habmin.thingStatusRemoved"></span>
                         </a>
                     </li>
                     <li role="presentation" class="divider"></li>
                     <li ng-repeat="binding in bindings" ng-class="{'disabled': binding.disabled}">
-                        <a ng-click="toggleFilter(binding)">
-                            <span ng-class="{'fa-fw fa': true, 'fa-check-square-o': filterBindings.indexOf(binding.id)!=-1}"></span>
+                        <a ng-click="toggleBindingFilter(binding)">
+                            <span ng-class="{'fa-fw fa': true, 'fa-check-square-o': filterBindings.indexOf(binding.id)==-1}"></span>
                             <habmin-icon class="fa fa-fw" icon="{{binding.icon}}"></habmin-icon>
                             <span>{{binding.name}}</span>
                         </a>
@@ -94,6 +94,12 @@
                                           class="fa fa-fw fa-check-circle text-success"></span>
                                     <span ng-switch-when="OFFLINE"
                                           class="fa fa-fw fa-times-circle text-danger"></span>
+                                    <span ng-switch-when="INITIALIZING"
+                                          class="fa fa-fw fa-caret-square-o-up text-info"></span>
+                                    <span ng-switch-when="REMOVING"
+                                          class="fa fa-fw fa-warning text-warning"></span>
+                                    <span ng-switch-when="REMOVED"
+                                          class="fa fa-fw fa-warning text-warning"></span>
                                     <span ng-switch-default
                                           class="fa fa-fw fa-question-circle text-muted"></span>
                                 </span>

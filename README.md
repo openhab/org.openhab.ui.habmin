@@ -28,9 +28,9 @@ the changes on the server side will not greatly impact the client.
 
 Features
 ========
+
 * **Responsive**. Should work well on all devices. Of course some functions may be removed or be difficult to use on small devices (eg the graphical rule editor).
 * **Theme-able**. Multiple themes are available - take your pick (currently 3 themes). If you want a different look, we're using [bootswatch](http://www.bootswatch.com) themes - vote for your favourite by [raising an issue](https://github.com/cdjackson/HABmin2/issues/new).
-* **Internal support**. OpenHAB is a multinational community - so the software should support your language and country.
 * **Charting**. Modern, fast charting of historical data.
 * **Graphical rule editor**. No need to learn rule syntax.
 * **International support**. Currently translated in English, Deutsch, Français. Add support for your language...
@@ -193,8 +193,14 @@ I am using the conventional changelog, and this requires that commit messages be
 So, for any messages that you want to appear in the changelog, please use the convention here [conventional-changelog/CONVENTIONS.md](https://github.com/ajoslin/conventional-changelog/blob/master/CONVENTIONS.md) for a synposis of the conventions with commit examples.
 
 I am using the following ```scope``` options -:
-* UI: for the majority of general changes
+* Dashboard: For dashboard specific changes
+* Chart: For the interactive charting
+* Items: For item management and configuration
 * Mobile: When related specifically to mobile app generation
+* Rules: For anything to do with rules and rule editing
+* Sitemap: For sitemap changes
+* Things: For OpenHAB2 thing management
+* UI: for the majority of general changes
 * ZWave: For zwave specific changes
 
 eg:
@@ -211,6 +217,7 @@ ZWave option.
 If unsure, please contact me as I'd like to keep this reasonably clean if possible to ensure we have a good change record.
 Also, please don't tag the same thing multiple times. If you're like me, and you commit often, that's fine, but when writing
 your commit tag, consider what it will look like in the changelog and if you're working on a feature, don't use this format
-for tags. Anything not tagged in the above format will simply not appear in the changelog, so you can choose yourself if it
+for tags, or merge your commits before creating the pull request.
+Anything not tagged in the above format will simply not appear in the changelog, so you can choose yourself if it
 shows up (again, be considerate).
 

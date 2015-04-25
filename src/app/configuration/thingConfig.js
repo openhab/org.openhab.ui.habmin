@@ -56,7 +56,7 @@ angular.module('Config.Things', [
         $scope.newThing = false;
         $scope.insertMode = false;
 
-        $scope.filterStatus = ["INITIALIZING", "ONLINE", "OFFLINE"];
+        $scope.filterStatus = [];
         $scope.filterBindings = [];
 
         SmartHomeModel.ready().then(
@@ -87,10 +87,6 @@ angular.module('Config.Things', [
         BindingModel.getList().then(
             function (bindings) {
                 $scope.bindings = bindings;
-                // Add all bindings into the filter for starters...
-                angular.forEach($scope.bindings, function (binding) {
-                    $scope.filterBindings.push(binding.id);
-                });
             },
             function (reason) {
                 // Handle failure
@@ -104,10 +100,10 @@ angular.module('Config.Things', [
          * @returns {boolean}
          */
         $scope.filterFunction = function (element) {
-            if ($scope.filterBindings.indexOf(element.binding) == -1) {
+            if ($scope.filterBindings.indexOf(element.binding) != -1) {
                 return false;
             }
-            if (element.statusInfo != null && $scope.filterStatus.indexOf(element.statusInfo.status) == -1) {
+            if (element.statusInfo != null && $scope.filterStatus.indexOf(element.statusInfo.status) != -1) {
                 return false;
             }
 
