@@ -15,6 +15,20 @@
                 </button>
                 <ul class="dropdown-menu" role="menu">
                     <li>
+                        <a ng-click="toggleStatusFilter('UNINITIALIZED')">
+                            <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': filterStatus.indexOf('UNINITIALIZED')!=-1}"></span>
+                            <span class="fa fa-fw fa-question-circle text-muted"></span>
+                            <span i18n="habmin.thingStatusUninitialised"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a ng-click="toggleStatusFilter('INITIALIZING')">
+                            <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': filterStatus.indexOf('INITIALIZING')!=-1}"></span>
+                            <span class="fa fa-fw fa-caret-square-o-up text-info"></span>
+                            <span i18n="habmin.thingStatusInitialising"></span>
+                        </a>
+                    </li>
+                    <li>
                         <a ng-click="toggleStatusFilter('ONLINE')">
                             <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': filterStatus.indexOf('ONLINE')!=-1}"></span>
                             <span class="fa fa-fw fa-check-circle text-success"></span>
@@ -29,10 +43,10 @@
                         </a>
                     </li>
                     <li>
-                        <a ng-click="toggleStatusFilter('INITIALIZING')">
-                            <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': filterStatus.indexOf('INITIALIZING')!=-1}"></span>
-                            <span class="fa fa-fw fa-question-circle text-muted"></span>
-                            <span i18n="habmin.thingStatusInitialising"></span>
+                        <a ng-click="toggleStatusFilter('REMOVING');toggleStatusFilter('REMOVED')">
+                            <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': filterStatus.indexOf('REMOVING')!=-1 || filterStatus.indexOf('REMOVED')!=-1}"></span>
+                            <span class="fa fa-fw fa-warning text-warning"></span>
+                            <span i18n="habmin.thingStatusRemoved"></span>
                         </a>
                     </li>
                     <li role="presentation" class="divider"></li>
@@ -70,7 +84,7 @@
         <div class="list-group habmin-list" resize-panel>
             <!-- THING LIST -->
             <div ng-if="thingCnt!=-1 && insertMode==false" ng-repeat="thing in things | filter:filterFunction">
-                <a role="presentation" ng-class="{'list-group-item':true, 'active': thing.UID==thingSelected.UID}"
+                <a role="presentation" ng-class="{'list-group-item':true, 'active': thing.UID==selectedThing.UID}"
                    ng-click="selectThing(thing)" sidepanel-click="main">
                     <table style="background-color: transparent">
                         <tr>
@@ -97,7 +111,7 @@
 
             <!-- NEW THING LIST -->
             <div ng-if="insertMode==true" ng-repeat="thing in newThings">
-                <a role="presentation" ng-class="{'list-group-item':true, 'active': thing.UID==thingSelected.UID}"
+                <a role="presentation" ng-class="{'list-group-item':true, 'active': thing.UID==selectedThing.UID}"
                    ng-click="selectNewThing(thing)" sidepanel-click="main">
                     <table style="background-color: transparent">
                         <tr>
@@ -153,15 +167,15 @@
             <button type="button"
                     class="btn btn-default"
                     ng-confirm-click="thingDelete()" ng-confirm-icon="warning"
-                    ng-disabled="thingSelected==null || newThing==true"
+                    ng-disabled="selectedThing==null || newThing==true"
                     i18n-attr="{'ngConfirmMessage': 'habmin.thingDeleteCheck','ngConfirmTitle': 'habmin.thingDelete','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes' }">
                 <span class="fa fa-trash"></span>
                 <span class="hidden-xs hidden-sm" i18n="common.delete"></span>
             </button>
 
             <div ng-hidex="!devEdit.label" class="btn-group">
-                <div>{{thingType.label}}</div>
-                <div class="text-muted small">{{thingType.description}}</div>
+                <div>{{selectedThingType.label}}</div>
+                <div class="text-muted small">{{selectedThingType.description}}</div>
             </div>
 
             <div class="pull-right btn-group dropdown">
@@ -187,7 +201,7 @@
 
         <!-- Body -->
         <div class="list-group habmin-list" resize-panel>
-            <div ng-if="thingSelected">
+            <div ng-if="selectedThing">
                 <!-- OVERVIEW -->
                 <div>
                     <a role="presentation"
@@ -204,8 +218,32 @@
                         <input type="text"
                                class="form-control"
                                id="inputThingLabel"
-                               ng-model="thingSelected.item.label"
+                               ng-model="selectedThing.item.label"
                                i18n-attr="{placeholder: 'habmin.itemSelectLabel'}">
+                    </div>
+
+                    <div class="form-group"
+                         ng-if="selectedThingType.bridge==false && selectedThingType.supportedBridgeTypeUIDs!=null && selectedThingType.supportedBridgeTypeUIDs.length>0">
+                        <label for="inputBridge" class="control-label" i18n="habmin.thingEditBridge">{{selectedThing.bridgeUID}}</label>
+
+                        <div>
+                            <ui-select id="inputBridge"
+                                       ng-model="selectedThing.bridgeUID"
+                                       theme="bootstrap"
+                                       search-enabled="false"
+                                    >
+                                <ui-select-match i18n-attr="{placeholder: 'habmin.thingSelectBridge'}">
+                                    <habmin-icon class="fa fa-fw"
+                                                 category="{{$select.selected.item.category}}"></habmin-icon>
+                                    {{$select.selected.item.label}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                        repeat="bridge.UID as bridge in things | filter:bridgeFilter | orderBy:'label'">
+                                    <habmin-icon class="fa fa-fw" category="{{category.item.category}}"></habmin-icon>
+                                    <span>{{bridge.item.label}}</span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -213,7 +251,7 @@
 
                         <div>
                             <ui-select id="inputCategory"
-                                       ng-model="thingSelected.item.category"
+                                       ng-model="selectedThing.item.category"
                                        theme="bootstrap"
                                        search-enabled="false"
                                     >
@@ -234,7 +272,7 @@
 
                         <div>
                             <ui-select id="inputGroups"
-                                       ng-model="thingSelected.item.groupNames"
+                                       ng-model="selectedThing.item.groupNames"
                                        theme="bootstrap"
                                        search-enabled="false"
                                        multiple
@@ -265,14 +303,14 @@
                 </div>
                 <div collapse="panelDisplayed!='CONFIG'"
                      class="panel-form">
-                    <div ng-repeat="config in thingType.configParameters">
+                    <div ng-repeat="config in selectedThingType.configParameters">
                         <div class="form-group">
                             <label for="CONFIGLABEL{{$index+1}}" class="control-label">{{config.label}}</label>
                             <input config-parameter="{{config}}"
                                    class="form-control"
                                    ng-dirty ng-required="{{config.required}}"
                                    id="CONFIGLABEL{{$index+1}}"
-                                   ng-model="thingSelected.configuration[config.name]">
+                                   ng-model="selectedThing.configuration[config.name]">
 
                             <p class="help-block"><span class="text-muted" ng-bind-html="config.description"></span></p>
                         </div>
@@ -284,12 +322,12 @@
                     <a role="presentation" ng-class="{'list-group-item':true, 'active': panelDisplayed=='CHANNELS'}"
                        ng-click="panelDisplayed='CHANNELS'">
                         <span class="fa fa-fw fa-navicon"></span>
-                        <span i18n="habmin.thingChannels"></span> <span ng-if="thingType.channels.length">[{{thingType.channels.length}}]</span>
+                        <span i18n="habmin.thingChannels"></span> <span ng-if="selectedThingType.channels.length">[{{selectedThingType.channels.length}}]</span>
                     </a>
                 </div>
                 <div collapse="panelDisplayed!='CHANNELS'"
                      class="panel-form">
-                    <div ng-repeat="channel in thingType.channels">
+                    <div ng-repeat="channel in selectedThingType.channels">
                         <div class="form-group">
                             <label for="CHANNELLABEL{{$index+1}}" class="control-label">{{channel.label}}</label>
 

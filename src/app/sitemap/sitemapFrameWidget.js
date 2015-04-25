@@ -7,21 +7,19 @@
  *
  * (c) 2014-2015 Chris Jackson (chris@cd-jackson.com)
  */
-angular.module('sitemapFrameWidget', [
-])
+angular.module('sitemapFrameWidget', [])
 
     .directive('sitemapFrame', function () {
         return {
             restrict: 'E',
             transclude: true,
-            template:
-                '<div class="col-md-4">' +
-                '  <div class="sitemap-frame-title">' +
-                '    <habmin-icon class="icon-lg" icon="{{widget.icon}}"></habmin-icon>' +
-                '    <span ng-style="labelColor">{{widget.label}}</span>' +
-                '    <span class="pull-right" ng-style="valueColor"></span>' +
-                '  </div>' +
-                '<div class="sitemap-frame" ng-transclude></div></div>',
+            template: '<div class="col-md-4">' +
+            '  <div class="sitemap-frame-title">' +
+            '    <habmin-icon class="icon-lg" icon="{{widget.icon}}"></habmin-icon>' +
+            '    <span ng-style="labelColor">{{widget.label}}</span>' +
+            '    <span class="pull-right" ng-style="valueColor"></span>' +
+            '  </div>' +
+            '<div class="sitemap-frame" ng-transclude></div></div>',
             scope: {
                 itemModel: "=",
                 widget: "="

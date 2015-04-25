@@ -39,10 +39,10 @@ angular.module('Config.ItemEdit', [
                 $scope.ok = function (result) {
                     $scope.item.groupNames = [].concat($scope.item.groupNames);
                     ItemModel.putItem($scope.item).then(
-                        function() {
+                        function () {
                             $modalInstance.close($scope.item);
                         },
-                        function() {
+                        function () {
                             growl.warning(locale.getString("habmin.itemSaveFailed",
                                 {name: $scope.item.label}));
                         }

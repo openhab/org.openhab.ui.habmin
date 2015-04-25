@@ -127,13 +127,13 @@ angular.module('Binding.config', [
                             pending: false
                         };
 
-                        if(field.state == "PENDING") {
+                        if (field.state == "PENDING") {
                             $scope.bindingData[field.name].pending = true;
                         }
 
                         newInput.attr('ng-model', 'bindingData.' + field.name + '.value');
 
-                        if(attrs.bindingChange !== undefined) {
+                        if (attrs.bindingChange !== undefined) {
 //                            newInput.attr('ng-change', attrs.bindingChange);
                         }
                         newInput.attr('ng-change', 'changeHandler("' + field.name + '","' + field.domain + '")');
@@ -146,7 +146,7 @@ angular.module('Binding.config', [
                         newOption = angular.element('<button></button>');
                         newOption.attr('class', 'btn btn-default');
                         newOption.attr('type', 'button');
-                        if(field.description == null || field.description.length === 0) {
+                        if (field.description == null || field.description.length === 0) {
                             newOption.attr('disabled', '');
                         }
                         else {
@@ -165,8 +165,8 @@ angular.module('Binding.config', [
 
                 function getElement(domain) {
                     var found = null;
-                    angular.forEach($scope.jsonTemplate, function(element) {
-                        if(element.domain == domain) {
+                    angular.forEach($scope.jsonTemplate, function (element) {
+                        if (element.domain == domain) {
                             found = element;
                         }
                     });
@@ -177,30 +177,30 @@ angular.module('Binding.config', [
                 $scope.changeHandler = function (name, domain) {
                     console.log("changeHandler", name, domain);
                     var el = getElement(domain);
-                    if(el == null) {
+                    if (el == null) {
                         console.log("Element not found:", domain);
                         return;
                     }
 
-                    if($scope.bindingData[name].value === el.value) {
+                    if ($scope.bindingData[name].value === el.value) {
                         $scope.bindingData[name].dirty = false;
                     } else {
                         $scope.bindingData[name].dirty = true;
                     }
 
-                    if($scope.bindingChange !== undefined) {
+                    if ($scope.bindingChange !== undefined) {
                         $scope.bindingChange(domain);
                     }
                 };
 
                 $scope.$watch("template", function (template) {
                     element.empty();
-                    if(template == null || template.length === 0) {
+                    if (template == null || template.length === 0) {
                         return;
                     }
                     console.log("New template:", template);
 
-                    if($scope.bindingData === undefined) {
+                    if ($scope.bindingData === undefined) {
                         $scope.bindingData = {};
                     }
                     try {

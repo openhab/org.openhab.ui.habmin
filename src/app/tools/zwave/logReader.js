@@ -161,21 +161,21 @@ angular.module('ZWaveLogViewer', [
             $scope.selectedNode = {};
             $scope.showOption = "LIST";
 
-            ZWaveLogReader.loadLogfile(file).then(function() {
-				$scope.data = ZWaveLogReader.getData();
-				$scope.countLines = ZWaveLogReader.getLinesProcessed();
-				$scope.nodes = ZWaveLogReader.getNodes();
+            ZWaveLogReader.loadLogfile(file).then(function () {
+                $scope.data = ZWaveLogReader.getData();
+                $scope.countLines = ZWaveLogReader.getLinesProcessed();
+                $scope.nodes = ZWaveLogReader.getNodes();
                 $scope.countEntries = $scope.data.length;
 
                 // Display all nodes to start
-				$scope.checkAllNodes();
+                $scope.checkAllNodes();
 
-				$scope.logState = "loaded";
-			});
+                $scope.logState = "loaded";
+            });
         }
 
         $scope.logName = ZWaveLogReader.getFileName();
-        if($scope.logName === "") {
+        if ($scope.logName === "") {
             $scope.logState = "empty";
         }
         else {

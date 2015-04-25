@@ -75,7 +75,7 @@ angular.module('HABmin.thingModel', [
                             console.log("Processing completed in", new Date().getTime() - tStart);
 
                             // Derive the binding ID so we can use this to filter things
-                            angular.forEach(thingList, function(thing) {
+                            angular.forEach(thingList, function (thing) {
                                 thing.binding = thing.UID.split(":")[0];
                             });
                             deferred.resolve(thingList);
@@ -122,8 +122,8 @@ angular.module('HABmin.thingModel', [
                 function (url) {
                     $http.get(url)
                         .success(function (data) {
-    //                        angular.forEach(thingList, function(thing) {
-  //                              thing.binding = thing.UID.split(":")[0];
+                            //                        angular.forEach(thingList, function(thing) {
+                            //                              thing.binding = thing.UID.split(":")[0];
 //                            });
                             deferred.resolve(data);
                         })
@@ -168,7 +168,7 @@ angular.module('HABmin.thingModel', [
             RestService.getService(svcSetup).then(
                 function (url) {
                     // If the UID ends with a colon, then it's new
-                    if(thing.UID.slice(-1) == ':') {
+                    if (thing.UID.slice(-1) == ':') {
                         thing.UID += new Date().getTime().toString(16);
                         $http.post(url + "/things", thing)
                             .success(function (data) {

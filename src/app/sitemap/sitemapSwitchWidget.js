@@ -14,16 +14,15 @@ angular.module('sitemapSwitchWidget', [
     .directive('sitemapSwitch', function (ImgFactory) {
         return {
             restrict: 'E',
-            template:
-                '<habmin-icon class="icon-lg sitemap-widget-icon" icon="{{widget.icon}}"></habmin-icon>' +
-                '<div class="sitemap-widget-content">' +
-                '  <span ng-style="labelColor">{{widget.label}}</span>' +
-                '  <span class="pull-right">' +
-                '  <span ng-style="valueColor"></span>' +
-                '  <small>' +
-                '    <toggle-switch ng-model="value" on-label="ON" off-label="OFF"></toggle-switch>' +
-                '  </small>' +
-                '</div>',
+            template: '<habmin-icon class="icon-lg sitemap-widget-icon" icon="{{widget.icon}}"></habmin-icon>' +
+            '<div class="sitemap-widget-content">' +
+            '  <span ng-style="labelColor">{{widget.label}}</span>' +
+            '  <span class="pull-right">' +
+            '  <span ng-style="valueColor"></span>' +
+            '  <small>' +
+            '    <toggle-switch ng-model="value" on-label="ON" off-label="OFF"></toggle-switch>' +
+            '  </small>' +
+            '</div>',
             scope: {
                 itemModel: "=",
                 widget: "="

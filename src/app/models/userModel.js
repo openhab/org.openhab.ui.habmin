@@ -224,10 +224,10 @@ angular.module('HABmin.userModel', [
 
             UserService.setServer($scope.server);
 
-            if($scope.user == null || $scope.user == 'null') {
+            if ($scope.user == null || $scope.user == 'null') {
                 $scope.user = "";
             }
-            if($scope.password == null || $scope.password == 'null') {
+            if ($scope.password == null || $scope.password == 'null') {
                 $scope.password = "";
             }
 

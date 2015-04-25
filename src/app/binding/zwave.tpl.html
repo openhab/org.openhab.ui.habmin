@@ -151,18 +151,21 @@
                 </ul>
             </div>
 
-            <button ng-show="deviceDisplay=='CONFIG'" type="button" ng-click="deviceSave()" ng-class="{'btn btn-default':true, 'disabled':!isDirty}">
+            <button ng-show="deviceDisplay=='CONFIG'" type="button" ng-click="deviceSave()"
+                    ng-class="{'btn btn-default':true, 'disabled':!isDirty}">
                 <span class="fa fa-floppy-o"></span>
                 <span class="hidden-xs hidden-sm" i18n="common.save"></span>
             </button>
-            <button ng-show="deviceDisplay=='CONFIG'" type="button" ng-click="deviceCancel()" ng-class="{'btn btn-default':true, 'disabled':!isDirty}">
+            <button ng-show="deviceDisplay=='CONFIG'" type="button" ng-click="deviceCancel()"
+                    ng-class="{'btn btn-default':true, 'disabled':!isDirty}">
                 <span class="fa fa-times"></span>
                 <span class="hidden-xs hidden-sm" i18n="common.cancel"></span>
             </button>
 
             <div ng-hide="!devEdit.label" class="btn-group pull-right">
                 <div class="text-right">{{devEdit.label}}</div>
-                <div class="text-right small"><span i18n="zwave.zwaveNode"></span>&nbsp;<span>{{devEdit.nodeID}}</span>:&nbsp;<span class="hidden-xs">{{devEdit.type}}</span></div>
+                <div class="text-right small"><span i18n="zwave.zwaveNode"></span>&nbsp;<span>{{devEdit.nodeID}}</span>:&nbsp;<span
+                        class="hidden-xs">{{devEdit.type}}</span></div>
             </div>
         </div>
 

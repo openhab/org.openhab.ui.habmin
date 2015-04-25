@@ -1083,7 +1083,7 @@ angular.module('ZWaveLogReader', [])
                 return;
             }
             createNode(id);
-            if(nodes[id].endpoints[endpoint] == null) {
+            if (nodes[id].endpoints[endpoint] == null) {
                 nodes[id].endpoints[endpoint] = {};
             }
             nodes[id].endpoints[endpoint][type] = value;
@@ -1119,14 +1119,14 @@ angular.module('ZWaveLogReader', [])
             if (endpoint !== 0) {
                 msg += endpoint + ":";
             }
-            if(cmd !== "") {
+            if (cmd !== "") {
                 msg += "command=" + cmd;
             }
             if (item != null) {
                 msg += "," + item;
             }
             // Check if the item exists
-            if(nodes[id].items.indexOf(msg) != -1) {
+            if (nodes[id].items.indexOf(msg) != -1) {
                 return;
             }
             nodes[id].items.push(msg);
@@ -1212,7 +1212,8 @@ angular.module('ZWaveLogReader', [])
             var data = {
                 result: INFO
             };
-            data.content = "Incoming Command: Item '" + message.slice(message.indexOf("itemname = ") + 11, message.indexOf(',')) +
+            data.content =
+                "Incoming Command: Item '" + message.slice(message.indexOf("itemname = ") + 11, message.indexOf(',')) +
                 "' to '" + message.slice(message.indexOf("Command = ") + 10, -1) + "'";
             return data;
         }
@@ -1394,8 +1395,8 @@ angular.module('ZWaveLogReader', [])
                     var maxNodes = HEX2DEC(bytes[3]);
                     var following = HEX2DEC(bytes[4]);
                     data.content += " Group:" + groupReport + " Max:" + maxNodes + " [";
-                    for(var a = 5; a < bytes.length; a++) {
-                        if(a != 5) {
+                    for (var a = 5; a < bytes.length; a++) {
+                        if (a != 5) {
                             data.content += ",";
                         }
                         data.content += HEX2DEC(bytes[a]);
@@ -1517,7 +1518,7 @@ angular.module('ZWaveLogReader', [])
                     }
                     break;
                 case 3:				// SENSOR_BINARY_REPORT
-                    if(bytes.length > 3) {
+                    if (bytes.length > 3) {
                         var typeReport = HEX2DEC(bytes[2]);
                         var scale = HEX2DEC(bytes[3]);
                         var val1 = HEX2DEC(bytes[4]);
@@ -1724,11 +1725,11 @@ angular.module('ZWaveLogReader', [])
             data.content = getCommandClassName(cmdCls, cmdCmd);
             data.content += "::" + cmdCfg;
 
-            if(cmdCmd == 4) {       // SET
+            if (cmdCmd == 4) {       // SET
             }
-            else if(cmdCmd == 5) {  // GET
+            else if (cmdCmd == 5) {  // GET
             }
-            else if(cmdCmd == 6) {  // REPORT
+            else if (cmdCmd == 6) {  // REPORT
             }
 
             return data;
@@ -1749,7 +1750,7 @@ angular.module('ZWaveLogReader', [])
             var cmdCls = HEX2DEC(bytes[0]);
             var cmdCmd = HEX2DEC(bytes[1]);
 
-            if(cmdCmd == 6) {       // REPORT
+            if (cmdCmd == 6) {       // REPORT
                 addNodeItem(node, endpoint, "SWITCH", commandClasses[cmdCls].name);
             }
 
@@ -1977,6 +1978,7 @@ angular.module('ZWaveLogReader', [])
             0x20: "DELETE_DONE",
             0x10: "SUC_ID"
         };
+
         function processAppUpdate(node, direction, type, bytes, len) {
             var data = {result: SUCCESS};
             if (direction == "TX") {
@@ -1985,17 +1987,17 @@ angular.module('ZWaveLogReader', [])
                     var state = HEX2DEC(bytes[0]);
                     data.node = HEX2DEC(bytes[1]);
                     data.content = "ApplicationUpdate::";
-                    if(appUpdateState[state] != null) {
+                    if (appUpdateState[state] != null) {
                         data.content += appUpdateState[state];
                     }
                     else {
                         data.content += bytes[0];
                     }
-                    switch(state) {
+                    switch (state) {
                         case 0x84:
                             createNode(data.node);
                             var cntrl = false;
-                            for(var c = 6; c < bytes.length; c++) {
+                            for (var c = 6; c < bytes.length; c++) {
                                 var id = HEX2DEC(bytes[c]);
                                 if (id == 0xEF) {
                                     cntrl = true;
@@ -2003,10 +2005,10 @@ angular.module('ZWaveLogReader', [])
                                 }
 
                                 // If we know the command class name, use it
-                                if(commandClasses[id] != null) {
+                                if (commandClasses[id] != null) {
                                     id = commandClasses[id].name;
                                 }
-                                if(cntrl === false) {
+                                if (cntrl === false) {
                                     if (nodes[data.node].classes[id] == null) {
                                         nodes[data.node].classes[id] = 0;
                                     }
@@ -2416,7 +2418,7 @@ angular.module('ZWaveLogReader', [])
 
             logTime = time.valueOf();
 
-            if(timeStart === 0) {
+            if (timeStart === 0) {
                 timeStart = logTime;
             }
 

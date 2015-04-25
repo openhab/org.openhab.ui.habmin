@@ -55,7 +55,7 @@ angular.module('HABmin.dashboard', [
             // If this is the first time we've edited this dashboard
             // then we reset the dirty flag here.
             // This allows us to avoid dirty calls during startup.
-            if($scope.firstEdit === false) {
+            if ($scope.firstEdit === false) {
                 $scope.firstEdit = true;
                 $scope.isDirty = false;
             }

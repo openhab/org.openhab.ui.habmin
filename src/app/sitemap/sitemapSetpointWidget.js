@@ -13,15 +13,14 @@ angular.module('sitemapSetpointWidget', [
     .directive('sitemapSetpoint', function (ImgFactory) {
         return {
             restrict: 'E',
-            template:
-                '<habmin-icon class="icon-lg sitemap-widget-icon" icon="{{widget.icon}}"></habmin-icon>' +
-                '<div class="sitemap-widget-content">' +
-                '  <span ng-style="labelColor">{{widget.label}}</span>' +
-                '  <span class="pull-right">' +
-                '  <button type="button" class="btn btn-primary btn-sm" ng-click="click(1)"><span class="fa fa-chevron-circle-up"></span></button>' +
-                '  <span ng-style="valueColor">{{widget.value}}</span>' +
-                '  <button type="button" class="btn btn-primary btn-sm" ng-click="click(-1)"><span class="fa fa-chevron-circle-down"></span></button>' +
-                '</div>',
+            template: '<habmin-icon class="icon-lg sitemap-widget-icon" icon="{{widget.icon}}"></habmin-icon>' +
+            '<div class="sitemap-widget-content">' +
+            '  <span ng-style="labelColor">{{widget.label}}</span>' +
+            '  <span class="pull-right">' +
+            '  <button type="button" class="btn btn-primary btn-sm" ng-click="click(1)"><span class="fa fa-chevron-circle-up"></span></button>' +
+            '  <span ng-style="valueColor">{{widget.value}}</span>' +
+            '  <button type="button" class="btn btn-primary btn-sm" ng-click="click(-1)"><span class="fa fa-chevron-circle-down"></span></button>' +
+            '</div>',
             scope: {
                 itemModel: "=",
                 widget: "="
@@ -32,7 +31,7 @@ angular.module('sitemapSetpointWidget', [
                 }
 
                 // Default the step to 1
-                if($scope.widget.step === undefined) {
+                if ($scope.widget.step === undefined) {
                     $scope.widget.step = 1;
                 }
 
@@ -43,14 +42,16 @@ angular.module('sitemapSetpointWidget', [
                 });
 
                 if ($scope.widget.item !== undefined) {
-                    $scope.click = function(val) {
+                    $scope.click = function (val) {
                         console.log("Changed setpoint", $scope.widget.label, val);
 
                         $scope.currentValue += ($scope.widget.step * val);
-                        if($scope.widget.minValue !== undefined && $scope.currentValue < parseInt($scope.widget.minValue, 10)) {
+                        if ($scope.widget.minValue !== undefined &&
+                            $scope.currentValue < parseInt($scope.widget.minValue, 10)) {
                             $scope.currentValue = parseInt($scope.widget.minValue, 10);
                         }
-                        if($scope.widget.maxValue !== undefined && $scope.currentValue > parseInt($scope.widget.maxValue, 10)) {
+                        if ($scope.widget.maxValue !== undefined &&
+                            $scope.currentValue > parseInt($scope.widget.maxValue, 10)) {
                             $scope.currentValue = parseInt($scope.widget.maxValue, 10);
                         }
                         $scope.$emit('habminGUIUpdate', $scope.widget.item.name, $scope.currentValue);

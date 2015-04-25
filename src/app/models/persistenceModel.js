@@ -246,7 +246,7 @@ angular.module('HABmin.persistenceModel', [
 
             RestService.getService('habmin/persistenceitem').then(
                 function (url) {
-                    if(url == null) {
+                    if (url == null) {
                         deferred.resolve(null);
                         return;
                     }

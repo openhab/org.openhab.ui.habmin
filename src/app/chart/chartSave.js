@@ -47,7 +47,7 @@ angular.module('HABmin.chartSave', [
                 legend: chart.legend
             };
 
-            if(scope.general.legend !== 'false' && scope.general.legend !== false) {
+            if (scope.general.legend !== 'false' && scope.general.legend !== false) {
                 scope.general.legend = 'true';
             }
 

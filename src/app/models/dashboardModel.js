@@ -33,7 +33,7 @@ angular.module('HABmin.dashboardModel', [
 
                             // Keep a local copy.
                             // This allows us to update the data later and keeps the GUI in sync.
-                            if(data.dashboard != null) {
+                            if (data.dashboard != null) {
                                 data = data.dashboard;
                             }
                             dashboardList = [].concat(data);
@@ -76,7 +76,7 @@ angular.module('HABmin.dashboardModel', [
 
                             // Handle the correct types.
                             // Especially important for gridster
-                            angular.forEach(data.widgets, function(widget) {
+                            angular.forEach(data.widgets, function (widget) {
                                 widget.row = Number(widget.row);
                                 widget.col = Number(widget.col);
                                 widget.sizeX = Number(widget.sizeX);

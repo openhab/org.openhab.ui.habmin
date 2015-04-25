@@ -53,7 +53,7 @@ angular.module('Config.Discovery', [
         );
 
         $scope.inbox = InboxModel.getInbox();
-        $scope.$watch('inbox', function() {
+        $scope.$watch('inbox', function () {
             $scope.inboxCnt = $scope.inbox.length;
         }, true);
 

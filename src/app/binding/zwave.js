@@ -29,7 +29,7 @@ angular.module('Binding.zwave', [
                     templateUrl: 'binding/zwave.tpl.html'
                 }
             },
-            data: { pageTitle: 'ZWave' },
+            data: {pageTitle: 'ZWave'},
             resolve: {
                 // Make sure the localisation files are resolved before the controller runs
                 localisations: function (locale) {
@@ -94,7 +94,7 @@ angular.module('Binding.zwave', [
             if (t.isValid()) {
                 lastTime = t.fromNow();
             }
-            else if(node.lastReceived == "NEVER") {
+            else if (node.lastReceived == "NEVER") {
                 lastTime = locale.getString("zwave.zwaveNeverReceived", node.retryRate);
             }
 
@@ -112,7 +112,7 @@ angular.module('Binding.zwave', [
 
         $scope.selectDevice = function (node) {
             // Make sure the node really changed!
-            if(node == $scope.devEdit) {
+            if (node == $scope.devEdit) {
                 return;
             }
 
@@ -210,7 +210,7 @@ angular.module('Binding.zwave', [
             var doUpdateInfo = false;
             // TODO: This needs some rationalisation...
             angular.forEach($scope.deviceData, function (el) {
-                if(el.dirty) {
+                if (el.dirty) {
                     saveDomain(el.domain, el.value);
                     el.dirty = false;
                     el.pending = true;
@@ -219,21 +219,21 @@ angular.module('Binding.zwave', [
                 }
             });
             angular.forEach($scope.infoData, function (el) {
-                if(el.dirty) {
+                if (el.dirty) {
                     saveDomain(el.domain, el.value);
                     el.dirty = false;
                     el.pending = true;
                 }
             });
             angular.forEach($scope.configData, function (el) {
-                if(el.dirty) {
+                if (el.dirty) {
                     saveDomain(el.domain, el.value);
                     el.dirty = false;
                     el.pending = true;
                 }
             });
             angular.forEach($scope.wakeupData, function (el) {
-                if(el.dirty) {
+                if (el.dirty) {
                     saveDomain(el.domain, el.value);
                     el.dirty = false;
                     el.pending = true;
@@ -242,7 +242,7 @@ angular.module('Binding.zwave', [
 
             // The name and location aren't handled normally
             // so we need to handle this explicitly here
-            if(doUpdateInfo === true) {
+            if (doUpdateInfo === true) {
                 updateInfo($scope.devEdit.device);
             }
         };
@@ -252,25 +252,25 @@ angular.module('Binding.zwave', [
             $scope.isDirty = false;
 
             angular.forEach($scope.deviceData, function (el) {
-                if(el.dirty) {
+                if (el.dirty) {
                     el.value = el.org;
                     el.dirty = false;
                 }
             });
             angular.forEach($scope.infoData, function (el) {
-                if(el.dirty) {
+                if (el.dirty) {
                     el.value = el.org;
                     el.dirty = false;
                 }
             });
             angular.forEach($scope.configData, function (el) {
-                if(el.dirty) {
+                if (el.dirty) {
                     el.value = el.org;
                     el.dirty = false;
                 }
             });
             angular.forEach($scope.wakeupData, function (el) {
-                if(el.dirty) {
+                if (el.dirty) {
                     el.value = el.org;
                     el.dirty = false;
                 }
@@ -424,12 +424,12 @@ angular.module('Binding.zwave', [
                         else if (status.name === "NodeStage") {
                             var stage = status.value.split(" ");
                             // For old binding compatibility
-                            if(stage[1] == '@') {
+                            if (stage[1] == '@') {
                                 stage[1] = stage[0];
                             }
 
                             // If the stage has changed, then update the info.
-                            if(device.nodeState != stage[0] || device.nodeStage != stage[1]) {
+                            if (device.nodeState != stage[0] || device.nodeStage != stage[1]) {
                                 device.nodeState = stage[0];
                                 device.nodeStage = stage[1];
 
@@ -458,7 +458,7 @@ angular.module('Binding.zwave', [
                         $scope.devEdit.deviceInfo[0] = data.records[0];
                         $scope.devEdit.deviceInfo[1] = data.records[1];
 
-                        if($scope.deviceData !== undefined) {
+                        if ($scope.deviceData !== undefined) {
                             if ($scope.deviceData["Name"] !== undefined) {
                                 $scope.deviceData["Name"].pending = false;
                             }
@@ -511,7 +511,7 @@ angular.module('Binding.zwave', [
                                     }
                                     else {
                                         var icon = Math.floor(level / 20) * 20;
-                                        if(icon === 0) {
+                                        if (icon === 0) {
                                             device.batteryIcon = "oa-battery-empty";
                                         }
                                         else {
@@ -529,29 +529,29 @@ angular.module('Binding.zwave', [
                             }
                         }
                         if (status.name === "SpecificClass") {
-                            if(deviceClassIcons[status.value] === undefined) {
+                            if (deviceClassIcons[status.value] === undefined) {
                                 device.icon = "wifi";
                             }
                             else {
                                 device.icon = deviceClassIcons[status.value];
                             }
                         }
-                        if(status.name === "Listening") {
+                        if (status.name === "Listening") {
                             device.listening = status.value == "true";
                         }
-                        if(status.name === "Routing") {
+                        if (status.name === "Routing") {
                             device.routing = status.value == "true";
                         }
-                        if(status.name === "NodeID") {
+                        if (status.name === "NodeID") {
                             device.nodeID = parseInt(status.value, 10);
                         }
-                        if(status.name === "ManufacturerID" && status.value === "UNKNOWN") {
+                        if (status.name === "ManufacturerID" && status.value === "UNKNOWN") {
                             status.value = locale.getString("zwave.zwaveUnknown");
                         }
-                        if(status.name === "DeviceID" && status.value === "UNKNOWN") {
+                        if (status.name === "DeviceID" && status.value === "UNKNOWN") {
                             status.value = locale.getString("zwave.zwaveUnknown");
                         }
-                        if(status.name === "DeviceType" && status.value === "UNKNOWN") {
+                        if (status.name === "DeviceType" && status.value === "UNKNOWN") {
                             status.value = locale.getString("zwave.zwaveUnknown");
                         }
                     });
@@ -635,7 +635,7 @@ angular.module('Binding.zwave', [
                         return;
                     }
                     var neighbors = [].concat(data.records);
-                    if(neighbors.length === 0) {
+                    if (neighbors.length === 0) {
                         return;
                     }
                     var domain = neighbors[0].domain.split('/');
@@ -831,7 +831,7 @@ angular.module('Binding.zwave', [
             });
 
             console.log("Setting network options");
-            $timeout(function() {
+            $timeout(function () {
                 $scope.networkNodes = {nodes: nodes, edges: edges};
             });
             console.log("Setting network options DONE");

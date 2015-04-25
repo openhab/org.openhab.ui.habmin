@@ -60,9 +60,9 @@ angular.module('HABmin.rules', [
         $scope.isDirty = false;
         $scope.selectedRule = null;
         $scope.aceOptions = {
-            useWrapMode : true,
+            useWrapMode: true,
             showGutter: true,
-            theme:'tomorrow',
+            theme: 'tomorrow',
             mode: 'openhabrules',
             onLoad: function (editor) {
                 $scope.aceEditor = editor;
@@ -82,7 +82,7 @@ angular.module('HABmin.rules', [
             }
         }
 
-        $scope.$on('habminTheme', function(event, theme) {
+        $scope.$on('habminTheme', function (event, theme) {
             console.log("habminTheme event", theme);
             setTheme(theme);
         });

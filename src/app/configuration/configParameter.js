@@ -25,20 +25,20 @@ angular.module('Config.parameter', [
 
                 var cfg = angular.fromJson(attrs.configParameter);
 
-                if(cfg.readOnly) {
+                if (cfg.readOnly) {
                     element.attr('readonly', 'true');
                 }
 
-                switch(cfg.type) {
+                switch (cfg.type) {
                     case 'INTEGER':
                         element.attr('type', 'number');
-                        if(cfg.min) {
+                        if (cfg.min) {
                             element.attr('min', cfg.min);
                         }
-                        if(cfg.max) {
+                        if (cfg.max) {
                             element.attr('min', cfg.max);
                         }
-                        if(cfg.step) {
+                        if (cfg.step) {
                             element.attr('min', cfg.step);
                         }
                         break;

@@ -37,7 +37,7 @@
                 </button>
                 <ul class="dropdown-menu" role="menu">
                     <li ng-repeat="choice in bindings" ng-class="{'disabled': choice.disabled}"
-                            ng-if="choice.discovery">
+                        ng-if="choice.discovery">
                         <a ng-click="startDiscovery(choice)">
                             <habmin-icon class="fa-fw" icon="{{choice.icon}}"></habmin-icon>
                             <span>{{choice.name}}</span>

@@ -8,7 +8,8 @@
                 <span class="fa fa-list-alt"></span>
                 <span>Log</span>
             </button>
-            <button type="button" ng-disabled="logState!='loaded' || showOption=='TIMELINE'" class="btn btn-sm btn-default"
+            <button type="button" ng-disabled="logState!='loaded' || showOption=='TIMELINE'"
+                    class="btn btn-sm btn-default"
                     ng-click="changePanel('TIMELINE')">
                 <span class="fa fa-line-chart"></span>
                 <span>Timeline</span>
@@ -105,7 +106,8 @@
                         <span ng-if="log.successFlag" class="text-success fa fa-check-circle"></span>
                         <span ng-if="log.warnFlag" class="text-warning fa fa-question-circle"></span>
                         <span ng-if="log.errorFlag" class="text-danger fa fa-exclamation-circle"></span>
-                        <span ng-if="log.queueLen>5&&log.queueLen<15" class="small label label-warning">{{log.queueLen}}</span>
+                        <span ng-if="log.queueLen>5&&log.queueLen<15"
+                              class="small label label-warning">{{log.queueLen}}</span>
                         <span ng-if="log.queueLen>=15" class="small label label-danger">{{log.queueLen}}</span>
                     </td>
                 </tr>
@@ -123,7 +125,8 @@
             <div class="col-sm-4 panel panel-default" style="height:100%;padding:0px;border-left:0px;border-right:0px;">
                 <div class="habmin-list" style="height:100%;">
                     <div class="list-group" style="height:100%;margin-bottom:0px;">
-                        <a ng-class="{'list-group-item':true, 'active':node==selectedNode}" ng-repeat="node in nodes | orderObjectBy:'id'" ng-click="selectNode(node)">
+                        <a ng-class="{'list-group-item':true, 'active':node==selectedNode}"
+                           ng-repeat="node in nodes | orderObjectBy:'id'" ng-click="selectNode(node)">
                             Node {{node.id}}
                             <span class="pull-right">
                                 <span ng-if="node.warnings.length" class="text-warning fa fa-question-circle"></span>
@@ -150,21 +153,25 @@
                             <td>
                                 <table>
                                     <tr ng-repeat="error in selectedNode.errors">
-                                        <td><span class="text-danger fa fa-exclamation-circle"></span>&nbsp;{{error}}</td>
+                                        <td><span class="text-danger fa fa-exclamation-circle"></span>&nbsp;{{error}}
+                                        </td>
                                     </tr>
                                     <tr ng-repeat="warning in selectedNode.warnings">
-                                        <td><span class="text-warning fa fa-question-circle"></span>&nbsp;{{warning}}</td>
+                                        <td><span class="text-warning fa fa-question-circle"></span>&nbsp;{{warning}}
+                                        </td>
                                     </tr>
                                 </table>
                             </td>
                         </tr>
                         <tr ng-if="selectedNode.txErrorCan">
                             <td>Messages CANcelled</td>
-                            <td><span class="text-danger fa fa-exclamation-circle"></span>&nbsp;{{selectedNode.txErrorCan}}</td>
+                            <td><span class="text-danger fa fa-exclamation-circle"></span>&nbsp;{{selectedNode.txErrorCan}}
+                            </td>
                         </tr>
                         <tr ng-if="selectedNode.txErrorNak">
                             <td>Messages NAKed</td>
-                            <td><span class="text-danger fa fa-exclamation-circle"></span>&nbsp;{{selectedNode.txErrorNak}}</td>
+                            <td><span class="text-danger fa fa-exclamation-circle"></span>&nbsp;{{selectedNode.txErrorNak}}
+                            </td>
                         </tr>
                         <tr>
                             <td>Command Classes</td>
@@ -223,7 +230,9 @@
                         </tr>
                         <tr ng-if="selectedNode.neighboursTotal!=null">
                             <td>Neighbours</td>
-                            <td>{{selectedNode.neighboursTotal}} total, {{selectedNode.neighboursListening}} listening, {{selectedNode.neighboursUnknown}} unknown</td>
+                            <td>{{selectedNode.neighboursTotal}} total, {{selectedNode.neighboursListening}} listening,
+                                {{selectedNode.neighboursUnknown}} unknown
+                            </td>
                         </tr>
                         <tr>
                             <td>Messages Sent</td>
@@ -235,7 +244,9 @@
                         </tr>
                         <tr>
                             <td>Response Times</td>
-                            <td>{{selectedNode.responseTimeMin}} / {{selectedNode.responseTimeAvg}} / {{selectedNode.responseTimeMax}}</td>
+                            <td>{{selectedNode.responseTimeMin}} / {{selectedNode.responseTimeAvg}} /
+                                {{selectedNode.responseTimeMax}}
+                            </td>
                         </tr>
                         <tr>
                             <td>Manufacturer</td>

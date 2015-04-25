@@ -114,7 +114,7 @@ angular.module('HABmin.chart', [
                 }
 
                 // If there's no predefined charts, change to items view
-                if($scope.charts === 0) {
+                if ($scope.charts === 0) {
                     $scope.selectCharts = false;
                 }
             },
@@ -129,7 +129,7 @@ angular.module('HABmin.chart', [
         PersistenceServiceModel.getList().then(
             function (data) {
                 $scope.services = [].concat(data);
-                if($scope.services.length > 0) {
+                if ($scope.services.length > 0) {
                     $scope.services[0].selected = true;
                     $scope.selectedService = $scope.services[0].name;
                 }
@@ -268,7 +268,7 @@ angular.module('HABmin.chart', [
             graph2d = graphRef;
             graph2d.setWindow($scope.startTime, $scope.stopTime);
             if ($scope.selectedChart != null) {
-                if(graphRef == null) {
+                if (graphRef == null) {
                     $scope.selectedChart.selected = null;
                 }
                 else {

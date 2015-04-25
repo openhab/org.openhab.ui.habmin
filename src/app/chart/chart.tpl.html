@@ -123,7 +123,8 @@
         <!-- Display the list of predefined charts -->
         <div id="chartList" class="list-group habmin-list" ng-if="selectCharts" resize-panel>
             <div ng-if="chartsTotal>0" ng-repeat="choice in charts">
-                <a role="presentation" ng-class="{'list-group-item': true, 'active': choice.selected=='yes'}" ng-class="{'active':choice.selected=='yes'}"
+                <a role="presentation" ng-class="{'list-group-item': true, 'active': choice.selected=='yes'}"
+                   ng-class="{'active':choice.selected=='yes'}"
                    ng-click="selectChart(choice)" sidepanel-click="main">
                     <habmin-icon class="icon-lg" icon="{{choice.icon}}"></habmin-icon>
                     <span>{{choice.name}}</span>
@@ -201,34 +202,34 @@
                         </span>
                     <span class="hidden-xs hidden-sm">Month</span>
                 </button>
-<!--                <button type="button" class="btn btn-default dropdown" ng-disabled="!graphLoaded"
-                        ng-init="calendarOpen=false" ng-click="calendarOpen=!calendarOpen">
-                    <span class="fa fa-clock-o"></span>&nbsp;Custom
-                </button>
-                <div class="dropdown-menu dropdown_dialog">
-                    <table>
-                        <tr>
-                            <td align="center" style="padding-right: 3px;">
-                                <span>Start Date</span>
-                            </td>
-                            <td align="center" style="padding-left: 3px;">
-                                <span>End Date</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="padding-right: 3px;">
-                                <datepicker ng-model="startTime" max-date="stopTime" max-mode="day" show-weeks="true"></datepicker>
-                            </td>
-                            <td style="padding-left: 3px;">
-                                <datepicker ng-model="stopTime" min-date="startTime" max-date="timeNow" max-mode="day" show-weeks="true"></datepicker>
-                            </td>
-                        </tr>
-                    </table>
-                    <div class="modal-footer">
-                    <button class="btn btn-sm btn-primary" ng-click="setDateRange();calendarOpen=false;">OK</button>
-                    <button class="btn btn-sm btn-warning" ng-click="calendarOpen=false;">Cancel</button>
-                    </div>
-                </div> -->
+                <!--                <button type="button" class="btn btn-default dropdown" ng-disabled="!graphLoaded"
+                                        ng-init="calendarOpen=false" ng-click="calendarOpen=!calendarOpen">
+                                    <span class="fa fa-clock-o"></span>&nbsp;Custom
+                                </button>
+                                <div class="dropdown-menu dropdown_dialog">
+                                    <table>
+                                        <tr>
+                                            <td align="center" style="padding-right: 3px;">
+                                                <span>Start Date</span>
+                                            </td>
+                                            <td align="center" style="padding-left: 3px;">
+                                                <span>End Date</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-right: 3px;">
+                                                <datepicker ng-model="startTime" max-date="stopTime" max-mode="day" show-weeks="true"></datepicker>
+                                            </td>
+                                            <td style="padding-left: 3px;">
+                                                <datepicker ng-model="stopTime" min-date="startTime" max-date="timeNow" max-mode="day" show-weeks="true"></datepicker>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <div class="modal-footer">
+                                    <button class="btn btn-sm btn-primary" ng-click="setDateRange();calendarOpen=false;">OK</button>
+                                    <button class="btn btn-sm btn-warning" ng-click="calendarOpen=false;">Cancel</button>
+                                    </div>
+                                </div> -->
             </div>
 
             <div ng-show="graphLoaded" class="hidden-xs hidden-sm pull-right">

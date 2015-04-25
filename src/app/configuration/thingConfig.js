@@ -52,6 +52,7 @@ angular.module('Config.Things', [
         $scope.thingCnt = -1;
 
         $scope.newThings = [];
+        $scope.thingTypes = [];
         $scope.newThing = false;
         $scope.insertMode = false;
 
@@ -59,7 +60,7 @@ angular.module('Config.Things', [
         $scope.filterBindings = [];
 
         SmartHomeModel.ready().then(
-            function() {
+            function () {
                 $scope.itemtypes = SmartHomeModel.itemtypes;
                 $scope.categories = SmartHomeModel.categories;
             });
@@ -68,6 +69,12 @@ angular.module('Config.Things', [
             function (list) {
                 $scope.things = list;
                 $scope.thingCnt = $scope.things.length;
+            }
+        );
+
+        ThingModel.getThingTypes().then(
+            function (list) {
+                $scope.thingTypes = list;
             }
         );
 
@@ -91,6 +98,11 @@ angular.module('Config.Things', [
             }
         );
 
+        /**
+         * Function to filter things depending on selected bindings and status
+         * @param element
+         * @returns {boolean}
+         */
         $scope.filterFunction = function (element) {
             if ($scope.filterBindings.indexOf(element.binding) == -1) {
                 return false;
@@ -122,26 +134,55 @@ angular.module('Config.Things', [
             }
         };
 
-        $scope.selectThing = function (thing) {
-            $scope.newThing = false;
-            $scope.thingSelected = null;
-            $scope.panelDisplayed = 'PROPERTIES';
+        /**
+         * Filter used to test if the thing is of a type included in the bridge types
+         * supported by the selected thing.
+         * @param thing
+         * @returns {boolean}
+         */
+        $scope.bridgeFilter = function (bridge) {
+            if ($scope.selectedThingType == null) {
+                return false;
+            }
 
+            var thingType = $scope.getThingType(bridge);
+            if (thingType == null || $scope.selectedThingType.supportedBridgeTypeUIDs == null ||
+                thingType.bridge === false) {
+                return false;
+            }
+
+            return $scope.selectedThingType.supportedBridgeTypeUIDs.indexOf(thingType.UID) != -1;
+        };
+
+        /**
+         * Get the thing type, given the thing
+         * @param thing
+         * @returns thingType
+         */
+        $scope.getThingType = function (thing) {
             var uid = thing.UID.substring(0, thing.UID.lastIndexOf(":"));
             uid = thing.UID.split(':', 2).join(':');
-            ThingModel.getThingInfo(uid).then(
-                function (type) {
-                    $scope.thingType = type;
-                },
-                function () {
-                    growl.warning(locale.getString("habmin.thingErrorGettingThing",
-                        {name: thing.item.label}));
-                }
-            );
 
+            for (var i = 0; i < $scope.thingTypes.length; i++) {
+                if ($scope.thingTypes[i].UID == uid) {
+                    return $scope.thingTypes[i];
+                }
+            }
+
+            return null;
+        };
+
+        $scope.selectThing = function (thing) {
+            $scope.newThing = false;
+            $scope.selectedThing = null;
+            $scope.panelDisplayed = 'PROPERTIES';
+
+            $scope.selectedThingType = $scope.getThingType(thing);
+
+            // TODO: Do we need to do this - could just make a copy?
             ThingModel.getThing(thing.UID).then(
                 function (data) {
-                    $scope.thingSelected = data;
+                    $scope.selectedThing = data;
                 },
                 function () {
                     growl.warning(locale.getString("habmin.thingErrorGettingThing",
@@ -151,17 +192,17 @@ angular.module('Config.Things', [
         };
 
         $scope.getChannelItems = function (channel) {
-            if ($scope.thingSelected == null) {
+            if ($scope.selectedThing == null) {
                 return false;
             }
 
-            if ($scope.thingSelected.channels == null) {
+            if ($scope.selectedThing.channels == null) {
                 return [];
             }
 
-            for (var i = 0; i < $scope.thingSelected.channels.length; i++) {
-                if ($scope.thingSelected.channels[i].id == channel.id) {
-                    return $scope.thingSelected.channels[i].linkedItems;
+            for (var i = 0; i < $scope.selectedThing.channels.length; i++) {
+                if ($scope.selectedThing.channels[i].id == channel.id) {
+                    return $scope.selectedThing.channels[i].linkedItems;
                 }
             }
             return [];
@@ -186,51 +227,51 @@ angular.module('Config.Things', [
 
         $scope.channelEnable = function (channel) {
             if ($scope.channelEnabled(channel)) {
-                ThingModel.disableChannel($scope.thingSelected.UID + ":" + channel.id).then(
+                ThingModel.disableChannel($scope.selectedThing.UID + ":" + channel.id).then(
                     function () {
                         growl.success(locale.getString("habmin.thingChannelDisabledOk",
-                            {thing: $scope.thingSelected.item.label, channel: channel.label}));
+                            {thing: $scope.selectedThing.item.label, channel: channel.label}));
 
-                        ThingModel.getThing($scope.thingSelected.UID).then(
+                        ThingModel.getThing($scope.selectedThing.UID).then(
                             function (data) {
-                                $scope.thingSelected = data;
+                                $scope.selectedThing = data;
                             }
                         );
                     },
                     function () {
                         growl.warning(locale.getString("habmin.thingChannelDisabledError",
-                            {thing: $scope.thingSelected.item.label, channel: channel.label}));
+                            {thing: $scope.selectedThing.item.label, channel: channel.label}));
                     }
                 );
             }
             else {
-                ThingModel.enableChannel($scope.thingSelected.UID + ":" + channel.id).then(
+                ThingModel.enableChannel($scope.selectedThing.UID + ":" + channel.id).then(
                     function () {
                         growl.success(locale.getString("habmin.thingChannelEnabledOk",
-                            {thing: $scope.thingSelected.item.label, channel: channel.label}));
+                            {thing: $scope.selectedThing.item.label, channel: channel.label}));
 
-                        ThingModel.getThing($scope.thingSelected.UID).then(
+                        ThingModel.getThing($scope.selectedThing.UID).then(
                             function (data) {
-                                $scope.thingSelected = data;
+                                $scope.selectedThing = data;
                             }
                         );
                     },
                     function () {
                         growl.warning(locale.getString("habmin.thingChannelDisabledError",
-                            {thing: $scope.thingSelected.item.label, channel: channel.label}));
+                            {thing: $scope.selectedThing.item.label, channel: channel.label}));
                     }
                 );
             }
         };
 
         $scope.channelEnabled = function (channel) {
-            if ($scope.thingSelected == null || $scope.thingSelected.channels == null) {
+            if ($scope.selectedThing == null || $scope.selectedThing.channels == null) {
                 return false;
             }
 
-            for (var i = 0; i < $scope.thingSelected.channels.length; i++) {
-                if ($scope.thingSelected.channels[i].id == channel.id) {
-                    if ($scope.thingSelected.channels[i].linkedItems.length) {
+            for (var i = 0; i < $scope.selectedThing.channels.length; i++) {
+                if ($scope.selectedThing.channels[i].id == channel.id) {
+                    if ($scope.selectedThing.channels[i].linkedItems.length) {
                         return true;
                     }
                     else {
@@ -242,47 +283,60 @@ angular.module('Config.Things', [
         };
 
         $scope.thingSave = function () {
-            ThingModel.putThing($scope.thingSelected).then(
+            // Perform type conversion to ensure that any INTEGER types are sent as a number
+            angular.forEach($scope.selectedThingType.configParameters, function (cfg, key) {
+                switch (cfg.type) {
+                    case "INTEGER":
+                        $scope.selectedThing.configuration[cfg.name] =
+                            Number($scope.selectedThing.configuration[cfg.name]);
+                        break;
+                    case "STRING":
+                        $scope.selectedThing.configuration[cfg.name] =
+                            $scope.selectedThing.configuration[cfg.name].toString();
+                        break;
+                }
+            });
+            ThingModel.putThing($scope.selectedThing).then(
                 function () {
                     $scope.newThing = false;
                     var name = "";
-                    if ($scope.thingSelected.item != null) {
-                        name = $scope.thingSelected.item.label;
+                    if ($scope.selectedThing.item != null) {
+                        name = $scope.selectedThing.item.label;
                     }
                     growl.success(locale.getString("habmin.thingSuccessSavingThing",
                         {name: name}));
                 },
                 function () {
                     var name = "";
-                    if ($scope.thingSelected.item != null) {
-                        name = $scope.thingSelected.item.label;
+                    if ($scope.selectedThing.item != null) {
+                        name = $scope.selectedThing.item.label;
                     }
                     growl.error(locale.getString("habmin.thingErrorSavingThing",
                         {name: name}));
                 }
-            )
+            );
         };
 
         $scope.thingDelete = function () {
-            ThingModel.deleteThing($scope.thingSelected).then(
+            ThingModel.deleteThing($scope.selectedThing).then(
                 function () {
                     var name = "";
-                    if ($scope.thingSelected.item != null) {
-                        name = $scope.thingSelected.item.label;
+                    if ($scope.selectedThing.item != null) {
+                        name = $scope.selectedThing.item.label;
                     }
                     growl.success(locale.getString("habmin.thingSuccessDeletingThing",
                         {name: name}));
-                    $scope.thingSelected = null;
+                    $scope.selectedThing = null;
                 },
                 function () {
                     var name = "";
-                    if ($scope.thingSelected.item != null) {
-                        name = $scope.thingSelected.item.label;
+                    if ($scope.selectedThing.item != null) {
+                        name = $scope.selectedThing.item.label;
                     }
                     growl.error(locale.getString("habmin.thingErrorDeletingThing",
                         {name: name}));
                 }
-            )
+            );
         };
 
         $scope.newThing = function (binding) {
@@ -297,8 +351,8 @@ angular.module('Config.Things', [
 
             ThingModel.getThingInfo(thing.UID).then(
                 function (type) {
-                    $scope.thingType = type;
-                    $scope.thingSelected = {
+                    $scope.selectedThingType = type;
+                    $scope.selectedThing = {
                         UID: type.UID + ":",
                         item: {
                             label: "",
@@ -309,11 +363,11 @@ angular.module('Config.Things', [
 
                     angular.forEach(type.configParameters, function (parameter) {
                         if (parameter.type == 'BOOLEAN') {
-                            $scope.thingSelected.configuration[parameter.name] =
+                            $scope.selectedThing.configuration[parameter.name] =
                                 parameter.defaultValue === 'true' ? true : false;
                         }
                         else {
-                            $scope.thingSelected.configuration[parameter.name] = parameter.defaultValue;
+                            $scope.selectedThing.configuration[parameter.name] = parameter.defaultValue;
                         }
                     });
                 },

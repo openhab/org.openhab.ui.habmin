@@ -63,7 +63,7 @@ angular.module('dashboardGaugeWidget', [
                         name: "",
                         desc: "",
                         options: {
-                            barWidth:20,
+                            barWidth: 20,
                             borderWidth: 0,
                             angle: 315,
                             rotate: 180,
@@ -79,7 +79,7 @@ angular.module('dashboardGaugeWidget', [
                 ];
 
                 $scope.selectTheme = function (theme) {
-                    if(theme == null || theme.options == null) {
+                    if (theme == null || theme.options == null) {
                         return;
                     }
                     $scope.options.barWidth = theme.options.barWidth;
@@ -89,19 +89,19 @@ angular.module('dashboardGaugeWidget', [
                     $scope.options.barAngle = theme.options.barAngle;
                 };
 
-                if($scope.options.barWidth != null) {
+                if ($scope.options.barWidth != null) {
                     $scope.options.barWidth = Number($scope.options.barWidth);
                 }
-                if($scope.options.borderWidth != null) {
+                if ($scope.options.borderWidth != null) {
                     $scope.options.borderWidth = Number($scope.options.borderWidth);
                 }
-                if($scope.options.angle != null) {
+                if ($scope.options.angle != null) {
                     $scope.options.angle = Number($scope.options.angle);
                 }
-                if($scope.options.rotate != null) {
+                if ($scope.options.rotate != null) {
                     $scope.options.rotate = Number($scope.options.rotate);
                 }
-                if($scope.options.barAngle != null) {
+                if ($scope.options.barAngle != null) {
                     $scope.options.barAngle = Number($scope.options.barAngle);
                 }
                 $scope.removeNull = function (item) {

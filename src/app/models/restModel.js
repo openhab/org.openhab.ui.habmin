@@ -61,7 +61,7 @@ angular.module('HABmin.restModel', [
 
                     // For OH2, we use the list from the server directly
                     // This removes any OH1 defaults we've added
-                    if(data.version != null) {
+                    if (data.version != null) {
                         serviceList = {};
                     }
 

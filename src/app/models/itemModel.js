@@ -69,7 +69,7 @@ angular.module('HABmin.itemModel', [
                             // Keep a local copy.
                             // This allows us to update the data later and keeps the GUI in sync.
                             // Handle difference between OH1 and OH2
-                            if(data.item != null) {
+                            if (data.item != null) {
                                 itemList = [].concat(data.item);
                             }
                             else {
@@ -142,7 +142,7 @@ angular.module('HABmin.itemModel', [
                         .error(function (data, status) {
                             deferred.reject(data);
                         });
-                    },
+                },
                 function () {
                     deferred.reject(null);
                 }

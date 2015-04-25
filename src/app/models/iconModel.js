@@ -140,7 +140,7 @@ angular.module('HABmin.iconModel', []
         };
 
         this.lookupIcon = function (src) {
-            if(src === undefined || src === "") {
+            if (src === undefined || src === "") {
                 return "";
             }
             if (this.generalIcons[src] === undefined || this.generalIcons[src].class === "") {
@@ -151,7 +151,7 @@ angular.module('HABmin.iconModel', []
         };
 
         this.lookupCategory = function (src) {
-            if(src === undefined || src === "") {
+            if (src === undefined || src === "") {
                 return "";
             }
             if (this.categoryIcons[src] === undefined || this.categoryIcons[src] === "") {
@@ -162,7 +162,7 @@ angular.module('HABmin.iconModel', []
         };
 
         this.lookupItem = function (src) {
-            if(src === undefined || src === "") {
+            if (src === undefined || src === "") {
                 return "";
             }
             if (this.itemIcons[src] === undefined || this.itemIcons[src] === "") {
@@ -179,7 +179,7 @@ angular.module('HABmin.iconModel', []
             restrict: 'E',
             link: function (scope, element, attrs, ctrl, transclude) {
                 var css = attrs.class;
-                if(css !== undefined && css.length !== 0) {
+                if (css !== undefined && css.length !== 0) {
                     css += ' ';
                 }
                 else {
@@ -188,7 +188,7 @@ angular.module('HABmin.iconModel', []
 
                 var cssIcon;
                 var el = element;
-                if(attrs.icon != null) {
+                if (attrs.icon != null) {
                     attrs.$observe('icon', function (val) {
                         var data = "<span class='" + css + ImgFactory.lookupIcon(val) + "'></span>";
                         var newEl = el.find('span');
@@ -197,7 +197,7 @@ angular.module('HABmin.iconModel', []
 
                     cssIcon = ImgFactory.lookupIcon(attrs.icon);
                 }
-                else if(attrs.category != null) {
+                else if (attrs.category != null) {
                     attrs.$observe('category', function (val) {
                         var data = "<span class='" + css + ImgFactory.lookupCategory(val) + "'></span>";
                         var newEl = el.find('span');
@@ -206,7 +206,7 @@ angular.module('HABmin.iconModel', []
 
                     cssIcon = ImgFactory.lookupCategory(attrs.category);
                 }
-                else if(attrs.itemtype != null) {
+                else if (attrs.itemtype != null) {
                     attrs.$observe('itemtype', function (val) {
                         var data = "<span class='" + css + ImgFactory.lookupItem(val) + "'></span>";
                         var newEl = el.find('span');

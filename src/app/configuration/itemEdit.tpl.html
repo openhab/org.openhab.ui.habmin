@@ -7,13 +7,16 @@
 
         <div class="form-group">
             <label for="inputLabel" class="control-label" i18n="habmin.itemEditLabel"></label>
+
             <div>
-                <input type="text" ng-model="item.label" class="form-control" id="inputLabel" i18n-attr="{placeholder: 'habmin.itemSelectLabel'}">
+                <input type="text" ng-model="item.label" class="form-control" id="inputLabel"
+                       i18n-attr="{placeholder: 'habmin.itemSelectLabel'}">
             </div>
         </div>
 
         <div class="form-group">
             <label for="inputType" class="control-label" i18n="habmin.itemEditType"></label>
+
             <div>
                 <ui-select id="inputType"
                            ng-model="item.type"
@@ -34,6 +37,7 @@
 
         <div class="form-group">
             <label for="inputCategory" class="control-label" i18n="habmin.itemEditCategory"></label>
+
             <div>
                 <ui-select id="inputCategory"
                            ng-model="item.category"
@@ -54,6 +58,7 @@
 
         <div class="form-group">
             <label for="inputGroups" class="control-label" i18n="habmin.itemEditGroups"></label>
+
             <div>
                 <ui-select id="inputGroups"
                            ng-model="item.groupNames"
@@ -65,7 +70,8 @@
                         <habmin-icon class="fa fa-fw" category="{{$item.category}}"></habmin-icon>
                         {{$item.label}}
                     </ui-select-match>
-                    <ui-select-choices repeat="group.name as group in items | filter: {type: 'GroupItem'} | orderBy: 'label'">
+                    <ui-select-choices
+                            repeat="group.name as group in items | filter: {type: 'GroupItem'} | orderBy: 'label'">
                         <habmin-icon class="fa fa-fw" category="{{group.category}}"></habmin-icon>
                         <span>{{group.label}}</span>
                     </ui-select-choices>

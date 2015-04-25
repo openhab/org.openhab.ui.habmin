@@ -22,7 +22,7 @@ angular.module('HABmin.ruleModel', [
 
             RestService.getService(svcName).then(
                 function (url) {
-                    if(url == null) {
+                    if (url == null) {
                         deferred.resolve(null);
                         return;
                     }

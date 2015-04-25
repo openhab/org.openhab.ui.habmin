@@ -39,30 +39,29 @@ angular.module('HABmin.sitemap', [
 //                $scope.title = params.getData()
             }
         })
-        .state('sitemap.view', {
-            url: '/view/:sitemapName/:sitemapPage',
-            //           views: {
-            //             "main": {
+            .state('sitemap.view', {
+                url: '/view/:sitemapName/:sitemapPage',
+                //           views: {
+                //             "main": {
 //                    controller: 'SitemapCtrl',
-            //                   templateUrl: 'sitemap/sitemap.tpl.html'
-            //           }
-            //     },
-            data: { pageTitle: 'Sitemap View' },
-            onEnter: function () {
-                console.log("onEnter");
-            },
-            onExit: function () {
-                console.log("onExit");
-            }
-        });
+                //                   templateUrl: 'sitemap/sitemap.tpl.html'
+                //           }
+                //     },
+                data: {pageTitle: 'Sitemap View'},
+                onEnter: function () {
+                    console.log("onEnter");
+                },
+                onExit: function () {
+                    console.log("onExit");
+                }
+            });
     })
 
     .directive('dynamicSitemap', function ($compile, SitemapModel, $stateParams, ItemModel) {
         return {
             restrict: 'A',
             replace: true,
-            scope: {
-            },
+            scope: {},
             controller: function ($scope, $element, $state) {
                 // The following table maps widgets to directives
                 var widgetMap = {
@@ -109,12 +108,12 @@ angular.module('HABmin.sitemap', [
 
                 // Click handler to handle page changes within the sitemap
                 $scope.click = function (sitemapName, sitemapPage) {
-                    $state.go('sitemap.view', {sitemapName: sitemapName, sitemapPage: sitemapPage}, { reload: true });
+                    $state.go('sitemap.view', {sitemapName: sitemapName, sitemapPage: sitemapPage}, {reload: true});
                     setPage(sitemapName + '/' + sitemapPage);
                 };
 
                 // Handler to handle widget updates and send command to server
-                $scope.$on('habminGUIUpdate', function(event, item, value) {
+                $scope.$on('habminGUIUpdate', function (event, item, value) {
                     console.log("Received command for", item, value);
                     ItemModel.sendCommand(item, value);
                 });
@@ -156,11 +155,11 @@ angular.module('HABmin.sitemap', [
                     // TODO: How to makes things disappear???
                     function processWidgetUpdate(widgetArray) {
                         // Sanity check
-                        if(widgetArray == null) {
+                        if (widgetArray == null) {
                             return;
                         }
 
-                        angular.forEach(widgetArray,function (widget) {
+                        angular.forEach(widgetArray, function (widget) {
                             // Sanity check
                             if (widget == null) {
                                 return;
@@ -181,7 +180,7 @@ angular.module('HABmin.sitemap', [
                             }
 
                             // If it has children - process them
-                            if(widget.widget !== undefined) {
+                            if (widget.widget !== undefined) {
                                 processWidgetUpdate(widget.widget);
                             }
                         });
@@ -205,7 +204,7 @@ angular.module('HABmin.sitemap', [
 
                     // Handle differences between OH1 and OH2
                     var widgets;
-                    if(pageDef.widget != null) {
+                    if (pageDef.widget != null) {
                         widgets = [].concat(pageDef.widget);
                     }
                     else {
@@ -249,7 +248,7 @@ angular.module('HABmin.sitemap', [
                         var link = "";
                         if (widget.linkedPage) {
                             link = 'ng-click="click(\'' + sitemapName + '\',\'' + widget.linkedPage.id +
-                                '\')"';
+                            '\')"';
                         }
 
                         // Create a list of CSS classes for this widget
@@ -280,18 +279,18 @@ angular.module('HABmin.sitemap', [
                         // Generate the directive definition
                         output += '<div ';
 
-                        if(widgetClass.length > 0) {
+                        if (widgetClass.length > 0) {
                             output += 'class ="' + widgetClass.join(" ");
                         }
 
                         output += '" id="' + widget.widgetId + '"' + link + '>' +
-                            '<' + widgetMap[widget.type].directive +
-                            ' widget="w' + widget.widgetId + '"' +
-                            ' item-model="m' + widget.widgetId + '"' +
-                            '>' +
-                            children +
-                            '</' + widgetMap[widget.type].directive + '>' +
-                            '</div>';
+                        '<' + widgetMap[widget.type].directive +
+                        ' widget="w' + widget.widgetId + '"' +
+                        ' item-model="m' + widget.widgetId + '"' +
+                        '>' +
+                        children +
+                        '</' + widgetMap[widget.type].directive + '>' +
+                        '</div>';
 
                         // Add the model references
                         if (widget.item !== undefined) {
@@ -311,7 +310,7 @@ angular.module('HABmin.sitemap', [
 
                         if (matches != null && matches.length !== 0) {
                             value = matches[matches.length - 1].substring(1,
-                                    matches[matches.length - 1].length - 1);
+                                matches[matches.length - 1].length - 1);
                             label = label.substr(0, label.indexOf(matches[matches.length - 1]));
                         }
 

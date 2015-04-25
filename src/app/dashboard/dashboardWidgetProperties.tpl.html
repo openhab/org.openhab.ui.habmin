@@ -30,8 +30,10 @@
 
         <div class="col-xs-6">
             <dashboard-general-properties ng-show="showTab==0" model="general"></dashboard-general-properties>
-            <dashboard-chart-properties ng-if="widget.type=='Chart' && showTab==1" widget="widget"></dashboard-chart-properties>
-            <dashboard-gauge-properties ng-if="widget.type=='Gauge'" ng-show="showTab==1" options="widget.options"></dashboard-gauge-properties>
+            <dashboard-chart-properties ng-if="widget.type=='Chart' && showTab==1"
+                                        widget="widget"></dashboard-chart-properties>
+            <dashboard-gauge-properties ng-if="widget.type=='Gauge'" ng-show="showTab==1"
+                                        options="widget.options"></dashboard-gauge-properties>
         </div>
     </div>
 </div>

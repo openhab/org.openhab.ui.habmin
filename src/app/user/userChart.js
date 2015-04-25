@@ -29,20 +29,20 @@ angular.module('UserChartPrefs', [
             scope.periodOptions = [
                 {value: 600, label: "1"},
                 {value: 700, label: "2"},
-                 {value: 3600, label: locale.getString("habmin.period1Hour")},
-                 {value: 7200, label: locale.getString("habmin.period2Hours")},
-                 {value: 21600, label: locale.getString("habmin.period6Hours")},
-                 {value: 43200, label: locale.getString("habmin.period12Hours")},
-                 {value: 86400, label: locale.getString("habmin.period1Day")},
-                 {value: 172800, label: locale.getString("habmin.period2Days")},
-                 {value: 259200, label: locale.getString("habmin.period3Days")},
-                 {value: 432000, label: locale.getString("habmin.period5Days")},
-                 {value: 604800, label: locale.getString("habmin.period1Week")},
-                 {value: 1209600, label: locale.getString("habmin.period2Weeks")},
-                 {value: 2419200, label: locale.getString("habmin.period1Month")},
-                 {value: 5184000, label: locale.getString("habmin.period2Months")},
-                 {value: 7776000, label: locale.getString("habmin.period3Months")},
-                 {value: 15724800, label: locale.getString("habmin.period6Months")}
+                {value: 3600, label: locale.getString("habmin.period1Hour")},
+                {value: 7200, label: locale.getString("habmin.period2Hours")},
+                {value: 21600, label: locale.getString("habmin.period6Hours")},
+                {value: 43200, label: locale.getString("habmin.period12Hours")},
+                {value: 86400, label: locale.getString("habmin.period1Day")},
+                {value: 172800, label: locale.getString("habmin.period2Days")},
+                {value: 259200, label: locale.getString("habmin.period3Days")},
+                {value: 432000, label: locale.getString("habmin.period5Days")},
+                {value: 604800, label: locale.getString("habmin.period1Week")},
+                {value: 1209600, label: locale.getString("habmin.period2Weeks")},
+                {value: 2419200, label: locale.getString("habmin.period1Month")},
+                {value: 5184000, label: locale.getString("habmin.period2Months")},
+                {value: 7776000, label: locale.getString("habmin.period3Months")},
+                {value: 15724800, label: locale.getString("habmin.period6Months")}
             ];
             scope.period = scope.periodOptions[1];
 

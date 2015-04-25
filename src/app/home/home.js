@@ -26,7 +26,7 @@ angular.module('HABmin.home', [
                     templateUrl: 'home/home.tpl.html'
                 }
             },
-            data: { pageTitle: 'Home' }
+            data: {pageTitle: 'Home'}
         });
     })
 

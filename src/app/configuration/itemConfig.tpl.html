@@ -4,7 +4,7 @@
     <div class="panel panel-default">
         <!-- Header -->
         <div class="panel-heading">
-Installed Bindings
+            Installed Bindings
         </div>
 
         <!-- Body -->
@@ -58,6 +58,7 @@ Installed Bindings
         <div class="list-group habmin-list" resize-panel>
             <div class="habmin-info">
                 <label>Label</label>
+
                 <div class="well well-sm">
                     {{selectedItem.label}}
                 </div>
@@ -65,6 +66,7 @@ Installed Bindings
 
             <div class="habmin-info">
                 <label>Format</label>
+
                 <div class="well well-sm">
                     {{selectedItem.stateDescription.format}}
                 </div>
@@ -72,6 +74,7 @@ Installed Bindings
 
             <div class="habmin-info">
                 <label>Type</label>
+
                 <div class="well well-sm">
                     {{selectedItem.type}}
                 </div>
@@ -79,6 +82,7 @@ Installed Bindings
 
             <div class="habmin-info">
                 <label>Category</label>
+
                 <div class="well well-sm">
                     {{selectedItem.category}}
                 </div>
@@ -86,18 +90,20 @@ Installed Bindings
 
             <div class="habmin-info">
                 <label>Tags</label>
+
                 <div class="well well-sm">
                     <p ng-repeat="tag in selectedItem.tags">
-                    {{tag}}
+                        {{tag}}
                     </p>
                 </div>
             </div>
 
             <div class="habmin-info">
                 <label>Groups</label>
+
                 <div class="well well-sm">
                     <p ng-repeat="group in selectedItem.groupNames">
-                    {{group}}
+                        {{group}}
                     </p>
                 </div>
             </div>
