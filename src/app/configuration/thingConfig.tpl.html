@@ -71,7 +71,7 @@
                 </button>
                 <ul class="dropdown-menu" role="menu">
                     <li ng-repeat="binding in bindings" ng-class="{'disabled': binding.disabled}">
-                        <a ng-click="newThing(binding)">
+                        <a ng-click="createNewThing(binding)">
                             <habmin-icon class="fa fa-fw" icon="{{binding.icon}}"></habmin-icon>
                             <span>{{binding.name}}</span>
                         </a>
@@ -187,7 +187,6 @@
             <div class="pull-right btn-group dropdown">
                 <button type="button"
                         class="btn btn-default dropdown-toggle"
-                        ng-disabled="true"
                         data-toggle="dropdown">
                     <span class="fa fa-cog"></span>
                     <span i18n="habmin.thingTools"></span>
@@ -196,9 +195,10 @@
                 </button>
                 <ul class="dropdown-menu" role="menu">
                     <li>
-                        <a ng-click="setView('NETWORK')">
-                            <span class="fa fa-fw fa-sitemap"></span>
-                            <span></span>
+                        <a ng-click="showAdvancedSettings=!showAdvancedSettings">
+                            <span class="fa fa-fw" ng-class="{'fa-check-square-o': showAdvancedSettings}"></span>
+                            <span class="fa fa-fw fa-user-plus"></span>
+                            <span i18n="habmin.thingAdvancedMode"></span>
                         </a>
                     </li>
                 </ul>
@@ -310,7 +310,7 @@
                 <div collapse="panelDisplayed!='CONFIG'"
                      class="panel-form">
                     <div ng-repeat="config in selectedThingType.configParameters">
-                        <div class="form-group">
+                        <div class="form-group" ng-if="!config.advanced||showAdvancedSettings">
                             <label for="CONFIGLABEL{{$index+1}}" class="control-label">{{config.label}}</label>
                             <input config-parameter="{{config}}"
                                    class="form-control"
@@ -318,7 +318,14 @@
                                    id="CONFIGLABEL{{$index+1}}"
                                    ng-model="selectedThing.configuration[config.name]">
 
-                            <p class="help-block"><span class="text-muted" ng-bind-html="config.description"></span></p>
+                            <p class="help-block" popup-show="templates/notifications/summary.tpl.html" popup-placement="top"
+                               popup-class="zwave-logreader-popover">
+                                <span class="text-muted" ng-bind-html="config.description"></span>
+                                <span class="pull-right">
+                                    <span class="text-info fa fa-ellipsis-h"
+                                          ></span>
+                                </span>
+                            </p>
                         </div>
                     </div>
                 </div>

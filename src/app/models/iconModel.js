@@ -108,7 +108,7 @@ angular.module('HABmin.iconModel', []
             Motion: 'oa-message_presence',
             MoveControl: 'fa fa-play',
             Player: 'fa fa-play',
-            PowerOutlet: 'oa-message_socket',
+            PowerOutlet: 'fa fa-plug',
             Pressure: 'oa-weather_barometric_pressure',
             QualityOfService: 'fa fa-pie-chart',
             Rain: 'oa-weather_rain_gauge',

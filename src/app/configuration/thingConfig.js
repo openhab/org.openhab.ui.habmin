@@ -56,6 +56,8 @@ angular.module('Config.Things', [
         $scope.newThing = false;
         $scope.insertMode = false;
 
+        $scope.showAdvancedSettings = false;
+
         $scope.filterStatus = [];
         $scope.filterBindings = [];
 
@@ -335,7 +337,7 @@ angular.module('Config.Things', [
             );
         };
 
-        $scope.newThing = function (binding) {
+        $scope.createNewThing = function (binding) {
             $scope.insertMode = true;
             $scope.newThings = binding.thingTypes;
         };

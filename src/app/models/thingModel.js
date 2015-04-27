@@ -200,9 +200,9 @@ angular.module('HABmin.thingModel', [
             var tStart = new Date().getTime();
             var deferred = $q.defer();
 
-            RestService.getService(svcName).then(
+            RestService.getService(svcSetup).then(
                 function (url) {
-                    $http['delete'](url + "/" + thing.UID)
+                    $http['delete'](url + "/things/" + thing.UID)
                         .success(function (data) {
                             deferred.resolve(data);
                         })

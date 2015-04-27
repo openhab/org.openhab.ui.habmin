@@ -26,8 +26,8 @@ angular.module('HABmin.updateService', [])
                     var newestPrereleaseTime = 0;
                     var newestPrereleaseVersion = "";
                     for (var cnt = 0; cnt < result.data.length; cnt++) {
-                        console.log("Version " + result.data[cnt].tag_name + " draft=" + result.data[cnt].draft + " " +
-                        "pre=" + result.data[cnt].prerelease + result.data[cnt].published_at);
+                        console.log("Version " + result.data[cnt].tag_name + " draft=" + result.data[cnt].draft +
+                        " pre=" + result.data[cnt].prerelease + " " + result.data[cnt].published_at);
                         // Ignore drafts
                         if (result.data[cnt].draft === true) {
                             continue;
