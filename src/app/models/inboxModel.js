@@ -111,7 +111,33 @@ angular.module('HABmin.inboxModel', [
                         return;
                     }
 
-                    $http.post(url + "/ignore/" + uid, {thingUID: uid})
+                    $http.post(url + "/" + uid + "/ignore/")
+                        .success(function (data) {
+                            deferred.resolve(true);
+                        })
+                        .error(function (data, status) {
+                            deferred.reject(false);
+                        });
+                },
+                function () {
+                    deferred.reject(false);
+                }
+            );
+
+            return deferred.promise;
+        };
+
+        this.thingUnignore = function (uid) {
+            var deferred = $q.defer();
+
+            RestService.getService(svcName).then(
+                function (url) {
+                    if (url == null) {
+                        deferred.resolve(false);
+                        return;
+                    }
+
+                    $http.post(url + "/" + uid + "/unignore/")
                         .success(function (data) {
                             deferred.resolve(true);
                         })
@@ -137,7 +163,7 @@ angular.module('HABmin.inboxModel', [
                         return;
                     }
 
-                    $http.post(url + "/approve/" + uid, name,
+                    $http.post(url + "/" + uid + "/approve/", name,
                         {
                             headers: {
                                 'Content-Type': 'text/plain'

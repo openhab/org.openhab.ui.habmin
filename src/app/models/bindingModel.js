@@ -119,7 +119,7 @@ angular.module('HABmin.bindingModel', [
                         return;
                     }
 
-                    $http.post(url + "/scan/" + binding, {bindingId: binding})
+                    $http.post(url + "/bindings/" + binding + "/scan") //, {bindingId: binding})
                         .success(function (data) {
                             deferred.resolve(true);
                         })
