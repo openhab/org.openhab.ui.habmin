@@ -109,7 +109,8 @@ module.exports = {
             'vendor/angular-visjs/angular-vis.js',
             'vendor/checklist-model/checklist-model.js',
             'vendor/angular-rt-popup/dist/angular-rt-popup.js',
-            'vendor/angular-ui-select/dist/select.js'
+            'vendor/angular-ui-select/dist/select.js',
+            'vendor/jQuery.dotdotdot/src/js/jquery.dotdotdot'
         ],
         css: [
             'vendor/angular-growl-v2/build/angular-growl.css',
