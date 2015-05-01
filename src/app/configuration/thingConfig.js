@@ -21,7 +21,8 @@ angular.module('Config.Things', [
     'angular-growl',
     'Binding.config',
     'ngVis',
-    'ResizePanel'
+    'ResizePanel',
+    'dotdotdot'
 ])
 
     .config(function config($stateProvider) {
