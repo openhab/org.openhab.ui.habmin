@@ -318,9 +318,16 @@
                                    id="CONFIGLABEL{{$index+1}}"
                                    ng-model="selectedThing.configuration[config.name]">
 
-                            <p class="help-block" style="height: 1.1em;">
-                                <span class="text-muted" dotdotdot ng-bind-html="config.description"></span>
+                            <p class="help-block single-line">
+                                <span class="text-muted" ng-bind-html="config.description"></span>
+                                <span show-overflow class="ellipsis text-info fa fa-ellipsis-h"
+                                      ng-help-dialog
+                                      ng-help-title="{{config.label}}"
+                                      ng-help-message="{{config.description}}">
+                                </span>
                             </p>
+
+
                         </div>
                     </div>
                 </div>

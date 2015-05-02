@@ -22,7 +22,8 @@ angular.module('Config.Things', [
     'Binding.config',
     'ngVis',
     'ResizePanel',
-    'dotdotdot'
+    'showOverflow',
+    'ngHelpDialog'
 ])
 
     .config(function config($stateProvider) {

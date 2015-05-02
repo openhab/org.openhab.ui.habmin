@@ -33,8 +33,7 @@
     "angular-animate": "~1.3.8",
     "checklist-model": "~0.1.3",
     "angular-rt-popup": "~1.0.3",
-    "angular-ui-select": "~0.11.2",
-    "jQuery.dotdotdot": "~1.7.2"
+    "angular-ui-select": "~0.11.2"
   },
   "resolutions": {
     "moment": "~2.9",

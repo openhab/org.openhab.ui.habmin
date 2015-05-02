@@ -718,7 +718,7 @@
       margin-bottom: 5px;
 
       td {
-        padding:3px;
+        padding: 3px;
         vertical-align: middle;
       }
     }
@@ -773,6 +773,31 @@
     background-size: 30px 24px;
     background-repeat: no-repeat;
     background-position: left;
+  }
+
+  .single-line {
+    height: 1.5em;
+    overflow: hidden;
+    white-space: nowrap;
+
+    position: relative;
+  }
+
+  .ellipsis {
+    text-align: right;
+
+    margin-top: 3px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 30px;
+
+    background: -webkit-gradient(linear, left top, right top,
+    from(rgba(255, 255, 255, 0)), to(white), color-stop(15%, white));
+    background: -moz-linear-gradient(to right, rgba(255, 255, 255, 0), @panel-bg 50%, @panel-bg);
+    background: -o-linear-gradient(to right, rgba(255, 255, 255, 0), @panel-bg 50%, @panel-bg);
+    background: -ms-linear-gradient(to right, rgba(255, 255, 255, 0), @panel-bg 50%, @panel-bg);
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), @panel-bg 50%, @panel-bg);
   }
 
   @import '@{HABminTheme}/habmin.less';
