@@ -1,3 +1,25 @@
+<a name="0.0.13"></a>
+### 0.0.13 (2015-05-03)
+
+
+#### Bug Fixes
+
+* **OpenHAB2:**
+  * Updated REST interfaces to new definition ([c865a258](git@github.com:cdjackson/HABmin2/commit/c865a258e6fc9d7f80da9f292d803d862c497211))
+* **UI:**
+  * Fix error reloading SmartHome data types ([1c8a6bcc](git@github.com:cdjackson/HABmin2/commit/1c8a6bcc787c0c119bfd83bbe7345a2e15368842))
+
+
+#### Features
+
+* **Things:**
+  * Add advanced settings option ([42cf0b8b](git@github.com:cdjackson/HABmin2/commit/42cf0b8bb710245dcea919ee710866ade49bb397))
+  * Updated thing list to display thing-type label ([a005d79d](git@github.com:cdjackson/HABmin2/commit/a005d79d8e7888fd8b9164b36e5636ef595f416f))
+  * Updated editing/deleting/updating of things/items ([d37185df](git@github.com:cdjackson/HABmin2/commit/d37185df218bcbb64c717943b64a85c9af13f103))
+* **UI:**
+  * Add help dialog box and ellipsis for long help strings and support HTML ([e21b60ee](git@github.com:cdjackson/HABmin2/commit/e21b60ee7d106daab6bca4d03e8ce3dbd30f4704))
+
+
 <a name="0.0.12"></a>
 ### 0.0.12 (2015-04-22)
 
