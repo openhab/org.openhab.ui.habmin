@@ -1,5 +1,5 @@
 /**
- * angular-localization :: v1.2.1 :: 2015-05-03
+ * angular-localization :: v1.2.1 :: 2015-05-04
  * web: https://github.com/doshprompt/angular-localization
  *
  * Copyright (c) 2015 | Rahul Doshi
@@ -200,7 +200,7 @@
                 if (angular.isString(path)) {
                     paths = path.split(',');
                 } else if (angular.isArray(path)) {
-                    paths = [path];
+                    paths = path;
                 } else {
                     throw new Error("locale.ready requires either an Array or comma-separated list.");
                 }
@@ -476,13 +476,25 @@
             };
         });
 
-    angular.module('ngLocalize.InstalledLanguages', [])
+    /*angular.module('ngLocalize.InstalledLanguages', [])
      .value('localeSupported', {
      'en-US': "English (United States)"
      })
      .value('localeFallbacks', {
      'en': 'en-US'
      });
+     */
+    angular.module('ngLocalize.InstalledLanguages', [])
+        .value('localeSupported', {
+            'en-US': "English (United States)",
+            'aa-XX': "English (XX)",
+            'aa-YY': "English (YY)"
+        })
+
+        .value('localeFallbacks', {
+            'en': 'en-US',
+            'aa': 'aa-XX'
+        });
     angular.module('ngLocalize.Version', [])
         .constant('localeVer', '1.2.1');
 })(window.angular, window, document);
