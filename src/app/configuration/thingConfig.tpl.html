@@ -212,7 +212,7 @@
                 <div>
                     <a role="presentation"
                        ng-class="{'list-group-item config-panel-title':true, 'active': panelDisplayed=='PROPERTIES'}"
-                       ng-click="panelDisplayed='PROPERTIES'">
+                       ng-click="setPanelDisplayed('PROPERTIES')">
                         <span class="fa fa-fw fa-info"></span>
                         <span i18n="habmin.thingProperties"></span>
                     </a>
@@ -295,39 +295,75 @@
                             </ui-select>
                         </div>
                     </div>
-
                 </div>
 
-                <!-- CONFIGURATION -->
-                <div>
-                    <a role="presentation"
-                       ng-class="{'list-group-item list-group-item-heading':true, 'active': panelDisplayed=='CONFIG'}"
-                       ng-click="panelDisplayed='CONFIG'">
-                        <span class="fa fa-fw fa-wrench"></span>
-                        <span i18n="habmin.thingConfiguration"></span>
-                    </a>
-                </div>
-                <div collapse="panelDisplayed!='CONFIG'"
-                     class="panel-form">
-                    <div ng-repeat="config in selectedThingType.configParameters">
-                        <div class="form-group" ng-if="!config.advanced||showAdvancedSettings">
-                            <label for="CONFIGLABEL{{$index+1}}" class="control-label">{{config.label}}</label>
-                            <input config-parameter="{{config}}"
-                                   class="form-control"
-                                   ng-dirty ng-required="{{config.required}}"
-                                   id="CONFIGLABEL{{$index+1}}"
-                                   ng-model="selectedThing.configuration[config.name]">
+                <!-- CONFIGURATION GROUPS -->
+                <div ng-repeat="group in selectedThingType.parameterGroups">
+                    <div>
+                        <a role="presentation"
+                           ng-class="{'list-group-item list-group-item-heading':true, 'active': panelDisplayed=='CONFIG-{{group.name}}'}"
+                           ng-click="setPanelDisplayed('CONFIG-{{group.name}}')"
+                           ng-if="!group.advanced">
+                            <habmin-icon class="fa-fw" cfgcontext="{{group.context}}"></habmin-icon>
+                            <span>{{group.label}}</span>
+                        </a>
+                    </div>
+                    <div collapse="$parent.panelDisplayed!='CONFIG-{{group.name}}'"
+                         class="panel-form">
+                        <div ng-repeat="config in selectedThingType.configParameters | filter: configGroupFilter(null)">
+                            <div class="form-group"
+                                 ng-if="configGroupFilter(config, group.name) && !config.advanced||showAdvancedSettings">
+                                <label for="CONFIGLABEL-{{config.name}}" class="control-label">{{config.label}}</label>
+                                <input config-parameter="{{config}}"
+                                       class="form-control"
+                                       ng-dirty ng-required="{{config.required}}"
+                                       id="CONFIGLABEL-{{config.name}}"
+                                       ng-model="selectedThing.configuration[config.name]">
 
-                            <p class="help-block single-line">
-                                <span class="text-muted" ng-bind-html="config.description"></span>
+                                <p class="help-block single-line">
+                                    <span class="text-muted" ng-bind-html="config.description"></span>
                                 <span show-overflow class="ellipsis text-info fa fa-ellipsis-h"
                                       ng-help-dialog
                                       ng-help-title="{{config.label}}"
                                       ng-help-message="{{config.description}}">
                                 </span>
-                            </p>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
+                <!-- CONFIGURATION UNGROUPED -->
+                <div ng-if="thingHasUngroupedParams()">
+                    <div>
+                        <a role="presentation"
+                           ng-class="{'list-group-item list-group-item-heading':true, 'active': panelDisplayed=='CONFIG-ungrouped'}"
+                           ng-click="setPanelDisplayed('CONFIG-ungrouped')">
+                            <span class="fa fa-fw fa-wrench"></span>
+                            <span i18n="habmin.thingConfiguration"></span>
+                        </a>
+                    </div>
+                    <div collapse="$parent.panelDisplayed!='CONFIG-ungrouped'"
+                         class="panel-form">
+                        <div ng-repeat="config in selectedThingType.configParameters">
+                            <div class="form-group"
+                                 ng-if="configGroupFilter(config, null) && !config.advanced||showAdvancedSettings">
+                                <label for="CONFIGLABEL-{{config.name}}" class="control-label">{{config.label}}</label>
+                                <input config-parameter="{{config}}"
+                                       class="form-control"
+                                       ng-dirty ng-required="{{config.required}}"
+                                       id="CONFIGLABEL-{{config.name}}"
+                                       ng-model="selectedThing.configuration[config.name]">
 
+                                <p class="help-block single-line">
+                                    <span class="text-muted" ng-bind-html="config.description"></span>
+                                <span show-overflow class="ellipsis text-info fa fa-ellipsis-h"
+                                      ng-help-dialog
+                                      ng-help-title="{{config.label}}"
+                                      ng-help-message="{{config.description}}">
+                                </span>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -335,7 +371,7 @@
                 <!-- CHANNELS -->
                 <div>
                     <a role="presentation" ng-class="{'list-group-item':true, 'active': panelDisplayed=='CHANNELS'}"
-                       ng-click="panelDisplayed='CHANNELS'">
+                       ng-click="setPanelDisplayed('CHANNELS')">
                         <span class="fa fa-fw fa-navicon"></span>
                         <span i18n="habmin.thingChannels"></span> <span ng-if="selectedThingType.channels.length">[{{selectedThingType.channels.length}}]</span>
                     </a>

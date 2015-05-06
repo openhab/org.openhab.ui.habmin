@@ -134,6 +134,35 @@ angular.module('Config.Things', [
             }
         };
 
+        $scope.configGroupFilter = function (config, group) {
+            // Are we looking for ungrouped parameters
+            if (group == null) {
+                if (config.groupName == null || config.groupName == "") {
+                    return true;
+                }
+                return false;
+            }
+
+            if (config.groupName == group) {
+                return true;
+            }
+
+            return false;
+        };
+
+        $scope.thingHasUngroupedParams = function () {
+            if ($scope.selectedThingType == null || $scope.selectedThingType.configParameters == null) {
+                return false;
+            }
+
+            for (var cnt = 0; cnt < $scope.selectedThingType.configParameters.length; cnt++) {
+                if ($scope.selectedThingType.configParameters[cnt].groupName == null ||
+                    $scope.selectedThingType.configParameters[cnt].groupName == "") {
+                    return true;
+                }
+            }
+        };
+
         /**
          * Filter used to test if the thing is of a type included in the bridge types
          * supported by the selected thing.
@@ -152,6 +181,10 @@ angular.module('Config.Things', [
             }
 
             return $scope.selectedThingType.supportedBridgeTypeUIDs.indexOf(thingType.UID) != -1;
+        };
+
+        $scope.setPanelDisplayed = function (panel) {
+            $scope.panelDisplayed = panel;
         };
 
         /**
@@ -370,6 +403,10 @@ angular.module('Config.Things', [
                             $scope.selectedThing.configuration[parameter.name] = parameter.defaultValue;
                         }
                     });
+
+                    if($scope.selectedThing.item != null) {
+                        $scope.selectedThing.item.category = ThingModel.getThingTypeCategory($scope.selectedThingType);
+                    }
                 },
                 function () {
                     growl.warning(locale.getString("habmin.thingErrorGettingThing",

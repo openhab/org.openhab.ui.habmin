@@ -139,6 +139,10 @@ angular.module('HABmin.iconModel', []
             SwitchItem: 'fa fa-power-off'
         };
 
+        this.cfgContextIcons = {
+            sleep: 'fa fa-moon-o'
+        };
+
         this.lookupIcon = function (src) {
             if (src === undefined || src === "") {
                 return "";
@@ -170,6 +174,17 @@ angular.module('HABmin.iconModel', []
                 return "";
             }
             return this.itemIcons[src];
+        };
+
+        this.lookupCfgContext = function (src) {
+            if (src === undefined || src === "") {
+                return "fa-wrench";
+            }
+            if (this.cfgContextIcons[src] === undefined || this.cfgContextIcons[src] === "") {
+                console.log("Unknown cfgcontext icon", src);
+                return "fa-wrench";
+            }
+            return this.cfgContextIcons[src];
         };
     })
 
@@ -209,6 +224,15 @@ angular.module('HABmin.iconModel', []
                 else if (attrs.itemtype != null) {
                     attrs.$observe('itemtype', function (val) {
                         var data = "<span class='" + css + ImgFactory.lookupItem(val) + "'></span>";
+                        var newEl = el.find('span');
+                        newEl.replaceWith(data);
+                    });
+
+                    cssIcon = ImgFactory.lookupItem(attrs.itemtype);
+                }
+                else if (attrs.cfgcontext != null) {
+                    attrs.$observe('cfgcontext', function (val) {
+                        var data = "<span class='" + css + ImgFactory.lookupCfgContext(val) + "'></span>";
                         var newEl = el.find('span');
                         newEl.replaceWith(data);
                     });

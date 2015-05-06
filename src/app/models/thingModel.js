@@ -262,5 +262,39 @@ angular.module('HABmin.thingModel', [
             return deferred.promise;
         };
 
+        /**
+         * Use the channel categories to determine the thing-type category
+         * @param thingType
+         */
+        this.getThingTypeCategory = function (thingType) {
+            if(thingType.channels == []) {
+                return "";
+            }
+
+            var categories = {};
+            angular.forEach(thingType.channels, function(channel) {
+                if(channel.category == null || channel.category == "") {
+                    return;
+                }
+                if(categories[channel.category] == null) {
+                    categories[channel.category] = 1;
+                }
+                else {
+                    categories[channel.category]++;
+                }
+            });
+
+            var category = "";
+            var max = 0;
+            angular.forEach(categories, function(val, key) {
+                if(val > max) {
+                    category = key;
+                    max = val;
+                }
+            });
+
+            return category;
+        };
+
     })
 ;
