@@ -11,13 +11,17 @@ angular.module('dashboardProperties', [
     'ui.bootstrap',
     'ngSanitize',
     'angular-growl',
-    'ngLocalize'
+    'ngLocalize',
+    'formSelectInput'
 ])
     .service('dashboardProperties',
     function ($modal, $rootScope, growl, locale, UserService) {
         this.editOptions = function (dashboard) {
             var scope = $rootScope.$new();
             scope.dashboard = angular.copy(dashboard);
+
+            // Convert the 'menu' from a boolean
+            scope.dashboard.menu = scope.dashboard.menu === false ? "no" : "yes";
 
             /**
              * Controller functions get called when the modal closes
@@ -26,6 +30,9 @@ angular.module('dashboardProperties', [
              */
             var controller = function ($scope, $modalInstance) {
                 $scope.ok = function (result) {
+                    // Convert the 'menu' to a boolean
+                    scope.dashboard.menu = !(scope.dashboard.menu === "no");
+
                     $modalInstance.close(scope.dashboard);
                 };
                 $scope.cancel = function (result) {

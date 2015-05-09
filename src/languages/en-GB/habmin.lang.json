@@ -130,6 +130,7 @@
   "dashboardDeleteError": "Error deleting dashboard <b><i>{name}</i></b>",
   "dashboardPropertiesTitle": "Dashboard Properties",
   "dashboardPropertiesName": "Name",
+  "dashboardPropertiesShowMenu": "List Dashboard in Menu",
   "bindingNoneFound": "No bindings found",
   "bindingInformation": "Binding Information",
   "bindingAuthor": "Primary Author",

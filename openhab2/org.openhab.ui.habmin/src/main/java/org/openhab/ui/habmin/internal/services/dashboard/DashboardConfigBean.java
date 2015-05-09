@@ -27,6 +27,7 @@ public class DashboardConfigBean {
 	public Integer id;
 	public String name;
 	public String icon;
+	public Boolean menu;
 
 	public List<DashboardWidgetBean> widgets;
 }
