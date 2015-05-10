@@ -1,6 +1,6 @@
 {
   "name": "angular-localization",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "homepage": "https://github.com/doshprompt/angular-localization",
   "description": "angularjs localization done right",
   "main": "angular-localization.js",
@@ -25,14 +25,8 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "1.2.x",
-    "angular-cookies": "1.2.x",
-    "angular-sanitize": "1.2.x"
-  },
-  "devDependencies": {
-    "angular-mocks": "1.2.x",
-    "bootstrap": "~3.1.1",
-    "angular-route": "1.2.x",
-    "bca-flag-sprite": "~1.0.0"
+    "angular": ">=1.2 < 2",
+    "angular-cookies": ">=1.2 < 2",
+    "angular-sanitize": ">=1.2 < 2"
   }
 }

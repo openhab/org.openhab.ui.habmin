@@ -8,7 +8,7 @@ angular.module('checklist-model', [])
   // contains
   function contains(arr, item) {
     if (angular.isArray(arr)) {
-      for (var i = 0; i < arr.length; i++) {
+      for (var i = arr.length; i--;) {
         if (angular.equals(arr[i], item)) {
           return true;
         }
@@ -20,19 +20,16 @@ angular.module('checklist-model', [])
   // add
   function add(arr, item) {
     arr = angular.isArray(arr) ? arr : [];
-    for (var i = 0; i < arr.length; i++) {
-      if (angular.equals(arr[i], item)) {
-        return arr;
-      }
-    }    
-    arr.push(item);
+    if(!contains(arr, item)){
+      arr.push(item);
+    }
     return arr;
   }  
 
   // remove
   function remove(arr, item) {
     if (angular.isArray(arr)) {
-      for (var i = 0; i < arr.length; i++) {
+      for (var i = arr.length; i--;) {
         if (angular.equals(arr[i], item)) {
           arr.splice(i, 1);
           break;
@@ -50,6 +47,7 @@ angular.module('checklist-model', [])
     // getter / setter for original model
     var getter = $parse(attrs.checklistModel);
     var setter = getter.assign;
+    var checklistChange = $parse(attrs.checklistChange);
 
     // value added to list
     var value = $parse(attrs.checklistValue)(scope.$parent);
@@ -65,12 +63,24 @@ angular.module('checklist-model', [])
       } else {
         setter(scope.$parent, remove(current, value));
       }
+
+      if (checklistChange) {
+        checklistChange(scope);
+      }
     });
+    
+    // declare one function to be used for both $watch functions
+    function setChecked(newArr, oldArr) {
+        scope.checked = contains(newArr, value);
+    }
 
     // watch original model change
-    scope.$parent.$watch(attrs.checklistModel, function(newArr, oldArr) {
-      scope.checked = contains(newArr, value);
-    }, true);
+    // use the faster $watchCollection method if it's available
+    if (angular.isFunction(scope.$parent.$watchCollection)) {
+        scope.$parent.$watchCollection(attrs.checklistModel, setChecked);
+    } else {
+        scope.$parent.$watch(attrs.checklistModel, setChecked, true);
+    }
   }
 
   return {
@@ -79,7 +89,7 @@ angular.module('checklist-model', [])
     terminal: true,
     scope: true,
     compile: function(tElement, tAttrs) {
-      if (tElement[0].tagName !== 'INPUT' || !tElement.attr('type', 'checkbox')) {
+      if (tElement[0].tagName !== 'INPUT' || tAttrs.type !== 'checkbox') {
         throw 'checklist-model should be applied to `input[type="checkbox"]`.';
       }
 

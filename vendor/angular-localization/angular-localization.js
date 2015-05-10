@@ -486,14 +486,10 @@
      */
     angular.module('ngLocalize.InstalledLanguages', [])
         .value('localeSupported', {
-            'en-US': "English (United States)",
-            'aa-XX': "English (XX)",
-            'aa-YY': "English (YY)"
+            'en-US': "English (United States)"
         })
 
         .value('localeFallbacks', {
-            'en': 'en-US',
-            'aa': 'aa-XX'
         });
     angular.module('ngLocalize.Version', [])
         .constant('localeVer', '1.2.1');

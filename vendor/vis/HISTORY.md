@@ -2,6 +2,24 @@
 http://visjs.org
 
 
+## 2015-04-07, version 3.12.0
+
+### Network
+
+- Fixed support for DataSet with custom id fields (option `fieldId`).
+
+### Timeline
+
+- Orientation can now be configured separately for axis and items.
+- The event handlers `onMove` and `onMoving` are now invoked with all item
+  properties as argument, and can be used to update all properties (like
+  content, className, etc) and add new properties as well.
+- Fixed #654: removed unnecessary minimum height for groups, takes the
+  height of the group label as minimum height now.
+- Fixed #708: detecting wrong group when page is scrolled.
+- Fixed #733: background items being selected on shift+click.
+
+
 ## 2015-03-05, version 3.11.0
 
 ### Network

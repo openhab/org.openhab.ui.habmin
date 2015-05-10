@@ -54,6 +54,11 @@ Item.prototype.unselect = function() {
  * @param {Object} data
  */
 Item.prototype.setData = function(data) {
+  var groupChanged = data.group != undefined && this.data.group != data.group;
+  if (groupChanged) {
+    this.parent.itemSet._moveToGroup(this, data.group);
+  }
+
   this.data = data;
   this.dirty = true;
   if (this.displayed) this.redraw();
@@ -140,8 +145,9 @@ Item.prototype._repaintDeleteButton = function (anchor) {
     Hammer(deleteButton, {
       preventDefault: true
     }).on('tap', function (event) {
-      me.parent.removeFromDataSet(me);
+      event.preventDefault();
       event.stopPropagation();
+      me.parent.removeFromDataSet(me);
     });
 
     anchor.appendChild(deleteButton);

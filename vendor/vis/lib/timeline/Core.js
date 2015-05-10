@@ -55,7 +55,7 @@ Core.prototype._create = function (container) {
   this.dom.background.className           = 'vispanel background';
   this.dom.backgroundVertical.className   = 'vispanel background vertical';
   this.dom.backgroundHorizontal.className = 'vispanel background horizontal';
-  this.dom.centerContainer.className      = 'vispanel center jooo';
+  this.dom.centerContainer.className      = 'vispanel center';
   this.dom.leftContainer.className        = 'vispanel left';
   this.dom.rightContainer.className       = 'vispanel right';
   this.dom.top.className                  = 'vispanel top';
@@ -190,8 +190,17 @@ Core.prototype._create = function (container) {
 Core.prototype.setOptions = function (options) {
   if (options) {
     // copy the known options
-    var fields = ['width', 'height', 'minHeight', 'maxHeight', 'autoResize', 'start', 'end', 'orientation', 'clickToUse', 'dataAttributes', 'hiddenDates'];
+    var fields = ['width', 'height', 'minHeight', 'maxHeight', 'autoResize', 'start', 'end', 'clickToUse', 'dataAttributes', 'hiddenDates'];
     util.selectiveExtend(fields, this.options, options);
+
+    if ('orientation' in options) {
+      if (typeof options.orientation === 'string') {
+        this.options.orientation = options.orientation;
+      }
+      else if (typeof options.orientation === 'object' && 'axis' in options.orientation) {
+        this.options.orientation = options.orientation.axis;
+      }
+    }
 
     if (this.options.orientation === 'both') {
       if (!this.timeAxis2) {

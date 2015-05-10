@@ -1,6 +1,6 @@
 {
     "name": "angular-base64",
-    "version": "2.0.3",
+    "version": "2.0.4",
     "author": "Ninjatronic",
     "description": "Base64 Conversion for AngularJS Apps",
     "contributors": [
@@ -17,8 +17,7 @@
         "url": "https://github.com/ninjatronic/angular-base64.git"
     },
     "main": [
-        "angular-base64.js",
-        "angular-base64.min.js"
+        "angular-base64.js"
     ],
     "ignore": [
         "package.json",
