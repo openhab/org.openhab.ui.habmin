@@ -142,16 +142,6 @@ angular.module('HABmin.dashboard', [
             );
         };
 
-        $scope.addWidget = function (type) {
-            $scope.isDirty = true;
-
-            $scope.dashboard.widgets.push({
-                type: type,
-                sizeX: 2,
-                sizeY: 2
-            });
-        };
-
         /* From Modernizr */
         function whichTransitionEvent() {
             var el = document.createElement('div');
@@ -209,6 +199,20 @@ angular.module('HABmin.dashboard', [
         $scope.removeWidget = function (widget) {
             $scope.isDirty = true;
             $scope.dashboard.widgets.splice($scope.dashboard.widgets.indexOf(widget), 1);
+        };
+
+        $scope.addWidget = function (type) {
+            var newWidget = {
+                type: type,
+                sizeX: 2,
+                sizeY: 2,
+                options: {}
+            };
+
+            $scope.isDirty = true;
+            $scope.dashboard.widgets.push(newWidget);
+
+            $scope.configWidget(newWidget);
         };
 
         $scope.configWidget = function (widget) {
