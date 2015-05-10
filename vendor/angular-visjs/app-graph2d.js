@@ -2,14 +2,13 @@
 
 var ngVisApp = angular.module('ngVisApp', ['ngVis']);
 
-ngVisApp.controller('appController', function ($scope, $location, $timeout, visDataSet) {
+ngVisApp.controller('appController', function ($scope, $location, $timeout, VisDataSet) {
 
     var names = ['SquareShaded', 'Bar', 'Blank', 'CircleShaded'];
     var groups = new vis.DataSet();
     groups.add({
         id: 0,
         content: names[0],
-        className: 'customStyle1',
         options: {
             drawPoints: {
                 style: 'square' // square, circle
@@ -22,7 +21,6 @@ ngVisApp.controller('appController', function ($scope, $location, $timeout, visD
     groups.add({
         id: 1,
         content: names[1],
-        className: 'customStyle2',
         options: {
             style:'bar',
             drawPoints: {style: 'circle',
@@ -42,7 +40,6 @@ ngVisApp.controller('appController', function ($scope, $location, $timeout, visD
     groups.add({
         id: 3,
         content: names[3],
-        className: 'customStyle3',
         options: {
             yAxisOrientation: 'right', // right, left
             drawPoints: {
@@ -53,7 +50,6 @@ ngVisApp.controller('appController', function ($scope, $location, $timeout, visD
             }
         }});
 
-    var container = document.getElementById('visualization');
     var items = [
         {x: '2014-06-12', y: 0 , group: 0},
         {x: '2014-06-13', y: 30, group: 0},

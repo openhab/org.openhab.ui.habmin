@@ -20,7 +20,7 @@ angular.module('ngVis', [])
                 data: '=',
                 options: '=',
                 events: '=',
-                component: '='
+                component: '=?'
             },
             link: function (scope, element, attr) {
                 var timelineEvents = [
@@ -95,7 +95,7 @@ angular.module('ngVis', [])
                 data: '=',
                 options: '=',
                 events: '=',
-                component: '='
+                component: '=?'
             },
             link: function (scope, element, attr) {
                 var networkEvents = [
@@ -172,7 +172,7 @@ angular.module('ngVis', [])
                 data: '=',
                 options: '=',
                 events: '=',
-                component: '='
+                component: '=?'
             },
             link: function (scope, element, attr) {
                 var graphEvents = [

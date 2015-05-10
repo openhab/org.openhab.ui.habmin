@@ -1,6 +1,6 @@
 {
   "name": "angular-visjs",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "homepage": "https://github.com/visjs/angular-visjs",
   "authors": [
     "Chris Jackson <chris@cd-jackson.com>"
@@ -27,13 +27,14 @@
     "angular": "~1.3.15",
     "vis": "~3.12.0"
   },
-  "_release": "0.0.5",
+  "_release": "0.0.6",
   "_resolution": {
     "type": "version",
-    "tag": "0.0.5",
-    "commit": "cff530a8ac41dac284875209cefcd7c1442b309b"
+    "tag": "0.0.6",
+    "commit": "fce9aad02242a8e60a3f222661f35cd82f097a58"
   },
   "_source": "git://github.com/visjs/angular-visjs.git",
-  "_target": "*",
-  "_originalSource": "angular-visjs"
+  "_target": "~0.0.6",
+  "_originalSource": "angular-visjs",
+  "_direct": true
 }
