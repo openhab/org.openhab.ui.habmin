@@ -10,7 +10,7 @@
             </button>
             <ul class="dropdown-menu" role="menu">
                 <li>
-                    <a ng-click="addWidget('Chart')">
+                    <a role="presentation" ng-click="addWidget('Chart')">
                         <span class="fa fa-fw fa-area-chart"></span>
                         <span i18n="habmin.dashboardAddChart"></span>
                     </a>
@@ -19,6 +19,12 @@
                     <a ng-click="addWidget('Gauge')">
                         <span class="fa fa-fw fa-dashboard"></span>
                         <span i18n="habmin.dashboardAddGauge"></span>
+                    </a>
+                </li>
+                <li>
+                    <a ng-click="addWidget('Image')">
+                        <span class="fa fa-fw fa-picture-o"></span>
+                        <span i18n="habmin.dashboardAddImage"></span>
                     </a>
                 </li>
             </ul>

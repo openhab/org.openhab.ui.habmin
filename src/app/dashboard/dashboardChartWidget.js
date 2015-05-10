@@ -33,11 +33,11 @@ angular.module('dashboardChartWidget', [
             restrict: 'E', // Use as element
             templateUrl: 'dashboard/dashboardChartProperties.tpl.html',
             scope: {
-                widget: "="
+                options: "="
             },
             link: function ($scope, $element, $state) {
                 // The select is expecting an int!
-                $scope.widget.options.chartId = parseInt($scope.widget.options.chartId, 10);
+                $scope.options.chartId = parseInt($scope.options.chartId, 10);
 
                 // Load the list of charts
                 ChartModel.getList().then(

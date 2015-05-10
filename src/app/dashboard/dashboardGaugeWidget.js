@@ -71,6 +71,19 @@ angular.module('dashboardGaugeWidget', [
                             lineCap: 'butt',
                             percent: true
                         }
+                    },
+                    {
+                        name: "",
+                        desc: "",
+                        options: {
+                            barWidth: 20,
+                            borderWidth: 0,
+                            angle: 315,
+                            rotate: 180,
+                            barAngle: 10,
+                            lineCap: 'round',
+                            percent: true
+                        }
                     }
                 ];
                 $scope.endCaps = [

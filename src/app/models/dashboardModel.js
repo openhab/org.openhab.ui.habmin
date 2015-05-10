@@ -115,10 +115,12 @@ angular.module('HABmin.dashboardModel', [
                             .success(function (data) {
                                 console.log("PUT completed in", new Date().getTime() - tStart);
 
-                                // Update the name in the cache. This will update the GUI if needed.
+                                // Update the cache. This will update the GUI if needed.
                                 angular.forEach(dashboardList, function (c) {
                                     if (c.id === dashboard.id) {
                                         c.name = dashboard.name;
+                                        c.category = dashboard.category;
+                                        c.menu = dashboard.menu;
                                     }
                                 });
 
@@ -173,7 +175,7 @@ angular.module('HABmin.dashboardModel', [
 
                                 var ref = 0;
 
-                                // Update the name in the cache. This will update the GUI if needed.
+                                // Update the cache. This will update the GUI if needed.
                                 angular.forEach(dashboardList, function (c, key) {
                                     if (c.id === id) {
                                         ref = key;

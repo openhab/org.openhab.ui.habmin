@@ -4,7 +4,7 @@
 
         <div>
             <select class="form-control" id="inputChart"
-                    ng-model="widget.options.chartId"
+                    ng-model="options.chartId"
                     ng-options="chart.id as chart.name for chart in charts">
             </select>
         </div>
@@ -14,7 +14,7 @@
 
         <div>
             <select class="form-control" id="inputServices"
-                    ng-model="widget.options.serviceId"
+                    ng-model="options.serviceId"
                     ng-options="service.name as service.name for service in services">
             </select>
         </div>

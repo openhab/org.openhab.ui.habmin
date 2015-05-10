@@ -24,16 +24,26 @@
                         <span i18n="habmin.dashboardWidgetConfigGauge"></span>
                     </a>
                 </li>
+                <li ng-show="widget.type=='Image'"
+                    ng-class="{'active':showTab==1}">
+                    <a ng-click="showTab=1">
+                        <span i18n="habmin.dashboardWidgetConfigImage"></span>
+                    </a>
+                </li>
 
             </ul>
         </div>
 
         <div class="col-xs-6">
             <dashboard-general-properties ng-show="showTab==0" model="general"></dashboard-general-properties>
-            <dashboard-chart-properties ng-if="widget.type=='Chart' && showTab==1"
-                                        widget="widget"></dashboard-chart-properties>
-            <dashboard-gauge-properties ng-if="widget.type=='Gauge'" ng-show="showTab==1"
-                                        options="widget.options"></dashboard-gauge-properties>
+            <div ng-show="showTab==1">
+                <dashboard-chart-properties ng-if="widget.type=='Chart'"
+                                            options="widget.options"></dashboard-chart-properties>
+                <dashboard-gauge-properties ng-if="widget.type=='Gauge'"
+                                            options="widget.options"></dashboard-gauge-properties>
+                <dashboard-image-properties ng-if="widget.type=='Image'"
+                                            options="widget.options"></dashboard-image-properties>
+            </div>
         </div>
     </div>
 </div>

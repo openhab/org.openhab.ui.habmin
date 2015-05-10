@@ -13,6 +13,7 @@ angular.module('HABmin.dashboard', [
     'HABmin.dashboardModel',
     'dashboardChartWidget',
     'dashboardGaugeWidget',
+    'dashboardImageWidget',
     'dashboardProperties',
     'dashboardWidgetProperties',
     'angular-growl',
@@ -63,6 +64,9 @@ angular.module('HABmin.dashboard', [
             $scope.gridsterOptions.resizable = {
                 enabled: true,
                 handles: ['n', 'e', 's', 'w', 'ne', 'se', 'sw', 'nw'],
+//                resize: function  (event, uiWidget, $element) {
+  //                  console.log("Resizeing", uiWidget, $element);
+    //            },
                 stop: function (event, uiWidget, $element) {
                     console.log("Resize done", uiWidget, $element);
                     $scope.isDirty = true;
@@ -224,11 +228,11 @@ angular.module('HABmin.dashboard', [
             );
         };
 
-        $scope.$on('gridster-resized', function (event, newSizes) {
-            console.log("Grid resized", newSizes);
+//        $scope.$on('gridster-resized', function (event, newSizes) {
+//            console.log("Gridster resized event", newSizes);
 //          var newWidth = sizes[0];
 //          var newHeight = sizes[1];
-        });
+//        });
 
         $scope.$watch('dashboard.widgets', function (items) {
             console.log("Items updated", items);
@@ -270,6 +274,9 @@ angular.module('HABmin.dashboard', [
                     },
                     Gauge: {
                         directive: "dashboard-gauge"
+                    },
+                    Image: {
+                        directive: "dashboard-image"
                     }
                 };
 

@@ -8,6 +8,8 @@
  */
 package org.openhab.ui.habmin.internal.services.dashboard;
 
+import java.net.URI;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -20,6 +22,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name="options")
 public class DashboardWidgetOptionsBean {
+
+    public URI uri;
 
 	public String chartId;
 	public String serviceId;
