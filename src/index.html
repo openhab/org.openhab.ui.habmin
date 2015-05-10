@@ -175,9 +175,10 @@
                             </li>
                             <li ng-if="dashboards" role="presentation" class="divider"></li>
                             <li ng-repeat="dashboard in dashboards">
-                                <a ui-sref="dashboard({dashboardId:'{{dashboard.id}}'})"
+                                <a ng-if="dashboard.menu!==false"
+                                   ui-sref="dashboard({dashboardId:'{{dashboard.id}}'})"
                                    ui-sref-opts="{ reload: true }">
-                                    <habmin-icon class="fa fa-fw" icon="{{dashboard.icon}}"></habmin-icon>
+                                    <habmin-icon class="fa fa-fw" category="{{dashboard.category}}"></habmin-icon>
                                     <span>{{dashboard.name}}</span>
                                 </a>
                             </li>

@@ -13,6 +13,22 @@
             </div>
         </div>
 
+        <div class="form-group">
+            <label for="inputName" class="control-label" i18n="habmin.dashboardPropertiesCategory"></label>
+
+            <div>
+                <form-select-category ng-model="dashboard.category" id="inputName" placeholder="Category" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="inputName" class="control-label" i18n="habmin.dashboardPropertiesShowMenu"></label>
+
+            <div>
+                <form-select-yes-no ng-model="dashboard.menu" id="inputName" placeholder="Label" />
+            </div>
+        </div>
+
     </form>
 
 </div>

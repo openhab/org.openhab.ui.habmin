@@ -26,8 +26,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class DashboardConfigBean {
 	public Integer id;
 	public String name;
-	public String icon;
+	public String category;
 	public Boolean menu;
+	public Integer menuOrder;
 
 	public List<DashboardWidgetBean> widgets;
 }

@@ -176,7 +176,8 @@ public class DashboardResource implements RESTResource {
 			DashboardConfigBean newDashboard = new DashboardConfigBean();
 			newDashboard.id = i.id;
 			newDashboard.name = i.name;
-			newDashboard.icon = i.icon;
+			newDashboard.category = i.category;
+			newDashboard.menu = i.menu;
 
 			list.add(newDashboard);
 		}

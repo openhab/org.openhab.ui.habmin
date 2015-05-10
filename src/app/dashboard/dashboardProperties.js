@@ -18,7 +18,15 @@ angular.module('dashboardProperties', [
     function ($modal, $rootScope, growl, locale, UserService) {
         this.editOptions = function (dashboard) {
             var scope = $rootScope.$new();
-            scope.dashboard = angular.copy(dashboard);
+
+            // Ensure dashboard is an object
+            // If it is, then make a copy of what we've been passed
+            if(dashboard !== null && typeof dashboard === 'object') {
+                scope.dashboard = angular.copy(dashboard);
+            }
+            else {
+                scope.dashboard = {};
+            }
 
             // Convert the 'menu' from a boolean
             scope.dashboard.menu = scope.dashboard.menu === false ? "no" : "yes";
