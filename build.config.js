@@ -110,7 +110,7 @@ module.exports = {
             'vendor/checklist-model/checklist-model.js',
             'vendor/angular-rt-popup/dist/angular-rt-popup.js',
             'vendor/angular-ui-select/dist/select.js',
-            'vendor/jQuery.dotdotdot/src/js/jquery.dotdotdot.js'
+            'vendor/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js'
         ],
         css: [
             'vendor/angular-growl-v2/build/angular-growl.css',
