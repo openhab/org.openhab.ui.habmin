@@ -14,6 +14,7 @@ angular.module('HABmin.dashboard', [
     'dashboardChartWidget',
     'dashboardGaugeWidget',
     'dashboardImageWidget',
+    'dashboardGroupWidget',
     'dashboardProperties',
     'dashboardWidgetProperties',
     'angular-growl',
@@ -281,6 +282,9 @@ angular.module('HABmin.dashboard', [
                     },
                     Image: {
                         directive: "dashboard-image"
+                    },
+                    Group: {
+                        directive: "dashboard-group"
                     }
                 };
 

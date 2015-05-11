@@ -30,6 +30,12 @@
                         <span i18n="habmin.dashboardWidgetConfigImage"></span>
                     </a>
                 </li>
+                <li ng-show="widget.type=='Group'"
+                    ng-class="{'active':showTab==1}">
+                    <a ng-click="showTab=1">
+                        <span i18n="habmin.dashboardWidgetConfigGroup"></span>
+                    </a>
+                </li>
 
             </ul>
         </div>
@@ -43,6 +49,8 @@
                                             options="widget.options"></dashboard-gauge-properties>
                 <dashboard-image-properties ng-if="widget.type=='Image'"
                                             options="widget.options"></dashboard-image-properties>
+                <dashboard-group-properties ng-if="widget.type=='Group'"
+                                            options="widget.options"></dashboard-group-properties>
             </div>
         </div>
     </div>

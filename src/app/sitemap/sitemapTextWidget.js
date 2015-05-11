@@ -31,4 +31,5 @@ angular.module('sitemapTextWidget', [
                 }
             }
         };
-    });
+    })
+;

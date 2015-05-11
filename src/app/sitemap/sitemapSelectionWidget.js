@@ -38,4 +38,5 @@ angular.module('sitemapSelectionWidget', [])
                 }
             }
         };
-    });
+    })
+;

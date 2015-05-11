@@ -33,5 +33,5 @@ angular.module('sitemapFrameWidget', [])
                 }
             }
         };
-    });
-
+    })
+;

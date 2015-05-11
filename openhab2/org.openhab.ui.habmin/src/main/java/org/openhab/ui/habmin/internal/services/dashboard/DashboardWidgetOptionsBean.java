@@ -40,5 +40,5 @@ public class DashboardWidgetOptionsBean {
 	public String title;
 	public String units;
 
-
+	public String group;
 }

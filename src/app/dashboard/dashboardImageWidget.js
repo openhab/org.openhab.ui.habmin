@@ -7,8 +7,7 @@
  *
  * (c) 2014-2015 Chris Jackson (chris@cd-jackson.com)
  */
-angular.module('dashboardImageWidget', [
-])
+angular.module('dashboardImageWidget', [])
     .directive('dashboardImage', function () {
         return {
             restrict: 'E',
@@ -22,11 +21,10 @@ angular.module('dashboardImageWidget', [
                 var divElement = element.children();
                 var imgElement = divElement.children();
 
+                // Resize the image.
+                // Actually, we let CSS do the resizing, we just need
+                // to work out how to constrain it
                 $scope.resizeImage = function () {
-                    if ($(element).is(":visible") === false) {
-                        return;
-                    }
-
                     var imgH = imgElement[0].naturalHeight;
                     var imgW = imgElement[0].naturalWidth;
 
@@ -36,11 +34,11 @@ angular.module('dashboardImageWidget', [
                     var rH = h / imgH;
                     var rW = w / imgW;
 
-                    if(rW > rH) {
-                        $scope.style={height:"100%"};
+                    if (rW > rH) {
+                        $scope.style = {height: "100%"};
                     }
                     else {
-                        $scope.style={width:"100%"};
+                        $scope.style = {width: "100%"};
                     }
                 };
 
@@ -52,19 +50,17 @@ angular.module('dashboardImageWidget', [
                     $scope.resizeImage();
                 });
 
-                imgElement.bind('load', function() {
+                imgElement.bind('load', function () {
                     $scope.resizeImage();
                     $scope.$apply();
                     imgElement.addClass('in');
                 });
-                imgElement.bind('error', function() {
+                imgElement.bind('error', function () {
                     console.log("Error loading img");
                 });
-
-                $scope.$watch('ngSrc', function(newVal) {
+                $scope.$watch('ngSrc', function (newVal) {
                     imgElement.removeClass('in');
                 });
-
             }
         };
     })
