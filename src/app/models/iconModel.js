@@ -140,7 +140,20 @@ angular.module('HABmin.iconModel', []
         };
 
         this.cfgContextIcons = {
-            sleep: 'fa fa-moon-o'
+            battery: '',
+            comment: 'fa fa-comment',
+            compass: 'fa fa-compass',
+            database: 'fa fa-database',
+            folder: 'fa fa-folder',
+            history: 'fa fa-history',
+            home: 'fa fa-home',
+            info: 'fa fa-info',
+            mail: 'fa fa-envelope',
+            security: 'fa fa-lock',
+            sleep: 'fa fa-moon-o',
+            tags: 'fa fa-tags',
+            warning: 'fa fa-warning',
+            wireless: 'fa fa-wireless'
         };
 
         this.lookupIcon = function (src) {
