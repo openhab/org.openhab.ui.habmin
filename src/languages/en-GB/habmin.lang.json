@@ -5,6 +5,8 @@
   "themeYetiDesc": "A friendly foundation",
   "themeSlateName": "Slate",
   "themeSlateDesc": "Shades of gunmetal gray",
+  "mainStatusOnline": "The server is online.",
+  "mainStatusOffline": "The server is offline!",
   "mainLogin": "Login",
   "mainLogout": "Logout",
   "mainUserPreferences": "User Preferences",
