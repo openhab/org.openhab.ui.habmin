@@ -20,7 +20,8 @@ angular.module('FloorplanEditor', [
     'ResizePanel',
     'SidepanelService',
     'floorplanUpload',
-    'FloorPlan'
+    'FloorPlan',
+    'floorplanHotspotProperties'
 ])
 
     .config(function config($stateProvider) {
@@ -43,7 +44,7 @@ angular.module('FloorplanEditor', [
     })
 
     .controller('FloorplanEditor',
-    function FloorplanEditorCtrl($scope, locale, growl, $timeout, $window, $http, $interval, floorplanUpload) {
+    function FloorplanEditorCtrl($scope, locale, growl, $timeout, $window, $http, $interval, floorplanUpload, floorplanHotspotProperties) {
         $scope.hotspots = [];
 
         /**
@@ -63,7 +64,11 @@ angular.module('FloorplanEditor', [
             // Work out if there's another hotspot already near here
 
             // Add the new hotspot to the list
-            $scope.hotspots.push({posX: posX, posY: posY});
+            var newHotspot = {posX: posX, posY: posY};
+            $scope.hotspots.push(newHotspot);
+
+            // And open the properties dialog
+            $scope.editHotspot(newHotspot);
         };
 
         $scope.getHotspotStyle = function (hotspot) {
@@ -73,6 +78,10 @@ angular.module('FloorplanEditor', [
         $scope.uploadFile = function () {
             floorplanUpload.open();
         };
+
+        $scope.editHotspot = function (hotspot) {
+            floorplanHotspotProperties.editOptions(hotspot);
+        }
     })
 
 ;

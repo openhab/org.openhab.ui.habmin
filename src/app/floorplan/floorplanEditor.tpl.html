@@ -4,7 +4,7 @@
     <div class="panel panel-default">
         <!-- Header -->
         <div class="panel-heading">
-            Installed Bindings
+            Floorplan Editor
         </div>
 
         <!-- Body -->
@@ -12,7 +12,7 @@
             <!-- HOTSPOT LIST -->
             <div ng-if="hotspots.length>0" ng-repeat="hotspot in hotspots">
                 <a role="presentation" ng-class="{'list-group-item':true, 'active': false}"
-                   ng-click="selectBinding(hotspot)" sidepanel-click="main">
+                   ng-click="editHotspot(hotspot)" sidepanel-click="main">
                     <table style="background-color: transparent">
                         <tr>
                             <td class="text-large" rowspan="2">

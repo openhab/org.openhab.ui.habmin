@@ -259,7 +259,10 @@
   "userLanguageSelect": "Select your language...",
   "ruleNoDevices": "No Devices",
   "floorplanUploadTitle": "Upload Floorplan",
-  "floorplanUploadName": "Floorplan Name"
+  "floorplanUploadName": "Floorplan Name",
+  "floorplanHotspotTitle": "Hotspot Properties",
+  "floorplanHotspotItem": "Item",
+  "floorplanHotspotItemPlaceholder": "Select Item..."
 }
 
 

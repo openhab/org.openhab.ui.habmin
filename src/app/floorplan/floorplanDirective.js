@@ -16,7 +16,7 @@ angular.module('FloorPlan', [])
             '<div ng-repeat="hotspot in hotspots">' +
             '<div class="hotspot" ng-style="getHotspotStyle(hotspot)">' +
             '<span class="badge">' +
-            '27.4C' +
+            '<habmin-icon category="hotspot.item.category"></habmin-icon>&nbsp;27.4C' +
             '</span>' +
             '</div>' +
             '</div>' +
