@@ -173,6 +173,10 @@ angular.module('HABmin', [
     .controller('HABminCtrl',
     function HABminCtrl($scope, $window, $timeout, $interval, $rootScope, locale, DashboardModel, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, InboxModel, SidepanelService, RestService, UpdateService) {
         $scope.isLoggedIn = UserService.isLoggedIn;
+        $scope.notificationError = false;
+        $scope.onlineStatus = false;
+
+        $scope.dashboards = [];
 
         // List of current themes
         // TODO: Consolidate this with the user selection
@@ -187,6 +191,19 @@ angular.module('HABmin', [
             $('html').removeClass();
             $('html').addClass(theme);
         };
+
+        $scope.$on("habminOnline", function (event, status) {
+            if(status != $scope.onlineStatus) {
+                $scope.onlineStatus = status;
+                if(status == false) {
+                    growl.warning(locale.getString('habmin.mainStatusOffline'));
+                }
+                else {
+                    growl.success(locale.getString('habmin.mainStatusOnline'));
+                }
+            }
+            $scope.notificationError = !status;
+        });
 
         $scope.$on("habminTheme", function (event, theme) {
             $scope.setTheme(theme);

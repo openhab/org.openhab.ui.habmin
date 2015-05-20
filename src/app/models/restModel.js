@@ -11,7 +11,7 @@ angular.module('HABmin.restModel', [
     'HABmin.userModel'
 ])
 
-    .service('RestService', function ($http, $q, UserService) {
+    .service('RestService', function ($http, $q, $rootScope, UserService) {
         // Service defaults. We default this to OH1 since OH2 provides the information
         var serviceList = {
             'habmin/designer': '/services/habmin/config/designer',
@@ -30,6 +30,7 @@ angular.module('HABmin.restModel', [
         var deferredList = [];
         var initialised = false;
         var me = this;
+        var errorCnt = 0;
 
         this.isServiceSupported = function (svc) {
             if (serviceList[svc] == null) {
@@ -49,6 +50,12 @@ angular.module('HABmin.restModel', [
                 .success(function (data) {
                     initialised = true;
                     console.log("REST Fetch completed in", new Date().getTime() - tStart);
+
+                    // Handle the online status
+                    if(errorCnt == 2) {
+                        errorCnt = 0;
+                        $rootScope.$broadcast('habminOnline', true);
+                    }
 
                     // Handle the different responses between OH1 and OH2
                     var links;
@@ -89,6 +96,12 @@ angular.module('HABmin.restModel', [
                 })
                 .error(function (data, status) {
                     console.log("REST Processing failed in", new Date().getTime() - tStart);
+                    // Handle the online status
+                    if(errorCnt++ == 2) {
+                        errorCnt--;
+                        $rootScope.$broadcast('habminOnline', false);
+                    }
+
                     if (deferredList != null) {
                         angular.forEach(deferredList, function (deferred) {
                             deferred.reject();

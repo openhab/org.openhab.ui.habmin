@@ -126,19 +126,8 @@ angular.module('dashboardGaugeWidget', [
                 };
 
                 // Load the list of items
-                PersistenceItemModel.get().then(
+                ItemModel.getList().then(
                     function (items) {
-                        if (items == null) {
-                            ItemModel.getList().then(
-                                function (items) {
-                                    $scope.items = items;
-                                },
-                                function (reason) {
-                                    // handle failure
-                                    growl.warning(locale.getString('habmin.chartErrorGettingItems'));
-                                }
-                            );
-                        }
                         $scope.items = items;
                     },
                     function (reason) {
