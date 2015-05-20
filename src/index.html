@@ -173,7 +173,7 @@
                                     <span i18n="habmin.mainCharts"></span>
                                 </a>
                             </li>
-                            <li ng-if="dashboards" role="presentation" class="divider"></li>
+                            <li ng-if="dashboards.length" role="presentation" class="divider"></li>
                             <li ng-repeat="dashboard in dashboards">
                                 <a ng-if="dashboard.menu!==false"
                                    ui-sref="dashboard({dashboardId:'{{dashboard.id}}'})"

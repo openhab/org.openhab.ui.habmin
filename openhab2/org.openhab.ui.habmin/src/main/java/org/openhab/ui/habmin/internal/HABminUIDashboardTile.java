@@ -27,6 +27,11 @@ public class HABminUIDashboardTile implements DashboardTile {
     public String getUrl() {
         return "../habmin/index.html";
     }
+    
+    @Override
+    public String getImageUrl() {
+        return "../habmin/assets/dashboardtile.png";
+    }
 
     @Override
     public String getOverlay() {

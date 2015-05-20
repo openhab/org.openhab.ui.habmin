@@ -175,6 +175,8 @@ angular.module('HABmin', [
         $scope.notificationError = false;
         $scope.onlineStatus = false;
 
+        $scope.dashboards = [];
+
         // List of current themes
         // TODO: Consolidate this with the user selection
         var themes = ['yeti', 'paper', 'slate'];
