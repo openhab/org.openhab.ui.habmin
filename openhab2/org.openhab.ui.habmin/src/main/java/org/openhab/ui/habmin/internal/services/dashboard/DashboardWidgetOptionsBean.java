@@ -41,4 +41,6 @@ public class DashboardWidgetOptionsBean {
 	public String units;
 
 	public String group;
+	
+	public String floorplanId;
 }

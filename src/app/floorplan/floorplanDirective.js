@@ -26,7 +26,7 @@ angular.module('FloorPlan', [
             '</div>' +
             '</div>',
             scope: {
-                image: "=",
+                image: "@",
                 hotspotList: "=",
                 hotspotClick: "="
             },

@@ -15,6 +15,7 @@ angular.module('HABmin.dashboard', [
     'dashboardGaugeWidget',
     'dashboardImageWidget',
     'dashboardGroupWidget',
+    'dashboardFloorWidget',
     'dashboardProperties',
     'dashboardWidgetProperties',
     'angular-growl',
@@ -285,6 +286,9 @@ angular.module('HABmin.dashboard', [
                     },
                     Group: {
                         directive: "dashboard-group"
+                    },
+                    Floor: {
+                        directive: "dashboard-floorplan"
                     }
                 };
 
