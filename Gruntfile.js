@@ -883,7 +883,8 @@ module.exports = function (grunt) {
                         scripts: jsFiles,
                         styles: cssFiles,
                         version: grunt.config('pkg.version'),
-                        buildtype: buildtype
+                        buildtype: buildtype,
+                        splashScreen: userConfig.splashScreen
                     }
                 });
             }

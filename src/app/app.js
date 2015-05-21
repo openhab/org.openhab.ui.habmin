@@ -437,6 +437,18 @@ angular.module('HABmin', [
 
         // Check if there's a newer version available
         UpdateService.checkForUpdates();
+
+        // Once we've initialised, fade out the splashscreen
+        // then remove it once the transition has finished!
+        $timeout(function() {
+            var splash = $('#splash');
+            var main = $('#content');
+            splash.removeClass('in');
+            main.addClass('in');
+            $timeout(function() {
+                splash.remove();
+            },250);
+        }, 100);
     })
 
     .filter('orderObjectBy', function () {

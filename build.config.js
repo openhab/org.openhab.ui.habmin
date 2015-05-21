@@ -154,5 +154,13 @@ module.exports = {
         'de-DE',
         'en-GB',
         'fr-FR'
-    ]
+    ],
+
+    /**
+     * Customisation of splashscreen
+     */
+    splashScreen: {
+        image: "",
+        background: "white"
+    }
 };
