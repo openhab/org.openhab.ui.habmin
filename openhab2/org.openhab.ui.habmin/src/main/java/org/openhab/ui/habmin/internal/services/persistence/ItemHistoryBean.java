@@ -13,10 +13,10 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.openhab.core.library.types.DecimalType;
-import org.openhab.core.library.types.OnOffType;
-import org.openhab.core.library.types.OpenClosedType;
-import org.openhab.core.types.State;
+import org.eclipse.smarthome.core.library.types.DecimalType;
+import org.eclipse.smarthome.core.library.types.OnOffType;
+import org.eclipse.smarthome.core.library.types.OpenClosedType;
+import org.eclipse.smarthome.core.types.State;
 import org.openhab.ui.habmin.internal.services.chart.ChartResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

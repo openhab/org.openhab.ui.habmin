@@ -52,19 +52,13 @@
                     <span class="fa fa-cog"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
-                    <li ng-if="services.length" ng-repeat="choice in services">
+                    <li ng-if="services.length>1" ng-repeat="choice in services">
                         <a role="presentation" ng-click="selectService(choice)">
                             <span>{{choice.name}}</span>
                             <span ng-if="choice.selected" class="pull-right fa fa-check-square-o"></span>
                         </a>
                     </li>
-                    <li ng-if="!services.length" class="disabled">
-                        <a>
-                            <span class="fa fa-exclamation-triangle text-warning"></span>
-                            <span i18n="habmin.chartNoPersistenceServices"></span>
-                        </a>
-                    </li>
-                    <li role="presentation" class="divider"></li>
+                    <li ng-if="services.length>1" role="presentation" class="divider"></li>
                     <li ng-if="!selectCharts" ng-class="{'disabled': !itemsSelected}">
                         <a ng-click="saveChart()">
                             <span i18n="habmin.chartSaveChart"></span>

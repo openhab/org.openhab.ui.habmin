@@ -11,7 +11,7 @@
 <scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" immediate="true" name="org.openhab.ui.habmin.persistence">
    <implementation class="org.openhab.ui.habmin.internal.services.persistence.PersistenceResource"/>
    <reference bind="setItemUIRegistry" cardinality="1..1" interface="org.eclipse.smarthome.ui.items.ItemUIRegistry" name="ItemUIRegistry" policy="dynamic" unbind="unsetItemUIRegistry"/>
-   <reference bind="addPersistenceService" cardinality="0..n" interface="org.openhab.core.persistence.PersistenceService" name="PersistenceService" policy="dynamic" unbind="removePersistenceService"/>
+   <reference bind="addPersistenceService" cardinality="0..n" interface="org.eclipse.smarthome.core.persistence.PersistenceService" name="PersistenceService" policy="dynamic" unbind="removePersistenceService"/>
    <service>
       <provide interface="org.eclipse.smarthome.io.rest.RESTResource"/>
    </service>

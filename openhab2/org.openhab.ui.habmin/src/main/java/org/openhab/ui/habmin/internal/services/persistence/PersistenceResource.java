@@ -31,15 +31,16 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import org.eclipse.smarthome.core.items.ItemRegistry;
+import org.eclipse.smarthome.core.library.types.OnOffType;
+import org.eclipse.smarthome.core.library.types.OpenClosedType;
+import org.eclipse.smarthome.core.persistence.FilterCriteria;
+import org.eclipse.smarthome.core.persistence.FilterCriteria.Ordering;
+import org.eclipse.smarthome.core.persistence.HistoricItem;
+import org.eclipse.smarthome.core.persistence.PersistenceService;
+import org.eclipse.smarthome.core.persistence.QueryablePersistenceService;
+import org.eclipse.smarthome.core.types.State;
 import org.eclipse.smarthome.io.rest.RESTResource;
 import org.eclipse.smarthome.ui.items.ItemUIRegistry;
-import org.openhab.core.library.types.*;
-import org.openhab.core.types.State;
-import org.openhab.core.persistence.FilterCriteria;
-import org.openhab.core.persistence.FilterCriteria.Ordering;
-import org.openhab.core.persistence.HistoricItem;
-import org.openhab.core.persistence.PersistenceService;
-import org.openhab.core.persistence.QueryablePersistenceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
