@@ -13,6 +13,7 @@ angular.module('FloorplanEditor', [
     'ngLocalize',
     'HABmin.userModel',
     'HABmin.bindingModel',
+    'HABmin.floorplanModel',
     'Config.parameter',
     'angular-growl',
     'Binding.config',
@@ -21,7 +22,8 @@ angular.module('FloorplanEditor', [
     'SidepanelService',
     'floorplanUpload',
     'FloorPlan',
-    'floorplanHotspotProperties'
+    'floorplanHotspotProperties',
+    'FloorplanProperties'
 ])
 
     .config(function config($stateProvider) {
@@ -44,8 +46,24 @@ angular.module('FloorplanEditor', [
     })
 
     .controller('FloorplanEditor',
-    function FloorplanEditorCtrl($scope, locale, growl, $timeout, $window, $http, $interval, floorplanUpload, floorplanHotspotProperties) {
-        $scope.hotspots = [];
+    function FloorplanEditorCtrl($scope, locale, growl, $timeout, $window, $http, $interval, FloorplanModel, floorplanProperties, floorplanUpload, floorplanHotspotProperties) {
+        $scope.floorplanList = [];
+        $scope.selectedFloorplan = {hotspots: []};
+
+        FloorplanModel.getList().then(
+            function(list) {
+                $scope.floorplanList = list;
+            }
+        );
+
+        $scope.selectFloorplan = function(floorplan) {
+            FloorplanModel.getFloorplan(floorplan.id).then(
+                function(fp){
+                    $scope.selectedFloorplan = fp;
+                    $scope.floorplanImage = "/rest/habmin/floorplan/1/image";
+                }
+            );
+        };
 
         /**
          * Event when image is clicked to add a hotspot.
@@ -61,27 +79,77 @@ angular.module('FloorplanEditor', [
             var posX = Math.round(event.offsetX / event.toElement.width * 10000) / 100;
             var posY = Math.round(event.offsetY / event.toElement.height * 10000) / 100;
 
-            // Work out if there's another hotspot already near here
-
             // Add the new hotspot to the list
             var newHotspot = {posX: posX, posY: posY};
-            $scope.hotspots.push(newHotspot);
+            $scope.selectedFloorplan.hotspots.push(newHotspot);
 
             // And open the properties dialog
             $scope.editHotspot(newHotspot);
         };
 
-        $scope.getHotspotStyle = function (hotspot) {
-            return {left: hotspot.posX + "%", top: hotspot.posY + "%"};
+        $scope.editHotspot = function (hotspot) {
+            floorplanHotspotProperties.editOptions(hotspot).then(
+                function(result) {
+                    if(result == null) {
+                        return;
+                    }
+
+                    if(result.cmd == 'save' || result.cmd == 'delete') {
+                        // First we want to remove the current hotspot from the list
+                        var pnt = -1;
+                        for(var i = 0; i < $scope.selectedFloorplan.hotspots.length; i++) {
+                            if ($scope.selectedFloorplan.hotspots[i] == hotspot) {
+                                pnt = i;
+                                break;
+                            }
+                        }
+
+                        if(pnt != -1) {
+                            $scope.selectedFloorplan.hotspots.splice(pnt, 1);
+                        }
+                    }
+
+                    if(result.cmd == 'save') {
+                        // Then if we're saving it, we add the new one back it
+                        $scope.selectedFloorplan.hotspots.push(result.hotspot);
+                    }
+                }
+            )
+        };
+
+        $scope.editFloorplan = function () {
+            floorplanProperties.editOptions($scope.selectedFloorplan).then(
+                function (floorplan) {
+                    $scope.selectedFloorplan = floorplan;
+                }
+            );
+        };
+
+        $scope.saveFloorplan = function () {
+            FloorplanModel.putFloorplan($scope.selectedFloorplan).then(
+                function() {
+                    growl.success(locale.getString('habmin.floorplanSaveOk',
+                        {name: $scope.selectedFloorplan.name}));
+                },
+                function () {
+                    growl.warning(locale.getString('habmin.floorplanSaveError',
+                        {name: $scope.selectedFloorplan.name}));
+                }
+            )
+        };
+
+        $scope.floorplanDelete = function () {
+            FloorplanModel.deleteFloorplan($scope.selectedFloorplan.id);
+        };
+
+        $scope.newFloorplan = function () {
+            $scope.selectedFloorplan = {hotspots: []};
+            $scope.editFloorplan();
         };
 
         $scope.uploadFile = function () {
             floorplanUpload.open();
         };
-
-        $scope.editHotspot = function (hotspot) {
-            floorplanHotspotProperties.editOptions(hotspot);
-        }
     })
 
 ;

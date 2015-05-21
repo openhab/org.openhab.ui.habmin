@@ -43,8 +43,6 @@ public class FloorplanResource implements RESTResource {
     
     private static String FLOORPLAN_FILE = "floorplans.xml";
 
-    private static final String FLOORPLAN_FOLDER = "floorplan/";
-
     private static final Logger logger = LoggerFactory.getLogger(FloorplanResource.class);
 
     @Context
@@ -152,14 +150,14 @@ public class FloorplanResource implements RESTResource {
    //     }
 
         
-        File folder = new File(HABminConstants.getDataDirectory() + FLOORPLAN_FOLDER);
+        File folder = new File(HABminConstants.getDataDirectory());
         // Create path.
         if (!folder.exists()) {
             logger.debug("Creating directory {}", HABminConstants.getDataDirectory());
             folder.mkdirs();
         }
         
-        File file = new File(folder + "/" + floorplanID + ".jpg");
+        File file = new File(folder + "/floorplan-" + floorplanID + ".jpg");
         
         return Response.ok((Object) file).build();
         
@@ -268,7 +266,7 @@ public class FloorplanResource implements RESTResource {
             FloorplanConfigBean newFloorplan = new FloorplanConfigBean();
             newFloorplan.id = i.id;
             newFloorplan.name = i.name;
-            newFloorplan.icon = i.icon;
+            newFloorplan.category = i.category;
 
             list.add(newFloorplan);
         }

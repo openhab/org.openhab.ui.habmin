@@ -260,11 +260,19 @@
   "userLanguage": "Language",
   "userLanguageSelect": "Select your language...",
   "ruleNoDevices": "No Devices",
+  "floorplanEditor": "Floorplan Editor",
   "floorplanUploadTitle": "Upload Floorplan",
   "floorplanUploadName": "Floorplan Name",
   "floorplanHotspotTitle": "Hotspot Properties",
   "floorplanHotspotItem": "Item",
-  "floorplanHotspotItemPlaceholder": "Select Item..."
+  "floorplanHotspotItemPlaceholder": "Select Item...",
+  "floorplanPropertiesTitle": "Floorplan Properties",
+  "floorplanPropertiesName": "Name",
+  "floorplanPropertiesCategory": "Category",
+  "floorplanDelete": "Delete Floorplan",
+  "floorplanDeleteCheck": "Are you sure you wnat to delete this floorplan?",
+  "floorplanSaveOk": "Floorplan <b><i>{name}</i></b> saved successfully",
+  "floorplanSaveError": "Error saving floorplan <b><i>{name}</i></b>"
 }
 
 

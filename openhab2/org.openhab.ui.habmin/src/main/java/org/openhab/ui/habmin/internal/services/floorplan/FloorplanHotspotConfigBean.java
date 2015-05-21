@@ -22,6 +22,6 @@ public class FloorplanHotspotConfigBean {
 
     public Double posX;
     public Double posY;
-    
-    public String item;
+
+    public String itemId;
 }

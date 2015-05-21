@@ -7,26 +7,75 @@
  *
  * (c) 2014-2015 Chris Jackson (chris@cd-jackson.com)
  */
-angular.module('FloorPlan', [])
-    .directive('floorPlan', function ($window) {
+angular.module('FloorPlan', [
+    'HABmin.itemModel'
+])
+    .directive('floorPlan', function ($window, ItemModel) {
         return {
             restrict: 'E',
             template: '<div class="floorplan" ng-style="style">' +
-            '<img ng-src="{{src}}" class="fade">' +
-            '<div ng-repeat="hotspot in hotspots">' +
-            '<div class="hotspot" ng-style="getHotspotStyle(hotspot)">' +
-            '<span class="badge">' +
-            '<habmin-icon category="hotspot.item.category"></habmin-icon>&nbsp;27.4C' +
+            '<img ng-src="{{image}}" class="fade">' +
+            '<div ng-repeat="hotspot in hotspotArray">' +
+            '<div class="hotspot" ng-style="hotspot.style">' +
+            '<span class="badge" ng-click="hotspotClicked(hotspot)">' +
+            '<habmin-icon category="{{hotspot.category}}"></habmin-icon>' +
+            '<span ng-if="hotspot.category">&nbsp;</span>' +
+            '{{hotspot.label}}' +
             '</span>' +
             '</div>' +
             '</div>' +
             '</div>',
             scope: {
-                src: "@",
-                hotspots: "="
+                image: "=",
+                hotspotList: "=",
+                hotspotClick: "="
             },
-            link: function ($scope, element) {
+            link: function ($scope, element, attr) {
                 $scope.style = {};
+                $scope.hotspotArray = [];
+
+                $scope.$watchCollection('hotspotList', function (hotspots) {
+                    console.log("Hotspots changed");
+                    $scope.hotspotArray = [];
+                    angular.forEach(hotspots, function (hotspot) {
+                        var hs = {
+                            style: {
+                                left: hotspot.posX + "%",
+                                top: hotspot.posY + "%"
+                            },
+                            callback: hotspot
+                        };
+                        if (hotspot.itemId == null) {
+                            hs.label = "!!??!!";
+                            $scope.hotspotArray.push(hs);
+                            return;
+                        }
+                        ItemModel.getItem(hotspot.itemId).then(
+                            function (item) {
+                                hs.category = item.category;
+
+                                if (item.state == "Uninitialized") {
+                                    hs.label = "---";
+                                } else {
+                                    hs.label = item.state;
+                                }
+                                $scope.hotspotArray.push(hs);
+                            },
+                            function () {
+                                hs.label = "!!??!!";
+                                $scope.hotspotArray.push(hs);
+                            }
+                        );
+                    });
+                });
+
+                $scope.hotspotClicked = function (hotspot) {
+                    if(!$scope.hotspotClick) {
+                        return;
+                    }
+
+                    $scope.hotspotClick(hotspot.callback);
+                };
 
                 var imgElement = element.children().children();
                 var divElement = element.parent();
@@ -46,12 +95,12 @@ angular.module('FloorPlan', [])
 
                     var margin;
                     if (rW > rH) {
-                        var nW = h * (imgW/imgH);
+                        var nW = h * (imgW / imgH);
                         margin = Math.abs(w - nW) / 2;
                         $scope.style = {height: "100%", width: nW, marginLeft: margin, marginRight: margin};
                     }
                     else {
-                        var nH = w * (imgH/imgW);
+                        var nH = w * (imgH / imgW);
                         margin = Math.abs(h - nH) / 2;
                         $scope.style = {width: "100%", height: nH, marginTop: margin, marginBottom: margin};
                     }

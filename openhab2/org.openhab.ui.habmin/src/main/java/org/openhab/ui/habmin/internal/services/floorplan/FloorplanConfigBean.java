@@ -26,8 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class FloorplanConfigBean {
 	public Integer id;
 	public String name;
-	public String title;
-	public String icon;
+	public String category;
 
 	public List<FloorplanHotspotConfigBean> hotspots;
 }

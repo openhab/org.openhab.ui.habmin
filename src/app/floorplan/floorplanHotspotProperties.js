@@ -49,10 +49,13 @@ angular.module('floorplanHotspotProperties', [
                 $scope.ok = function (result) {
                     // Copy over the properties
                     hotspot.itemId = scope.hotspot.itemId;
-                    $modalInstance.close(scope.hotspot);
+                    $modalInstance.close({cmd: 'save', hotspot: scope.hotspot});
                 };
                 $scope.cancel = function (result) {
-                    $modalInstance.dismiss('cancel');
+                    $modalInstance.dismiss({cmd: 'cancel'});
+                };
+                $scope.delete = function (result) {
+                    $modalInstance.close({cmd: 'delete'});
                 };
             };
 

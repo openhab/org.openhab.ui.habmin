@@ -3,23 +3,31 @@
 <div class="col-sm-4" sidepanel-pane="side">
     <div class="panel panel-default">
         <!-- Header -->
-        <div class="panel-heading">
-            Floorplan Editor
+        <div class="panel-heading clearfix">
+            <span class="panel-title pull-left" i18n="habmin.floorplanEditor"></span>
+            <div class="btn-group pull-right">
+                <button type="button"
+                        class="btn btn-default btn-sm"
+                        ng-click="newFloorplan()">
+                    <span class="fa fa-floppy-o"></span>
+                    <span class="hidden-xs hidden-sm" i18n="common.new"></span>
+                </button>
+            </div>
         </div>
 
         <!-- Body -->
         <div class="list-group habmin-list" resize-panel>
-            <!-- HOTSPOT LIST -->
-            <div ng-if="hotspots.length>0" ng-repeat="hotspot in hotspots">
-                <a role="presentation" ng-class="{'list-group-item':true, 'active': false}"
-                   ng-click="editHotspot(hotspot)" sidepanel-click="main">
+            <!-- FLOORPLAN LIST -->
+            <div ng-if="floorplanList.length>0" ng-repeat="floorplan in floorplanList">
+                <a role="presentation" ng-class="{'list-group-item':true, 'active': selectedFloorplan.id==floorplan.id}"
+                   ng-click="selectFloorplan(floorplan)" sidepanel-click="main">
                     <table style="background-color: transparent">
                         <tr>
                             <td class="text-large" rowspan="2">
-                                <habmin-icon class="fa fa-fw" icon="{{hotspot.icon}}"></habmin-icon>
+                                <habmin-icon class="fa fa-fw" category="{{floorplan.category}}"></habmin-icon>
                             </td>
                             <td>
-                                <span class="small">x={{hotspot.posX}}%&nbsp;y={{hotspot.posY}}%</span>
+                                <span>{{floorplan.name}}</span>
                             </td>
                         </tr>
                         <tr>
@@ -29,7 +37,7 @@
                 </a>
             </div>
 
-            <!-- Cover options for loading, and no devices -->
+            <!-- Cover options for loading, and no floorplans -->
             <div ng-if="bindingsCnt==-1" class="list-group-item text-center">
                 <span class="fa fa-spin fa-refresh"></span>
                 <span i18n="common.loading"></span>
@@ -53,16 +61,34 @@
         <div class="panel-heading">
             <button type="button"
                     class="btn btn-default btn-sm"
-                    ng-click="uploadFile()"
-                    ngx-disabled="!thingConfigForm.modified">
+                    ng-click="saveFloorplan()"
+                    ng-disabled="selectedFloorplan==null">
                 <span class="fa fa-floppy-o"></span>
                 <span class="hidden-xs hidden-sm" i18n="common.save"></span>
+            </button>
+            <button type="button"
+                    class="btn btn-default btn-sm"
+                    ng-disabled="selectedFloorplan==null"
+                    ng-click="editFloorplan()">
+                <span class="fa fa-floppy-o"></span>
+                <span class="hidden-xs hidden-sm" i18n="common.properties"></span>
+            </button>
+            <button type="button"
+                    class="btn btn-default btn-sm"
+                    ng-confirm-click="floorplanDelete()" ng-confirm-icon="warning"
+                    ng-disabled="selectedFloorplan==null || selectedFloorplan.id==null"
+                    i18n-attr="{'ngConfirmMessage': 'habmin.floorplanDeleteCheck','ngConfirmTitle': 'habmin.floorplanDelete','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes' }">
+                <span class="fa fa-trash"></span>
+                <span class="hidden-xs hidden-sm" i18n="common.delete"></span>
             </button>
         </div>
 
         <!-- Body -->
         <div class="list-group habmin-list floorplan-editor" resize-panel>
-            <floor-plan ng-click="imgClicked($event)" hotspots="hotspots" src="/rest/habmin/floorplan/1/image">
+            <floor-plan ng-click="imgClicked($event)"
+                        hotspot-click="editHotspot"
+                        hotspot-list="selectedFloorplan.hotspots"
+                        image="floorplanImage">
             </floor-plan>
         </div>
 
