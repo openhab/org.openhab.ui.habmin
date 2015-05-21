@@ -157,10 +157,13 @@ module.exports = {
     ],
 
     /**
-     * Customisation of splashscreen
+     * Customisation of splashscreen and navscreen
      */
     splashScreen: {
         image: "",
         background: "white"
+    },
+    navScreen: {
+        image: ""
     }
 };

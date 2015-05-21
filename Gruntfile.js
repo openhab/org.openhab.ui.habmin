@@ -884,7 +884,8 @@ module.exports = function (grunt) {
                         styles: cssFiles,
                         version: grunt.config('pkg.version'),
                         buildtype: buildtype,
-                        splashScreen: userConfig.splashScreen
+                        splashScreen: userConfig.splashScreen,
+                        navScreen: userConfig.navScreen
                     }
                 });
             }
