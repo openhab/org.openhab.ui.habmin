@@ -24,8 +24,6 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.eclipse.smarthome.core.items.Item;
-import org.openhab.core.items.ItemNotFoundException;
-import org.openhab.ui.habmin.HABminConstants;
 import org.openhab.ui.habmin.internal.services.designer.DesignerBlockBean;
 import org.openhab.ui.habmin.internal.services.designer.DesignerChildBean;
 import org.openhab.ui.habmin.internal.services.designer.DesignerFieldBean;
