@@ -61,6 +61,13 @@
         <div class="panel-heading">
             <button type="button"
                     class="btn btn-default btn-sm"
+                    ng-click="uploadFile()"
+                    ng-disabled="selectedFloorplan==null">
+                <span class="fa fa-floppy-o"></span>
+                <span class="hidden-xs hidden-sm" i18n="habmin.floorplanUpload"></span>
+            </button>
+            <button type="button"
+                    class="btn btn-default btn-sm"
                     ng-click="saveFloorplan()"
                     ng-disabled="selectedFloorplan==null">
                 <span class="fa fa-floppy-o"></span>

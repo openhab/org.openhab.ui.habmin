@@ -33,7 +33,7 @@ angular.module('floorplanUpload', [
 
 
                 var uploader = $scope.uploader = new FileUploader({
-                    url: '/rest/habmin/files/upload'
+                    url: '/rest/habmin/floorplan/upload'
                 });
 
                 // FILTERS
