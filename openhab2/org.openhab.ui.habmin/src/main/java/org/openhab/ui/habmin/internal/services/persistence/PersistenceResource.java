@@ -17,7 +17,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -103,8 +102,7 @@ public class PersistenceResource implements RESTResource {
 
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response httpGetPersistenceServices(@Context HttpHeaders headers,
-			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
+	public Response httpGetPersistenceServices(@Context HttpHeaders headers) {
 		logger.trace("Received HTTP GET request at '{}'.", uriInfo.getPath());
 
 		Object responseObject = getPersistenceServiceList();
@@ -117,8 +115,7 @@ public class PersistenceResource implements RESTResource {
 	public Response httpGetPersistenceItemData(@Context HttpHeaders headers,
 			@PathParam("servicename") String serviceName, @PathParam("itemname") String itemName,
 			@QueryParam("starttime") String startTime, @QueryParam("endtime") String endTime,
-			@QueryParam("page") long pageNumber, @QueryParam("pagelength") long pageLength,
-			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
+			@QueryParam("page") long pageNumber, @QueryParam("pagelength") long pageLength) {
 		logger.trace("Received HTTP GET request at '{}'.", uriInfo.getPath());
 
 		final Object responseObject = getItemHistoryBean(serviceName, itemName, startTime, endTime);

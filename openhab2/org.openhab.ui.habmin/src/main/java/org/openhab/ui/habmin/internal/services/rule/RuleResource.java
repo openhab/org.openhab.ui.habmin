@@ -16,13 +16,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -68,8 +66,7 @@ public class RuleResource implements RESTResource {
 
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response httpGetModelList(@Context HttpHeaders headers,
-			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
+	public Response httpGetModelList(@Context HttpHeaders headers) {
 		logger.debug("Received HTTP GET request at '{}'", uriInfo.getPath());
 
 		Object responseObject = getRuleModelList();
@@ -80,8 +77,7 @@ public class RuleResource implements RESTResource {
 	@Path("/{modelname: .+}")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response httpGetModelSource(@Context HttpHeaders headers,
-			@PathParam("modelname") String modelName,
-			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
+			@PathParam("modelname") String modelName) {
 		logger.debug("Received HTTP GET request at '{}'", uriInfo.getPath());
 
 		Object responseObject = getRuleModelSource(modelName);
@@ -93,7 +89,7 @@ public class RuleResource implements RESTResource {
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response httpPutModelSource(@Context HttpHeaders headers,
 			@PathParam("modelname") String modelName,
-			@QueryParam("jsoncallback") @DefaultValue("callback") String callback, RuleSourceBean rule) {
+			RuleSourceBean rule) {
 		logger.debug("Received HTTP PUT request at '{}'", uriInfo.getPath());
 
 		Object responseObject = putRuleModelSource(modelName, rule);

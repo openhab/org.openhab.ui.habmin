@@ -17,10 +17,6 @@ import org.eclipse.smarthome.core.library.types.DecimalType;
 import org.eclipse.smarthome.core.library.types.OnOffType;
 import org.eclipse.smarthome.core.library.types.OpenClosedType;
 import org.eclipse.smarthome.core.types.State;
-import org.openhab.ui.habmin.internal.services.chart.ChartResource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 
 
 
@@ -61,10 +57,8 @@ public class ItemHistoryBean {
 	public List<HistoryDataBean> data;
 	
 	public ItemHistoryBean() {};
-	private static final Logger logger = LoggerFactory.getLogger(ChartResource.class);
 
 	public double addData(Long time, State state) {
-//		logger.debug("addData: {}  {}  {}", time, state.toString(), state.getClass());
 		if(data == null) {
 			data = new ArrayList<HistoryDataBean>();
 		}

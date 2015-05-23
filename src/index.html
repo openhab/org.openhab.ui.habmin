@@ -17,6 +17,7 @@
                 left: 0px;
                 height: 100%;
                 width: 100%;
+                padding-top: 50px;
             }
             .splash img {
                 display: block;
@@ -172,7 +173,11 @@
                             </div>
                         </button>
 
-                        <span class="navbar-brand" i18n="common.appName"></span>
+                <span class="navbar-brand" style="white-space: nowrap;">
+                    <% if(navScreen.image.length > 0) { %>
+                        <img align="left" height="100%" src="assets/<%= navScreen.image %>">
+                    <% } %>
+                    &nbsp;<span i18n="common.appName"></span></span>
 
                         <button type="button" class="navbar-toggle pull-right" ng-init="menuCollapsed = true"
                                 ng-click="menuCollapsed = !menuCollapsed">

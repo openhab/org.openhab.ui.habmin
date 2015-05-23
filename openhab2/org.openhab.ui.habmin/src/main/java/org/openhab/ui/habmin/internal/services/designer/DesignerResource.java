@@ -16,14 +16,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.ws.rs.DELETE;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -73,8 +71,7 @@ public class DesignerResource implements RESTResource {
 
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response getDesigns(@Context HttpHeaders headers,
-			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
+	public Response getDesigns(@Context HttpHeaders headers) {
 		logger.debug("Received HTTP GET request at '{}'", uriInfo.getPath());
 
 		Object responseObject = getDesignBeans();
@@ -85,7 +82,6 @@ public class DesignerResource implements RESTResource {
 	@Path("/{designref: [0-9]*}")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response getDesignRef(@Context HttpHeaders headers,
-			@QueryParam("jsoncallback") @DefaultValue("callback") String callback,
 			@PathParam("designref") Integer designref
 			) {
 		logger.debug("Received HTTP GET request at '{}'.", uriInfo.getPath());
@@ -98,7 +94,6 @@ public class DesignerResource implements RESTResource {
 	@Path("/{designref: [0-9]*}")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response deleteDesignRef(@Context HttpHeaders headers,
-			@QueryParam("jsoncallback") @DefaultValue("callback") String callback,
 			@PathParam("designref") Integer designref
 			) {
 		logger.debug("Received HTTP DELETE request at '{}'.", uriInfo.getPath());
@@ -111,7 +106,6 @@ public class DesignerResource implements RESTResource {
 	@Path("/{designref: [0-9]*}")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response putDesignRef(@Context HttpHeaders headers,
-			@QueryParam("jsoncallback") @DefaultValue("callback") String callback,
 			@PathParam("designref") Integer designref, 
 			DesignerBean updatedDesign
 			) {
@@ -124,7 +118,6 @@ public class DesignerResource implements RESTResource {
 	@POST
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response postDesignRef(@Context HttpHeaders headers,
-			@QueryParam("jsoncallback") @DefaultValue("callback") String callback,
 			DesignerBean updatedDesign
 			) {
 		logger.debug("Received HTTP POST request at '{}'", uriInfo.getPath());
