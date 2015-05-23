@@ -59,13 +59,11 @@
     <div class="panel panel-default">
         <!-- Header -->
         <div class="panel-heading">
-            <button type="button"
-                    class="btn btn-default btn-sm"
-                    ng-click="uploadFile()"
-                    ng-disabled="selectedFloorplan==null">
-                <span class="fa fa-floppy-o"></span>
-                <span class="hidden-xs hidden-sm" i18n="habmin.floorplanUpload"></span>
-            </button>
+             <span class="btn btn-sm btn-default btn-file" ng-disabled="selectedFloorplan==null">
+                <span class="fa fa-picture-o"></span>
+                <span i18n="habmin.floorplanSelectImage"></span>
+                <input onchange="angular.element(this).scope().selectImage(this.files[0]);this.value = '';" type="file"/>
+            </span>
             <button type="button"
                     class="btn btn-default btn-sm"
                     ng-click="saveFloorplan()"

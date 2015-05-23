@@ -98,47 +98,11 @@ public class FloorplanResource implements RESTResource {
         return Response.ok(responseObject).build();
     }
 
-    /**
-     * Upload a File
-     * 
-     * @return
-     */
-    @PUT
-    @Path("/{floorplanID: [0-9]*}/image")
-    @Produces({ MediaType.APPLICATION_JSON })
-    public Response httpPutFloorplanImage(@Context HttpHeaders headers, @PathParam("floorplanID") Integer floorplanID,
-            FloorplanConfigBean floorplan) {
-        logger.trace("Received HTTP POST request at '{}'.", uriInfo.getPath());
-
-        File folder = new File(HABminConstants.getDataDirectory());
-        // create path for serialization.
-        if (!folder.exists()) {
-            // logger.debug("Creating directory {}", HABminConstants.getDataDirectory());
-            folder.mkdirs();
-        }
-
-        // String filePath = folder + contentDispositionHeader.getFileName();
-
-        // save the file to the server
-        // saveFile(fileInputStream, filePath);
-
-        String responseObject = "File saved to server location : ";// + filePath;
-
-        return Response.ok(responseObject).build();
-    }
-
     @GET
     @Produces({ "image/jpeg" })
     @Path("/{floorplanID: [0-9]*}/image")
-    public Response doGetImage(@Context HttpHeaders headers, @PathParam("floorplanID") String floorplanID,
+    public Response httpGetFloorplanImage(@Context HttpHeaders headers, @PathParam("floorplanID") String floorplanID,
             String filedata) {
-
-        // if (req.getDateHeader("If-Modified-Since") > startupTime) {
-        // resp.setStatus(304);
-        // return;
-        // }
-
-        byte[] data = Base64.decodeBase64(filedata);
 
         File folder = new File(HABminConstants.getDataDirectory());
         // Create path.
@@ -146,52 +110,9 @@ public class FloorplanResource implements RESTResource {
             logger.debug("Creating directory {}", HABminConstants.getDataDirectory());
             folder.mkdirs();
         }
-
-        try {
-            FileOutputStream fos = new FileOutputStream(folder + "/floorplan-" + floorplanID + ".bin");
-
-            BufferedOutputStream out = new BufferedOutputStream(fos);
-            out.write(data);
-            out.flush();
-            fos.close();
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        return Response.ok().build();
+        File file = new File(folder + "/floorplan-" + floorplanID + ".img");
         
-//        return Response.ok((Object) file).build();
-
-        /*
-         * ByteArrayOutputStream baos = new ByteArrayOutputStream();
-         * BufferedImage img = null;
-         * try {
-         * img = ImageIO.read(new File(folder + "/" + floorplanID + ".jpg"));
-         * } catch (IOException e) {
-         * }
-         * 
-         * // byte[] imageData = baos.toByteArray();
-         * 
-         * // uncomment line below to send non-streamed
-         * return Response.ok(imageData).build();
-         */
-        // return Response.ok(img).header("", "").build();
-
-        // if (provider.hasIcon(iconName)) {
-        // resp.setContentType("image/jpg");
-        // resp.setDateHeader("Last-Modified", new Date().getTime());
-        // ServletOutputStream os = resp.getOutputStream();
-        // InputStream is = new FileInputStream(new File(floorplanID + ".jpg"));
-        // IOUtils.copy(is, os);
-        // resp.flushBuffer();
-
-        // }
-
-        // resp.sendError(404);
+        return Response.ok((Object) file).build();
     }
 
     private FloorplanConfigBean putFloorplanBean(Integer floorplanRef, FloorplanConfigBean bean) {
@@ -199,6 +120,36 @@ public class FloorplanResource implements RESTResource {
             bean.id = null;
         } else {
             bean.id = floorplanRef;
+        }
+        
+        // Save the image
+        if(bean.imgBase64 != null) {
+            byte[] data = Base64.decodeBase64(bean.imgBase64);
+    
+            File folder = new File(HABminConstants.getDataDirectory());
+            // Create path.
+            if (!folder.exists()) {
+                logger.debug("Creating directory {}", HABminConstants.getDataDirectory());
+                folder.mkdirs();
+            }
+    
+            try {
+                FileOutputStream fos = new FileOutputStream(folder + "/floorplan-" + bean.id + ".img");
+    
+                BufferedOutputStream out = new BufferedOutputStream(fos);
+                out.write(data);
+                out.flush();
+                fos.close();
+            } catch (FileNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+    
+            // And don't save it in the XML!!
+            bean.imgBase64 = null;
         }
 
         // Load the existing list

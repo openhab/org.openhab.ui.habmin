@@ -20,7 +20,6 @@ angular.module('FloorplanEditor', [
     'ngVis',
     'ResizePanel',
     'SidepanelService',
-    'floorplanUpload',
     'FloorPlan',
     'floorplanHotspotProperties',
     'FloorplanProperties'
@@ -46,9 +45,10 @@ angular.module('FloorplanEditor', [
     })
 
     .controller('FloorplanEditor',
-    function FloorplanEditorCtrl($scope, locale, growl, $timeout, $window, $http, $interval, FloorplanModel, floorplanProperties, floorplanUpload, floorplanHotspotProperties) {
+    function FloorplanEditorCtrl($scope, $sce, locale, growl, FloorplanModel, floorplanProperties, floorplanHotspotProperties) {
         $scope.floorplanList = [];
-        $scope.selectedFloorplan = {hotspots: []};
+        $scope.selectedFloorplan = null ;
+        $scope.floorplanImageUpdated = false;
 
         FloorplanModel.getList().then(
             function(list) {
@@ -60,7 +60,7 @@ angular.module('FloorplanEditor', [
             FloorplanModel.getFloorplan(floorplan.id).then(
                 function(fp){
                     $scope.selectedFloorplan = fp;
-                    $scope.floorplanImage = "/rest/habmin/floorplan/1/image";
+                    $scope.floorplanImage = "/rest/habmin/floorplan/" + floorplan.id + "/image";
                 }
             );
         };
@@ -126,16 +126,34 @@ angular.module('FloorplanEditor', [
         };
 
         $scope.saveFloorplan = function () {
-            FloorplanModel.putFloorplan($scope.selectedFloorplan).then(
-                function() {
-                    growl.success(locale.getString('habmin.floorplanSaveOk',
-                        {name: $scope.selectedFloorplan.name}));
-                },
-                function () {
-                    growl.warning(locale.getString('habmin.floorplanSaveError',
-                        {name: $scope.selectedFloorplan.name}));
-                }
-            )
+            function save() {
+                FloorplanModel.putFloorplan($scope.selectedFloorplan).then(
+                    function () {
+                        growl.success(locale.getString('habmin.floorplanSaveOk',
+                            {name: $scope.selectedFloorplan.name}));
+
+                        $scope.selectedFloorplan.imgBase64 = null;
+                    },
+                    function () {
+                        growl.warning(locale.getString('habmin.floorplanSaveError',
+                            {name: $scope.selectedFloorplan.name}));
+                    }
+                );
+            }
+
+            // If we have a new file loaded, then load the file before saving
+            // Otherwise, just save!
+            if($scope.newFile != null) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $scope.selectedFloorplan.imgBase64 = window.btoa(e.target.result);
+                    save();
+                };
+                reader.readAsBinaryString($scope.newFile);
+            }
+            else {
+                save();
+            }
         };
 
         $scope.floorplanDelete = function () {
@@ -147,9 +165,25 @@ angular.module('FloorplanEditor', [
             $scope.editFloorplan();
         };
 
-        $scope.uploadFile = function () {
-            floorplanUpload.open();
+        $scope.selectImage = function (newFile) {
+            // Remember the file so we can save it later.
+            $scope.newFile = newFile;
+
+            // Load the image and display it
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $scope.floorplanImage = e.target.result;
+                $scope.$apply();
+            };
+
+            reader.readAsDataURL(newFile);
         };
     })
 
 ;
+
+
+
+
+

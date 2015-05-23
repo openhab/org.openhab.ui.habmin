@@ -28,5 +28,8 @@ public class FloorplanConfigBean {
 	public String name;
 	public String category;
 
+	public String imgBase64;
+	public String imgType;
+
 	public List<FloorplanHotspotConfigBean> hotspots;
 }
