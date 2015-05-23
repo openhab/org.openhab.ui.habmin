@@ -6,12 +6,7 @@ Bundle-Vendor: openHAB.org
 Bundle-Version: 2.0.0.qualifier
 Bundle-ManifestVersion: 2
 Bundle-License: http://www.eclipse.org/legal/epl-v10.html
-Import-Package: com.thoughtworks.xstream,
- com.thoughtworks.xstream.annotations,
- com.thoughtworks.xstream.converters,
- com.thoughtworks.xstream.io,
- com.thoughtworks.xstream.io.xml,
- javax.servlet,
+Import-Package: javax.servlet,
  javax.servlet.http,
  javax.ws.rs,
  javax.ws.rs.core,
@@ -37,5 +32,5 @@ Bundle-SymbolicName: org.openhab.ui.habmin;singleton:=true
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Service-Component: OSGI-INF/*
 Require-Bundle: javax.servlet
-Bundle-ClassPath: .,
+Bundle-ClassPath: ., lib/xstream-1.4.6.jar,
  lib/commons-codec-1.10.jar
