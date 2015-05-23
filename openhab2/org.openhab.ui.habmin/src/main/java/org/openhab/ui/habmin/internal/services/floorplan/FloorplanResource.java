@@ -1,19 +1,19 @@
 package org.openhab.ui.habmin.internal.services.floorplan;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.codec.binary.Base64;
+
 import javax.ws.rs.DELETE;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -40,7 +40,7 @@ public class FloorplanResource implements RESTResource {
 
     /** The URI path to this resource */
     public static final String PATH = "habmin/floorplan";
-    
+
     private static String FLOORPLAN_FILE = "floorplans.xml";
 
     private static final Logger logger = LoggerFactory.getLogger(FloorplanResource.class);
@@ -50,8 +50,7 @@ public class FloorplanResource implements RESTResource {
 
     @GET
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response httpGetFloorplans(@Context HttpHeaders headers,
-            @QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
+    public Response httpGetFloorplans(@Context HttpHeaders headers) {
         logger.trace("Received HTTP GET request at '{}'.", uriInfo.getPath());
 
         Object responseObject = getFloorplanList();
@@ -60,8 +59,7 @@ public class FloorplanResource implements RESTResource {
 
     @POST
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response httpPostFloorplans(@Context HttpHeaders headers,
-            @QueryParam("jsoncallback") @DefaultValue("callback") String callback, FloorplanConfigBean floorplan) {
+    public Response httpPostFloorplan(@Context HttpHeaders headers, FloorplanConfigBean floorplan) {
         logger.trace("Received HTTP POST request at '{}'.", uriInfo.getPath());
 
         Object responseObject = putFloorplanBean(0, floorplan);
@@ -71,20 +69,18 @@ public class FloorplanResource implements RESTResource {
     @GET
     @Path("/{floorplanID: [0-9]*}")
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response httpGetFloorplans(@Context HttpHeaders headers,
-            @QueryParam("jsoncallback") @DefaultValue("callback") String callback, @PathParam("floorplanID") Integer floorplanID) {
+    public Response httpGetFloorplan(@Context HttpHeaders headers, @PathParam("floorplanID") Integer floorplanID) {
         logger.trace("Received HTTP GET request at '{}'.", uriInfo.getPath());
 
         Object responseObject = getFloorplan(floorplanID);
         return Response.ok(responseObject).build();
     }
-    
+
     @PUT
     @Path("/{floorplanID: [0-9]*}")
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response httpPutFloorplans(@Context HttpHeaders headers,
-            @QueryParam("jsoncallback") @DefaultValue("callback") String callback,
-            @PathParam("floorplanID") Integer floorplanID, FloorplanConfigBean floorplan) {
+    public Response httpPutFloorplan(@Context HttpHeaders headers, @PathParam("floorplanID") Integer floorplanID,
+            FloorplanConfigBean floorplan) {
         logger.trace("Received HTTP PUT request at '{}'.", uriInfo.getPath());
 
         Object responseObject = putFloorplanBean(floorplanID, floorplan);
@@ -95,127 +91,109 @@ public class FloorplanResource implements RESTResource {
     @Path("/{floorplanID: [0-9]*}")
     @Produces({ MediaType.APPLICATION_JSON })
     public Response httpDeleteFloorplan(@Context HttpHeaders headers, @QueryParam("type") String type,
-            @QueryParam("jsoncallback") @DefaultValue("callback") String callback, @PathParam("floorplanID") Integer floorplanID) {
+            @PathParam("floorplanID") Integer floorplanID) {
         logger.trace("Received HTTP DELETE request at '{}'.", uriInfo.getPath());
 
         Object responseObject = deleteFloorplan(floorplanID);
         return Response.ok(responseObject).build();
     }
-    
-    
-    
-    
-    
-    
-    
+
     /**
      * Upload a File
-     * @return 
+     * 
+     * @return
      */
-/*
-    @POST
-    @Path("/upload")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response uploadFile(
-            //@FormDataParam("file") InputStream fileInputStream,
-            //@FormDataParam("file") FormDataContentDisposition contentDispositionHeader
-            ) {
+    @PUT
+    @Path("/{floorplanID: [0-9]*}/image")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response httpPutFloorplanImage(@Context HttpHeaders headers, @PathParam("floorplanID") Integer floorplanID,
+            FloorplanConfigBean floorplan) {
+        logger.trace("Received HTTP POST request at '{}'.", uriInfo.getPath());
 
         File folder = new File(HABminConstants.getDataDirectory());
         // create path for serialization.
         if (!folder.exists()) {
-//            logger.debug("Creating directory {}", HABminConstants.getDataDirectory());
+            // logger.debug("Creating directory {}", HABminConstants.getDataDirectory());
             folder.mkdirs();
         }
 
-        String filePath = folder + contentDispositionHeader.getFileName();
+        // String filePath = folder + contentDispositionHeader.getFileName();
 
         // save the file to the server
-        saveFile(fileInputStream, filePath);
+        // saveFile(fileInputStream, filePath);
 
-        String output = "File saved to server location : " + filePath;
+        String responseObject = "File saved to server location : ";// + filePath;
 
-        return Response.status(200).entity(output).build();
-    }*/
+        return Response.ok(responseObject).build();
+    }
 
     @GET
-    @Produces({"image/jpeg"})
+    @Produces({ "image/jpeg" })
     @Path("/{floorplanID: [0-9]*}/image")
-    public Response doGetImage(@Context HttpHeaders headers,
-            @PathParam("floorplanID") String floorplanID) {
+    public Response doGetImage(@Context HttpHeaders headers, @PathParam("floorplanID") String floorplanID,
+            String filedata) {
 
-//        if (req.getDateHeader("If-Modified-Since") > startupTime) {
-//            resp.setStatus(304);
- //           return;
-   //     }
+        // if (req.getDateHeader("If-Modified-Since") > startupTime) {
+        // resp.setStatus(304);
+        // return;
+        // }
 
-        
+        byte[] data = Base64.decodeBase64(filedata);
+
         File folder = new File(HABminConstants.getDataDirectory());
         // Create path.
         if (!folder.exists()) {
             logger.debug("Creating directory {}", HABminConstants.getDataDirectory());
             folder.mkdirs();
         }
-        
-        File file = new File(folder + "/floorplan-" + floorplanID + ".jpg");
-        
-        return Response.ok((Object) file).build();
-        
-/*
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        BufferedImage img = null;
-        try {
-            img = ImageIO.read(new File(folder + "/" + floorplanID + ".jpg"));
-        } catch (IOException e) {
-        }
-        
-//        byte[] imageData = baos.toByteArray();
-
-        // uncomment line below to send non-streamed
-        return Response.ok(imageData).build();
-        */
-//        return Response.ok(img).header("", "").build();
-
-//            if (provider.hasIcon(iconName)) {
-        //        resp.setContentType("image/jpg");
-//                resp.setDateHeader("Last-Modified", new Date().getTime());
-      //          ServletOutputStream os = resp.getOutputStream();
-    //            InputStream is = new FileInputStream(new File(floorplanID + ".jpg"));
-  //              IOUtils.copy(is, os);
-//                resp.flushBuffer();
-
-//            }
-
-//        resp.sendError(404);
-    }
-
-    // save uploaded file to a defined location on the server
-    private void saveFile(InputStream uploadedInputStream,
-            String serverLocation) {
 
         try {
-            OutputStream outpuStream = new FileOutputStream(new File(serverLocation));
-            int read = 0;
-            byte[] bytes = new byte[1024];
+            FileOutputStream fos = new FileOutputStream(folder + "/floorplan-" + floorplanID + ".bin");
 
-            outpuStream = new FileOutputStream(new File(serverLocation));
-            while ((read = uploadedInputStream.read(bytes)) != -1) {
-                outpuStream.write(bytes, 0, read);
-            }
-            outpuStream.flush();
-            outpuStream.close();
+            BufferedOutputStream out = new BufferedOutputStream(fos);
+            out.write(data);
+            out.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         } catch (IOException e) {
-
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
+        return Response.ok().build();
+        
+//        return Response.ok((Object) file).build();
+
+        /*
+         * ByteArrayOutputStream baos = new ByteArrayOutputStream();
+         * BufferedImage img = null;
+         * try {
+         * img = ImageIO.read(new File(folder + "/" + floorplanID + ".jpg"));
+         * } catch (IOException e) {
+         * }
+         * 
+         * // byte[] imageData = baos.toByteArray();
+         * 
+         * // uncomment line below to send non-streamed
+         * return Response.ok(imageData).build();
+         */
+        // return Response.ok(img).header("", "").build();
+
+        // if (provider.hasIcon(iconName)) {
+        // resp.setContentType("image/jpg");
+        // resp.setDateHeader("Last-Modified", new Date().getTime());
+        // ServletOutputStream os = resp.getOutputStream();
+        // InputStream is = new FileInputStream(new File(floorplanID + ".jpg"));
+        // IOUtils.copy(is, os);
+        // resp.flushBuffer();
+
+        // }
+
+        // resp.sendError(404);
     }
 
-    
-    
-    
-    
-    
     private FloorplanConfigBean putFloorplanBean(Integer floorplanRef, FloorplanConfigBean bean) {
         if (floorplanRef == 0) {
             bean.id = null;
@@ -258,7 +236,7 @@ public class FloorplanResource implements RESTResource {
 
     private List<FloorplanConfigBean> getFloorplanList() {
         FloorplanListBean floorplans = loadFloorplans();
-//      FloorplanListBean newList = new FloorplanListBean();
+        // FloorplanListBean newList = new FloorplanListBean();
         List<FloorplanConfigBean> list = new ArrayList<FloorplanConfigBean>();
 
         // We only want to return the id and name
@@ -317,8 +295,9 @@ public class FloorplanResource implements RESTResource {
 
         try {
             long timerStart = System.currentTimeMillis();
-            
-            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(HABminConstants.getDataDirectory() + FLOORPLAN_FILE),"UTF-8"));
+
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
+                    HABminConstants.getDataDirectory() + FLOORPLAN_FILE), "UTF-8"));
 
             XStream xstream = new XStream(new StaxDriver());
             xstream.alias("floorplans", FloorplanListBean.class);
@@ -375,7 +354,5 @@ public class FloorplanResource implements RESTResource {
 
         return floorplans;
     }
-    
-    
-    
+
 }
