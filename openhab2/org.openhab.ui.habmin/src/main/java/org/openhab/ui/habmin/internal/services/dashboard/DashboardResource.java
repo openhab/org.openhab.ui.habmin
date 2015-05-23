@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.DELETE;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -43,12 +42,11 @@ import com.thoughtworks.xstream.io.xml.StaxDriver;
 
 /**
  * <p>
- * This class acts as a REST resource for history data and provides different
- * methods to interact with the, persistence store
+ * This class acts as a REST resource for history data and provides different methods to interact with the, persistence
+ * store
  * 
  * <p>
- * The typical content types are plain text for status values and XML or JSON(P)
- * for more complex data structures
+ * The typical content types are plain text for status values and XML or JSON(P) for more complex data structures
  * </p>
  * 
  * <p>
@@ -61,230 +59,226 @@ import com.thoughtworks.xstream.io.xml.StaxDriver;
 @Path(DashboardResource.PATH)
 public class DashboardResource implements RESTResource {
 
-	private static String DASHBOARD_FILE = "dashboards.xml";
+    private static String DASHBOARD_FILE = "dashboards.xml";
 
-	private static final Logger logger = LoggerFactory.getLogger(DashboardResource.class);
+    private static final Logger logger = LoggerFactory.getLogger(DashboardResource.class);
 
-	/** The URI path to this resource */
-	public static final String PATH = "habmin/dashboards";
+    /** The URI path to this resource */
+    public static final String PATH = "habmin/dashboards";
 
-	@Context
-	UriInfo uriInfo;
+    @Context
+    UriInfo uriInfo;
 
+    @GET
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response httpGetDashboards(@Context HttpHeaders headers) {
+        logger.trace("Received HTTP GET request at '{}'.", uriInfo.getPath());
 
-	@GET
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response httpGetDashboards(@Context HttpHeaders headers,
-			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
-		logger.trace("Received HTTP GET request at '{}'.", uriInfo.getPath());
+        Object responseObject = getDashboardList();
+        return Response.ok(responseObject).build();
+    }
 
-		Object responseObject = getDashboardList();
-		return Response.ok(responseObject).build();
-	}
+    @POST
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response httpPostDashboards(@Context HttpHeaders headers, DashboardConfigBean dashboard) {
+        logger.trace("Received HTTP POST request at '{}'.", uriInfo.getPath());
 
-	@POST
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response httpPostDashboards(@Context HttpHeaders headers,
-			@QueryParam("jsoncallback") @DefaultValue("callback") String callback, DashboardConfigBean dashboard) {
-		logger.trace("Received HTTP POST request at '{}'.", uriInfo.getPath());
+        Object responseObject = putDashboardBean(0, dashboard);
+        return Response.ok(responseObject).build();
+    }
 
-		Object responseObject = putDashboardBean(0, dashboard);
-		return Response.ok(responseObject).build();
-	}
+    @PUT
+    @Path("/{dashboardId: [a-zA-Z_0-9]*}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response httpPutDashboards(@Context HttpHeaders headers, @PathParam("dashboardId") Integer dashboardId,
+            DashboardConfigBean dashboard) {
+        logger.trace("Received HTTP PUT request at '{}'.", uriInfo.getPath());
 
-	@PUT
-	@Path("/{dashboardid: [a-zA-Z_0-9]*}")
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response httpPutDashboards(@Context HttpHeaders headers,
-			@QueryParam("jsoncallback") @DefaultValue("callback") String callback,
-			@PathParam("dashboardid") Integer dashboardId, DashboardConfigBean dashboard) {
-		logger.trace("Received HTTP PUT request at '{}'.", uriInfo.getPath());
+        Object responseObject = putDashboardBean(dashboardId, dashboard);
+        return Response.ok(responseObject).build();
+    }
 
-		Object responseObject = putDashboardBean(dashboardId, dashboard);
-		return Response.ok(responseObject).build();
-	}
+    @DELETE
+    @Path("/{dashboardId: [a-zA-Z_0-9]*}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response httpDeleteDashboards(@Context HttpHeaders headers, @QueryParam("type") String type,
+            @PathParam("dashboardId") Integer dashboardId) {
+        logger.trace("Received HTTP DELETE request at '{}'.", uriInfo.getPath());
 
-	@DELETE
-	@Path("/{dashboardid: [a-zA-Z_0-9]*}")
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response httpDeleteDashboards(@Context HttpHeaders headers, @QueryParam("type") String type,
-			@QueryParam("jsoncallback") @DefaultValue("callback") String callback, @PathParam("dashboardid") Integer dashboardId) {
-		logger.trace("Received HTTP DELETE request at '{}'.", uriInfo.getPath());
+        Object responseObject = deleteDashboard(dashboardId);
+        return Response.ok(responseObject).build();
+    }
 
-		Object responseObject = deleteDashboard(dashboardId);
-		return Response.ok(responseObject).build();
-	}
+    @GET
+    @Path("/{dashboardId: [a-zA-Z_0-9]*}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response httpGetDashboards(@Context HttpHeaders headers, @PathParam("dashboardId") Integer dashboardId) {
+        logger.trace("Received HTTP GET request at '{}'.", uriInfo.getPath());
 
-	@GET
-	@Path("/{dashboardid: [a-zA-Z_0-9]*}")
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response httpGetDashboards(@Context HttpHeaders headers,
-			@QueryParam("jsoncallback") @DefaultValue("callback") String callback, @PathParam("dashboardid") Integer dashboardId) {
-		logger.trace("Received HTTP GET request at '{}'.", uriInfo.getPath());
+        Object responseObject = getDashboard(dashboardId);
+        return Response.ok(responseObject).build();
+    }
 
-		Object responseObject = getDashboard(dashboardId);
-		return Response.ok(responseObject).build();
-	}
+    private DashboardConfigBean putDashboardBean(Integer dashboardRef, DashboardConfigBean bean) {
+        if (dashboardRef == 0) {
+            bean.id = null;
+        } else {
+            bean.id = dashboardRef;
+        }
 
-	private DashboardConfigBean putDashboardBean(Integer dashboardRef, DashboardConfigBean bean) {
-		if (dashboardRef == 0) {
-			bean.id = null;
-		} else {
-			bean.id = dashboardRef;
-		}
+        // Load the existing list
+        DashboardListBean list = loadDashboards();
 
-		// Load the existing list
-		DashboardListBean list = loadDashboards();
+        int high = 0;
 
-		int high = 0;
+        DashboardConfigBean foundDashboard = null;
+        // Loop through the interface list
+        for (DashboardConfigBean i : list.entries) {
+            if (i.id > high)
+                high = i.id;
+            if (i.id.intValue() == dashboardRef) {
+                // If it was found in the list, remember it...
+                foundDashboard = i;
+            }
+        }
 
-		DashboardConfigBean foundDashboard = null;
-		// Loop through the interface list
-		for (DashboardConfigBean i : list.entries) {
-			if (i.id > high)
-				high = i.id;
-			if (i.id.intValue() == dashboardRef) {
-				// If it was found in the list, remember it...
-				foundDashboard = i;
-			}
-		}
+        // If it was found in the list, remove it...
+        if (foundDashboard != null) {
+            list.entries.remove(foundDashboard);
+        }
 
-		// If it was found in the list, remove it...
-		if (foundDashboard != null) {
-			list.entries.remove(foundDashboard);
-		}
+        // Set defaults if this is a new dashboard
+        if (bean.id == null) {
+            bean.id = high + 1;
+        }
 
-		// Set defaults if this is a new dashboard
-		if (bean.id == null) {
-			bean.id = high + 1;
-		}
+        // Now save the updated version
+        list.entries.add(bean);
+        saveDashboards(list);
 
-		// Now save the updated version
-		list.entries.add(bean);
-		saveDashboards(list);
+        return bean;
+    }
 
-		return bean;
-	}
+    private List<DashboardConfigBean> getDashboardList() {
+        DashboardListBean dashboards = loadDashboards();
+        // DashboardListBean newList = new DashboardListBean();
+        List<DashboardConfigBean> list = new ArrayList<DashboardConfigBean>();
 
-	private List<DashboardConfigBean> getDashboardList() {
-		DashboardListBean dashboards = loadDashboards();
-//		DashboardListBean newList = new DashboardListBean();
-		List<DashboardConfigBean> list = new ArrayList<DashboardConfigBean>();
+        // We only want to return the id and name
+        for (DashboardConfigBean i : dashboards.entries) {
+            DashboardConfigBean newDashboard = new DashboardConfigBean();
+            newDashboard.id = i.id;
+            newDashboard.name = i.name;
+            newDashboard.category = i.category;
+            newDashboard.menu = i.menu;
 
-		// We only want to return the id and name
-		for (DashboardConfigBean i : dashboards.entries) {
-			DashboardConfigBean newDashboard = new DashboardConfigBean();
-			newDashboard.id = i.id;
-			newDashboard.name = i.name;
-			newDashboard.category = i.category;
-			newDashboard.menu = i.menu;
+            list.add(newDashboard);
+        }
 
-			list.add(newDashboard);
-		}
+        return list;
+    }
 
-		return list;
-	}
+    private DashboardConfigBean getDashboard(Integer dashboardRef) {
+        DashboardListBean dashboards = loadDashboards();
 
-	private DashboardConfigBean getDashboard(Integer dashboardRef) {
-		DashboardListBean dashboards = loadDashboards();
+        for (DashboardConfigBean i : dashboards.entries) {
+            if (i.id.intValue() == dashboardRef)
+                return i;
+        }
 
-		for (DashboardConfigBean i : dashboards.entries) {
-			if (i.id.intValue() == dashboardRef)
-				return i;
-		}
+        return null;
+    }
 
-		return null;
-	}
+    private List<DashboardConfigBean> deleteDashboard(Integer dashboardRef) {
+        DashboardListBean dashboards = loadDashboards();
 
-	private List<DashboardConfigBean> deleteDashboard(Integer dashboardRef) {
-		DashboardListBean dashboards = loadDashboards();
+        DashboardConfigBean foundDashboard = null;
+        for (DashboardConfigBean i : dashboards.entries) {
+            if (i.id.intValue() == dashboardRef) {
+                // If it was found in the list, remember it...
+                foundDashboard = i;
+                break;
+            }
+        }
 
-		DashboardConfigBean foundDashboard = null;
-		for (DashboardConfigBean i : dashboards.entries) {
-			if (i.id.intValue() == dashboardRef) {
-				// If it was found in the list, remember it...
-				foundDashboard = i;
-				break;
-			}
-		}
+        // If it was found in the list, remove it...
+        if (foundDashboard != null) {
+            dashboards.entries.remove(foundDashboard);
+        }
 
-		// If it was found in the list, remove it...
-		if (foundDashboard != null) {
-			dashboards.entries.remove(foundDashboard);
-		}
+        saveDashboards(dashboards);
 
-		saveDashboards(dashboards);
+        return getDashboardList();
+    }
 
-		return getDashboardList();
-	}
-	
-	private XStream getXStream() {
-		XStream xstream = new XStream(new StaxDriver());
-		xstream.alias("dashboards", DashboardListBean.class);
-		xstream.alias("dashboard", DashboardConfigBean.class);
-		xstream.alias("widgets", DashboardWidgetBean.class);
-		xstream.alias("options", DashboardWidgetOptionsBean.class);
-		xstream.processAnnotations(DashboardListBean.class);
+    private XStream getXStream() {
+        XStream xstream = new XStream(new StaxDriver());
+        xstream.alias("dashboards", DashboardListBean.class);
+        xstream.alias("dashboard", DashboardConfigBean.class);
+        xstream.alias("widgets", DashboardWidgetBean.class);
+        xstream.alias("options", DashboardWidgetOptionsBean.class);
+        xstream.processAnnotations(DashboardListBean.class);
 
-		return xstream;
-	}
+        return xstream;
+    }
 
-	private boolean saveDashboards(DashboardListBean dashboard) {
-		File folder = new File(HABminConstants.getDataDirectory());
-		// create path for serialization.
-		if (!folder.exists()) {
-			logger.debug("Creating directory {}", HABminConstants.getDataDirectory());
-			folder.mkdirs();
-		}
+    private boolean saveDashboards(DashboardListBean dashboard) {
+        File folder = new File(HABminConstants.getDataDirectory());
+        // create path for serialization.
+        if (!folder.exists()) {
+            logger.debug("Creating directory {}", HABminConstants.getDataDirectory());
+            folder.mkdirs();
+        }
 
-		try {
-			long timerStart = System.currentTimeMillis();
-			
-			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(HABminConstants.getDataDirectory() + DASHBOARD_FILE),"UTF-8"));
+        try {
+            long timerStart = System.currentTimeMillis();
 
-			XStream xstream = getXStream();
-			xstream.toXML(dashboard, out);
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
+                    HABminConstants.getDataDirectory() + DASHBOARD_FILE), "UTF-8"));
 
-			out.close();
+            XStream xstream = getXStream();
+            xstream.toXML(dashboard, out);
 
-			long timerStop = System.currentTimeMillis();
-			logger.debug("Dashboard list saved in {}ms.", timerStop - timerStart);
-		} catch (FileNotFoundException e) {
-			logger.debug("Unable to open Dashboards list for SAVE - ", e);
+            out.close();
 
-			return false;
-		} catch (IOException e) {
-			logger.debug("Unable to write Dashboards list for SAVE - ", e);
+            long timerStop = System.currentTimeMillis();
+            logger.debug("Dashboard list saved in {}ms.", timerStop - timerStart);
+        } catch (FileNotFoundException e) {
+            logger.debug("Unable to open Dashboards list for SAVE - ", e);
 
-			return false;
-		}
+            return false;
+        } catch (IOException e) {
+            logger.debug("Unable to write Dashboards list for SAVE - ", e);
 
-		return true;
-	}
+            return false;
+        }
 
-	private DashboardListBean loadDashboards() {
-		DashboardListBean dashboards = null;
+        return true;
+    }
 
-		FileInputStream fin;
-		try {
-			long timerStart = System.currentTimeMillis();
+    private DashboardListBean loadDashboards() {
+        DashboardListBean dashboards = null;
 
-			fin = new FileInputStream(HABminConstants.getDataDirectory() + DASHBOARD_FILE);
+        FileInputStream fin;
+        try {
+            long timerStart = System.currentTimeMillis();
 
-			XStream xstream = getXStream();
-			dashboards = (DashboardListBean) xstream.fromXML(fin);
+            fin = new FileInputStream(HABminConstants.getDataDirectory() + DASHBOARD_FILE);
 
-			fin.close();
+            XStream xstream = getXStream();
+            dashboards = (DashboardListBean) xstream.fromXML(fin);
 
-			long timerStop = System.currentTimeMillis();
-			logger.debug("Dashboards loaded in {}ms.", timerStop - timerStart);
+            fin.close();
 
-		} catch (FileNotFoundException e) {
-			dashboards = new DashboardListBean();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+            long timerStop = System.currentTimeMillis();
+            logger.debug("Dashboards loaded in {}ms.", timerStop - timerStart);
 
-		return dashboards;
-	}
+        } catch (FileNotFoundException e) {
+            dashboards = new DashboardListBean();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return dashboards;
+    }
 }

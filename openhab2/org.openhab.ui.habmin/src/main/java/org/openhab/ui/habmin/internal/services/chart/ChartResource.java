@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.DELETE;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -37,7 +36,6 @@ import org.eclipse.smarthome.core.items.ItemRegistry;
 import org.eclipse.smarthome.io.rest.RESTResource;
 import org.eclipse.smarthome.ui.items.ItemUIRegistry;
 import org.openhab.ui.habmin.HABminConstants;
-import org.openhab.ui.habmin.internal.services.dashboard.DashboardConfigBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -90,8 +88,7 @@ public class ChartResource implements RESTResource {
 
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response httpGetCharts(@Context HttpHeaders headers,
-			@QueryParam("jsoncallback") @DefaultValue("callback") String callback) {
+	public Response httpGetCharts(@Context HttpHeaders headers) {
 		logger.trace("Received HTTP GET request at '{}'.", uriInfo.getPath());
 
 		Object responseObject = getChartList();
@@ -101,7 +98,7 @@ public class ChartResource implements RESTResource {
 	@POST
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response httpPostCharts(@Context HttpHeaders headers,
-			@QueryParam("jsoncallback") @DefaultValue("callback") String callback, ChartConfigBean chart) {
+			ChartConfigBean chart) {
 		logger.trace("Received HTTP POST request at '{}'.", uriInfo.getPath());
 
 		Object responseObject = putChartBean(0, chart);
@@ -109,11 +106,10 @@ public class ChartResource implements RESTResource {
 	}
 
 	@PUT
-	@Path("/{chartid: [a-zA-Z_0-9]*}")
+	@Path("/{chartId: [a-zA-Z_0-9]*}")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response httpPutCharts(@Context HttpHeaders headers,
-			@QueryParam("jsoncallback") @DefaultValue("callback") String callback,
-			@PathParam("chartid") Integer chartId, ChartConfigBean chart) {
+			@PathParam("chartId") Integer chartId, ChartConfigBean chart) {
 		logger.trace("Received HTTP PUT request at '{}'.", uriInfo.getPath());
 
 		Object responseObject = putChartBean(chartId, chart);
@@ -121,10 +117,10 @@ public class ChartResource implements RESTResource {
 	}
 
 	@DELETE
-	@Path("/{chartid: [a-zA-Z_0-9]*}")
+	@Path("/{chartId: [a-zA-Z_0-9]*}")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response httpDeleteCharts(@Context HttpHeaders headers, @QueryParam("type") String type,
-			@QueryParam("jsoncallback") @DefaultValue("callback") String callback, @PathParam("chartid") Integer chartId) {
+			@PathParam("chartId") Integer chartId) {
 		logger.trace("Received HTTP DELETE request at '{}'.", uriInfo.getPath());
 
 		Object responseObject = deleteChart(chartId);
@@ -132,10 +128,10 @@ public class ChartResource implements RESTResource {
 	}
 
 	@GET
-	@Path("/{chartid: [a-zA-Z_0-9]*}")
+	@Path("/{chartId: [a-zA-Z_0-9]*}")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response httpGetCharts(@Context HttpHeaders headers,
-			@QueryParam("jsoncallback") @DefaultValue("callback") String callback, @PathParam("chartid") Integer chartId) {
+			@PathParam("chartId") Integer chartId) {
 		logger.trace("Received HTTP GET request at '{}'.", uriInfo.getPath());
 
 		Object responseObject = getChart(chartId);
