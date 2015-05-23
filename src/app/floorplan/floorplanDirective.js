@@ -13,8 +13,8 @@ angular.module('FloorPlan', [
     .directive('floorPlan', function ($window, ItemModel) {
         return {
             restrict: 'E',
-            template: '<div class="floorplan" ng-style="style">' +
-            '<img ng-src="{{image}}" class="fade">' +
+            template: '<div class="floorplan fade" ng-style="style" ng-class="class">' +
+            '<img ng-src="{{image}}">' +
             '<div ng-repeat="hotspot in hotspotArray">' +
             '<div class="hotspot" ng-style="hotspot.style">' +
             '<span class="badge" ng-click="hotspotClicked(hotspot)">' +
@@ -32,10 +32,10 @@ angular.module('FloorPlan', [
             },
             link: function ($scope, element, attr) {
                 $scope.style = {};
+                $scope.class = "";
                 $scope.hotspotArray = [];
 
                 $scope.$watchCollection('hotspotList', function (hotspots) {
-                    console.log("Hotspots changed");
                     $scope.hotspotArray = [];
                     angular.forEach(hotspots, function (hotspot) {
                         var hs = {
@@ -114,10 +114,12 @@ angular.module('FloorPlan', [
 
                 imgElement.bind('load', function () {
                     $scope.resizeImage();
+                    $scope.class = "in";
                     $scope.$apply();
-                    imgElement.addClass('in');
                 });
                 imgElement.bind('error', function () {
+                    $scope.class = "";
+                    $scope.$apply();
                     console.log("Error loading img");
                 });
                 var w = angular.element($window);
@@ -125,11 +127,12 @@ angular.module('FloorPlan', [
                     $scope.resizeImage();
                     $scope.$apply();
                 });
-                $scope.$watch('ngSrc', function (newVal) {
-                    imgElement.removeClass('in');
+                $scope.$watch('image', function (newVal) {
+                    $scope.class = "";
                 });
             }
         };
     })
 
 ;
+
