@@ -7,7 +7,7 @@
             <span class="panel-title pull-left" i18n="habmin.floorplanEditor"></span>
             <div class="btn-group pull-right">
                 <button type="button"
-                        class="btn btn-default btn-sm"
+                        class="btn btn-default"
                         ng-click="newFloorplan()">
                     <span class="fa fa-floppy-o"></span>
                     <span class="hidden-xs hidden-sm" i18n="common.new"></span>
@@ -59,27 +59,27 @@
     <div class="panel panel-default">
         <!-- Header -->
         <div class="panel-heading">
-             <span class="btn btn-sm btn-default btn-file" ng-disabled="selectedFloorplan==null">
+             <span class="btn btn-default btn-file" ng-disabled="selectedFloorplan==null">
                 <span class="fa fa-picture-o"></span>
                 <span i18n="habmin.floorplanSelectImage"></span>
                 <input onchange="angular.element(this).scope().selectImage(this.files[0]);this.value = '';" type="file"/>
             </span>
             <button type="button"
-                    class="btn btn-default btn-sm"
+                    class="btn btn-default"
                     ng-click="saveFloorplan()"
                     ng-disabled="selectedFloorplan==null">
                 <span class="fa fa-floppy-o"></span>
                 <span class="hidden-xs hidden-sm" i18n="common.save"></span>
             </button>
             <button type="button"
-                    class="btn btn-default btn-sm"
+                    class="btn btn-default"
                     ng-disabled="selectedFloorplan==null"
                     ng-click="editFloorplan()">
                 <span class="fa fa-floppy-o"></span>
                 <span class="hidden-xs hidden-sm" i18n="common.properties"></span>
             </button>
             <button type="button"
-                    class="btn btn-default btn-sm"
+                    class="btn btn-default"
                     ng-confirm-click="floorplanDelete()" ng-confirm-icon="warning"
                     ng-disabled="selectedFloorplan==null || selectedFloorplan.id==null"
                     i18n-attr="{'ngConfirmMessage': 'habmin.floorplanDeleteCheck','ngConfirmTitle': 'habmin.floorplanDelete','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes' }">
