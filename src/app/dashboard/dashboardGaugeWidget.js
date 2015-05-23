@@ -40,11 +40,12 @@ angular.module('dashboardGaugeWidget', [
                     }
                 );
 
-                // and then watch for changes
-                $scope.$on('openhab:smarthome/update', function (event) {
-                    if (event == null) {
-                        $scope.value = 0;
+                // And then watch for changes
+                $scope.$on('smarthome/items/updated', function (item) {
+                    if (item == null) {
+                        return;
                     }
+                    $scope.value = item.state;
                 });
             }
         };

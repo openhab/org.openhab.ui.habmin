@@ -11,7 +11,7 @@ angular.module('HABmin.itemModel', [
     'HABmin.userModel'
 ])
 
-    .service('ItemModel', function ($http, $q, UserService, RestService) {
+    .service('ItemModel', function ($http, $q, $rootScope, UserService, RestService) {
         var svcName = "items";
         var itemList = [];
         var url = UserService.getServer() + '/rest/items';
@@ -48,6 +48,9 @@ angular.module('HABmin.itemModel', [
                             break;
                         }
                     }
+
+                    // Broadcast an event so we update any widgets or listeners
+                    $rootScope.$broadcast('smarthome/items/updated', item);
                 }
             });
         };
