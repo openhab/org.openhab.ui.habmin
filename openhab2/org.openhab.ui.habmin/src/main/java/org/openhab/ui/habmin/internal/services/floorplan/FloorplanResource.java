@@ -125,7 +125,7 @@ public class FloorplanResource implements RESTResource {
         // Save the image
         if(bean.imgBase64 != null) {
             byte[] data = Base64.decodeBase64(bean.imgBase64);
-    
+
             File folder = new File(HABminConstants.getDataDirectory());
             // Create path.
             if (!folder.exists()) {
@@ -229,8 +229,17 @@ public class FloorplanResource implements RESTResource {
         // If it was found in the list, remove it...
         if (foundFloorplan != null) {
             floorplans.entries.remove(foundFloorplan);
+
+            // Remove the image as well...
+            File folder = new File(HABminConstants.getDataDirectory());
+            if (folder.exists()) {
+                File file = new File(folder, "floorplan-" + floorplanRef + ".img");
+    
+                file.delete();
+            }
         }
 
+        // And save this to disk...
         saveFloorplans(floorplans);
 
         return getFloorplanList();
