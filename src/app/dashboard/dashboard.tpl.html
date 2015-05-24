@@ -38,19 +38,19 @@
     </div>
 
     <div class="btn-group btn-group-sm pull-right" role="group">
-        <button class="btn btn-sm btn-primary" ng-click="saveDashboard()"
-                ng-disabled="isDirty==false">
+        <button class="btn btn-sm btn-default" ng-click="saveDashboard()"
+                ng-disabled="isDirty==false" ng-class="{'btn-warning': isDirty}">
             <span class="fa fa-save"></span> <span i18n="common.save"></span>
         </button>
-        <button class="btn btn-sm btn-primary" ng-click="endEdit()">
+        <button class="btn btn-sm btn-default" ng-click="endEdit()">
             <span class="fa fa-check-square"></span> <span i18n="common.close"></span>
         </button>
-        <button class="btn btn-sm btn-warning" ng-confirm-click="clearDashboard()"
+        <button class="btn btn-sm btn-default" ng-confirm-click="clearDashboard()"
                 ng-disabled="dashboard.widgets.length==0"
                 i18n-attr="{'ngConfirmMessage': 'habmin.dashboardClearText','ngConfirmTitle': 'habmin.dashboardClearTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}">
             <span class="fa fa-file-o"></span> <span i18n="common.clear"></span>
         </button>
-        <button class="btn btn-sm btn-warning" ng-confirm-click="deleteDashboard()"
+        <button class="btn btn-sm btn-default" ng-confirm-click="deleteDashboard()"
                 ng-disabled="dashboard.id==0"
                 i18n-attr="{'ngConfirmMessage': 'habmin.dashboardDeleteText','ngConfirmTitle': 'habmin.dashboardDeleteTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}">
             <span class="fa fa-trash-o"></span> <span i18n="common.delete"></span>
