@@ -22,7 +22,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-shell');
-
+    grunt.loadNpmTasks('grunt-lesslint')
 
     /**
      * Load in our build configuration file.
@@ -352,6 +352,13 @@ module.exports = function (grunt) {
          */
         less: {
             // Will be generated dynamically to account for themes
+        },
+
+        /**
+         * Check our LESS files
+         */
+        lesslint: {
+            src: ['src/**/*.less']
         },
 
         /**

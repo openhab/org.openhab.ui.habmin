@@ -21,6 +21,7 @@ angular.module('HABmin', [
     'HABmin.bindingModel',
     'HABmin.dashboardModel',
     'HABmin.inboxModel',
+    'HABmin.eventModel',
     'HABmin.dashboard',
     'HABmin.scheduler',
     'HABmin.updateService',
@@ -171,7 +172,7 @@ angular.module('HABmin', [
     ])
 
     .controller('HABminCtrl',
-    function HABminCtrl($scope, $window, $timeout, $interval, $rootScope, locale, DashboardModel, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, InboxModel, SidepanelService, RestService, UpdateService) {
+    function HABminCtrl($scope, $window, $timeout, $interval, $rootScope, locale, DashboardModel, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, InboxModel, SidepanelService, RestService, UpdateService, EventModel) {
         $scope.isLoggedIn = UserService.isLoggedIn;
         $scope.notificationError = false;
         $scope.onlineStatus = false;
@@ -450,6 +451,8 @@ angular.module('HABmin', [
                 splash.remove();
             },250);
         }, 100);
+
+        EventModel.listen();
     })
 
     .filter('orderObjectBy', function () {
