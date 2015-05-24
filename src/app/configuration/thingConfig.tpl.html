@@ -158,7 +158,7 @@
             <button type="button"
                     class="btn btn-default"
                     ng-click="thingSave()"
-                    ngx-disabled="!thingConfigForm.modified">
+                    ng-disabled="selectedThing==null">
                 <span class="fa fa-floppy-o"></span>
                 <span class="hidden-xs hidden-sm" i18n="common.save"></span>
             </button>
