@@ -36,7 +36,10 @@ angular.module('dashboardGaugeWidget', [
                 // First poll the current value
                 ItemModel.getItem($scope.options.itemId).then(
                     function (item) {
-                        $scope.value = item.state;
+                        var num = Number(item.state);
+                        if(!isNaN(num)) {
+                            $scope.value = num;
+                        }
                     }
                 );
 
