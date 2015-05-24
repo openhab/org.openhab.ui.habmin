@@ -17,13 +17,11 @@ angular.module('FloorPlan', [
             '<img ng-src="{{image}}">' +
             '<div ng-repeat="hotspot in hotspotArray">' +
             '<div class="hotspot" ng-style="hotspot.style">' +
-            '<div class="hotspot-inner" ng-class="hotspot.class">' +
-            '<span class="badge" ng-click="hotspotClicked(hotspot)">' +
+            '<span class="badge" ng-class="hotspot.class" ng-click="hotspotClicked(hotspot)">' +
             '<habmin-icon category="{{hotspot.category}}"></habmin-icon>' +
             '<span ng-if="hotspot.category">&nbsp;</span>' +
             '<span>{{hotspot.label}}</span>' +
             '</span>' +
-            '</div>' +
             '</div>' +
             '</div>' +
             '</div>',
@@ -74,13 +72,13 @@ angular.module('FloorPlan', [
 
                         // And then watch for changes
                         $scope.$on('smarthome/update/' + hotspot.itemId, function (event, value) {
-                            $scope.value = Number(value);
                             hs.label = value;
 
-                            hs.class = "highxx";
+                            hs.class = "updated";
                             $timeout(function() {
                                 hs.class = "";
-                            }, 2000);
+                                $scope.$apply();
+                            }, 250);
 
                             $scope.$apply();
                         });

@@ -881,42 +881,39 @@
 
     img {
       cursor: crosshair;
-      width:100%;
-      height:100%;
+      width: 100%;
+      height: 100%;
     }
 
     .hotspot {
       position: absolute;
 
-      .hotspot-inner {
+      .badge {
         margin-left: -50%;
         margin-top: -50%;
-        opacity: 0.7;
+        opacity: 0.6;
+        cursor: context-menu;
 
-//        transition: all 2s;
-  //      -moz-transition: all 2s;
-    //    -webkit-transition: all 2s;
-      //  -o-transition: all 2s;
+        transition: all 0.2s;
+        -moz-transition: all 0.2s;
+        -webkit-transition: all 0.2s;
+        -o-transition: all 0.2s;
 
-        .highxx {
-          opacity: 0.2;
+        &:hover {
+          font-size: @font-size-base * 1.6;
+          opacity: 1;
         }
 
-        .badge {
-          cursor: context-menu;
-
-          transition: all 0.2s;
-          -moz-transition: all 0.2s;
-          -webkit-transition: all 0.2s;
-          -o-transition: all 0.2s;
-
-                  &:hover {
-                    font-size: @font-size-base * 1.6;
-                    opacity: 1;
-                  }
-        }
       }
     }
+  }
+
+  .updated {
+    opacity: 1 !important;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+    -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+    -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+    -o-box-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
   }
 
   // Finally - any theme specific tailoring
