@@ -49,6 +49,7 @@ angular.module('FloorplanEditor', [
         $scope.floorplanList = [];
         $scope.selectedFloorplan = null ;
         $scope.floorplanImageUpdated = false;
+        $scope.isDirty = false;
 
         FloorplanModel.getList().then(
             function(list) {
@@ -74,6 +75,9 @@ angular.module('FloorplanEditor', [
             if(event.toElement.localName != "img") {
                 return;
             }
+
+            // Getting dirty...
+            $scope.isDirty = true;
 
             // Get the position of the click - rounding to 2 decimal places
             var posX = Math.round(event.offsetX / event.toElement.width * 10000) / 100;
@@ -113,6 +117,9 @@ angular.module('FloorplanEditor', [
                         // Then if we're saving it, we add the new one back it
                         $scope.selectedFloorplan.hotspots.push(result.hotspot);
                     }
+
+                    // Getting dirty...
+                    $scope.isDirty = true;
                 }
             )
         };
@@ -121,6 +128,9 @@ angular.module('FloorplanEditor', [
             floorplanProperties.editOptions($scope.selectedFloorplan).then(
                 function (floorplan) {
                     $scope.selectedFloorplan = floorplan;
+
+                    // Getting dirty...
+                    $scope.isDirty = true;
                 }
             );
         };
@@ -133,6 +143,9 @@ angular.module('FloorplanEditor', [
                             {name: $scope.selectedFloorplan.name}));
 
                         $scope.selectedFloorplan.imgBase64 = null;
+
+                        // Clear the dirty flag
+                        $scope.isDirty = false;
                     },
                     function () {
                         growl.warning(locale.getString('habmin.floorplanSaveError',
@@ -141,7 +154,7 @@ angular.module('FloorplanEditor', [
                 );
             }
 
-            // If we have a new file loaded, then load the file before saving
+            // If we have a new image file loaded, then load the file before saving
             // Otherwise, just save!
             if($scope.newFile != null) {
                 var reader = new FileReader();
@@ -178,6 +191,9 @@ angular.module('FloorplanEditor', [
             };
 
             reader.readAsDataURL(newFile);
+
+            // Getting dirty...
+            $scope.isDirty = true;
         };
     })
 

@@ -66,17 +66,18 @@
             </span>
             <button type="button"
                     class="btn btn-default"
-                    ng-click="saveFloorplan()"
-                    ng-disabled="selectedFloorplan==null">
-                <span class="fa fa-floppy-o"></span>
-                <span class="hidden-xs hidden-sm" i18n="common.save"></span>
-            </button>
-            <button type="button"
-                    class="btn btn-default"
                     ng-disabled="selectedFloorplan==null"
                     ng-click="editFloorplan()">
                 <span class="fa fa-floppy-o"></span>
                 <span class="hidden-xs hidden-sm" i18n="common.properties"></span>
+            </button>
+            <button type="button"
+                    class="btn btn-default"
+                    ng-class="{'btn-warning': isDirty}"
+                    ng-click="saveFloorplan()"
+                    ng-disabled="selectedFloorplan==null || isDirty==false">
+                <span class="fa fa-floppy-o"></span>
+                <span class="hidden-xs hidden-sm" i18n="common.save"></span>
             </button>
             <button type="button"
                     class="btn btn-default"
