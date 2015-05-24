@@ -10,18 +10,20 @@
 angular.module('FloorPlan', [
     'HABmin.itemModel'
 ])
-    .directive('floorPlan', function ($window, ItemModel) {
+    .directive('floorPlan', function ($window, $timeout, ItemModel) {
         return {
             restrict: 'E',
             template: '<div class="floorplan fade" ng-style="style" ng-class="class">' +
             '<img ng-src="{{image}}">' +
             '<div ng-repeat="hotspot in hotspotArray">' +
             '<div class="hotspot" ng-style="hotspot.style">' +
+            '<div class="hotspot-inner" ng-class="hotspot.class">' +
             '<span class="badge" ng-click="hotspotClicked(hotspot)">' +
             '<habmin-icon category="{{hotspot.category}}"></habmin-icon>' +
             '<span ng-if="hotspot.category">&nbsp;</span>' +
-            '{{hotspot.label}}' +
+            '<span>{{hotspot.label}}</span>' +
             '</span>' +
+            '</div>' +
             '</div>' +
             '</div>' +
             '</div>',
@@ -43,6 +45,7 @@ angular.module('FloorPlan', [
                                 left: hotspot.posX + "%",
                                 top: hotspot.posY + "%"
                             },
+                            class: "",
                             callback: hotspot
                         };
                         if (hotspot.itemId == null) {
@@ -50,11 +53,13 @@ angular.module('FloorPlan', [
                             $scope.hotspotArray.push(hs);
                             return;
                         }
+
+                        // Get the initial value of the item
                         ItemModel.getItem(hotspot.itemId).then(
                             function (item) {
                                 hs.category = item.category;
 
-                                if (item.state == "Uninitialized") {
+                                if (item.state == "Uninitialized" || item.state == "NULL") {
                                     hs.label = "---";
                                 } else {
                                     hs.label = item.state;
@@ -66,11 +71,24 @@ angular.module('FloorPlan', [
                                 $scope.hotspotArray.push(hs);
                             }
                         );
+
+                        // And then watch for changes
+                        $scope.$on('smarthome/update/' + hotspot.itemId, function (event, value) {
+                            $scope.value = Number(value);
+                            hs.label = value;
+
+                            hs.class = "highxx";
+                            $timeout(function() {
+                                hs.class = "";
+                            }, 2000);
+
+                            $scope.$apply();
+                        });
                     });
                 });
 
                 $scope.hotspotClicked = function (hotspot) {
-                    if(!$scope.hotspotClick) {
+                    if (!$scope.hotspotClick) {
                         return;
                     }
 
