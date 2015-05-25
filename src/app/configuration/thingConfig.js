@@ -23,7 +23,8 @@ angular.module('Config.Things', [
     'ngVis',
     'ResizePanel',
     'showOverflow',
-    'ngHelpDialog'
+    'ngHelpDialog',
+    'ngInputModified'
 ])
 
     .config(function config($stateProvider) {
@@ -52,6 +53,8 @@ angular.module('Config.Things', [
     function ThingConfigCtrl($scope, locale, growl, $timeout, $window, $http, $interval, UserService, ThingModel, BindingModel, ItemModel, itemEdit, SmartHomeModel) {
         $scope.panelDisplayed = 'CHANNELS';
         $scope.thingCnt = -1;
+
+        $scope.formLoaded = false;
 
         $scope.newThings = [];
         $scope.thingTypes = [];
@@ -206,6 +209,7 @@ angular.module('Config.Things', [
         };
 
         $scope.selectThing = function (thing) {
+            $scope.formLoaded = false;
             $scope.newThing = false;
             $scope.selectedThing = null;
             $scope.panelDisplayed = 'PROPERTIES';
@@ -216,6 +220,10 @@ angular.module('Config.Things', [
             ThingModel.getThing(thing.UID).then(
                 function (data) {
                     $scope.selectedThing = data;
+                    $timeout(function () {
+                        $scope.thingConfigForm.$setPristine();
+                        $scope.formLoaded = true;
+                    });
                 },
                 function () {
                     growl.warning(locale.getString("habmin.thingErrorGettingThing",
@@ -338,6 +346,7 @@ angular.module('Config.Things', [
                     }
                     growl.success(locale.getString("habmin.thingSuccessSavingThing",
                         {name: name}));
+                    $scope.thingConfigForm.$setPristine();
                 },
                 function () {
                     var name = "";
@@ -404,7 +413,7 @@ angular.module('Config.Things', [
                         }
                     });
 
-                    if($scope.selectedThing.item != null) {
+                    if ($scope.selectedThing.item != null) {
                         $scope.selectedThing.item.category = ThingModel.getThingTypeCategory($scope.selectedThingType);
                     }
                 },
