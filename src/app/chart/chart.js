@@ -55,7 +55,7 @@ angular.module('HABmin.chart', [
 
         $scope.graphLoaded = false;
 
-        $scope.selectCharts = true;
+        $scope.selectedView = "CHART";
         $scope.selectedChart = undefined;
 
         $scope.chartsTotal = -1;
@@ -115,7 +115,7 @@ angular.module('HABmin.chart', [
 
                 // If there's no predefined charts, change to items view
                 if ($scope.charts === 0) {
-                    $scope.selectCharts = false;
+                    $scope.selectedView = "ITEMS";
                 }
             },
             function (reason) {
@@ -133,10 +133,14 @@ angular.module('HABmin.chart', [
                     $scope.services[0].selected = true;
                     $scope.selectedService = $scope.services[0].name;
                 }
+                else {
+                    $scope.selectedView = "ERROR";
+                }
             },
             function (reason) {
                 // handle failure
                 growl.warning(locale.getString('habmin.chartErrorGettingServices'));
+                $scope.selectedView = "ERROR";
             }
         );
 
@@ -146,7 +150,7 @@ angular.module('HABmin.chart', [
         $scope.doChart = function () {
             console.log("doChart button clicked");
 
-            if ($scope.selectCharts === false) {
+            if ($scope.selectedView === "CHART") {
                 $scope.chartLoading = true;
 
                 var items = [];
@@ -230,15 +234,6 @@ angular.module('HABmin.chart', [
             $scope.chartLoading = true;
 
             $scope.selectedChart = parm;
-        };
-
-        $scope.setType = function (selectType) {
-            if (selectType === false) {
-                $scope.selectCharts = false;
-            }
-            else {
-                $scope.selectCharts = true;
-            }
         };
 
         $scope.clearList = function () {
