@@ -125,11 +125,7 @@
                     </a>
                 </div>
 
-                <!-- Cover options for loading, and no charts -->
-                <div ng-if="chartsTotal==-1" class="list-group-item text-center">
-                    <span class="fa fa-spin fa-refresh"></span>
-                    <span i18n="common.loading"></span>
-                </div>
+                <!-- Cover situation with no charts -->
                 <div ng-if="chartsTotal==0" class="list-group-item text-center">
                     <span class="fa fa-exclamation-triangle text-warning"></span>
                     <span i18n="habmin.chartNoCharts"></span>
@@ -141,6 +137,14 @@
                 <div class="list-group-item text-center">
                     <span class="fa fa-exclamation-triangle text-warning"></span>
                     <span i18n="habmin.chartNoPersistenceServices"></span>
+                </div>
+            </div>
+
+            <!-- Display LOADING -->
+            <div ng-if="selectedView=='LOAD'">
+                <div class="list-group-item text-center">
+                    <span class="fa fa-spin fa-refresh"></span>
+                    <span i18n="common.loading"></span>
                 </div>
             </div>
         </div>
