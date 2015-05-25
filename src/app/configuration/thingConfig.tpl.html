@@ -156,15 +156,15 @@
         <!-- Header -->
         <div class="panel-heading">
             <button type="button"
-                    class="btn btn-default"
+                    class="btn btn-default" ng-class="{'btn-success': formLoaded&&thingConfigForm.modified}"
                     ng-click="thingSave()"
-                    ngx-disabled="!thingConfigForm.modified">
+                    ng-disabled="!formLoaded || !thingConfigForm.modified">
                 <span class="fa fa-floppy-o"></span>
                 <span class="hidden-xs hidden-sm" i18n="common.save"></span>
             </button>
             <button type="button"
                     class="btn btn-default"
-                    ng-click=""
+                    ng-click="thingConfigForm.reset()"
                     ng-disabled="!thingConfigForm.modified">
                 <span class="fa fa-times"></span>
                 <span class="hidden-xs hidden-sm" i18n="common.cancel"></span>
@@ -172,13 +172,13 @@
             <button type="button"
                     class="btn btn-default"
                     ng-confirm-click="thingDelete()" ng-confirm-icon="warning"
-                    ng-disabled="selectedThing==null || newThing==true"
+                    ng-disabled="!formLoaded || newThing"
                     i18n-attr="{'ngConfirmMessage': 'habmin.thingDeleteCheck','ngConfirmTitle': 'habmin.thingDelete','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes' }">
                 <span class="fa fa-trash"></span>
                 <span class="hidden-xs hidden-sm" i18n="common.delete"></span>
             </button>
 
-            <div ng-hidex="!devEdit.label" class="btn-group">
+            <div class="btn-group">
                 <div>{{selectedThingType.label}}</div>
                 <div class="text-muted small">{{selectedThingType.description}}</div>
             </div>
@@ -206,7 +206,7 @@
 
         <!-- Body -->
         <div class="list-group habmin-list" resize-panel>
-            <div ng-if="selectedThing">
+            <form name="thingConfigForm" novalidate ng-show="formLoaded" style="height:100%">
                 <!-- OVERVIEW -->
                 <div>
                     <a role="presentation"
@@ -216,7 +216,7 @@
                         <span i18n="habmin.thingProperties"></span>
                     </a>
                 </div>
-                <div ng-showx="devEdit.information" collapse="panelDisplayed!='PROPERTIES'"
+                <div collapse="panelDisplayed!='PROPERTIES'"
                      class="panel-form">
                     <div class="form-group">
                         <label for="inputThingLabel" class="control-label" i18n="habmin.thingLabel"></label>
@@ -244,7 +244,8 @@
                                 </ui-select-match>
                                 <ui-select-choices
                                         repeat="bridge.UID as bridge in things | filter:bridgeFilter | orderBy:'label'">
-                                    <habmin-icon class="fa fa-fw" category="{{category.item.category}}"></habmin-icon>
+                                    <habmin-icon class="fa fa-fw"
+                                                 category="{{category.item.category}}"></habmin-icon>
                                     <span>{{bridge.item.label}}</span>
                                 </ui-select-choices>
                             </ui-select>
@@ -312,7 +313,8 @@
                         <div ng-repeat="config in selectedThingType.configParameters | filter: configGroupFilter(null)">
                             <div class="form-group"
                                  ng-if="configGroupFilter(config, group.name) && !config.advanced||showAdvancedSettings">
-                                <label for="CONFIGLABEL-{{config.name}}" class="control-label">{{config.label}}</label>
+                                <label for="CONFIGLABEL-{{config.name}}"
+                                       class="control-label">{{config.label}}</label>
                                 <input config-parameter="{{config}}"
                                        class="form-control"
                                        ng-dirty ng-required="{{config.required}}"
@@ -347,7 +349,8 @@
                         <div ng-repeat="config in selectedThingType.configParameters">
                             <div class="form-group"
                                  ng-if="configGroupFilter(config, null) && !config.advanced||showAdvancedSettings">
-                                <label for="CONFIGLABEL-{{config.name}}" class="control-label">{{config.label}}</label>
+                                <label for="CONFIGLABEL-{{config.name}}"
+                                       class="control-label">{{config.label}}</label>
                                 <input config-parameter="{{config}}"
                                        class="form-control"
                                        ng-dirty ng-required="{{config.required}}"
@@ -450,7 +453,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
+
+            </form>
         </div>
 
         <!-- Footer -->

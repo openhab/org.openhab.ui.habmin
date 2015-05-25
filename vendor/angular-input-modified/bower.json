@@ -1,0 +1,18 @@
+{
+    "name": "angular-input-modified",
+    "description": "Angular.js module to detect and indicate input modifications",
+    "version": "2.2.1",
+    "main": "dist/angular-input-modified.js",
+    "ignore" : [
+        "demos",
+        "emblem/emblem.eps",
+        "src",
+        "tests",
+        ".*",
+        "gulpfile.js",
+        "package.json"
+    ],
+    "dependencies": {
+        "angular": "~1"
+    }
+}

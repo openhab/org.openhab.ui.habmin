@@ -45,7 +45,7 @@ angular.module('HABmin.chart', [
     })
 
     .controller('ChartCtrl',
-    function ChartCtrl($scope, locale, ItemModel, PersistenceServiceModel, PersistenceItemModel, PersistenceDataModel, ChartModel, ChartSave, SidepanelService, growl, VisDataSet, $interval, $timeout) {
+    function ChartCtrl($scope, $q, locale, ItemModel, PersistenceServiceModel, PersistenceItemModel, PersistenceDataModel, ChartModel, ChartSave, SidepanelService, growl, VisDataSet, $interval, $timeout) {
         var itemsLoaded = 0;
         var itemsLoading = 0;
         var newChart;
@@ -55,7 +55,7 @@ angular.module('HABmin.chart', [
 
         $scope.graphLoaded = false;
 
-        $scope.selectCharts = true;
+        $scope.selectedView = "LOAD";
         $scope.selectedChart = undefined;
 
         $scope.chartsTotal = -1;
@@ -70,8 +70,11 @@ angular.module('HABmin.chart', [
 
         // ------------------------------------------------
         // Load model data
+        var promises = [];
 
         // Load the list of items
+        var pItems = $q.defer();
+        promises.push(pItems.promise);
         PersistenceItemModel.get().then(
             function (items) {
                 if (items == null) {
@@ -81,10 +84,12 @@ angular.module('HABmin.chart', [
                             if ($scope.items != null) {
                                 $scope.itemsTotal = $scope.items.length;
                             }
+                            pItems.resolve();
                         },
                         function (reason) {
                             // handle failure
                             growl.warning(locale.getString('habmin.chartErrorGettingItems'));
+                            pItems.resolve();
                         }
                     );
 
@@ -95,14 +100,19 @@ angular.module('HABmin.chart', [
                 if ($scope.items != null) {
                     $scope.itemsTotal = $scope.items.length;
                 }
+
+                pItems.resolve();
             },
             function (reason) {
                 // handle failure
                 growl.warning(locale.getString('habmin.chartErrorGettingItems'));
+                pItems.resolve();
             }
         );
 
         // Load the list of charts
+        var pCharts = $q.defer();
+        promises.push(pCharts.promise);
         ChartModel.getList().then(
             function (charts) {
                 $scope.charts = charts;
@@ -112,31 +122,49 @@ angular.module('HABmin.chart', [
                 else {
                     $scope.charts = 0;
                 }
-
-                // If there's no predefined charts, change to items view
-                if ($scope.charts === 0) {
-                    $scope.selectCharts = false;
-                }
+                pCharts.resolve();
             },
             function (reason) {
                 // handle failure
                 growl.warning(locale.getString('habmin.chartErrorGettingCharts'));
                 $scope.chartsTotal = 0;
+                pCharts.resolve();
             }
         );
 
         // Load the list of persistence services
+        var pServices = $q.defer();
+        promises.push(pServices.promise);
         PersistenceServiceModel.getList().then(
             function (data) {
-                $scope.services = [].concat(data);
+                $scope.services = data;
                 if ($scope.services.length > 0) {
                     $scope.services[0].selected = true;
                     $scope.selectedService = $scope.services[0].name;
                 }
+                pServices.resolve();
             },
             function (reason) {
                 // handle failure
                 growl.warning(locale.getString('habmin.chartErrorGettingServices'));
+                pServices.resolve();
+            }
+        );
+
+        // Wait for all the promises to complete
+        $q.all(promises).then(
+            function() {
+                if ($scope.services == null || $scope.services.length == 0) {
+                    // If there's no services, then disable charting
+                    $scope.selectedView = "ERROR";
+                }
+                else if ($scope.charts === null || $scope.charts.length == 0) {
+                    // If there's no predefined charts, change to items view
+                    $scope.selectedView = "ITEMS";
+                }
+                else {
+                    $scope.selectedView = "CHART";
+                }
             }
         );
 
@@ -146,7 +174,7 @@ angular.module('HABmin.chart', [
         $scope.doChart = function () {
             console.log("doChart button clicked");
 
-            if ($scope.selectCharts === false) {
+            if ($scope.selectedView === "CHART") {
                 $scope.chartLoading = true;
 
                 var items = [];
@@ -230,15 +258,6 @@ angular.module('HABmin.chart', [
             $scope.chartLoading = true;
 
             $scope.selectedChart = parm;
-        };
-
-        $scope.setType = function (selectType) {
-            if (selectType === false) {
-                $scope.selectCharts = false;
-            }
-            else {
-                $scope.selectCharts = true;
-            }
         };
 
         $scope.clearList = function () {
