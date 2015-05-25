@@ -1,0 +1,29 @@
+{
+  "name": "angular-input-modified",
+  "description": "Angular.js module to detect and indicate input modifications",
+  "version": "2.2.1",
+  "main": "dist/angular-input-modified.js",
+  "ignore": [
+    "demos",
+    "emblem/emblem.eps",
+    "src",
+    "tests",
+    ".*",
+    "gulpfile.js",
+    "package.json"
+  ],
+  "dependencies": {
+    "angular": "~1"
+  },
+  "homepage": "https://github.com/betsol/angular-input-modified",
+  "_release": "2.2.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v2.2.1",
+    "commit": "e29d3e9990780fa010799ec512a164841ecadefd"
+  },
+  "_source": "git://github.com/betsol/angular-input-modified.git",
+  "_target": "~2.2.1",
+  "_originalSource": "angular-input-modified",
+  "_direct": true
+}

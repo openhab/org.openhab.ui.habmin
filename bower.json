@@ -35,7 +35,8 @@
     "angular-rt-popup": "~1.0.3",
     "angular-ui-select": "~0.11.2",
     "angular-visjs": "~0.0.6",
-    "angular-drag-and-drop-lists": "~1.2.0"
+    "angular-drag-and-drop-lists": "~1.2.0",
+    "angular-input-modified": "~2.2.1"
   },
   "resolutions": {
     "moment": "~2.9",
