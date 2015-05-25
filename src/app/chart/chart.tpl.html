@@ -1,7 +1,7 @@
 <!-- Chart and Item Lists -->
 <div class="col-sm-4" sidepanel-pane="side">
     <div class="panel panel-default">
-        <!-- Header -->
+        <!-- PANEL HEADER -->
         <div class="panel-heading">
             <!-- Button to select items or chart mode -->
             <div class="btn-group dropdown">
@@ -78,7 +78,6 @@
                 </ul>
             </div>
 
-
             <!-- FILTER BOX -->
             <div id="custom-search-form" class="input-group input-group-sm" ng-if="!selectCharts">
                 <span class="input-group-addon"><span class=" fa fa-filter"></span></span>
@@ -88,56 +87,60 @@
             </div>
         </div>
 
-        <!-- Display the list of items -->
-        <div id="itemList" class="list-group habmin-list" ng-if="!selectCharts" resize-panel>
-            <div ng-if="itemsTotal>0" ng-repeat="item in items | filter:filterFunction">
-                <a role="presentation" ng-if="item.label" ng-hide="item.filter"
-                   ng-class="{'list-group-item': true, 'active':item.selected}"
-                   ng-click="selectItem(item)">
-                    <habmin-icon class="icon-lg" icon="{{item.icon}}"></habmin-icon>
-                    <span>{{item.label}}</span>
+        <!-- PANEL BODY -->
+        <div class="list-group habmin-list" resize-panel>
+            <!-- Display the list of items -->
+            <div ng-if="!selectCharts">
+                <div ng-if="itemsTotal>0" ng-repeat="item in items | filter:filterFunction">
+                    <a role="presentation" ng-if="item.label" ng-hide="item.filter"
+                       ng-class="{'list-group-item': true, 'active':item.selected}"
+                       ng-click="selectItem(item)">
+                        <habmin-icon class="icon-lg" icon="{{item.icon}}"></habmin-icon>
+                        <span>{{item.label}}</span>
                     <span class="pull-right">
                         <span ng-if="item.selected" class="fa fa-check-square-o"></span>
                     </span>
-                </a>
+                    </a>
+                </div>
+
+                <!-- Cover options for loading, and no items -->
+                <div ng-if="itemsTotal==-1" class="list-group-item text-center">
+                    <span class="fa fa-spin fa-refresh"></span>
+                    <span i18n="common.loading"></span>
+                </div>
+                <div ng-if="itemsTotal==0" class="list-group-item text-center">
+                    <span class="fa fa-exclamation-triangle text-warning"></span>
+                    <span i18n="habmin.chartNoItems"></span>
+                </div>
             </div>
 
-            <!-- Cover options for loading, and no items -->
-            <div ng-if="itemsTotal==-1" class="list-group-item text-center">
-                <span class="fa fa-spin fa-refresh"></span>
-                <span i18n="common.loading"></span>
-            </div>
-            <div ng-if="itemsTotal==0" class="list-group-item text-center">
-                <span class="fa fa-exclamation-triangle text-warning"></span>
-                <span i18n="habmin.chartNoItems"></span>
-            </div>
-        </div>
-
-        <!-- Display the list of predefined charts -->
-        <div id="chartList" class="list-group habmin-list" ng-if="selectCharts" resize-panel>
-            <div ng-if="chartsTotal>0" ng-repeat="choice in charts">
-                <a role="presentation" ng-class="{'list-group-item': true, 'active': choice.selected=='yes'}"
-                   ng-class="{'active':choice.selected=='yes'}"
-                   ng-click="selectChart(choice)" sidepanel-click="main">
-                    <habmin-icon class="icon-lg" icon="{{choice.icon}}"></habmin-icon>
-                    <span>{{choice.name}}</span>
+            <!-- Display the list of predefined charts -->
+            <div ng-if="selectCharts">
+                <div ng-if="chartsTotal>0" ng-repeat="choice in charts">
+                    <a role="presentation" ng-class="{'list-group-item': true, 'active': choice.selected=='yes'}"
+                       ng-class="{'active':choice.selected=='yes'}"
+                       ng-click="selectChart(choice)" sidepanel-click="main">
+                        <habmin-icon class="icon-lg" icon="{{choice.icon}}"></habmin-icon>
+                        <span>{{choice.name}}</span>
                     <span class="pull-right">
                         <span ng-class="{'fa': true, 'fa-check-square-o': choice.selected=='yes', 'fa-spinner fa-spin': choice.selected=='loading'}"></span>
                     </span>
-                </a>
-            </div>
+                    </a>
+                </div>
 
-            <!-- Cover options for loading, and no charts -->
-            <div ng-if="chartsTotal==-1" class="list-group-item text-center">
-                <span class="fa fa-spin fa-refresh"></span>
-                <span i18n="common.loading"></span>
-            </div>
-            <div ng-if="chartsTotal==0" class="list-group-item text-center">
-                <span class="fa fa-exclamation-triangle text-warning"></span>
-                <span i18n="habmin.chartNoCharts"></span>
+                <!-- Cover options for loading, and no charts -->
+                <div ng-if="chartsTotal==-1" class="list-group-item text-center">
+                    <span class="fa fa-spin fa-refresh"></span>
+                    <span i18n="common.loading"></span>
+                </div>
+                <div ng-if="chartsTotal==0" class="list-group-item text-center">
+                    <span class="fa fa-exclamation-triangle text-warning"></span>
+                    <span i18n="habmin.chartNoCharts"></span>
+                </div>
             </div>
         </div>
-        <!-- Footer -->
+
+        <!-- PANEL FOOTER -->
         <div class="panel-footer panel-footer-none">
         </div>
     </div>
