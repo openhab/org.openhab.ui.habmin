@@ -829,7 +829,7 @@ module.exports = function (grunt) {
      * Phonegap compiler - internal...
      */
     grunt.registerTask('compile_cordova', [
-        'copy:cordova_compile', 'index:cordova', 'shell:build_android', 'copy:cordova_android'
+        'copy:cordova_build', 'index:cordova', 'shell:build_android', 'copy:cordova_android'
     ]);
 
     /**
