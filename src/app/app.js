@@ -44,7 +44,8 @@ angular.module('HABmin', [
     'Binding.zwave',
     'SidepanelService',
     'ngAnimate',
-    'ngTouch'
+    'ngTouch',
+    'serverMonitor'
 ])
     .value('localeConf', {
         basePath: 'languages',
@@ -171,7 +172,7 @@ angular.module('HABmin', [
     ])
 
     .controller('HABminCtrl',
-    function HABminCtrl($scope, $window, $timeout, $interval, $rootScope, locale, DashboardModel, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, InboxModel, SidepanelService, RestService, UpdateService, EventModel) {
+    function HABminCtrl($scope, $window, $timeout, $interval, $rootScope, locale, DashboardModel, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, InboxModel, SidepanelService, RestService, UpdateService, EventModel, ServerMonitor) {
         $scope.isLoggedIn = UserService.isLoggedIn;
         $scope.notificationError = false;
         $scope.onlineStatus = false;
@@ -192,18 +193,7 @@ angular.module('HABmin', [
             $('html').addClass(theme);
         };
 
-        $scope.$on("habminOnline", function (event, status) {
-            if(status != $scope.onlineStatus) {
-                $scope.onlineStatus = status;
-                if(status == false) {
-                    growl.warning(locale.getString('habmin.mainStatusOffline'));
-                }
-                else {
-                    growl.success(locale.getString('habmin.mainStatusOnline'));
-                }
-            }
-            $scope.notificationError = !status;
-        });
+        ServerMonitor.monitor();
 
         $scope.$on("habminTheme", function (event, theme) {
             $scope.setTheme(theme);
