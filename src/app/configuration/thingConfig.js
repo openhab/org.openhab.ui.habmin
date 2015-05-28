@@ -369,6 +369,8 @@ angular.module('Config.Things', [
                     growl.success(locale.getString("habmin.thingSuccessDeletingThing",
                         {name: name}));
                     $scope.selectedThing = null;
+                    $scope.formLoaded = false;
+                    $scope.thingConfigForm.$setPristine();
                 },
                 function () {
                     var name = "";

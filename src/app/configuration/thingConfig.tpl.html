@@ -165,7 +165,7 @@
             <button type="button"
                     class="btn btn-default"
                     ng-click="thingConfigForm.reset()"
-                    ng-disabled="!thingConfigForm.modified">
+                    ng-disabled="!formLoaded || !thingConfigForm.modified">
                 <span class="fa fa-times"></span>
                 <span class="hidden-xs hidden-sm" i18n="common.cancel"></span>
             </button>
