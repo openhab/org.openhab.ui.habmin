@@ -101,8 +101,8 @@ module.exports = {
             'vendor/jquery-ui/ui/resizable.js',
             'vendor/angular-dialgauge/src/angular-dialgauge.js',
             'vendor/angular-ui-calendar/src/calendar.js',
-            'vendor/fullcalendar/fullcalendar.js',
-            'vendor/fullcalendar/gcal.js',
+            'vendor/fullcalendar/dist/fullcalendar.js',
+            'vendor/fullcalendar/dist/gcal.js',
             'vendor/angular-timeago/src/timeAgo.js',
             'vendor/vis/dist/vis.js',
             'vendor/angular-base64/angular-base64.js',
@@ -122,7 +122,7 @@ module.exports = {
             'vendor/oa-font/css/style.css',
             'vendor/fontawesome/css/font-awesome.css',
             'vendor/weather-icons/css/weather-icons.css',
-            'vendor/fullcalendar/fullcalendar.css',
+            'vendor/fullcalendar/dist/fullcalendar.css',
             'vendor/vis/dist/vis.css'
         ],
         assets: [
