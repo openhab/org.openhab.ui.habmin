@@ -174,22 +174,20 @@ angular.module('HABmin.chart', [
         $scope.doChart = function () {
             console.log("doChart button clicked");
 
-            if ($scope.selectedView === "CHART") {
-                $scope.chartLoading = true;
+            $scope.chartLoading = true;
 
-                var items = [];
-                angular.forEach($scope.items, function (item) {
-                    if (item.selected === true) {
-                        var i = {};
-                        i.item = item.name;
-                        i.label = item.label;
-                        i.axis = "left";
-                        items.push(i);
-                    }
-                });
+            var items = [];
+            angular.forEach($scope.items, function (item) {
+                if (item.selected === true) {
+                    var i = {};
+                    i.item = item.name;
+                    i.label = item.label;
+                    i.axis = "left";
+                    items.push(i);
+                }
+            });
 
-                $scope.graphItems = items;
-            }
+            $scope.graphItems = items;
         };
 
         $scope.saveChart = function () {
