@@ -255,7 +255,12 @@ angular.module('HABmin.chart', [
             parm.selected = 'loading';
             $scope.chartLoading = true;
 
-            $scope.selectedChart = parm;
+            // Make sure the directive detects the change - use copy
+            $scope.newSelectedChart = angular.copy(parm);
+            $scope.selectedChart = null;
+            $timeout(function() {
+                $scope.selectedChart = $scope.newSelectedChart;
+            });
         };
 
         $scope.clearList = function () {
@@ -284,14 +289,11 @@ angular.module('HABmin.chart', [
             console.log("graph loaded callback", graphRef);
             graph2d = graphRef;
             graph2d.setWindow($scope.startTime, $scope.stopTime);
-            if ($scope.selectedChart != null) {
-                if (graphRef == null) {
-                    $scope.selectedChart.selected = null;
+            angular.forEach($scope.charts, function (chart) {
+                if(chart.selected == 'loading') {
+                    chart.selected = 'yes';
                 }
-                else {
-                    $scope.selectedChart.selected = "yes";
-                }
-            }
+            });
         };
 
         $scope.filterDefaultString = locale.getString('common.filter');
@@ -458,7 +460,7 @@ angular.module('HABmin.chart', [
             if (!$scope.$$phase) {
                 $timeout(function () {
                     $scope.$apply();
-                }, 0);
+                });
             }
         };
 
