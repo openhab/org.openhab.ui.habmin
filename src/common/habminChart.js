@@ -36,10 +36,13 @@ angular.module('habminChart', [
                 var roundingTime;
                 var itemsLoading;
                 var itemsLoaded;
+                var valuesLoaded;
                 var newChart;
                 var dataGroups;
                 var dataItems;
                 var chartDef;
+
+                var tStart;
 
                 var lineStyles = {
                     solid: [5, 0],
@@ -77,10 +80,11 @@ angular.module('habminChart', [
                 function _initChart(period) {
                     // The following sets the number of chart points to approximately 2000
                     roundingTime = Math.floor(period / 2000000) * 1000;
-                    console.log("Setting rounding time to", roundingTime);
+//                    console.log("Setting rounding time to", roundingTime);
 
                     itemsLoaded = 0;
                     itemsLoading = 0;
+                    valuesLoaded = 0;
 
                     newChart = [];
 
@@ -93,6 +97,7 @@ angular.module('habminChart', [
                 }
 
                 function _displayChart(id) {
+                    tStart = new Date().getTime();
                     ChartModel.getChart(id).then(
                         function (chart) {
                             $scope.stopTime = Math.floor((new Date()).getTime());
@@ -107,7 +112,7 @@ angular.module('habminChart', [
                             });
                         },
                         function (reason) {
-                            // TODO: Should notify the user...
+                            // Notify the user...
                             $scope.events.onload(null);
                         }
                     );
@@ -138,7 +143,6 @@ angular.module('habminChart', [
 
                     PersistenceDataModel.get($scope.service, itemRef, start, stop).then(
                         function (response) {
-                            console.log("The item definition is: ", response);
                             _addChartItem(itemRef, response);
                         },
                         function (reason) {
@@ -172,7 +176,7 @@ angular.module('habminChart', [
                         itemCfg.repeatTime *= 1000;
                     }
 
-                    console.log("Adding", itemRef, "- repeat is ", itemCfg.repeatTime);
+//                    console.log("Adding", itemRef, "- repeat is ", itemCfg.repeatTime);
 
                     var style = "";
                     if (itemCfg.lineColor !== undefined) {
@@ -220,11 +224,11 @@ angular.module('habminChart', [
 
                     // If everything is loaded, render the chart
                     itemsLoaded++;
+                    valuesLoaded += data.length;
                     console.log("Loaded " + itemsLoaded + " of " + itemsLoading);
                     if (itemsLoaded >= itemsLoading) {
                         // All items loaded
                         if (chartDef.title) {
-                            //                  chartOptions.title = chartDef.title;
                         }
 
                         if (chartDef.axis) {
@@ -251,8 +255,6 @@ angular.module('habminChart', [
                                 switch (axis.position) {
                                     default:
                                     case 'left':
-                                        //                            chartData.options.axes.y = {};
-                                        //                          chartData.options.axes.y.format = Number(axis.format);
                                         if (axis.minimum !== undefined || axis.maximum !== undefined) {
                                             if (axis.minimum !== undefined) {
                                                 min = Number(axis.minimum);
@@ -260,13 +262,9 @@ angular.module('habminChart', [
                                             if (axis.maximum !== undefined) {
                                                 max = Number(axis.maximum);
                                             }
-                                            //                          chartData.options.axes.y.valueRange = null;
-                                            //                            chartData.options.axes.y.valueRange = [min, max];
                                         }
                                         break;
                                     case 'right':
-                                        //                            chartData.options.axes.y2 = {};
-                                        //                          chartData.options.axes.y2.format = Number(axis.format);
                                         if (axis.minimum !== undefined || axis.maximum !== undefined) {
                                             if (axis.minimum !== undefined) {
                                                 min = Number(axis.minimum);
@@ -274,8 +272,6 @@ angular.module('habminChart', [
                                             if (axis.maximum !== undefined) {
                                                 max = Number(axis.maximum);
                                             }
-                                            //                                 chartData.options.axes.y2.valueRange = null;
-                                            //                               chartData.options.axes.y2.valueRange = [min, max];
                                         }
                                         break;
                                 }
@@ -306,6 +302,7 @@ angular.module('habminChart', [
                         console.log("We're done :)");
                         // TODO: Notify the user.
 
+                        console.log("Chart completed. Loaded " + valuesLoaded + " values in " + itemsLoaded + " items in " + (new Date().getTime() - tStart) + " ms");
                     }
                 }
 
@@ -350,7 +347,7 @@ angular.module('habminChart', [
                  * @param period
                  */
                 $scope.onRangeChanged = function (period) {
-                    console.log("Range changed", period);
+//                    console.log("Range changed", period);
 
                     // We want to add any additional data at the beginning, and/or end of the current data
                     /*
@@ -368,8 +365,8 @@ angular.module('habminChart', [
                     var startTime = moment(period.start).valueOf();
                     var stopTime = moment(period.end).valueOf();
 
-                    console.log("Start", startTime, $scope.startTime, startTime - $scope.startTime);
-                    console.log("Stop", stopTime, $scope.stopTime, stopTime - $scope.stopTime);
+//                    console.log("Start", startTime, $scope.startTime, startTime - $scope.startTime);
+//                    console.log("Stop", stopTime, $scope.stopTime, stopTime - $scope.stopTime);
 
                     if (startTime >= $scope.startTime - allowableDelta &&
                         stopTime <= $scope.stopTime + allowableDelta) {
@@ -384,12 +381,12 @@ angular.module('habminChart', [
                     newChart = [];
                     var cnt = chartDef.items.length;
                     angular.forEach(chartDef.items, function (item) {
-                        console.log("Range changed on item", item);
+//                        console.log("Range changed on item", item);
 
                         PersistenceDataModel.get($scope.service, item.item, $scope.startTime,
                             $scope.stopTime).then(
                             function (data) {
-                                console.log("The item definition is: ", data);
+//                                console.log("The item definition is: ", data);
                                 newChart = addSeries(newChart, data, item.repeatTime, item.item);
                                 cnt--;
 
