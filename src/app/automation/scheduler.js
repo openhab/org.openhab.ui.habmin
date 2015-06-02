@@ -160,23 +160,10 @@ angular.module('HABmin.scheduler', [
             eventClick: $scope.alertOnEventClick,
             eventDrop: $scope.alertOnDrop,
             eventResize: $scope.alertOnResize,
-            eventRender: $scope.eventRender
-
+            eventRender: $scope.eventRender,
+            columnFormat: 'D MMM'
         };
-
-        $scope.changeLang = function () {
-            if ($scope.changeTo === 'Hungarian') {
-                $scope.uiConfig.calendar.dayNames =
-                    ["Vasárnap", "Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat"];
-                $scope.uiConfig.calendar.dayNamesShort = ["Vas", "Hét", "Kedd", "Sze", "Csüt", "Pén", "Szo"];
-                $scope.changeTo = 'English';
-            } else {
-                $scope.uiConfig.calendar.dayNames =
-                    ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-                $scope.uiConfig.calendar.dayNamesShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-                $scope.changeTo = 'Hungarian';
-            }
-        };
+        
         /* event sources array*/
         $scope.eventSources = [$scope.events, $scope.eventsF];
         $scope.eventSources2 = [$scope.calEventsExt, $scope.eventsF, $scope.events];
