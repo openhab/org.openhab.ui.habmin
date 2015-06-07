@@ -1,10 +1,16 @@
 <div class="modal-header">
-    <h3 class="modal-title" i18n="habmin.itemEditTitle"></h3>
+    <h3 class="modal-title" i18n="habmin.scheduleEditTitle"></h3>
 </div>
 <div class="modal-body">
+    <ul class="nav nav-tabs">
+        <li role="presentation" ng-class="{'active': tabDisplayed=='event'}" ng-click="tabDisplayed='event'"><a href="#">Event</a></li>
+        <li role="presentation" ng-class="{'active': tabDisplayed=='rule'}" ng-click="tabDisplayed='rule'"><a href="#">Rule</a></li>
+    </ul>
+
+    <div ng-show="tabDisplayed=='event'">
     <form class="form-horizontal" role="form">
         <div class="form-group">
-            <label for="inputLabel" class="control-label" i18n="habmin.itemEditLabel"></label>
+            <label for="inputLabel" class="control-label" i18n="habmin.scheduleEditLabel"></label>
 
             <div>
                 <input type="text" ng-model="event.label" class="form-control" id="inputLabel"
@@ -12,12 +18,44 @@
             </div>
         </div>
 
+        <div class="row">
+        <div class="form-group col-md-6">
+            <label class="control-label" i18n="habmin.scheduleEditStart"></label>
+
+            <timepicker ng-model="event.start" ng-change="changed()" hour-step="1" minute-step="5" show-meridian="ismeridian"></timepicker>
+        </div>
+
+        <div class="form-group col-md-6">
+            <label class="control-label" i18n="habmin.scheduleEditEnd"></label>
+
+            <timepicker ng-model="event.end" ng-change="changed()" hour-step="1" minute-step="5" show-meridian="ismeridian"></timepicker>
+        </div>
+        </div>
+
         <div class="form-group">
-            <label for="inputLabel" class="control-label" i18n="habmin.itemEditLabel"></label>
+            <label class="control-label" i18n="habmin.scheduleEditDaily"></label>
 
             <div>
-                <input type="text" ng-model="event.start" class="form-control" id="inputStart"
-                       i18n-attr="{placeholder: 'habmin.itemSelectLabel'}">
+                <form-select-yes-no ng-model="event.daily" placeholder="Label" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="inputRepeat" class="control-label" i18n="habmin.scheduleEditRepeat"></label>
+
+            <div>
+                <ui-select id="inputRepeat"
+                           ng-model="event.repeat"
+                           theme="bootstrap"
+                           search-enabled="false"
+                        >
+                    <ui-select-match i18n-attr="{placeholder: 'habmin.scheduleEditRepeat'}">
+                        {{$select.selected.label}}
+                    </ui-select-match>
+                    <ui-select-choices repeat="repeat.period as repeat in repeater">
+                        <span>{{repeat.label}}</span>
+                    </ui-select-choices>
+                </ui-select>
             </div>
         </div>
 
@@ -41,6 +79,7 @@
                 </ui-select>
             </div>
         </div>
+
     </form>
 </div>
 <div class="modal-footer">

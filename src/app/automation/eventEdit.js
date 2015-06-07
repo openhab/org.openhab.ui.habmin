@@ -19,7 +19,9 @@ angular.module('Automation.editEvent', [
     function ($modal, $rootScope, growl, locale, UserService, ItemModel, SmartHomeModel) {
         this.add = function (date) {
             var event = {
-                start: date.format()
+                start: date.format(),
+                end: date.add(30, "minute").format(),
+                daily: 'no'
             };
             doModal(event);
         };
@@ -34,7 +36,12 @@ angular.module('Automation.editEvent', [
 
         function doModal (event) {
             var scope = $rootScope.$new();
+            scope.tabDisplayed = "event";
             scope.event = angular.copy(event);
+
+            scope.repeater = [
+                {period: 86400, label: "Daily"}
+            ];
 
             scope.items = [];
             ItemModel.getList().then(

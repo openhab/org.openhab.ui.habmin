@@ -43,18 +43,12 @@ angular.module('HABmin.scheduler', [
         /* event source that contains custom events on the scope */
         $scope.events = {
             id: "1",
-            name: "Blah",
+            name: "Heating",
             events: [
-                {title: 'All Day Event', start: new Date(y, m, 1)},
-                {title: 'Long Event', start: new Date(y, m, d - 5), end: new Date(y, m, d - 2)},
-                {id: 999, title: 'Repeating Event', start: new Date(y, m, d - 3, 16, 0), allDay: false},
-                {id: 999, title: 'Repeating Event', start: new Date(y, m, d + 4, 16, 0), allDay: false},
-                {
-                    title: 'Birthday Party',
-                    start: new Date(y, m, d + 1, 19, 0),
-                    end: new Date(y, m, d + 1, 22, 30),
-                    allDay: false
-                }
+                {title: 'Morning (20C)', start: new Date(y, m, d,5, 30), end: new Date(y, m, d,8)},
+                {title: 'Day (18C)', start: new Date(y, m, d,8, 0), end: new Date(y, m, d,15, 30)},
+                {title: 'Evening (21C)', start: new Date(y, m, d,15, 30), end: new Date(y, m, d,22,0)},
+                {title: 'Night (17C)', start: new Date(y, m, d,22, 0), end: new Date(y, m, d+1,5,30)}
             ]
         };
 
@@ -139,7 +133,16 @@ angular.module('HABmin.scheduler', [
         };
 
         $scope.stepDate = function (step) {
-            uiCalendarConfig.calendars.calendar.fullCalendar(step);
+            if ($scope.view == "timeline") {
+                switch(step) {
+                    case 'today':
+                        $scope.timeline.setWindow(new Date().setHours(0,0,0,0), new Date().setHours(0,0,0,0) + 86400000);
+                        break;
+                }
+            }
+            else {
+                uiCalendarConfig.calendars.calendar.fullCalendar(step);
+            }
         };
 
         $scope.renderCalender = function (calendar) {
@@ -200,7 +203,9 @@ angular.module('HABmin.scheduler', [
             });
         });
 
-        createTimeline($scope.eventSources);
+        $scope.onLoaded = function(timeline) {
+            $scope.timeline = timeline;
+        };
 
         function createTimeline(eventSources) {
             var groups = new VisDataSet();
@@ -216,7 +221,7 @@ angular.module('HABmin.scheduler', [
                     items.add({
 //                        id: event.id,
                         group: source.id,
-                        content: event.type,
+                        content: "<span class='fa fa-clock-o'></span>" + event.title,
                         start: event.start,
                         end: event.end,
                         type: event.end ? 'range' : 'box'
@@ -230,11 +235,11 @@ angular.module('HABmin.scheduler', [
                 groupOrder: 'content'  // groupOrder can be a property name or a sorting function
             };
 
-            /*        $scope.graphEvents = {
-             rangechange: $scope.onRangeChange,
-             rangechanged: $scope.onRangeChanged,
+            $scope.graphEvents = {
+            // rangechange: $scope.onRangeChange,
+            // rangechanged: $scope.onRangeChanged,
              onload: $scope.onLoaded
-             };*/
+             };
 
             $scope.timelineData = {
                 items: items,
@@ -242,6 +247,7 @@ angular.module('HABmin.scheduler', [
             };
         }
 
+        createTimeline($scope.eventSources);
     })
 
 ;
