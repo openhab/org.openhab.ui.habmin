@@ -42,15 +42,18 @@
             </div>
 
             <div class="pull-right btn-group">
-                <button type="button" class="btn btn-default" ng-class="{'active': view=='timeline'}" ng-click="changeView('timeline')">
+                <button type="button" class="btn btn-default" ng-class="{'active': view=='timeline'}"
+                        ng-click="changeView('timeline')">
                     <span class="fa fa-clock-o"></span>
                     <span i18n1="common.new">Timeline</span>
                 </button>
-                <button type="button" class="btn btn-default" ng-class="{'active': view=='agendaDay'}" ng-click="changeView('agendaDay')">
+                <button type="button" class="btn btn-default" ng-class="{'active': view=='agendaDay'}"
+                        ng-click="changeView('agendaDay')">
                     <span class="fa fa-calendar-o"></span>
                     <span i18n1="common.new">Day</span>
                 </button>
-                <button type="button" class="btn btn-default" ng-class="{'active': view=='agendaWeek'}" ng-click="changeView('agendaWeek')">
+                <button type="button" class="btn btn-default" ng-class="{'active': view=='agendaWeek'}"
+                        ng-click="changeView('agendaWeek')">
                     <span class="fa fa-calendar-o"></span>
                     <span i18n1="common.delete">Week</span>
                 </button>
@@ -59,8 +62,11 @@
 
         <!-- Body -->
         <div resize-panel>
-            <div ui-calendar="calendarCfg" ng-model="eventSources" calendar="calendar">
+            <div ng-show="view!='timeline'" ui-calendar="calendarCfg" ng-model="eventSources" calendar="calendar">
             </div>
+
+            <vis-timeline ng-show="view=='timeline'" data="timelineData" options="timelineOptions"
+                          events="graphEvents"></vis-timeline>
         </div>
     </div>
 </div>

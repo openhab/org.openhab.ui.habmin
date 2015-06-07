@@ -14,7 +14,8 @@ angular.module('HABmin.scheduler', [
     'ui.calendar',
     'ResizePanel',
     'SidepanelService',
-    'Automation.editEvent'
+    'Automation.editEvent',
+    'ngVis'
 ])
 
     .config(function config($stateProvider) {
@@ -31,7 +32,7 @@ angular.module('HABmin.scheduler', [
     })
 
     .controller('AutomationSchedulerCtrl',
-    function AutomationSchedulerCtrl($scope, $sce, $compile, locale, growl, RuleModel, $timeout, $window, uiCalendarConfig, eventEdit) {
+    function AutomationSchedulerCtrl($scope, $sce, $compile, locale, growl, RuleModel, $timeout, $window, uiCalendarConfig, eventEdit, VisDataSet) {
         $scope.view = "agendaWeek";
 
         var date = new Date();
@@ -39,36 +40,27 @@ angular.module('HABmin.scheduler', [
         var m = date.getMonth();
         var y = date.getFullYear();
 
-        $scope.changeTo = 'Hungarian';
         /* event source that contains custom events on the scope */
-        $scope.events = [
-            {title: 'All Day Event', start: new Date(y, m, 1)},
-            {title: 'Long Event', start: new Date(y, m, d - 5), end: new Date(y, m, d - 2)},
-            {id: 999, title: 'Repeating Event', start: new Date(y, m, d - 3, 16, 0), allDay: false},
-            {id: 999, title: 'Repeating Event', start: new Date(y, m, d + 4, 16, 0), allDay: false},
-            {
-                title: 'Birthday Party',
-                start: new Date(y, m, d + 1, 19, 0),
-                end: new Date(y, m, d + 1, 22, 30),
-                allDay: false
-            }
-        ];
-        /* event source that calls a function on every view switch */
-        $scope.eventsF = function (start, end, timezone, callback) {
-            var s = new Date(start).getTime() / 1000;
-            var e = new Date(end).getTime() / 1000;
-            var m = new Date(start).getMonth();
-            var events = [{
-                title: 'Feed Me ' + m,
-                start: s + (50000),
-                end: s + (100000),
-                allDay: false,
-                className: ['customFeed']
-            }];
-            callback(events);
+        $scope.events = {
+            id: "1",
+            name: "Blah",
+            events: [
+                {title: 'All Day Event', start: new Date(y, m, 1)},
+                {title: 'Long Event', start: new Date(y, m, d - 5), end: new Date(y, m, d - 2)},
+                {id: 999, title: 'Repeating Event', start: new Date(y, m, d - 3, 16, 0), allDay: false},
+                {id: 999, title: 'Repeating Event', start: new Date(y, m, d + 4, 16, 0), allDay: false},
+                {
+                    title: 'Birthday Party',
+                    start: new Date(y, m, d + 1, 19, 0),
+                    end: new Date(y, m, d + 1, 22, 30),
+                    allDay: false
+                }
+            ]
         };
 
         $scope.calEventsExt = {
+            id: "2",
+            name: "Ext",
             color: '#f00',
             textColor: 'yellow',
             events: [
@@ -95,7 +87,8 @@ angular.module('HABmin.scheduler', [
                 }
             ]
         };
-        /* alert on eventClick */
+
+        // alert on eventClick
         $scope.alertOnEventClick = function (date, jsEvent, view) {
             $scope.alertMessage = (date.title + ' was clicked ');
         };
@@ -120,7 +113,7 @@ angular.module('HABmin.scheduler', [
                 sources.push(source);
             }
         };
-        /* add custom event*/
+        // add custom event
         $scope.addEvent = function () {
             $scope.events.push({
                 title: 'Open Sesame',
@@ -133,22 +126,29 @@ angular.module('HABmin.scheduler', [
         $scope.remove = function (index) {
             $scope.events.splice(index, 1);
         };
-        /* Change View */
+
+        // Change View
         $scope.changeView = function (view) {
             $scope.view = view;
             if ($scope.view != "timeline") {
-                uiCalendarConfig.calendars.calendar.fullCalendar('changeView', view);
+                uiCalendarConfig.calendars.calendar.fullCalendar('changeView', view)
+                $timeout(function () {
+                    uiCalendarConfig.calendars.calendar.fullCalendar('changeView', view)
+                });
             }
         };
+
         $scope.stepDate = function (step) {
             uiCalendarConfig.calendars.calendar.fullCalendar(step);
         };
+
         $scope.renderCalender = function (calendar) {
             if (uiCalendarConfig.calendars[calendar]) {
                 uiCalendarConfig.calendars[calendar].fullCalendar('render');
             }
         };
-        /* Render Tooltip */
+
+        // Render Tooltip
         $scope.eventRender = function (event, element, view) {
             element.attr({
                 'tooltip': event.title,
@@ -156,6 +156,7 @@ angular.module('HABmin.scheduler', [
             });
             $compile(element)($scope);
         };
+
         $scope.dayClick = function (date, jsEvent, view) {
             console.log('Clicked on: ' + date.format());
             console.log('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
@@ -164,7 +165,7 @@ angular.module('HABmin.scheduler', [
             eventEdit.add(date);
         };
 
-        /* config object */
+        // Calendar config object
         $scope.calendarCfg = {
             height: 0,
             editable: true,
@@ -185,9 +186,8 @@ angular.module('HABmin.scheduler', [
             }
         };
 
-        /* event sources array*/
-        $scope.eventSources = [$scope.events, $scope.eventsF];
-        $scope.eventSources2 = [$scope.calEventsExt, $scope.eventsF, $scope.events];
+        // event sources array
+        $scope.eventSources = [$scope.events, $scope.calEventsExt];
 
         // TODO: Height is fixed - it needs to account for parent. Should really be in the calendar directive!
         $timeout(function () {
@@ -198,7 +198,49 @@ angular.module('HABmin.scheduler', [
                 var w = angular.element($window);
                 uiCalendarConfig.calendars.calendar.fullCalendar('option', 'height', w.height() - 152);
             });
-        }, 0);
+        });
+
+        createTimeline($scope.eventSources);
+
+        function createTimeline(eventSources) {
+            var groups = new VisDataSet();
+            var items = new VisDataSet();
+
+            // Loop through all the event sources
+            angular.forEach(eventSources, function (source) {
+                // Create a group for the source
+                groups.add({id: source.id, content: source.name});
+
+                // Add the events for this group
+                angular.forEach(source.events, function (event) {
+                    items.add({
+//                        id: event.id,
+                        group: source.id,
+                        content: event.type,
+                        start: event.start,
+                        end: event.end,
+                        type: event.end ? 'range' : 'box'
+                    });
+                });
+            });
+
+            // create visualization
+            $scope.timelineOptions = {
+                height: "100%",
+                groupOrder: 'content'  // groupOrder can be a property name or a sorting function
+            };
+
+            /*        $scope.graphEvents = {
+             rangechange: $scope.onRangeChange,
+             rangechanged: $scope.onRangeChanged,
+             onload: $scope.onLoaded
+             };*/
+
+            $scope.timelineData = {
+                items: items,
+                groups: groups
+            };
+        }
 
     })
 
