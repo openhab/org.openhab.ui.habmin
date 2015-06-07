@@ -51,7 +51,7 @@ angular.module('Config.Things', [
 
     .controller('ThingConfigCtrl',
     function ThingConfigCtrl($scope, locale, growl, $timeout, $window, $http, $interval, UserService, ThingModel, BindingModel, ItemModel, itemEdit, SmartHomeModel) {
-        $scope.panelDisplayed = 'CHANNELS';
+        $scope.panelDisplayed = 'PROPERTIES';
         $scope.thingCnt = -1;
 
         $scope.formLoaded = false;
