@@ -34,6 +34,6 @@
     "commit": "e0405d6001f0d12e9c5ae0b1177978afad46f795"
   },
   "_source": "git://github.com/visjs/angular-visjs.git",
-  "_target": "~0.0.6",
+  "_target": "~0.0.7",
   "_originalSource": "angular-visjs"
 }

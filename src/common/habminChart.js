@@ -16,7 +16,8 @@ angular.module('habminChart', [
     'angular-growl'
 ])
 
-    .directive('habminChart', function (PersistenceItemModel, PersistenceDataModel, ChartModel, UserService, VisDataSet, growl, locale) {
+    .directive('habminChart',
+    function (PersistenceItemModel, PersistenceDataModel, ChartModel, UserService, VisDataSet, growl, locale) {
         return {
             restrict: 'E',
             scope: {
@@ -70,6 +71,7 @@ angular.module('habminChart', [
                     legend: true,
                     zoomMin: 60000,
                     locale: UserService.getLanguage()
+                    // TODO: locales[]
                 };
 
                 $scope.graphOptions = chartOptions;
@@ -88,9 +90,8 @@ angular.module('habminChart', [
 
                     newChart = [];
 
-                    chartOptions.dataAxis.title = {};
-                    chartOptions.dataAxis.title.left = {};
-                    chartOptions.dataAxis.title.right = {};
+                    chartOptions.dataAxis.left = {title: {}};//, range: {}};
+                    chartOptions.dataAxis.right = {title: {}};//, range: {}};
 
                     dataGroups = new VisDataSet();
                     dataItems = new VisDataSet();
@@ -214,7 +215,7 @@ angular.module('habminChart', [
                         }
                     };
 
-                    if(["bar","line"].indexOf(itemCfg.chart) != -1) {
+                    if (["bar", "line"].indexOf(itemCfg.chart) != -1) {
                         options.options.style = itemCfg.chart;
                     }
 
@@ -250,7 +251,7 @@ angular.module('habminChart', [
                                     }
                                     label.text = axis.label;
                                 }
-                                chartOptions.dataAxis.title[axis.position] = label;
+                                chartOptions.dataAxis[axis.position].title = label;
 
                                 switch (axis.position) {
                                     default:
@@ -289,20 +290,21 @@ angular.module('habminChart', [
                             groups: dataGroups
                         };
 
-                        if($scope.height !== undefined) {
+                        if ($scope.height !== undefined) {
                             chartOptions.height = $scope.height;
                         }
-                        if($scope.width !== undefined) {
+                        if ($scope.width !== undefined) {
                             chartOptions.width = $scope.width;
                         }
 
                         chartOptions.max = moment().valueOf();
                         $scope.graphOptions = chartOptions;
 
-                        console.log("We're done :)");
+                        console.log("We're done :)", chartOptions, dataItems, dataGroups);
                         // TODO: Notify the user.
 
-                        console.log("Chart completed. Loaded " + valuesLoaded + " values in " + itemsLoaded + " items in " + (new Date().getTime() - tStart) + " ms");
+                        console.log("Chart completed. Loaded " + valuesLoaded + " values in " + itemsLoaded +
+                        " items in " + (new Date().getTime() - tStart) + " ms");
                     }
                 }
 
@@ -421,7 +423,7 @@ angular.module('habminChart', [
 
                 $scope.$watch('chart', function () {
                     // Sanity check
-                    if ($scope.chart == null ) {
+                    if ($scope.chart == null) {
                         return;
                     }
 
@@ -440,3 +442,9 @@ angular.module('habminChart', [
         };
     })
 ;
+
+
+
+
+
+

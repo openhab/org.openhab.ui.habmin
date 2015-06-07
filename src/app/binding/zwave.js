@@ -60,10 +60,13 @@ angular.module('Binding.zwave', [
         $scope.deviceDisplay = "CONFIG";
 
         $scope.networkOptions = {
-            hierarchicalLayout: {
-                enabled: true,
-                layout: "direction",
-                direction: "UD"
+            layout: {
+                hierarchical: {
+                    enabled: true,
+//                    layout: "direction",
+                    sortMethod: "directed",
+                    direction: "UD"
+                }
             },
             width: '100%',
             height: '100%',
@@ -71,7 +74,9 @@ angular.module('Binding.zwave', [
                 color: '#ffffff',
                 width: 5
             },
-            dragNodes: false
+            interaction: {
+                dragNodes: false
+            }
         };
 
         // Avoid error messages on every poll!
