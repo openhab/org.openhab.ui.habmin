@@ -1,0 +1,49 @@
+<div class="modal-header">
+    <h3 class="modal-title" i18n="habmin.itemEditTitle"></h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" role="form">
+        <div class="form-group">
+            <label for="inputLabel" class="control-label" i18n="habmin.itemEditLabel"></label>
+
+            <div>
+                <input type="text" ng-model="event.label" class="form-control" id="inputLabel"
+                       i18n-attr="{placeholder: 'habmin.itemSelectLabel'}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="inputLabel" class="control-label" i18n="habmin.itemEditLabel"></label>
+
+            <div>
+                <input type="text" ng-model="event.start" class="form-control" id="inputStart"
+                       i18n-attr="{placeholder: 'habmin.itemSelectLabel'}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="inputCategory" class="control-label" i18n="habmin.itemEditCategory"></label>
+
+            <div>
+                <ui-select id="inputCategory"
+                           ng-model="item.category"
+                           theme="bootstrap"
+                           search-enabled="false"
+                        >
+                    <ui-select-match i18n-attr="{placeholder: 'habmin.itemSelectCategory'}">
+                        <habmin-icon class="fa fa-fw" category="{{$select.selected.id}}"></habmin-icon>
+                        {{$select.selected.name}}
+                    </ui-select-match>
+                    <ui-select-choices repeat="category.id as category in categories | orderBy: 'name'">
+                        <habmin-icon class="fa fa-fw" category="{{category.id}}"></habmin-icon>
+                        <span>{{category.name}}</span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" ng-click="ok()" i18n="common.save"></button>
+    <button type="button" class="btn btn-warning" ng-click="cancel()" i18n="common.cancel"></button>
+</div>

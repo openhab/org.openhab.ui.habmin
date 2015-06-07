@@ -41,25 +41,19 @@
                 </button>
             </div>
 
-            <!--            <div style="width:100%" class="h4 fillspace" ng-bind-html="title"></div> -->
-
             <div class="pull-right btn-group">
-                <button type="button" class="btn btn-default">
-                    <span class="fa fa-list"></span>
-                    <span i18n1="common.new">List</span>
+                <button type="button" class="btn btn-default" ng-class="{'active': view=='timeline'}" ng-click="changeView('timeline')">
+                    <span class="fa fa-clock-o"></span>
+                    <span i18n1="common.new">Timeline</span>
                 </button>
-                <button type="button" class="btn btn-default" ng-click="changeView('agendaDay')">
+                <button type="button" class="btn btn-default" ng-class="{'active': view=='agendaDay'}" ng-click="changeView('agendaDay')">
                     <span class="fa fa-calendar-o"></span>
                     <span i18n1="common.new">Day</span>
                 </button>
-                <button type="button" class="btn btn-default" ng-click="changeView('agendaWeek')">
+                <button type="button" class="btn btn-default" ng-class="{'active': view=='agendaWeek'}" ng-click="changeView('agendaWeek')">
                     <span class="fa fa-calendar-o"></span>
                     <span i18n1="common.delete">Week</span>
                 </button>
-                <!--            <button type="button" class="btn btn-default" ng-click="changeView('month')">
-                                    <span class="fa fa-calendar-o"></span>
-                                    <span i18n1="common.delete">Month</span>
-                                </button> -->
             </div>
         </div>
 

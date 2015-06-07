@@ -13,7 +13,8 @@ angular.module('HABmin.scheduler', [
     'ngLocalize',
     'ui.calendar',
     'ResizePanel',
-    'SidepanelService'
+    'SidepanelService',
+    'Automation.editEvent'
 ])
 
     .config(function config($stateProvider) {
@@ -30,7 +31,9 @@ angular.module('HABmin.scheduler', [
     })
 
     .controller('AutomationSchedulerCtrl',
-    function AutomationSchedulerCtrl($scope, $sce, $compile, locale, growl, RuleModel, $timeout, $window, uiCalendarConfig) {
+    function AutomationSchedulerCtrl($scope, $sce, $compile, locale, growl, RuleModel, $timeout, $window, uiCalendarConfig, eventEdit) {
+        $scope.view = "agendaWeek";
+
         var date = new Date();
         var d = date.getDate();
         var m = date.getMonth();
@@ -48,8 +51,7 @@ angular.module('HABmin.scheduler', [
                 start: new Date(y, m, d + 1, 19, 0),
                 end: new Date(y, m, d + 1, 22, 30),
                 allDay: false
-            },
-            {title: 'Click for Google', start: new Date(y, m, 28), end: new Date(y, m, 29), url: 'http://google.com/'}
+            }
         ];
         /* event source that calls a function on every view switch */
         $scope.eventsF = function (start, end, timezone, callback) {
@@ -132,8 +134,11 @@ angular.module('HABmin.scheduler', [
             $scope.events.splice(index, 1);
         };
         /* Change View */
-        $scope.changeView = function (view, calendar) {
-            uiCalendarConfig.calendars.calendar.fullCalendar('changeView', view);
+        $scope.changeView = function (view) {
+            $scope.view = view;
+            if ($scope.view != "timeline") {
+                uiCalendarConfig.calendars.calendar.fullCalendar('changeView', view);
+            }
         };
         $scope.stepDate = function (step) {
             uiCalendarConfig.calendars.calendar.fullCalendar(step);
@@ -151,19 +156,35 @@ angular.module('HABmin.scheduler', [
             });
             $compile(element)($scope);
         };
+        $scope.dayClick = function (date, jsEvent, view) {
+            console.log('Clicked on: ' + date.format());
+            console.log('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+            console.log('Current view: ' + view.name);
+
+            eventEdit.add(date);
+        };
+
         /* config object */
         $scope.calendarCfg = {
             height: 0,
             editable: true,
             header: false,
-            defaultView: 'agendaWeek',
+            defaultView: $scope.view != 'timeline' ? $scope.view : 'agendaWeek',
             eventClick: $scope.alertOnEventClick,
             eventDrop: $scope.alertOnDrop,
             eventResize: $scope.alertOnResize,
             eventRender: $scope.eventRender,
-            columnFormat: 'D MMM'
+            dayClick: $scope.dayClick,
+            views: {
+                agendaDay: {
+                    columnFormat: 'dddd D MMMM'
+                },
+                agendaWeek: {
+                    columnFormat: 'D MMM'
+                }
+            }
         };
-        
+
         /* event sources array*/
         $scope.eventSources = [$scope.events, $scope.eventsF];
         $scope.eventSources2 = [$scope.calEventsExt, $scope.eventsF, $scope.events];
