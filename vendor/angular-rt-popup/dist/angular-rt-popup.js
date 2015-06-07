@@ -8,6 +8,10 @@ angular.module('rt.popup', [])
         var padding = 10;
 
         function loseFocus(e) {
+            if (e.isDefaultPrevented()) {
+                mouseDownInsidePopup = null;
+                return;
+            }
             if ( (mouseDownInsidePopup === null || mouseDownInsidePopup === false) && openedPopup && !$.contains(openedPopup.el[0], e.target)) {
                 mouseDownInsidePopup = null;
                 hidePopup();

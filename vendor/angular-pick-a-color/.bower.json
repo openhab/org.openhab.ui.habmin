@@ -1,6 +1,6 @@
 {
   "name": "angular-pick-a-color",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "authors": [
     "Chris Jackson <chris@cd-jackson.com>"
   ],
@@ -24,11 +24,11 @@
   "devDependencies": {
     "pick-a-color": "~1.2.3"
   },
-  "_release": "0.2.0",
+  "_release": "0.2.2",
   "_resolution": {
     "type": "version",
-    "tag": "0.2.0",
-    "commit": "1dcf388dda8bb2d8457f0e8391bbbf13897e0a44"
+    "tag": "0.2.2",
+    "commit": "2a7adfbe205af45ba4a824f665c1a8210c65f8e6"
   },
   "_source": "git://github.com/cdjackson/angular-pick-a-color.git",
   "_target": "~0.2.0",

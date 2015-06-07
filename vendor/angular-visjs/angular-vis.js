@@ -27,7 +27,11 @@ angular.module('ngVis', [])
                     'rangechange',
                     'rangechanged',
                     'timechange',
-                    'timechanged'
+                    'timechanged',
+                    'select',
+                    'doubleClick',
+                    'click',
+                    'contextmenu'
                 ];
 
                 // Declare the timeline
