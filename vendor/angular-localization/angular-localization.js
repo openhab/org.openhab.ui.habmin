@@ -1,5 +1,5 @@
 /**
- * angular-localization :: v1.2.1 :: 2015-05-04
+ * angular-localization :: v1.2.2 :: 2015-06-06
  * web: https://github.com/doshprompt/angular-localization
  *
  * Copyright (c) 2015 | Rahul Doshi
@@ -361,6 +361,25 @@
                 }
             }
 
+            /**
+             * Returns the localized bundle given the bundle path.
+             * Note that this will not load the bundle if it's not already loaded.
+             * Therefore you should wrap this inside a call to ready
+             * @param path the name of the bundle to retrieve
+             * @returns {*} the bundle
+             */
+            function getLocalizedBundle(path) {
+                var key = path + ".-";
+                for (var i = 0; i < locales.length; i++) {
+                    var bundle = getBundle(key, locales[i]);
+                    if (bundle && !bundle._loading) {
+                        return bundle;
+                    }
+                }
+
+                return null;
+            }
+
             function getLocale() {
                 return currentLocale;
             }
@@ -374,7 +393,8 @@
                 getKey: getKey,
                 setLocale: setLocale,
                 getLocale: getLocale,
-                getString: getLocalizedString
+                getString: getLocalizedString,
+                getBundle: getLocalizedBundle
             };
         })
         .filter('i18n', function (locale) {
@@ -476,21 +496,13 @@
             };
         });
 
-    /*angular.module('ngLocalize.InstalledLanguages', [])
-     .value('localeSupported', {
-     'en-US': "English (United States)"
-     })
-     .value('localeFallbacks', {
-     'en': 'en-US'
-     });
-     */
     angular.module('ngLocalize.InstalledLanguages', [])
         .value('localeSupported', {
             'en-US': "English (United States)"
         })
-
         .value('localeFallbacks', {
+            'en': 'en-US'
         });
     angular.module('ngLocalize.Version', [])
-        .constant('localeVer', '1.2.1');
+        .constant('localeVer', '1.2.2');
 })(window.angular, window, document);

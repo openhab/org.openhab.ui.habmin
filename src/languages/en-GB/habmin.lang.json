@@ -160,6 +160,7 @@
   "thingStatusInitialising": "Initialising",
   "thingStatusUninitialised": "Uninitialised",
   "thingStatusRemoved": "Removed",
+  "thingShowAll": "Show all",
   "thingSearch": "Start Scan",
   "thingNoneFound": "No things found",
   "thingTools": "Tools",

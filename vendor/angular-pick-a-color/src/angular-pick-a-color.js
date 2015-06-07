@@ -41,33 +41,39 @@ angular.module('pickAColor', [])
                 return function (scope, element, attrs, controller) {
                     // Process options
                     var options = pickAColor.getOptions();
-                    if (attrs.inlineDropdown != null) {
+                    if (attrs.inlineDropdown !== null) {
                         options.inlineDropdown = attrs.inlineDropdown;
                     }
-                    if (attrs.showSpectrum != null) {
+                    if (attrs.showSpectrum !== null) {
                         options.showSpectrum = attrs.showSpectrum;
                     }
-                    if (attrs.showSavedColors != null) {
+                    if (attrs.showSavedColors !== null) {
                         options.showSavedColors = attrs.showSavedColors;
                     }
-                    if (attrs.saveColorsPerElement != null) {
+                    if (attrs.saveColorsPerElement !== null) {
                         options.saveColorsPerElement = attrs.saveColorsPerElement;
                     }
-                    if (attrs.fadeMenuToggle != null) {
+                    if (attrs.fadeMenuToggle !== null) {
                         options.fadeMenuToggle = attrs.fadeMenuToggle;
                     }
-                    if (attrs.showAdvanced != null) {
+                    if (attrs.showAdvanced !== null) {
                         options.showAdvanced = attrs.showAdvanced;
                     }
-                    if (attrs.showBasicColors != null) {
+                    if (attrs.showBasicColors !== null) {
                         options.showBasicColors = attrs.showBasicColors;
                     }
-                    if (attrs.showHexInput != null) {
+                    if (attrs.showHexInput !== null) {
                         options.showHexInput = attrs.showHexInput;
                     }
-                    if (attrs.allowBlank != null) {
+                    if (attrs.allowBlank !== null) {
                         options.allowBlank = attrs.allowBlank;
                     }
+
+                    scope.$watch(model, function(value) {
+                        element.val(model(scope));
+                        element.focus();
+                        element.blur();
+                    });
 
                     // Set the value before we initialise the picker
                     element.val(model(scope));
@@ -81,7 +87,7 @@ angular.module('pickAColor', [])
                     element.on("change", function () {
                         var value = $(this).val();
 
-                        // This probably should be needed, but currently pick-a-color doesn't close on enter
+                        // This probably shouldn't be needed, but currently pick-a-color doesn't close on enter
                         // so we end up with an unvalidated value
                         value = tinycolor(value).toHexString();
                         scope.$apply(function (scope) {

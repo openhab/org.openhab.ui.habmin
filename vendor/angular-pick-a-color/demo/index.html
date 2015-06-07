@@ -1,0 +1,39 @@
+<!doctype html>
+<html ng-app="demoApp">
+<head>
+    <title>dygraphs demo</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="../bower_components/tinycolor/dist/tinycolor-min.js"></script>
+    <script src="../bower_components/pick-a-color/build/1.2.3/js/pick-a-color-1.2.3.min.js"></script>
+    <script src="../src/angular-pick-a-color.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="../bower_components/pick-a-color/build/1.2.3/css/pick-a-color-1.2.3.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+</head>
+<body ng-controller="DemoCtrl">
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <h3>pick-a-color - AngularJS Directive</h3>
+
+            <p>This directive provides a simple angular interface for the pick-a-color color picker.</p>
+        </div>
+        <div class="col-md-8">
+            <pick-a-color id="inputColor" ng-model="color" inline-dropdown="true"></pick-a-color>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var demoApp = angular.module('demoApp', [
+        "pickAColor"
+    ]);
+
+    demoApp.controller('DemoCtrl', function ($scope) {
+        $scope.color = "green";
+    });
+</script>
+</body>
+</html>

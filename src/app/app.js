@@ -157,17 +157,25 @@ angular.module('HABmin', [
                 '<td><span class="fa fa-fw fa-plus-circle text-success"></span><span i18n="habmin.thingNew"></span></td>' +
                 '<td>{{msg.label}}</td>' +
                 '</tr>' +
-                '<tr ng-repeat="msg in inbox" ng-if="msg.flag==\'IGNORED\'" class="text-muted">' +
+                '<tr ng-repeat="msg in inbox" ng-if="msg.flag==\'IGNORED\' && showAll" class="text-muted">' +
                 '<td><span class="fa fa-fw fa-dot-circle-o text-muted"></span><span i18n="habmin.thingIgnored"></span></td>' +
                 '<td>{{msg.label}}</td>' +
                 '</tr>' +
                 '</table>' +
+                '<div>' +
+                '<div class="checkbox pull-left">' +
+                '<label>' +
+                '<input type="checkbox" ng-model="showAll"><span i18n="habmin.thingShowAll"></span>' +
+                '</label>' +
+                '</div>' +
                 '<div class="pull-right">' +
                 '<a ui-sref="things" ng-click="hidePopover()" class="btn btn-xs btn-primary"><span i18n="common.open"></span></a>' +
                 '<a ng-click="hidePopover()" class="btn btn-xs btn-primary"><span i18n="common.close"></span></a>' +
                 '</div>' +
+                '</div>' +
                 '</div>'
-            );
+            )
+            ;
         }
     ])
 
@@ -431,14 +439,14 @@ angular.module('HABmin', [
 
         // Once we've initialised, fade out the splashscreen
         // then remove it once the transition has finished!
-        $timeout(function() {
+        $timeout(function () {
             var splash = $('#splash');
             var main = $('#content');
             splash.removeClass('in');
             main.addClass('in');
-            $timeout(function() {
+            $timeout(function () {
                 splash.remove();
-            },250);
+            }, 250);
         }, 100);
 
         EventModel.listen();
