@@ -1,13 +1,30 @@
 {
   "name": "fullcalendar",
-  "version": "2.1.1",
+  "title": "FullCalendar",
+  "version": "2.3.1",
   "description": "Full-sized drag & drop event calendar",
   "keywords": [
     "calendar",
     "event",
-    "full-sized"
+    "full-sized",
+    "jquery-plugin"
   ],
-  "homepage": "http://arshaw.com/fullcalendar/",
+  "homepage": "http://fullcalendar.io/",
+  "bugs": "http://fullcalendar.io/wiki/Reporting-Bugs/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arshaw/fullcalendar.git"
+  },
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/arshaw/fullcalendar/blob/master/license.txt"
+  },
+  "author": {
+    "name": "Adam Shaw",
+    "email": "arshaw@arshaw.com",
+    "url": "http://arshaw.com/"
+  },
+  "copyright": "2015 Adam Shaw",
   "dependencies": {
     "jquery": ">=1.7.1",
     "moment": ">=2.5.0"
@@ -29,18 +46,18 @@
     "*",
     "**/.*",
     "!/dist/**",
-    "!/bower.json",
     "!/changelog.*",
     "!/license.*",
     "!/readme.*"
   ],
-  "_release": "2.1.1",
+  "_release": "2.3.1",
   "_resolution": {
     "type": "version",
-    "tag": "v2.1.1",
-    "commit": "b4217b0d0f3afe702db4022643d5eed1738cf50a"
+    "tag": "v2.3.1",
+    "commit": "ff991ab6450934507437391d4753380c66e39436"
   },
   "_source": "git://github.com/arshaw/fullcalendar.git",
-  "_target": "2.1.1",
-  "_originalSource": "fullcalendar"
+  "_target": "~2.3.1",
+  "_originalSource": "fullcalendar",
+  "_direct": true
 }
