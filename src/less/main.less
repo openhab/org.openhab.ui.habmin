@@ -510,13 +510,13 @@
   }
 
   .vis-timeline .vis-legend-background {
-    stroke-width:1px;
-    fill-opacity:0.9;
+    stroke-width: 1px;
+    fill-opacity: 0.9;
     fill: #ffffff;
     stroke: #c2c2c2;
   }
 
-  .vis-timeline .outline {
+  .vis-timeline .vis-outline {
     fill: @panel-default-heading-bg;
     stroke: @panel-default-border;
   }
@@ -883,6 +883,28 @@
       background-color: @list-group-active-bg;
       color: @list-group-active-color;
     }
+  }
+
+  .glyphicon {
+    display: inline-block;
+    font: normal normal normal @font-size-base/1 FontAwesome; // shortening font declaration
+    font-size: inherit; // can't have font-size inherit on line above, so need to override
+    text-rendering: auto; // optimizelegibility throws things off #1094
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transform: translate(0, 0); // ensures no half-pixel rendering in firefox
+  }
+  .glyphicon-chevron-left:before {
+    content: "\f053";
+  }
+  .glyphicon-chevron-right:before {
+    content: "\f054";
+  }
+  .glyphicon-chevron-up:before {
+    content: "\f077";
+  }
+  .glyphicon-chevron-down:before {
+    content: "\f078";
   }
 
   // Finally - any theme specific tailoring

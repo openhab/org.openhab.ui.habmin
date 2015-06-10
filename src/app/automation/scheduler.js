@@ -9,7 +9,7 @@
  */
 angular.module('HABmin.scheduler', [
     'ui.router',
-    'ui.bootstrap',
+//    'ui.bootstrap',
     'ngLocalize',
     'ui.calendar',
     'ResizePanel',
@@ -40,7 +40,7 @@ angular.module('HABmin.scheduler', [
         var m = date.getMonth();
         var y = date.getFullYear();
 
-        /* event source that contains custom events on the scope */
+        // Event source that contains custom events on the scope
         $scope.events = {
             id: "1",
             name: "Heating",
@@ -61,13 +61,6 @@ angular.module('HABmin.scheduler', [
                 {
                     type: 'party',
                     title: 'Lunch',
-                    start: new Date(y, m, d, 12, 0),
-                    end: new Date(y, m, d, 14, 0),
-                    allDay: false
-                },
-                {
-                    type: 'party',
-                    title: 'Lunch 2',
                     start: new Date(y, m, d, 12, 0),
                     end: new Date(y, m, d, 14, 0),
                     allDay: false
