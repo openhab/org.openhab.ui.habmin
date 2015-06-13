@@ -115,7 +115,7 @@
             <div ng-show="selectedView=='CHART'">
                 <div ng-show="chartsTotal>0" ng-repeat="choice in charts">
                     <a role="presentation"
-                       class="list-group-item" ng-class="{'active':item.selected}"
+                       class="list-group-item" ng-class="{'active':choice.selected=='yes'}"
                        ng-click="selectChart(choice)" sidepanel-click="main">
                         <habmin-icon class="icon-lg" icon="{{choice.icon}}"></habmin-icon>
                         <span>{{choice.name}}</span>
