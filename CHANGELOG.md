@@ -1,3 +1,34 @@
+<a name="0.0.15"></a>
+### 0.0.15 (2015-06-19)
+
+
+#### Bug Fixes
+
+* **Chart:**
+  * Fix item buttons and persistence selection tick position ([a393fb96](git@github.com:cdjackson/HABmin2/commit/a393fb9645303788d1e873b2773c21d40f8d5d64), closes [#59](git@github.com:cdjackson/HABmin2/issues/59))
+  * Fixed default vertical axis title colour ([f26a9133](git@github.com:cdjackson/HABmin2/commit/f26a913353ab8b4410a5ba40bd199e1154590a4e), closes [#55](git@github.com:cdjackson/HABmin2/issues/55))
+  * Fixed highlighting of selected chart ([2647fd52](git@github.com:cdjackson/HABmin2/commit/2647fd52c234503e24a8dd6ab4be23bd5e699139))
+  * Allow a chart to be reselected to reloaded ([6153a3b3](git@github.com:cdjackson/HABmin2/commit/6153a3b3e128235b5b4e2a3720ffad27b5e065f9), closes [#22](git@github.com:cdjackson/HABmin2/issues/22))
+  * Fixed error selecting items to chart ([7ced8658](git@github.com:cdjackson/HABmin2/commit/7ced8658e3359e3d4e5a814ac925caa98840a692), closes [#50](git@github.com:cdjackson/HABmin2/issues/50))
+* **Things:**
+  * Fix initialisation error displaying thing configuration ([cbcf69af](git@github.com:cdjackson/HABmin2/commit/cbcf69afc973809872bd1f55c7f8703c34b0db87))
+  * Fixed rendering of thing name when adding a thing ([84264d51](git@github.com:cdjackson/HABmin2/commit/84264d51bb26b3c8950d9eecfd6b5e4215234d5b))
+  * Fixed button rendering in thing config editor ([7b4e969c](git@github.com:cdjackson/HABmin2/commit/7b4e969c67a7a46ca83f405f6ec7b3e3fd4d22f0))
+* **UI:**
+  * Add German translation for time data ([64350c30](git@github.com:cdjackson/HABmin2/commit/64350c30387641f0accbe818942d4ff578d05138), closes [#58](git@github.com:cdjackson/HABmin2/issues/58))
+  * Fix apply error in panel resizing ([3ff4f4c7](git@github.com:cdjackson/HABmin2/commit/3ff4f4c7a35fa5b6d322b546d02a82c0e6bf970d))
+
+
+#### Features
+
+* **Scheduler:**
+  * Add timeline view to scheduler ([298d8fdf](git@github.com:cdjackson/HABmin2/commit/298d8fdfbc27bd2c031c377e859319841818e15b))
+* **Things:**
+  * By default hide ignored things from inbox popup ([2d24cc33](git@github.com:cdjackson/HABmin2/commit/2d24cc338af938bcf1d85b4ac00ff6159f2d2f36))
+* **UI:**
+  * Add notification dialog if server is offline ([03d5b0f7](git@github.com:cdjackson/HABmin2/commit/03d5b0f776ec8581f1c44594ba6db4ee0d56f589))
+
+
 <a name="0.0.14"></a>
 ### 0.0.14 (2015-05-25)
 
