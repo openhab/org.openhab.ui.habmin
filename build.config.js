@@ -85,6 +85,7 @@ module.exports = {
             'vendor/angular-pick-a-color/src/angular-pick-a-color.js',
             'vendor/moment/moment.js',
             'vendor/moment/locale/fr.js',
+            'vendor/moment/locale/de.js',
             'vendor/angular-blockly/build/angular-blockly.js',
             'vendor/angular-blockly/build/blockly_compressed.js',
             'vendor/angular-blockly/build/blocks_compressed.js',
