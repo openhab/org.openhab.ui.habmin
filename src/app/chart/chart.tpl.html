@@ -32,16 +32,14 @@
 
             <div class="btn-group dropdown pull-right" ng-show="services.length>0">
                 <button type="button" ng-show="selectedView=='ITEMS'"
-                        class="btn btn-default" ng-disabled="!itemsSelected">
-                    <a ng-click="doChart()">
+                        class="btn btn-default" ng-disabled="!itemsSelected"
+                        ng-click="doChart()">
                         <span class="fa fa-play"></span>
-                    </a>
                 </button>
                 <button type="button" ng-show="selectedView=='ITEMS'"
-                        class="btn btn-default" ng-disabled="!itemsSelected">
-                    <a ng-click="clearList()">
+                        class="btn btn-default" ng-disabled="!itemsSelected"
+                        ng-click="clearList()">
                         <span class="fa fa-times"></span>
-                    </a>
                 </button>
 
                 <!-- Tools menu -->
@@ -51,8 +49,8 @@
                 <ul class="dropdown-menu" role="menu">
                     <li ng-show="services.length>1" ng-repeat="choice in services">
                         <a role="presentation" ng-click="selectService(choice)">
+                            <span ng-class="{'fa-check-square-o': choice.selected}" class="fa fa-fw"></span>
                             <span>{{choice.name}}</span>
-                            <span ng-show="choice.selected" class="pull-right fa fa-check-square-o"></span>
                         </a>
                     </li>
                     <li ng-show="services.length>1" role="presentation" class="divider"></li>
