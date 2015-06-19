@@ -131,5 +131,35 @@ ngVisApp.controller('appController', function ($scope, $location, $timeout, VisD
         editable: true
     })
 
+    $scope.onSelect = function (items) {
+        // debugger;
+        alert('select');
+    };
+
+    $scope.onClick = function (props) {
+        //debugger;
+        alert('Click');
+    };
+
+    $scope.onDoubleClick = function (props) {
+        // debugger;
+        alert('DoubleClick');
+    };
+
+    $scope.rightClick = function (props) {
+        alert('Right click!');
+        props.event.preventDefault();
+    };
+
+    $scope.events = {
+        rangechange: $scope.onRangeChange,
+        rangechanged: $scope.onRangeChanged,
+        onload: $scope.onLoaded,
+        select: $scope.onSelect,
+        click: $scope.onClick,
+        doubleClick: $scope.onDoubleClick,
+        contextmenu: $scope.rightClick
+    };
+
 })
 ;

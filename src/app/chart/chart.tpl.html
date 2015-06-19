@@ -13,7 +13,7 @@
                     <span class="sr-only">Dropdown</span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
-                    <li ng-disabled="!selectedChart"">
+                    <li ng-disabled="!selectedChart">
                         <a ng-click="selectedView='CHART'">
                             <span class="fa fa-fw" ng-class="{'fa-check-square-o': selectedView=='CHART'}"></span>
                             <span class="fa fa-pie-chart"></span>
@@ -30,18 +30,16 @@
                 </ul>
             </div>
 
-            <div class="btn-group dropdown pull-right" ng-if="services.length>0">
-                <button type="button" ng-if="selectedView=='ITEMS'"
-                        ng-class="{'btn btn-default': true, 'disabled': !itemsSelected}">
-                    <a ng-click="doChart()">
+            <div class="btn-group dropdown pull-right" ng-show="services.length>0">
+                <button type="button" ng-show="selectedView=='ITEMS'"
+                        class="btn btn-default" ng-disabled="!itemsSelected"
+                        ng-click="doChart()">
                         <span class="fa fa-play"></span>
-                    </a>
                 </button>
-                <button type="button" ng-if="selectedView=='ITEMS'"
-                        ng-class="{'btn btn-default': true, 'disabled': !itemsSelected}">
-                    <a ng-click="clearList()">
+                <button type="button" ng-show="selectedView=='ITEMS'"
+                        class="btn btn-default" ng-disabled="!itemsSelected"
+                        ng-click="clearList()">
                         <span class="fa fa-times"></span>
-                    </a>
                 </button>
 
                 <!-- Tools menu -->
@@ -49,24 +47,24 @@
                     <span class="fa fa-cog"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
-                    <li ng-if="services.length>1" ng-repeat="choice in services">
+                    <li ng-show="services.length>1" ng-repeat="choice in services">
                         <a role="presentation" ng-click="selectService(choice)">
+                            <span ng-class="{'fa-check-square-o': choice.selected}" class="fa fa-fw"></span>
                             <span>{{choice.name}}</span>
-                            <span ng-if="choice.selected" class="pull-right fa fa-check-square-o"></span>
                         </a>
                     </li>
-                    <li ng-if="services.length>1" role="presentation" class="divider"></li>
-                    <li ng-if="selectedView=='ITEMS'" ng-class="{'disabled': !itemsSelected}">
+                    <li ng-show="services.length>1" role="presentation" class="divider"></li>
+                    <li ng-show="selectedView=='ITEMS'" ng-disabled="!itemsSelected">
                         <a ng-click="saveChart()">
                             <span i18n="habmin.chartSaveChart"></span>
                         </a>
                     </li>
-                    <li ng-if="selectedView='CHART'" ng-class="{'disabled': !selectedChart}">
+                    <li ng-show="selectedView=='CHART'" ng-disabled="!selectedChart">
                         <a ng-click="editChart()">
                             <span i18n="habmin.chartEditChart"></span>
                         </a>
                     </li>
-                    <li ng-if="selectedView=='CHART'" ng-class="{'disabled': !selectedChart}">
+                    <li ng-show="selectedView=='CHART'" ng-disabled="!selectedChart">
                         <a ng-confirm-click="deleteChart()"
                            i18n-attr="{'ngConfirmMessage': 'habmin.chartDeleteChartCheck','ngConfirmTitle': 'habmin.chartDeleteChart','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes' }">
                             <span i18n="habmin.chartDeleteChart"></span>
@@ -76,7 +74,7 @@
             </div>
 
             <!-- FILTER BOX -->
-            <div id="custom-search-form" class="input-group input-group-sm" ng-if="selectedView=='ITEMS'">
+            <div id="custom-search-form" class="input-group input-group-sm" ng-show="selectedView=='ITEMS'">
                 <span class="input-group-addon"><span class=" fa fa-filter"></span></span>
                 <input type="text" class="form-control" placeholder={{filterDefaultString}} ng-model="filter.text"
                        ng-model-options="{debounce: 1000}">
@@ -87,35 +85,35 @@
         <!-- PANEL BODY -->
         <div class="list-group habmin-list" resize-panel>
             <!-- Display the list of items -->
-            <div ng-if="selectedView=='ITEMS'">
-                <div ng-if="itemsTotal>0" ng-repeat="item in items | filter:filterFunction">
-                    <a role="presentation" ng-if="item.label" ng-hide="item.filter"
-                       ng-class="{'list-group-item': true, 'active':item.selected}"
+            <div ng-show="selectedView=='ITEMS'">
+                <div ng-show="itemsTotal>0" ng-repeat="item in items | filter:filterFunction">
+                    <a role="presentation" ng-show="item.label" ng-hide="item.filter"
+                       class="list-group-item" ng-class="{'active':item.selected}"
                        ng-click="selectItem(item)">
                         <habmin-icon class="icon-lg" icon="{{item.icon}}"></habmin-icon>
                         <span>{{item.label}}</span>
                     <span class="pull-right">
-                        <span ng-if="item.selected" class="fa fa-check-square-o"></span>
+                        <span ng-show="item.selected" class="fa fa-check-square-o"></span>
                     </span>
                     </a>
                 </div>
 
                 <!-- Cover options for loading, and no items -->
-                <div ng-if="itemsTotal==-1" class="list-group-item text-center">
+                <div ng-show="itemsTotal==-1" class="list-group-item text-center">
                     <span class="fa fa-spin fa-refresh"></span>
                     <span i18n="common.loading"></span>
                 </div>
-                <div ng-if="itemsTotal==0" class="list-group-item text-center">
+                <div ng-show="itemsTotal==0" class="list-group-item text-center">
                     <span class="fa fa-exclamation-triangle text-warning"></span>
                     <span i18n="habmin.chartNoItems"></span>
                 </div>
             </div>
 
             <!-- Display the list of predefined charts -->
-            <div ng-if="selectedView=='CHART'">
-                <div ng-if="chartsTotal>0" ng-repeat="choice in charts">
-                    <a role="presentation" ng-class="{'list-group-item': true, 'active': choice.selected=='yes'}"
-                       ng-class="{'active':choice.selected=='yes'}"
+            <div ng-show="selectedView=='CHART'">
+                <div ng-show="chartsTotal>0" ng-repeat="choice in charts">
+                    <a role="presentation"
+                       class="list-group-item" ng-class="{'active':choice.selected=='yes'}"
                        ng-click="selectChart(choice)" sidepanel-click="main">
                         <habmin-icon class="icon-lg" icon="{{choice.icon}}"></habmin-icon>
                         <span>{{choice.name}}</span>
@@ -126,14 +124,14 @@
                 </div>
 
                 <!-- Cover situation with no charts -->
-                <div ng-if="chartsTotal==0" class="list-group-item text-center">
+                <div ng-show="chartsTotal==0" class="list-group-item text-center">
                     <span class="fa fa-exclamation-triangle text-warning"></span>
                     <span i18n="habmin.chartNoCharts"></span>
                 </div>
             </div>
 
             <!-- Display ERROR if no persistence services -->
-            <div ng-if="selectedView=='ERROR'">
+            <div ng-show="selectedView=='ERROR'">
                 <div class="list-group-item text-center">
                     <span class="fa fa-exclamation-triangle text-warning"></span>
                     <span i18n="habmin.chartNoPersistenceServices"></span>
@@ -141,7 +139,7 @@
             </div>
 
             <!-- Display LOADING -->
-            <div ng-if="selectedView=='LOAD'">
+            <div ng-show="selectedView=='LOAD'">
                 <div class="list-group-item text-center">
                     <span class="fa fa-spin fa-refresh"></span>
                     <span i18n="common.loading"></span>
@@ -182,7 +180,7 @@
                     <span class="fa fa-search-plus"></span>
                 </button>
             </div>
-            <div ng-class="{'btn-group btn-group-sm': true, 'open': calendarOpen}">
+            <div class="btn-group btn-group-sm" ng-class="{'open': calendarOpen}">
                 <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded||calendarOpen"
                         ng-class="{active:graphWindow=='day'}" ng-click="setWindow('day')">
                         <span class="calendar-stack">

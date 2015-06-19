@@ -160,6 +160,7 @@
   "thingStatusInitialising": "Initialising",
   "thingStatusUninitialised": "Uninitialised",
   "thingStatusRemoved": "Removed",
+  "thingShowAll": "Show all",
   "thingSearch": "Start Scan",
   "thingNoneFound": "No things found",
   "thingTools": "Tools",
@@ -259,5 +260,11 @@
   "userThemeSelect": "Select your theme...",
   "userLanguage": "Language",
   "userLanguageSelect": "Select your language...",
-  "ruleNoDevices": "No Devices"
+  "ruleNoDevices": "No Devices",
+  "scheduleEditTitle": "Edit Event",
+  "scheduleEditStart": "Start Time",
+  "scheduleEditEnd": "End Time",
+  "scheduleEditLabel": "Title",
+  "scheduleEditDaily": "All Day Event",
+  "scheduleEditRepeat": "Repeat Interval"
 }
