@@ -1,6 +1,23 @@
 # vis.js history
 http://visjs.org
 
+
+## 2015-06-16, version 4.3.0
+
+### General
+
+- Fixed #950: option `locales` broken in `Timeline`, `Graph2d`, and `Network`.
+- Fixed #964: `Timeline`, `Graph2d`, and `Network` not working on IE9.
+
+### Graph2d
+
+- Fixed #942, #966: bug when data is empty.
+
+### Timeline
+
+- Implemented `editable` option for individual items. Thanks @danbertolini.
+
+
 ## 2015-06-05, version 4.2.0
 
 ### General
@@ -33,7 +50,7 @@ http://visjs.org
 - Added releaseFunction to openCluster.
 - Fixed bug where the network could flicker when the pixelRatio is not integer.
 - Added enabled property to physics.
-- Fixed #927, dragStart event didnt contain node that was being dragged
+- Fixed #927, dragStart event didn't contain node that was being dragged
 
 ## 2015-05-28, version 4.1.0
 
