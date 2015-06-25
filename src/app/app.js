@@ -165,7 +165,7 @@ angular.module('HABmin', [
                 '<div>' +
                 '<div class="checkbox pull-left">' +
                 '<label>' +
-                '<input type="checkbox" ng-model="showAll"><span i18n="habmin.thingShowAll"></span>' +
+                '<input type="checkbox" ng-model="showAll" ng-disabled="notificationCntIgnored==0"><span i18n="habmin.thingShowAll"></span>' +
                 '</label>' +
                 '</div>' +
                 '<div class="pull-right">' +
@@ -221,10 +221,14 @@ angular.module('HABmin', [
         // If there are any changes, then count the number of NEW messages
         $scope.inbox = InboxModel.getInbox();
         $scope.$watch('inbox', function () {
-            $scope.notificationCnt = 0;
+            $scope.notificationCntNew = 0;
+            $scope.notificationCntIgnored = 0;
             angular.forEach($scope.inbox, function (msg) {
                 if (msg.flag == "NEW") {
-                    $scope.notificationCnt++;
+                    $scope.notificationCntNew++;
+                }
+                if (msg.flag == "IGNORED") {
+                    $scope.notificationCntIgnored++;
                 }
             });
         }, true);
@@ -241,7 +245,8 @@ angular.module('HABmin', [
         // Load models used in the nav bar
         function getAppData() {
             $scope.sitemaps = null;
-            $scope.notificationCnt = 0;
+            $scope.notificationCntNew = 0;
+            $scope.notificationCntIgnored = 0;
 
             RestService.updateServices().then(
                 function (data) {
