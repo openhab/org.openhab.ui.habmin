@@ -393,6 +393,7 @@ angular.module('Config.Things', [
             $scope.insertMode = false;
             $scope.panelDisplayed = 'PROPERTIES';
 
+            // Get the thing type
             ThingModel.getThingInfo(thing.UID).then(
                 function (type) {
                     $scope.selectedThingType = type;
@@ -418,6 +419,12 @@ angular.module('Config.Things', [
                     if ($scope.selectedThing.item != null) {
                         $scope.selectedThing.item.category = ThingModel.getThingTypeCategory($scope.selectedThingType);
                     }
+
+                    // Display the form
+                    $timeout(function () {
+                        $scope.thingConfigForm.$setPristine();
+                        $scope.formLoaded = true;
+                    });
                 },
                 function () {
                     growl.warning(locale.getString("habmin.thingErrorGettingThing",
