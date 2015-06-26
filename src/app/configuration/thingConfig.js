@@ -75,9 +75,13 @@ angular.module('Config.Things', [
         ThingModel.getList().then(
             function (list) {
                 $scope.things = list;
-                $scope.thingCnt = $scope.things.length;
             }
         );
+
+        // If the list ever changes, update the count
+        $scope.$watch("things", function() {
+            $scope.thingCnt = $scope.things.length;
+        }, true);
 
         ThingModel.getThingTypes().then(
             function (list) {
