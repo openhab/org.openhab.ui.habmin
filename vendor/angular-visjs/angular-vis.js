@@ -89,10 +89,33 @@ angular.module('ngVis', [])
             },
             link: function (scope, element, attr) {
                 var networkEvents = [
-                    'rangechange',
-                    'rangechanged',
-                    'timechange',
-                    'timechanged'
+                    'click',
+                    'doubleclick',
+                    'oncontext',
+                    'hold',
+                    'release',
+                    'selectNode',
+                    'selectEdge',
+                    'deselectNode',
+                    'deselectEdge',
+                    'dragStart',
+                    'dragging',
+                    'dragEnd',
+                    'hoverNode',
+                    'blurNode',
+                    'zoom',
+                    'showPopup',
+                    'hidePopup',
+                    'startStabilizing',
+                    'stabilizationProgress',
+                    'stabilizationIterationsDone',
+                    'stabilized',
+                    'resize',
+                    'initRedraw',
+                    'beforeDrawing',
+                    'afterDrawing',
+                    'animationFinished'
+
                 ];
 
                 var network = null;
@@ -122,7 +145,7 @@ angular.module('ngVis', [])
                     // onLoad callback
                     if (scope.events != null && scope.events.onload != null &&
                         angular.isFunction(scope.events.onload)) {
-                        scope.events.onload(graph);
+                        scope.events.onload(network);
                     }
                 });
 
@@ -131,14 +154,6 @@ angular.module('ngVis', [])
                         return;
                     }
                     network.setOptions(options);
-                });
-
-                scope.$watch('events', function (events) {
-                    angular.forEach(events, function (callback, event) {
-                        if (['select', 'click', 'hoverNode', 'doubleClick'].indexOf(String(event)) >= 0) {
-                            network.on(event, callback);
-                        }
-                    });
                 });
             }
         };
@@ -162,7 +177,8 @@ angular.module('ngVis', [])
                     'rangechange',
                     'rangechanged',
                     'timechange',
-                    'timechanged'
+                    'timechanged',
+                    'finishedRedraw'
                 ];
 
                 // Create the chart
