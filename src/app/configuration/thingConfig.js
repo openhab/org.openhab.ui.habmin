@@ -80,7 +80,12 @@ angular.module('Config.Things', [
 
         // If the list ever changes, update the count
         $scope.$watch("things", function() {
-            $scope.thingCnt = $scope.things.length;
+            if($scope.things == null) {
+                $scope.thingCnt = 0;
+            }
+            else {
+                $scope.thingCnt = $scope.things.length;
+            }
         }, true);
 
         ThingModel.getThingTypes().then(
@@ -200,8 +205,7 @@ angular.module('Config.Things', [
          * @returns thingType
          */
         $scope.getThingType = function (thing) {
-            var uid = thing.UID.substring(0, thing.UID.lastIndexOf(":"));
-            uid = thing.UID.split(':', 2).join(':');
+            var uid = thing.UID.split(':', 2).join(':');
 
             for (var i = 0; i < $scope.thingTypes.length; i++) {
                 if ($scope.thingTypes[i].UID == uid) {
@@ -424,6 +428,28 @@ angular.module('Config.Things', [
 
                     if ($scope.selectedThing.item != null) {
                         $scope.selectedThing.item.category = ThingModel.getThingTypeCategory($scope.selectedThingType);
+                    }
+
+                    // If this thing requires a bridge, see how many things are current defined of the type required
+                    // If there's only one, then use it by default
+                    if(type.supportedBridgeTypeUIDs != null && type.supportedBridgeTypeUIDs.length != 0) {
+                        var bridgeFound = null;
+                        angular.forEach($scope.things, function(thing) {
+                            // Check if this is a supported bridge
+                            if(type.supportedBridgeTypeUIDs.indexOf(thing.UID.split(':', 2).join(':')) != -1) {
+                                if(bridgeFound == null) {
+                                    bridgeFound = thing.UID;
+                                }
+                                else {
+                                    bridgeFound = "";
+                                }
+                            }
+                        });
+
+                        // If we found a single bridge, it's now in bridgeFound
+                        if(bridgeFound != null && bridgeFound != "") {
+                            $scope.selectedThing.bridgeUID = bridgeFound;
+                        }
                     }
 
                     // Display the form
