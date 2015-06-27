@@ -225,7 +225,7 @@ angular.module('habminChart', [
 
                     // If everything is loaded, render the chart
                     itemsLoaded++;
-                    valuesLoaded += data.length;
+                    valuesLoaded += data != null ? data.length : 0;
                     console.log("Loaded " + itemsLoaded + " of " + itemsLoading);
                     if (itemsLoaded >= itemsLoading) {
                         // All items loaded
@@ -310,7 +310,10 @@ angular.module('habminChart', [
 
 // Sequentially step through the new data and add it to a new array along with the old data
                 function addSeries(curData, newData, repeatTime, group) {
-                    var d;
+                    // If no data exists for this channel, just return the current data
+                    if (newData == null || newData.length == 0 || newData[0].time == null) {
+                        return curData;
+                    }
 
                     // Record the starting time/value of the new series
                     var lastTime = Math.floor(Number(newData[0].time) / roundingTime) * roundingTime;

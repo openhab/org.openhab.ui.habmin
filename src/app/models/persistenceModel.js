@@ -137,7 +137,10 @@ angular.module('HABmin.persistenceModel', [
                             console.log("HTML GET completed in", new Date().getTime() - tStart);
                             console.log("HTML GET data is", data);
 
-                            var persistence = [].concat(data.data);
+                            var persistence = null;
+                            if(data.datapoints != 0) {
+                                persistence = [].concat(data.data);
+                            }
                             /*
                              // Response handling
                              switch (cacheState) {
