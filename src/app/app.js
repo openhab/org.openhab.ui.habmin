@@ -72,6 +72,9 @@ angular.module('HABmin', [
     })
 
     .config(function myAppConfig($stateProvider, $urlRouterProvider, growlProvider, pickAColorProvider, ngBlocklyProvider, uiSelectConfig) {
+        // Default the 'moment' language to english
+        moment.locale("en");
+
         $urlRouterProvider.otherwise('/home');
         growlProvider.globalTimeToLive({
             success: 2000,
