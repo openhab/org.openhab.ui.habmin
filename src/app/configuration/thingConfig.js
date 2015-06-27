@@ -404,12 +404,14 @@ angular.module('Config.Things', [
                     $scope.selectedThing = {
                         UID: type.UID + ":",
                         item: {
-                            label: "",
+                            // Default the thing name to the thing type name
+                            label: type.label,
                             groupNames: []
                         },
                         configuration: {}
                     };
 
+                    // Handle any type conversion and default parameters
                     angular.forEach(type.configParameters, function (parameter) {
                         if (parameter.type == 'BOOLEAN') {
                             $scope.selectedThing.configuration[parameter.name] =
