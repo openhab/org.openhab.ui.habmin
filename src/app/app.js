@@ -317,6 +317,7 @@ angular.module('HABmin', [
                 },
                 function (reason) {
                     // Handle failure
+                    // TODO: Maybe remove this and just let the monitor handle it?
                     growl.warning(locale.getString('habmin.mainOpenHABOffline'));
                 }
             );

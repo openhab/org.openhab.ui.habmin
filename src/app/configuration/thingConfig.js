@@ -78,8 +78,11 @@ angular.module('Config.Things', [
             }
         );
 
-        // If the list ever changes, update the count
+        // If the list ever changes, update the counter
         $scope.$watch("things", function() {
+            if($scope.things === undefined) {
+                return;
+            }
             if($scope.things == null) {
                 $scope.thingCnt = 0;
             }
