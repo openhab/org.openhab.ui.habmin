@@ -14,6 +14,7 @@ angular.module('HABmin.eventModel', [
         var eventSrc;
 
         this.listen = function () {
+            return;
             eventSrc = new EventSource("/rest/events?topics=smarthome/update/*");
             eventSrc.addEventListener('message', function (event) {
                 console.log(event.type);

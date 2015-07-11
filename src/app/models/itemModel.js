@@ -23,13 +23,24 @@ angular.module('HABmin.itemModel', [
             eventSrc = new EventSource("/rest/events?topics=smarthome/items/*");
 
             eventSrc.addEventListener('message', function (event) {
-                console.log(event.type);
+//                console.log(event.type);
                 console.log(event.data);
 
                 var evt = angular.fromJson(event.data);
-                var item = evt.object[0];
+                var payload = angular.fromJson(evt.payload);
+                var topic = evt.topic.split("/");
 
-                if (evt.topic.indexOf("smarthome/items/added") === 0) {
+//                var item = evt.object[0];
+
+                switch(evt.type) {
+                    case 'ItemStateEvent':
+
+                        // Broadcast an event so we update any widgets or listeners
+                        $rootScope.$broadcast(evt.topic, payload);
+                        break;
+                }
+
+/*                if (evt.topic.indexOf("smarthome/items/added") === 0) {
                     itemList.push(item);
                 }
                 else if (evt.topic.indexOf("smarthome/items/removed") === 0) {
@@ -52,6 +63,7 @@ angular.module('HABmin.itemModel', [
                     // Broadcast an event so we update any widgets or listeners
                     $rootScope.$broadcast('smarthome/items/updated', item);
                 }
+                */
             });
         };
 
