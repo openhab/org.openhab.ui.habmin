@@ -79,11 +79,11 @@ angular.module('Config.Things', [
         );
 
         // If the list ever changes, update the counter
-        $scope.$watch("things", function() {
-            if($scope.things === undefined) {
+        $scope.$watch("things", function () {
+            if ($scope.things === undefined) {
                 return;
             }
-            if($scope.things == null) {
+            if ($scope.things == null) {
                 $scope.thingCnt = 0;
             }
             else {
@@ -160,6 +160,21 @@ angular.module('Config.Things', [
 
             if (config.groupName == group) {
                 return true;
+            }
+
+            return false;
+        };
+
+        $scope.configGroupAdvanced = function (group) {
+            if (group.advanced == true || group == null || group.length == 0) {
+                return false;
+            }
+
+            for (var i = 0; i < $scope.selectedThingType.configParameters.length; i++) {
+                if ($scope.selectedThingType.configParameters[i].groupName == group.name &&
+                    !($scope.selectedThingType.configParameters[i].advanced == true)) {
+                    return true;
+                }
             }
 
             return false;
@@ -396,7 +411,15 @@ angular.module('Config.Things', [
 
         $scope.createNewThing = function (binding) {
             $scope.insertMode = true;
-            $scope.newThings = binding.thingTypes;
+
+            // Create a list of all thingTypes for this binding
+            $scope.newThings = [];
+            angular.forEach($scope.thingTypes, function (thingType) {
+                var uid = thingType.UID.split(":");
+                if (uid[0] == binding.id) {
+                    $scope.newThings.push(thingType);
+                }
+            });
         };
 
         $scope.selectNewThing = function (thing) {
@@ -435,12 +458,12 @@ angular.module('Config.Things', [
 
                     // If this thing requires a bridge, see how many things are current defined of the type required
                     // If there's only one, then use it by default
-                    if(type.supportedBridgeTypeUIDs != null && type.supportedBridgeTypeUIDs.length != 0) {
+                    if (type.supportedBridgeTypeUIDs != null && type.supportedBridgeTypeUIDs.length != 0) {
                         var bridgeFound = null;
-                        angular.forEach($scope.things, function(thing) {
+                        angular.forEach($scope.things, function (thing) {
                             // Check if this is a supported bridge
-                            if(type.supportedBridgeTypeUIDs.indexOf(thing.UID.split(':', 2).join(':')) != -1) {
-                                if(bridgeFound == null) {
+                            if (type.supportedBridgeTypeUIDs.indexOf(thing.UID.split(':', 2).join(':')) != -1) {
+                                if (bridgeFound == null) {
                                     bridgeFound = thing.UID;
                                 }
                                 else {
@@ -450,7 +473,7 @@ angular.module('Config.Things', [
                         });
 
                         // If we found a single bridge, it's now in bridgeFound
-                        if(bridgeFound != null && bridgeFound != "") {
+                        if (bridgeFound != null && bridgeFound != "") {
                             $scope.selectedThing.bridgeUID = bridgeFound;
                         }
                     }
