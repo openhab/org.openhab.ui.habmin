@@ -150,6 +150,11 @@ angular.module('Config.Things', [
         };
 
         $scope.configGroupFilter = function (config, group) {
+            // Sanity check
+            if (config == null) {
+                return false;
+            }
+
             // Are we looking for ungrouped parameters
             if (group == null) {
                 if (config.groupName == null || config.groupName == "") {

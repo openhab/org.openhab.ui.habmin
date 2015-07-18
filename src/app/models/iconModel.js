@@ -195,11 +195,11 @@ angular.module('HABmin.iconModel', []
 
         this.lookupCfgContext = function (src) {
             if (src === undefined || src === "") {
-                return "fa-wrench";
+                return "fa fa-wrench";
             }
             if (this.cfgContextIcons[src] === undefined || this.cfgContextIcons[src] === "") {
                 console.log("Unknown cfgcontext icon", src);
-                return "fa-wrench";
+                return "fa fa-wrench";
             }
             return this.cfgContextIcons[src];
         };
