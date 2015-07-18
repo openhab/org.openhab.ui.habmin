@@ -142,18 +142,22 @@ angular.module('HABmin.iconModel', []
         this.cfgContextIcons = {
             battery: '',
             comment: 'fa fa-comment',
+            communication: 'fa fa-tty',
             compass: 'fa fa-compass',
             database: 'fa fa-database',
             folder: 'fa fa-folder',
+            health: 'fa fa-ambulance',
             history: 'fa fa-history',
             home: 'fa fa-home',
             info: 'fa fa-info',
+            link: 'fa fa-link',
             mail: 'fa fa-envelope',
             security: 'fa fa-lock',
             sleep: 'fa fa-moon-o',
             tags: 'fa fa-tags',
             warning: 'fa fa-warning',
-            wireless: 'fa fa-wireless'
+            wireless: 'fa fa-wifi',
+            setup: 'fa fa-wrench'
         };
 
         this.lookupIcon = function (src) {
