@@ -44,8 +44,8 @@ angular.module('dashboardGaugeWidget', [
                 );
 
                 // And then watch for changes
-                $scope.$on('smarthome/items/' + $scope.options.itemId + "/state", function (event, value) {
-                    var num = Number(value);
+                $scope.$on('smarthome/items/' + $scope.options.itemId + "/state", function (event, state) {
+                    var num = Number(state.value);
                     if(!isNaN(num)) {
                         $scope.value = num;
                     }

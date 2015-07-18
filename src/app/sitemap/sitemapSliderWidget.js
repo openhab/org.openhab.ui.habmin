@@ -26,6 +26,7 @@ angular.module('sitemapSliderWidget', [
             '  <input type="range" min="0" max="100" step="1" ng-model="sliderValue">' +
             '</div>',
             scope: {
+                itemId: "@",
                 itemModel: "=",
                 widget: "="
             },
@@ -96,8 +97,6 @@ angular.module('sitemapSliderWidget', [
                     });
                 }
 
-                updateWidget();
-
                 function updateWidget() {
                     if ($scope.widget.item !== undefined) {
                         // Handle state translation
@@ -139,6 +138,23 @@ angular.module('sitemapSliderWidget', [
                     $scope.currentSwitchValue = $scope.switchValue;
                     $scope.currentSliderValue = $scope.sliderValue;
                 }
+
+                // And then watch for changes
+                $scope.$on('smarthome/items/' + $scope.itemId + "/state", function (event, state) {
+                    var num = Number(state.value);
+                    if (!isNaN(num)) {
+                        $scope.switchValue = num == 0 ? false : true;
+                        $scope.sliderValue = num;
+
+                        // Keep a record of the current value so we can detect changes from the GUI
+                        // and avoid changes coming from the server!
+                        $scope.currentSwitchValue = $scope.switchValue;
+                        $scope.currentSliderValue = $scope.sliderValue;
+                    }
+                    $scope.$apply();
+                });
+
+                updateWidget();
             }
         };
     })

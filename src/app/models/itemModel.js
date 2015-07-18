@@ -34,7 +34,6 @@ angular.module('HABmin.itemModel', [
 
                 switch(evt.type) {
                     case 'ItemStateEvent':
-
                         // Broadcast an event so we update any widgets or listeners
                         $rootScope.$broadcast(evt.topic, payload);
                         break;
@@ -67,12 +66,19 @@ angular.module('HABmin.itemModel', [
             });
         };
 
-        this.getList = function () {
+        this.getList = function (refresh) {
+            // TODO: Only get the list once, then rely on SSE unless we refresh
             var tStart = new Date().getTime();
             var deferred = $q.defer();
 
             if (eventSrc == null) {
                 me.listen();
+            }
+
+            // Just return the current list unless it's empty, or we explicitly want to refresh
+            if(itemList.length != 0 && refresh != true) {
+                deferred.resolve(itemList);
+                return deferred.promise;
             }
 
             RestService.getService(svcName).then(

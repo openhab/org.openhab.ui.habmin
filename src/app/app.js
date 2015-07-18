@@ -15,9 +15,11 @@ angular.module('HABmin', [
     'HABmin.chart',
     'HABmin.sitemap',
     'HABmin.rules',
+    'HABmin.itemModel',
     'HABmin.userModel',
     'HABmin.restModel',
     'HABmin.sitemapModel',
+    'HABmin.thingModel',
     'HABmin.bindingModel',
     'HABmin.dashboardModel',
     'HABmin.inboxModel',
@@ -183,7 +185,7 @@ angular.module('HABmin', [
     ])
 
     .controller('HABminCtrl',
-    function HABminCtrl($scope, $window, $timeout, $interval, $rootScope, locale, DashboardModel, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, InboxModel, SidepanelService, RestService, UpdateService, EventModel, ServerMonitor) {
+    function HABminCtrl($scope, $window, $timeout, $interval, $rootScope, locale, ItemModel, ThingModel, DashboardModel, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, InboxModel, SidepanelService, RestService, UpdateService, EventModel, ServerMonitor) {
         $scope.isLoggedIn = UserService.isLoggedIn;
         $scope.notificationError = false;
         $scope.onlineStatus = false;
@@ -263,6 +265,9 @@ angular.module('HABmin', [
                             growl.warning(locale.getString('habmin.mainErrorLoadingInbox'));
                         }
                     );
+
+                    ThingModel.getList(true);
+                    ItemModel.getList(true);
 
                     DashboardModel.getList().then(
                         function (data) {

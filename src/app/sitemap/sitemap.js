@@ -286,8 +286,12 @@ angular.module('HABmin.sitemap', [
                         output += '" id="' + widget.widgetId + '"' + link + '>' +
                         '<' + widgetMap[widget.type].directive +
                         ' widget="w' + widget.widgetId + '"' +
-                        ' item-model="m' + widget.widgetId + '"' +
-                        '>' +
+                        ' item-model="m' + widget.widgetId + '"';
+
+                        if (widget.item != null) {
+                            output += ' item-id="' + widget.item.name + '"';
+                        }
+                        output += '>' +
                         children +
                         '</' + widgetMap[widget.type].directive + '>' +
                         '</div>';

@@ -50,8 +50,6 @@ angular.module('sitemapSwitchWidget', [
                     });
                 }
 
-                updateWidget();
-
                 function updateWidget() {
                     if ($scope.widget.item !== undefined) {
                         // Handle state translation
@@ -86,6 +84,21 @@ angular.module('sitemapSwitchWidget', [
                     // and avoid changes coming from the server!
                     $scope.currentValue = $scope.value;
                 }
+
+                // And then watch for changes
+                $scope.$on('smarthome/items/' + $scope.itemId + "/state", function (event, state) {
+                    var num = Number(state.value);
+                    if (!isNaN(num)) {
+                        $scope.value = num == 0 ? false : true;
+
+                        // Keep a record of the current value so we can detect changes from the GUI
+                        // and avoid changes coming from the server!
+                        $scope.currentValue = $scope.value;
+                    }
+                    $scope.$apply();
+                });
+
+                updateWidget();
             }
         };
     });

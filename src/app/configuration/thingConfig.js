@@ -79,11 +79,11 @@ angular.module('Config.Things', [
         );
 
         // If the list ever changes, update the counter
-        $scope.$watch("things", function() {
-            if($scope.things === undefined) {
+        $scope.$watch("things", function () {
+            if ($scope.things === undefined) {
                 return;
             }
-            if($scope.things == null) {
+            if ($scope.things == null) {
                 $scope.thingCnt = 0;
             }
             else {
@@ -150,6 +150,11 @@ angular.module('Config.Things', [
         };
 
         $scope.configGroupFilter = function (config, group) {
+            // Sanity check
+            if (config == null) {
+                return false;
+            }
+
             // Are we looking for ungrouped parameters
             if (group == null) {
                 if (config.groupName == null || config.groupName == "") {
@@ -435,12 +440,12 @@ angular.module('Config.Things', [
 
                     // If this thing requires a bridge, see how many things are current defined of the type required
                     // If there's only one, then use it by default
-                    if(type.supportedBridgeTypeUIDs != null && type.supportedBridgeTypeUIDs.length != 0) {
+                    if (type.supportedBridgeTypeUIDs != null && type.supportedBridgeTypeUIDs.length != 0) {
                         var bridgeFound = null;
-                        angular.forEach($scope.things, function(thing) {
+                        angular.forEach($scope.things, function (thing) {
                             // Check if this is a supported bridge
-                            if(type.supportedBridgeTypeUIDs.indexOf(thing.UID.split(':', 2).join(':')) != -1) {
-                                if(bridgeFound == null) {
+                            if (type.supportedBridgeTypeUIDs.indexOf(thing.UID.split(':', 2).join(':')) != -1) {
+                                if (bridgeFound == null) {
                                     bridgeFound = thing.UID;
                                 }
                                 else {
@@ -450,7 +455,7 @@ angular.module('Config.Things', [
                         });
 
                         // If we found a single bridge, it's now in bridgeFound
-                        if(bridgeFound != null && bridgeFound != "") {
+                        if (bridgeFound != null && bridgeFound != "") {
                             $scope.selectedThing.bridgeUID = bridgeFound;
                         }
                     }

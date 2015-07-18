@@ -310,7 +310,7 @@
                     </div>
                     <div collapse="$parent.panelDisplayed!='CONFIG-{{group.name}}'"
                          class="panel-form">
-                        <div ng-repeat="config in selectedThingType.configParameters | filter: configGroupFilter(null)">
+                        <div ng-repeat="config in selectedThingType.configParameters">
                             <div class="form-group"
                                  ng-if="configGroupFilter(config, group.name) && !config.advanced||showAdvancedSettings">
                                 <label for="CONFIGLABEL-{{config.name}}"

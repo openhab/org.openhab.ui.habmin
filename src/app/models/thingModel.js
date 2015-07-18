@@ -12,7 +12,7 @@ angular.module('HABmin.thingModel', [
     'HABmin.restModel'
 ])
 
-    .service('ThingModel', function ($http, $q, UserService, RestService) {
+    .service('ThingModel', function ($http, $q, $rootScope, UserService, RestService) {
         var thingList = [];
         var svcName = "things";
         var svcSetup = "setup";
@@ -28,18 +28,28 @@ angular.module('HABmin.thingModel', [
                 console.log(event.type);
                 console.log(event.data);
 
-
                 var evt = angular.fromJson(event.data);
                 var payload = angular.fromJson(evt.payload);
                 var topic = evt.topic.split("/");
 
-//                var item = evt.object[0];
-
                 switch(evt.type) {
                     case 'ThingStatusInfoEvent':
-
-                        // Broadcast an event so we update any widgets or listeners
-//                        $rootScope.$broadcast(evt.topic, payload);
+                        for (var b = 0; b < thingList.length; b++) {
+                            if (thingList[b].UID == topic[2]) {
+                                thingList[b].statusInfo = payload;
+                                $rootScope.$apply();
+                                break;
+                            }
+                        }
+                        break;
+                    case 'ThingUpdatedEvent':
+                        for (var b = 0; b < thingList.length; b++) {
+                            if (thingList[b].UID == topic[2]) {
+                                thingList[b] = payload[0];
+                                $rootScope.$apply();
+                                break;
+                            }
+                        }
                         break;
                 }
                 //
@@ -69,12 +79,18 @@ angular.module('HABmin.thingModel', [
             });
         };
 
-        this.getList = function () {
+        this.getList = function (refresh) {
             var tStart = new Date().getTime();
             var deferred = $q.defer();
 
             if (eventSrc == null) {
                 me.listen();
+            }
+
+            // Just return the current list unless it's empty, or we explicitly want to refresh
+            if(thingList.length != 0 && refresh != true) {
+                deferred.resolve(thingList);
+                return deferred.promise;
             }
 
             RestService.getService(svcName).then(
