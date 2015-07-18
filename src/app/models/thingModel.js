@@ -28,9 +28,22 @@ angular.module('HABmin.thingModel', [
                 console.log(event.type);
                 console.log(event.data);
 
-                var evt = angular.fromJson(event.data);
-                var thing = evt.object[0];
 
+                var evt = angular.fromJson(event.data);
+                var payload = angular.fromJson(evt.payload);
+                var topic = evt.topic.split("/");
+
+//                var item = evt.object[0];
+
+                switch(evt.type) {
+                    case 'ThingStatusInfoEvent':
+
+                        // Broadcast an event so we update any widgets or listeners
+//                        $rootScope.$broadcast(evt.topic, payload);
+                        break;
+                }
+                //
+                /*
                 if (evt.topic.indexOf("smarthome/things/added") === 0) {
                     thing.binding = thing.UID.split(":")[0];
                     thingList.push(thing);
@@ -52,6 +65,7 @@ angular.module('HABmin.thingModel', [
                         }
                     }
                 }
+                */
             });
         };
 

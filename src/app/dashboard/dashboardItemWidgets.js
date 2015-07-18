@@ -32,7 +32,7 @@ angular.module('dashboardItemWidgets', [
                 );
 
                 // And then watch for changes
-                $scope.$on('smarthome/update/' + $scope.item.name, function (event, value) {
+                $scope.$on('smarthome/state/' + $scope.item.name + "/state", function (event, value) {
                     $scope.item.value = value;
                     $scope.$apply();
                 });
@@ -65,7 +65,7 @@ angular.module('dashboardItemWidgets', [
                 );
 
                 // And then watch for changes
-                $scope.$on('smarthome/update/' + $scope.item.name, function (event, value) {
+                $scope.$on('smarthome/state/' + $scope.item.name + "/state", function (event, value) {
                     $scope.updateValue(value);
                     $scope.$apply();
                 });
