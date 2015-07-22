@@ -29,8 +29,43 @@ angular.module('HABmin.thingModel', [
                 console.log(event.data);
 
                 var evt = angular.fromJson(event.data);
-                var thing = evt.object[0];
+                var payload = angular.fromJson(evt.payload);
+                var topic = evt.topic.split("/");
 
+                switch(evt.type) {
+                    case 'ThingStatusInfoEvent':
+                        for (var c = 0; c < thingList.length; c++) {
+                            if (thingList[c].UID == topic[2]) {
+                                thingList[c].statusInfo = payload;
+                                $rootScope.$apply();
+                                break;
+                            }
+                        }
+                        break;
+                    case 'ThingUpdatedEvent':
+                        for (var b = 0; b < thingList.length; b++) {
+                            if (thingList[b].UID == topic[2]) {
+                                thingList[b] = payload[0];
+                                $rootScope.$apply();
+                                break;
+                            }
+                        }
+                        break;
+                    case 'ThingRemovedEvent':
+                        for (var a = 0; a < thingList.length; a++) {
+                            if (thingList[a].UID == topic[2]) {
+                                thingList.splice(a, 1);
+                                break;
+                            }
+                        }
+                        break;
+                    case 'ThingAddedEvent':
+                        payload.binding = payload.UID.split(":")[0];
+                        thingList.push(payload);
+                        break;
+                }
+
+/*
                 if (evt.topic.indexOf("smarthome/things/added") === 0) {
                     thing.binding = thing.UID.split(":")[0];
                     thingList.push(thing);
@@ -52,7 +87,7 @@ angular.module('HABmin.thingModel', [
                         }
                     }
                 }
-            });
+*/            });
         };
 
         this.getList = function () {
@@ -61,6 +96,12 @@ angular.module('HABmin.thingModel', [
 
             if (eventSrc == null) {
                 me.listen();
+            }
+
+            // Just return the current list unless it's empty, or we explicitly want to refresh
+            if(thingList.length != 0 && refresh != true) {
+                deferred.resolve(thingList);
+                return deferred.promise;
             }
 
             RestService.getService(svcName).then(
@@ -187,6 +228,28 @@ angular.module('HABmin.thingModel', [
                                 deferred.reject(data);
                             });
                     }
+                },
+                function () {
+                    deferred.reject(null);
+                }
+            );
+
+            return deferred.promise;
+        };
+
+        this.putConfig = function (thing, cfg) {
+            var tStart = new Date().getTime();
+            var deferred = $q.defer();
+
+            RestService.getService(svcName).then(
+                function (url) {
+                        $http.put(url + "/" + thing.UID + "/config", cfg)
+                            .success(function (data) {
+                                deferred.resolve(data);
+                            })
+                            .error(function (data, status) {
+                                deferred.reject(data);
+                            });
                 },
                 function () {
                     deferred.reject(null);

@@ -350,8 +350,13 @@ angular.module('Config.Things', [
         };
 
         $scope.thingSave = function () {
+            var dirtyCfg = {};
             // Perform type conversion to ensure that any INTEGER types are sent as a number
             angular.forEach($scope.selectedThingType.configParameters, function (cfg, key) {
+                // If this value hasn't changed, then don't send an update
+                if($scope.thingConfigForm[cfg.name].$dirty != true) {
+                    return;
+                }
                 switch (cfg.type) {
                     case "INTEGER":
                         $scope.selectedThing.configuration[cfg.name] =
@@ -362,8 +367,11 @@ angular.module('Config.Things', [
                             $scope.selectedThing.configuration[cfg.name].toString();
                         break;
                 }
+
+                dirtyCfg[cfg.name] = $scope.selectedThing.configuration[cfg.name];
             });
-            ThingModel.putThing($scope.selectedThing).then(
+
+            ThingModel.putConfig($scope.selectedThing, dirtyCfg).then(
                 function () {
                     $scope.newThing = false;
                     var name = "";

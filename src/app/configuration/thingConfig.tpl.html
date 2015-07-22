@@ -317,6 +317,7 @@
                                        class="control-label">{{config.label}}</label>
                                 <input config-parameter="{{config}}"
                                        class="form-control"
+                                       name="{{config.name}}"
                                        ng-dirty ng-required="{{config.required}}"
                                        id="CONFIGLABEL-{{config.name}}"
                                        ng-model="selectedThing.configuration[config.name]">
@@ -353,6 +354,7 @@
                                        class="control-label">{{config.label}}</label>
                                 <input config-parameter="{{config}}"
                                        class="form-control"
+                                       name="{{config.name}}"
                                        ng-dirty ng-required="{{config.required}}"
                                        id="CONFIGLABEL-{{config.name}}"
                                        ng-model="selectedThing.configuration[config.name]">

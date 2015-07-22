@@ -25,31 +25,49 @@ angular.module('HABmin.inboxModel', [
             eventSrc = new EventSource("/rest/events?topics=smarthome/inbox/*");
 
             eventSrc.addEventListener('message', function (event) {
-                console.log(event.type);
                 console.log(event.data);
 
                 var evt = angular.fromJson(event.data);
+                var payload = angular.fromJson(evt.payload);
+                var topic = evt.topic.split("/");
 
-                if (evt.topic.indexOf("smarthome/inbox/added") === 0) {
-                    inboxContents.push(evt.object);
-                    growl.success(locale.getString('habmin.discoveryNewThing', {name: evt.object.label}));
-                }
-                else if (evt.topic.indexOf("smarthome/inbox/removed") === 0) {
-                    for (var a = 0; a < inboxContents.length; a++) {
-                        if (inboxContents[a].thingUID == evt.object.thingUID) {
-                            inboxContents.splice(a, 1);
-                            break;
+                switch (evt.type) {
+                    case 'InboxRemovedEvent':
+                        for (var a = 0; a < inboxContents.length; a++) {
+                            if (inboxContents[a].thingUID == topic[2]) {
+                                inboxContents.splice(a, 1);
+                                break;
+                            }
                         }
-                    }
+                        break;
+                    case 'InboxAddedEvent':
+                        inboxContents.push(payload);
+                        growl.success(locale.getString('habmin.discoveryNewThing', {name: payload.label}));
+                        break;
                 }
-                else if (evt.topic.indexOf("smarthome/inbox/updated") === 0) {
-                    for (var b = 0; b < inboxContents.length; b++) {
-                        if (inboxContents[b].thingUID == evt.object.thingUID) {
-                            inboxContents[b] = evt.object;
-                            break;
-                        }
-                    }
-                }
+
+                /*
+                 if (evt.topic.indexOf("smarthome/inbox/added") === 0) {
+                 inboxContents.push(evt.object);
+                 growl.success(locale.getString('habmin.discoveryNewThing', {name: evt.object.label}));
+                 }
+                 else if (evt.topic.indexOf("smarthome/inbox/removed") === 0) {
+                 for (var a = 0; a < inboxContents.length; a++) {
+                 if (inboxContents[a].thingUID == evt.object.thingUID) {
+                 inboxContents.splice(a, 1);
+                 break;
+                 }
+                 }
+                 }
+                 else if (evt.topic.indexOf("smarthome/inbox/updated") === 0) {
+                 for (var b = 0; b < inboxContents.length; b++) {
+                 if (inboxContents[b].thingUID == evt.object.thingUID) {
+                 inboxContents[b] = evt.object;
+                 break;
+                 }
+                 }
+                 }
+                 */
             });
         };
 
