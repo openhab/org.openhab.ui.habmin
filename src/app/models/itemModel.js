@@ -23,19 +23,24 @@ angular.module('HABmin.itemModel', [
             eventSrc = new EventSource("/rest/events?topics=smarthome/items/*");
 
             eventSrc.addEventListener('message', function (event) {
-//                console.log(event.type);
                 console.log(event.data);
 
                 var evt = angular.fromJson(event.data);
                 var payload = angular.fromJson(evt.payload);
                 var topic = evt.topic.split("/");
 
-//                var item = evt.object[0];
-
                 switch(evt.type) {
                     case 'ItemStateEvent':
                         // Broadcast an event so we update any widgets or listeners
                         $rootScope.$broadcast(evt.topic, payload);
+                        break;
+                    case 'ItemRemovedEvent':
+                        for (var a = 0; a < itemList.length; a++) {
+                            if (itemList[a].name == topic[2]) {
+                                itemList.splice(a, 1);
+                                break;
+                            }
+                        }
                         break;
                 }
 
@@ -62,11 +67,10 @@ angular.module('HABmin.itemModel', [
                     // Broadcast an event so we update any widgets or listeners
                     $rootScope.$broadcast('smarthome/items/updated', item);
                 }
-                */
             });
         };
 
-        this.getList = function (refresh) {
+        this.getList = function () {
             // TODO: Only get the list once, then rely on SSE unless we refresh
             var tStart = new Date().getTime();
             var deferred = $q.defer();
