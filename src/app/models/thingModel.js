@@ -12,7 +12,7 @@ angular.module('HABmin.thingModel', [
     'HABmin.restModel'
 ])
 
-    .service('ThingModel', function ($http, $q, UserService, RestService) {
+    .service('ThingModel', function ($http, $q, $rootScope, UserService, RestService) {
         var thingList = [];
         var svcName = "things";
         var svcSetup = "setup";
@@ -45,7 +45,10 @@ angular.module('HABmin.thingModel', [
                     case 'ThingUpdatedEvent':
                         for (var b = 0; b < thingList.length; b++) {
                             if (thingList[b].UID == topic[2]) {
-                                thingList[b] = payload[0];
+                                // Aggregate the data - only update what we've been given
+                                for(var i in payload[0]){
+                                    thingList[b][i] = payload[0][i];
+                                }
                                 $rootScope.$apply();
                                 break;
                             }
@@ -64,33 +67,10 @@ angular.module('HABmin.thingModel', [
                         thingList.push(payload);
                         break;
                 }
-
-/*
-                if (evt.topic.indexOf("smarthome/things/added") === 0) {
-                    thing.binding = thing.UID.split(":")[0];
-                    thingList.push(thing);
-                }
-                else if (evt.topic.indexOf("smarthome/things/removed") === 0) {
-                    for (var a = 0; a < thingList.length; a++) {
-                        if (thingList[a].UID == thing.UID) {
-                            thingList.splice(a, 1);
-                            break;
-                        }
-                    }
-                }
-                else if (evt.topic.indexOf("smarthome/things/updated") === 0) {
-                    thing = evt.object[1];
-                    for (var b = 0; b < thingList.length; b++) {
-                        if (thingList[b].UID == thing.UID) {
-                            thingList[b] = thing;
-                            break;
-                        }
-                    }
-                }
-*/            });
+            });
         };
 
-        this.getList = function () {
+        this.getList = function (refresh) {
             var tStart = new Date().getTime();
             var deferred = $q.defer();
 

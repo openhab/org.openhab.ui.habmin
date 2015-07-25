@@ -34,6 +34,21 @@ angular.module('HABmin.itemModel', [
                         // Broadcast an event so we update any widgets or listeners
                         $rootScope.$broadcast(evt.topic, payload);
                         break;
+                    case 'ItemUpdatedEvent':
+                        for (var b = 0; b < itemList.length; b++) {
+                            if (itemList[b].name == topic[2]) {
+                                // Aggregate the data - only update what we've been given
+                                for(var i in payload[0]){
+                                    itemList[b][i] = payload[0][i];
+                                }
+                                $rootScope.$apply();
+                                break;
+                            }
+                        }
+                        break;
+                    case 'ItemAddedEvent':
+                        itemList.push(payload);
+                        break;
                     case 'ItemRemovedEvent':
                         for (var a = 0; a < itemList.length; a++) {
                             if (itemList[a].name == topic[2]) {
@@ -43,34 +58,10 @@ angular.module('HABmin.itemModel', [
                         }
                         break;
                 }
-
-/*                if (evt.topic.indexOf("smarthome/items/added") === 0) {
-                    itemList.push(item);
-                }
-                else if (evt.topic.indexOf("smarthome/items/removed") === 0) {
-                    for (var a = 0; a < itemList.length; a++) {
-                        if (itemList[a].name == item.name) {
-                            itemList.splice(a, 1);
-                            break;
-                        }
-                    }
-                }
-                else if (evt.topic.indexOf("smarthome/items/updated") === 0) {
-                    item = evt.object[1];
-                    for (var b = 0; b < itemList.length; b++) {
-                        if (itemList[b].name == item.name) {
-                            itemList[b] = item;
-                            break;
-                        }
-                    }
-
-                    // Broadcast an event so we update any widgets or listeners
-                    $rootScope.$broadcast('smarthome/items/updated', item);
-                }
             });
         };
 
-        this.getList = function () {
+        this.getList = function (refresh) {
             // TODO: Only get the list once, then rely on SSE unless we refresh
             var tStart = new Date().getTime();
             var deferred = $q.defer();

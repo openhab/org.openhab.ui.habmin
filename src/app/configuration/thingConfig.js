@@ -50,7 +50,7 @@ angular.module('Config.Things', [
     })
 
     .controller('ThingConfigCtrl',
-    function ThingConfigCtrl($scope, locale, growl, $timeout, $window, $http, $interval, UserService, ThingModel, BindingModel, ItemModel, itemEdit, SmartHomeModel) {
+    function ThingConfigCtrl($scope, $q, locale, growl, $timeout, $window, $http, $interval, UserService, ThingModel, BindingModel, ItemModel, itemEdit, SmartHomeModel) {
         $scope.panelDisplayed = 'PROPERTIES';
         $scope.thingCnt = -1;
 
@@ -355,11 +355,21 @@ angular.module('Config.Things', [
         };
 
         $scope.thingSave = function () {
+            var promises = [];
+            // Check if the linked item information has changed
+            if ($scope.thingConfigForm.itemLabel.$dirty === true ||
+                $scope.thingConfigForm.itemCategory.$dirty === true || $scope.thingConfigForm.itemGroups.$dirty) {
+                promises.push(ItemModel.putItem($scope.selectedThing.item));
+            }
+
+            // Keep track of configs that have changed
             var dirtyCfg = {};
+            var workToDo = false;
+
             // Perform type conversion to ensure that any INTEGER types are sent as a number
             angular.forEach($scope.selectedThingType.configParameters, function (cfg, key) {
                 // If this value hasn't changed, then don't send an update
-                if($scope.thingConfigForm[cfg.name].$dirty != true) {
+                if ($scope.thingConfigForm[cfg.name].$dirty !== true) {
                     return;
                 }
                 switch (cfg.type) {
@@ -373,10 +383,17 @@ angular.module('Config.Things', [
                         break;
                 }
 
+                workToDo = true;
                 dirtyCfg[cfg.name] = $scope.selectedThing.configuration[cfg.name];
             });
 
-            ThingModel.putConfig($scope.selectedThing, dirtyCfg).then(
+            // Is there anything for us to do?
+            if (workToDo === true) {
+                promises.push(ThingModel.putConfig($scope.selectedThing, dirtyCfg));
+            }
+
+            // Now wait for any promises to complete before notifying our users
+            $q.all(promises).then(
                 function () {
                     $scope.newThing = false;
                     var name = "";
@@ -396,6 +413,7 @@ angular.module('Config.Things', [
                         {name: name}));
                 }
             );
+
         };
 
         $scope.thingDelete = function () {

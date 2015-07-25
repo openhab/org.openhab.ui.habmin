@@ -223,6 +223,7 @@
                         <input type="text"
                                class="form-control"
                                id="inputThingLabel"
+                               name="itemLabel"
                                ng-model="selectedThing.item.label"
                                i18n-attr="{placeholder: 'habmin.itemSelectLabel'}">
                     </div>
@@ -259,6 +260,7 @@
                             <ui-select id="inputCategory"
                                        ng-model="selectedThing.item.category"
                                        theme="bootstrap"
+                                       name="itemCategory"
                                        search-enabled="false"
                                     >
                                 <ui-select-match i18n-attr="{placeholder: 'habmin.itemSelectCategory'}">
@@ -281,6 +283,7 @@
                                        ng-model="selectedThing.item.groupNames"
                                        theme="bootstrap"
                                        search-enabled="false"
+                                       name="itemGroups"
                                        multiple
                                     >
                                 <ui-select-match i18n-attr="{placeholder: 'habmin.itemSelectGroup'}">
@@ -323,7 +326,7 @@
                                        ng-model="selectedThing.configuration[config.name]">
 
                                 <p class="help-block single-line" ng-hide="config.description==null || config.description.length==0">
-                                    <span class="text-muted" ng-bind-html="config.description"></span>
+                                    <span class="text-muted" marked="config.description"></span>
                                 <span show-overflow class="ellipsis text-info fa fa-ellipsis-h"
                                       ng-help-dialog
                                       ng-help-title="{{config.label}}"
