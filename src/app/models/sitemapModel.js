@@ -150,13 +150,3 @@ angular.module('HABmin.sitemapModel', [
         };
 
     });
-
-
-/*
- .factory('DocumentsList', function($http, $q){
- var d = $q.defer();
- $http.get('/DocumentsList').success(function(data){
- d.resolve(data);
- });
- return d.promise;
- });*/

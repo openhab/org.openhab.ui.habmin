@@ -88,6 +88,23 @@ angular.module('Config.Things', [
             }
             else {
                 $scope.thingCnt = $scope.things.length;
+
+                // Loop through all the things and derive battery status
+                // TODO: Maybe this should move to the ThingModel?
+                angular.forEach($scope.things, function(thing) {
+                    for (var i = 0; i < thing.channels.length; i++) {
+                        if (thing.channels[i].id == "battery-level") {
+                            ItemModel.getItem(thing.channels[i].linkedItems[0]).then(
+                                function (item) {
+//                            if(item == null) {
+                                    thing.batteryIcon = "fa fa-question-circle";
+                                }
+                            );
+
+                            return;
+                        }
+                    }
+                });
             }
         }, true);
 
@@ -239,6 +256,15 @@ angular.module('Config.Things', [
             return null;
         };
 
+
+        $scope.channelExists = function(thing, channelId) {
+            angular.forEach(thing.channels, function(channel) {
+                if(channel.id == channelId) {
+                    return channel;
+                }
+            });
+        };
+
         $scope.selectThing = function (thing) {
             $scope.formLoaded = false;
             $scope.newThing = false;
@@ -247,10 +273,23 @@ angular.module('Config.Things', [
 
             $scope.selectedThingType = $scope.getThingType(thing);
 
+            // Ensure the options are converted to the correct type
+            if($scope.selectedThingType != null) {
+                angular.forEach($scope.selectedThingType.configParameters, function (parameter) {
+                    angular.forEach(parameter.options, function (option) {
+                        option.value = ThingModel.convertType(parameter.type, option.value);
+                    });
+                });
+            }
+
             // TODO: Do we need to do this - could just make a copy?
             ThingModel.getThing(thing.UID).then(
                 function (data) {
                     $scope.selectedThing = data;
+                    angular.forEach($scope.selectedThingType.configParameters, function (parameter) {
+                        $scope.selectedThing.configuration[parameter.name] =
+                            ThingModel.convertType(parameter.type, $scope.selectedThing.configuration[parameter.name], parameter.multiple);
+                    });
                     $timeout(function () {
                         $scope.thingConfigForm.$setPristine();
                         $scope.formLoaded = true;
@@ -367,24 +406,17 @@ angular.module('Config.Things', [
             var workToDo = false;
 
             // Perform type conversion to ensure that any INTEGER types are sent as a number
-            angular.forEach($scope.selectedThingType.configParameters, function (cfg, key) {
+            angular.forEach($scope.selectedThingType.configParameters, function (parameter, key) {
                 // If this value hasn't changed, then don't send an update
-                if ($scope.thingConfigForm[cfg.name].$dirty !== true) {
+                if ($scope.thingConfigForm[parameter.name].$dirty !== true) {
                     return;
                 }
-                switch (cfg.type) {
-                    case "INTEGER":
-                        $scope.selectedThing.configuration[cfg.name] =
-                            Number($scope.selectedThing.configuration[cfg.name]);
-                        break;
-                    case "STRING":
-                        $scope.selectedThing.configuration[cfg.name] =
-                            $scope.selectedThing.configuration[cfg.name].toString();
-                        break;
-                }
+
+                $scope.selectedThing.configuration[parameter.name] =
+                    ThingModel.convertType(parameter.type, $scope.selectedThing.configuration[parameter.name], parameter.multiple);
 
                 workToDo = true;
-                dirtyCfg[cfg.name] = $scope.selectedThing.configuration[cfg.name];
+                dirtyCfg[parameter.name] = $scope.selectedThing.configuration[parameter.name];
             });
 
             // Is there anything for us to do?

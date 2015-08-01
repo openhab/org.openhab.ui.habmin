@@ -32,7 +32,7 @@ angular.module('HABmin.thingModel', [
                 var payload = angular.fromJson(evt.payload);
                 var topic = evt.topic.split("/");
 
-                switch(evt.type) {
+                switch (evt.type) {
                     case 'ThingStatusInfoEvent':
                         for (var c = 0; c < thingList.length; c++) {
                             if (thingList[c].UID == topic[2]) {
@@ -46,7 +46,7 @@ angular.module('HABmin.thingModel', [
                         for (var b = 0; b < thingList.length; b++) {
                             if (thingList[b].UID == topic[2]) {
                                 // Aggregate the data - only update what we've been given
-                                for(var i in payload[0]){
+                                for (var i in payload[0]) {
                                     thingList[b][i] = payload[0][i];
                                 }
                                 $rootScope.$apply();
@@ -79,7 +79,7 @@ angular.module('HABmin.thingModel', [
             }
 
             // Just return the current list unless it's empty, or we explicitly want to refresh
-            if(thingList.length != 0 && refresh != true) {
+            if (thingList.length != 0 && refresh != true) {
                 deferred.resolve(thingList);
                 return deferred.promise;
             }
@@ -223,13 +223,13 @@ angular.module('HABmin.thingModel', [
 
             RestService.getService(svcName).then(
                 function (url) {
-                        $http.put(url + "/" + thing.UID + "/config", cfg)
-                            .success(function (data) {
-                                deferred.resolve(data);
-                            })
-                            .error(function (data, status) {
-                                deferred.reject(data);
-                            });
+                    $http.put(url + "/" + thing.UID + "/config", cfg)
+                        .success(function (data) {
+                            deferred.resolve(data);
+                        })
+                        .error(function (data, status) {
+                            deferred.reject(data);
+                        });
                 },
                 function () {
                     deferred.reject(null);
@@ -310,16 +310,16 @@ angular.module('HABmin.thingModel', [
          * @param thingType
          */
         this.getThingTypeCategory = function (thingType) {
-            if(thingType.channels == []) {
+            if (thingType.channels == []) {
                 return "";
             }
 
             var categories = {};
-            angular.forEach(thingType.channels, function(channel) {
-                if(channel.category == null || channel.category == "") {
+            angular.forEach(thingType.channels, function (channel) {
+                if (channel.category == null || channel.category == "") {
                     return;
                 }
-                if(categories[channel.category] == null) {
+                if (categories[channel.category] == null) {
                     categories[channel.category] = 1;
                 }
                 else {
@@ -329,14 +329,43 @@ angular.module('HABmin.thingModel', [
 
             var category = "";
             var max = 0;
-            angular.forEach(categories, function(val, key) {
-                if(val > max) {
+            angular.forEach(categories, function (val, key) {
+                if (val > max) {
                     category = key;
                     max = val;
                 }
             });
 
             return category;
+        };
+
+        function _convertType(type, value) {
+            switch (type) {
+                case "INTEGER":
+                    return Number(value);
+                case "TEXT":
+                    return value.toString();
+                case "BOOLEAN":
+                    return Boolean(value);
+                case "DECIMAL":
+                    break;
+            }
+        }
+
+        this.convertType = function (type, value, multiple) {
+            if(multiple) {
+                value = [].concat(value);
+            }
+            if(angular.isArray(value)) {
+                angular.forEach(value, function(val) {
+                    val = _convertType(type, val);
+                });
+            }
+            else {
+                value = _convertType(type, value);
+            }
+
+            return value;
         };
 
     })
