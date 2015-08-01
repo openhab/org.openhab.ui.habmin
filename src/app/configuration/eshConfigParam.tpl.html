@@ -1,0 +1,54 @@
+<label for="CONFIGLABEL-{{config.name}}" class="control-label">{{config.label}}</label>
+
+<div ng-if="config.options!=null && config.options.length!=0 && config.multiple==true">
+    <ui-select id="CONFIGLABEL-{{config.name}}"
+               ng-model="selectedThing.configuration[config.name]"
+               theme="bootstrap"
+               name="{{config.name}}"
+               search-enabled="false"
+               multiple
+               limit="config.multipleLimit"
+            >
+        <ui-select-match i18n-attr="{placeholder: 'habmin.itemSelectCategory'}">
+            {{$item.label}}
+        </ui-select-match>
+        <ui-select-choices repeat="option.value as option in config.options">
+            <span>{{option.label}}</span>
+        </ui-select-choices>
+    </ui-select>
+</div>
+
+<div ng-if="config.options!=null && config.options.length!=0 && config.multiple!=true">
+    <ui-select id="CONFIGLABEL-{{config.name}}"
+               ng-model="selectedThing.configuration[config.name]"
+               theme="bootstrap"
+               name="{{config.name}}"
+               search-enabled="false"
+            >
+        <ui-select-match i18n-attr="{placeholder: 'habmin.itemSelectCategory'}">
+            {{$select.selected.label}}
+        </ui-select-match>
+        <ui-select-choices repeat="option.value as option in config.options">
+            <span>{{option.label}}</span>
+        </ui-select-choices>
+    </ui-select>
+</div>
+
+<div ng-if="config.options==null || config.options.length==0">
+    <input config-parameter="{{config}}"
+           class="form-control"
+           name="{{config.name}}"
+           ng-dirty ng-required="{{config.required}}"
+           id="CONFIGLABEL-{{config.name}}"
+           ng-model="selectedThing.configuration[config.name]"
+            >
+</div>
+
+<p class="help-block single-line" ng-hide="config.description==null || config.description.length==0">
+    <span class="text-muted" ng-bind-html="config.description"></span>
+    <span show-overflow class="ellipsis text-info fa fa-ellipsis-h"
+          ng-help-dialog
+          ng-help-title="{{config.label}}"
+          ng-help-message="{{config.description}}">
+    </span>
+</p>
