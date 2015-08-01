@@ -264,7 +264,7 @@
   "userThemeSelect": "Select your theme...",
   "userLanguage": "Language",
   "userLanguageSelect": "Select your language...",
-  "ruleNoDevices": "No Devices"
+  "ruleNoDevices": "No Devices",
   "floorplanEditor": "Floorplan Editor",
   "floorplanSelectImage": "Select Image",
   "floorplanUploadTitle": "Upload Floorplan",
@@ -278,7 +278,7 @@
   "floorplanDelete": "Delete Floorplan",
   "floorplanDeleteCheck": "Are you sure you wnat to delete this floorplan?",
   "floorplanSaveOk": "Floorplan <b><i>{name}</i></b> saved successfully",
-  "floorplanSaveError": "Error saving floorplan <b><i>{name}</i></b>"
+  "floorplanSaveError": "Error saving floorplan <b><i>{name}</i></b>",
   "scheduleEditTitle": "Edit Event",
   "scheduleEditStart": "Start Time",
   "scheduleEditEnd": "End Time",
