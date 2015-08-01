@@ -19,6 +19,7 @@ angular.module('sitemapTextWidget', [
             '  <span class="pull-right" ng-style="valueColor">{{itemModel}}</span>' +
             '</div>',
             scope: {
+                itemId: "@",
                 itemModel: "=",
                 widget: "="
             },
@@ -29,6 +30,15 @@ angular.module('sitemapTextWidget', [
                 if ($scope.widget.valuecolor) {
                     $scope.valueColor = {color: $scope.widget.valuecolor};
                 }
+
+                // And then watch for changes
+                $scope.$on('smarthome/items/' + $scope.itemId + "/state", function (event, state) {
+                    var num = Number(state.value);
+                    if (!isNaN(num)) {
+                        $scope.itemModel = num;
+                    }
+                    $scope.$apply();
+                });
             }
         };
     })

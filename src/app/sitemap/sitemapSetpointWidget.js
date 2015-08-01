@@ -22,6 +22,7 @@ angular.module('sitemapSetpointWidget', [
             '  <button type="button" class="btn btn-primary btn-sm" ng-click="click(-1)"><span class="fa fa-chevron-circle-down"></span></button>' +
             '</div>',
             scope: {
+                itemId: "@",
                 itemModel: "=",
                 widget: "="
             },
@@ -58,8 +59,6 @@ angular.module('sitemapSetpointWidget', [
                     };
                 }
 
-                updateWidget();
-
                 function updateWidget() {
                     if ($scope.widget.item !== undefined) {
                         $scope.value = $scope.widget.item.state;
@@ -76,6 +75,17 @@ angular.module('sitemapSetpointWidget', [
                     // and avoid changes coming from the server!
                     $scope.currentValue = parseInt($scope.value, 10);
                 }
+
+                // And then watch for changes
+                $scope.$on('smarthome/items/' + $scope.itemId + "/state", function (event, state) {
+                    var num = Number(state.value);
+                    if (!isNaN(num)) {
+                        $scope.currentValue = num;
+                    }
+                    $scope.$apply();
+                });
+
+                updateWidget();
             }
         };
     });
