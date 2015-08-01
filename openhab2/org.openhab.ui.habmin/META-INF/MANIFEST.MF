@@ -31,4 +31,5 @@ Bundle-SymbolicName: org.openhab.ui.habmin;singleton:=true
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Service-Component: OSGI-INF/*
 Require-Bundle: javax.servlet
-Bundle-ClassPath: ., lib/xstream-1.4.6.jar
+Bundle-ClassPath: ., lib/xstream-1.4.6.jar,
+ lib/commons-codec-1.10.jar

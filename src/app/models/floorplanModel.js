@@ -7,14 +7,14 @@
  *
  * (c) 2014-2015 Chris Jackson (chris@cd-jackson.com)
  */
-angular.module('HABmin.dashboardModel', [
+angular.module('HABmin.floorplanModel', [
     'HABmin.userModel',
     'HABmin.restModel'
 ])
 
-    .service('DashboardModel', function ($http, $q, UserService, RestService) {
-        var svcName = "habmin/dashboards";
-        var dashboardList = [];
+    .service('FloorplanModel', function ($http, $q, UserService, RestService) {
+        var svcName = "habmin/floorplan";
+        var floorplanList = [];
 
         this.getList = function () {
             var tStart = new Date().getTime();
@@ -22,24 +22,16 @@ angular.module('HABmin.dashboardModel', [
 
             RestService.getService(svcName).then(
                 function (url) {
-                    if (url == null) {
-                        deferred.resolve(false);
-                        return;
-                    }
-
                     $http.get(url)
                         .success(function (data) {
                             console.log("Fetch completed in", new Date().getTime() - tStart);
 
                             // Keep a local copy.
                             // This allows us to update the data later and keeps the GUI in sync.
-                            if (data.dashboard != null) {
-                                data = data.dashboard;
-                            }
-                            dashboardList = [].concat(data);
+                            floorplanList = [].concat(data);
                             console.log("Processing completed in", new Date().getTime() - tStart);
 
-                            deferred.resolve(dashboardList);
+                            deferred.resolve(floorplanList);
                         })
                         .error(function (data, status) {
                             deferred.reject(data);
@@ -54,34 +46,18 @@ angular.module('HABmin.dashboardModel', [
             return deferred.promise;
         };
 
-        this.getDashboard = function (id) {
+        this.getFloorplan = function (id) {
             var tStart = new Date().getTime();
             var deferred = $q.defer();
 
             RestService.getService(svcName).then(
                 function (url) {
-                    if (url == null) {
-                        deferred.resolve(false);
-                        return;
-                    }
-
                     $http.get(url + "/" + id)
                         .success(function (data) {
                             console.log("Fetch completed in", new Date().getTime() - tStart);
 
                             console.log("Store completed in", new Date().getTime() - tStart);
 
-                            // Make sure widgets is an array
-                            data.widgets = [].concat(data.widgets);
-
-                            // Handle the correct types.
-                            // Especially important for gridster
-                            angular.forEach(data.widgets, function (widget) {
-                                widget.row = Number(widget.row);
-                                widget.col = Number(widget.col);
-                                widget.sizeX = Number(widget.sizeX);
-                                widget.sizeY = Number(widget.sizeY);
-                            });
                             deferred.resolve(data);
                         })
                         .error(function (data, status) {
@@ -98,52 +74,44 @@ angular.module('HABmin.dashboardModel', [
         };
 
 
-        this.saveDashboard = function (dashboard) {
+        this.putFloorplan = function (floorplan) {
             var tStart = new Date().getTime();
             var deferred = $q.defer();
 
             RestService.getService(svcName).then(
                 function (url) {
-                    if (url == null) {
-                        deferred.resolve(false);
-                        return;
-                    }
-
-                    if (dashboard.id !== undefined && Number(dashboard.id) > 0) {
-                        // This is an existing dashboard - use PUT
-                        $http.put(url + "/" + dashboard.id, dashboard)
+                    if (floorplan.id !== undefined && Number(floorplan.id) > 0) {
+                        // This is an existing floorplan - use PUT
+                        $http.put(url + "/" + floorplan.id, floorplan)
                             .success(function (data) {
                                 console.log("PUT completed in", new Date().getTime() - tStart);
 
-                                // Update the cache. This will update the GUI if needed.
-                                angular.forEach(dashboardList, function (c) {
-                                    if (c.id === dashboard.id) {
-                                        c.name = dashboard.name;
-                                        c.category = dashboard.category;
-                                        c.menu = dashboard.menu;
+                                // Update the name in the cache. This will update the GUI if needed.
+                                angular.forEach(floorplanList, function (c) {
+                                    if (c.id === floorplan.id) {
+                                        c.name = floorplan.name;
+                                        c.category = floorplan.category;
                                     }
                                 });
 
-                                // Make sure widgets is an array
-                                data.widgets = [].concat(data.widgets);
-                                deferred.resolve(data.id);
+                                deferred.resolve(data);
                             })
                             .error(function (data, status) {
                                 deferred.reject(data);
                             });
                     }
                     else {
-                        // This is an new dashboard - use POST
-                        $http.post(url, dashboard)
+                        // This is an new floorplan - use POST
+                        $http.post(url, floorplan)
                             .success(function (data) {
                                 console.log("POST completed in", new Date().getTime() - tStart);
 
-                                dashboardList.push(data);
+                                floorplanList.push(data);
 
                                 deferred.resolve(data);
                             })
                             .error(function (data, status) {
-                                deferred.reject(data.id);
+                                deferred.reject(data);
                             });
                     }
 
@@ -157,17 +125,12 @@ angular.module('HABmin.dashboardModel', [
         };
 
 
-        this.deleteDashboard = function (id) {
+        this.deleteFloorplan = function (id) {
             var tStart = new Date().getTime();
             var deferred = $q.defer();
 
             RestService.getService(svcName).then(
                 function (url) {
-                    if (url == null) {
-                        deferred.resolve(false);
-                        return;
-                    }
-
                     if (id !== undefined && Number(id) > 0) {
                         $http['delete'](url + "/" + id)
                             .success(function (data) {
@@ -175,15 +138,15 @@ angular.module('HABmin.dashboardModel', [
 
                                 var ref = 0;
 
-                                // Update the cache. This will update the GUI if needed.
-                                angular.forEach(dashboardList, function (c, key) {
+                                // Remove from cache. This will update the GUI if needed.
+                                angular.forEach(floorplanList, function (c, key) {
                                     if (c.id === id) {
                                         ref = key;
                                     }
                                 });
 
                                 if (ref !== 0) {
-                                    dashboardList.splice(ref, 1);
+                                    floorplanList.splice(ref, 1);
                                 }
                                 deferred.resolve(data);
                             })

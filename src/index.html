@@ -292,47 +292,54 @@
                                 </ul>
                             </li>
 
-                            <!-- CONFIGURATION menu -->
-                            <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown">
-                                    <span class="fa fa-wrench"></span>
-                                    <span i18n="habmin.mainConfiguration"></span>
-                                    <span class="caret"></span>
+                    <!-- CONFIGURATION menu -->
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="fa fa-wrench"></span>
+                            <span i18n="habmin.mainConfiguration"></span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a ui-sref="bindings">
+                                    <span class="fa fa-fw fa-random"></span>
+                                    <span i18n="habmin.mainBindings"></span>
                                 </a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                        <a ui-sref="bindings">
-                                            <span class="fa fa-fw fa-random"></span>
-                                            <span i18n="habmin.mainBindings"></span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a ui-sref="things">
-                                            <span class="fa fa-fw fa-share-alt"></span>
-                                            <span i18n="habmin.mainThings"></span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a ui-sref="discovery">
-                                            <span class="fa fa-fw fa-paper-plane"></span>
-                                            <span i18n="habmin.mainDiscovery"></span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a ui-sref="items">
-                                            <span class="fa fa-fw fa-paper-plane"></span>
-                                            <span i18n="habmin.mainItems"></span>
-                                        </a>
-                                    </li>
-                                    <li role="presentation" class="divider"></li>
-                                    <li>
-                                        <a ui-sref="binding/zwave">
-                                            <habmin-icon class="fa fa-fw" icon="zwave"></habmin-icon>
-                                            <span>ZWave (OH1)</span>
-                                        </a>
-                                    </li>
-                                </ul>
                             </li>
+                            <li>
+                                <a ui-sref="things">
+                                    <span class="fa fa-fw fa-share-alt"></span>
+                                    <span i18n="habmin.mainThings"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a ui-sref="discovery">
+                                    <span class="fa fa-fw fa-paper-plane"></span>
+                                    <span i18n="habmin.mainDiscovery"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a ui-sref="items">
+                                    <span class="fa fa-fw fa-paper-plane"></span>
+                                    <span i18n="habmin.mainItems"></span>
+                                </a>
+                            </li>
+                            <li role="presentation" class="divider"></li>
+                            <li>
+                                <a ui-sref="binding/zwave">
+                                    <habmin-icon class="fa fa-fw" icon="zwave"></habmin-icon>
+                                    <span>ZWave</span>
+                                </a>
+                            </li>
+                          <li role="presentation" class="divider"></li>
+                            <li>
+                                <a ui-sref="floorplan/editor">
+                                    <habmin-icon class="fa fa-fw" icon="zwave"></habmin-icon>
+                                    <span>Floorplan Editor</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
 
                             <!-- TOOLS menu -->
                             <li class="dropdown">

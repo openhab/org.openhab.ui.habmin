@@ -105,6 +105,7 @@
   "dashboardAddGauge": "Gauge",
   "dashboardAddImage": "Image",
   "dashboardAddGroup": "Control Group",
+  "dashboardAddFloorplan": "Floorplan",
   "dashboardDeleteTitle": "Delete Dashboard",
   "dashboardDeleteText": "Are you sure you want to delete this dashboard? It will not be possible to restore!",
   "dashboardClearTitle": "Clear Dashboard",
@@ -115,6 +116,7 @@
   "dashboardWidgetConfigGauge": "Gauge Properties",
   "dashboardWidgetConfigImage": "Image Properties",
   "dashboardWidgetConfigGroup": "Group Properties",
+  "dashboardWidgetConfigFloorplan": "Floorplan Properties",
   "dashboardChartName": "Chart Name",
   "dashboardChartService": "Persistence Service",
   "dashboardGaugeLabel": "Label",
@@ -132,7 +134,9 @@
   "dashboardGaugeMinimum": "Minimum Value",
   "dashboardGaugeMaximum": "Maximum Value",
   "dashboardGroupName": "Group Name",
-  "dashboardGroupSelectName": "Select group...",
+  "dashboardFloorName": "Floorplan Name",
+  "dashboardFloorSelectName": "Select the floorplan...",
+  "GroupSelectName": "Select group...",
   "dashboardGroupItems": "Item Properties",
   "dashboardImageName": "Image Name",
   "dashboardImageURL": "Image URL",
@@ -260,7 +264,21 @@
   "userThemeSelect": "Select your theme...",
   "userLanguage": "Language",
   "userLanguageSelect": "Select your language...",
-  "ruleNoDevices": "No Devices",
+  "ruleNoDevices": "No Devices"
+  "floorplanEditor": "Floorplan Editor",
+  "floorplanSelectImage": "Select Image",
+  "floorplanUploadTitle": "Upload Floorplan",
+  "floorplanUploadName": "Floorplan Name",
+  "floorplanHotspotTitle": "Hotspot Properties",
+  "floorplanHotspotItem": "Item",
+  "floorplanHotspotItemPlaceholder": "Select Item...",
+  "floorplanPropertiesTitle": "Floorplan Properties",
+  "floorplanPropertiesName": "Name",
+  "floorplanPropertiesCategory": "Category",
+  "floorplanDelete": "Delete Floorplan",
+  "floorplanDeleteCheck": "Are you sure you wnat to delete this floorplan?",
+  "floorplanSaveOk": "Floorplan <b><i>{name}</i></b> saved successfully",
+  "floorplanSaveError": "Error saving floorplan <b><i>{name}</i></b>"
   "scheduleEditTitle": "Edit Event",
   "scheduleEditStart": "Start Time",
   "scheduleEditEnd": "End Time",
@@ -268,3 +286,9 @@
   "scheduleEditDaily": "All Day Event",
   "scheduleEditRepeat": "Repeat Interval"
 }
+
+
+
+
+
+

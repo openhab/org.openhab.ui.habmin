@@ -35,7 +35,12 @@
                         <span i18n="habmin.dashboardWidgetConfigGroup"></span>
                     </a>
                 </li>
-
+                <li ng-show="widget.type=='Floor'"
+                    ng-class="{'active':showTab==1}">
+                    <a ng-click="showTab=1">
+                        <span i18n="habmin.dashboardWidgetConfigFloorplan"></span>
+                    </a>
+                </li>
             </ul>
         </div>
 
@@ -50,6 +55,8 @@
                                             options="widget.options"></dashboard-image-properties>
                 <dashboard-group-properties ng-if="widget.type=='Group'"
                                             options="widget.options"></dashboard-group-properties>
+                <dashboard-floorplan-properties ng-if="widget.type=='Floor'"
+                                            options="widget.options"></dashboard-floorplan-properties>
             </div>
         </div>
     </div>
