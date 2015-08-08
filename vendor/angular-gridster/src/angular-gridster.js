@@ -537,6 +537,10 @@
 			 * @param {Boolean} ceilOrFloor (Optional) Determines rounding method
 			 */
 			this.pixelsToRows = function(pixels, ceilOrFloor) {
+				if (!this.outerMargin) {
+					pixels += this.margins[0] / 2;
+				}
+
 				if (ceilOrFloor === true) {
 					return Math.ceil(pixels / this.curRowHeight);
 				} else if (ceilOrFloor === false) {
@@ -554,6 +558,10 @@
 			 * @returns {Number} The number of columns
 			 */
 			this.pixelsToColumns = function(pixels, ceilOrFloor) {
+				if (!this.outerMargin) {
+					pixels += this.margins[1] / 2;
+				}
+
 				if (ceilOrFloor === true) {
 					return Math.ceil(pixels / this.curColWidth);
 				} else if (ceilOrFloor === false) {
@@ -1315,8 +1323,8 @@
 		};
 	}])
 
-	.factory('GridsterDraggable', ['$document', '$timeout', '$window', 'GridsterTouch',
-		function($document, $timeout, $window, GridsterTouch) {
+	.factory('GridsterDraggable', ['$document', '$window', 'GridsterTouch',
+		function($document, $window, GridsterTouch) {
 			function GridsterDraggable($el, scope, gridster, item, itemOptions) {
 
 				var elmX, elmY, elmW, elmH,
@@ -1563,8 +1571,14 @@
 						return;
 					}
 
-					// disable and timeout required for some template rendering
-					$timeout(function() {
+					enabled = true;
+
+					// timeout required for some template rendering
+					$el.ready(function() {
+						if (enabled !== true) {
+							return;
+						}
+
 						// disable any existing draghandles
 						for (var u = 0, ul = unifiedInputs.length; u < ul; ++u) {
 							unifiedInputs[u].disable();
@@ -1585,8 +1599,6 @@
 							unifiedInputs[h] = new GridsterTouch($dragHandles[h], mouseDown, mouseMove, mouseUp);
 							unifiedInputs[h].enable();
 						}
-
-						enabled = true;
 					});
 				};
 
@@ -1595,17 +1607,13 @@
 						return;
 					}
 
-					// timeout to avoid race contition with the enable timeout
-					$timeout(function() {
+					enabled = false;
 
-						for (var u = 0, ul = unifiedInputs.length; u < ul; ++u) {
-							unifiedInputs[u].disable();
-						}
+					for (var u = 0, ul = unifiedInputs.length; u < ul; ++u) {
+						unifiedInputs[u].disable();
+					}
 
-						unifiedInputs = [];
-						enabled = false;
-
-					});
+					unifiedInputs = [];
 				};
 
 				this.toggle = function(enabled) {
@@ -1830,7 +1838,9 @@
 						sizeY = gridster.pixelsToRows(elmH, true);
 					}
 
-					if (gridster.pushing !== false || gridster.getItems(row, col, sizeX, sizeY, item).length === 0) {
+
+					var canOccupy = row > -1 && col > -1 && sizeX + col <= gridster.columns && sizeY + row <= gridster.maxRows;
+					if (canOccupy && (gridster.pushing !== false || gridster.getItems(row, col, sizeX, sizeY, item).length === 0)) {
 						item.row = row;
 						item.col = col;
 						item.sizeX = sizeX;

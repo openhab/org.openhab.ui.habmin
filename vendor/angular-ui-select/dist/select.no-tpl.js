@@ -1,14 +1,13 @@
 /*!
  * ui-select
  * http://github.com/angular-ui/ui-select
- * Version: 0.12.1 - 2015-08-02T20:56:31.493Z
+ * Version: 0.12.1 - 2015-08-06T13:28:34.948Z
  * License: MIT
  */
 
 
 (function () { 
 "use strict";
-
 var KEY = {
     TAB: 9,
     ENTER: 13,
@@ -29,20 +28,19 @@ var KEY = {
     DELETE: 46,
     COMMAND: 91,
 
-    MAP: { 91 : "COMMAND", 8 : "BACKSPACE" , 9 : "TAB" , 13 : "ENTER" , 16 : "SHIFT" , 17 : "CTRL" , 18 : "ALT" , 19 : "PAUSEBREAK" , 20 : "CAPSLOCK" , 27 : "ESC" , 32 : "SPACE" , 33 : "PAGE_UP", 34 : "PAGE_DOWN" , 35 : "END" , 36 : "HOME" , 37 : "LEFT" , 38 : "UP" , 39 : "RIGHT" , 40 : "DOWN" , 43 : "+" , 44 : "PRINTSCREEN" , 45 : "INSERT" , 46 : "DELETE", 48 : "0" , 49 : "1" , 50 : "2" , 51 : "3" , 52 : "4" , 53 : "5" , 54 : "6" , 55 : "7" , 56 : "8" , 57 : "9" , 59 : ";", 61 : "=" , 65 : "A" , 66 : "B" , 67 : "C" , 68 : "D" , 69 : "E" , 70 : "F" , 71 : "G" , 72 : "H" , 73 : "I" , 74 : "J" , 75 : "K" , 76 : "L", 77 : "M" , 78 : "N" , 79 : "O" , 80 : "P" , 81 : "Q" , 82 : "R" , 83 : "S" , 84 : "T" , 85 : "U" , 86 : "V" , 87 : "W" , 88 : "X" , 89 : "Y" , 90 : "Z", 96 : "0" , 97 : "1" , 98 : "2" , 99 : "3" , 100 : "4" , 101 : "5" , 102 : "6" , 103 : "7" , 104 : "8" , 105 : "9", 106 : "*" , 107 : "+" , 109 : "-" , 110 : "." , 111 : "/", 112 : "F1" , 113 : "F2" , 114 : "F3" , 115 : "F4" , 116 : "F5" , 117 : "F6" , 118 : "F7" , 119 : "F8" , 120 : "F9" , 121 : "F10" , 122 : "F11" , 123 : "F12", 144 : "NUMLOCK" , 145 : "SCROLLLOCK" , 186 : ";" , 187 : "=" , 188 : "," , 189 : "-" , 190 : "." , 191 : "/" , 192 : "`" , 219 : "[" , 220 : "\\" , 221 : "]" , 222 : "'"
-    },
-
     isControl: function (e) {
         var k = e.which;
         switch (k) {
-        case KEY.COMMAND:
-        case KEY.SHIFT:
-        case KEY.CTRL:
-        case KEY.ALT:
-            return true;
+            case KEY.COMMAND:
+            case KEY.SHIFT:
+            case KEY.CTRL:
+            case KEY.ALT:
+                return true;
         }
 
-        if (e.metaKey) return true;
+        if (e.metaKey) {
+            return true;
+        }
 
         return false;
     },
@@ -50,13 +48,13 @@ var KEY = {
         k = k.which ? k.which : k;
         return k >= 112 && k <= 123;
     },
-    isVerticalMovement: function (k){
-      return ~[KEY.UP, KEY.DOWN].indexOf(k);
+    isVerticalMovement: function (k) {
+        return ~[KEY.UP, KEY.DOWN].indexOf(k);
     },
-    isHorizontalMovement: function (k){
-      return ~[KEY.LEFT,KEY.RIGHT,KEY.BACKSPACE,KEY.DELETE].indexOf(k);
+    isHorizontalMovement: function (k) {
+        return ~[KEY.LEFT, KEY.RIGHT, KEY.BACKSPACE, KEY.DELETE].indexOf(k);
     }
-  };
+};
 
 /**
  * Add querySelectorAll() to jqLite.
@@ -68,67 +66,67 @@ var KEY = {
  * See feat(jqLite): use querySelectorAll instead of getElementsByTagName in jqLite.find https://github.com/angular/angular.js/pull/3598
  */
 if (angular.element.prototype.querySelectorAll === undefined) {
-  angular.element.prototype.querySelectorAll = function(selector) {
-    return angular.element(this[0].querySelectorAll(selector));
-  };
+    angular.element.prototype.querySelectorAll = function (selector) {
+        return angular.element(this[0].querySelectorAll(selector));
+    };
 }
 
 /**
  * Add closest() to jqLite.
  */
 if (angular.element.prototype.closest === undefined) {
-  angular.element.prototype.closest = function( selector) {
-    var elem = this[0];
-    var matchesSelector = elem.matches || elem.webkitMatchesSelector || elem.mozMatchesSelector || elem.msMatchesSelector;
+    angular.element.prototype.closest = function (selector) {
+        var elem = this[0];
+        var matchesSelector = elem.matches || elem.webkitMatchesSelector || elem.mozMatchesSelector ||
+            elem.msMatchesSelector;
 
-    while (elem) {
-      if (matchesSelector.bind(elem)(selector)) {
-        return elem;
-      } else {
-        elem = elem.parentElement;
-      }
-    }
-    return false;
-  };
+        while (elem) {
+            if (matchesSelector.bind(elem)(selector)) {
+                return elem;
+            } else {
+                elem = elem.parentElement;
+            }
+        }
+        return false;
+    };
 }
 
 var latestId = 0;
 
 var uis = angular.module('ui.select', [])
 
-.constant('uiSelectConfig', {
-  theme: 'bootstrap',
-  searchEnabled: true,
-  sortable: false,
-  placeholder: '', // Empty by default, like HTML tag <select>
-  refreshDelay: 1000, // In milliseconds
-  closeOnSelect: true,
-  generateId: function() {
-    return latestId++;
-  },
-  appendToBody: false
-})
+    .constant('uiSelectConfig', {
+        theme: 'bootstrap',
+        searchEnabled: true,
+        sortable: false,
+        placeholder: '', // Empty by default, like HTML tag <select>
+        closeOnSelect: true,
+        generateId: function () {
+            return latestId++;
+        },
+        appendToBody: false
+    })
 
 // See Rename minErr and make it accessible from outside https://github.com/angular/angular.js/issues/6913
-.service('uiSelectMinErr', function() {
-  var minErr = angular.$$minErr('ui.select');
-  return function() {
-    var error = minErr.apply(this, arguments);
-    var message = error.message.replace(new RegExp('\nhttp://errors.angularjs.org/.*'), '');
-    return new Error(message);
-  };
-})
+    .service('uiSelectMinErr', function () {
+        var minErr = angular.$$minErr('ui.select');
+        return function () {
+            var error = minErr.apply(this, arguments);
+            var message = error.message.replace(new RegExp('\nhttp://errors.angularjs.org/.*'), '');
+            return new Error(message);
+        };
+    })
 
 // Recreates old behavior of ng-transclude. Used internally.
-.directive('uisTranscludeAppend', function () {
-  return {
-    link: function (scope, element, attrs, ctrl, transclude) {
-        transclude(scope, function (clone) {
-          element.append(clone);
-        });
-      }
-    };
-})
+    .directive('uisTranscludeAppend', function () {
+        return {
+            link: function (scope, element, attrs, ctrl, transclude) {
+                transclude(scope, function (clone) {
+                    element.append(clone);
+                });
+            }
+        };
+    })
 
 /**
  * Highlights text that matches $select.search.
@@ -136,15 +134,16 @@ var uis = angular.module('ui.select', [])
  * Taken from AngularUI Bootstrap Typeahead
  * See https://github.com/angular-ui/bootstrap/blob/0.10.0/src/typeahead/typeahead.js#L340
  */
-.filter('highlight', function() {
-  function escapeRegexp(queryToEscape) {
-    return queryToEscape.replace(/([.?*+^$[\]\\(){}|-])/g, '\\$1');
-  }
+    .filter('highlight', function () {
+        function escapeRegexp(queryToEscape) {
+            return queryToEscape.replace(/([.?*+^$[\]\\(){}|-])/g, '\\$1');
+        }
 
-  return function(matchItem, query) {
-    return query && matchItem ? matchItem.replace(new RegExp(escapeRegexp(query), 'gi'), '<span class="ui-select-highlight">$&</span>') : matchItem;
-  };
-})
+        return function (matchItem, query) {
+            return query && matchItem ? matchItem.replace(new RegExp(escapeRegexp(query), 'gi'),
+                '<span class="ui-select-highlight">$&</span>') : matchItem;
+        };
+    })
 
 /**
  * A read-only equivalent of jQuery's offset function: http://api.jquery.com/offset/
@@ -152,96 +151,92 @@ var uis = angular.module('ui.select', [])
  * Taken from AngularUI Bootstrap Position:
  * See https://github.com/angular-ui/bootstrap/blob/master/src/position/position.js#L70
  */
-.factory('uisOffset',
-  ['$document', '$window',
-  function ($document, $window) {
+    .factory('uisOffset',
+    ['$document', '$window',
+        function ($document, $window) {
 
-  return function(element) {
-    var boundingClientRect = element[0].getBoundingClientRect();
-    return {
-      width: boundingClientRect.width || element.prop('offsetWidth'),
-      height: boundingClientRect.height || element.prop('offsetHeight'),
-      top: boundingClientRect.top + ($window.pageYOffset || $document[0].documentElement.scrollTop),
-      left: boundingClientRect.left + ($window.pageXOffset || $document[0].documentElement.scrollLeft)
-    };
-  };
-}]);
+            return function (element) {
+                var boundingClientRect = element[0].getBoundingClientRect();
+                return {
+                    width: boundingClientRect.width || element.prop('offsetWidth'),
+                    height: boundingClientRect.height || element.prop('offsetHeight'),
+                    top: boundingClientRect.top + ($window.pageYOffset || $document[0].documentElement.scrollTop),
+                    left: boundingClientRect.left + ($window.pageXOffset || $document[0].documentElement.scrollLeft)
+                };
+            };
+        }]);
 
 uis.directive('uiSelectChoices',
-  ['uiSelectConfig', 'uisRepeatParser', 'uiSelectMinErr', '$compile',
-  function(uiSelectConfig, RepeatParser, uiSelectMinErr, $compile) {
+    ['uiSelectConfig', 'uisRepeatParser', 'uiSelectMinErr', '$compile',
+        function (uiSelectConfig, RepeatParser, uiSelectMinErr, $compile) {
 
-  return {
-    restrict: 'EA',
-    require: '^uiSelect',
-    replace: true,
-    transclude: true,
-    templateUrl: function(tElement) {
-      // Gets theme attribute from parent (ui-select)
-      var theme = tElement.parent().attr('theme') || uiSelectConfig.theme;
-      return theme + '/choices.tpl.html';
-    },
+            return {
+                restrict: 'EA',
+                require: '^uiSelect',
+                replace: true,
+                transclude: true,
+                templateUrl: function (tElement) {
+                    // Gets theme attribute from parent (ui-select)
+                    var theme = tElement.parent().attr('theme') || uiSelectConfig.theme;
+                    return theme + '/choices.tpl.html';
+                },
 
-    compile: function(tElement, tAttrs) {
+                compile: function (tElement, tAttrs) {
 
-      if (!tAttrs.repeat) throw uiSelectMinErr('repeat', "Expected 'repeat' expression.");
+                    if (!tAttrs.repeat) {
+                        throw uiSelectMinErr('repeat', "Expected 'repeat' expression.");
+                    }
 
-      return function link(scope, element, attrs, $select, transcludeFn) {
+                    return function link(scope, element, attrs, $select, transcludeFn) {
 
-        // var repeat = RepeatParser.parse(attrs.repeat);
-        var groupByExp = attrs.groupBy;
-        var groupFilterExp = attrs.groupFilter;
+                        // var repeat = RepeatParser.parse(attrs.repeat);
+                        var groupByExp = attrs.groupBy;
+                        var groupFilterExp = attrs.groupFilter;
 
-        $select.parseRepeatAttr(attrs.repeat, groupByExp, groupFilterExp); //Result ready at $select.parserResult
+                        $select.parseRepeatAttr(attrs.repeat, groupByExp, groupFilterExp); //Result ready at $select.parserResult
 
-        $select.disableChoiceExpression = attrs.uiDisableChoice;
-        $select.onHighlightCallback = attrs.onHighlight;
+                        $select.disableChoiceExpression = attrs.uiDisableChoice;
+                        $select.onHighlightCallback = attrs.onHighlight;
 
-        $select.refreshOnActive = scope.$eval(attrs.refreshOnActive);
+                        if (groupByExp) {
+                            var groups = element.querySelectorAll('.ui-select-choices-group');
+                            if (groups.length !== 1) throw uiSelectMinErr('rows',
+                                "Expected 1 .ui-select-choices-group but got '{0}'.", groups.length);
+                            groups.attr('ng-repeat', RepeatParser.getGroupNgRepeatExpression());
+                        }
 
-        if(groupByExp) {
-          var groups = element.querySelectorAll('.ui-select-choices-group');
-          if (groups.length !== 1) throw uiSelectMinErr('rows', "Expected 1 .ui-select-choices-group but got '{0}'.", groups.length);
-          groups.attr('ng-repeat', RepeatParser.getGroupNgRepeatExpression());
-        }
+                        var choices = element.querySelectorAll('.ui-select-choices-row');
+                        if (choices.length !== 1) {
+                            throw uiSelectMinErr('rows', "Expected 1 .ui-select-choices-row but got '{0}'.",
+                                choices.length);
+                        }
 
-        var choices = element.querySelectorAll('.ui-select-choices-row');
-        if (choices.length !== 1) {
-          throw uiSelectMinErr('rows', "Expected 1 .ui-select-choices-row but got '{0}'.", choices.length);
-        }
+                        choices.attr('ng-repeat',
+                            RepeatParser.getNgRepeatExpression($select.parserResult.itemName, '$select.items',
+                                $select.parserResult.trackByExp, groupByExp))
+                            .attr('ng-if', '$select.open') // Prevent unnecessary watches when dropdown is closed
+                            .attr('ng-mouseenter', '$select.setActiveItem(' + $select.parserResult.itemName + ')')
+                            .attr('ng-click', '$select.select(' + $select.parserResult.itemName + ',false,$event)');
 
-        choices.attr('ng-repeat', RepeatParser.getNgRepeatExpression($select.parserResult.itemName, '$select.items', $select.parserResult.trackByExp, groupByExp))
-            .attr('ng-if', '$select.open') //Prevent unnecessary watches when dropdown is closed
-            .attr('ng-mouseenter', '$select.setActiveItem('+$select.parserResult.itemName +')')
-            .attr('ng-click', '$select.select(' + $select.parserResult.itemName + ',false,$event)');
+                        var rowsInner = element.querySelectorAll('.ui-select-choices-row-inner');
+                        if (rowsInner.length !== 1) {
+                            throw uiSelectMinErr('rows',
+                                "Expected 1 .ui-select-choices-row-inner but got '{0}'.", rowsInner.length);
+                        }
+                        rowsInner.attr('uis-transclude-append', ''); //Adding uisTranscludeAppend directive to row element after choices element has ngRepeat
 
-        var rowsInner = element.querySelectorAll('.ui-select-choices-row-inner');
-        if (rowsInner.length !== 1) throw uiSelectMinErr('rows', "Expected 1 .ui-select-choices-row-inner but got '{0}'.", rowsInner.length);
-        rowsInner.attr('uis-transclude-append', ''); //Adding uisTranscludeAppend directive to row element after choices element has ngRepeat
+                        $compile(element, transcludeFn)(scope); //Passing current transcludeFn to be able to append elements correctly from uisTranscludeAppend
 
-        $compile(element, transcludeFn)(scope); //Passing current transcludeFn to be able to append elements correctly from uisTranscludeAppend
-
-        scope.$watch('$select.search', function(newValue) {
-          if(newValue && !$select.open && $select.multiple) $select.activate(false, true);
-          $select.activeIndex = 0;
-          if(!$select.refreshOnActive || ($select.refreshOnActive && $select.refreshIsActive)) {
-            $select.refresh(attrs.refresh);
-          }
-        });
-
-        scope.$watch('$select.refreshIsActive', function(newValue, oldValue){
-          if(angular.isUndefined(oldValue) && newValue){
-            $select.refresh(attrs.refresh);
-          }
-        });
-
-        // $eval() is needed otherwise we get a string instead of a number
-        var refreshDelay = scope.$eval(attrs.refreshDelay);
-        $select.refreshDelay = refreshDelay !== undefined ? refreshDelay : uiSelectConfig.refreshDelay;
-      };
-    }
-  };
-}]);
+                        scope.$watch('$select.search', function (newValue) {
+                            if (newValue && !$select.open && $select.multiple) {
+                                $select.activate(false, true);
+                            }
+                            $select.activeIndex = 0;
+                        });
+                    };
+                }
+            };
+        }]);
 
 /**
  * Contains ui-select "intelligence".
@@ -260,29 +255,26 @@ uis.controller('uiSelectCtrl',
             ctrl.placeholder = uiSelectConfig.placeholder;
             ctrl.searchEnabled = uiSelectConfig.searchEnabled;
             ctrl.sortable = uiSelectConfig.sortable;
-            ctrl.refreshDelay = uiSelectConfig.refreshDelay;
 
-            ctrl.removeSelected = false; //If selected item(s) should be removed from dropdown list
-            ctrl.closeOnSelect = true; //Initialized inside uiSelect directive link function
+            ctrl.removeSelected = false; // If selected item(s) should be removed from dropdown list
+            ctrl.closeOnSelect = true; // Initialized inside uiSelect directive link function
             ctrl.search = EMPTY_SEARCH;
 
-            ctrl.activeIndex = 0; //Dropdown of choices
-            ctrl.items = []; //All available choices
+            ctrl.activeIndex = 0; // Dropdown of choices
+            ctrl.items = []; // All available choices
 
             ctrl.open = false;
             ctrl.focus = false;
             ctrl.disabled = false;
             ctrl.selected = undefined;
 
-            ctrl.focusser = undefined; //Reference to input element used to handle focus events
+            ctrl.focusser = undefined; // Reference to input element used to handle focus events
             ctrl.resetSearchInput = true;
             ctrl.multiple = undefined; // Initialized inside uiSelect directive link function
             ctrl.disableChoiceExpression = undefined; // Initialized inside uiSelectChoices directive link function
             ctrl.lockChoiceExpression = undefined; // Initialized inside uiSelectMatch directive link function
             ctrl.clickTriggeredSelect = false;
             ctrl.$filter = $filter;
-            ctrl.refreshOnActive = undefined;
-            ctrl.refreshIsActive = undefined;
 
             ctrl.searchInput = $element.querySelectorAll('input.ui-select-search');
             if (ctrl.searchInput.length !== 1) {
@@ -290,6 +282,10 @@ uis.controller('uiSelectCtrl',
                     ctrl.searchInput.length);
             }
 
+            /**
+             * Returns true if the selection is empty
+             * @returns {boolean|*}
+             */
             ctrl.isEmpty = function () {
                 return angular.isUndefined(ctrl.selected) || ctrl.selected === null || ctrl.selected === '';
             };
@@ -298,12 +294,18 @@ uis.controller('uiSelectCtrl',
             function _resetSearchInput() {
                 if (ctrl.resetSearchInput || (ctrl.resetSearchInput === undefined && uiSelectConfig.resetSearchInput)) {
                     ctrl.search = EMPTY_SEARCH;
-                    //reset activeIndex
+                    // Reset activeIndex
                     if (ctrl.selected && ctrl.items.length && !ctrl.multiple) {
                         ctrl.activeIndex = ctrl.items.indexOf(ctrl.selected);
                     }
                 }
             }
+
+            ctrl.findGroupByName = function (name) {
+                return ctrl.groups && ctrl.groups.filter(function (group) {
+                        return group.name === name;
+                    })[0];
+            };
 
             function _groupsFilter(groups, groupNames) {
                 var i, j, result = [];
@@ -317,37 +319,56 @@ uis.controller('uiSelectCtrl',
                 return result;
             }
 
-            // When the user clicks on ui-select, displays the dropdown list
+            /**
+             * Activates the control.
+             * When the user clicks on ui-select, displays the dropdown list
+             */
             ctrl.activate = function (initSearchValue, avoidReset) {
                 if (!ctrl.disabled && !ctrl.open) {
-                    if (!avoidReset) _resetSearchInput();
+                    var completeCallback = function () {
+                        if (!avoidReset) {
+                            _resetSearchInput();
+                        }
 
-                    $scope.$broadcast('uis:activate');
+                        $scope.$broadcast('uis:activate');
 
-                    ctrl.open = true;
-                    if (!ctrl.searchEnabled) {
-                        angular.element(ctrl.searchInput[0]).addClass('ui-select-offscreen');
+                        ctrl.open = true;
+                        if (!ctrl.searchEnabled) {
+                            angular.element(ctrl.searchInput[0]).addClass('ui-select-offscreen');
+                        }
+
+                        ctrl.activeIndex = ctrl.activeIndex >= ctrl.items.length ? 0 : ctrl.activeIndex;
+
+                        // Give it time to appear before focus
+                        $timeout(function () {
+                            ctrl.search = initSearchValue || ctrl.search;
+                            ctrl.searchInput[0].focus();
+                        });
+                    };
+
+                    var result = ctrl.onDropdownCallback($scope, {open: true});
+                    if (angular.isDefined(result)) {
+                        if (angular.isFunction(result.then)) {
+                            // Promise returned - wait for it to complete before completing the selection
+                            result.then(function (result) {
+                                if (!result) {
+                                    return;
+                                }
+                                completeCallback();
+                            });
+                        } else if (result === true) {
+                            completeCallback();
+                        } else if (result) {
+                            completeCallback();
+                        }
+                    } else {
+                        completeCallback();
                     }
-
-                    ctrl.activeIndex = ctrl.activeIndex >= ctrl.items.length ? 0 : ctrl.activeIndex;
-                    ctrl.refreshIsActive = true;
-
-                    // Give it time to appear before focus
-                    $timeout(function () {
-                        ctrl.search = initSearchValue || ctrl.search;
-                        ctrl.searchInput[0].focus();
-                    });
                 }
                 else if (ctrl.open && !ctrl.searchEnabled) {
                     // Close the selection if we don't have search enabled, and we click on the select again
                     ctrl.close();
                 }
-            };
-
-            ctrl.findGroupByName = function (name) {
-                return ctrl.groups && ctrl.groups.filter(function (group) {
-                        return group.name === name;
-                    })[0];
             };
 
             ctrl.parseRepeatAttr = function (repeatAttr, groupByExp, groupFilterExp) {
@@ -382,6 +403,7 @@ uis.controller('uiSelectCtrl',
                     ctrl.items = items;
                 }
 
+                // Set the function to use when displaying items - either groups or single
                 ctrl.setItemsFn = groupByExp ? updateGroups : setPlainItems;
 
                 ctrl.parserResult = RepeatParser.parse(repeatAttr);
@@ -392,7 +414,7 @@ uis.controller('uiSelectCtrl',
                 ctrl.refreshItems = function (data) {
                     data = data || ctrl.parserResult.source($scope);
                     var selectedItems = ctrl.selected;
-                    //TODO should implement for single mode removeSelected
+                    // TODO should implement for single mode removeSelected
                     if (ctrl.isEmpty() || (angular.isArray(selectedItems) && !selectedItems.length) ||
                         !ctrl.removeSelected) {
                         ctrl.setItemsFn(data);
@@ -417,49 +439,38 @@ uis.controller('uiSelectCtrl',
                         if (!angular.isArray(items)) {
                             throw uiSelectMinErr('items', "Expected an array but got '{0}'.", items);
                         } else {
-                            //Remove already selected items (ex: while searching)
-                            //TODO Should add a test
+                            // Remove already selected items (ex: while searching)
+                            // TODO Should add a test
                             ctrl.refreshItems(items);
-                            ctrl.ngModel.$modelValue = null; //Force scope model value and ngModel value to be out of sync to re-run formatters
+                            // Force scope model value and ngModel value to be out of sync to re-run formatters
+                            ctrl.ngModel.$modelValue = null;
                         }
                     }
                 });
-
-            };
-
-            var _refreshDelayPromise;
-
-            /**
-             * Typeahead mode: lets the user refresh the collection using his own function.
-             *
-             * See Expose $select.search for external / remote filtering https://github.com/angular-ui/ui-select/pull/31
-             */
-            ctrl.refresh = function (refreshAttr) {
-                if (refreshAttr !== undefined) {
-
-                    // Debounce
-                    // See https://github.com/angular-ui/bootstrap/blob/0.10.0/src/typeahead/typeahead.js#L155
-                    // FYI AngularStrap typeahead does not have debouncing: https://github.com/mgcrea/angular-strap/blob/v2.0.0-rc.4/src/typeahead/typeahead.js#L177
-                    if (_refreshDelayPromise) {
-                        $timeout.cancel(_refreshDelayPromise);
-                    }
-                    _refreshDelayPromise = $timeout(function () {
-                        $scope.$eval(refreshAttr);
-                    }, ctrl.refreshDelay);
-                }
             };
 
             ctrl.setActiveItem = function (item) {
                 ctrl.activeIndex = ctrl.items.indexOf(item);
             };
 
+            /**
+             * Checks if the item is active
+             * @param itemScope the item
+             * @returns {boolean} true if active
+             */
             ctrl.isActive = function (itemScope) {
                 if (!ctrl.open) {
                     return false;
                 }
+                // Get the index of this item - returns -1 if the item isn't in the current list
                 var itemIndex = ctrl.items.indexOf(itemScope[ctrl.itemProperty]);
-                var isActive = itemIndex === ctrl.activeIndex;
 
+                // Is this the active index?
+                // If the itemIndex is -1, then the item wasn't in the list so let's ensure we're not active
+                // otherwise we can end up with all items being selected as active!
+                var isActive = itemIndex === -1 ? false : itemIndex === ctrl.activeIndex;
+
+                // If this is active, and we've defined a callback, do it!
                 if (isActive && !angular.isUndefined(ctrl.onHighlightCallback)) {
                     itemScope.$eval(ctrl.onHighlightCallback);
                 }
@@ -469,11 +480,13 @@ uis.controller('uiSelectCtrl',
 
             /**
              * Checks if the item is disabled
-             * @return boolean true if the item is disabled
+             * @param itemScope the item
+             * @return {boolean} true if the item is disabled
              */
             ctrl.isDisabled = function (itemScope) {
-
-                if (!ctrl.open) return false;
+                if (!ctrl.open) {
+                    return false;
+                }
 
                 var itemIndex = ctrl.items.indexOf(itemScope[ctrl.itemProperty]);
                 var isDisabled = false;
@@ -488,92 +501,139 @@ uis.controller('uiSelectCtrl',
                 return isDisabled;
             };
 
-
             /**
+             * Selects an item. Calls the onBeforeSelect and onSelect callbacks
+             * onBeforeSelect is called to allow the user to alter or abort the selection
+             * onSelect is called to notify the user of the selection
+             *
              * Called when the user selects an item with ENTER or clicks the dropdown
              */
             ctrl.select = function (item, skipFocusser, $event) {
-                if (item === undefined || !item._uiSelectChoiceDisabled) {
+                if (item !== undefined && item._uiSelectChoiceDisabled) {
+                    return;
+                }
 
-                    if (!ctrl.items && !ctrl.search){
-                        return;
+                // If no items in the list, and no search, then return
+                if (!ctrl.items && !ctrl.search) {
+                    return;
+                }
+
+                // Create the data used to pass to the callbacks
+                var locals = {};
+                locals[ctrl.parserResult.itemName] = item;
+                var callbackContext = {
+                    $item: item,
+                    $model: ctrl.parserResult.modelMapper($scope, locals)
+                };
+
+                // Local method called when we complete the select
+                // eg. called after the onselect callback
+                var completeCallback = function (item) {
+                    callbackContext.$item = item;
+                    $scope.$broadcast('uis:select', item);
+
+                    $timeout(function () {
+                        ctrl.onSelectCallback($scope, callbackContext);
+                    });
+
+                    if (ctrl.closeOnSelect) {
+                        ctrl.close(skipFocusser);
                     }
-
-                    if (!item || !item._uiSelectChoiceDisabled) {
-
-                        var completeSelection = function () {
-                            $scope.$broadcast('uis:select', item);
-
-                            $timeout(function () {
-                                ctrl.onSelectCallback($scope, callbackContext);
-                            });
-
-                            if (ctrl.closeOnSelect) {
-                                ctrl.close(skipFocusser);
-                            }
-                            if ($event && $event.type === 'click') {
-                                ctrl.clickTriggeredSelect = true;
-                            }
-                        };
-
-                        var locals = {};
-                        locals[ctrl.parserResult.itemName] = item;
-
-                        var callbackContext = {
-                            $item: item,
-                            $model: ctrl.parserResult.modelMapper($scope, locals)
-                        };
-
-                        // Call the onBeforeSelect callback
-                        // Allowable responses are -:
-                        // falsy: Abort the selection
-                        // promise: Wait for response
-                        // true: Complete selection
-                        // object: Add the returned object
-                        var onBeforeSelectResult = ctrl.onBeforeSelectCallback($scope, callbackContext);
-                        if (angular.isDefined(onBeforeSelectResult)) {
-                            if (!onBeforeSelectResult) {
-                                return;  // abort the selection in case of deliberate falsey result
-                            } else if (angular.isFunction(onBeforeSelectResult.then)) {
-                                onBeforeSelectResult.then(function (result) {
-                                    if (!result) {
-                                        return;
-                                    }
-                                    completeSelection(result);
-                                });
-                            } else if (onBeforeSelectResult === true) {
-                                completeSelection(item);
-                            } else {
-                                completeSelection(onBeforeSelectResult);
-                            }
-                        } else {
-                            completeSelection(item);
-                        }
+                    if ($event && $event.type === 'click') {
+                        ctrl.clickTriggeredSelect = true;
                     }
+                };
+
+                // If there's no onBeforeSelect callback, then just call the completeCallback
+                if(!angular.isDefined(ctrl.onBeforeRemoveCallback)) {
+                    completeCallback(item);
+                    return;
+                }
+
+                // Call the onBeforeSelect callback
+                // Allowable responses are -:
+                // falsy: Abort the selection
+                // promise: Wait for response
+                // true: Complete selection
+                // object: Add the returned object
+                var result = ctrl.onBeforeSelectCallback($scope, callbackContext);
+                if (angular.isDefined(result)) {
+                    if (angular.isFunction(result.then)) {
+                        // Promise returned - wait for it to complete before completing the selection
+                        result.then(function (response) {
+                            if (!response) {
+                                return;
+                            }
+                            if (response === true) {
+                                completeCallback(item);
+                            } else if (response) {
+                                completeCallback(response);
+                            }
+                        });
+                    } else if (result === true) {
+                        completeCallback(item);
+                    } else if (result) {
+                        completeCallback(result);
+                    }
+                } else {
+                    completeCallback(item);
                 }
             };
 
-            // Closes the dropdown
+            /**
+             * Close the dropdown
+             */
             ctrl.close = function (skipFocusser) {
                 if (!ctrl.open) {
                     return;
                 }
-                if (ctrl.ngModel && ctrl.ngModel.$setTouched) ctrl.ngModel.$setTouched();
-                _resetSearchInput();
-                ctrl.open = false;
-                if (!ctrl.searchEnabled) {
-                    angular.element(ctrl.searchInput[0]).removeClass('ui-select-offscreen');
+
+                function completeCallback() {
+                    if (ctrl.ngModel && ctrl.ngModel.$setTouched) {
+                        ctrl.ngModel.$setTouched();
+                    }
+                    _resetSearchInput();
+                    ctrl.open = false;
+                    if (!ctrl.searchEnabled) {
+                        angular.element(ctrl.searchInput[0]).removeClass('ui-select-offscreen');
+                    }
+
+                    $scope.$broadcast('uis:close', skipFocusser);
                 }
 
-                $scope.$broadcast('uis:close', skipFocusser);
+                var result = ctrl.onDropdownCallback($scope, {open: false});
+                if (angular.isDefined(result)) {
+                    if (angular.isFunction(result.then)) {
+                        // Promise returned - wait for it to complete before completing the selection
+                        result.then(function (result) {
+                            if (!result) {
+                                return;
+                            }
+                            completeCallback();
+                        });
+                    } else if (result === true) {
+                        completeCallback();
+                    } else if (result) {
+                        completeCallback();
+                    }
+                } else {
+                    completeCallback();
+                }
             };
 
+            /**
+             *  Set focus on the control
+             */
             ctrl.setFocus = function () {
                 if (!ctrl.focus) {
                     ctrl.focusInput[0].focus();
                 }
             };
 
+            /**
+             * Clears the selection
+             * @param $event
+             */
             ctrl.clear = function ($event) {
                 ctrl.select(undefined);
                 $event.stopPropagation();
@@ -582,7 +642,9 @@ uis.controller('uiSelectCtrl',
                 }, 0, false);
             };
 
-            // Toggle dropdown
+            /**
+             * Toggle the dropdown open and closed
+             */
             ctrl.toggle = function (e) {
                 if (ctrl.open) {
                     ctrl.close();
@@ -597,8 +659,10 @@ uis.controller('uiSelectCtrl',
                 var isLocked, item = ctrl.selected[itemIndex];
 
                 if (item && !angular.isUndefined(ctrl.lockChoiceExpression)) {
-                    isLocked = !!(itemScope.$eval(ctrl.lockChoiceExpression)); // force the boolean value
-                    item._uiSelectChoiceLocked = isLocked; // store this for later reference
+                    // Force the boolean value
+                    isLocked = !!(itemScope.$eval(ctrl.lockChoiceExpression));
+                    // Store this for later reference
+                    item._uiSelectChoiceLocked = isLocked;
                 }
 
                 return isLocked;
@@ -606,7 +670,6 @@ uis.controller('uiSelectCtrl',
 
             var sizeWatch = null;
             ctrl.sizeSearchInput = function () {
-
                 var input = ctrl.searchInput[0],
                     container = ctrl.searchInput.parent().parent()[0],
                     calculateContainerWidth = function () {
@@ -627,7 +690,8 @@ uis.controller('uiSelectCtrl',
                     };
 
                 ctrl.searchInput.css('width', '10px');
-                $timeout(function () { //Give time to render correctly
+                $timeout(function () {
+                    // Give time to render correctly
                     if (sizeWatch === null && !updateIfVisible(calculateContainerWidth())) {
                         sizeWatch = $scope.$watch(calculateContainerWidth, function (containerWidth) {
                             if (updateIfVisible(containerWidth)) {
@@ -644,7 +708,8 @@ uis.controller('uiSelectCtrl',
                 switch (key) {
                     case KEY.DOWN:
                         if (!ctrl.open && ctrl.multiple) {
-                            ctrl.activate(false, true); //In case its the search input in 'multiple' mode
+                            // In case its the search input in 'multiple' mode
+                            ctrl.activate(false, true);
                         }
                         else if (ctrl.activeIndex < ctrl.items.length - 1) {
                             ctrl.activeIndex++;
@@ -659,7 +724,9 @@ uis.controller('uiSelectCtrl',
                         }
                         break;
                     case KEY.TAB:
-                        if (!ctrl.multiple || ctrl.open) ctrl.select(ctrl.items[ctrl.activeIndex], true);
+                        if (!ctrl.multiple || ctrl.open) {
+                            ctrl.select(ctrl.items[ctrl.activeIndex], true);
+                        }
                         break;
                     case KEY.ENTER:
                         if (ctrl.open) {
@@ -703,24 +770,6 @@ uis.controller('uiSelectCtrl',
                 }
             });
 
-            // If tagging try to split by tokens and add items
-      /*      ctrl.searchInput.on('paste', function (e) {
-                var data = e.originalEvent.clipboardData.getData('text/plain');
-                if (data && data.length > 0 && ctrl.taggingTokens.isActivated && ctrl.tagging.fct) {
-                    var items = data.split(ctrl.taggingTokens.tokens[0]); // split by first token only
-                    if (items && items.length > 0) {
-                        angular.forEach(items, function (item) {
-                            var newItem = ctrl.tagging.fct(item);
-                            if (newItem) {
-                                ctrl.select(newItem, true);
-                            }
-                        });
-                        e.preventDefault();
-                        e.stopPropagation();
-                    }
-                }
-            });*/
-
             ctrl.searchInput.on('keyup', function (e) {
                 // return early with these keys
                 if (e.which === KEY.TAB || KEY.isControl(e) || KEY.isFunctionKey(e) || e.which === KEY.ESC ||
@@ -733,7 +782,6 @@ uis.controller('uiSelectCtrl',
                 }
                 ctrl.onKeypressCallback($scope, {event: e});
             });
-
 
             // See https://github.com/ivaynberg/select2/blob/3.4.6/select2.js#L1431
             function _ensureHighlightVisible() {
@@ -755,10 +803,13 @@ uis.controller('uiSelectCtrl',
                 if (posY > height) {
                     container[0].scrollTop += posY - height;
                 } else if (posY < highlighted.clientHeight) {
-                    if (ctrl.isGrouped && ctrl.activeIndex === 0)
-                        container[0].scrollTop = 0; //To make group header visible when going all the way up
-                    else
+                    if (ctrl.isGrouped && ctrl.activeIndex === 0) {
+                        // To make group header visible when going all the way up
+                        container[0].scrollTop = 0;
+                    }
+                    else {
                         container[0].scrollTop -= highlighted.clientHeight - posY;
+                    }
                 }
             }
 
@@ -769,8 +820,8 @@ uis.controller('uiSelectCtrl',
         }]);
 
 uis.directive('uiSelect',
-    ['$document', 'uiSelectConfig', 'uiSelectMinErr', 'uisOffset', '$compile', '$parse', '$timeout',
-        function ($document, uiSelectConfig, uiSelectMinErr, uisOffset, $compile, $parse, $timeout) {
+    ['$document', '$window', 'uiSelectConfig', 'uiSelectMinErr', 'uisOffset', '$compile', '$parse', '$timeout',
+        function ($document, $window, uiSelectConfig, uiSelectMinErr, uisOffset, $compile, $parse, $timeout) {
 
             return {
                 restrict: 'EA',
@@ -787,14 +838,15 @@ uis.directive('uiSelect',
                 controllerAs: '$select',
                 compile: function (tElement, tAttrs) {
 
-                    //Multiple or Single depending if multiple attribute presence
-                    if (angular.isDefined(tAttrs.multiple))
+                    // Multiple or Single depending if multiple attribute presence
+                    if (angular.isDefined(tAttrs.multiple)) {
                         tElement.append("<ui-select-multiple/>").removeAttr('multiple');
-                    else
+                    }
+                    else {
                         tElement.append("<ui-select-single/>");
+                    }
 
                     return function (scope, element, attrs, ctrls, transcludeFn) {
-
                         var $select = ctrls[0];
                         var ngModel = ctrls[1];
 
@@ -811,15 +863,17 @@ uis.directive('uiSelect',
                             }
                         }();
 
-                        $select.onBeforeSelectCallback = $parse(attrs.onBeforeSelect);
                         $select.onSelectCallback = $parse(attrs.onSelect);
+                        $select.onBeforeSelectCallback = $parse(attrs.onBeforeSelect);
                         $select.onRemoveCallback = $parse(attrs.onRemove);
+                        $select.onBeforeRemoveCallback = $parse(attrs.onBeforeRemove);
                         $select.onKeypressCallback = $parse(attrs.onKeypress);
+                        $select.onDropdownCallback = $parse(attrs.onDropdown);
 
-                        //Limit the number of selections allowed
+                        // Limit the number of selections allowed
                         $select.limit = (angular.isDefined(attrs.limit)) ? parseInt(attrs.limit, 10) : undefined;
 
-                        //Set reference to ngModel from uiSelectCtrl
+                        // Set reference to ngModel from uiSelectCtrl
                         $select.ngModel = ngModel;
 
                         $select.choiceGrouped = function (group) {
@@ -845,11 +899,6 @@ uis.directive('uiSelect',
                             $select.disabled = attrs.disabled !== undefined ? attrs.disabled : false;
                         });
 
-                        attrs.$observe('resetSearchInput', function () {
-                            // $eval() is needed otherwise we get a string instead of a boolean
-                            var resetSearchInput = scope.$eval(attrs.resetSearchInput);
-                            $select.resetSearchInput = resetSearchInput !== undefined ? resetSearchInput : true;
-                        });
 
                         //Automatically gets focus when loaded
                         if (angular.isDefined(attrs.autofocus)) {
@@ -858,7 +907,7 @@ uis.directive('uiSelect',
                             });
                         }
 
-                        //Gets focus based on scope event name (e.g. focus-on='SomeEventName')
+                        // Gets focus based on scope event name (e.g. focus-on='SomeEventName')
                         if (angular.isDefined(attrs.focusOn)) {
                             scope.$on(attrs.focusOn, function () {
                                 $timeout(function () {
@@ -868,7 +917,10 @@ uis.directive('uiSelect',
                         }
 
                         function onDocumentClick(e) {
-                            if (!$select.open) return; //Skip it if dropdown is close
+                            //Skip it if dropdown is close
+                            if (!$select.open) {
+                                return;
+                            }
 
                             var contains = false;
 
@@ -881,14 +933,14 @@ uis.directive('uiSelect',
                             }
 
                             if (!contains && !$select.clickTriggeredSelect) {
-                                //Will lose focus only with certain targets
+                                // Will lose focus only with certain targets
                                 var focusableControls = ['input', 'button', 'textarea'];
-                                //To check if target is other ui-select
+                                // To check if target is other ui-select
                                 var targetScope = angular.element(e.target).scope();
-                                //To check if target is other ui-select
+                                // To check if target is other ui-select
                                 var skipFocusser = targetScope && targetScope.$select &&
                                     targetScope.$select !== $select;
-                                //Check if target is input, button or textarea
+                                // Check if target is input, button or textarea
                                 if (!skipFocusser) {
                                     skipFocusser = ~focusableControls.indexOf(e.target.tagName.toLowerCase());
                                 }
@@ -1001,6 +1053,7 @@ uis.directive('uiSelect',
                         // Support changing the direction of the dropdown if there isn't enough space to render it.
                         scope.$watch('$select.open', function (isOpen) {
                             if (isOpen) {
+                                // Get the dropdown element
                                 dropdown = angular.element(element).querySelectorAll('.ui-select-dropdown');
                                 if (dropdown === null) {
                                     return;
@@ -1015,11 +1068,7 @@ uis.directive('uiSelect',
                                     var offsetDropdown = uisOffset(dropdown);
 
                                     // Determine if the direction of the dropdown needs to be changed.
-                                    if (offset.top + offset.height + offsetDropdown.height >
-                                        $document[0].documentElement.scrollTop +
-                                        $document[0].documentElement.clientHeight) {
-                                        dropdown[0].style.position = 'absolute';
-                                        dropdown[0].style.top = (offsetDropdown.height * -1) + 'px';
+                                    if (offset.top + offset.height + offsetDropdown.height > $window.pageYOffset + $document[0].documentElement.clientHeight) {
                                         element.addClass(directionUpClassName);
                                     }
 
@@ -1032,8 +1081,6 @@ uis.directive('uiSelect',
                                 }
 
                                 // Reset the position of the dropdown.
-                                dropdown[0].style.position = '';
-                                dropdown[0].style.top = '';
                                 element.removeClass(directionUpClassName);
                             }
                         });
@@ -1042,425 +1089,490 @@ uis.directive('uiSelect',
             };
         }]);
 
-uis.directive('uiSelectMatch', ['uiSelectConfig', function(uiSelectConfig) {
-  return {
-    restrict: 'EA',
-    require: '^uiSelect',
-    replace: true,
-    transclude: true,
-    templateUrl: function(tElement) {
-      // Gets theme attribute from parent (ui-select)
-      var theme = tElement.parent().attr('theme') || uiSelectConfig.theme;
-      var multi = tElement.parent().attr('multiple');
-      return theme + (multi ? '/match-multiple.tpl.html' : '/match.tpl.html');
-    },
-    link: function(scope, element, attrs, $select) {
-      $select.lockChoiceExpression = attrs.uiLockChoice;
-      attrs.$observe('placeholder', function(placeholder) {
-        $select.placeholder = placeholder !== undefined ? placeholder : uiSelectConfig.placeholder;
-      });
+uis.directive('uiSelectMatch', ['uiSelectConfig', function (uiSelectConfig) {
+    return {
+        restrict: 'EA',
+        require: '^uiSelect',
+        replace: true,
+        transclude: true,
+        templateUrl: function (tElement) {
+            // Gets theme attribute from parent (ui-select)
+            var theme = tElement.parent().attr('theme') || uiSelectConfig.theme;
+            var multi = tElement.parent().attr('multiple');
+            return theme + (multi ? '/match-multiple.tpl.html' : '/match.tpl.html');
+        },
+        link: function (scope, element, attrs, $select) {
+            $select.lockChoiceExpression = attrs.uiLockChoice;
+            attrs.$observe('placeholder', function (placeholder) {
+                $select.placeholder = placeholder !== undefined ? placeholder : uiSelectConfig.placeholder;
+            });
 
-      function setAllowClear(allow) {
-        $select.allowClear = (angular.isDefined(allow)) ? (allow === '') ? true : (allow.toLowerCase() === 'true') : false;
-      }
+            function setAllowClear(allow) {
+                $select.allowClear =
+                    (angular.isDefined(allow)) ? (allow === '') ? true : (allow.toLowerCase() === 'true') : false;
+            }
 
-      attrs.$observe('allowClear', setAllowClear);
-      setAllowClear(attrs.allowClear);
+            attrs.$observe('allowClear', setAllowClear);
+            setAllowClear(attrs.allowClear);
 
-      if($select.multiple){
-        $select.sizeSearchInput();
-      }
-
-    }
-  };
+            if ($select.multiple) {
+                $select.sizeSearchInput();
+            }
+        }
+    };
 }]);
 
-uis.directive('uiSelectMultiple', ['uiSelectMinErr','$timeout', function(uiSelectMinErr, $timeout) {
-  return {
-    restrict: 'EA',
-    require: ['^uiSelect', '^ngModel'],
+uis.directive('uiSelectMultiple', ['uiSelectMinErr', '$timeout', function (uiSelectMinErr, $timeout) {
+    return {
+        restrict: 'EA',
+        require: ['^uiSelect', '^ngModel'],
+        controller: ['$scope', '$timeout', function ($scope, $timeout) {
+            var ctrl = this,
+                $select = $scope.$select,
+                ngModel;
 
-    controller: ['$scope','$timeout', function($scope, $timeout){
+            //Wait for link fn to inject it
+            $scope.$evalAsync(function () {
+                ngModel = $scope.ngModel;
+            });
 
-      var ctrl = this,
-          $select = $scope.$select,
-          ngModel;
+            ctrl.activeMatchIndex = -1;
 
-      //Wait for link fn to inject it 
-      $scope.$evalAsync(function(){ ngModel = $scope.ngModel; });
+            ctrl.updateModel = function () {
+                ngModel.$setViewValue(Date.now()); //Set timestamp as a unique string to force changes
+                ctrl.refreshComponent();
+            };
 
-      ctrl.activeMatchIndex = -1;
+            ctrl.refreshComponent = function () {
+                // Remove already selected items
+                // e.g. When user clicks on a selection, the selected array changes and
+                // the dropdown should remove that item
+                $select.refreshItems();
+                $select.sizeSearchInput();
+            };
 
-      ctrl.updateModel = function(){
-        ngModel.$setViewValue(Date.now()); //Set timestamp as a unique string to force changes
-        ctrl.refreshComponent();
-      };
+            /**
+             * Remove item from multiple select
+             * Calls onBeforeRemove to allow the user to prevent the removal of the item
+             * Then calls onRemove to notify the user the item has been removed
+             */
+            ctrl.removeChoice = function (index) {
+                var removedChoice = $select.selected[index];
 
-      ctrl.refreshComponent = function(){
-        //Remove already selected items
-        //e.g. When user clicks on a selection, the selected array changes and 
-        //the dropdown should remove that item
-        $select.refreshItems();
-        $select.sizeSearchInput();
-      };
+                // if the choice is locked, can't remove it
+                if (removedChoice._uiSelectChoiceLocked) {
+                    return;
+                }
 
-      // Remove item from multiple select
-      ctrl.removeChoice = function(index){
+                var locals = {};
+                locals[$select.parserResult.itemName] = removedChoice;
 
-        var removedChoice = $select.selected[index];
+                $select.selected.splice(index, 1);
+                ctrl.activeMatchIndex = -1;
+                $select.sizeSearchInput();
 
-        // if the choice is locked, can't remove it
-        if(removedChoice._uiSelectChoiceLocked) return;
+                var callbackContext = {
+                    $item: removedChoice,
+                    $model: $select.parserResult.modelMapper($scope, locals)
+                };
 
-        var locals = {};
-        locals[$select.parserResult.itemName] = removedChoice;
+                // Give some time for scope propagation.
+                function completeCallback() {
+                    $timeout(function () {
+                        $select.onRemoveCallback($scope, callbackContext);
+                    });
 
-        $select.selected.splice(index, 1);
-        ctrl.activeMatchIndex = -1;
-        $select.sizeSearchInput();
+                    ctrl.updateModel();
+                }
 
-        // Give some time for scope propagation.
-        $timeout(function(){
-          $select.onRemoveCallback($scope, {
-            $item: removedChoice,
-            $model: $select.parserResult.modelMapper($scope, locals)
-          });
-        });
+                // If there's no onBeforeRemove callback, then just call the completeCallback
+                if(!angular.isDefined(ctrl.onBeforeRemoveCallback)) {
+                    completeCallback();
+                    return;
+                }
 
-        ctrl.updateModel();
+                // Call the onBeforeRemove callback
+                // Allowable responses are -:
+                // falsy: Abort the removal
+                // promise: Wait for response
+                // true: Complete removal
+                var result = ctrl.onBeforeRemoveCallback($scope, callbackContext);
+                if (angular.isDefined(result)) {
+                    if (angular.isFunction(result.then)) {
+                        // Promise returned - wait for it to complete before completing the selection
+                        result.then(function (result) {
+                            if (!result) {
+                                return;
+                            }
+                            completeCallback(result);
+                        });
+                    } else if (result === true) {
+                        completeCallback();
+                    }
+                } else {
+                    completeCallback();
+                }
+            };
 
-      };
+            ctrl.getPlaceholder = function () {
+                //Refactor single?
+                if ($select.selected && $select.selected.length) {
+                    return;
+                }
+                return $select.placeholder;
+            };
+        }],
+        controllerAs: '$selectMultiple',
 
-      ctrl.getPlaceholder = function(){
-        //Refactor single?
-        if($select.selected && $select.selected.length) return;
-        return $select.placeholder;
-      };
+        link: function (scope, element, attrs, ctrls) {
+            var $select = ctrls[0];
+            var ngModel = scope.ngModel = ctrls[1];
+            var $selectMultiple = scope.$selectMultiple;
 
+            //$select.selected = raw selected objects (ignoring any property binding)
 
-    }],
-    controllerAs: '$selectMultiple',
+            $select.multiple = true;
+            $select.removeSelected = true;
 
-    link: function(scope, element, attrs, ctrls) {
+            //Input that will handle focus
+            $select.focusInput = $select.searchInput;
 
-      var $select = ctrls[0];
-      var ngModel = scope.ngModel = ctrls[1];
-      var $selectMultiple = scope.$selectMultiple;
+            //From view --> model
+            ngModel.$parsers.unshift(function () {
+                var locals = {},
+                    result,
+                    resultMultiple = [];
+                for (var j = $select.selected.length - 1; j >= 0; j--) {
+                    locals = {};
+                    locals[$select.parserResult.itemName] = $select.selected[j];
+                    result = $select.parserResult.modelMapper(scope, locals);
+                    resultMultiple.unshift(result);
+                }
+                return resultMultiple;
+            });
 
-      //$select.selected = raw selected objects (ignoring any property binding)
+            // From model --> view
+            ngModel.$formatters.unshift(function (inputValue) {
+                var data = $select.parserResult.source(scope, {$select: {search: ''}}), //Overwrite $search
+                    locals = {},
+                    result;
+                if (!data) {
+                    return inputValue;
+                }
+                var resultMultiple = [];
+                var checkFnMultiple = function (list, value) {
+                    if (!list || !list.length) {
+                        return;
+                    }
+                    for (var p = list.length - 1; p >= 0; p--) {
+                        locals[$select.parserResult.itemName] = list[p];
+                        result = $select.parserResult.modelMapper(scope, locals);
+                        if ($select.parserResult.trackByExp) {
+                            var matches = /\.(.+)/.exec($select.parserResult.trackByExp);
+                            if (matches.length > 0 && result[matches[1]] == value[matches[1]]) {
+                                resultMultiple.unshift(list[p]);
+                                return true;
+                            }
+                        }
+                        if (angular.equals(result, value)) {
+                            resultMultiple.unshift(list[p]);
+                            return true;
+                        }
+                    }
+                    return false;
+                };
+                if (!inputValue) return resultMultiple; //If ngModel was undefined
+                for (var k = inputValue.length - 1; k >= 0; k--) {
+                    //Check model array of currently selected items
+                    if (!checkFnMultiple($select.selected, inputValue[k])) {
+                        //Check model array of all items available
+                        if (!checkFnMultiple(data, inputValue[k])) {
+                            //If not found on previous lists, just add it directly to resultMultiple
+                            resultMultiple.unshift(inputValue[k]);
+                        }
+                    }
+                }
+                return resultMultiple;
+            });
 
-      $select.multiple = true;
-      $select.removeSelected = true;
+            //Watch for external model changes
+            scope.$watchCollection(function () {
+                return ngModel.$modelValue;
+            }, function (newValue, oldValue) {
+                if (oldValue != newValue) {
+                    ngModel.$modelValue = null; //Force scope model value and ngModel value to be out of sync to re-run formatters
+                    $selectMultiple.refreshComponent();
+                }
+            });
 
-      //Input that will handle focus
-      $select.focusInput = $select.searchInput;
+            ngModel.$render = function () {
+                // Make sure that model value is array
+                if (!angular.isArray(ngModel.$viewValue)) {
+                    // Have tolerance for null or undefined values
+                    if (angular.isUndefined(ngModel.$viewValue) || ngModel.$viewValue === null) {
+                        $select.selected = [];
+                    } else {
+                        throw uiSelectMinErr('multiarr', "Expected model value to be array but got '{0}'",
+                            ngModel.$viewValue);
+                    }
+                }
+                $select.selected = ngModel.$viewValue;
+                scope.$evalAsync(); //To force $digest
+            };
 
-      //From view --> model
-      ngModel.$parsers.unshift(function () {
-        var locals = {},
-            result,
-            resultMultiple = [];
-        for (var j = $select.selected.length - 1; j >= 0; j--) {
-          locals = {};
-          locals[$select.parserResult.itemName] = $select.selected[j];
-          result = $select.parserResult.modelMapper(scope, locals);
-          resultMultiple.unshift(result);
-        }
-        return resultMultiple;
-      });
+            scope.$on('uis:select', function (event, item) {
+                if ($select.selected.length >= $select.limit) {
+                    return;
+                }
+                $select.selected.push(item);
+                $selectMultiple.updateModel();
+            });
 
-      // From model --> view
-      ngModel.$formatters.unshift(function (inputValue) {
-        var data = $select.parserResult.source (scope, { $select : {search:''}}), //Overwrite $search
-            locals = {},
-            result;
-        if (!data) return inputValue;
-        var resultMultiple = [];
-        var checkFnMultiple = function(list, value){
-          if (!list || !list.length) return;
-          for (var p = list.length - 1; p >= 0; p--) {
-            locals[$select.parserResult.itemName] = list[p];
-            result = $select.parserResult.modelMapper(scope, locals);
-            if($select.parserResult.trackByExp){
-                var matches = /\.(.+)/.exec($select.parserResult.trackByExp);
-                if(matches.length>0 && result[matches[1]] == value[matches[1]]){
-                    resultMultiple.unshift(list[p]);
-                    return true;
+            scope.$on('uis:activate', function () {
+                $selectMultiple.activeMatchIndex = -1;
+            });
+
+            scope.$watch('$select.disabled', function (newValue, oldValue) {
+                // As the search input field may now become visible, it may be necessary to recompute its size
+                if (oldValue && !newValue) {
+                    $select.sizeSearchInput();
+                }
+            });
+
+            $select.searchInput.on('keydown', function (e) {
+                var key = e.which;
+                scope.$apply(function () {
+                    var processed = false;
+                    if (KEY.isHorizontalMovement(key)) {
+                        processed = _handleMatchSelection(key);
+                    }
+                    if (processed && key != KEY.TAB) {
+                        //TODO Check si el tab selecciona aun correctamente
+                        //Crear test
+//            e.preventDefault();
+                        //          e.stopPropagation();
+                    }
+                });
+            });
+            function _getCaretPosition(el) {
+                if (angular.isNumber(el.selectionStart)) {
+                    return el.selectionStart;
+                }
+                // selectionStart is not supported in IE8 and we don't want hacky workarounds so we compromise
+                else {
+                    return el.value.length;
                 }
             }
-            if (angular.equals(result,value)){
-              resultMultiple.unshift(list[p]);
-              return true;
+
+            // Handles selected options in "multiple" mode
+            function _handleMatchSelection(key) {
+                var caretPosition = _getCaretPosition($select.searchInput[0]),
+                    length = $select.selected.length,
+                    first = 0,
+                    last = length - 1,
+                    curr = $selectMultiple.activeMatchIndex,
+                    next = $selectMultiple.activeMatchIndex + 1,
+                    prev = $selectMultiple.activeMatchIndex - 1,
+                    newIndex = curr;
+
+                if (caretPosition > 0 || ($select.search.length && key == KEY.RIGHT)) {
+                    return false;
+                }
+
+                $select.close();
+
+                function getNewActiveMatchIndex() {
+                    switch (key) {
+                        case KEY.LEFT:
+                            // Select previous/first item
+                            if (~$selectMultiple.activeMatchIndex) {
+                                return prev;
+                            }
+                            // Select last item
+                            else {
+                                return last;
+                            }
+                            break;
+                        case KEY.RIGHT:
+                            // Open drop-down
+                            if (!~$selectMultiple.activeMatchIndex || curr === last) {
+                                $select.activate();
+                                return false;
+                            }
+                            // Select next/last item
+                            else {
+                                return next;
+                            }
+                            break;
+                        case KEY.BACKSPACE:
+                            // Remove selected item and select previous/first
+                            if (~$selectMultiple.activeMatchIndex) {
+                                $selectMultiple.removeChoice(curr);
+                                return prev;
+                            }
+                            // Select last item
+                            else {
+                                return last;
+                            }
+                            break;
+                        case KEY.DELETE:
+                            // Remove selected item and select next item
+                            if (~$selectMultiple.activeMatchIndex) {
+                                $selectMultiple.removeChoice($selectMultiple.activeMatchIndex);
+                                return curr;
+                            }
+                            else {
+                                return false;
+                            }
+                    }
+                }
+
+                newIndex = getNewActiveMatchIndex();
+
+                if (!$select.selected.length || newIndex === false) {
+                    $selectMultiple.activeMatchIndex = -1;
+                }
+                else {
+                    $selectMultiple.activeMatchIndex = Math.min(last, Math.max(first, newIndex));
+                }
+
+                return true;
             }
-          }
-          return false;
-        };
-        if (!inputValue) return resultMultiple; //If ngModel was undefined
-        for (var k = inputValue.length - 1; k >= 0; k--) {
-          //Check model array of currently selected items 
-          if (!checkFnMultiple($select.selected, inputValue[k])){
-            //Check model array of all items available
-            if (!checkFnMultiple(data, inputValue[k])){
-              //If not found on previous lists, just add it directly to resultMultiple
-              resultMultiple.unshift(inputValue[k]);
-            }
-          }
+
+            $select.searchInput.on('blur', function () {
+                $timeout(function () {
+                    $selectMultiple.activeMatchIndex = -1;
+                });
+            });
+
         }
-        return resultMultiple;
-      });
-      
-      //Watch for external model changes 
-      scope.$watchCollection(function(){ return ngModel.$modelValue; }, function(newValue, oldValue) {
-        if (oldValue != newValue){
-          ngModel.$modelValue = null; //Force scope model value and ngModel value to be out of sync to re-run formatters
-          $selectMultiple.refreshComponent();
-        }
-      });
-
-      ngModel.$render = function() {
-        // Make sure that model value is array
-        if(!angular.isArray(ngModel.$viewValue)){
-          // Have tolerance for null or undefined values
-          if(angular.isUndefined(ngModel.$viewValue) || ngModel.$viewValue === null){
-            $select.selected = [];
-          } else {
-            throw uiSelectMinErr('multiarr', "Expected model value to be array but got '{0}'", ngModel.$viewValue);
-          }
-        }
-        $select.selected = ngModel.$viewValue;
-        scope.$evalAsync(); //To force $digest
-      };
-
-      scope.$on('uis:select', function (event, item) {
-        if($select.selected.length >= $select.limit) {
-          return;
-        }
-        $select.selected.push(item);
-        $selectMultiple.updateModel();
-      });
-
-      scope.$on('uis:activate', function () {
-        $selectMultiple.activeMatchIndex = -1;
-      });
-
-      scope.$watch('$select.disabled', function(newValue, oldValue) {
-        // As the search input field may now become visible, it may be necessary to recompute its size
-        if (oldValue && !newValue) $select.sizeSearchInput();
-      });
-
-      $select.searchInput.on('keydown', function(e) {
-        var key = e.which;
-        scope.$apply(function() {
-          var processed = false;
-          if(KEY.isHorizontalMovement(key)){
-            processed = _handleMatchSelection(key);
-          }
-          if (processed  && key != KEY.TAB) {
-            //TODO Check si el tab selecciona aun correctamente
-            //Crear test
-//            e.preventDefault();
-  //          e.stopPropagation();
-          }
-        });
-      });
-      function _getCaretPosition(el) {
-        if(angular.isNumber(el.selectionStart)) return el.selectionStart;
-        // selectionStart is not supported in IE8 and we don't want hacky workarounds so we compromise
-        else return el.value.length;
-      }
-      // Handles selected options in "multiple" mode
-      function _handleMatchSelection(key){
-        var caretPosition = _getCaretPosition($select.searchInput[0]),
-            length = $select.selected.length,
-            // none  = -1,
-            first = 0,
-            last  = length-1,
-            curr  = $selectMultiple.activeMatchIndex,
-            next  = $selectMultiple.activeMatchIndex+1,
-            prev  = $selectMultiple.activeMatchIndex-1,
-            newIndex = curr;
-
-        if(caretPosition > 0 || ($select.search.length && key == KEY.RIGHT)) return false;
-
-        $select.close();
-
-        function getNewActiveMatchIndex(){
-          switch(key){
-            case KEY.LEFT:
-              // Select previous/first item
-              if(~$selectMultiple.activeMatchIndex) return prev;
-              // Select last item
-              else return last;
-              break;
-            case KEY.RIGHT:
-              // Open drop-down
-              if(!~$selectMultiple.activeMatchIndex || curr === last){
-                $select.activate();
-                return false;
-              }
-              // Select next/last item
-              else return next;
-              break;
-            case KEY.BACKSPACE:
-              // Remove selected item and select previous/first
-              if(~$selectMultiple.activeMatchIndex){
-                $selectMultiple.removeChoice(curr);
-                return prev;
-              }
-              // Select last item
-              else return last;
-              break;
-            case KEY.DELETE:
-              // Remove selected item and select next item
-              if(~$selectMultiple.activeMatchIndex){
-                $selectMultiple.removeChoice($selectMultiple.activeMatchIndex);
-                return curr;
-              }
-              else return false;
-          }
-        }
-
-        newIndex = getNewActiveMatchIndex();
-
-        if(!$select.selected.length || newIndex === false) $selectMultiple.activeMatchIndex = -1;
-        else $selectMultiple.activeMatchIndex = Math.min(last,Math.max(first,newIndex));
-
-        return true;
-      }
-
-      $select.searchInput.on('blur', function() {
-        $timeout(function() {
-          $selectMultiple.activeMatchIndex = -1;
-        });
-      });
-
-    }
-  };
+    };
 }]);
 
-uis.directive('uiSelectSingle', ['$timeout','$compile', function($timeout, $compile) {
-  return {
-    restrict: 'EA',
-    require: ['^uiSelect', '^ngModel'],
-    link: function(scope, element, attrs, ctrls) {
+uis.directive('uiSelectSingle', ['$timeout', '$compile', function ($timeout, $compile) {
+    return {
+        restrict: 'EA',
+        require: ['^uiSelect', '^ngModel'],
+        link: function (scope, element, attrs, ctrls) {
 
-      var $select = ctrls[0];
-      var ngModel = ctrls[1];
+            var $select = ctrls[0];
+            var ngModel = ctrls[1];
 
-      //From view --> model
-      ngModel.$parsers.unshift(function (inputValue) {
-        var locals = {},
-            result;
-        locals[$select.parserResult.itemName] = inputValue;
-        result = $select.parserResult.modelMapper(scope, locals);
-        return result;
-      });
+            // From view --> model
+            ngModel.$parsers.unshift(function (inputValue) {
+                var locals = {},
+                    result;
+                locals[$select.parserResult.itemName] = inputValue;
+                result = $select.parserResult.modelMapper(scope, locals);
+                return result;
+            });
 
-      //From model --> view
-      ngModel.$formatters.unshift(function (inputValue) {
-        var data = $select.parserResult.source (scope, { $select : {search:''}}), //Overwrite $search
-            locals = {},
-            result;
-        if (data){
-          var checkFnSingle = function(d){
-            locals[$select.parserResult.itemName] = d;
-            result = $select.parserResult.modelMapper(scope, locals);
-            return result == inputValue;
-          };
-          //If possible pass same object stored in $select.selected
-          if ($select.selected && checkFnSingle($select.selected)) {
-            return $select.selected;
-          }
-          for (var i = data.length - 1; i >= 0; i--) {
-            if (checkFnSingle(data[i])) return data[i];
-          }
+            // From model --> view
+            ngModel.$formatters.unshift(function (inputValue) {
+                var data = $select.parserResult.source(scope, {$select: {search: ''}}), //Overwrite $search
+                    locals = {},
+                    result;
+                if (data) {
+                    var checkFnSingle = function (d) {
+                        locals[$select.parserResult.itemName] = d;
+                        result = $select.parserResult.modelMapper(scope, locals);
+                        return result == inputValue;
+                    };
+                    // If possible pass same object stored in $select.selected
+                    if ($select.selected && checkFnSingle($select.selected)) {
+                        return $select.selected;
+                    }
+                    for (var i = data.length - 1; i >= 0; i--) {
+                        if (checkFnSingle(data[i])) {
+                            return data[i];
+                        }
+                    }
+                }
+                return inputValue;
+            });
+
+            // Update viewValue if model change
+            scope.$watch('$select.selected', function (newValue) {
+                if (ngModel.$viewValue !== newValue) {
+                    ngModel.$setViewValue(newValue);
+                }
+            });
+
+            ngModel.$render = function () {
+                $select.selected = ngModel.$viewValue;
+            };
+
+            scope.$on('uis:select', function (event, item) {
+                $select.selected = item;
+            });
+
+            scope.$on('uis:close', function (event, skipFocusser) {
+                $timeout(function () {
+                    $select.focusser.prop('disabled', false);
+                    if (!skipFocusser) $select.focusser[0].focus();
+                }, 0, false);
+            });
+
+            scope.$on('uis:activate', function () {
+                // Will reactivate it on .close()
+                focusser.prop('disabled', true);
+            });
+
+            // Idea from: https://github.com/ivaynberg/select2/blob/79b5bf6db918d7560bdd959109b7bcfb47edaf43/select2.js#L1954
+            var focusser = angular.element("<input ng-disabled='$select.disabled' class='ui-select-focusser ui-select-offscreen' type='text' id='{{ $select.focusserId }}' aria-label='{{ $select.focusserTitle }}' aria-haspopup='true' role='button' />");
+            $compile(focusser)(scope);
+            $select.focusser = focusser;
+
+            // Input that will handle focus
+            $select.focusInput = focusser;
+
+            element.parent().append(focusser);
+            focusser.bind("focus", function () {
+                scope.$evalAsync(function () {
+                    $select.focus = true;
+                });
+            });
+            focusser.bind("blur", function () {
+                scope.$evalAsync(function () {
+                    $select.focus = false;
+                });
+            });
+
+            focusser.bind("keydown", function (e) {
+                if (e.which === KEY.BACKSPACE) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    $select.select(undefined);
+                    scope.$apply();
+                    return;
+                }
+
+                if (e.which === KEY.TAB || KEY.isControl(e) || KEY.isFunctionKey(e) || e.which === KEY.ESC) {
+                    return;
+                }
+
+                if (e.which == KEY.DOWN || e.which == KEY.UP || e.which == KEY.ENTER || e.which == KEY.SPACE) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    $select.activate();
+                }
+
+                scope.$digest();
+            });
+
+            focusser.bind("keyup input", function (e) {
+                if (e.which === KEY.TAB || KEY.isControl(e) || KEY.isFunctionKey(e) || e.which === KEY.ESC ||
+                    e.which == KEY.ENTER || e.which === KEY.BACKSPACE) {
+                    return;
+                }
+
+                // User pressed some regular key, so we pass it to the search input
+                $select.activate(focusser.val());
+                focusser.val('');
+                scope.$digest();
+            });
         }
-        return inputValue;
-      });
-
-      //Update viewValue if model change
-      scope.$watch('$select.selected', function(newValue) {
-        if (ngModel.$viewValue !== newValue) {
-          ngModel.$setViewValue(newValue);
-        }
-      });
-
-      ngModel.$render = function() {
-        $select.selected = ngModel.$viewValue;
-      };
-
-      scope.$on('uis:select', function (event, item) {
-        $select.selected = item;
-      });
-
-      scope.$on('uis:close', function (event, skipFocusser) {
-        $timeout(function(){
-          $select.focusser.prop('disabled', false);
-          if (!skipFocusser) $select.focusser[0].focus();
-        },0,false);
-      });
-
-      scope.$on('uis:activate', function () {
-        focusser.prop('disabled', true); //Will reactivate it on .close()
-      });
-
-      //Idea from: https://github.com/ivaynberg/select2/blob/79b5bf6db918d7560bdd959109b7bcfb47edaf43/select2.js#L1954
-      var focusser = angular.element("<input ng-disabled='$select.disabled' class='ui-select-focusser ui-select-offscreen' type='text' id='{{ $select.focusserId }}' aria-label='{{ $select.focusserTitle }}' aria-haspopup='true' role='button' />");
-      $compile(focusser)(scope);
-      $select.focusser = focusser;
-
-      //Input that will handle focus
-      $select.focusInput = focusser;
-
-      element.parent().append(focusser);
-      focusser.bind("focus", function(){
-        scope.$evalAsync(function(){
-          $select.focus = true;
-        });
-      });
-      focusser.bind("blur", function(){
-        scope.$evalAsync(function(){
-          $select.focus = false;
-        });
-      });
-      focusser.bind("keydown", function(e){
-
-        if (e.which === KEY.BACKSPACE) {
-          e.preventDefault();
-          e.stopPropagation();
-          $select.select(undefined);
-          scope.$apply();
-          return;
-        }
-
-        if (e.which === KEY.TAB || KEY.isControl(e) || KEY.isFunctionKey(e) || e.which === KEY.ESC) {
-          return;
-        }
-
-        if (e.which == KEY.DOWN  || e.which == KEY.UP || e.which == KEY.ENTER || e.which == KEY.SPACE){
-          e.preventDefault();
-          e.stopPropagation();
-          $select.activate();
-        }
-
-        scope.$digest();
-      });
-
-      focusser.bind("keyup input", function(e){
-
-        if (e.which === KEY.TAB || KEY.isControl(e) || KEY.isFunctionKey(e) || e.which === KEY.ESC || e.which == KEY.ENTER || e.which === KEY.BACKSPACE) {
-          return;
-        }
-
-        $select.activate(focusser.val()); //User pressed some regular key, so we pass it to the search input
-        focusser.val('');
-        scope.$digest();
-
-      });
-
-
-    }
-  };
+    };
 }]);
 /**
  * Parses "repeat" attribute.
@@ -1472,45 +1584,46 @@ uis.directive('uiSelectSingle', ['$timeout','$compile', function($timeout, $comp
  * https://github.com/angular-ui/ui-select/commit/5dd63ad#commitcomment-5504697
  */
 
-uis.service('uisRepeatParser', ['uiSelectMinErr','$parse', function(uiSelectMinErr, $parse) {
-  var self = this;
+uis.service('uisRepeatParser', ['uiSelectMinErr', '$parse', function (uiSelectMinErr, $parse) {
+    var self = this;
 
-  /**
-   * Example:
-   * expression = "address in addresses | filter: {street: $select.search} track by $index"
-   * itemName = "address",
-   * source = "addresses | filter: {street: $select.search}",
-   * trackByExp = "$index",
-   */
-  self.parse = function(expression) {
+    /**
+     * Example:
+     * expression = "address in addresses | filter: {street: $select.search} track by $index"
+     * itemName = "address",
+     * source = "addresses | filter: {street: $select.search}",
+     * trackByExp = "$index",
+     */
+    self.parse = function (expression) {
 
-    var match = expression.match(/^\s*(?:([\s\S]+?)\s+as\s+)?([\S]+?)\s+in\s+([\s\S]+?)(?:\s+track\s+by\s+([\s\S]+?))?\s*$/);
+        var match = expression.match(/^\s*(?:([\s\S]+?)\s+as\s+)?([\S]+?)\s+in\s+([\s\S]+?)(?:\s+track\s+by\s+([\s\S]+?))?\s*$/);
 
-    if (!match) {
-      throw uiSelectMinErr('iexp', "Expected expression in form of '_item_ in _collection_[ track by _id_]' but got '{0}'.",
-              expression);
-    }
+        if (!match) {
+            throw uiSelectMinErr('iexp',
+                "Expected expression in form of '_item_ in _collection_[ track by _id_]' but got '{0}'.",
+                expression);
+        }
 
-    return {
-      itemName: match[2], // (lhs) Left-hand side,
-      source: $parse(match[3]),
-      trackByExp: match[4],
-      modelMapper: $parse(match[1] || match[2])
+        return {
+            itemName: match[2], // (lhs) Left-hand side,
+            source: $parse(match[3]),
+            trackByExp: match[4],
+            modelMapper: $parse(match[1] || match[2])
+        };
+
     };
 
-  };
+    self.getGroupNgRepeatExpression = function () {
+        return '$group in $select.groups';
+    };
 
-  self.getGroupNgRepeatExpression = function() {
-    return '$group in $select.groups';
-  };
-
-  self.getNgRepeatExpression = function(itemName, source, trackByExp, grouped) {
-    var expression = itemName + ' in ' + (grouped ? '$group.items' : source);
-    if (trackByExp) {
-      expression += ' track by ' + trackByExp;
-    }
-    return expression;
-  };
+    self.getNgRepeatExpression = function (itemName, source, trackByExp, grouped) {
+        var expression = itemName + ' in ' + (grouped ? '$group.items' : source);
+        if (trackByExp) {
+            expression += ' track by ' + trackByExp;
+        }
+        return expression;
+    };
 }]);
 
 }());

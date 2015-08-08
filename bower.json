@@ -21,7 +21,7 @@
     "moment": "latest",
     "angular-ui-ace": "bower",
     "fontawesome": "~4.3.0",
-    "angular-gridster": "0.13.4",
+    "angular-gridster": "0.13.5",
     "angular-ui-calendar": "latest",
     "weather-icons": "latest",
     "jquery-ui": "~1.11.1",
