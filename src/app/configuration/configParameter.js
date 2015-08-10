@@ -36,11 +36,11 @@ angular.module('Config.parameter', [
                             element.attr('min', cfg.min);
                         }
                         if (cfg.max) {
-                            element.attr('min', cfg.max);
+                            element.attr('max', cfg.max);
                         }
-                        if (cfg.step) {
-                            element.attr('min', cfg.step);
-                        }
+//                        if (cfg.step) {
+//                            element.attr('min', cfg.step);
+//                        }
                         break;
                     default:
                         break;

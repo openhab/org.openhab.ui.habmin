@@ -75,7 +75,7 @@
    */
   @import 'variables.less';
 
-  @import 'angular-ui-select.less';
+  //  @import 'angular-ui-select.less';
 
   // Body updates
   // Stop the user selecting text (it's annoying)
@@ -956,6 +956,70 @@
     -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
     -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
     -o-box-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+  }
+
+  // UI Select overrides
+  .input-group > .ui-select-bootstrap > input.ui-select-search.form-control {
+    border-radius: @border-radius-base;
+  }
+
+  .ui-select-bootstrap > .ui-select-match > .btn {
+    color: @input-color;
+    padding: @padding-base-vertical @padding-base-horizontal;
+    font-size: @font-size-base;
+    line-height: @line-height-base;
+    background-color: @input-bg;
+    border: 1px solid @input-border;
+    border-radius: @input-border-radius;
+  }
+
+  .ui-select-bootstrap > .ui-select-choices {
+    font-size: @font-size-base;
+    background-color: @input-bg;
+  }
+
+  body > .ui-select-bootstrap.open {
+    z-index: @zindex-dropdown;
+  }
+
+  .ui-select-multiple.ui-select-bootstrap {
+    min-height: 42px;
+    padding: @padding-base-vertical @padding-base-horizontal (@padding-base-vertical/2) @padding-base-horizontal;
+  }
+
+  .ui-select-multiple.ui-select-bootstrap .ui-select-match-item {
+    margin: auto;
+  }
+
+  .ui-select-bootstrap .ui-select-choices-row > a {
+    line-height: @line-height-base;
+    color: @input-color;
+  }
+
+  .ui-select-bootstrap .ui-select-placeholder {
+    color: @input-color-placeholder;
+  }
+
+  .ui-select-bootstrap .ui-select-placeholder {
+    color: @input-color-placeholder;
+  }
+
+  .ui-select-bootstrap .ui-select-placeholder {
+    color: @input-color-placeholder;
+  }
+
+  .ui-select-bootstrap .ui-select-choices-row.active > a {
+    color: @dropdown-link-active-color;
+    background-color: @dropdown-link-active-bg;
+  }
+
+  .hue {
+    background: -moz-linear-gradient(left, #ff0000 0%, #ffff00 17%, #00ff00 33%, #00ffff 50%, #0000ff 67%, #ff00ff 83%, #ff0000 100%);
+    background: -ms-linear-gradient(left, #ff0000 0%, #ffff00 17%, #00ff00 33%, #00ffff 50%, #0000ff 67%, #ff00ff 83%, #ff0000 100%);
+    background: -o-linear-gradient(left, #ff0000 0%, #ffff00 17%, #00ff00 33%, #00ffff 50%, #0000ff 67%, #ff00ff 83%, #ff0000 100%);
+    background: -webkit-gradient(linear, left top, right top, from(#ff0000), color-stop(0.17, #ffff00), color-stop(0.33, #00ff00), color-stop(0.5, #00ffff), color-stop(0.67, #0000ff), color-stop(0.83, #ff00ff), to(#ff0000));
+    background: -webkit-linear-gradient(left, #ff0000 0%, #ffff00 17%, #00ff00 33%, #00ffff 50%, #0000ff 67%, #ff00ff 83%, #ff0000 100%);
+    background: linear-gradient(to right, #ff0000 0%, #ffff00 17%, #00ff00 33%, #00ffff 50%, #0000ff 67%, #ff00ff 83%, #ff0000 100%);
   }
 
   // Finally - any theme specific tailoring
