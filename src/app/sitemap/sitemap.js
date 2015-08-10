@@ -11,6 +11,7 @@ angular.module('HABmin.sitemap', [
     'ui.router',
     'HABmin.itemModel',
     'HABmin.sitemapModel',
+    'sitemapColorWidget',
     'sitemapFrameWidget',
     'sitemapSliderWidget',
     'sitemapSelectionWidget',
@@ -66,7 +67,7 @@ angular.module('HABmin.sitemap', [
                 // The following table maps widgets to directives
                 var widgetMap = {
                     Colorpicker: {
-                        directive: "sitemap-text"
+                        directive: "sitemap-color"
                     },
                     Chart: {
                         directive: "sitemap-chart"
