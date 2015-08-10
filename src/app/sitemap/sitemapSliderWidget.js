@@ -9,7 +9,8 @@
  */
 angular.module('sitemapSliderWidget', [
     'HABmin.iconModel',
-    'toggle-switch'
+    'toggle-switch',
+    'rzModule'
 ])
     .directive('sitemapSlider', function ($interval, ImgFactory) {
         return {
@@ -23,7 +24,15 @@ angular.module('sitemapSliderWidget', [
             '      <toggle-switch ng-show="showSwitch" ng-model="switchValue" on-label="ON" off-label="OFF"></toggle-switch>' +
             '    </small>' +
             '  </span>' +
-            '  <input type="range" min="0" max="100" step="1" ng-model="sliderValue">' +
+
+            '<rzslider ' +
+            'rz-slider-floor="0" ' +
+            'rz-slider-ceil="100" ' +
+            'rz-slider-step="1" ' +
+            'rz-slider-precision="1" ' +
+            'rz-slider-model="sliderValue" ' +
+            'rz-slider-hide-limit-labels="true"></rzslider>' +
+
             '</div>',
             scope: {
                 itemId: "@",
