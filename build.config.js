@@ -122,7 +122,7 @@ module.exports = {
             'vendor/jquery-ui/themes/base/core.css',
             'vendor/jquery-ui/themes/base/resizable.css',
             'vendor/oa-font/css/style.css',
-            'vendor/fontawesome/css/font-awesome.css',
+            'vendor/font-awesome/css/font-awesome.css',
             'vendor/weather-icons/css/weather-icons.css',
             'vendor/fullcalendar/dist/fullcalendar.css',
             'vendor/angular-ui-select/dist/select.css',
@@ -130,7 +130,7 @@ module.exports = {
         ],
         assets: [
             'vendor/oa-font/fonts/*',
-            'vendor/fontawesome/fonts/*',
+            'vendor/font-awesome/fonts/*',
             'vendor/weather-icons/font/*',
             'vendor/bootstrap/fonts/*',
             'vendor/angular-blockly/media/*',

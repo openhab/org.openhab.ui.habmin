@@ -9,7 +9,7 @@
  */
 angular.module('dashboardItemWidgets', [
     'HABmin.iconModel',
-    'HABmin.itemModel',
+    'HABmin.itemModel'
 ])
     .directive('dashboardText', function (ItemModel) {
         return {

@@ -90,7 +90,7 @@ angular.module('HABmin.iconModel', []
 
         this.categoryIcons = {
             Alarm: 'oa-secur_alarm',
-            Battery: 'oa-measure_battery_100',
+            Battery: 'fa fa-battery-full',
             Blinds: 'oa-fts_sunblind',
             ColorLight: 'fa fa-lightbulb-o',
             Contact: 'fa fa-dot-circle-o',
@@ -140,7 +140,7 @@ angular.module('HABmin.iconModel', []
         };
 
         this.cfgContextIcons = {
-            battery: '',
+            battery: 'fa fa-battery-full',
             comment: 'fa fa-comment',
             communication: 'fa fa-tty',
             compass: 'fa fa-compass',
