@@ -48,6 +48,7 @@ angular.module('HABmin', [
     'SidepanelService',
     'ngAnimate',
     'ngTouch',
+    'angularScreenfull',
     'serverMonitor'
 ])
     .value('localeConf', {

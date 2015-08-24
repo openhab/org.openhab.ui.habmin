@@ -30,7 +30,7 @@
     </style>
 </head>
 
-<body>
+<body ngsf-fullscreen>
 <!-- The splash screen must be first -->
 <div id="splash" class="splash fade in">
     <% if(splashScreen.image.length > 0) { %>
@@ -380,6 +380,12 @@
                                 <a ng-click="logout()">
                                     <span class="fa fa-fw fa-sign-out"></span>
                                     <span i18n="habmin.mainLogout"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a ngsf-toggle-fullscreen>
+                                    <span class="fa fa-fw fa-sign-out"></span>
+                                    <span>Fullscreen</span>
                                 </a>
                             </li>
                         </ul>

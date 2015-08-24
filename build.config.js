@@ -113,7 +113,9 @@ module.exports = {
             'vendor/angular-ui-select/dist/select.bootstrap.js',
             'vendor/angular-input-modified/dist/angular-input-modified.js',
             'vendor/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js',
-            'vendor/angularjs-slider/rzslider.js'
+            'vendor/angularjs-slider/rzslider.js',
+            'vendor/screenfull/dist/screenfull.js',
+            'vendor/angular-screenfull/dist/angular-screenfull.min.js'
         ],
         css: [
             'vendor/angular-growl-v2/build/angular-growl.css',

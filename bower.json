@@ -38,7 +38,8 @@
     "angular-drag-and-drop-lists": "~1.2.0",
     "angular-input-modified": "~2.2.1",
     "fullcalendar": "~2.3.1",
-    "font-awesome": "~4.4.0"
+    "font-awesome": "~4.4.0",
+    "angular-screenfull": "~0.1.0"
   },
   "resolutions": {
     "moment": "~2.10",
