@@ -107,3 +107,8 @@ for tags, or merge your commits before creating the pull request.
 Anything not tagged in the above format will simply not appear in the changelog, so you can choose yourself if it
 shows up (again, be considerate).
 
+# Contribution Requirements
+
+- Contributions are only accepted through Github pull requests.
+- When you contribute, you agree to give a non-exclusive license to @cdjackson to use that contribution in any context.
+- If you use content provided by another party, it must be appropriately licensed using an open source license (MIT, EPL, Apache).
