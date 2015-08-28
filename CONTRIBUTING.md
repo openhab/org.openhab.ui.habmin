@@ -20,7 +20,7 @@ To compile for release, run ```grunt compile```. This will generate a minified v
 and also put a zipped ```debug``` and ```release``` versions into the ```output``` folder.
 
 ## Language Translations
-If you want to add a translation for your language, then you need to copy the files in ```/src/app/languages```
+If you want to add a translation for your language, then you need to copy the files in ```/src/languages```
 and copy the folder ```en-GB``` and rename it to your language (eg ```de-DE```). The folder name is
 ```language-country``` and you should be able find the
 [language](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) and
