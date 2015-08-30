@@ -414,37 +414,36 @@ angular.module('HABmin', [
             );
         };
 
-        $scope.saveThing = function () {
-            InboxModel.thingApprove($scope.selectedThing.thingUID, $scope.selectedThing.label).then(
+        $scope.saveThing = function (thingUID, thingLabel) {
+            InboxModel.thingApprove(thingUID, thingLabel).then(
                 function () {
                     InboxModel.refreshInbox();
                 },
                 function () {
-                    growl.error(locale.getString("habmin.discoveryIgnoreFail", {name: $scope.selectedThing.name}));
+                    growl.error(locale.getString("habmin.discoveryIgnoreFail", {name: thingUID}));
                 }
             );
 
         };
 
-        $scope.ignoreThing = function () {
-            InboxModel.thingIgnore($scope.selectedThing.thingUID).then(
+        $scope.ignoreThing = function (thingUID) {
+            InboxModel.thingIgnore(thingUID).then(
                 function () {
                     InboxModel.refreshInbox();
                 },
                 function () {
-                    growl.error(locale.getString("habmin.discoveryIgnoreFail", {name: $scope.selectedThing.name}));
+                    growl.error(locale.getString("habmin.discoveryIgnoreFail", {name: thingUID}));
                 }
             );
         };
 
-        $scope.deleteThing = function () {
-            InboxModel.thingDelete($scope.selectedThing.thingUID).then(
+        $scope.deleteThing = function (thingUID) {
+            InboxModel.thingDelete(thingUID).then(
                 function () {
                     InboxModel.refreshInbox();
-                    $scope.selectedThing = null;
                 },
                 function () {
-                    growl.error(locale.getString("habmin.discoveryDeleteFail", {name: $scope.selectedThing.name}));
+                    growl.error(locale.getString("habmin.discoveryDeleteFail", {name: thingUID}));
                 }
             );
         };

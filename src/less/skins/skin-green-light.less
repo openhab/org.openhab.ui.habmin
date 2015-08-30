@@ -1,22 +1,22 @@
 /*
- * Skin: Purple
- * ------------
+ * Skin: Green
+ * -----------
  */
 
-@import "../../../../vendor/bootstrap/less/variables.less";
-@import "../../../../vendor/bootstrap/less/mixins.less";
+@import "../../../vendor/bootstrap/less/variables.less";
+@import "../../../vendor/bootstrap/less/mixins.less";
 @import "../variables.less";
 @import "../mixins.less";
 
-.skin-purple-light {
+.skin-green-light {
   //Navbar
   .main-header {
     .navbar {
-      .navbar-variant(@purple; #fff);
+      .navbar-variant(@green; #fff);
       .sidebar-toggle {
         color: #fff;
         &:hover {
-          background-color: darken(@purple, 5%);
+          background-color: darken(@green, 5%);
         }
       }
       @media(max-width: @screen-header-collapse) {
@@ -28,7 +28,7 @@
             a {
               color: #fff;
               &:hover {
-                background: darken(@purple, 5%);
+                background: darken(@green, 5%);
               }
             }
           }
@@ -37,11 +37,11 @@
     }
     //Logo
     .logo {
-      .logo-variant(@purple);
+      .logo-variant(@green);
     }
 
     li.user-header {
-      background-color: @purple;
+      background-color: @green;
     }
   }
 
@@ -51,5 +51,6 @@
   }
 
   //Create the sidebar skin
-  .skin-light-sidebar(@purple);
+  .skin-light-sidebar(@green);
+
 }

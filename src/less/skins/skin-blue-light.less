@@ -2,12 +2,12 @@
  * Skin: Blue
  * ----------
  */
-@import "../../../../vendor/bootstrap/less/variables.less";
-@import "../../../../vendor/bootstrap/less/mixins.less";
+@import "../../../vendor/bootstrap/less/variables.less";
+@import "../../../vendor/bootstrap/less/mixins.less";
 @import "../variables.less";
 @import "../mixins.less";
 
-.skin-blue {
+.skin-blue-light {
   //Navbar
   .main-header {
     .navbar {
@@ -36,7 +36,7 @@
     }
     //Logo
     .logo {
-      .logo-variant(darken(@light-blue, 5%));
+      .logo-variant(@light-blue);
     }
 
     li.user-header {
@@ -50,7 +50,10 @@
   }
 
   //Create the sidebar skin
-  .skin-dark-sidebar(@light-blue);
+  .skin-light-sidebar(@light-blue);
+  .main-footer {
+    border-top-color: @gray;
+  }
 }
 
 .skin-blue.layout-top-nav .main-header > .logo {

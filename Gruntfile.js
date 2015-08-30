@@ -712,43 +712,7 @@ module.exports = function (grunt) {
     };
 
     /**
-     * Generate the theme tasks.
-     * Maybe this isn't the best way!
-     */
-    var themeTasksBuild = [];
-    var themeTasksCompile = [];
-//    taskConfig.less = {};
-    userConfig.themes.forEach(function (theme) {
-        var theme_css = '<%= build_dir %>/assets/<%= pkg.name %>-' + theme + '-<%= pkg.version %>.css';
-        taskConfig.less[theme] = {
-            files: {},
-            options: {
-                modifyVars: {
-                    HABminTheme: theme
-                }
-            }
-        };
-        taskConfig.less[theme].files[theme_css] = '<%= app_files.less %>';
-        themeTasksBuild.push('less:' + theme);
-
-        taskConfig.less[theme + '_compile'] = {
-            files: {},
-            options: {
-                modifyVars: {
-                    HABminTheme: theme
-                },
-                cleancss: true,
-                compress: true
-            }
-        };
-        taskConfig.less[theme + '_compile'].files[theme_css] = '<%= app_files.less %>';
-        themeTasksCompile.push('less:' + theme + '_compile');
-    });
-    grunt.registerTask('themes_build', themeTasksBuild);
-    grunt.registerTask('themes_compile', themeTasksCompile);
-
-    /**
-     * Generate the theme tasks.
+     * Generate the skins tasks.
      * Maybe this isn't the best way!
      */
     var skinTasksBuild = [];
@@ -760,7 +724,7 @@ module.exports = function (grunt) {
             options: {
             }
         };
-        taskConfig.less[skin].files[skin_css] = 'src/less/lte/skins/' + skin + '.less';
+        taskConfig.less[skin].files[skin_css] = 'src/less/skins/' + skin + '.less';
         skinTasksBuild.push('less:' + skin);
 
         grunt.log.write(taskConfig.less[skin].files[skin_css]);
@@ -772,7 +736,7 @@ module.exports = function (grunt) {
                 compress: true
             }
         };
-        taskConfig.less[skin + '_compile'].files[skin_css] = 'src/less/lte/skins/<%= skin %>.less';
+        taskConfig.less[skin + '_compile'].files[skin_css] = 'src/less/skins/<%= skin %>.less';
         skinTasksCompile.push('less:' + skin + '_compile');
     });
     grunt.registerTask('skins_build', skinTasksBuild);

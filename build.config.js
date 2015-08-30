@@ -146,15 +146,8 @@ module.exports = {
     },
 
     /**
-     * The name of each theme.
-     * This needs to point to a folder under the location of the app_files.less setting
+     * The name of each skin.
      */
-    themes: [
-        'paper',
-        'slate',
-        'yeti'
-    ],
-
     skins: [
         'skin-blue'
     ],

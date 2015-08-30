@@ -18,8 +18,7 @@ angular.module('dashboardGaugeWidget', [
     .directive('dashboardGauge', function (ItemModel) {
         return {
             restrict: 'E',
-            template: '<ng-dial-gauge options="options" ng-model="value" ' +
-            'style="display:inline-block;height:100%;width:100%;"></ng-dial-gauge>',
+            templateUrl: 'dashboard/dashboardGaugeWidget.tpl.html',
             scope: {
                 options: "="
             },

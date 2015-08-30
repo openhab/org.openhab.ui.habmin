@@ -3,12 +3,12 @@
  * ---------
  */
 
-@import "../../../../vendor/bootstrap/less/variables.less";
-@import "../../../../vendor/bootstrap/less/mixins.less";
+@import "../../../vendor/bootstrap/less/variables.less";
+@import "../../../vendor/bootstrap/less/mixins.less";
 @import "../variables.less";
 @import "../mixins.less";
 
-.skin-red {
+.skin-red-light {
   //Navbar
   .main-header {
     .navbar {
@@ -37,7 +37,7 @@
     }
     //Logo
     .logo {
-      .logo-variant(darken(@red, 5%));
+      .logo-variant(@red);
     }
 
     li.user-header {
@@ -51,5 +51,5 @@
   }
 
   //Create the sidebar skin
-  .skin-dark-sidebar(@red);
+  .skin-light-sidebar(@red);
 }

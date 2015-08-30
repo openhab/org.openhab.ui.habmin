@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- Device List -->
-<div class="col-sm-4" sidepanel-pane="side">
+<div class="col-sm-4">
     <div class="panel panel-default">
         <!-- Header -->
         <div class="panel-heading clearfix">
@@ -20,7 +20,7 @@
             <!-- FLOORPLAN LIST -->
             <div ng-if="floorplanList.length>0" ng-repeat="floorplan in floorplanList">
                 <a role="presentation" ng-class="{'list-group-item':true, 'active': selectedFloorplan.id==floorplan.id}"
-                   ng-click="selectFloorplan(floorplan)" sidepanel-click="main">
+                   ng-click="selectFloorplan(floorplan)">
                     <table style="background-color: transparent">
                         <tr>
                             <td class="text-large" rowspan="2">
@@ -55,7 +55,7 @@
 </div>
 
 <!-- Binding Information / Configuration -->
-<div class="col-sm-8" sidepanel-pane="main">
+<div class="col-sm-8">
     <div class="panel panel-default">
         <!-- Header -->
         <div class="panel-heading">

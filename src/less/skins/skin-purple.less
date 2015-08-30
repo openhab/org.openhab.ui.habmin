@@ -1,22 +1,22 @@
 /*
- * Skin: Red
- * ---------
+ * Skin: Purple
+ * ------------
  */
 
-@import "../../../../vendor/bootstrap/less/variables.less";
-@import "../../../../vendor/bootstrap/less/mixins.less";
+@import "../../../vendor/bootstrap/less/variables.less";
+@import "../../../vendor/bootstrap/less/mixins.less";
 @import "../variables.less";
 @import "../mixins.less";
 
-.skin-red-light {
+.skin-purple {
   //Navbar
   .main-header {
     .navbar {
-      .navbar-variant(@red; #fff);
+      .navbar-variant(@purple; #fff);
       .sidebar-toggle {
         color: #fff;
         &:hover {
-          background-color: darken(@red, 5%);
+          background-color: darken(@purple, 5%);
         }
       }
       @media(max-width: @screen-header-collapse) {
@@ -28,7 +28,7 @@
             a {
               color: #fff;
               &:hover {
-                background: darken(@red, 5%);
+                background: darken(@purple, 5%);
               }
             }
           }
@@ -37,11 +37,11 @@
     }
     //Logo
     .logo {
-      .logo-variant(@red);
+      .logo-variant(darken(@purple, 5%));
     }
 
     li.user-header {
-      background-color: @red;
+      background-color: @purple;
     }
   }
 
@@ -51,5 +51,5 @@
   }
 
   //Create the sidebar skin
-  .skin-light-sidebar(@red);
+  .skin-dark-sidebar(@purple);
 }

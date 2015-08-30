@@ -107,7 +107,7 @@
             <!-- Navbar Right Menu -->
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
-                    <!-- Thing Discovery Menu: style can be found in dropdown.less-->
+                    <!-- THING DISCOVERY MENU -->
                     <li class="dropdown discovery-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-plug"></i>
@@ -130,18 +130,18 @@
                                             </h4>
                                             <p>
                                                 <button type="button" class="btn btn-xs btn-default"
-                                                        ng-click="saveThing()">
+                                                        ng-click="saveThing(msg.thingUID, msg.label)">
                                                     <span class="fa fa-fw fa-plus-circle text-success"></span>
                                                     <span i18n="common.add"></span>
                                                 </button>
                                                 <button type="button" class="btn btn-xs btn-default"
-                                                        ng-confirm-click="ignoreThing()"
+                                                        ng-confirm-click="ignoreThing(msg.thingUID)"
                                                         i18n-attr="{'ngConfirmMessage': 'habmin.discoveryIgnoreConfirmMsg','ngConfirmTitle': 'habmin.discoveryIgnoreConfirmTitle','ngConfirmNoBtn': 'common.cancel', 'ngConfirmYesBtn': 'common.ok'}">
                                                     <span class="fa fa-fw fa-dot-circle-o text-warning"></span>
                                                     <span i18n="common.ignore"></span>
                                                 </button>
                                                 <button type="button" class="btn btn-xs btn-default"
-                                                        ng-confirm-click="deleteThing()"
+                                                        ng-confirm-click="deleteThing(msg.thingUID)"
                                                         i18n-attr="{'ngConfirmMessage': 'habmin.discoveryDeleteConfirmMsg','ngConfirmTitle': 'habmin.discoveryDeleteConfirmTitle','ngConfirmNoBtn': 'common.cancel', 'ngConfirmYesBtn': 'common.ok'}">
                                                     <span class="fa fa-fw fa-times-circle text-danger"></span>
                                                     <span i18n="common.delete"></span>
@@ -154,28 +154,7 @@
                             <li class="footer"><a><span i18n="common.close"></span></a></li>
                         </ul>
                     </li>
-                    <!-- Notifications: style can be found in dropdown.less -->
-                    <li class="dropdown notifications-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-bell-o"></i>
-                            <span class="label label-warning">10</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="header">You have 10 notifications</li>
-                            <li>
-                                <!-- inner menu: contains the actual data -->
-                                <ul class="menu">
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="footer"><a href="#">View all</a></li>
-                        </ul>
-                    </li>
-                    <!-- Fullscreen Toggle Button -->
+                    <!-- FULLSCREEN TOGGLE BUTTON -->
                     <li>
                         <a ngsf-toggle-fullscreen show-if-fullscreen-enabled>
                             <span show-if-fullscreen=false class="fa fa-fw fa-expand"></span>
@@ -198,6 +177,7 @@
         <section class="sidebar">
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu">
+                <!-- CHARTS MENU -->
                 <li class="treeview" ng-class="{active: $state.includes('chart')}">
                     <a href="#">
                         <i class="fa fa-fw fa-area-chart"></i> <span i18n="habmin.mainCharts"></span> <i class="fa fa-angle-left pull-right"></i>
@@ -211,6 +191,7 @@
                         </li>
                     </ul>
                 </li>
+                <!-- DASHBOARD MENU -->
                 <li class="treeview" ng-class="{active: $state.includes('dashboard')}">
                     <a href="#">
                         <i class="fa fa-fw fa-dashboard"></i> <span i18n="habmin.mainDashboard"></span> <i class="fa fa-angle-left pull-right"></i>
@@ -234,6 +215,7 @@
                         </li>
                     </ul>
                 </li>
+                <!-- AUTOMATION MENU -->
                 <li class="treeview">
                     <a href="#">
                         <i class="fa fa-cogs"></i>
@@ -241,10 +223,22 @@
                         <i class="fa fa-angle-left pull-right"></i>
                     </a>
                     <ul class="treeview-menu">
-                        <li ui-sref="chart" ng-class="{active: $state.includes('chart')}">
+                        <li ui-sref="rules">
                             <a>
-                                <span class="fa fa-fw fa-area-chart"></span>
-                                <span i18n="habmin.mainCharts"></span>
+                                <i class="fa fa-fw fa-puzzle-piece"></i>
+                                <span i18n="habmin.mainRules"></span>
+                            </a>
+                        </li>
+                        <li ui-sref="scheduler">
+                            <a>
+                                <i class="fa fa-fw fa-clock-o"></i>
+                                <span i18n="habmin.mainScheduler"></span>
+                            </a>
+                        </li>
+                        <li ui-sref="scheduler" class="disabled">
+                            <a>
+                                <i class="fa fa-fw fa-at"></i>
+                                <span i18n="habmin.mainNotifications"></span>
                             </a>
                         </li>
                     </ul>
@@ -288,8 +282,14 @@
                         </li>
                         <li ui-sref="items" ng-class="{active: $state.includes('items')}">
                             <a>
-                                <i class="fa fa-fw fa-paper-plane"></i>
+                                <i class="fa fa-fw fa-map-signs"></i>
                                 <span i18n="habmin.mainItems"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a ui-sref="floorplan/editor" ng-class="{active: $state.includes('items')}">
+                                <i class="fa fa-fw fa-home"></i>
+                                <span>Floorplan Editor</span>
                             </a>
                         </li>
                     </ul>
