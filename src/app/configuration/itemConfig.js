@@ -17,8 +17,7 @@ angular.module('Config.Items', [
     'angular-growl',
     'Binding.config',
     'ngVis',
-    'ResizePanel',
-    'SidepanelService'
+    'ResizePanel'
 ])
 
     .config(function config($stateProvider) {
@@ -41,7 +40,7 @@ angular.module('Config.Items', [
     })
 
     .controller('ItemConfigCtrl',
-    function ItemConfigCtrl($scope, locale, growl, $timeout, $window, $http, $interval, UserService, ItemModel, SidepanelService) {
+    function ItemConfigCtrl($scope, locale, growl, $timeout, $window, $http, $interval, UserService, ItemModel) {
         $scope.items = null;
         $scope.itemsCnt = -1;
         ItemModel.getList().then(

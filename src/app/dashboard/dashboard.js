@@ -15,6 +15,7 @@ angular.module('HABmin.dashboard', [
     'dashboardGaugeWidget',
     'dashboardImageWidget',
     'dashboardGroupWidget',
+    'dashboardGroupBarWidget',
     'dashboardFloorWidget',
     'dashboardProperties',
     'dashboardWidgetProperties',
@@ -272,7 +273,7 @@ angular.module('HABmin.dashboard', [
     })
 
     .controller('DashboardCtrlMenu',
-    function ($scope, $timeout, $state) {
+    function ($scope, $rootScope) {
         $scope.dashboardEdit = function () {
             $rootScope.$broadcast("dashboardEdit");
         };
@@ -297,6 +298,9 @@ angular.module('HABmin.dashboard', [
                     },
                     Group: {
                         directive: "dashboard-group"
+                    },
+                    GroupBar: {
+                        directive: "dashboard-groupbar"
                     },
                     Floor: {
                         directive: "dashboard-floorplan"

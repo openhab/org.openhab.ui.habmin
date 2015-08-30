@@ -19,7 +19,6 @@ angular.module('FloorplanEditor', [
     'Binding.config',
     'ngVis',
     'ResizePanel',
-    'SidepanelService',
     'FloorPlan',
     'floorplanHotspotProperties',
     'FloorplanProperties'

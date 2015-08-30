@@ -116,6 +116,7 @@ angular.module('HABmin.iconModel', []
             Smoke: 'oa-secur_smoke_detector',
             SoundVolume: 'fa fa-volume-up',
             Switch: 'fa fa-power-off',
+            temperature: 'oa-temp_temperature',
             Temperature: 'oa-temp_temperature',
             Water: 'oa-sani_water_tap',
             Wind: 'oa-weather_wind',

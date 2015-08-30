@@ -98,6 +98,11 @@
     }
   }
 
+  .navbar-left {
+    display: inline-block;
+    float: left;
+  }
+
   //Navbar User Menu
   .navbar .nav > li.user > a {
     > .fa,
@@ -214,8 +219,13 @@
   .navbar-custom-menu .navbar-nav > li {
     float: left;
   }
-  //Dont't let links get full width
+  //Don't let links get full width
   .navbar-custom-menu .navbar-nav {
+    margin: 0;
+    float: left;
+  }
+
+  .navbar-custom-menu .navbar-left {
     margin: 0;
     float: left;
   }

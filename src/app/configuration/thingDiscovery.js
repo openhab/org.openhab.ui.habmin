@@ -18,8 +18,7 @@ angular.module('Config.Discovery', [
     'angular-growl',
     'Binding.config',
     'ngVis',
-    'ResizePanel',
-    'SidepanelService'
+    'ResizePanel'
 ])
 
     .config(function config($stateProvider) {
@@ -42,7 +41,7 @@ angular.module('Config.Discovery', [
     })
 
     .controller('DiscoveryCtrl',
-    function DiscoveryCtrl($scope, locale, growl, $timeout, $window, $http, $interval, UserService, ThingModel, InboxModel, BindingModel, SidepanelService) {
+    function DiscoveryCtrl($scope, locale, growl, $timeout, $window, $http, $interval, UserService, ThingModel, InboxModel, BindingModel) {
 
         $scope.inboxCnt = -1;
         InboxModel.refreshInbox().then(

@@ -33,6 +33,13 @@ angular.module('HABmin.itemModel', [
                     case 'ItemStateEvent':
                         // Broadcast an event so we update any widgets or listeners
                         $rootScope.$broadcast(evt.topic, payload);
+                        for (var b = 0; b < itemList.length; b++) {
+                            if (itemList[b].name == topic[2]) {
+                                itemList[b].state = payload.value;
+                                $rootScope.$apply();
+                                break;
+                            }
+                        }
                         break;
                     case 'ItemUpdatedEvent':
                         for (var b = 0; b < itemList.length; b++) {
@@ -78,7 +85,7 @@ angular.module('HABmin.itemModel', [
 
             RestService.getService(svcName).then(
                 function (url) {
-                    $http.get(url)
+                    $http.get(url + "?recursive=true")
                         .success(function (data) {
                             console.log("Fetch completed in", new Date().getTime() - tStart);
 
@@ -127,6 +134,14 @@ angular.module('HABmin.itemModel', [
         this.getItem = function (itemName) {
             var tStart = new Date().getTime();
             var deferred = $q.defer();
+
+            // First try and get our local copy
+            for (var b = 0; b < itemList.length; b++) {
+                if (itemList[b].name == itemName) {
+                    deferred.resolve(itemList[b]);
+                    return deferred.promise;
+                }
+            }
 
             RestService.getService(svcName).then(
                 function (url) {

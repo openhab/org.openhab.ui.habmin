@@ -46,7 +46,6 @@ angular.module('HABmin', [
     'pickAColor',
     'angular-blockly',
     'Binding.zwave',
-    'SidepanelService',
     'ngAnimate',
     'ngTouch',
     'angularScreenfull',
@@ -160,7 +159,7 @@ angular.module('HABmin', [
     ])
 
     .controller('HABminCtrl',
-    function HABminCtrl($scope, $state, $window, $timeout, $interval, $rootScope, locale, ItemModel, ThingModel, DashboardModel, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, InboxModel, SidepanelService, RestService, UpdateService, EventModel, ServerMonitor) {
+    function HABminCtrl($scope, $state, $window, $timeout, $interval, $rootScope, locale, ItemModel, ThingModel, DashboardModel, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, InboxModel, RestService, UpdateService, EventModel, ServerMonitor) {
         $scope.$state = $state;
 
         $scope.isLoggedIn = UserService.isLoggedIn;
@@ -327,73 +326,6 @@ angular.module('HABmin', [
         $scope.$on('event:auth-loginConfirmed', function () {
             console.log("App login message - updating configuration data");
             getAppData();
-        });
-
-        var el = angular.element(".navbar-toggle");
-        if (el != null) {
-            if (el.css('display') == 'none') {
-                SidepanelService.showPanel('all');
-            }
-            else {
-                SidepanelService.showPanel('side');
-            }
-        }
-
-        // Detect if we're in multi or single (collapsed) configuration
-        // We need to use the right toggle as the left one changes visibility for other reasons!
-        function checkPanelConfiguration() {
-            var el = angular.element(".navbar-toggle.pull-right");
-            if (el != null) {
-                if (el.css('display') == 'none') {
-                    $scope.doublePanel = true;
-                    SidepanelService.showPanel('all');
-                }
-                else {
-                    $scope.doublePanel = false;
-
-                    // We need to detect the single instance the menu collapses
-                    // to avoid unwanted changes to the displayed panel
-                    if (SidepanelService.getPanel() == 'all') {
-                        SidepanelService.showPanel('side');
-                    }
-                }
-            }
-        }
-
-        checkPanelConfiguration();
-
-        // Use the resize event to detect if the navbar is collapsed
-        // If it's not collapsed, tell the sidepanel to show all
-        angular.element($window).bind('resize', checkPanelConfiguration);
-
-        $scope.$on("sidepanelChange", function () {
-            $timeout(function () {
-                $(window).trigger('resize');
-            }, 0);
-        });
-
-        $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-            console.log("State change - panel is", SidepanelService.getPanel());
-            // Collapse the menu if we change view
-            $scope.menuCollapsed = true;
-            if (angular.isDefined(toState.data.pageTitle)) {
-                $scope.pageTitle = toState.data.pageTitle + ' | HABmin';
-            }
-            if (angular.isDefined(toState.data.sidepanelEnabled)) {
-                $scope.sidepanelEnabled = toState.data.sidepanelEnabled;
-            }
-            else {
-                $scope.sidepanelEnabled = true;
-            }
-
-            // Remember the state so we can enable some state dependant options
-            // (The ui router directives don't seem to support hide options!)
-            $scope.currentState = toState.name;
-
-            // Reset the sidebar
-            if ($scope.doublePanel === false) {
-                SidepanelService.showPanel('side');
-            }
         });
 
         $scope.showUserChartPrefs = function () {

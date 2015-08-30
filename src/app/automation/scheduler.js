@@ -13,7 +13,6 @@ angular.module('HABmin.scheduler', [
     'ngLocalize',
     'ui.calendar',
     'ResizePanel',
-    'SidepanelService',
     'Automation.editEvent',
     'ngVis'
 ])

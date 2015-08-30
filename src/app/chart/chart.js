@@ -21,7 +21,6 @@ angular.module('HABmin.chart', [
     'ngVis',
     'ngConfirmClick',
     'ResizePanel',
-    'SidepanelService',
     'habminChart'
 ])
 
@@ -45,7 +44,7 @@ angular.module('HABmin.chart', [
     })
 
     .controller('ChartCtrl',
-    function ChartCtrl($scope, $q, locale, ItemModel, PersistenceServiceModel, PersistenceItemModel, PersistenceDataModel, ChartModel, ChartSave, SidepanelService, growl, VisDataSet, $interval, $timeout) {
+    function ChartCtrl($scope, $q, locale, ItemModel, PersistenceServiceModel, PersistenceItemModel, PersistenceDataModel, ChartModel, ChartSave, growl, VisDataSet, $interval, $timeout) {
         var itemsLoaded = 0;
         var itemsLoading = 0;
         var newChart;
