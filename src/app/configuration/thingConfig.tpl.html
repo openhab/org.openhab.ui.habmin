@@ -1,5 +1,5 @@
 <!-- Device List -->
-<div class="col-sm-4" sidepanel-pane="side">
+<div class="col-sm-4">
     <div class="panel panel-default">
         <!-- Header -->
         <div class="panel-heading">
@@ -85,7 +85,7 @@
             <!-- THING LIST -->
             <div ng-if="thingCnt!=-1 && insertMode==false" ng-repeat="thing in things | filter:filterFunction">
                 <a role="presentation" ng-class="{'list-group-item':true, 'active': thing.UID==selectedThing.UID}"
-                   ng-click="selectThing(thing)" sidepanel-click="main">
+                   ng-click="selectThing(thing)">
                     <table style="background-color: transparent">
                         <tr>
                             <td class="text-large" rowspan="2">
@@ -120,7 +120,7 @@
             <!-- NEW THING LIST -->
             <div ng-if="insertMode==true" ng-repeat="thing in newThings">
                 <a role="presentation" ng-class="{'list-group-item':true, 'active': thing.UID==selectedThing.UID}"
-                   ng-click="selectNewThing(thing)" sidepanel-click="main">
+                   ng-click="selectNewThing(thing)">
                     <table style="background-color: transparent">
                         <tr>
                             <td class="text-large" rowspan="2">
@@ -154,7 +154,7 @@
 </div>
 
 <!-- Device Configuration -->
-<div class="col-sm-8" sidepanel-pane="main">
+<div class="col-sm-8">
     <div class="panel panel-default">
         <!-- Header -->
         <div class="panel-heading">

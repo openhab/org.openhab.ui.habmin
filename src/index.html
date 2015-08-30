@@ -1,6 +1,9 @@
 <!DOCTYPE html>
-<html ng-controller="HABminCtrl" class="slate">
+<html ng-controller="HABminCtrl" ngsf-fullscreen>
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
     <title ng-bind="pageTitle"></title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -28,28 +31,28 @@
             margin-right: auto;
         }
     </style>
-</head>
 
-<body ngsf-fullscreen>
-<!-- The splash screen must be first -->
-<div id="splash" class="splash fade in">
-    <% if(splashScreen.image.length > 0) { %>
-    <img src="assets/<%= splashScreen.image %>">
-    <% } %>
-    Loading...
-</div>
+
+    <!-- The splash screen must be first -->
+    <div id="splash" class="splash fade in">
+        <% if(splashScreen.image.length > 0) { %>
+        <img src="assets/<%= splashScreen.image %>">
+        <% } %>
+        Loading...
+    </div>
 
 <% if(buildtype == 'cordova') { %>
 <!-- Include PhoneGap -->
-<script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
 <% } %>
 
 <!-- compiled CSS --><% styles.forEach( function ( file ) { %>
-<link rel="stylesheet" type="text/css" href="<%= file %>"/>
+    <link rel="stylesheet" type="text/css" href="<%= file %>"/>
 <% }); %>
 
+
 <!-- compiled JavaScript --><% scripts.forEach( function ( file ) { %>
-<script type="text/javascript" src="<%= file %>"></script>
+    <script type="text/javascript" src="<%= file %>"></script>
 <% }); %>
 
 <script type="text/javascript">
@@ -76,347 +79,339 @@
     }
     %>
 </script>
+</head>
 
-<!-- ng-swipe-left="swipe('left')" ng-swipe-right="swipe('right')"> -->
+<body class="hold-transition skin-blue sidebar-mini fixed">
+<div class="wrapper">
+    <header class="main-header">
 
-<div id="login-holder" class="login-form login-handler" style="display: none;">
-    <div class="container-fluid">
-        <div id="loginbox" class="col-sm-4 col-sm-offset-4" ng-controller="LoginController">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <span class="fa fa-key"></span>&nbsp;<span i18n="habmin.loginFormTitle"></span>
-                </div>
-                <div class="panel-body">
-                    <form name="form">
-                        <!-- SERVER -->
-                        <div class="form-group" ng-show="showServer"
-                             ng-class="{'has-error': form.server.$invalid && submitted}">
-                            <label for="server" class="control-label"><span i18n="habmin.loginServer"></span></label>
+        <!-- Logo -->
+        <a href="" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"></span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><b>HAB</b>min</span>
+        </a>
 
-                            <div class="input-group">
-                                <span class="input-group-addon"><span class="fa fa-desktop"></span></span>
-                                <input
-                                        type="text"
-                                        class="form-control"
-                                        id="server"
-                                        name="server"
-                                        placeholder="Server"
-                                        ng-model="server"
-                                        ng-model-options="{updateOn: 'blur'}"
-                                        required>
-                            </div>
-                        </div>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top" role="navigation">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
 
-                        <!-- USERNAME -->
-                        <div class="form-group" ng-class="{'has-error': form.user.$invalid && submitted}">
-                            <label for="user" class="control-label"><span i18n="habmin.loginUser"></span></label>
-
-                            <div class="input-group">
-                                <span class="input-group-addon"><span class="fa fa-user"></span></span>
-                                <input
-                                        type="text"
-                                        class="form-control"
-                                        id="user"
-                                        name="user"
-                                        placeholder="Username"
-                                        ng-model="user"
-                                        ng-model-options="{updateOn: 'blur'}"
-                                        required>
-                            </div>
-                        </div>
-
-                        <!-- PASSWORD -->
-                        <div class="form-group" ng-class="{'has-error': form.password.$invalid && submitted}">
-                            <label for="password" class="control-label"><span
-                                    i18n="habmin.loginPassword"></span></label>
-
-                            <div class="input-group">
-                                <span class="input-group-addon"><span class="fa fa-lock"></span></span>
-                                <input
-                                        type="password"
-                                        class="form-control"
-                                        id="password"
-                                        name="password"
-                                        placeholder="Password"
-                                        ng-model="password"
-                                        ng-model-options="{updateOn: 'blur'}"
-                                        required>
-                            </div>
-                        </div>
-                        <button type="submit" ng-click="submit()" class="btn btn-primary btn-block"><span
-                                i18n="habmin.loginSubmit"></span></button>
-                    </form>
-                </div>
-                <div class="panel-footer">
-                    <div class="text-center">
-                        <small>
-                            <span i18n="habmin.loginVersion"></span>&nbsp;<span>{{HABminVersion}}</span>,&nbsp;<span>{{HABminDate}}</span>
-                        </small>
-                    </div>
-                </div>
+            <!-- Navbar Left Menu -->
+            <div ui-view="menu">
             </div>
-        </div>
-    </div>
-</div>
 
-<div id="content" class="fade">
-    <div class="container-fluid">
-        <nav class="navbar navbar-default navbar-fixed-top" container="false" role="navigation">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle pull-left"
-                        sidepanel-toggle="side,main" ng-show="sidepanelEnabled">
-                    <span class="sr-only">Toggle panels</span>
-
-                    <div class="nav-expand-bar">
-                        <span class="icon-bar nav-expand-bar"></span>
-                        <span class="icon-bar nav-expand-bar"></span>
-                        <span class="icon-bar nav-expand-bar"></span>
-                    </div>
-                    <div class="nav-expand-dir">
-                        <span class="fa" sidepanel-class="main:fa-caret-left, side:fa-caret-right"></span>
-                    </div>
-                </button>
-
-                <span class="navbar-brand" style="white-space: nowrap;">
-                    <% if(navScreen.image.length > 0) { %>
-                        <img align="left" height="100%" src="assets/<%= navScreen.image %>">
-                    <% } %>
-                    &nbsp;<span i18n="common.appName"></span></span>
-
-                <button type="button" class="navbar-toggle pull-right" ng-init="menuCollapsed = true"
-                        ng-click="menuCollapsed = !menuCollapsed">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <div class="collapse navbar-collapse navbar-ex1-collapse" collapse="menuCollapsed">
+            <!-- Navbar Right Menu -->
+            <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
-                    <!-- DASHBOARD menu -->
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="fa fa-tachometer"></span>
-                            <span i18n="habmin.mainDashboard"></span>
-                            <span class="caret"></span>
+                    <!-- Thing Discovery Menu: style can be found in dropdown.less-->
+                    <li class="dropdown discovery-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-plug"></i>
+                            <span ng-if="notificationCntNew && !notificationError" class="label label-success">
+                                {{notificationCntNew}}
+                            </span>
                         </a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li ui-sref="chart">
-                                <a>
-                                    <span class="fa fa-fw fa-area-chart"></span>
-                                    <span i18n="habmin.mainCharts"></span>
-                                </a>
+                        <ul class="dropdown-menu">
+                            <li class="header">There are {{notificationCntNew}} new things</li>
+                            <li>
+                                <!-- inner menu: contains the actual data -->
+                                <ul class="menu">
+                                    <li ng-repeat="msg in inbox" ng-if="msg.flag=='NEW'">
+                                        <a>
+                                            <div class="pull-left">
+                                                <small class="label pull-right bg-green">new</small>
+                                            </div>
+                                            <h4>
+                                                {{msg.label}}
+                                            </h4>
+                                            <p>
+                                                <button type="button" class="btn btn-xs btn-default"
+                                                        ng-click="saveThing()">
+                                                    <span class="fa fa-fw fa-plus-circle text-success"></span>
+                                                    <span i18n="common.add"></span>
+                                                </button>
+                                                <button type="button" class="btn btn-xs btn-default"
+                                                        ng-confirm-click="ignoreThing()"
+                                                        i18n-attr="{'ngConfirmMessage': 'habmin.discoveryIgnoreConfirmMsg','ngConfirmTitle': 'habmin.discoveryIgnoreConfirmTitle','ngConfirmNoBtn': 'common.cancel', 'ngConfirmYesBtn': 'common.ok'}">
+                                                    <span class="fa fa-fw fa-dot-circle-o text-warning"></span>
+                                                    <span i18n="common.ignore"></span>
+                                                </button>
+                                                <button type="button" class="btn btn-xs btn-default"
+                                                        ng-confirm-click="deleteThing()"
+                                                        i18n-attr="{'ngConfirmMessage': 'habmin.discoveryDeleteConfirmMsg','ngConfirmTitle': 'habmin.discoveryDeleteConfirmTitle','ngConfirmNoBtn': 'common.cancel', 'ngConfirmYesBtn': 'common.ok'}">
+                                                    <span class="fa fa-fw fa-times-circle text-danger"></span>
+                                                    <span i18n="common.delete"></span>
+                                                </button>
+                                            </p>
+                                        </a>
+                                    </li>
+                                 </ul>
                             </li>
-                            <li ng-if="dashboards.length" role="presentation" class="divider"></li>
-                            <li ng-repeat="dashboard in dashboards">
-                                <a ng-if="dashboard.menu!==false"
-                                   ui-sref="dashboard({dashboardId:'{{dashboard.id}}'})"
-                                   ui-sref-opts="{ reload: true }">
-                                    <habmin-icon class="fa fa-fw" category="{{dashboard.category}}"></habmin-icon>
-                                    <span>{{dashboard.name}}</span>
-                                </a>
-                            </li>
-                            <li role="presentation" class="divider"></li>
-                            <li ui-sref="dashboard({dashboardId:''})"
-                                ui-sref-opts="{ reload: true }">
-                                <a>
-                                    <span class="fa fa-fw fa-th"></span>
-                                    <span i18n="habmin.mainDashboardNew"></span>
-                                </a>
-                            </li>
-                            <li ng-show="currentState.indexOf('dashboard')==0">
-                                <a ng-click="dashboardEdit()">
-                                    <span class="fa fa-fw fa-magic"></span>
-                                    <span i18n="habmin.mainDashboardEdit"></span>
-                                </a>
-                            </li>
+                            <li class="footer"><a><span i18n="common.close"></span></a></li>
                         </ul>
                     </li>
-
-                    <!-- AUTOMATION menu -->
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="fa fa-cogs"></span>
-                            <span i18n="habmin.mainAutomation"></span>
-                            <span class="caret"></span>
+                    <!-- Notifications: style can be found in dropdown.less -->
+                    <li class="dropdown notifications-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-bell-o"></i>
+                            <span class="label label-warning">10</span>
                         </a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li ui-sref="rules">
-                                <a>
-                                    <span class="fa fa-fw fa-puzzle-piece"></span>
-                                    <span i18n="habmin.mainRules"></span>
-                                </a>
+                        <ul class="dropdown-menu">
+                            <li class="header">You have 10 notifications</li>
+                            <li>
+                                <!-- inner menu: contains the actual data -->
+                                <ul class="menu">
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-users text-aqua"></i> 5 new members joined today
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
-                            <li ui-sref="scheduler">
-                                <a>
-                                    <span class="fa fa-fw fa-clock-o"></span>
-                                    <span i18n="habmin.mainScheduler"></span>
-                                </a>
-                            </li>
-                            <li ui-sref="scheduler" class="disabled">
-                                <a>
-                                    <span class="fa fa-fw fa-at"></span>
-                                    <span i18n="habmin.mainNotifications"></span>
-                                </a>
-                            </li>
+                            <li class="footer"><a href="#">View all</a></li>
                         </ul>
                     </li>
-
-                    <!-- SITEMAP menu -->
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="fa fa-sitemap"></span>
-                            <span i18n="habmin.mainSitemaps"></span>
-                            <span class="caret"></span>
+                    <!-- Fullscreen Toggle Button -->
+                    <li>
+                        <a ngsf-toggle-fullscreen show-if-fullscreen-enabled>
+                            <span show-if-fullscreen=false class="fa fa-fw fa-expand"></span>
+                            <span show-if-fullscreen=true class="fa fa-fw fa-compress"></span>
                         </a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li ng-repeat="choice in sitemaps">
-                                <a ui-sref="sitemap.view({sitemapName:'{{choice.name}}', sitemapPage:'{{choice.name}}'})"
-                                   ui-sref-opts="{ reload: true }">
-                                    <habmin-icon class="" icon="{{choice.icon}}"></habmin-icon>
-                                    <span>{{choice.label}}</span>
-                                </a>
-                            </li>
-                            <li class="disabled" ng-if="!sitemaps">
-                                <a>
-                                    <span class="fa fa-fw fa-warning"></span>
-                                    <span i18n="habmin.mainNoSitemaps"></span>
-                                </a>
-                            </li>
-                            <li role="presentation" class="divider"></li>
-                            <li ui-sref="sitemap.view">
-                                <a>
-                                    <span class="fa fa-fw fa-plus"></span>
-                                    <span i18n="habmin.mainNewSitemap"></span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
 
-                    <!-- CONFIGURATION menu -->
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="fa fa-wrench"></span>
-                            <span i18n="habmin.mainConfiguration"></span>
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li>
-                                <a ui-sref="bindings">
-                                    <span class="fa fa-fw fa-random"></span>
-                                    <span i18n="habmin.mainBindings"></span>
-                                </a>
-                            </li>
-                            <li>
-                                <a ui-sref="things">
-                                    <span class="fa fa-fw fa-share-alt"></span>
-                                    <span i18n="habmin.mainThings"></span>
-                                </a>
-                            </li>
-                            <li>
-                                <a ui-sref="discovery">
-                                    <span class="fa fa-fw fa-paper-plane"></span>
-                                    <span i18n="habmin.mainDiscovery"></span>
-                                </a>
-                            </li>
-                            <li>
-                                <a ui-sref="items">
-                                    <span class="fa fa-fw fa-paper-plane"></span>
-                                    <span i18n="habmin.mainItems"></span>
-                                </a>
-                            </li>
-                            <li role="presentation" class="divider"></li>
-                            <li>
-                                <a ui-sref="binding/zwave">
-                                    <habmin-icon class="fa fa-fw" icon="zwave"></habmin-icon>
-                                    <span>ZWave (OH1 only)</span>
-                                </a>
-                            </li>
-                            <li role="presentation" class="divider"></li>
-                            <li>
-                                <a ui-sref="floorplan/editor">
-                                    <habmin-icon class="fa fa-fw" icon="zwave"></habmin-icon>
-                                    <span>Floorplan Editor</span>
-                                </a>
-                            </li>
-                        </ul>
                     </li>
-
-                    <!-- TOOLS menu -->
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="fa fa-laptop"></span>
-                            <span i18n="habmin.mainTools"></span>
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li>
-                                <a ui-sref="tools/zwave/logreader">
-                                    <span class="fa fa-fw fa-info-circle"></span>
-                                    <span i18n="habmin.mainZWaveLogReader"></span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-
-                <!-- USER menu -->
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown" ng-if="isLoggedIn()">
-                        <a class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="fa fa-user"></span>
-                            <span class="hidden-sm" i18n="habmin.mainUserPreferences"></span>
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li>
-                                <a ng-click="showUserGeneralPrefs()">
-                                    <span class="fa fa-fw fa-cog"></span>
-                                    <span i18n="habmin.mainGeneralPreferences"></span>
-                                </a>
-                            </li>
-                            <li role="presentation" class="divider"></li>
-                            <li>
-                                <a ng-click="logout()">
-                                    <span class="fa fa-fw fa-sign-out"></span>
-                                    <span i18n="habmin.mainLogout"></span>
-                                </a>
-                            </li>
-                            <li>
-                                <a ngsf-toggle-fullscreen>
-                                    <span class="fa fa-fw fa-sign-out"></span>
-                                    <span>Fullscreen</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li ng-if="!isLoggedIn()">
-                        <a ng-click="login()">
-                            <span class="fa fa-fw fa-user"></span>
-                            <span class="hidden-sm" i18n="habmin.mainLogin"></span>
-                        </a>
-                    </li>
-
-                    <!-- NOTIFICATION AREA -->
-                    <li class="navbar-notification">
-                        <p class="no-padding" ng-if="notificationCntNew && !notificationError"
-                           popup-show="templates/notifications/summary.tpl.html" popup-placement="left"
-                           popup-class="zwave-logreader-popover">
-                                    <span class="badge">
-                                        {{notificationCntNew}}
-                                    </span>
-                        </p>
+                    <!-- Control Sidebar Toggle Button -->
+                    <li>
+                        <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
                     </li>
                 </ul>
             </div>
         </nav>
-    </div>
+    </header>
 
-    <div class="container-fluid habmin-body" ui-view="main">
-    </div>
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu">
+                <li class="treeview" ng-class="{active: $state.includes('chart')}">
+                    <a href="#">
+                        <i class="fa fa-fw fa-area-chart"></i> <span i18n="habmin.mainCharts"></span> <i class="fa fa-angle-left pull-right"></i>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li ui-sref="chart" ng-class="{active: $state.includes('chart')}">
+                            <a>
+                                <span class="fa fa-fw fa-area-chart"></span>
+                                <span i18n="habmin.mainCharts"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="treeview" ng-class="{active: $state.includes('dashboard')}">
+                    <a href="#">
+                        <i class="fa fa-fw fa-dashboard"></i> <span i18n="habmin.mainDashboard"></span> <i class="fa fa-angle-left pull-right"></i>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li ng-repeat="dashboard in dashboards">
+                            <a ng-if="dashboard.menu!==false"
+                               ui-sref="dashboard({dashboardId:'{{dashboard.id}}'})"
+                               ui-sref-opts="{ reload: true }">
+                                <habmin-icon class="fa fa-fw" category="{{dashboard.category}}"></habmin-icon>
+                                <span>{{dashboard.name}}</span>
+                            </a>
+                        </li>
+                        <li role="presentation" class="divider"></li>
+                        <li ui-sref="dashboard({dashboardId:''})"
+                            ui-sref-opts="{ reload: true }">
+                            <a>
+                                <span class="fa fa-fw fa-th"></span>
+                                <span i18n="habmin.mainDashboardNew"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-cogs"></i>
+                        <span i18n="habmin.mainAutomation"></span>
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li ui-sref="chart" ng-class="{active: $state.includes('chart')}">
+                            <a>
+                                <span class="fa fa-fw fa-area-chart"></span>
+                                <span i18n="habmin.mainCharts"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- SITEMAP MENU -->
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-sitemap"></i>
+                        <span i18n="habmin.mainSitemaps"></span>
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li ng-repeat="choice in sitemaps">
+                            <a ui-sref="sitemap.view({sitemapName:'{{choice.name}}', sitemapPage:'{{choice.name}}'})"
+                               ui-sref-opts="{ reload: true }">
+                                <habmin-icon class="" icon="{{choice.icon}}"></habmin-icon>
+                                <span>{{choice.label}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- CONFIGURATION MENU -->
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-wrench"></i>
+                        <span i18n="habmin.mainConfiguration"></span>
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li ui-sref="bindings" ng-class="{active: $state.includes('bindings')}">
+                            <a>
+                                <i class="fa fa-fw fa-random"></i>
+                                <span i18n="habmin.mainBindings"></span>
+                            </a>
+                        </li>
+                        <li ui-sref="things" ng-class="{active: $state.includes('things')}">
+                            <a>
+                                <i class="fa fa-fw fa-plug"></i>
+                                <span i18n="habmin.mainThings"></span>
+                            </a>
+                        </li>
+                        <li ui-sref="items" ng-class="{active: $state.includes('items')}">
+                            <a>
+                                <i class="fa fa-fw fa-paper-plane"></i>
+                                <span i18n="habmin.mainItems"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- TOOLS MENU -->
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-laptop"></i>
+                        <span i18n="habmin.mainTools"></span>
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li ui-sref="tools/zwave/logreader" ng-class="{active: $state.includes('tools/zwave/logreader')}">
+                            <a>
+                                <i class="fa fa-fw fa-info-circle"></i>
+                                <span i18n="habmin.mainZWaveLogReader"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
 
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Main content -->
+        <section class="content container-fluid habmin-body" ui-view="main">
+        </section><!-- /.content -->
+    </div><!-- /.content-wrapper -->
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Create the tabs -->
+        <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+            <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+            <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <!-- Home tab content -->
+            <div class="tab-pane" id="control-sidebar-home-tab">
+                <h3 class="control-sidebar-heading">Recent Activity</h3>
+                <ul class="control-sidebar-menu">
+                </ul><!-- /.control-sidebar-menu -->
+
+                <h3 class="control-sidebar-heading">Tasks Progress</h3>
+                <ul class="control-sidebar-menu">
+                </ul><!-- /.control-sidebar-menu -->
+
+            </div><!-- /.tab-pane -->
+
+            <!-- Settings tab content -->
+            <div class="tab-pane" id="control-sidebar-settings-tab">
+                <form method="post">
+                    <h3 class="control-sidebar-heading">General Settings</h3>
+                    <div class="form-group">
+                        <label class="control-sidebar-subheading">
+                            Report panel usage
+                            <input type="checkbox" class="pull-right" checked>
+                        </label>
+                        <p>
+                            Some information about this general settings option
+                        </p>
+                    </div><!-- /.form-group -->
+
+                    <div class="form-group">
+                        <label class="control-sidebar-subheading">
+                            Allow mail redirect
+                            <input type="checkbox" class="pull-right" checked>
+                        </label>
+                        <p>
+                            Other sets of options are available
+                        </p>
+                    </div><!-- /.form-group -->
+
+                    <div class="form-group">
+                        <label class="control-sidebar-subheading">
+                            Expose author name in posts
+                            <input type="checkbox" class="pull-right" checked>
+                        </label>
+                        <p>
+                            Allow the user to show his name in blog posts
+                        </p>
+                    </div><!-- /.form-group -->
+
+                    <h3 class="control-sidebar-heading">Chat Settings</h3>
+
+                    <div class="form-group">
+                        <label class="control-sidebar-subheading">
+                            Show me as online
+                            <input type="checkbox" class="pull-right" checked>
+                        </label>
+                    </div><!-- /.form-group -->
+
+                    <div class="form-group">
+                        <label class="control-sidebar-subheading">
+                            Turn off notifications
+                            <input type="checkbox" class="pull-right">
+                        </label>
+                    </div><!-- /.form-group -->
+
+                    <div class="form-group">
+                        <label class="control-sidebar-subheading">
+                            Delete chat history
+                            <a href="javascript::;" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
+                        </label>
+                    </div><!-- /.form-group -->
+                </form>
+            </div><!-- /.tab-pane -->
+        </div>
+    </aside><!-- /.control-sidebar -->
+    <!-- Add the sidebar's background. This div must be placed
+         immediately after the control sidebar -->
+    <div class="control-sidebar-bg"></div>
+
+    <!-- Add the growl div -->
     <div growl>
     </div>
-</div>
+
+</div><!-- ./wrapper -->
+
 </body>
 </html>

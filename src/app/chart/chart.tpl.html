@@ -1,5 +1,5 @@
 <!-- Chart and Item Lists -->
-<div class="col-sm-4" sidepanel-pane="side">
+<div class="col-sm-4">
     <div class="panel panel-default">
         <!-- PANEL HEADER -->
         <div class="panel-heading">
@@ -114,7 +114,7 @@
                 <div ng-show="chartsTotal>0" ng-repeat="choice in charts">
                     <a role="presentation"
                        class="list-group-item" ng-class="{'active':choice.selected=='yes'}"
-                       ng-click="selectChart(choice)" sidepanel-click="main">
+                       ng-click="selectChart(choice)">
                         <habmin-icon class="icon-lg" icon="{{choice.icon}}"></habmin-icon>
                         <span>{{choice.name}}</span>
                     <span class="pull-right">
@@ -154,7 +154,7 @@
 </div>
 
 <!-- Chart -->
-<div class="col-sm-8" sidepanel-pane="main">
+<div class="col-sm-8">
     <div class="panel panel-default">
         <!-- Header -->
         <div class="panel-heading" style="padding:3px;">

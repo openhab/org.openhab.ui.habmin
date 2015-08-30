@@ -115,7 +115,9 @@ module.exports = {
             'vendor/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js',
             'vendor/angularjs-slider/rzslider.js',
             'vendor/screenfull/dist/screenfull.js',
-            'vendor/angular-screenfull/dist/angular-screenfull.min.js'
+            'vendor/angular-screenfull/dist/angular-screenfull.min.js',
+            'vendor/slimScroll/jquery.slimscroll.js',
+            'vendor/angular-slimscroll/angular-slimscroll.js'
         ],
         css: [
             'vendor/angular-growl-v2/build/angular-growl.css',
@@ -151,6 +153,10 @@ module.exports = {
         'paper',
         'slate',
         'yeti'
+    ],
+
+    skins: [
+        'skin-blue'
     ],
 
     /**

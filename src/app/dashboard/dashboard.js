@@ -28,6 +28,10 @@ angular.module('HABmin.dashboard', [
                 "main": {
                     controller: 'DashboardCtrl',
                     templateUrl: 'dashboard/dashboard.tpl.html'
+                },
+                "menu": {
+                    controller: 'DashboardCtrlMenu',
+                    templateUrl: 'dashboard/dashboardMenu.tpl.html'
                 }
             },
             data: {pageTitle: 'Dashboard'}
@@ -67,8 +71,8 @@ angular.module('HABmin.dashboard', [
                 enabled: true,
                 handles: ['n', 'e', 's', 'w', 'ne', 'se', 'sw', 'nw'],
 //                resize: function  (event, uiWidget, $element) {
-  //                  console.log("Resizeing", uiWidget, $element);
-    //            },
+                //                  console.log("Resizeing", uiWidget, $element);
+                //            },
                 stop: function (event, uiWidget, $element) {
                     console.log("Resize done", uiWidget, $element);
                     $scope.isDirty = true;
@@ -264,7 +268,13 @@ angular.module('HABmin.dashboard', [
                 }
             );
         }
+    })
 
+    .controller('DashboardCtrlMenu',
+    function ($scope, $timeout, $state) {
+        $scope.dashboardEdit = function () {
+            $rootScope.$broadcast("dashboardEdit");
+        };
     })
 
     .directive('dashboardWidget', ['$compile', function ($compile) {

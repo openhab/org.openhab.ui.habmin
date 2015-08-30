@@ -183,14 +183,17 @@
 (function(angular) {
     angular.module('angularScreenfull')
     .directive('ngsfToggleFullscreen', ngsfToggleFullscreenDirective);
+    ngsfToggleFullscreenDirective.$inject = ['$timeout'];
 
-    function ngsfToggleFullscreenDirective () {
+    function ngsfToggleFullscreenDirective ($timeout) {
         return {
             restrict: 'A',
             require: '^ngsfFullscreen',
             link: function(scope, elm, attrs, fullScreenCtrl) {
                 elm.on('click', function() {
                     fullScreenCtrl.toggleFullscreen();
+
+                    $timeout(scope.$apply(),500);
                 });
             }
         };

@@ -38,6 +38,7 @@ angular.module('HABmin', [
     'ui.router',
     'ui.bootstrap',
     'ui.select',
+    'ui.slimscroll',
     'ngLocalize',
     'ngLocalize.Config',
     'ngLocalize.Events',
@@ -155,39 +156,13 @@ angular.module('HABmin', [
                 '<h4 class="growl-title" ng-show="message.title" ng-bind="message.title"></h4>' +
                 '<div class="growl-message" ng-bind-html="message.text"></div></div></div>'
             );
-
-            // Update the notification template. The use of <button> causes problems with some templates
-            $templateCache.put('templates/notifications/summary.tpl.html',
-                '<div class="popover-content">' +
-                '<table class="table table-condensed small">' +
-                '<tr ng-repeat="msg in inbox" ng-if="msg.flag==\'NEW\'" class="text-success">' +
-                '<td><span class="fa fa-fw fa-plus-circle text-success"></span><span i18n="habmin.thingNew"></span></td>' +
-                '<td>{{msg.label}}</td>' +
-                '</tr>' +
-                '<tr ng-repeat="msg in inbox" ng-if="msg.flag==\'IGNORED\' && showAll" class="text-muted">' +
-                '<td><span class="fa fa-fw fa-dot-circle-o text-muted"></span><span i18n="habmin.thingIgnored"></span></td>' +
-                '<td>{{msg.label}}</td>' +
-                '</tr>' +
-                '</table>' +
-                '<div>' +
-                '<div class="checkbox pull-left">' +
-                '<label>' +
-                '<input type="checkbox" ng-model="showAll" ng-disabled="notificationCntIgnored==0"><span i18n="habmin.thingShowAll"></span>' +
-                '</label>' +
-                '</div>' +
-                '<div class="pull-right">' +
-                '<a ui-sref="things" ng-click="hidePopover()" class="btn btn-xs btn-primary"><span i18n="common.open"></span></a>' +
-                '<a ng-click="hidePopover()" class="btn btn-xs btn-primary"><span i18n="common.close"></span></a>' +
-                '</div>' +
-                '</div>' +
-                '</div>'
-            )
-            ;
         }
     ])
 
     .controller('HABminCtrl',
-    function HABminCtrl($scope, $window, $timeout, $interval, $rootScope, locale, ItemModel, ThingModel, DashboardModel, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, InboxModel, SidepanelService, RestService, UpdateService, EventModel, ServerMonitor) {
+    function HABminCtrl($scope, $state, $window, $timeout, $interval, $rootScope, locale, ItemModel, ThingModel, DashboardModel, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, InboxModel, SidepanelService, RestService, UpdateService, EventModel, ServerMonitor) {
+        $scope.$state = $state;
+
         $scope.isLoggedIn = UserService.isLoggedIn;
         $scope.notificationError = false;
         $scope.onlineStatus = false;
@@ -196,7 +171,7 @@ angular.module('HABmin', [
 
         // List of current themes
         // TODO: Consolidate this with the user selection
-        var themes = ['yeti', 'paper', 'slate'];
+/*        var themes = ['yeti', 'paper', 'slate'];
         $scope.setTheme = function (theme) {
             // Make sure the theme exists!
             // Setting an invalid theme will completely screw the presentation
@@ -206,15 +181,15 @@ angular.module('HABmin', [
 
             $('html').removeClass();
             $('html').addClass(theme);
-        };
-
-        ServerMonitor.monitor();
+        };*/
 
         $scope.$on("habminTheme", function (event, theme) {
-            $scope.setTheme(theme);
+//            $scope.setTheme(theme);
         });
 
-        $scope.setTheme(UserService.getTheme());
+//        $scope.setTheme(UserService.getTheme());
+
+        ServerMonitor.monitor();
 
         $scope.logout = function () {
             UserService.logout();
@@ -428,26 +403,50 @@ angular.module('HABmin', [
             UserGeneralPrefs.showModal();
         };
 
-        $scope.dashboardEdit = function () {
-            $rootScope.$broadcast("dashboardEdit");
+        $scope.startDiscovery = function (binding) {
+            BindingModel.startDiscovery(binding.id).then(
+                function () {
+                    growl.success(locale.getString("habmin.discoveryStartOk", {name: binding.name}));
+                },
+                function () {
+                    growl.error(locale.getString("habmin.discoveryStartFail", {name: binding.name}));
+                }
+            );
         };
 
-        // Swipe handler - mainly for handling small screens where we split the panels
-        // on a side and main panel and display them separately.
-        $scope.swipe = function (dir) {
-            console.log("Swipe action event:" + dir);
-            // Ignore this if we don't have the split screen
-            if ($scope.sidepanelEnabled === false || SidepanelService.getPanel() == 'all') {
-                return;
-            }
+        $scope.saveThing = function () {
+            InboxModel.thingApprove($scope.selectedThing.thingUID, $scope.selectedThing.label).then(
+                function () {
+                    InboxModel.refreshInbox();
+                },
+                function () {
+                    growl.error(locale.getString("habmin.discoveryIgnoreFail", {name: $scope.selectedThing.name}));
+                }
+            );
 
-            // Handle the swipe notifications
-            if (dir == 'left') {
-                SidepanelService.showPanel('main');
-            }
-            if (dir == 'right') {
-                SidepanelService.showPanel('side');
-            }
+        };
+
+        $scope.ignoreThing = function () {
+            InboxModel.thingIgnore($scope.selectedThing.thingUID).then(
+                function () {
+                    InboxModel.refreshInbox();
+                },
+                function () {
+                    growl.error(locale.getString("habmin.discoveryIgnoreFail", {name: $scope.selectedThing.name}));
+                }
+            );
+        };
+
+        $scope.deleteThing = function () {
+            InboxModel.thingDelete($scope.selectedThing.thingUID).then(
+                function () {
+                    InboxModel.refreshInbox();
+                    $scope.selectedThing = null;
+                },
+                function () {
+                    growl.error(locale.getString("habmin.discoveryDeleteFail", {name: $scope.selectedThing.name}));
+                }
+            );
         };
 
         // Check if there's a newer version available

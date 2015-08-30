@@ -6,11 +6,7 @@
         </h3>
     </div>
     <div class="box-body">
-        <div class="" ng-repeat="item in groupItem.members">
-            <div ng-switch on="item.type" class="sitemap-row">
-                <dashboard-switch ng-switch-when="SwitchItem" item="item"></dashboard-switch>
-                <dashboard-text ng-switch-default item="item"></dashboard-text>
-            </div>
-        </div>
+        <habmin-chart style="display:inline-block;height:100%;width:100%" chart="options.chartId" service="options.serviceId">
+        </habmin-chart>
     </div>
 </div>

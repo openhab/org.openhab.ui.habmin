@@ -14,8 +14,10 @@ angular.module('sitemapChartWidget', [
     .directive('sitemapChart', function (ImgFactory) {
         return {
             restrict: 'E',
-            template: '<habmin-chart style="display:inline-block;height:100%;width:100%" height="300" ' +
-            'chart="chartId" service="serviceId"></habmin-chart>',
+            template: '<div class="box box-success box-solid">' +
+            '<habmin-chart style="display:inline-block;height:100%;width:100%" height="300" ' +
+            'chart="chartId" service="serviceId"></habmin-chart>' +
+            '</div>',
             scope: {
                 itemModel: "=",
                 widget: "="

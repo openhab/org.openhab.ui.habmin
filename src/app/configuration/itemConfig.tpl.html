@@ -1,5 +1,5 @@
 <!-- Device List -->
-<div class="col-sm-4" sidepanel-pane="side">
+<div class="col-sm-4">
     <div class="panel panel-default">
         <!-- Header -->
         <div class="panel-heading">
@@ -11,7 +11,7 @@
             <!-- BINDING LIST -->
             <div ng-if="itemsCnt>0" ng-repeat="item in items">
                 <a role="presentation" ng-class="{'list-group-item':true, 'active': item==selectedItem}"
-                   ng-click="selectItem(item)" sidepanel-click="main">
+                   ng-click="selectItem(item)">
                     <table style="background-color: transparent">
                         <tr>
                             <td class="text-large" rowspan="2">
@@ -49,7 +49,7 @@
 </div>
 
 <!-- Item Information / Configuration -->
-<div class="col-sm-8" sidepanel-pane="main">
+<div class="col-sm-8">
     <div class="panel panel-default">
         <!-- Header -->
         <div class="panel-heading">

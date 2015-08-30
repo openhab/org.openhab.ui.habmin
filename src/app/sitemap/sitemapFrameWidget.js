@@ -13,13 +13,16 @@ angular.module('sitemapFrameWidget', [])
         return {
             restrict: 'E',
             transclude: true,
-            template: '<div class="col-md-4">' +
-            '  <div class="sitemap-frame-title">' +
+            template: '<div class="col-md-3 box box-default collapsed-box">' +
+            '<div class="box-header with-border">' +
+            '  <h3 class="box-title">' +
             '    <habmin-icon class="icon-lg" icon="{{widget.icon}}"></habmin-icon>' +
             '    <span ng-style="labelColor">{{widget.label}}</span>' +
             '    <span class="pull-right" ng-style="valueColor"></span>' +
-            '  </div>' +
-            '<div class="sitemap-frame" ng-transclude></div></div>',
+            '  </h3>' +
+            '</div>' +
+            '<div class="sitemap-frame" ng-transclude></div>' +
+            '</div>',
             scope: {
                 itemModel: "=",
                 widget: "="

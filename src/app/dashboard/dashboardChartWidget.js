@@ -16,8 +16,7 @@ angular.module('dashboardChartWidget', [
     .directive('dashboardChart', function () {
         return {
             restrict: 'E',
-            template: '<habmin-chart style="display:inline-block;height:100%;width:100%" ' +
-            'chart="options.chartId" service="options.serviceId"></habmin-chart>',
+            templateUrl: 'dashboard/dashboardChartWidget.tpl.html',
             scope: {
                 options: "="
             },

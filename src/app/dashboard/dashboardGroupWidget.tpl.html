@@ -1,12 +1,16 @@
-<div>
-    <div class="sitemap-frame-title">
-        <habmin-icon class="icon-lg" category="{{groupItem.category}}"></habmin-icon>
-        {{groupItem.label}}
+<div class="box box-default">
+    <div class="box-header with-border">
+        <h3 class="box-title">
+            <habmin-icon class="icon-lg" category="{{groupItem.category}}"></habmin-icon>
+            {{groupItem.label}}
+        </h3>
     </div>
-    <div class="" ng-repeat="item in groupItem.members">
-        <div ng-switch on="item.type" class="sitemap-row">
-            <dashboard-switch ng-switch-when="SwitchItem" item="item"></dashboard-switch>
-            <dashboard-text ng-switch-default item="item"></dashboard-text>
+    <div class="box-body">
+        <div class="" ng-repeat="item in groupItem.members">
+            <div ng-switch on="item.type" class="sitemap-row">
+                <dashboard-switch ng-switch-when="SwitchItem" item="item"></dashboard-switch>
+                <dashboard-text ng-switch-default item="item"></dashboard-text>
+            </div>
         </div>
     </div>
 </div>
