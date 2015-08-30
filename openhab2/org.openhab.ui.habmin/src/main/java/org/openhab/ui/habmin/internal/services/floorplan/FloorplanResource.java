@@ -11,8 +11,6 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.codec.binary.Base64;
-
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -27,6 +25,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import org.apache.commons.codec.binary.Base64;
 import org.eclipse.smarthome.io.rest.RESTResource;
 import org.openhab.ui.habmin.HABminConstants;
 import org.slf4j.Logger;
@@ -111,8 +110,8 @@ public class FloorplanResource implements RESTResource {
             folder.mkdirs();
         }
         File file = new File(folder + "/floorplan-" + floorplanID + ".img");
-        
-        return Response.ok((Object) file).build();
+
+        return Response.ok(file).build();
     }
 
     private FloorplanConfigBean putFloorplanBean(Integer floorplanRef, FloorplanConfigBean bean) {
@@ -120,36 +119,6 @@ public class FloorplanResource implements RESTResource {
             bean.id = null;
         } else {
             bean.id = floorplanRef;
-        }
-        
-        // Save the image
-        if(bean.imgBase64 != null) {
-            byte[] data = Base64.decodeBase64(bean.imgBase64);
-
-            File folder = new File(HABminConstants.getDataDirectory());
-            // Create path.
-            if (!folder.exists()) {
-                logger.debug("Creating directory {}", HABminConstants.getDataDirectory());
-                folder.mkdirs();
-            }
-    
-            try {
-                FileOutputStream fos = new FileOutputStream(folder + "/floorplan-" + bean.id + ".img");
-    
-                BufferedOutputStream out = new BufferedOutputStream(fos);
-                out.write(data);
-                out.flush();
-                fos.close();
-            } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-    
-            // And don't save it in the XML!!
-            bean.imgBase64 = null;
         }
 
         // Load the existing list
@@ -160,8 +129,9 @@ public class FloorplanResource implements RESTResource {
         FloorplanConfigBean foundFloorplan = null;
         // Loop through the interface list
         for (FloorplanConfigBean i : list.entries) {
-            if (i.id > high)
+            if (i.id > high) {
                 high = i.id;
+            }
             if (i.id.intValue() == floorplanRef) {
                 // If it was found in the list, remember it...
                 foundFloorplan = i;
@@ -176,6 +146,36 @@ public class FloorplanResource implements RESTResource {
         // Set defaults if this is a new floorplan
         if (bean.id == null) {
             bean.id = high + 1;
+        }
+
+        // Save the image
+        if (bean.imgBase64 != null) {
+            byte[] data = Base64.decodeBase64(bean.imgBase64);
+
+            File folder = new File(HABminConstants.getDataDirectory());
+            // Create path.
+            if (!folder.exists()) {
+                logger.debug("Creating directory {}", HABminConstants.getDataDirectory());
+                folder.mkdirs();
+            }
+
+            try {
+                FileOutputStream fos = new FileOutputStream(folder + "/floorplan-" + bean.id + ".img");
+
+                BufferedOutputStream out = new BufferedOutputStream(fos);
+                out.write(data);
+                out.flush();
+                fos.close();
+            } catch (FileNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            // And don't save it in the XML!!
+            bean.imgBase64 = null;
         }
 
         // Now save the updated version
@@ -234,7 +234,7 @@ public class FloorplanResource implements RESTResource {
             File folder = new File(HABminConstants.getDataDirectory());
             if (folder.exists()) {
                 File file = new File(folder, "floorplan-" + floorplanRef + ".img");
-    
+
                 file.delete();
             }
         }
@@ -256,8 +256,8 @@ public class FloorplanResource implements RESTResource {
         try {
             long timerStart = System.currentTimeMillis();
 
-            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
-                    HABminConstants.getDataDirectory() + FLOORPLAN_FILE), "UTF-8"));
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(HABminConstants.getDataDirectory() + FLOORPLAN_FILE), "UTF-8"));
 
             XStream xstream = new XStream(new StaxDriver());
             xstream.alias("floorplans", FloorplanListBean.class);
