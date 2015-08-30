@@ -125,6 +125,7 @@ angular.module('HABmin.dashboard', [
             else {
                 DashboardModel.saveDashboard($scope.dashboard).then(
                     function (dashboard) {
+                        $scope.isDirty = false;
                         $scope.dashboard.id = dashboard.id;
                         growl.success(locale.getString('habmin.dashboardSaveOk', {name: $scope.dashboard.name}));
                     },
