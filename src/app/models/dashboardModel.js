@@ -126,7 +126,7 @@ angular.module('HABmin.dashboardModel', [
 
                                 // Make sure widgets is an array
                                 data.widgets = [].concat(data.widgets);
-                                deferred.resolve(data.id);
+                                deferred.resolve(data);
                             })
                             .error(function (data, status) {
                                 deferred.reject(data);
@@ -143,7 +143,7 @@ angular.module('HABmin.dashboardModel', [
                                 deferred.resolve(data);
                             })
                             .error(function (data, status) {
-                                deferred.reject(data.id);
+                                deferred.reject(data);
                             });
                     }
 
