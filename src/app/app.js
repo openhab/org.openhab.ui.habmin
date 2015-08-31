@@ -223,6 +223,18 @@ angular.module('HABmin', [
             $scope.updateRestServices();
         }, 30000);
 
+        function updateClock() {
+            var m = moment();
+            $scope.clockTime = m.format("HH:mm");
+            $scope.clockDay = m.format("ddd Do MMM");
+        }
+        updateClock();
+
+        // Create a poll timer to update the time every 5 seconds
+        var clockTimer = $interval(function () {
+            updateClock();
+        }, 5000);
+
         // Load models used in the nav bar
         function getAppData() {
             $scope.sitemaps = null;
