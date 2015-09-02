@@ -101,7 +101,7 @@
             </a>
 
             <!-- Navbar Left Menu -->
-            <div class="navbar-left" ui-view="menu">
+            <div class="navbar-custom-menu navbar-left" ui-view="menu">
             </div>
 
             <!-- Navbar Right Menu -->
@@ -112,7 +112,7 @@
                         <div style="text-align: center;">{{clockTime}}</div>
                         <div style="font-size: 10px;">{{clockDay}}</div>
                     </li>
-                    <!-- THING DISCOVERY MENU -->
+                    <!-- THING DISCOVERY (INBOX) MENU -->
                     <li class="dropdown discovery-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-plug"></i>
@@ -185,12 +185,20 @@
                 <!-- CHARTS MENU -->
                 <li class="treeview" ng-class="{active: $state.includes('chart')}">
                     <a href="#">
-                        <i class="fa fa-fw fa-area-chart"></i> <span i18n="habmin.mainCharts"></span> <i class="fa fa-angle-left pull-right"></i>
+                        <i class="fa fa-fw fa-bar-chart"></i> <span i18n="habmin.mainCharts"></span> <i class="fa fa-angle-left pull-right"></i>
                     </a>
                     <ul class="treeview-menu">
+                        <li ng-repeat="chart in charts">
+                            <a ui-sref="chart({chartId:'{{chart.id}}'})"
+                               ui-sref-opts="{ reload: true }">
+                                <habmin-icon class="fa fa-fw" icon="{{chart.icon}}"></habmin-icon>
+                                <span>{{chart.name}}</span>
+                            </a>
+                        </li>
+
                         <li ui-sref="chart" ng-class="{active: $state.includes('chart')}">
                             <a>
-                                <span class="fa fa-fw fa-area-chart"></span>
+                                <i class="fa fa-fw fa-area-chart"></i>
                                 <span i18n="habmin.mainCharts"></span>
                             </a>
                         </li>

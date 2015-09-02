@@ -26,11 +26,15 @@ angular.module('HABmin.chart', [
 
     .config(function config($stateProvider) {
         $stateProvider.state('chart', {
-            url: '/chart',
+            url: '/chart/:chartId',
             views: {
                 "main": {
                     controller: 'ChartCtrl',
                     templateUrl: 'chart/chart.tpl.html'
+                },
+                "menu": {
+                    controller: 'ChartCtrlMenu',
+                    templateUrl: 'chart/chartMenu.tpl.html'
                 }
             },
             data: {pageTitle: 'Charting'},
@@ -43,8 +47,25 @@ angular.module('HABmin.chart', [
         });
     })
 
+    .factory('ChartService', function () {
+        var Service = {
+            graphItems: [],
+            service: ""
+        };
+
+        Service.getItems = function() {
+            return Service.graphItems;
+        };
+
+        Service.getService = function() {
+            return Service.service;
+        };
+
+        return Service;
+    })
+
     .controller('ChartCtrl',
-    function ChartCtrl($scope, $q, locale, ItemModel, PersistenceServiceModel, PersistenceItemModel, PersistenceDataModel, ChartModel, ChartSave, growl, VisDataSet, $interval, $timeout) {
+    function ChartCtrl($scope, $q, $stateParams, ChartService, locale, PersistenceDataModel, ChartModel, growl, VisDataSet, $interval, $timeout) {
         var itemsLoaded = 0;
         var itemsLoading = 0;
         var newChart;
@@ -53,234 +74,18 @@ angular.module('HABmin.chart', [
         var graph2d;
 
         $scope.graphLoaded = false;
-
-        $scope.selectedView = "LOAD";
         $scope.selectedChart = undefined;
-
-        $scope.chartsTotal = -1;
-        $scope.charts = [];
-
-        $scope.itemsTotal = -1;
-        $scope.itemsSelected = 0;
-        $scope.items = [];
-        $scope.services = [];
-
         $scope.chartLoading = false;
+
+        $scope.graphItems = ChartService.getItems;
+        $scope.service = ChartService.getService;
 
         // ------------------------------------------------
         // Load model data
-        var promises = [];
-
-        // Load the list of items
-        var pItems = $q.defer();
-        promises.push(pItems.promise);
-        PersistenceItemModel.get().then(
-            function (items) {
-                if (items == null) {
-                    ItemModel.getList().then(
-                        function (items) {
-                            $scope.items = items;
-                            if ($scope.items != null) {
-                                $scope.itemsTotal = $scope.items.length;
-                            }
-                            pItems.resolve();
-                        },
-                        function (reason) {
-                            // handle failure
-                            growl.warning(locale.getString('habmin.chartErrorGettingItems'));
-                            pItems.resolve();
-                        }
-                    );
-
-                    return;
-                }
-
-                $scope.items = items;
-                if ($scope.items != null) {
-                    $scope.itemsTotal = $scope.items.length;
-                }
-
-                pItems.resolve();
-            },
-            function (reason) {
-                // handle failure
-                growl.warning(locale.getString('habmin.chartErrorGettingItems'));
-                pItems.resolve();
-            }
-        );
-
-        // Load the list of charts
-        var pCharts = $q.defer();
-        promises.push(pCharts.promise);
-        ChartModel.getList().then(
-            function (charts) {
-                $scope.charts = charts;
-                if ($scope.charts != null) {
-                    $scope.chartsTotal = $scope.charts.length;
-                }
-                else {
-                    $scope.charts = 0;
-                }
-                pCharts.resolve();
-            },
-            function (reason) {
-                // handle failure
-                growl.warning(locale.getString('habmin.chartErrorGettingCharts'));
-                $scope.chartsTotal = 0;
-                pCharts.resolve();
-            }
-        );
-
-        // Load the list of persistence services
-        var pServices = $q.defer();
-        promises.push(pServices.promise);
-        PersistenceServiceModel.getList().then(
-            function (data) {
-                $scope.services = data;
-                if ($scope.services.length > 0) {
-                    $scope.services[0].selected = true;
-                    $scope.selectedService = $scope.services[0].name;
-                }
-                pServices.resolve();
-            },
-            function (reason) {
-                // handle failure
-                growl.warning(locale.getString('habmin.chartErrorGettingServices'));
-                pServices.resolve();
-            }
-        );
-
-        // Wait for all the promises to complete
-        $q.all(promises).then(
-            function() {
-                if ($scope.services == null || $scope.services.length == 0) {
-                    // If there's no services, then disable charting
-                    $scope.selectedView = "ERROR";
-                }
-                else if ($scope.charts === null || $scope.charts.length == 0) {
-                    // If there's no predefined charts, change to items view
-                    $scope.selectedView = "ITEMS";
-                }
-                else {
-                    $scope.selectedView = "CHART";
-                }
-            }
-        );
+//        var promises = [];
 
         // ------------------------------------------------
         // Event Handlers
-
-        $scope.doChart = function () {
-            console.log("doChart button clicked");
-
-            $scope.chartLoading = true;
-
-            var items = [];
-            angular.forEach($scope.items, function (item) {
-                if (item.selected === true) {
-                    var i = {};
-                    i.item = item.name;
-                    i.label = item.label;
-                    i.axis = "left";
-                    items.push(i);
-                }
-            });
-
-            $scope.graphItems = items;
-        };
-
-        $scope.saveChart = function () {
-            console.log("saveChart button clicked");
-            var chart = {};
-            chart.name = locale.getString('habmin.chartSaveNewName');
-            chart.period = 86400;
-            chart.items = [];
-
-            angular.forEach($scope.items, function (item) {
-                if (item.selected === true) {
-                    var newItem = {};
-                    newItem.item = item.name;
-                    newItem.label = item.label;
-                    chart.items.push(newItem);
-                }
-            });
-
-            ChartSave.saveChart(chart);
-        };
-
-        $scope.editChart = function () {
-            console.log("editChart button clicked");
-
-            if ($scope.selectedChart === undefined) {
-                return;
-            }
-
-            ChartSave.editChart($scope.selectedChart.id);
-        };
-
-        $scope.deleteChart = function () {
-            console.log("deleteChart button clicked");
-
-            if ($scope.selectedChart === undefined) {
-                return;
-            }
-
-            ChartModel.deleteChart($scope.selectedChart.id).then(
-                function () {
-                    growl.success(locale.getString('habmin.chartDeleteOk', {name: $scope.selectedChart.name}));
-                },
-                function () {
-                    growl.warning(locale.getString('habmin.chartDeleteError', {name: $scope.selectedChart.name}));
-                }
-            );
-        };
-
-        $scope.selectItem = function (parm) {
-            parm.selected = !parm.selected;
-
-            $scope.itemsSelected = 0;
-            angular.forEach($scope.items, function (item) {
-                if (item.selected === true) {
-                    $scope.itemsSelected++;
-                }
-            });
-        };
-
-        $scope.selectChart = function (parm) {
-            angular.forEach($scope.charts, function (chart) {
-                chart.selected = 'no';
-            });
-
-            parm.selected = 'loading';
-            $scope.chartLoading = true;
-
-            // Make sure the directive detects the change - use copy
-            $scope.newSelectedChart = angular.copy(parm);
-            $scope.selectedChart = null;
-            $timeout(function() {
-                $scope.selectedChart = $scope.newSelectedChart;
-            });
-        };
-
-        $scope.clearList = function () {
-            console.log("clearList button clicked");
-            $scope.itemsSelected = 0;
-            angular.forEach($scope.items, function (item) {
-                item.selected = false;
-            });
-        };
-
-        $scope.selectService = function (sel) {
-            angular.forEach($scope.services, function (service) {
-                if (service.name == sel.name) {
-                    service.selected = true;
-                }
-                else {
-                    service.selected = false;
-                }
-            });
-            $scope.selectedService = sel.name;
-        };
 
         $scope.onLoaded = function (graphRef) {
             $scope.graphLoaded = true;
@@ -289,24 +94,10 @@ angular.module('HABmin.chart', [
             graph2d = graphRef;
             graph2d.setWindow($scope.startTime, $scope.stopTime);
             angular.forEach($scope.charts, function (chart) {
-                if(chart.selected == 'loading') {
+                if (chart.selected == 'loading') {
                     chart.selected = 'yes';
                 }
             });
-        };
-
-        $scope.filterDefaultString = locale.getString('common.filter');
-
-// This is what we will bind the filter to
-        $scope.filter = {text: ''};
-        $scope.filterFunction = function (element) {
-            if ($scope.filter.text === "") {
-                return true;
-            }
-            if (element.label == null) {
-                return false;
-            }
-            return element.label.toLowerCase().indexOf($scope.filter.text.toLowerCase()) !== -1 ? true : false;
         };
 
         $scope.setWindow = function (window) {
@@ -468,6 +259,188 @@ angular.module('HABmin.chart', [
             onload: $scope.onLoaded
         };
 
+        if ($stateParams.chartId != null && $stateParams.chartId.length !== 0) {
+            ChartModel.getChart($stateParams.chartId).then(
+                function (chart) {
+                    // Make sure the directive detects the change - use copy
+                    $scope.newSelectedChart = angular.copy(chart);
+                    $scope.selectedChart = null;
+                    $timeout(function () {
+                        $scope.selectedChart = $scope.newSelectedChart;
+                    });
+                }
+            );
+        }
+    })
+
+    .controller('ChartCtrlMenu',
+    function ($scope, locale, growl, ChartService, PersistenceServiceModel, PersistenceItemModel, ItemModel, ChartSave) {
+        $scope.items = [];
+        $scope.services = [];
+
+        $scope.itemsTotal = -1;
+        $scope.itemsSelected = 0;
+
+        // Load the list of persistence services
+//        var pServices = $q.defer();
+//        promises.push(pServices.promise);
+        PersistenceServiceModel.getList().then(
+            function (data) {
+                $scope.services = data;
+                if ($scope.services.length > 0) {
+                    $scope.services[0].selected = true;
+                    ChartService.service = $scope.services[0].name;
+                }
+                //         pServices.resolve();
+            },
+            function (reason) {
+                // handle failure
+                growl.warning(locale.getString('habmin.chartErrorGettingServices'));
+                //               pServices.resolve();
+            }
+        );
+
+        // Load the list of items
+//        var pItems = $q.defer();
+//        promises.push(pItems.promise);
+        PersistenceItemModel.get().then(
+            function (items) {
+                if (items == null) {
+                    ItemModel.getList().then(
+                        function (items) {
+                            $scope.items = items;
+                            if ($scope.items != null) {
+                                $scope.itemsTotal = $scope.items.length;
+                            }
+//                            pItems.resolve();
+                        },
+                        function (reason) {
+                            // handle failure
+                            growl.warning(locale.getString('habmin.chartErrorGettingItems'));
+//                            pItems.resolve();
+                        }
+                    );
+
+                    return;
+                }
+
+                $scope.items = items;
+                if ($scope.items != null) {
+                    $scope.itemsTotal = $scope.items.length;
+                }
+
+//                pItems.resolve();
+            },
+            function (reason) {
+                // handle failure
+                growl.warning(locale.getString('habmin.chartErrorGettingItems'));
+//                pItems.resolve();
+            }
+        );
+
+        $scope.selectItem = function (parm) {
+            parm.selected = !parm.selected;
+
+            $scope.itemsSelected = 0;
+            angular.forEach($scope.items, function (item) {
+                if (item.selected === true) {
+                    $scope.itemsSelected++;
+                }
+            });
+        };
+
+        $scope.selectService = function (svc) {
+            angular.forEach($scope.services, function (service) {
+                if (service.name == svc.name) {
+                    service.selected = true;
+                }
+                else {
+                    service.selected = false;
+                }
+            });
+            ChartService.service = svc.name;
+        };
+
+        $scope.clearList = function () {
+            $scope.itemsSelected = 0;
+            angular.forEach($scope.items, function (item) {
+                item.selected = false;
+            });
+        };
+
+        $scope.filterDefaultString = locale.getString('common.filter');
+
+        // This is what we will bind the filter to
+        $scope.filter = {text: ''};
+        $scope.filterFunction = function (element) {
+            if ($scope.filter.text === "") {
+                return true;
+            }
+            if (element.label == null) {
+                return false;
+            }
+            return element.label.toLowerCase().indexOf($scope.filter.text.toLowerCase()) !== -1 ? true : false;
+        };
+
+        $scope.doGraph = function () {
+            // Close the channel list
+            $scope.itemListOpen = false;
+
+            var items = [];
+            angular.forEach($scope.items, function (item) {
+                if (item.selected === true) {
+                    var i = {};
+                    i.item = item.name;
+                    i.label = item.label;
+                    i.axis = "left";
+                    items.push(i);
+                }
+            });
+
+            ChartService.graphItems = items;
+        };
+
+        $scope.deleteChart = function () {
+            if ($scope.selectedChart === undefined) {
+                return;
+            }
+
+            ChartModel.deleteChart($scope.selectedChart.id).then(
+                function () {
+                    growl.success(locale.getString('habmin.chartDeleteOk', {name: $scope.selectedChart.name}));
+                },
+                function () {
+                    growl.warning(locale.getString('habmin.chartDeleteError', {name: $scope.selectedChart.name}));
+                }
+            );
+        };
+
+        $scope.saveChart = function () {
+            var chart = {};
+            chart.name = locale.getString('habmin.chartSaveNewName');
+            chart.period = 86400;
+            chart.items = [];
+
+            angular.forEach($scope.items, function (item) {
+                if (item.selected === true) {
+                    var newItem = {};
+                    newItem.item = item.name;
+                    newItem.label = item.label;
+                    chart.items.push(newItem);
+                }
+            });
+
+            ChartSave.saveChart(chart);
+        };
+
+        $scope.editChart = function () {
+            if ($scope.selectedChart === undefined) {
+                return;
+            }
+
+            ChartSave.editChart($scope.selectedChart.id);
+        };
 
     })
+
 ;

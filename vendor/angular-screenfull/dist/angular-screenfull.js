@@ -193,7 +193,7 @@
                 elm.on('click', function() {
                     fullScreenCtrl.toggleFullscreen();
 
-                    $timeout(scope.$apply(),500);
+//                    $timeout(scope.$apply(),500);
                 });
             }
         };

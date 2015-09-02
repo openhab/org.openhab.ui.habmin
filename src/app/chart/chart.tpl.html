@@ -1,256 +1,98 @@
-<!-- Chart and Item Lists -->
-<div class="col-sm-4">
-    <div class="panel panel-default">
-        <!-- PANEL HEADER -->
-        <div class="panel-heading">
-            <!-- Button to select items or chart mode -->
-            <div class="btn-group dropdown">
-                <button type="button" class="btn btn-default dropdown-toggle"
-                        ng-disabled="services.length==0" data-toggle="dropdown">
-                    <span i18n="habmin.chartChartList" ng-show="selectedView!='ITEMS'"></span>
-                    <span i18n="habmin.chartItemList" ng-show="selectedView=='ITEMS'"></span>
-                    <span class="caret"></span>
-                    <span class="sr-only">Dropdown</span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li ng-disabled="!selectedChart">
-                        <a ng-click="selectedView='CHART'">
-                            <span class="fa fa-fw" ng-class="{'fa-check-square-o': selectedView=='CHART'}"></span>
-                            <span class="fa fa-pie-chart"></span>
-                            <span i18n="habmin.chartChartList"></span>
-                        </a>
-                    </li>
-                    <li ng-disabled="!selectedChart">
-                        <a ng-click="selectedView='ITEMS'">
-                            <span class="fa fa-fw" ng-class="{'fa-check-square-o': selectedView=='ITEMS'}"></span>
-                            <span class="fa fa-list-alt"></span>
-                            <span i18n="habmin.chartItemList"></span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="btn-group dropdown pull-right" ng-show="services.length>0">
-                <button type="button" ng-show="selectedView=='ITEMS'"
-                        class="btn btn-default" ng-disabled="!itemsSelected"
-                        ng-click="doChart()">
-                        <span class="fa fa-play"></span>
-                </button>
-                <button type="button" ng-show="selectedView=='ITEMS'"
-                        class="btn btn-default" ng-disabled="!itemsSelected"
-                        ng-click="clearList()">
-                        <span class="fa fa-times"></span>
-                </button>
-
-                <!-- Tools menu -->
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    <span class="fa fa-cog"></span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li ng-show="services.length>1" ng-repeat="choice in services">
-                        <a role="presentation" ng-click="selectService(choice)">
-                            <span ng-class="{'fa-check-square-o': choice.selected}" class="fa fa-fw"></span>
-                            <span>{{choice.name}}</span>
-                        </a>
-                    </li>
-                    <li ng-show="services.length>1" role="presentation" class="divider"></li>
-                    <li ng-show="selectedView=='ITEMS'" ng-disabled="!itemsSelected">
-                        <a ng-click="saveChart()">
-                            <span i18n="habmin.chartSaveChart"></span>
-                        </a>
-                    </li>
-                    <li ng-show="selectedView=='CHART'" ng-disabled="!selectedChart">
-                        <a ng-click="editChart()">
-                            <span i18n="habmin.chartEditChart"></span>
-                        </a>
-                    </li>
-                    <li ng-show="selectedView=='CHART'" ng-disabled="!selectedChart">
-                        <a ng-confirm-click="deleteChart()"
-                           i18n-attr="{'ngConfirmMessage': 'habmin.chartDeleteChartCheck','ngConfirmTitle': 'habmin.chartDeleteChart','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes' }">
-                            <span i18n="habmin.chartDeleteChart"></span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- FILTER BOX -->
-            <div id="custom-search-form" class="input-group input-group-sm" ng-show="selectedView=='ITEMS'">
-                <span class="input-group-addon"><span class=" fa fa-filter"></span></span>
-                <input type="text" class="form-control" placeholder={{filterDefaultString}} ng-model="filter.text"
-                       ng-model-options="{debounce: 1000}">
-                <span class="input-group-addon"><span class="fa fa-minus-circle"></span></span>
-            </div>
+<div class="panel panel-default">
+    <!-- Header -->
+    <div class="panel-heading" style="padding:3px;">
+        <div class="btn-group btn-group-sm" role="group">
+            <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded||calendarOpen"
+                    ng-click="stepWindow(-1)">
+                <span class="fa fa-backward"></span>
+            </button>
+            <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded||calendarOpen"
+                    ng-click="stepWindow(1)">
+                <span class="fa fa-forward"></span>
+            </button>
+            <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded||calendarOpen"
+                    ng-click="setNow()">
+                <span class="fa fa-fast-forward"></span>
+            </button>
+            <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded||calendarOpen"
+                    ng-click="zoomWindow(0.10)">
+                <span class="fa fa-search-minus"></span>
+            </button>
+            <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded||calendarOpen"
+                    ng-click="zoomWindow(-0.10)">
+                <span class="fa fa-search-plus"></span>
+            </button>
         </div>
-
-        <!-- PANEL BODY -->
-        <div class="list-group habmin-list" resize-panel>
-            <!-- Display the list of items -->
-            <div ng-show="selectedView=='ITEMS'">
-                <div ng-show="itemsTotal>0" ng-repeat="item in items | filter:filterFunction">
-                    <a role="presentation" ng-show="item.label" ng-hide="item.filter"
-                       class="list-group-item" ng-class="{'active':item.selected}"
-                       ng-click="selectItem(item)">
-                        <habmin-icon class="icon-lg" icon="{{item.icon}}"></habmin-icon>
-                        <span>{{item.label}}</span>
-                    <span class="pull-right">
-                        <span ng-show="item.selected" class="fa fa-check-square-o"></span>
-                    </span>
-                    </a>
-                </div>
-
-                <!-- Cover options for loading, and no items -->
-                <div ng-show="itemsTotal==-1" class="list-group-item text-center">
-                    <span class="fa fa-spin fa-refresh"></span>
-                    <span i18n="common.loading"></span>
-                </div>
-                <div ng-show="itemsTotal==0" class="list-group-item text-center">
-                    <span class="fa fa-exclamation-triangle text-warning"></span>
-                    <span i18n="habmin.chartNoItems"></span>
-                </div>
-            </div>
-
-            <!-- Display the list of predefined charts -->
-            <div ng-show="selectedView=='CHART'">
-                <div ng-show="chartsTotal>0" ng-repeat="choice in charts">
-                    <a role="presentation"
-                       class="list-group-item" ng-class="{'active':choice.selected=='yes'}"
-                       ng-click="selectChart(choice)">
-                        <habmin-icon class="icon-lg" icon="{{choice.icon}}"></habmin-icon>
-                        <span>{{choice.name}}</span>
-                    <span class="pull-right">
-                        <span ng-class="{'fa': true, 'fa-check-square-o': choice.selected=='yes', 'fa-spinner fa-spin': choice.selected=='loading'}"></span>
-                    </span>
-                    </a>
-                </div>
-
-                <!-- Cover situation with no charts -->
-                <div ng-show="chartsTotal==0" class="list-group-item text-center">
-                    <span class="fa fa-exclamation-triangle text-warning"></span>
-                    <span i18n="habmin.chartNoCharts"></span>
-                </div>
-            </div>
-
-            <!-- Display ERROR if no persistence services -->
-            <div ng-show="selectedView=='ERROR'">
-                <div class="list-group-item text-center">
-                    <span class="fa fa-exclamation-triangle text-warning"></span>
-                    <span i18n="habmin.chartNoPersistenceServices"></span>
-                </div>
-            </div>
-
-            <!-- Display LOADING -->
-            <div ng-show="selectedView=='LOAD'">
-                <div class="list-group-item text-center">
-                    <span class="fa fa-spin fa-refresh"></span>
-                    <span i18n="common.loading"></span>
-                </div>
-            </div>
-        </div>
-
-        <!-- PANEL FOOTER -->
-        <div class="panel-footer panel-footer-none">
-        </div>
-    </div>
-</div>
-
-<!-- Chart -->
-<div class="col-sm-8">
-    <div class="panel panel-default">
-        <!-- Header -->
-        <div class="panel-heading" style="padding:3px;">
-            <div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded||calendarOpen"
-                        ng-click="stepWindow(-1)">
-                    <span class="fa fa-backward"></span>
-                </button>
-                <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded||calendarOpen"
-                        ng-click="stepWindow(1)">
-                    <span class="fa fa-forward"></span>
-                </button>
-                <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded||calendarOpen"
-                        ng-click="setNow()">
-                    <span class="fa fa-fast-forward"></span>
-                </button>
-                <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded||calendarOpen"
-                        ng-click="zoomWindow(0.10)">
-                    <span class="fa fa-search-minus"></span>
-                </button>
-                <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded||calendarOpen"
-                        ng-click="zoomWindow(-0.10)">
-                    <span class="fa fa-search-plus"></span>
-                </button>
-            </div>
-            <div class="btn-group btn-group-sm" ng-class="{'open': calendarOpen}">
-                <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded||calendarOpen"
-                        ng-class="{active:graphWindow=='day'}" ng-click="setWindow('day')">
+        <div class="btn-group btn-group-sm" ng-class="{'open': calendarOpen}">
+            <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded||calendarOpen"
+                    ng-class="{active:graphWindow=='day'}" ng-click="setWindow('day')">
                         <span class="calendar-stack">
                             <span class="fa fa-calendar-o"></span>
                             <span class="calendar-day">1</span>
                         </span>
-                    <span class="hidden-xs hidden-sm">Day</span>
-                </button>
-                <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded||calendarOpen"
-                        ng-class="{active:graphWindow=='week'}" ng-click="setWindow('week')">
+                <span class="hidden-xs hidden-sm">Day</span>
+            </button>
+            <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded||calendarOpen"
+                    ng-class="{active:graphWindow=='week'}" ng-click="setWindow('week')">
                         <span class="calendar-stack">
                             <span class="fa fa-calendar-o"></span>
                             <span class="calendar-day">7</span>
                         </span>
-                    <span class="hidden-xs hidden-sm">Week</span>
-                </button>
-                <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded||calendarOpen"
-                        ng-class="{active:graphWindow=='month'}" ng-click="setWindow('month')">
+                <span class="hidden-xs hidden-sm">Week</span>
+            </button>
+            <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded||calendarOpen"
+                    ng-class="{active:graphWindow=='month'}" ng-click="setWindow('month')">
                         <span class="calendar-stack">
                             <span class="fa fa-calendar-o"></span>
                             <span class="calendar-day">30</span>
                         </span>
-                    <span class="hidden-xs hidden-sm">Month</span>
-                </button>
-                <!--                <button type="button" class="btn btn-default dropdown" ng-disabled="!graphLoaded"
-                                        ng-init="calendarOpen=false" ng-click="calendarOpen=!calendarOpen">
-                                    <span class="fa fa-clock-o"></span>&nbsp;Custom
-                                </button>
-                                <div class="dropdown-menu dropdown_dialog">
-                                    <table>
-                                        <tr>
-                                            <td align="center" style="padding-right: 3px;">
-                                                <span>Start Date</span>
-                                            </td>
-                                            <td align="center" style="padding-left: 3px;">
-                                                <span>End Date</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding-right: 3px;">
-                                                <datepicker ng-model="startTime" max-date="stopTime" max-mode="day" show-weeks="true"></datepicker>
-                                            </td>
-                                            <td style="padding-left: 3px;">
-                                                <datepicker ng-model="stopTime" min-date="startTime" max-date="timeNow" max-mode="day" show-weeks="true"></datepicker>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <div class="modal-footer">
-                                    <button class="btn btn-sm btn-primary" ng-click="setDateRange();calendarOpen=false;">OK</button>
-                                    <button class="btn btn-sm btn-warning" ng-click="calendarOpen=false;">Cancel</button>
-                                    </div>
-                                </div> -->
-            </div>
-
-            <div ng-show="graphLoaded" class="hidden-xs hidden-sm pull-right">
-                <h6>{{graphTimeline}}</h6>
-            </div>
+                <span class="hidden-xs hidden-sm">Month</span>
+            </button>
+            <!--                <button type="button" class="btn btn-default dropdown" ng-disabled="!graphLoaded"
+                                    ng-init="calendarOpen=false" ng-click="calendarOpen=!calendarOpen">
+                                <span class="fa fa-clock-o"></span>&nbsp;Custom
+                            </button>
+                            <div class="dropdown-menu dropdown_dialog">
+                                <table>
+                                    <tr>
+                                        <td align="center" style="padding-right: 3px;">
+                                            <span>Start Date</span>
+                                        </td>
+                                        <td align="center" style="padding-left: 3px;">
+                                            <span>End Date</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding-right: 3px;">
+                                            <datepicker ng-model="startTime" max-date="stopTime" max-mode="day" show-weeks="true"></datepicker>
+                                        </td>
+                                        <td style="padding-left: 3px;">
+                                            <datepicker ng-model="stopTime" min-date="startTime" max-date="timeNow" max-mode="day" show-weeks="true"></datepicker>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="modal-footer">
+                                <button class="btn btn-sm btn-primary" ng-click="setDateRange();calendarOpen=false;">OK</button>
+                                <button class="btn btn-sm btn-warning" ng-click="calendarOpen=false;">Cancel</button>
+                                </div>
+                            </div> -->
         </div>
 
-        <!-- Graph -->
-        <div class="panel-body" style="padding:3px;" resize-panel>
-            <habmin-chart ng-show="true" style="display:inline-block;height:100%;width:100%"
-                          items="graphItems" chart="selectedChart.id" service="selectedService" events="graphEvents">
-            </habmin-chart>
+        <div ng-show="graphLoaded" class="hidden-xs hidden-sm pull-right">
+            <h6>{{graphTimeline}}</h6>
         </div>
-        <div ng-show="chartLoading==true" class="chart-loading"><span class="fa fa-spin fa-circle-o-notch"></span></div>
+    </div>
 
-        <!-- Footer -->
-        <div class="panel-footer panel-footer-none">
-        </div>
+    <!-- Graph -->
+    <div class="panel-body" style="padding:3px;" resize-panel>
+        <habmin-chart ng-show="true" style="display:inline-block;height:100%;width:100%"
+                      items="graphItems()" chart="selectedChart.id" service="service()" events="graphEvents">
+        </habmin-chart>
+    </div>
+    <div ng-show="chartLoading==true" class="chart-loading"><span class="fa fa-spin fa-circle-o-notch"></span></div>
+
+    <!-- Footer -->
+    <div class="panel-footer panel-footer-none">
     </div>
 </div>
 

@@ -15,6 +15,7 @@ angular.module('HABmin', [
     'HABmin.chart',
     'HABmin.sitemap',
     'HABmin.rules',
+    'HABmin.chartModel',
     'HABmin.itemModel',
     'HABmin.userModel',
     'HABmin.restModel',
@@ -159,7 +160,7 @@ angular.module('HABmin', [
     ])
 
     .controller('HABminCtrl',
-    function HABminCtrl($scope, $state, $window, $timeout, $interval, $rootScope, locale, ItemModel, ThingModel, DashboardModel, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, InboxModel, RestService, UpdateService, EventModel, ServerMonitor) {
+    function HABminCtrl($scope, $state, $window, $timeout, $interval, $rootScope, locale, ChartModel, ItemModel, ThingModel, DashboardModel, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, InboxModel, RestService, UpdateService, EventModel, ServerMonitor) {
         $scope.$state = $state;
 
         $scope.isLoggedIn = UserService.isLoggedIn;
@@ -241,6 +242,10 @@ angular.module('HABmin', [
             $scope.notificationCntNew = 0;
             $scope.notificationCntIgnored = 0;
 
+            // TODO: Maybe wait for all promises to be resolved?
+//                    var pCharts = $q.defer();
+//                    promises.push(pCharts.promise);
+
             RestService.updateServices().then(
                 function (data) {
                     $scope.updateRestServices();
@@ -262,6 +267,7 @@ angular.module('HABmin', [
                             $scope.dashboards = data;
                         },
                         function (reason) {
+                            $scope.dashboards = [];
                             // Handle failure
                             growl.warning(locale.getString('habmin.mainErrorLoadingDashboards'));
                         }
@@ -272,39 +278,21 @@ angular.module('HABmin', [
                             $scope.sitemaps = data;
                         },
                         function (reason) {
+                            $scope.sitemaps = [];
                             // Handle failure
                             growl.warning(locale.getString('habmin.mainErrorLoadingSitemaps'));
                         }
                     );
 
-                    BindingModel.getList().then(
-                        function (bindings) {
-//                            var bindings = [];
-                            /*                            angular.forEach(data, function (binding) {
-                             // Only show bindings that have defined names
-                             if (binding.name === undefined) {
-                             return;
-                             }
-                             var info = BindingModel.getBinding(binding.pid);
-                             var newBinding = {};
-                             newBinding.name = binding.name;
-
-                             if (info === undefined) {
-                             newBinding.disabled = true;
-                             }
-                             else {
-                             newBinding.disabled = false;
-                             newBinding.icon = info.icon;
-                             newBinding.link = info.link;
-                             }
-
-                             bindings.push(newBinding);
-                             });*/
-                            $scope.bindings = bindings;
+                    // Load the list of charts
+                    ChartModel.getList().then(
+                        function (charts) {
+                            $scope.charts = charts;
                         },
                         function (reason) {
+                            $scope.charts = [];
                             // Handle failure
-                            growl.warning(locale.getString("habmin.mainErrorGettingBindings"));
+                            growl.warning(locale.getString('habmin.chartErrorGettingCharts'));
                         }
                     );
                 },

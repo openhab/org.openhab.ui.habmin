@@ -435,7 +435,7 @@ angular.module('habminChart', [
 
                 $scope.$watch('items', function () {
                     // Sanity check
-                    if ($scope.items == null || $scope.length === 0) {
+                    if ($scope.items == null || $scope.items.length === 0) {
                         return;
                     }
 

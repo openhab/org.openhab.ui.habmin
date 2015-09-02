@@ -45,6 +45,7 @@ angular.module('HABmin.dashboard', [
             outerMargin: false,
             margins: [10, 10],
             columns: 12,
+            rowHeight: 20,
             draggable: {enabled: false},
             resizable: {enabled: false}
         };
