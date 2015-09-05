@@ -2,29 +2,29 @@
     <!-- Header -->
     <div class="panel-heading" style="padding:3px;">
         <div class="btn-group btn-group-sm" role="group">
-            <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded||calendarOpen"
+            <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded"
                     ng-click="stepWindow(-1)">
                 <span class="fa fa-backward"></span>
             </button>
-            <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded||calendarOpen"
+            <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded"
                     ng-click="stepWindow(1)">
                 <span class="fa fa-forward"></span>
             </button>
-            <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded||calendarOpen"
+            <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded"
                     ng-click="setNow()">
                 <span class="fa fa-fast-forward"></span>
             </button>
-            <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded||calendarOpen"
+            <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded"
                     ng-click="zoomWindow(0.10)">
                 <span class="fa fa-search-minus"></span>
             </button>
-            <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded||calendarOpen"
+            <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded"
                     ng-click="zoomWindow(-0.10)">
                 <span class="fa fa-search-plus"></span>
             </button>
         </div>
-        <div class="btn-group btn-group-sm" ng-class="{'open': calendarOpen}">
-            <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded||calendarOpen"
+        <div class="btn-group btn-group-sm">
+            <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded"
                     ng-class="{active:graphWindow=='day'}" ng-click="setWindow('day')">
                         <span class="calendar-stack">
                             <span class="fa fa-calendar-o"></span>
@@ -32,7 +32,7 @@
                         </span>
                 <span class="hidden-xs hidden-sm">Day</span>
             </button>
-            <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded||calendarOpen"
+            <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded"
                     ng-class="{active:graphWindow=='week'}" ng-click="setWindow('week')">
                         <span class="calendar-stack">
                             <span class="fa fa-calendar-o"></span>
@@ -40,7 +40,7 @@
                         </span>
                 <span class="hidden-xs hidden-sm">Week</span>
             </button>
-            <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded||calendarOpen"
+            <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded"
                     ng-class="{active:graphWindow=='month'}" ng-click="setWindow('month')">
                         <span class="calendar-stack">
                             <span class="fa fa-calendar-o"></span>
@@ -48,45 +48,30 @@
                         </span>
                 <span class="hidden-xs hidden-sm">Month</span>
             </button>
-            <!--                <button type="button" class="btn btn-default dropdown" ng-disabled="!graphLoaded"
-                                    ng-init="calendarOpen=false" ng-click="calendarOpen=!calendarOpen">
-                                <span class="fa fa-clock-o"></span>&nbsp;Custom
-                            </button>
-                            <div class="dropdown-menu dropdown_dialog">
-                                <table>
-                                    <tr>
-                                        <td align="center" style="padding-right: 3px;">
-                                            <span>Start Date</span>
-                                        </td>
-                                        <td align="center" style="padding-left: 3px;">
-                                            <span>End Date</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding-right: 3px;">
-                                            <datepicker ng-model="startTime" max-date="stopTime" max-mode="day" show-weeks="true"></datepicker>
-                                        </td>
-                                        <td style="padding-left: 3px;">
-                                            <datepicker ng-model="stopTime" min-date="startTime" max-date="timeNow" max-mode="day" show-weeks="true"></datepicker>
-                                        </td>
-                                    </tr>
-                                </table>
-                                <div class="modal-footer">
-                                <button class="btn btn-sm btn-primary" ng-click="setDateRange();calendarOpen=false;">OK</button>
-                                <button class="btn btn-sm btn-warning" ng-click="calendarOpen=false;">Cancel</button>
-                                </div>
-                            </div> -->
         </div>
 
-        <div ng-show="graphLoaded" class="hidden-xs hidden-sm pull-right">
-            <h6>{{graphTimeline}}</h6>
+        <div class="pull-right">
+            <div ng-show="graphLoaded" class="hidden-xs hidden-sm pull-right">
+                <h6>{{graphTimeline}}</h6>
+            </div>
+
+            <div class="btn-group btn-group-sm">
+                <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded"
+                        ng-click="stepWindow(-1)">
+                    <span class="fa fa-video-camera"></span>
+                </button>
+                <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded"
+                        ng-click="stepWindow(-1)">
+                    <span class="fa fa-refresh"></span>
+                </button>
+            </div>
         </div>
     </div>
 
     <!-- Graph -->
     <div class="panel-body" style="padding:3px;" resize-panel>
         <habmin-chart ng-show="true" style="display:inline-block;height:100%;width:100%"
-                      items="graphItems()" chart="selectedChart.id" service="service()" events="graphEvents">
+                      items="graphItems()" chart="selectedChart.id" service="ervice" events="graphEvents">
         </habmin-chart>
     </div>
     <div ng-show="chartLoading==true" class="chart-loading"><span class="fa fa-spin fa-circle-o-notch"></span></div>

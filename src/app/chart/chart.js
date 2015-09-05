@@ -47,6 +47,7 @@ angular.module('HABmin.chart', [
         });
     })
 
+    // Service used to communicate between controllers
     .factory('ChartService', function () {
         var Service = {
             graphItems: [],
@@ -65,7 +66,7 @@ angular.module('HABmin.chart', [
     })
 
     .controller('ChartCtrl',
-    function ChartCtrl($scope, $q, $stateParams, ChartService, locale, PersistenceDataModel, ChartModel, growl, VisDataSet, $interval, $timeout) {
+    function ($scope, $q, $stateParams, ChartService, locale, PersistenceDataModel, ChartModel, growl, VisDataSet, $interval, $timeout) {
         var itemsLoaded = 0;
         var itemsLoading = 0;
         var newChart;
