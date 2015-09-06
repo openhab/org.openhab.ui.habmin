@@ -19,6 +19,42 @@ angular.module('HABmin.itemModel', [
 
         var me = this;
 
+        this.addOrUpdateItem = function (newItem) {
+            // If this is a new thing, add it to the list
+            /*            if(itemList[newItem.name] === undefined) {
+             itemList[newItem.name] = {};
+             }
+             var item = itemList[newItem.name];*/
+
+            var item = me.getItem(newItem.name);
+            if (item == null) {
+                item = newItem;
+                itemList.push(item);
+            }
+
+            if (item.label == null) {
+//                                    item.stateDescription = {
+//                                        pattern: ""
+//                                    };
+                item.label = item.name;
+//                return;
+            }
+            var title = item.label;
+            var pntStart = item.label.indexOf("[");
+            if (pntStart != -1) {
+                title = item.label.substr(0, pntStart).trim();
+                //    var pntFinish = item.label.lastIndexOf("]");
+            }
+            item.label = title;
+
+            // Aggregate the data - only update what we've been given
+            for (var i in newItem) {
+                item[i] = newItem[i];
+            }
+
+            return item;
+        };
+
         this.listen = function () {
             eventSrc = new EventSource("/rest/events?topics=smarthome/items/*");
 
@@ -29,42 +65,28 @@ angular.module('HABmin.itemModel', [
                 var payload = angular.fromJson(evt.payload);
                 var topic = evt.topic.split("/");
 
-                switch(evt.type) {
+                switch (evt.type) {
                     case 'ItemStateEvent':
                         // Broadcast an event so we update any widgets or listeners
                         $rootScope.$broadcast(evt.topic, payload);
-                        for (var b = 0; b < itemList.length; b++) {
-                            if (itemList[b].name == topic[2]) {
-                                itemList[b].state = payload.value;
-                                $rootScope.$apply();
-                                break;
-                            }
+                        if (itemList[topic[2]] === undefined) {
+                            break;
                         }
+                        itemList[topic[2]].state = payload.value;
                         break;
                     case 'ItemUpdatedEvent':
-                        for (var b = 0; b < itemList.length; b++) {
-                            if (itemList[b].name == topic[2]) {
-                                // Aggregate the data - only update what we've been given
-                                for(var i in payload[0]){
-                                    itemList[b][i] = payload[0][i];
-                                }
-                                $rootScope.$apply();
-                                break;
-                            }
-                        }
+                        me.addOrUpdateItem(payload[0]);
                         break;
                     case 'ItemAddedEvent':
-                        itemList.push(payload);
+                        me.addOrUpdateItem(payload);
                         break;
                     case 'ItemRemovedEvent':
-                        for (var a = 0; a < itemList.length; a++) {
-                            if (itemList[a].name == topic[2]) {
-                                itemList.splice(a, 1);
-                                break;
-                            }
+                        if (itemList[topic[2]] !== undefined) {
+                            delete itemList[topic[2]];
                         }
                         break;
                 }
+                $rootScope.$apply();
             });
         };
 
@@ -73,49 +95,36 @@ angular.module('HABmin.itemModel', [
             var tStart = new Date().getTime();
             var deferred = $q.defer();
 
+            // TODO: Need to work out how to reconnect
             if (eventSrc == null) {
                 me.listen();
             }
 
             // Just return the current list unless it's empty, or we explicitly want to refresh
-            if(itemList.length != 0 && refresh != true) {
+            if (itemList.length != 0 && refresh != true) {
                 deferred.resolve(itemList);
                 return deferred.promise;
             }
 
             RestService.getService(svcName).then(
                 function (url) {
-                    $http.get(url + "?recursive=true")
+                    $http.get(url)
                         .success(function (data) {
                             console.log("Fetch completed in", new Date().getTime() - tStart);
 
-                            // Keep a local copy.
-                            // This allows us to update the data later and keeps the GUI in sync.
                             // Handle difference between OH1 and OH2
                             if (data.item != null) {
-                                itemList = [].concat(data.item);
+                                data = [].concat(data.item);
                             }
                             else {
-                                itemList = [].concat(data);
+                                data = [].concat(data);
                             }
-                            // Remove the formatting part off the end.
-                            // For OH2 we should ultimately use the stateDescription
-                            angular.forEach(itemList, function (item) {
-                                if (item.label == null) {
-//                                    item.stateDescription = {
-//                                        pattern: ""
-//                                    };
-                                    item.label = item.name;
-                                    return;
-                                }
-                                var title = item.label;
-                                var pntStart = item.label.indexOf("[");
-                                if (pntStart != -1) {
-                                    title = item.label.substr(0, pntStart).trim();
-                                    //    var pntFinish = item.label.lastIndexOf("]");
-                                }
-                                item.label = title;
+
+                            // Add every item in the root items list to our local copy
+                            angular.forEach(data, function (item) {
+                                me.addOrUpdateItem(item);
                             });
+
                             console.log("Processing completed in", new Date().getTime() - tStart);
 
                             deferred.resolve(itemList);
@@ -132,6 +141,15 @@ angular.module('HABmin.itemModel', [
         };
 
         this.getItem = function (itemName) {
+            for (var i = 0; i < itemList.length; i++) {
+                if (itemList[i].name == itemName) {
+                    return itemList[i];
+                }
+            }
+
+            return null;
+            return itemList[itemName];
+
             var tStart = new Date().getTime();
             var deferred = $q.defer();
 
@@ -160,6 +178,18 @@ angular.module('HABmin.itemModel', [
                 }
             );
             return deferred.promise;
+        };
+
+        this.getGroupMembers = function (group) {
+            var members = [];
+
+            for (var i = 0; i < itemList.length; i++) {
+                if (itemList[i].groupNames != null && itemList[i].groupNames.indexOf(group) != -1) {
+                    members.push(itemList[i]);
+                }
+            }
+
+            return members;
         };
 
         this.putItem = function (item) {

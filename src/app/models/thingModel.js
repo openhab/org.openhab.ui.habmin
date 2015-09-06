@@ -12,7 +12,11 @@ angular.module('HABmin.thingModel', [
     'HABmin.restModel'
 ])
 
-    .service('ThingModel', function ($http, $q, $rootScope, UserService, RestService) {
+/**
+ * thingList is an object. This allows us to perform fast lookups without looping through the array.
+ *
+ */
+    .service('ThingModel', function ($http, $q, $rootScope, ItemModel, UserService, RestService) {
         var thingList = [];
         var svcName = "things";
         var svcSetup = "setup";
@@ -20,6 +24,40 @@ angular.module('HABmin.thingModel', [
         var eventSrc;
 
         var me = this;
+
+        this.addOrUpdateThing = function (newThing) {
+            // If this is a new thing, add it to the list
+            /*            if (thingList[newThing.UID] === undefined) {
+             thingList[newThing.UID] = {};
+             // For convenience we keep the binding name
+             thingList[newThing.UID].binding = newThing.UID.split(":")[0];
+             }
+             var thing = thingList[newThing.UID];*/
+
+            var thing = me.getThing(newThing.UID);
+            if (thing == null) {
+                thing = newThing;
+                thingList.push(thing);
+            }
+
+            // Aggregate the data - only update what we've been given
+            for (var i in newThing) {
+                thing[i] = newThing[i];
+
+                // If any items are updated, link to the item from the items list
+                if (i == "item") {
+                    thing.item = ItemModel.getItem(thing.item.name);
+                }
+                else if (i == "channels") {
+                    for (var c = 0; c < thing.channels.length; c++) {
+                        for (var l = 0; l < thing.channels[c].linkedItems.length; l++) {
+                            thing.channels[c].linkedItems[l] = ItemModel.getItem(thing.channels[c].linkedItems[l].name);
+                        }
+                    }
+                }
+            }
+            return thing;
+        };
 
         this.listen = function () {
             eventSrc = new EventSource("/rest/events?topics=smarthome/things/*");
@@ -34,39 +72,24 @@ angular.module('HABmin.thingModel', [
 
                 switch (evt.type) {
                     case 'ThingStatusInfoEvent':
-                        for (var c = 0; c < thingList.length; c++) {
-                            if (thingList[c].UID == topic[2]) {
-                                thingList[c].statusInfo = payload;
-                                $rootScope.$apply();
-                                break;
-                            }
+                        if (thingList[topic[2]] === undefined) {
+                            break;
                         }
+                        thingList[topic[2]].state = payload.value;
                         break;
                     case 'ThingUpdatedEvent':
-                        for (var b = 0; b < thingList.length; b++) {
-                            if (thingList[b].UID == topic[2]) {
-                                // Aggregate the data - only update what we've been given
-                                for (var i in payload[0]) {
-                                    thingList[b][i] = payload[0][i];
-                                }
-                                $rootScope.$apply();
-                                break;
-                            }
-                        }
+                        addOrUpdateThing(payload[0]);
                         break;
                     case 'ThingRemovedEvent':
-                        for (var a = 0; a < thingList.length; a++) {
-                            if (thingList[a].UID == topic[2]) {
-                                thingList.splice(a, 1);
-                                break;
-                            }
+                        if (thingList[topic[2]] !== undefined) {
+                            delete thingList[topic[2]];
                         }
                         break;
                     case 'ThingAddedEvent':
-                        payload.binding = payload.UID.split(":")[0];
-                        thingList.push(payload);
+                        addOrUpdateThing(payload);
                         break;
                 }
+                $rootScope.$apply();
             });
         };
 
@@ -92,13 +115,12 @@ angular.module('HABmin.thingModel', [
 
                             // Keep a local copy.
                             // This allows us to update the data later and keeps the GUI in sync.
-                            thingList = [].concat(data);
-                            console.log("Processing completed in", new Date().getTime() - tStart);
+                            data = [].concat(data);
 
-                            // Derive the binding ID so we can use this to filter things
-                            angular.forEach(thingList, function (thing) {
-                                thing.binding = thing.UID.split(":")[0];
+                            angular.forEach(data, function (thing) {
+                                me.addOrUpdateThing(thing);
                             });
+                            console.log("Processing completed in", new Date().getTime() - tStart);
                             deferred.resolve(thingList);
                         })
                         .error(function (data, status) {
@@ -161,6 +183,15 @@ angular.module('HABmin.thingModel', [
         };
 
         this.getThing = function (uid) {
+            for (var i = 0; i < thingList.length; i++) {
+                if (thingList[i].UID == uid) {
+                    return thingList[i];
+                }
+            }
+
+            return null;
+
+
             var tStart = new Date().getTime();
             var deferred = $q.defer();
 
@@ -168,7 +199,8 @@ angular.module('HABmin.thingModel', [
                 function (url) {
                     $http.get(url + "/" + uid)
                         .success(function (data) {
-                            deferred.resolve(data);
+                            var thing = me.addOrUpdateThing(data);
+                            deferred.resolve(thing);
                         })
                         .error(function (data, status) {
                             deferred.reject(data);
@@ -353,11 +385,11 @@ angular.module('HABmin.thingModel', [
         }
 
         this.convertType = function (type, value, multiple) {
-            if(multiple) {
+            if (multiple) {
                 value = [].concat(value);
             }
-            if(angular.isArray(value)) {
-                angular.forEach(value, function(val) {
+            if (angular.isArray(value)) {
+                angular.forEach(value, function (val) {
                     val = _convertType(type, val);
                 });
             }

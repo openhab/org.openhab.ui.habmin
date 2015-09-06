@@ -26,6 +26,7 @@ angular.module('sitemapSelectionWidget', [])
             '</div>' +
             '</span></div>',
             scope: {
+                itemId: "@",
                 label: "@",
                 value: "@"
             },

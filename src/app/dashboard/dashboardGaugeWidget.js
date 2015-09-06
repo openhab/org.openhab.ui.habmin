@@ -33,6 +33,7 @@ angular.module('dashboardGaugeWidget', [
             },
             controller: function ($scope) {
                 // First poll the current value
+                // TODO: getItem
                 ItemModel.getItem($scope.options.itemId).then(
                     function (item) {
                         var num = Number(item.state);

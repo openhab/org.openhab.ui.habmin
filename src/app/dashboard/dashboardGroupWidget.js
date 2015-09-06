@@ -20,11 +20,7 @@ angular.module('dashboardGroupWidget', [
                 options: "="
             },
             link: function ($scope, element) {
-                ItemModel.getItem($scope.options.group).then(
-                    function (item) {
-                        $scope.groupItem = item;
-                    }
-                );
+                $scope.groupMembers = ItemModel.getGroupMembers($scope.options.group);
             }
         };
     })

@@ -250,49 +250,56 @@ angular.module('HABmin', [
                 function (data) {
                     $scope.updateRestServices();
 
-                    InboxModel.refreshInbox().then(
-                        function (data) {
-                        },
-                        function (reason) {
-                            // Handle failure
-                            growl.warning(locale.getString('habmin.mainErrorLoadingInbox'));
-                        }
-                    );
+                    // We need to ensure we get all the items first
+                    // This is needed so that we link our local copy of items
+                    // everywhere it's needed to avoid multiple copies!
+                    ItemModel.getList(true).then(
+                        function () {
 
-                    ThingModel.getList(true);
-                    ItemModel.getList(true);
+                            InboxModel.refreshInbox().then(
+                                function (data) {
+                                },
+                                function (reason) {
+                                    // Handle failure
+                                    growl.warning(locale.getString('habmin.mainErrorLoadingInbox'));
+                                }
+                            );
 
-                    DashboardModel.getList().then(
-                        function (data) {
-                            $scope.dashboards = data;
-                        },
-                        function (reason) {
-                            $scope.dashboards = [];
-                            // Handle failure
-                            growl.warning(locale.getString('habmin.mainErrorLoadingDashboards'));
-                        }
-                    );
+                            DashboardModel.getList().then(
+                                function (data) {
+                                    $scope.dashboards = data;
+                                },
+                                function (reason) {
+                                    $scope.dashboards = [];
+                                    // Handle failure
+                                    growl.warning(locale.getString('habmin.mainErrorLoadingDashboards'));
+                                }
+                            );
 
-                    SitemapModel.getList().then(
-                        function (data) {
-                            $scope.sitemaps = data;
-                        },
-                        function (reason) {
-                            $scope.sitemaps = [];
-                            // Handle failure
-                            growl.warning(locale.getString('habmin.mainErrorLoadingSitemaps'));
-                        }
-                    );
+                            SitemapModel.getList().then(
+                                function (data) {
+                                    $scope.sitemaps = data;
+                                },
+                                function (reason) {
+                                    $scope.sitemaps = [];
+                                    // Handle failure
+                                    growl.warning(locale.getString('habmin.mainErrorLoadingSitemaps'));
+                                }
+                            );
 
-                    // Load the list of charts
-                    ChartModel.getList().then(
-                        function (charts) {
-                            $scope.charts = charts;
-                        },
-                        function (reason) {
-                            $scope.charts = [];
-                            // Handle failure
-                            growl.warning(locale.getString('habmin.chartErrorGettingCharts'));
+                            // Load the list of charts
+                            ChartModel.getList().then(
+                                function (charts) {
+                                    $scope.charts = charts;
+                                },
+                                function (reason) {
+                                    $scope.charts = [];
+                                    // Handle failure
+                                    growl.warning(locale.getString('habmin.chartErrorGettingCharts'));
+                                }
+                            );
+
+                            ThingModel.getList(true);
                         }
                     );
                 },

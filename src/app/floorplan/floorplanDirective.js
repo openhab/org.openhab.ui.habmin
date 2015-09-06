@@ -53,6 +53,7 @@ angular.module('FloorPlan', [
                         }
 
                         // Get the initial value of the item
+                        // TODO: getItem
                         ItemModel.getItem(hotspot.itemId).then(
                             function (item) {
                                 hs.category = item.category;

@@ -60,11 +60,11 @@ angular.module('Config.Things', [
             service: ""
         };
 
-        Service.getItems = function() {
+        Service.getItems = function () {
             return Service.graphItems;
         };
 
-        Service.getService = function() {
+        Service.getService = function () {
             return Service.service;
         };
 
@@ -113,15 +113,16 @@ angular.module('Config.Things', [
 
                 // Loop through all the things and derive battery status
                 // TODO: Maybe this should move to the ThingModel?
-                angular.forEach($scope.things, function(thing) {
+                angular.forEach($scope.things, function (thing) {
                     for (var i = 0; i < thing.channels.length; i++) {
                         if (thing.channels[i].id == "battery-level") {
-                            ItemModel.getItem(thing.channels[i].linkedItems[0]).then(
-                                function (item) {
-//                            if(item == null) {
-                                    thing.batteryIcon = "fa fa-question-circle";
-                                }
-                            );
+                            /*ItemModel.getItem(thing.channels[i].linkedItems[0]).then(
+                             function (item) {
+                             if (item == null) {
+                             thing.batteryIcon = "fa fa-question-circle";
+                             }
+                             }
+                             );*/
 
                             return;
                         }
@@ -279,9 +280,9 @@ angular.module('Config.Things', [
         };
 
 
-        $scope.channelExists = function(thing, channelId) {
-            angular.forEach(thing.channels, function(channel) {
-                if(channel.id == channelId) {
+        $scope.channelExists = function (thing, channelId) {
+            angular.forEach(thing.channels, function (channel) {
+                if (channel.id == channelId) {
                     return channel;
                 }
             });
@@ -296,7 +297,7 @@ angular.module('Config.Things', [
             $scope.selectedThingType = $scope.getThingType(thing);
 
             // Ensure the options are converted to the correct type
-            if($scope.selectedThingType != null) {
+            if ($scope.selectedThingType != null) {
                 angular.forEach($scope.selectedThingType.configParameters, function (parameter) {
                     angular.forEach(parameter.options, function (option) {
                         option.value = ThingModel.convertType(parameter.type, option.value);
@@ -304,24 +305,17 @@ angular.module('Config.Things', [
                 });
             }
 
-            // TODO: Do we need to do this - could just make a copy?
-            ThingModel.getThing(thing.UID).then(
-                function (data) {
-                    $scope.selectedThing = data;
-                    angular.forEach($scope.selectedThingType.configParameters, function (parameter) {
-                        $scope.selectedThing.configuration[parameter.name] =
-                            ThingModel.convertType(parameter.type, $scope.selectedThing.configuration[parameter.name], parameter.multiple);
-                    });
-                    $timeout(function () {
-                        $scope.thingConfigForm.$setPristine();
-                        $scope.formLoaded = true;
-                    });
-                },
-                function () {
-                    growl.warning(locale.getString("habmin.thingErrorGettingThing",
-                        {name: thing.item.label}));
-                }
-            );
+            // We make a copy here so that we're not editing the live version
+            $scope.selectedThing = angular.copy(ThingModel.getThing(thing.UID));
+            angular.forEach($scope.selectedThingType.configParameters, function (parameter) {
+                $scope.selectedThing.configuration[parameter.name] =
+                    ThingModel.convertType(parameter.type, $scope.selectedThing.configuration[parameter.name],
+                        parameter.multiple);
+            });
+            $timeout(function () {
+                $scope.thingConfigForm.$setPristine();
+                $scope.formLoaded = true;
+            });
         };
 
         $scope.getChannelItems = function (channel) {
@@ -435,7 +429,8 @@ angular.module('Config.Things', [
                 }
 
                 $scope.selectedThing.configuration[parameter.name] =
-                    ThingModel.convertType(parameter.type, $scope.selectedThing.configuration[parameter.name], parameter.multiple);
+                    ThingModel.convertType(parameter.type, $scope.selectedThing.configuration[parameter.name],
+                        parameter.multiple);
 
                 workToDo = true;
                 dirtyCfg[parameter.name] = $scope.selectedThing.configuration[parameter.name];

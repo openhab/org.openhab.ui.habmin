@@ -24,6 +24,7 @@ angular.module('sitemapFrameWidget', [])
             '<div class="sitemap-frame" ng-transclude></div>' +
             '</div>',
             scope: {
+                itemId: "@",
                 itemModel: "=",
                 widget: "="
             },

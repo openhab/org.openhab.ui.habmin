@@ -25,11 +25,10 @@ angular.module('dashboardItemWidgets', [
             },
             link: function ($scope, element, attrs, controller) {
                 // First poll the current value
-                ItemModel.getItem($scope.item.name).then(
-                    function (item) {
-                        $scope.item.value = item.state;
-                    }
-                );
+                var item = ItemModel.getItem($scope.item.name);
+                if(item != null) {
+                    $scope.item.value = item.state;
+                }
 
                 // And then watch for changes
                 $scope.$on('smarthome/state/' + $scope.item.name + "/state", function (event, value) {
@@ -58,11 +57,10 @@ angular.module('dashboardItemWidgets', [
             },
             link: function ($scope, element, attrs, controller) {
                 // First poll the current value
-                ItemModel.getItem($scope.item.name).then(
-                    function (item) {
-                        $scope.updateValue(item.state);
-                    }
-                );
+                var item = ItemModel.getItem($scope.item.name);
+                if(item != null) {
+                    $scope.updateValue(item.state);
+                }
 
                 // And then watch for changes
                 $scope.$on('smarthome/state/' + $scope.item.name + "/state", function (event, value) {
