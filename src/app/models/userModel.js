@@ -93,7 +93,7 @@ angular.module('HABmin.userModel', [
 
         return {
             isLoggedIn: function () {
-                return authenticated;
+                return true;//authenticated;
             },
 
             isLoginRequired: function () {

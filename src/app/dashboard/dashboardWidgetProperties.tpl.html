@@ -11,6 +11,12 @@
                     </a>
                 </li>
 
+                <li ng-show="widget.type=='Buton'"
+                    ng-class="{'active':showTab==1}">
+                    <a ng-click="showTab=1">
+                        <span i18n="habmin.dashboardWidgetConfigButton"></span>
+                    </a>
+                </li>
                 <li ng-show="widget.type=='Chart'"
                     ng-class="{'active':showTab==1}">
                     <a ng-click="showTab=1">
@@ -53,6 +59,8 @@
         <div class="col-xs-6">
             <dashboard-general-properties ng-show="showTab==0" model="general"></dashboard-general-properties>
             <div ng-show="showTab==1">
+                <dashboard-button-properties ng-if="widget.type=='Button'"
+                                            options="widget.options"></dashboard-button-properties>
                 <dashboard-chart-properties ng-if="widget.type=='Chart'"
                                             options="widget.options"></dashboard-chart-properties>
                 <dashboard-gauge-properties ng-if="widget.type=='Gauge'"

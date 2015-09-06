@@ -15,12 +15,13 @@ angular.module('HABmin.bindingModel', [
     .service('BindingModel', function ($http, $q, UserService, RestService) {
         var svcBind = "bindings";
         var svcDisc = "discovery";
-        var bindingList = {
+        var iconList = {
             astro: {icon: "moon"},
             sonos: {icon: "soundcloud"},
             yahooweather: {icon: "weather"},
             zwave: {icon: "zwave"}
         };
+        var bindingList = [];
 
         this.getList = function () {
             var tStart = new Date().getTime();
@@ -45,13 +46,22 @@ angular.module('HABmin.bindingModel', [
 
                             // Keep a local copy.
                             // This allows us to update the data later and keeps the GUI in sync.
-                            angular.forEach(data, function (binding) {
-                                if (bindingList[binding.id] != null) {
-                                    binding.icon = bindingList[binding.id].icon;
-                                    binding.discovery = bindingList[binding.id].discovery;
+                            angular.forEach(data, function (newBinding) {
+                                var found = false;
+                                angular.forEach(bindingList, function (binding) {
+                                    if(binding.id == newBinding.id) {
+                                        for(var i in newBinding){
+                                            binding[i] = newBinding[i];
+                                        }
+                                        found = true;
+                                    }
+                                });
+
+                                // Is this a new binding we've not seen before?
+                                if(found == false) {
+                                    bindingList.push(newBinding);
                                 }
                             });
-                            bindingList = data;
 
                             console.log("Processing completed in", new Date().getTime() - tStart);
 
@@ -80,11 +90,18 @@ angular.module('HABmin.bindingModel', [
 
                             // Keep a local copy.
                             // This allows us to update the data later and keeps the GUI in sync.
-                            angular.forEach(data, function (binding) {
-                                if (bindingList[binding] == null) {
-                                    bindingList[binding] = {};
+                            angular.forEach(data, function (newBinding) {
+                                var found = false;
+                                angular.forEach(bindingList, function (binding) {
+                                    if(binding.id == newBinding) {
+                                        binding.discovery = true;
+                                        found = true;
+                                    }
+                                });
+
+                                if(found == false) {
+                                    bindingList.push({id: newBinding, discovery: true});
                                 }
-                                bindingList[binding].discovery = true;
                             });
 
                             console.log("Processing completed in", new Date().getTime() - tStart);
@@ -100,6 +117,7 @@ angular.module('HABmin.bindingModel', [
                 }
             );
 
+            // Wait for all the promises to be resolved
             $q.all([defBind.promise, defDisc.promise]).then(
                 function () {
                     deferred.resolve(bindingList);

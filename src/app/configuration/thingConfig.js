@@ -34,6 +34,10 @@ angular.module('Config.Things', [
                 "main": {
                     controller: 'ThingConfigCtrl',
                     templateUrl: 'configuration/thingConfig.tpl.html'
+                },
+                "menu": {
+                    controller: 'ThingConfigMenuCtrl',
+                    templateUrl: 'configuration/thingConfigMenu.tpl.html'
                 }
             },
             data: {pageTitle: 'Things'},
@@ -49,8 +53,26 @@ angular.module('Config.Things', [
         });
     })
 
+    // Service used to communicate between controllers
+    .factory('ThingConfigService', function () {
+        var Service = {
+            graphItems: [],
+            service: ""
+        };
+
+        Service.getItems = function() {
+            return Service.graphItems;
+        };
+
+        Service.getService = function() {
+            return Service.service;
+        };
+
+        return Service;
+    })
+
     .controller('ThingConfigCtrl',
-    function ThingConfigCtrl($scope, $q, locale, growl, $timeout, $window, $http, $interval, UserService, ThingModel, BindingModel, ItemModel, itemEdit, SmartHomeModel) {
+    function ($scope, $q, ThingConfigService, locale, growl, $timeout, $window, $http, $interval, UserService, ThingModel, BindingModel, ItemModel, itemEdit, SmartHomeModel) {
         $scope.panelDisplayed = 'PROPERTIES';
         $scope.thingCnt = -1;
 
@@ -555,4 +577,29 @@ angular.module('Config.Things', [
         };
     })
 
+    .controller('ThingConfigMenuCtrl',
+    function ($scope, ThingConfigService, BindingModel, locale, growl) {
+        BindingModel.getList().then(
+            function (bindings) {
+                $scope.bindings = bindings;
+            },
+            function (reason) {
+                // Handle failure
+                growl.warning(locale.getString("habmin.mainErrorGettingBindings"));
+            }
+        );
+
+
+        $scope.startDiscovery = function (binding) {
+            BindingModel.startDiscovery(binding.id).then(
+                function () {
+                    growl.success(locale.getString("habmin.discoveryStartOk", {name: binding.name}));
+                },
+                function () {
+                    growl.error(locale.getString("habmin.discoveryStartFail", {name: binding.name}));
+                }
+            );
+        };
+
+    })
 ;

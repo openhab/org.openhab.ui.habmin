@@ -266,14 +266,16 @@ angular.module('HABmin.chart', [
         };
 
         if ($stateParams.chartId != null && $stateParams.chartId.length !== 0) {
+            ChartService.graphItems = [];
             ChartModel.getChart($stateParams.chartId).then(
                 function (chart) {
                     // Make sure the directive detects the change - use copy
-                    $scope.newSelectedChart = angular.copy(chart);
-                    $scope.selectedChart = null;
-                    $timeout(function () {
-                        $scope.selectedChart = $scope.newSelectedChart;
-                    });
+                    ChartService.graphItems = [];
+                    $scope.selectedChart = angular.copy(chart);
+//                    $scope.selectedChart = null;
+  //                  $timeout(function () {
+    //                    $scope.selectedChart = $scope.newSelectedChart;
+      //              });
                 }
             );
         }
@@ -301,7 +303,7 @@ angular.module('HABmin.chart', [
             },
             function (reason) {
                 // handle failure
-                growl.warning(locale.getString('habmin.chartErrorGettingServices'));
+                growl.waselectrning(locale.getString('habmin.chartErrorGettingServices'));
                 //               pServices.resolve();
             }
         );
@@ -423,6 +425,13 @@ angular.module('HABmin.chart', [
         };
 
         $scope.saveChart = function () {
+            // If we have a chart selected, then edit it
+            if ($scope.selectedChart !== undefined) {
+                ChartSave.editChart($scope.selectedChart.id);
+                return;
+            }
+
+            // Otherwise save the existing chart
             var chart = {};
             chart.name = locale.getString('habmin.chartSaveNewName');
             chart.period = 86400;
@@ -439,15 +448,6 @@ angular.module('HABmin.chart', [
 
             ChartSave.saveChart(chart);
         };
-
-        $scope.editChart = function () {
-            if ($scope.selectedChart === undefined) {
-                return;
-            }
-
-            ChartSave.editChart($scope.selectedChart.id);
-        };
-
     })
 
 ;

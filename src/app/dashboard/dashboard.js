@@ -11,6 +11,7 @@ angular.module('HABmin.dashboard', [
     'ui.router',
     'gridster',
     'HABmin.dashboardModel',
+    'dashboardButtonWidget',
     'dashboardChartWidget',
     'dashboardGaugeWidget',
     'dashboardImageWidget',
@@ -288,6 +289,9 @@ angular.module('HABmin.dashboard', [
             },
             link: function (scope, element, attrs) {
                 var widgetMap = {
+                    Button: {
+                        directive: "dashboard-button"
+                    },
                     Chart: {
                         directive: "dashboard-chart"
                     },

@@ -84,17 +84,6 @@ angular.module('Config.Discovery', [
             $scope.selectedThing = thing;
         };
 
-        $scope.startDiscovery = function (binding) {
-            BindingModel.startDiscovery(binding.id).then(
-                function () {
-                    growl.success(locale.getString("habmin.discoveryStartOk", {name: binding.name}));
-                },
-                function () {
-                    growl.error(locale.getString("habmin.discoveryStartFail", {name: binding.name}));
-                }
-            );
-        };
-
         $scope.saveThing = function () {
             InboxModel.thingApprove($scope.selectedThing.thingUID, $scope.selectedThing.label).then(
                 function () {
