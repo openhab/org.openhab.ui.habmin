@@ -57,11 +57,11 @@
 
             <div class="btn-group btn-group-sm">
                 <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded"
-                        ng-click="stepWindow(-1)">
+                        ng-click="refreshChartx()">
                     <span class="fa fa-video-camera"></span>
                 </button>
                 <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded"
-                        ng-click="stepWindow(-1)">
+                        ng-click="refreshChart()">
                     <span class="fa fa-refresh"></span>
                 </button>
             </div>
@@ -71,7 +71,7 @@
     <!-- Graph -->
     <div class="panel-body" style="padding:3px;" resize-panel>
         <habmin-chart ng-show="true" style="display:inline-block;height:100%;width:100%"
-                      items="graphItems()" chart="selectedChart.id" service="ervice" events="graphEvents">
+                      items="graphItems()" chart="selectedChart.id" service="persistenceService()" events="graphEvents">
         </habmin-chart>
     </div>
     <div ng-show="chartLoading==true" class="chart-loading"><span class="fa fa-spin fa-circle-o-notch"></span></div>

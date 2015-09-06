@@ -79,7 +79,7 @@ angular.module('HABmin.chart', [
         $scope.chartLoading = false;
 
         $scope.graphItems = ChartService.getItems;
-        $scope.service = ChartService.getService;
+        $scope.persistenceService = ChartService.getService;
 
         // ------------------------------------------------
         // Load model data
@@ -153,6 +153,11 @@ angular.module('HABmin.chart', [
                 start: range.start.valueOf() - interval * percentage,
                 end: range.end.valueOf() + interval * percentage
             });
+        };
+
+        $scope.refreshChart = function() {
+            // Make sure the directive detects the change - use copy
+            ChartService.graphItems = angular.copy(ChartService.graphItems);
         };
 
         $scope.setDateRange = function () {
@@ -398,7 +403,8 @@ angular.module('HABmin.chart', [
                 }
             });
 
-            ChartService.graphItems = items;
+            // Make sure the directive detects the change - use copy
+            ChartService.graphItems = angular.copy(items);
         };
 
         $scope.deleteChart = function () {
