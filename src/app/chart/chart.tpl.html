@@ -50,22 +50,21 @@
             </button>
         </div>
 
-        <div class="pull-right">
-            <div ng-show="graphLoaded" class="hidden-xs hidden-sm">
-                <h6>{{graphTimeline}}</h6>
-            </div>
-
-            <div class="btn-group btn-group-sm">
-                <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded"
-                        ng-click="refreshChartx()">
-                    <span class="fa fa-video-camera"></span>
-                </button>
-                <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded"
-                        ng-click="refreshChart()">
-                    <span class="fa fa-refresh"></span>
-                </button>
-            </div>
+        <div class="pull-right btn-group btn-group-sm">
+            <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded"
+                    ng-click="refreshChartx()">
+                <span class="fa fa-video-camera"></span>
+            </button>
+            <button type="button" class="btn btn-sm btn-default" ng-disabled="!graphLoaded"
+                    ng-click="refreshChart()">
+                <span class="fa fa-refresh"></span>
+            </button>
         </div>
+
+        <div ng-show="graphLoaded" class="pull-right hidden-xs hidden-sm">
+            <h6>{{graphTimeline}}</h6>
+        </div>
+
     </div>
 
     <!-- Graph -->
