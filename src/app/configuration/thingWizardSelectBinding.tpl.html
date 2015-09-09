@@ -1,0 +1,7 @@
+<label>Select binding...</label>
+<li ng-repeat="binding in bindings">
+    <a ng-click="selectBinding(binding)">
+        <habmin-icon class="fa-fw" icon="{{binding.icon}}"></habmin-icon>
+        <span>{{binding.name}}</span>
+    </a>
+</li>

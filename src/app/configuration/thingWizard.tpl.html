@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="col-sm-8 col-sm-offset-2">
+
+        <div class="page-header text-center">
+            <h2>Add new Thing Wizard</h2>
+
+            <!-- the links to our nested states using relative paths -->
+            <!-- add the active class if the state matches our ui-sref -->
+            <div id="status-buttons" class="text-center">
+                <a ui-sref-active="active" ui-sref="/thing-wizard.binding"><span>1</span> Binding</a>
+                <a ui-sref-active="active" ui-sref="/thing-wizard.thing"><span>2</span> Thing Type</a>
+                <a ui-sref-active="active" ui-sref="/thing-wizard.configure"><span>2</span> Configure</a>
+            </div>
+        </div>
+
+        <div id="form-views" ui-view></div>
+    </div>
+</div>
+
