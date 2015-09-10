@@ -36,6 +36,11 @@ angular.module('Config.ThingWizard', [
                 templateUrl: 'configuration/thingWizardSelectBinding.tpl.html'
             })
 
+            .state('/thing-wizard.discovery', {
+                url: '/discovery',
+                templateUrl: 'configuration/thingWizardDiscovery.tpl.html'
+            })
+
             .state('/thing-wizard.thing', {
                 url: '/thing',
                 templateUrl: 'configuration/thingWizardSelectThing.tpl.html'
@@ -64,6 +69,19 @@ angular.module('Config.ThingWizard', [
             }
         );
 
+        $scope.countBindingThings = function (binding) {
+            // Create a list of all thingTypes for this binding
+            var cnt = 0;
+            angular.forEach($scope.thingTypes, function (thingType) {
+                var uid = thingType.UID.split(":");
+                if (uid[0] == binding.id) {
+                    cnt++;
+                }
+            });
+
+            return cnt;
+        };
+
         $scope.selectBinding = function (binding) {
             $scope.binding = binding;
 
@@ -81,7 +99,6 @@ angular.module('Config.ThingWizard', [
 
         $scope.selectThing = function (thing) {
             $scope.selectedThing = thing;
-
 
             // Get the thing type
             ThingModel.getThingInfo(thing.UID).then(
@@ -166,4 +183,3 @@ angular.module('Config.ThingWizard', [
         }
 
     });
-
