@@ -78,15 +78,18 @@ angular.module('HABmin.thingModel', [
                         thingList[topic[2]].state = payload.value;
                         break;
                     case 'ThingUpdatedEvent':
-                        addOrUpdateThing(payload[0]);
+                        me.addOrUpdateThing(payload[0]);
                         break;
                     case 'ThingRemovedEvent':
-                        if (thingList[topic[2]] !== undefined) {
-                            delete thingList[topic[2]];
+                        for (var i = 0; i < thingList.length; i++) {
+                            if (thingList[i].UID == topic[2]) {
+                                thingList.splice(i, 1);
+                                break;
+                            }
                         }
                         break;
                     case 'ThingAddedEvent':
-                        addOrUpdateThing(payload);
+                        me.addOrUpdateThing(payload);
                         break;
                 }
                 $rootScope.$apply();

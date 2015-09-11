@@ -171,6 +171,12 @@ angular.module('Config.ThingWizard', [
                 return;
             }
 
+            angular.forEach($scope.selectedThingType.configParameters, function (parameter, key) {
+                $scope.selectedThing.configuration[parameter.name] =
+                    ThingModel.convertType(parameter.type, $scope.selectedThing.configuration[parameter.name],
+                        parameter.multiple);
+            });
+
             ThingModel.putThing($scope.selectedThing).then(
                 function () {
                     $state.go('/things');

@@ -20,7 +20,6 @@ angular.module('Config.Things', [
     'Config.ItemEdit',
     'angular-growl',
     'Binding.config',
-    'ngVis',
     'ResizePanel',
     'showOverflow',
     'ngHelpDialog',
@@ -297,13 +296,15 @@ angular.module('Config.Things', [
             $scope.selectedThingType = $scope.getThingType(thing);
 
             // Ensure the options are converted to the correct type
-            if ($scope.selectedThingType != null) {
-                angular.forEach($scope.selectedThingType.configParameters, function (parameter) {
-                    angular.forEach(parameter.options, function (option) {
-                        option.value = ThingModel.convertType(parameter.type, option.value);
-                    });
-                });
+            if ($scope.selectedThingType == null) {
+                return;
             }
+
+            angular.forEach($scope.selectedThingType.configParameters, function (parameter) {
+                angular.forEach(parameter.options, function (option) {
+                    option.value = ThingModel.convertType(parameter.type, option.value);
+                });
+            });
 
             // We make a copy here so that we're not editing the live version
             $scope.selectedThing = angular.copy(ThingModel.getThing(thing.UID));
@@ -423,8 +424,11 @@ angular.module('Config.Things', [
 
             // Perform type conversion to ensure that any INTEGER types are sent as a number
             angular.forEach($scope.selectedThingType.configParameters, function (parameter, key) {
+                // If this value doesn't exist in the object, then return!
+                // This can happen for advanced parameters when not in advanced mode
                 // If this value hasn't changed, then don't send an update
-                if ($scope.thingConfigForm[parameter.name].$dirty !== true) {
+                if ($scope.thingConfigForm[parameter.name] === undefined ||
+                    $scope.thingConfigForm[parameter.name].$dirty !== true) {
                     return;
                 }
 

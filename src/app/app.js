@@ -33,7 +33,7 @@ angular.module('HABmin', [
     'Config.Bindings',
     'Config.Things',
     'Config.Items',
-    'Config.Discovery',
+    'Config.ThingWizard',
     'UserChartPrefs',
     'UserGeneralPrefs',
     'ui.router',

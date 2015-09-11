@@ -81,8 +81,11 @@ angular.module('HABmin.itemModel', [
                         me.addOrUpdateItem(payload);
                         break;
                     case 'ItemRemovedEvent':
-                        if (itemList[topic[2]] !== undefined) {
-                            delete itemList[topic[2]];
+                        for (var i = 0; i < itemList.length; i++) {
+                            if (itemList[i].name == topic[2]) {
+                                itemList.splice(i, 1);
+                                break;
+                            }
                         }
                         break;
                 }
