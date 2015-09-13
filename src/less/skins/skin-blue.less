@@ -55,8 +55,17 @@
 
   //Create the sidebar skin
   .skin-dark-sidebar(@light-blue);
+
+  .list-group-item {
+    &.active {
+      .text-muted {
+        color: lightskyblue;
+      }
+    }
+  }
+
+  .layout-top-nav .main-header > .logo {
+    .logo-variant(@light-blue);
+  }
 }
 
-.skin-blue.layout-top-nav .main-header > .logo {
-  .logo-variant(@light-blue);
-}
