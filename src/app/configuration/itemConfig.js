@@ -48,6 +48,19 @@ angular.module('Config.Items', [
             "channel-group"
         ];
 
+        $scope.filterDefaultString = locale.getString('common.filter');
+
+        $scope.filter = {text: ''};
+        $scope.filterFunction = function (element) {
+            if ($scope.filter.text === "") {
+                return true;
+            }
+            if (element.label == null) {
+                return false;
+            }
+            return element.label.toLowerCase().indexOf($scope.filter.text.toLowerCase()) !== -1 ? true : false;
+        };
+
         ItemModel.getList().then(
             function (items) {
                 $scope.items = items;
@@ -61,24 +74,6 @@ angular.module('Config.Items', [
 
         $scope.selectItem = function (item) {
             $scope.selectedItem = item;
-        };
-
-        /**
-         * Function to filter items
-         * @param element
-         * @returns {boolean}
-         */
-        $scope.filterFunction = function (element) {
-            if(element.tags == null) {
-                return true;
-            }
-            for(var c = 0; c < element.tags.length; c++) {
-                if ($scope.filterItems.indexOf(element.tags[c]) != -1) {
-                    return false;
-                }
-            }
-
-            return true;
         };
 
         $scope.getParentThingItem = function(item) {

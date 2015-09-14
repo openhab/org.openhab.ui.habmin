@@ -33,20 +33,18 @@ angular.module('dashboardGaugeWidget', [
             },
             controller: function ($scope) {
                 // First poll the current value
-                // TODO: getItem
-                ItemModel.getItem($scope.options.itemId).then(
-                    function (item) {
-                        var num = Number(item.state);
-                        if(!isNaN(num)) {
-                            $scope.value = num;
-                        }
+                var item = ItemModel.getItem($scope.options.itemId);
+                if (item != null) {
+                    var num = Number(item.state);
+                    if (!isNaN(num)) {
+                        $scope.value = num;
                     }
-                );
+                }
 
                 // And then watch for changes
                 $scope.$on('smarthome/items/' + $scope.options.itemId + "/state", function (event, state) {
                     var num = Number(state.value);
-                    if(!isNaN(num)) {
+                    if (!isNaN(num)) {
                         $scope.value = num;
                     }
                     $scope.$apply();
