@@ -43,6 +43,11 @@ angular.module('Config.Items', [
     function ItemConfigCtrl($scope, locale, growl, $timeout, $window, $http, $interval, UserService, ItemModel) {
         $scope.items = null;
         $scope.itemsCnt = -1;
+        $scope.filterItems = [
+            "thing",
+            "channel-group"
+        ];
+
         ItemModel.getList().then(
             function (items) {
                 $scope.items = items;
@@ -56,6 +61,28 @@ angular.module('Config.Items', [
 
         $scope.selectItem = function (item) {
             $scope.selectedItem = item;
+        };
+
+        /**
+         * Function to filter items
+         * @param element
+         * @returns {boolean}
+         */
+        $scope.filterFunction = function (element) {
+            if(element.tags == null) {
+                return true;
+            }
+            for(var c = 0; c < element.tags.length; c++) {
+                if ($scope.filterItems.indexOf(element.tags[c]) != -1) {
+                    return false;
+                }
+            }
+
+            return true;
+        };
+
+        $scope.getParentThingItem = function(item) {
+            return ItemModel.getParentThingItem(item);
         };
     })
 

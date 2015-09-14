@@ -53,30 +53,28 @@ angular.module('FloorPlan', [
                         }
 
                         // Get the initial value of the item
-                        // TODO: getItem
-                        ItemModel.getItem(hotspot.itemId).then(
-                            function (item) {
-                                hs.category = item.category;
+                        var item = ItemModel.getItem(hotspot.itemId);
+                        if (item == null) {
+                            hs.label = "!!??!!";
+                            $scope.hotspotArray.push(hs);
+                        }
+                        else {
+                            hs.category = item.category;
 
-                                if (item.state == "Uninitialized" || item.state == "NULL") {
-                                    hs.label = "---";
-                                } else {
-                                    hs.label = item.state;
-                                }
-                                $scope.hotspotArray.push(hs);
-                            },
-                            function () {
-                                hs.label = "!!??!!";
-                                $scope.hotspotArray.push(hs);
+                            if (item.state == "Uninitialized" || item.state == "NULL") {
+                                hs.label = "---";
+                            } else {
+                                hs.label = item.state;
                             }
-                        );
+                            $scope.hotspotArray.push(hs);
+                        }
 
                         // And then watch for changes
                         $scope.$on('smarthome/update/' + hotspot.itemId, function (event, value) {
                             hs.label = value;
 
                             hs.class = "updated";
-                            $timeout(function() {
+                            $timeout(function () {
                                 hs.class = "";
                                 $scope.$apply();
                             }, 250);

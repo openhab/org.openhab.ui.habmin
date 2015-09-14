@@ -8,17 +8,22 @@
 
         <!-- Body -->
         <div class="list-group habmin-list" resize-panel>
-            <!-- BINDING LIST -->
-            <div ng-if="itemsCnt>0" ng-repeat="item in items">
+            <!-- ITEM LIST -->
+            <div ng-if="itemsCnt>0" ng-repeat="item in items | filter:filterFunction">
                 <a role="presentation" ng-class="{'list-group-item':true, 'active': item==selectedItem}"
                    ng-click="selectItem(item)">
                     <table style="background-color: transparent">
                         <tr>
-                            <td class="text-large" rowspan="2">
+                            <td class="text-large" rowspan="3">
                                 <habmin-icon class="fa fa-fw" category="{{item.category}}"></habmin-icon>
                             </td>
                             <td>
-                                <span>{{item.name}}&nbsp;</span>
+                                <span>{{item.label}}&nbsp;</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted small">
+                                &nbsp;{{getParentThingItem(item).label}}
                             </td>
                         </tr>
                         <tr>

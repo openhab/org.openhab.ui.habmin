@@ -1,10 +1,4 @@
 {
-  "themePaperName": "Paper",
-  "themePaperDesc": "Material is the metaphor",
-  "themeYetiName": "Yeti",
-  "themeYetiDesc": "A friendly foundation",
-  "themeSlateName": "Slate",
-  "themeSlateDesc": "Shades of gunmetal gray",
   "mainStatusOnline": "The server is online.",
   "mainStatusOffline": "The server is offline!",
   "mainLogin": "Login",
@@ -15,6 +9,7 @@
   "mainDashboardEdit": "Edit Dashboard",
   "mainDashboardOrganise": "Organise Dashboards",
   "mainCharts": "Charts",
+  "mainChartEditor": "Chart Editor",
   "mainRules": "Rules",
   "mainScheduler": "Scheduler",
   "mainBindings": "Bindings",

@@ -40,6 +40,10 @@ angular.module('floorplanHotspotProperties', [
                 }
             );
 
+            scope.getParentThingItem = function(item) {
+                return ItemModel.getParentThingItem(item);
+            };
+
             /**
              * Controller functions get called when the modal closes
              * @param $scope

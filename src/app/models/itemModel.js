@@ -195,6 +195,19 @@ angular.module('HABmin.itemModel', [
             return members;
         };
 
+        this.getParentThingItem = function (item) {
+            for (var i = 0; i < itemList.length; i++) {
+                if (itemList[i].tags.indexOf("thing") == -1) {
+                    continue;
+                }
+                if(item.groupNames.indexOf(itemList[i].name) != -1) {
+                    return itemList[i];
+                }
+            }
+
+            return null;
+        };
+
         this.putItem = function (item) {
             var deferred = $q.defer();
             RestService.getService(svcName).then(
