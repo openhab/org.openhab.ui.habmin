@@ -18,15 +18,13 @@ angular.module('dashboardButtonWidget', [
                 options: "="
             },
             link: function ($scope, element) {
-                // TODO: getItem
-                ItemModel.getItem($scope.options.group).then(
-                    function (item) {
-                        $scope.groupItem = item;
-                    }
-                );
+                var item = ItemModel.getItem($scope.options.group);
+                if (item != null) {
+                    $scope.groupItem = item;
+                }
 
-                $scope.buttonClick = function() {
-                    if($scope.state == 'circle-on') {
+                $scope.buttonClick = function () {
+                    if ($scope.state == 'circle-on') {
                         $scope.state = 'circle-off';
                     }
                     else {
