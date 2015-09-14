@@ -22,7 +22,7 @@ angular.module('dashboardFloorWidget', [
                 FloorplanModel.getFloorplan($scope.options.floorplanId).then(
                     function (floorplan) {
                         $scope.hotspotList = floorplan.hotspots;
-                        $scope.floorplanImage = "/rest/habmin/floorplan/1/image";
+                        $scope.floorplanImage = "/rest/habmin/floorplan/" + floorplan.id + "/image";
                     }
                 );
 
