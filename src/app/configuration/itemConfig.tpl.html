@@ -3,17 +3,13 @@
     <div class="panel panel-default">
         <!-- Header -->
         <div class="panel-heading">
-            <div>
-                Items
-            </div>
-
             <!-- FILTER BOX -->
-            <div id="custom-search-form" class="input-group input-group-sm">
+            <div id="custom-search-form" class="input-group">
                 <span class="input-group-addon"><span class="fa fa-filter"></span></span>
                 <input type="text" class="form-control" placeholder={{filterDefaultString}} ng-model="filter.text"
                        ng-model-options="{debounce: 500}">
                 <span class="input-group-addon">
-                    <span class="fa fa-minus-circle" ng-click="filter.text=''"></span>
+                    <span class="fa fa-minus-circle text-danger" ng-click="filter.text=''"></span>
                 </span>
             </div>
         </div>

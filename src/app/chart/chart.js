@@ -51,14 +51,19 @@ angular.module('HABmin.chart', [
     .factory('ChartService', function () {
         var Service = {
             graphItems: [],
+            selectedChart: undefined,
             service: ""
         };
 
-        Service.getItems = function() {
+        Service.getItems = function () {
             return Service.graphItems;
         };
 
-        Service.getService = function() {
+        Service.getChart = function () {
+            return Service.selectedChart;
+        };
+
+        Service.getService = function () {
             return Service.service;
         };
 
@@ -71,13 +76,13 @@ angular.module('HABmin.chart', [
         var itemsLoading = 0;
         var newChart;
         var chartDef;
-
         var graph2d;
 
-        $scope.graphLoaded = false;
-        $scope.selectedChart = undefined;
-        $scope.chartLoading = false;
+        $scope.liveupdate = false;
 
+        $scope.graphLoaded = false;
+        $scope.chartLoading = false;
+        $scope.selectedChart = ChartService.getChart;
         $scope.graphItems = ChartService.getItems;
         $scope.persistenceService = ChartService.getService;
 
@@ -155,9 +160,22 @@ angular.module('HABmin.chart', [
             });
         };
 
-        $scope.refreshChart = function() {
+        $scope.refreshChart = function () {
             // Make sure the directive detects the change - use copy
-            ChartService.graphItems = angular.copy(ChartService.graphItems);
+            if (ChartService.selectedChart == undefined) {
+                var update = ChartService.graphItems;
+                $timeout(function () {
+                    ChartService.graphItems = angular.copy(update);
+                });
+            }
+            else {
+                var update = ChartService.selectedChart;
+                $timeout(function () {
+                    ChartService.selectedChart = angular.copy(update);
+                });
+            }
+            ChartService.graphItems = undefined;
+            ChartService.selectedChart = undefined;
         };
 
         $scope.setDateRange = function () {
@@ -271,11 +289,7 @@ angular.module('HABmin.chart', [
                 function (chart) {
                     // Make sure the directive detects the change - use copy
                     ChartService.graphItems = [];
-                    $scope.selectedChart = angular.copy(chart);
-//                    $scope.selectedChart = null;
-  //                  $timeout(function () {
-    //                    $scope.selectedChart = $scope.newSelectedChart;
-      //              });
+                    ChartService.selectedChart = angular.copy(chart);
                 }
             );
         }
@@ -284,14 +298,12 @@ angular.module('HABmin.chart', [
     .controller('ChartCtrlMenu',
     function ($scope, locale, growl, ChartService, PersistenceServiceModel, PersistenceItemModel, ItemModel, ChartSave) {
         $scope.items = [];
-        $scope.services = [];
+//        $scope.services = ChartService.services;
 
         $scope.itemsTotal = -1;
         $scope.itemsSelected = 0;
 
         // Load the list of persistence services
-//        var pServices = $q.defer();
-//        promises.push(pServices.promise);
         PersistenceServiceModel.getList().then(
             function (data) {
                 $scope.services = data;
@@ -299,12 +311,10 @@ angular.module('HABmin.chart', [
                     $scope.services[0].selected = true;
                     ChartService.service = $scope.services[0].name;
                 }
-                //         pServices.resolve();
             },
             function (reason) {
                 // handle failure
-                growl.waselectrning(locale.getString('habmin.chartErrorGettingServices'));
-                //               pServices.resolve();
+                growl.warning(locale.getString('habmin.chartErrorGettingServices'));
             }
         );
 
@@ -391,6 +401,8 @@ angular.module('HABmin.chart', [
         };
 
         $scope.doGraph = function () {
+            ChartService.selectedChart = undefined;
+
             // Close the channel list
             $scope.itemListOpen = false;
 
@@ -410,24 +422,24 @@ angular.module('HABmin.chart', [
         };
 
         $scope.deleteChart = function () {
-            if ($scope.selectedChart === undefined) {
+            if (ChartService.selectedChart === undefined) {
                 return;
             }
 
-            ChartModel.deleteChart($scope.selectedChart.id).then(
+            ChartModel.deleteChart(ChartService.selectedChart.id).then(
                 function () {
-                    growl.success(locale.getString('habmin.chartDeleteOk', {name: $scope.selectedChart.name}));
+                    growl.success(locale.getString('habmin.chartDeleteOk', {name: ChartService.selectedChart.name}));
                 },
                 function () {
-                    growl.warning(locale.getString('habmin.chartDeleteError', {name: $scope.selectedChart.name}));
+                    growl.warning(locale.getString('habmin.chartDeleteError', {name: ChartService.selectedChart.name}));
                 }
             );
         };
 
         $scope.saveChart = function () {
             // If we have a chart selected, then edit it
-            if ($scope.selectedChart !== undefined) {
-                ChartSave.editChart($scope.selectedChart.id);
+            if (ChartService.selectedChart !== undefined) {
+                ChartSave.editChart(ChartService.selectedChart.id);
                 return;
             }
 
