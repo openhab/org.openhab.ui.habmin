@@ -43,6 +43,10 @@ angular.module('habminChart', [
                 var dataItems;
                 var chartDef;
 
+                var graph2d;
+
+                var listeners = [];
+
                 var tStart;
 
                 var lineStyles = {
@@ -125,6 +129,10 @@ angular.module('habminChart', [
                     $scope.startTime = $scope.stopTime - (86400 * 1000);
                     _initChart($scope.stopTime - $scope.startTime);
 
+                    angular.forEach(listeners, function(listener) {
+                        listener();
+                    });
+
                     chartDef = {items: []};
                     angular.forEach(items, function (item) {
                         itemsLoading++;
@@ -145,6 +153,18 @@ angular.module('habminChart', [
                     PersistenceDataModel.get($scope.service, itemRef, start, stop).then(
                         function (response) {
                             _addChartItem(itemRef, response);
+
+                            listeners.push($scope.$on('smarthome/items/' + itemRef + "/state", function (event, state) {
+                                var num = Number(state.value);
+                                if (!isNaN(num)) {
+                                    var now = new Date().getTime();
+                                    var range = graph2d.getWindow();
+                                    var interval = range.end - range.start;
+                                    newChart.push({x: now, y: num, group: itemRef});
+                                    dataItems.update(newChart);
+                                    graph2d.setWindow(now - interval, now, {animation: false});
+                                }
+                            }));
                         },
                         function (reason) {
                             // Handle failure
@@ -308,7 +328,7 @@ angular.module('habminChart', [
                     }
                 }
 
-// Sequentially step through the new data and add it to a new array along with the old data
+                // Sequentially step through the new data and add it to a new array along with the old data
                 function addSeries(curData, newData, repeatTime, group) {
                     // If no data exists for this channel, just return the current data
                     if (newData == null || newData.length == 0 || newData[0].time == null) {
@@ -410,16 +430,20 @@ angular.module('habminChart', [
                 };
 
                 $scope.graphEvents = {
-                    rangechanged: $scope.onRangeChanged
+                    rangechanged: $scope.onRangeChanged,
+                    onload: function(chart) {
+                        graph2d = chart;
+                        if ($scope.events.onload != null) {
+                            $scope.events.onload(chart);
+                        }
+
+                    }
                 };
 
                 $scope.$watch('events', function () {
                     if ($scope.events != null) {
                         if ($scope.events.rangechange != null) {
                             $scope.graphEvents.rangechange = $scope.events.rangechange;
-                        }
-                        if ($scope.events.rangechange != null) {
-                            $scope.graphEvents.onload = $scope.events.onload;
                         }
                     }
                 });
@@ -440,6 +464,12 @@ angular.module('habminChart', [
                     }
 
                     _displayItems($scope.items);
+                });
+
+                $scope.$on('$destroy', function() {
+                    angular.forEach(listeners, function(listener) {
+                        listener();
+                    })
                 });
             }
         };
