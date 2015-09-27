@@ -64,7 +64,8 @@
         <div class="list-group habmin-list" resize-panel>
             <!-- THING LIST -->
             <div ng-if="thingCnt!=-1 && insertMode==false" ng-repeat="thing in things | filter:filterFunction">
-                <a role="presentation" ng-class="{'list-group-item':true, 'active': thing.UID==selectedThing.UID}"
+                <a role="presentation" class="list-group-item"
+                   ng-class="{'active': thing.UID==selectedThing.UID, 'disabled': getThingType(thing)==null}"
                    ng-click="selectThing(thing)">
                     <table style="background-color: transparent">
                         <tr>
