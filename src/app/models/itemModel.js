@@ -233,7 +233,7 @@ angular.module('HABmin.itemModel', [
 
             RestService.getService(svcName).then(
                 function (url) {
-                    $http['delete'](url + "/", item.name)
+                    $http['delete'](url + "/" + item.name)
                         .success(function (data) {
                             deferred.resolve(data);
                         })
