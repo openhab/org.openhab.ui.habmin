@@ -158,7 +158,7 @@
   "thingStatusOffline": "Offline",
   "thingStatusInitialising": "Initialising",
   "thingStatusUninitialised": "Uninitialised",
-  "thingStatusRemoved": "Removed",
+  "thingStatusRemoving": "Removing",
   "thingShowAll": "Show all",
   "thingSearch": "Start Scan",
   "thingNoneFound": "No things found",

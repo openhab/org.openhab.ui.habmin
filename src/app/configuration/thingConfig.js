@@ -469,12 +469,12 @@ angular.module('Config.Things', [
 
         };
 
-        $scope.thingDelete = function () {
-            ThingModel.deleteThing($scope.selectedThing).then(
+        $scope.thingDelete = function (thing, force) {
+            ThingModel.deleteThing(thing, force).then(
                 function () {
                     var name = "";
-                    if ($scope.selectedThing.item != null) {
-                        name = $scope.selectedThing.item.label;
+                    if (thing.item != null) {
+                        name = thing.item.label;
                     }
                     growl.success(locale.getString("habmin.thingSuccessDeletingThing",
                         {name: name}));
@@ -484,8 +484,8 @@ angular.module('Config.Things', [
                 },
                 function () {
                     var name = "";
-                    if ($scope.selectedThing.item != null) {
-                        name = $scope.selectedThing.item.label;
+                    if (thing.item != null) {
+                        name = thing.item.label;
                     }
                     growl.error(locale.getString("habmin.thingErrorDeletingThing",
                         {name: name}));

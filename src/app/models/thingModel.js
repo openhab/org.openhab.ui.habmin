@@ -274,13 +274,17 @@ angular.module('HABmin.thingModel', [
             return deferred.promise;
         };
 
-        this.deleteThing = function (thing) {
+        this.deleteThing = function (thing, force) {
             var tStart = new Date().getTime();
             var deferred = $q.defer();
 
+            var options = "";
+            if(force == true) {
+                options="?force=true";
+            }
             RestService.getService(svcSetup).then(
                 function (url) {
-                    $http['delete'](url + "/things/" + thing.UID)
+                    $http['delete'](url + "/things/" + thing.UID + options)
                         .success(function (data) {
                             deferred.resolve(data);
                         })
