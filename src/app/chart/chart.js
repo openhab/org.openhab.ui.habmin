@@ -296,7 +296,7 @@ angular.module('HABmin.chart', [
     })
 
     .controller('ChartCtrlMenu',
-    function ($scope, locale, growl, ChartService, PersistenceServiceModel, PersistenceItemModel, ItemModel, ChartSave) {
+    function ($scope, locale, growl, ChartModel, ChartService, PersistenceServiceModel, PersistenceItemModel, ItemModel, ChartSave) {
         $scope.items = [];
 //        $scope.services = ChartService.services;
 
