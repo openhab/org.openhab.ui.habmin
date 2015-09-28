@@ -27,7 +27,8 @@ angular.module('habminChart', [
                 items: '=',
                 events: '=',
                 height: '=',
-                width: '='
+                width: '=',
+                liveupdate: '='
             },
             template: '<vis-graph2d data="graphData" options="graphOptions" events="graphEvents"></vis-graph2d>',
             transclude: false,
@@ -155,14 +156,17 @@ angular.module('habminChart', [
                             _addChartItem(itemRef, response);
 
                             listeners.push($scope.$on('smarthome/items/' + itemRef + "/state", function (event, state) {
+                                if($scope.liveupdate === false) {
+                                    return;
+                                }
                                 var num = Number(state.value);
                                 if (!isNaN(num)) {
-                                    var now = new Date().getTime();
+                                    var now = moment().valueOf();
                                     var range = graph2d.getWindow();
                                     var interval = range.end - range.start;
-                                    newChart.push({x: now, y: num, group: itemRef});
-                                    dataItems.update(newChart);
-                                    graph2d.setWindow(now - interval, now, {animation: false});
+                                    dataItems.add({x: now, y: num, group: itemRef});
+                                    graph2d.setOptions({max: now});
+                                    graph2d.setWindow(now - interval, now);
                                 }
                             }));
                         },
