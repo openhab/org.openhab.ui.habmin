@@ -74,11 +74,16 @@ angular.module('Config.Items', [
 
         $scope.selectItem = function (item) {
             $scope.selectedItem = item;
+            $scope.formLoaded = true;
         };
 
         $scope.getParentThingItem = function(item) {
             return ItemModel.getParentThingItem(item);
         };
+
+        $scope.itemDelete = function() {
+            ItemModel.deleteItem($scope.selectedItem);
+        }
     })
 
 ;

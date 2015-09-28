@@ -66,7 +66,32 @@
     <div class="panel panel-default">
         <!-- Header -->
         <div class="panel-heading">
-            Item Information: <i>{{selectedItem.name}}</i>
+            <button type="button"
+                    class="btn btn-default" ng-class="{'btn-success': formLoaded&&itemConfigForm.modified}"
+                    ng-click="itemSave()"
+                    ng-disabled="!formLoaded || !itemConfigForm.modified">
+                <span class="fa fa-floppy-o"></span>
+                <span class="hidden-xs hidden-sm" i18n="common.save"></span>
+            </button>
+            <button type="button"
+                    class="btn btn-default"
+                    ng-click="itemConfigForm.reset()"
+                    ng-disabled="!formLoaded || !itemConfigForm.modified">
+                <span class="fa fa-times"></span>
+                <span class="hidden-xs hidden-sm" i18n="common.cancel"></span>
+            </button>
+            <button type="button"
+                    class="btn btn-default"
+                    ng-confirm-click="itemDelete()" ng-confirm-icon="warning"
+                    ng-disabled="!formLoaded || newItem"
+                    i18n-attr="{'ngConfirmMessage': 'habmin.itemDeleteCheck','ngConfirmTitle': 'habmin.itemDelete','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes' }">
+                <span class="fa fa-trash"></span>
+                <span class="hidden-xs hidden-sm" i18n="common.delete"></span>
+            </button>
+
+            <div class="pull-right">
+                {{selectedItem.name}}
+            </div>
         </div>
 
         <!-- Body -->
