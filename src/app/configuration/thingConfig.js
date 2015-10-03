@@ -578,6 +578,8 @@ angular.module('Config.Things', [
 
     .controller('ThingConfigMenuCtrl',
     function ($scope, ThingConfigService, BindingModel, locale, growl) {
+        $scope.tooltipDiscover = locale.getString('habmin.mainDiscovery');
+
         BindingModel.getList().then(
             function (bindings) {
                 $scope.bindings = bindings;
@@ -587,7 +589,6 @@ angular.module('Config.Things', [
                 growl.warning(locale.getString("habmin.mainErrorGettingBindings"));
             }
         );
-
 
         $scope.startDiscovery = function (binding) {
             BindingModel.startDiscovery(binding.id).then(

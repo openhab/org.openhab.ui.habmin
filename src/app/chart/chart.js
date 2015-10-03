@@ -40,8 +40,12 @@ angular.module('HABmin.chart', [
             data: {pageTitle: 'Charting'},
             resolve: {
                 // Make sure the localisation files are resolved before the controller runs
-                localisations: function (locale) {
-                    return locale.ready('common');
+                // Make sure the localisation files are resolved before the controller runs
+                localisations: function ($q, locale) {
+                    return $q.all([
+                        locale.ready('common'),
+                        locale.ready('habmin')
+                    ]);
                 }
             }
         });
@@ -302,6 +306,10 @@ angular.module('HABmin.chart', [
 
         $scope.itemsTotal = -1;
         $scope.itemsSelected = 0;
+
+        $scope.tooltipItems = locale.getString('habmin.chartSelectItems');
+        $scope.tooltipSave = locale.getString('habmin.chartSaveChart');
+        $scope.tooltipDelete = locale.getString('habmin.chartDeleteChart');
 
         // Load the list of persistence services
         PersistenceServiceModel.getList().then(

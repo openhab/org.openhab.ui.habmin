@@ -36,7 +36,16 @@ angular.module('HABmin.dashboard', [
                     templateUrl: 'dashboard/dashboardMenu.tpl.html'
                 }
             },
-            data: {pageTitle: 'Dashboard'}
+            data: {pageTitle: 'Dashboard'},
+            resolve: {
+                // Make sure the localisation files are resolved before the controller runs
+                localisations: function ($q, locale) {
+                    return $q.all([
+                        locale.ready('common'),
+                        locale.ready('habmin')
+                    ]);
+                }
+            }
         });
     })
 
@@ -275,7 +284,9 @@ angular.module('HABmin.dashboard', [
     })
 
     .controller('DashboardCtrlMenu',
-    function ($scope, $rootScope) {
+    function ($scope, $rootScope, locale) {
+        $scope.tooltipEdit = locale.getString('habmin.mainDashboardEdit');
+
         $scope.dashboardEdit = function () {
             $rootScope.$broadcast("dashboardEdit");
         };

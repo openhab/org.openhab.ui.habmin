@@ -73,13 +73,19 @@
     </li>
 
     <li>
-        <a class="navbar-button" role="button" ng-click="saveChart()">
+        <a class="navbar-button" role="button" ng-click="saveChart()"
+           tooltip-placement="bottom" tooltip="{{tooltipSave}}" tooltip-popup-delay="500"
+           tooltip-enable="true" tooltip-trigger tooltip-animation="false">
             <i class="fa fa-save"></i>
         </a>
     </li>
 
     <li>
-        <a class="navbar-button" role="button" ng-click="deleteChart()">
+        <a class="navbar-button" role="button"
+           tooltip-placement="bottom" tooltip="{{tooltipDelete}}" tooltip-popup-delay="500"
+           tooltip-enable="true" tooltip-trigger tooltip-animation="false"
+           ng-confirm-click="deleteChart()" ng-confirm-icon="warning"
+           i18n-attr="{'ngConfirmMessage': 'habmin.chartDeleteChartCheck','ngConfirmTitle': 'habmin.chartDeleteChart','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes' }">
             <i class="fa fa-trash-o"></i>
         </a>
     </li>
