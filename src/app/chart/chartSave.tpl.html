@@ -19,10 +19,10 @@
                         <span i18n="habmin.chartSaveRightAxis"></span>
                     </a>
                 </li>
-                <li ng-class="{'active':showTab==choice.item}" ng-repeat="choice in items">
-                    <a ng-click="$parent.showTab=choice.item">
-                        <span></span>
-                        <span>{{choice.item}}</span>
+                <li ng-class="{'active':showTab==item.item}" ng-repeat="item in items">
+                    <a ng-click="$parent.showTab=item.item">
+                        <div>{{item.label}}</div>
+                        <div class="small">{{item.item}}</div>
                     </a>
                 </li>
             </ul>
@@ -32,8 +32,8 @@
             <chart-save-general ng-show="showTab==0" model="general"></chart-save-general>
             <chart-save-axis ng-show="showTab==1" model="leftaxis"></chart-save-axis>
             <chart-save-axis ng-show="showTab==2" model="rightaxis"></chart-save-axis>
-            <chart-save-item ng-repeat="choice in items" model="choice"
-                             ng-show="showTab==choice.item"></chart-save-item>
+            <chart-save-item ng-repeat="item in items" model="choice"
+                             ng-show="showTab==item.item"></chart-save-item>
         </div>
     </div>
 </div>

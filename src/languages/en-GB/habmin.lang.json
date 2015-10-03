@@ -43,7 +43,7 @@
   "chartNoPersistenceServices": "No persistence services",
   "chartNoCharts": "No Charts Defined",
   "chartTotalItems": "Total Items",
-  "chartSelectedItems": "Selected Items",
+  "chartSelectItems": "Select Items",
   "chartSaveChart": "Save Chart",
   "chartEditChart": "Edit Chart",
   "chartDeleteChart": "Delete Chart",
