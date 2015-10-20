@@ -37,7 +37,7 @@ angular.module('sitemapTextWidget', [
                     if (!isNaN(num)) {
                         $scope.itemModel = num;
                     }
-                    $scope.$apply();
+//                    $scope.$apply();
                 });
             }
         };

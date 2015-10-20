@@ -89,7 +89,7 @@ angular.module('HABmin.itemModel', [
                         }
                         break;
                 }
-                $rootScope.$apply();
+//                $rootScope.$apply();
             });
         };
 

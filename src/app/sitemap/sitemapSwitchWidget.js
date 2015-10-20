@@ -20,36 +20,67 @@ angular.module('sitemapSwitchWidget', [
             '  <span class="pull-right">' +
             '  <span ng-style="valueColor"></span>' +
             '  <small>' +
-            '    <toggle-switch ng-model="value" on-label="ON" off-label="OFF"></toggle-switch>' +
+            '    <toggle-switch ng-if="toggle" ng-model="value2" on-label="ON" off-label="OFF"></toggle-switch>' +
+            '    <ui-select ng-if="!toggle"' +
+            '        ng-model="value1"' +
+            '        theme="bootstrap"'+
+            '        search-enabled="false">' +
+            '      <ui-select-match>{{$select.selected.label}}'+
+            '      </ui-select-match>'+
+            '      <ui-select-choices repeat="mapping.command as mapping in widget.mappings">'+
+            '        <div>{{mapping.label}}</div>'+
+            '      </ui-select-choices>'+
+            '    </ui-select>' +
             '  </small>' +
             '</div>',
             scope: {
                 itemId: "@",
                 itemModel: "=",
-                widget: "="
+                widget: "=",
+                value: "="
             },
             link: function ($scope, element, attrs, controller) {
                 if ($scope.widget === undefined) {
                     return;
                 }
 
+                if($scope.widget.mappings != null && $scope.widget.mappings.length > 0) {
+                    $scope.toggle = false;
+
+                    if ($scope.widget.item !== undefined) {
+                        $scope.$watch('value1', function (newValue, oldValue) {
+                            console.log("Changed switch", $scope.widget.label, newValue, oldValue);
+                            if (newValue != $scope.currentValue) {
+                                // Keep a record of the current value so we can detect changes from the GUI
+                                // and avoid changes coming from the server!
+                                $scope.currentValue = newValue;
+//                                $scope.$emit('habminGUIUpdate', $scope.widget.item.name,
+//                                    $scope.currentValue === true ? "ON" : "OFF");
+                            }
+                        });
+                    }
+                }
+                else {
+                    $scope.toggle = true;
+
+                    if ($scope.widget.item !== undefined) {
+                        $scope.$watch('value2', function (newValue, oldValue) {
+                            console.log("Changed switch", $scope.widget.label, newValue, oldValue);
+                            if (newValue != $scope.currentValue) {
+                                // Keep a record of the current value so we can detect changes from the GUI
+                                // and avoid changes coming from the server!
+                                $scope.currentValue = newValue;
+                                $scope.$emit('habminGUIUpdate', $scope.widget.item.name,
+                                    $scope.currentValue === true ? "ON" : "OFF");
+                            }
+                        });
+                    }
+                }
+
                 $scope.$on('habminGUIRefresh', function (newValue, oldValue) {
                     updateWidget();
                     $scope.$apply();
                 });
-
-                if ($scope.widget.item !== undefined) {
-                    $scope.$watch('value', function (newValue, oldValue) {
-                        //                       console.log("Changed switch", $scope.widget.label, newValue, oldValue);
-                        if (newValue != $scope.currentValue) {
-                            // Keep a record of the current value so we can detect changes from the GUI
-                            // and avoid changes coming from the server!
-                            $scope.currentValue = newValue;
-                            $scope.$emit('habminGUIUpdate', $scope.widget.item.name,
-                                $scope.currentValue === true ? "ON" : "OFF");
-                        }
-                    });
-                }
 
                 function updateWidget() {
                     if ($scope.widget.item !== undefined) {
@@ -101,7 +132,7 @@ angular.module('sitemapSwitchWidget', [
                             $scope.currentValue = $scope.value;
                         }
                     }
-                    $scope.$apply();
+//                    $scope.$apply();
                 });
 
                 updateWidget();
