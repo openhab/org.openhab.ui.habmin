@@ -22,6 +22,7 @@ angular.module('HABmin.thingModel', [
         var svcSetup = "setup";
         var svcTypes = "thing-types";
         var eventSrc;
+        var eventSrcLink;
 
         var me = this;
 
@@ -61,7 +62,6 @@ angular.module('HABmin.thingModel', [
 
         this.listen = function () {
             eventSrc = new EventSource("/rest/events?topics=smarthome/things/*");
-
             eventSrc.addEventListener('message', function (event) {
                 console.log(event.type);
                 console.log(event.data);
@@ -72,10 +72,11 @@ angular.module('HABmin.thingModel', [
 
                 switch (evt.type) {
                     case 'ThingStatusInfoEvent':
-                        if (thingList[topic[2]] === undefined) {
+                        var thing = me.getThing(topic[2]);
+                        if (thing == null) {
                             break;
                         }
-                        thingList[topic[2]].state = payload.value;
+                        thing.statusInfo = payload;
                         break;
                     case 'ThingUpdatedEvent':
                         me.addOrUpdateThing(payload[0]);
@@ -92,10 +93,44 @@ angular.module('HABmin.thingModel', [
                         me.addOrUpdateThing(payload);
                         break;
                 }
-                $rootScope.$apply();
+//                $rootScope.$apply();
+            });
+
+            eventSrcLink = new EventSource("/rest/events?topics=smarthome/links/*");
+            eventSrcLink.addEventListener('message', function (event) {
+                console.log(event.type);
+                console.log(event.data);
+
+                var evt = angular.fromJson(event.data);
+                var payload = angular.fromJson(evt.payload);
+                var topic = evt.topic.split("/");
+                var thing = me.getThing(payload.thingUID);
+                if(thing == null) {
+                    return;
+                }
+
+                switch (evt.type) {
+                    case 'ItemThingLinkAddedEvent':
+                        thing.item = ItemModel.getItem(payload.itemName);
+                        break;
+                    case 'ItemThingLinkRemovedEvent':
+                        thing.item = null;
+                        break;
+                }
+
             });
         };
 
+
+
+
+
+
+
+
+
+
+        
         this.getList = function (refresh) {
             var tStart = new Date().getTime();
             var deferred = $q.defer();
