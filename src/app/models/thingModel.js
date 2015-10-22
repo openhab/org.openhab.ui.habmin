@@ -121,16 +121,6 @@ angular.module('HABmin.thingModel', [
             });
         };
 
-
-
-
-
-
-
-
-
-
-        
         this.getList = function (refresh) {
             var tStart = new Date().getTime();
             var deferred = $q.defer();

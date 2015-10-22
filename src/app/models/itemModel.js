@@ -200,7 +200,7 @@ angular.module('HABmin.itemModel', [
                 if (itemList[i].tags.indexOf("thing") == -1) {
                     continue;
                 }
-                if(item.groupNames.indexOf(itemList[i].name) != -1) {
+                if (item.groupNames.indexOf(itemList[i].name) != -1) {
                     return itemList[i];
                 }
             }
@@ -250,6 +250,9 @@ angular.module('HABmin.itemModel', [
         };
 
         this.sendCommand = function (item, value) {
+            if (typeof value === 'number') {
+                value = value + '';
+            }
             console.log("Sending command", item, value);
             var deferred = $q.defer();
             $http.post(url + "/" + item, value, {
