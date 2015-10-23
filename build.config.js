@@ -117,7 +117,8 @@ module.exports = {
             'vendor/screenfull/dist/screenfull.js',
             'vendor/angular-screenfull/dist/angular-screenfull.min.js',
             'vendor/slimScroll/jquery.slimscroll.js',
-            'vendor/angular-slimscroll/angular-slimscroll.js'
+            'vendor/angular-slimscroll/angular-slimscroll.js',
+            'vendor/angular-clipboard/angular-clipboard.js'
         ],
         css: [
             'vendor/angular-growl-v2/build/angular-growl.css',

@@ -1,0 +1,30 @@
+{
+  "name": "angular-clipboard",
+  "version": "1.1.1",
+  "main": "angular-clipboard.js",
+  "description": "Copy to clipboard with AngularJS directive, without using Flash.",
+  "dependencies": {
+    "angular": "*"
+  },
+  "ignore": [
+    "demo",
+    "test",
+    ".gitignore",
+    "bower.json",
+    "karma.conf.js",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ],
+  "homepage": "https://github.com/omichelsen/angular-clipboard",
+  "_release": "1.1.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.1.1",
+    "commit": "4d2236ee51247bd5a2f0b4de892991f3dd19fc35"
+  },
+  "_source": "git://github.com/omichelsen/angular-clipboard.git",
+  "_target": "~1.1.1",
+  "_originalSource": "angular-clipboard",
+  "_direct": true
+}

@@ -10,6 +10,7 @@
 angular.module('HABmin', [
     'templates-app',
     'templates-common',
+    'angular-clipboard',
     'http-auth-interceptor',
     'HABmin.home',
     'HABmin.chart',
