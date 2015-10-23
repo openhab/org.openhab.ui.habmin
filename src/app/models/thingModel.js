@@ -49,13 +49,6 @@ angular.module('HABmin.thingModel', [
                 if (i == "item") {
                     thing.item = ItemModel.getItem(thing.item.name);
                 }
-                else if (i == "channels") {
-                    for (var c = 0; c < thing.channels.length; c++) {
-                        for (var l = 0; l < thing.channels[c].linkedItems.length; l++) {
-                            thing.channels[c].linkedItems[l] = ItemModel.getItem(thing.channels[c].linkedItems[l].name);
-                        }
-                    }
-                }
             }
             return thing;
         };

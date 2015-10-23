@@ -23,7 +23,7 @@
                     <li>
                         <a ng-click="toggleStatusFilter('INITIALIZING')">
                             <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': filterStatus.indexOf('INITIALIZING')==-1}"></span>
-                            <span class="fa fa-fw fa-caret-square-o-up text-info"></span>
+                            <span class="fa fa-fw fa-gears text-info"></span>
                             <span i18n="habmin.thingStatusInitialising"></span>
                         </a>
                     </li>
@@ -76,7 +76,7 @@
                                     <span ng-switch-when="OFFLINE"
                                           class="fa fa-fw fa-times-circle text-danger"></span>
                                     <span ng-switch-when="INITIALIZING"
-                                          class="fa fa-fw fa-caret-square-o-up text-info"></span>
+                                          class="fa fa-fw fa-gears text-info"></span>
                                     <span ng-switch-when="REMOVING"
                                           class="fa fa-fw fa-warning text-warning"></span>
                                     <span ng-switch-when="REMOVED"
@@ -196,7 +196,37 @@
         <!-- Body -->
         <div class="list-group habmin-list" resize-panel>
             <form name="thingConfigForm" novalidate ng-show="formLoaded" style="height:100%">
-                <!-- OVERVIEW -->
+                <!-- DESCRIPTION -->
+                <div>
+                    <a role="presentation"
+                       ng-class="{'list-group-item config-panel-title':true, 'active': panelDisplayed=='DESCRIPTION'}"
+                       ng-click="setPanelDisplayed('DESCRIPTION')">
+                        <span class="fa fa-fw fa-book"></span>
+                        <span i18n="habmin.thingDescription"></span>
+                    </a>
+                </div>
+                <div collapse="panelDisplayed!='DESCRIPTION'" class="panel-form">
+                    <div class="well well-sm" ng-bind-html="selectedThingType.label">
+                    </div>
+                    <div class="well well-sm" ng-bind-html="selectedThingType.description">
+                        ng-bind-html="selectedThingType.description">
+                    </div>
+
+                    <div ng-repeat="channel in selectedThingType.channels">
+                        <div>{{channel.label}}</div>
+
+                        <div class="well well-sm">
+                            <div ng-repeat="item in getChannelItems(channel)">
+                                <habmin-icon class="fa fa-fw"
+                                             itemtype="{{getItem(item).type}}"></habmin-icon>
+                                {{getItem(item).name}}
+                                {{getItem(item).label}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PROPERTIES -->
                 <div>
                     <a role="presentation"
                        ng-class="{'list-group-item config-panel-title':true, 'active': panelDisplayed=='PROPERTIES'}"
@@ -386,27 +416,28 @@
                                             </td>
                                         </thead>
                                         <tbody>
-                                        <tr ng-repeat="item in getChannelItems(channel)">
-                                            <td>
-                                                <habmin-icon class="fa fa-fw"
-                                                             itemtype="{{getItem(item).type}}"></habmin-icon>
-                                                {{getItem(item).label}}
-                                            </td>
-                                            <td>
-                                                <div class="pull-right">
-                                                    <button type="button" class="btn btn-primary btn-xs"
-                                                            ng-click="editItem(item)">
-                                                        <span class="fa fa-edit"></span> <span
-                                                            i18n="common.Edit"></span>
-                                                    </button>
-                                                    <button type="button" class="btn btn-primary btn-xs"
-                                                            ng-click="editItem(item)">
-                                                        <span class="fa fa-trash"></span> <span
-                                                            i18n="common.delete"></span>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                            <tr ng-repeat="item in getChannelItems(channel)">
+                                                <td class="span-hover">
+                                                    <habmin-icon class="fa fa-fw"
+                                                                 itemtype="{{getItem(item).type}}"></habmin-icon>
+                                                    {{getItem(item).label}}
+                                                    <span class="span-hover-hide fa fa-clipboard" clipboard text="getItem(item).name"></span>
+                                                </td>
+                                                <td>
+                                                    <div class="pull-right">
+                                                        <button type="button" class="btn btn-primary btn-xs"
+                                                                ng-click="editItem(item)">
+                                                            <span class="fa fa-edit"></span> <span
+                                                                i18n="common.Edit"></span>
+                                                        </button>
+                                                        <button type="button" class="btn btn-primary btn-xs"
+                                                                ng-click="editItem(item)">
+                                                            <span class="fa fa-trash"></span> <span
+                                                                i18n="common.delete"></span>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>

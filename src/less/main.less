@@ -7,7 +7,6 @@
  * First, we include the Twitter Bootstrap LESS files. Only the ones used in the
  * project should be imported as the rest are just wasting space.
  */
-
 // Import individual Bootstrap less files - and only those we need!
 //  @import '../../vendor/bootstrap/less/bootstrap.less';
 // Core variables and mixins
@@ -54,19 +53,14 @@
 // Utility classes
 @import "../../vendor/bootstrap/less/utilities.less";
 @import "../../vendor/bootstrap/less/responsive-utilities.less";
-
-
 @import "../../vendor/pick-a-color/src/less/pick-a-color.less";
 @import "../../vendor/angular-gridster/src/angular-gridster.less";
-
 @import "blockly.less";
-
 //MISC
 //----
 @import "core.less";
 @import "variables.less";
 @import "mixins.less";
-
 //COMPONENTS
 //-----------
 @import "header.less";
@@ -91,24 +85,20 @@
 @import "carousel.less";
 @import "modal.less";
 @import "wizard.less";
-
 //PAGES
 //------
 @import "mailbox.less";
 @import "lockscreen.less";
 @import "login_and_register.less";
 @import "profile";
-
 //Plugins
 //--------
 @import "fullcalendar.less";
 @import "select2.less";
-
 //Miscellaneous
 //-------------
 @import "miscellaneous.less";
 @import "print.less";
-
 /**
  * This is our main variables file. We must include it last so we can overwrite any variable
  * definitions in our imported stylesheets.
@@ -292,7 +282,7 @@
   padding-left: @panel-body-padding;
   padding-right: @panel-body-padding;
   margin-bottom: 5px;
-//  position: fixed;
+  //  position: fixed;
   left: 0px;
   right: 0px;
   z-index: 10;
@@ -396,7 +386,7 @@
 }
 
 .page-header {
-//  margin-top: 60px;
+  //  margin-top: 60px;
 }
 
 ul {
@@ -447,7 +437,7 @@ ul {
 }
 
 .dashboard-content {
-//  position: absolute;  // Causes collapsed dash not to work
+  //  position: absolute;  // Causes collapsed dash not to work
   left: 0px;
   top: 0px;
   right: 0px;
@@ -919,12 +909,27 @@ ul {
   -o-box-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
 }
 
-
 .fullscreen {
   width: 100%;
   height: 100%;
 }
 
 .nav > li {
-//  overflow: hidden;
+  //  overflow: hidden;
 }
+
+.span-hover {
+  .span-hover-hide {
+    opacity: 0;
+  }
+  &:hover {
+    .span-hover-hide {
+      transition: all 0.4s ease-in-out;
+      opacity: 1;
+      -webkit-transition-delay: 1s;
+      transition-delay: 1s;
+    }
+  }
+}
+
+

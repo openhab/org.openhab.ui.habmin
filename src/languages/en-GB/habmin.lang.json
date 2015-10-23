@@ -165,6 +165,7 @@
   "thingTools": "Tools",
   "thingAdvancedMode": "Show advanced settings",
   "thingLabel": "Label",
+  "thingDescription": "Description",
   "thingProperties": "Properties",
   "thingConfiguration": "Configuration",
   "thingChannels": "Channels",
