@@ -2,6 +2,202 @@
 http://visjs.org
 
 
+## 2015-01-01, version 4.9.0
+
+### Network
+
+- Fixed bug where an edge that was not connected would crash the layout algorithms.
+- Fixed bug where a box shape could not be drawn outside of the viewable area.
+- Fixed bug where dragging a node that is not a control node during edit edge mode would throw an error.
+- Made auto scaling on container size change pick the lowest between delta height and delta width.
+- Added images with borders option (useBorderWithImage)
+- Updated the manipulation css to fix offset if there is no separator.
+
+### Timeline
+
+- Fixed #1326: wrongly positioned dot of PointItems.
+- Fixed #1249: option `hiddenDates` not accepting a single hidden date.
+- Fixed a bug when pinching and using hidden dates. Thanks @lauzierj.
+
+
+## 2015-09-14, version 4.8.2
+
+### Network
+
+- Fixed Phantom Edges during clustering.
+- Fixed scaling not doing anything to edges.
+- Fixed setting font to null so the network won't crash anymore.
+- Fixed stabilized event not firing if layout algorithm does very well.
+- Fixed arrows with some shapes when they are selected. #1292
+- Fixed deletion of options by settings them to null.
+
+
+## 2015-09-07, version 4.8.1
+
+### Network
+
+- Added German (de) locale. Thanks @Tooa.
+- Fixed critical camera zoom bug #1273.
+- Fixed unselectAll method. #1256
+- Fixed bug that broke the network if drawn in a hidden div #1254
+
+### Timeline
+
+- Fixed #1215: inconsistent types of properties `start` and `end` in callback
+  functions `onMove`, `onMoving`, `onAdd`.
+
+
+## 2015-08-28, version 4.8.0
+
+### Timeline
+
+- Implemented reordering groups by dragging them vertically. Thanks @hansmaulwurf23.
+
+### Network
+
+- Added Spanish (es) locale. Thanks @gomezgoiri.
+- Added support for labels in edges and titles for both nodes and edges during gephi import.
+- Added KamadaKawai layout engine for improved initial layout.
+- Added Adaptive timestep to the physics solvers for increased performance during stabilization.
+- Added improvedLayout as experimental option for greatly improved stabilization times.
+- Added adaptiveTimestep as experimental option for greatly improved stabilization times.
+- Added support for Gephi directed edges, edge labels and titles.
+- Improved the positioning and CSS of the configurator and the color picker.
+- Greatly improved performance in clustering.
+- Made the network keep its 'view' during a change of the size of the container.
+- Fixed #1152, updating images now works.
+- Fixed cleaning up of nodes.
+- Fixed dynamic updating of label properties.
+- Fixed bugs in clustering algorithm.
+- Fixed find node return types.
+- Fixed bug where stabilization iterations were counted double. If it looks like the stabilization is slower, its because it is doing twice the amount of steps it did before.
+- Fixed getPositions return values.
+
+## Graph2d
+
+- Implemented configuration option `excludeFromLegend`. Thanks @Bernd0.
+
+
+## 2015-07-27, version 4.7.0
+
+### Timeline
+
+- Fixed #192: Items keep their group offset while dragging items located in 
+  multiple groups. Thanks @Fice.
+- Fixed #1118: since v4.6.0, grid of time axis was wrongly positioned on some 
+  scales.
+
+### Network
+
+- Added moveNode method.
+- Added cubic Bezier curves.
+
+
+## 2015-07-22, version 4.6.0
+
+### Timeline
+
+- Implemented #24: support for custom timezones, see configuration option `moment`.
+
+### Graph2d
+
+- Implemented #24: support for custom timezones, see configuration option `moment`.
+
+### Network
+
+- Fixed #1111, check if edges exist was not correct on update.
+- Fixed #1112, network now works in firefox on unix again.
+- Added #931, borderRadius in shapeProperties for the box shape.
+- Added #936, useImageSize for images and circularImages
+
+## 2015-07-20, version 4.5.1
+
+### Network
+
+- Fixed another clustering bug, phantom edges should be gone now.
+- Fixed disabling hierarchical layout.
+- Fixed delete button when using multiple selected items in manipulation system.
+
+
+## 2015-07-17, version 4.5.0
+
+### General
+
+- Docs have been greatly improved thanks to @felixhayashi! Thanks a lot!
+
+### Network
+
+- Added shapeProperties, thanks @zukomgwili!
+- Added configChange event.
+- Properly fixed the _lockedRedraw method.
+- Fixed node resizing on dragging.
+- Fixed missing edges during clustering.
+- Fixed missing refresh of node data when changing hierarchical layout on the fly.
+- Fixed hover and blur events for edges.
+
+### Graph3d
+
+- Fixed not changing `backgroundColor` when not provided in options. Thanks @ozydingo.
+
+### Timeline
+
+- Implemented support for group templates (#996). Thanks @hansmaulwurf23.
+- Implemented option `zoomKey` for both Timeline and Graph2d (see #1082). 
+  Thanks @hansmaulwurf23.
+- Fixed #1076: Fixed possible overlap of minor labels text on the TimeAxis. 
+- Fixed #1001: First element of group style being cut.
+- Fixed #1071: HTML contents of a group not cleared when the contents is updated.
+- Fixed #1033: Moved item data not updated in DataSet when using an asynchronous
+  `onMove` handler.
+- Fixed #239: Do not zoom/move the window when the mouse is on the left panel
+  with group labels.   
+
+
+## 2015-07-03, version 4.4.0
+
+### General
+
+- Documentation now has breadcrums. Thanks @felixhayashi!
+
+### Graph3d
+
+- Fixed #970: Implemented options `dataColor`, `axisColor`, and `gridColor`.
+
+### Network 
+
+- Fixed Hammerjs direction issue.
+- Fixed recursion error when node is fixed but has no position.
+- Fixed accidental redrawing during stabilization.
+- Fixed delete callbacks with null argument not showing toolbar afterwards.
+- Added zoom events from keyboard and navigation buttons.
+- No longer start stabilization with an empty node set.
+- Fixed #974 connecting static smooth and straight edges.
+- Improved handling of empty image field.
+- Fixed #987 proper cleaning of support nodes.
+- Fixed static smooth edges not fully working from every angle.
+- Fixed updating bounding box of nodes without drawing.
+- Fixed #1036, bug in lockedRedraw. Thanks @vges!
+- Added getDataset to all manipulation functions. Thanks @ericvandever!
+- Fixed #1039, icon now returns correct distance to border
+- Added blurEdge and hoverEdge events.
+- Added labelHighlightBold option to edges and nodes.
+- Added getOptionsFromConfigurator method.
+- Fixed extra edges in clustering.
+- Fixed cleaning up of clustering edges on declustering.
+- Made fit() method only look at visible nodes to get the range.
+
+### Graph2d
+
+- Made graph2d more robust against string values in the y position.
+- Fixed bug where 0 axis was always in the automatically fitted range.
+- Added drawPoints.onRender. Thanks @mschallar!
+
+### Timeline
+
+- Fixed cleaning up of items in subgroups, thanks @ChenMachluf!
+- Improved error notification with groups, thanks @skinkie!
+
+
 ## 2015-06-16, version 4.3.0
 
 ### General
@@ -17,6 +213,9 @@ http://visjs.org
 
 - Implemented `editable` option for individual items. Thanks @danbertolini.
 
+### Network
+
+- Fixed dragStart event to give the correct node information.
 
 ## 2015-06-05, version 4.2.0
 

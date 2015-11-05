@@ -10,6 +10,9 @@
 
   <!-- Bootstrap core CSS -->
   <link href="../css/bootstrap.css" rel="stylesheet">
+  <!-- Tipue vendor css -->
+  <link href="../css/tipuesearch.css" rel="stylesheet">
+
   <link href="../css/style.css" rel="stylesheet">
 
 
@@ -28,7 +31,13 @@
   <script language="JavaScript">
     smoothScroll.init();
   </script>
-
+  
+  <!-- Tipue vendor css -->
+  <link href="../css/tipuesearch.css" rel="stylesheet">
+    
+  <!-- Tipue vendor css -->
+  <link href="../css/tipuesearch.css" rel="stylesheet">
+  
   <script type="text/javascript" src="../js/toggleTable.js"></script>
 </head>
 <body onload="prettyPrint();">
@@ -99,8 +108,8 @@
     <li><a href="#Editing_Items">Editing Items</a></li>
     <li><a href="#Templates">Templates</a></li>
     <li><a href="#Localization">Localization</a></li>
+    <li><a href="#Time_zone">Time zone</a></li>
     <li><a href="#Styles">Styles</a></li>
-    <li><a href="#Data_Policy">Data Policy</a></li>
   </ul>
 
   <h2 id="Example">Example</h2>
@@ -200,19 +209,20 @@
 
   <h3 id="items">Items</h3>
   <p>
-    The Timeline uses regular Arrays and Objects as data format.
-    Data items can contain the properties <code>start</code>,
+    For items, the Timeline accepts an Array, a DataSet (offering 2 way data binding),
+    or a DataView (offering 1 way data binding).
+    Items are regular objects and can contain the properties <code>start</code>,
     <code>end</code> (optional), <code>content</code>,
     <code>group</code> (optional), <code>className</code> (optional), 
     <code>editable</code> (optional), and <code>style</code> (optional).
   </p>
 
   <p>
-    A table is constructed as:
+    A DataSet is constructed as:
   </p>
 
 <pre class="prettyprint lang-js">
-var items = [
+var items = new vis.DataSet([
   {
     start: new Date(2010, 7, 15),
     end: new Date(2010, 8, 2),  // end is optional
@@ -334,7 +344,9 @@ var items = [
 
   <h3 id="groups">Groups</h3>
   <p>
-    Like the items, groups are regular JavaScript Arrays and Objects.
+    For the items, groups can be an Array, a DataSet (offering 2 way data binding),
+    or a DataView (offering 1 way data binding).
+
     Using groups, items can be grouped together.
     Items are filtered per group, and displayed as
 
@@ -576,13 +588,59 @@ function (option, path) {
       </td>
     </tr>
 
+	<tr class='toggle collapsible' onclick="toggleTable('optionTable','groupEditable', this);">
+      <td><span parent="groupEditable" class="right-caret"></span> groupEditable</td>
+      <td>boolean or Object</td>
+      <td><code>false</code></td>
+      <td>If true, the groups in the timeline can be manipulated. See also the callbacks <code>onAddGroup</code>, <code>onMoveGroup</code>, and <code>onRemoveGroup</code>. When <code>groupEditable</code> is an object, one can enable or disable individual manipulation actions.
+        The editing of groups follows the same principles as for items, see section <a href="#Editing_Items">Editing Items</a> for a detailed explanation.
+      </td>
+    </tr>
+    <tr parent="groupEditable" class="hidden">
+      <td class="indent">groupEditable.add</td>
+      <td>boolean</td>
+      <td><code>false</code></td>
+      <td>If true, new groups can be created in the Timeline. For now adding new groups is done by the user.</td>
+    </tr>
+    <tr parent="groupEditable" class="hidden">
+      <td class="indent">groupEditable.remove</td>
+      <td>boolean</td>
+      <td><code>false</code></td>
+      <td>If true, groups can be deleted. For now removing groups is done by the user.</td>
+    </tr>
+    <tr parent="groupEditable" class="hidden">
+      <td class="indent">groupEditable.order</td>
+      <td>boolean</td>
+      <td><code>false</code></td>
+      <td>If true, groups can be dragged to change their order. Only applicable when the Timeline has groups. For this option to work properly the groupOrder and groupOrderSwap options have to be set as well.</td>
+    </tr>
+
     <tr>
       <td>groupOrder</td>
       <td>String or Function</td>
-      <td>none</td>
+      <td>'order'</td>
       <td>Order the groups by a field name or custom sort function.
-        By default, groups are not ordered.
+        By default, groups are ordered by a property <code>order</code> (if set).
+        If no <code>order</code> properties are provided, the order will be undetermined.
       </td>
+    </tr>
+    
+    <tr>
+      <td>groupOrderSwap</td>
+      <td>Function</td>
+      <td>none</td>
+      <td>Swaps the positions of two groups. If groups have a custom order (via <code>groupOrder</code>) and groups are configured to be reorderable (via <code>groupEditable.order</code>), the user has to provide a function that swaps the positions of two given groups.
+      If this option is not set, the default implementation assumes that groups hold an attribute <code>order</code> which values are changed. The signature of the <code>groupOrderWap</code> function is:
+      <pre class="prettyprint lang-js">function groupOrderSwap(fromGroup: Object, toGroup: Object, groups: DataSet)</pre>
+      The first to arguments hold the groups of which the positions are to be swapped and the third argument holds the DataSet with all groups.
+      </td>
+    </tr>
+
+    <tr>
+      <td>groupTemplate</td>
+      <td>function</td>
+      <td>none</td>
+      <td>A template function used to generate the contents of the groups. The function is called by the Timeline with a groups data as argument, and must return HTML code as result. When the option groupTemplate is specified, the groups do not need to have a field <code>content</code>. See section <a href="#Templates">Templates</a> for a detailed explanation.</td>
     </tr>
 
     <tr>
@@ -620,6 +678,13 @@ function (option, path) {
       <td>Object</td>
       <td>none</td>
       <td>A map with i18n locales. See section <a href="#Localization">Localization</a> for more information.</td>
+    </tr>
+
+    <tr>
+      <td>moment</td>
+      <td>function</td>
+      <td>vis.moment</td>
+      <td>A constructor for creating a moment.js Date. Allows for applying a custom time zone. See section <a href="#Time_zone">Time zone</a> for more information.</td>
     </tr>
 
     <tr class='toggle collapsible' onclick="toggleTable('optionTable','margin', this);">
@@ -712,6 +777,14 @@ function (option, path) {
       <td>Callback function triggered when an item is about to be added: when the user double taps an empty space in the Timeline. See section <a href="#Editing_Items">Editing Items</a> for more information. Only applicable when both options <code>selectable</code> and <code>editable.add</code> are set <code><code>true</code></code>.
       </td>
     </tr>
+    
+    <tr>
+      <td>onAddGroup</td>
+      <td>function</td>
+      <td>none</td>
+      <td>Callback function triggered when a group is about to be added. The signature and semantics are the same as for <code>onAdd</code>.
+      </td>
+    </tr>
 
     <tr>
       <td>onUpdate</td>
@@ -728,6 +801,14 @@ function (option, path) {
       <td>Callback function triggered when an item has been moved: after the user has dragged the item to an other position. See section <a href="#Editing_Items">Editing Items</a> for more information. Only applicable when both options <code>selectable</code> and <code>editable.updateTime</code> or <code>editable.updateGroup</code> are set <code><code>true</code></code>.
       </td>
     </tr>
+    
+    <tr>
+      <td>onMoveGroup</td>
+      <td>function</td>
+      <td>none</td>
+      <td>Callback function triggered when a group has been moved: after the user has dragged the group to an other position. The signature and semantics are the same as for <code>onMove</code>.
+      </td>
+    </tr>
 
     <tr>
       <td>onMoving</td>
@@ -742,6 +823,14 @@ function (option, path) {
       <td>function</td>
       <td>none</td>
       <td>Callback function triggered when an item is about to be removed: when the user tapped the delete button on the top right of a selected item. See section <a href="#Editing_Items">Editing Items</a> for more information. Only applicable when both options <code>selectable</code> and <code>editable.remove</code> are set <code><code>true</code></code>.
+      </td>
+    </tr>
+    
+    <tr>
+      <td>onRemoveGroup</td>
+      <td>function</td>
+      <td>none</td>
+      <td>Callback function triggered when a group is about to be removed. The signature and semantics are the same as for <code>onRemove</code>.
       </td>
     </tr>
 
@@ -850,6 +939,13 @@ function (option, path) {
       <td>A template function used to generate the contents of the items. The function is called by the Timeline with an items data as argument, and must return HTML code as result. When the option template is specified, the items do not need to have a field <code>content</code>. See section <a href="#Templates">Templates</a> for a detailed explanation.</td>
     </tr>
 
+    <tr>
+      <td>throttleRedraw</td>
+      <td>number</td>
+      <td><code>0</code></td>
+      <td>Limit the maximum number of redraws to once every x milliseconds. For example setting throttleRedraw to `100` milliseconds will limit the number of redraws to 10 times per second.</td>
+    </tr>
+
     <tr class='toggle collapsible' onclick="toggleTable('optionTable','timeAxis', this);">
       <td><span parent="timeAxis" class="right-caret"></span> timeAxis</td>
       <td>Object</td>
@@ -866,6 +962,7 @@ function (option, path) {
 }</pre>
       </td>
     </tr>
+
     <tr parent="timeAxis" class="hidden">
       <td class="indent">timeAxis.step</td>
       <td>number</td>
@@ -896,6 +993,16 @@ function (option, path) {
       <td><code>true</code></td>
       <td>
         Specifies whether the Timeline can be zoomed by pinching or scrolling in the window.
+        Only applicable when option <code>moveable</code> is set <code><code>true</code></code>.
+      </td>
+    </tr>
+
+	<tr>
+      <td>zoomKey</td>
+      <td>String</td>
+      <td><code>''</code></td>
+      <td>Specifies whether the Timeline is only zoomed when an additional key is down.
+      	Available values are '' (does not apply), 'altKey', 'ctrlKey', or 'metaKey'.
         Only applicable when option <code>moveable</code> is set <code><code>true</code></code>.
       </td>
     </tr>
@@ -1090,13 +1197,22 @@ document.getElementById('myTimeline').onclick = function (event) {
     </tr>
 
     <tr>
+      <td>setCustomTimeTitle(title [, id])</td>
+      <td>none</td>
+      <td>Adjust the title attribute of a custom time bar.
+        Parameter <code>title</code> is the string to be set as title. Use empty string to hide the title completely.
+        Parameter <code>id</code> is the id of the custom time bar, and is <code>undefined</code> by default.
+      </td>
+    </tr>
+
+    <tr>
       <td>setData({<br>&nbsp;&nbsp;groups: groups,<br>&nbsp;&nbsp;items: items<br>})</td>
       <td>none</td>
       <td>Set both groups and items at once. Both properties are optional. This is a convenience method for individually calling both <code>setItems(items)</code> and <code>setGroups(groups)</code>.
         Both <code>items</code> and <code>groups</code> can be an Array with Objects,
-        a DataSet, or a DataView. For each of the groups, the items of the
-        timeline are filtered on the property <code>group</code>, which
-        must correspond with the id of the group.
+        a DataSet (offering 2 way data binding), or a DataView (offering 1 way data binding).
+        For each of the groups, the items of the timeline are filtered on the
+        property <code>group</code>, which must correspond with the id of the group.
       </td>
     </tr>
 
@@ -1105,9 +1221,9 @@ document.getElementById('myTimeline').onclick = function (event) {
       <td>none</td>
       <td>Set a data set with groups for the Timeline.
         <code>groups</code> can be an Array with Objects,
-        a DataSet, or a DataView. For each of the groups, the items of the
-        timeline are filtered on the property <code>group</code>, which
-        must correspond with the id of the group.
+        a DataSet (offering 2 way data binding), or a DataView (offering 1 way data binding).
+        For each of the groups, the items of the timeline are filtered on the
+        property <code>group</code>, which must correspond with the id of the group.
       </td>
     </tr>
 
@@ -1116,7 +1232,7 @@ document.getElementById('myTimeline').onclick = function (event) {
       <td>none</td>
       <td>Set a data set with items for the Timeline.
         <code>items</code> can be an Array with Objects,
-        a DataSet, or a DataView.
+        a DataSet (offering 2 way data binding), or a DataView (offering 1 way data binding).
       </td>
     </tr>
 
@@ -1229,6 +1345,15 @@ timeline.off('select', onSelect);
       <td>Fired when double clicked inside the Timeline.
       </td>
     </tr>
+
+    <tr>
+      <td>groupDragged</td>
+      <td>
+        Passes the id of the dragged group.
+      </td>
+      <td>Fired after the dragging of a group is finished.
+      </td>
+    </tr>    
 
     <tr>
       <td>rangechange</td>
@@ -1514,6 +1639,32 @@ var options = {
   </table>
 
 
+  <h2 id="Time_zone">Time zone</h2>
+  <p>
+    By default, the Timeline displays time in local time. To display a Timeline in an other time zone or in UTC, the date constructor can be overloaded via the configuration option <code>moment</code>, which by default is the constructor function of moment.js. More information about UTC with moment.js can be found in the docs: <a href="http://momentjs.com/docs/#/parsing/utc/">http://momentjs.com/docs/#/parsing/utc/</a>.
+  </p>
+
+  <p>
+    Examples:
+  </p>
+
+<pre class="prettyprint lang-js">// display in UTC
+var options = {
+  moment: function(date) {
+    return vis.moment(date).utc();
+  }
+};
+
+// display in UTC +08:00
+var options = {
+  moment: function(date) {
+    return vis.moment(date).utcOffset('+08:00');
+  }
+};
+</pre>
+
+
+
   <h2 id="Styles">Styles</h2>
   <p>
     All parts of the Timeline have a class name and a default css style.
@@ -1591,13 +1742,6 @@ var options = {
 &lt;/style&gt;
 </pre>
 
-
-  <h2 id="Data_Policy">Data Policy</h2>
-  <p>
-    All code and data is processed and rendered in the browser.
-    No data is sent to any server.
-  </p>
-
 </div>
 
 <!-- Bootstrap core JavaScript
@@ -1607,3 +1751,11 @@ var options = {
 <script src="../js/bootstrap.min.js"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="../js/ie10-viewport-bug-workaround.js"></script>
+<!-- jquery extensions -->
+<script src="../js/jquery.highlight.js"></script>
+<script src="../js/jquery.url.min.js"></script>
+<!-- Tipue vendor js -->
+<script src="../js/tipuesearch.config.js"></script>
+<script src="../js/tipuesearch.js"></script>
+<!-- controller -->
+<script src="../js/main.js"></script>
