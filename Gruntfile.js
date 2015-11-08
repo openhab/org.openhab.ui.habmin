@@ -727,7 +727,7 @@ module.exports = function (grunt) {
         taskConfig.less[skin].files[skin_css] = 'src/less/skins/' + skin + '.less';
         skinTasksBuild.push('less:' + skin);
 
-        grunt.log.write(taskConfig.less[skin].files[skin_css]);
+//        grunt.log.write(taskConfig.less[skin].files[skin_css]);
 
         taskConfig.less[skin + '_compile'] = {
             files: {},
@@ -876,9 +876,23 @@ module.exports = function (grunt) {
         var jsFiles = filterForJS(this.filesSrc).map(function (file) {
             return file.replace(dirRE, '');
         });
-        var cssFiles = filterForCSS(this.filesSrc).map(function (file) {
+        var cssFilesRaw = filterForCSS(this.filesSrc).map(function (file) {
             return file.replace(dirRE, '');
         });
+
+        // Make sure that our main file and skins are last so they over-ride any classes
+        var cssFiles = [];
+        var cssFilesApp = [];
+        for(var cnt=0; cnt < cssFilesRaw.length; cnt++) {
+            if(cssFilesRaw[cnt].indexOf("assets/" + pkg.name + "-skin") == 0) {
+                cssFilesApp.push(cssFilesRaw[cnt]);
+            }
+            else if(cssFilesRaw[cnt].indexOf("assets/" + pkg.name) != 0) {
+                cssFiles.push(cssFilesRaw[cnt]);
+            }
+        }
+        cssFiles.push("assets/" + pkg.name + ".css");
+        cssFiles.push.apply(cssFiles, cssFilesApp);
 
         var buildtype = this.data.build;
         grunt.file.copy('src/index.html', this.data.dir + '/index.html', {
