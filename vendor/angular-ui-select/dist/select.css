@@ -170,6 +170,7 @@ body > .select2-container.open {
   max-height: 200px;
   overflow-x: hidden;
   margin-top: -1px;
+  min-width: 50px;
 }
 
 body > .ui-select-bootstrap.open {
