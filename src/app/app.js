@@ -29,6 +29,7 @@ angular.module('HABmin', [
     'HABmin.dashboard',
     'HABmin.scheduler',
     'HABmin.updateService',
+    'User.Config',
     'FloorplanEditor',
     'ZWaveLogViewer',
     'Config.Bindings',

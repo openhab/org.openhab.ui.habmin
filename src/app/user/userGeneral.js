@@ -8,7 +8,6 @@
  * (c) 2014 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('UserGeneralPrefs', [
-    'ngLocalize',
     'HABmin.userModel',
     'ui.select',
     'ngLocalize'
