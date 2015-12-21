@@ -186,6 +186,9 @@
   "thingDeleteBridgeCheck": "Are you sure you wish to delete this <i>thing</i>.<br><br>This is a bridge - if you click <b>Yes</b> the bridge, all attached <i>things</i>, and it's associated items will be deleted!",
   "thingSuccessDeletingThing": "Thing <b><i>{name}</i></b> and all its items have been deleted",
   "thingErrorDeletingThing": "Error deleting thing <b><i>{name}</i></b>!",
+  "thingWizardBinding": "Binding",
+  "thingWizardType": "Thing Type",
+  "thingWizardConfigure": "Configure",
   "discoveryStartOk": "Discovery started for binding <b><i>{name}</i></b>",
   "discoveryStartFail": "Discovery failed for binding <b><i>{name}</i></b>",
   "discoveryIgnoreFail": "Failed to ignore <b><i>{name}</i></b>",
@@ -285,9 +288,3 @@
   "scheduleEditDaily": "All Day Event",
   "scheduleEditRepeat": "Repeat Interval"
 }
-
-
-
-
-
-

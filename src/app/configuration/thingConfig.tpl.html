@@ -182,6 +182,14 @@
                     <span class="sr-only">Dropdown</span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
+                    <li ng-repeat="config in selectedThingConfig.parameters">
+                        <a ng-if="config.groupName=='actions'" ng-click="doAction(config)">
+                            <span class="fa fa-fw"></span>
+                            <span class="fa fa-fw fa-user-plus"></span>
+                            <span>{{config.label}}</span>
+                        </a>
+                    </li>
+
                     <li>
                         <a ng-click="showAdvancedSettings=!showAdvancedSettings">
                             <span class="fa fa-fw" ng-class="{'fa-check-square-o': showAdvancedSettings}"></span>
@@ -319,7 +327,7 @@
                 </div>
 
                 <!-- CONFIGURATION GROUPS -->
-                <div ng-repeat="group in selectedThingType.parameterGroups">
+                <div ng-repeat="group in selectedThingConfig.parameterGroups">
                     <div>
                         <a role="presentation"
                            ng-class="{'list-group-item list-group-item-heading':true, 'active': panelDisplayed=='CONFIG-{{group.name}}'}"
@@ -331,7 +339,7 @@
                     </div>
                     <div collapse="$parent.panelDisplayed!='CONFIG-{{group.name}}'"
                          class="panel-form">
-                        <div ng-repeat="config in selectedThingType.configParameters">
+                        <div ng-repeat="config in selectedThingConfig.parameters">
                             <div class="form-group"
                                  ng-if="configGroupFilter(config, group.name) && (!config.advanced||showAdvancedSettings)">
                                 <ng-include src="'configuration/eshConfigParam.tpl.html'"></ng-include>
@@ -352,7 +360,7 @@
                     </div>
                     <div collapse="$parent.panelDisplayed!='CONFIG-ungrouped'"
                          class="panel-form">
-                        <div ng-repeat="config in selectedThingType.configParameters">
+                        <div ng-repeat="config in selectedThingConfig.parameters">
                             <div class="form-group"
                                  ng-if="configGroupFilter(config, null) && (!config.advanced||showAdvancedSettings)">
                                 <ng-include src="'configuration/eshConfigParam.tpl.html'"></ng-include>
@@ -416,28 +424,29 @@
                                             </td>
                                         </thead>
                                         <tbody>
-                                            <tr ng-repeat="item in getChannelItems(channel)">
-                                                <td class="span-hover">
-                                                    <habmin-icon class="fa fa-fw"
-                                                                 itemtype="{{getItem(item).type}}"></habmin-icon>
-                                                    {{getItem(item).label}}
-                                                    <span class="span-hover-hide fa fa-clipboard" clipboard text="getItem(item).name"></span>
-                                                </td>
-                                                <td>
-                                                    <div class="pull-right">
-                                                        <button type="button" class="btn btn-primary btn-xs"
-                                                                ng-click="editItem(item)">
-                                                            <span class="fa fa-edit"></span> <span
-                                                                i18n="common.Edit"></span>
-                                                        </button>
-                                                        <button type="button" class="btn btn-primary btn-xs"
-                                                                ng-click="editItem(item)">
-                                                            <span class="fa fa-trash"></span> <span
-                                                                i18n="common.delete"></span>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                        <tr ng-repeat="item in getChannelItems(channel)">
+                                            <td class="span-hover">
+                                                <habmin-icon class="fa fa-fw"
+                                                             itemtype="{{getItem(item).type}}"></habmin-icon>
+                                                {{getItem(item).label}}
+                                                <span class="span-hover-hide fa fa-clipboard" clipboard
+                                                      text="getItem(item).name"></span>
+                                            </td>
+                                            <td>
+                                                <div class="pull-right">
+                                                    <button type="button" class="btn btn-primary btn-xs"
+                                                            ng-click="editItem(item)">
+                                                        <span class="fa fa-edit"></span> <span
+                                                            i18n="common.Edit"></span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-primary btn-xs"
+                                                            ng-click="editItem(item)">
+                                                        <span class="fa fa-trash"></span> <span
+                                                            i18n="common.delete"></span>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>

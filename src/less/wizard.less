@@ -5,7 +5,7 @@
     .status-buttons {
 
       a {
-        color: #FFF;
+        color: @white;
         display: inline-block;
         font-size: 12px;
         margin-right: 10px;
@@ -17,8 +17,8 @@
         text-decoration: none;
       }
 
-      span {
-        background: #080808;
+      .number {
+        background: @black;
         display: block;
         height: 30px;
         margin: 0 auto 10px;
@@ -27,10 +27,17 @@
         border-radius: 50%;
       }
 
-      /* active buttons */
-      a.active span {
-        background: #00BC8C;
+      .active.number {
+        background: @green;
         font-weight: 800;
+      }
+
+      a.disabled {
+        cursor: default;
+        background-image: none;
+        opacity: 0.65;
+        filter: alpha(opacity=65);
+        pointer-events: none;
       }
     }
   }

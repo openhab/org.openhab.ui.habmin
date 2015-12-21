@@ -300,6 +300,16 @@ angular.module('Config.Things', [
                 return;
             }
 
+            // Get the configuration
+            ThingModel.getConfig(thing.UID).then(
+                function (cfg) {
+                    $scope.selectedThingConfig = cfg;
+                },
+                function () {
+                    $scope.selectedThingConfig = null;
+                }
+            );
+
             angular.forEach($scope.selectedThingType.configParameters, function (parameter) {
                 angular.forEach(parameter.options, function (option) {
                     option.value = ThingModel.convertType(parameter.type, option.value);
@@ -411,7 +421,20 @@ angular.module('Config.Things', [
             // Check if the linked item information has changed
             if ($scope.thingConfigForm.itemLabel.$dirty === true ||
                 $scope.thingConfigForm.itemCategory.$dirty === true || $scope.thingConfigForm.itemGroups.$dirty) {
-                promises.push(ItemModel.putItem($scope.selectedThing.item));
+                // We need to check if the item exists - if it doesn't we need to create it...
+                if ($scope.selectedThing.item.name == null) {
+                    // Item doesn't exist - create it
+                    // TODO: Once ESH supports linking a new item to a thing
+                    //   $scope.selectedThing.item.name = $scope.selectedThing.UID.split(':').join('_');
+                    //   $scope.selectedThing.item.type = "GroupItem";
+                    //   $scope.selectedThing.item.tags = ["thing"];
+                    //   $scope.selectedThing.item.members = [];
+                    //   $scope.selectedThing.item.groupNames = [];
+                }
+                else {
+                    // For now, only save the item if it already exists
+                    promises.push(ItemModel.putItem($scope.selectedThing.item));
+                }
             }
 
             // Keep track of configs that have changed
@@ -487,6 +510,12 @@ angular.module('Config.Things', [
                         {name: name}));
                 }
             );
+        };
+
+        $scope.doAction = function (config) {
+            var cfg = {};
+            cfg[config.name] = 0;
+            ThingModel.putConfig($scope.selectedThing, cfg);
         };
 
         $scope.createNewThing = function (binding) {

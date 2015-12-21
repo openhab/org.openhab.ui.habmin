@@ -11,7 +11,7 @@
                limit="config.multipleLimit"
                ng-disabled="config.readOnly"
             >
-        <ui-select-match i18n-attr="{placeholder: 'habmin.itemSelectCategory'}">
+        <ui-select-match>
             {{$item.label}}
         </ui-select-match>
         <ui-select-choices repeat="option.value as option in config.options">
@@ -30,7 +30,7 @@
                ng-disabled="config.readOnly"
                on-keypress="onComboKeypress"
             >
-        <ui-select-match i18n-attr="{placeholder: 'habmin.itemSelectCategory'}">
+        <ui-select-match>
             {{$select.selected.label}}
         </ui-select-match>
         <ui-select-choices repeat="option.value as option in config.options">
@@ -49,7 +49,7 @@
                ng-disabled="config.readOnly"
                on-keypress="onComboKeypress"
             >
-        <ui-select-match i18n-attr="{placeholder: 'habmin.itemSelectCategory'}">
+        <ui-select-match>
             {{$select.selected.label}}
         </ui-select-match>
         <ui-select-choices repeat="option.value as option in config.options">

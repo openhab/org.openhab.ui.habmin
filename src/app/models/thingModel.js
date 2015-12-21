@@ -21,6 +21,7 @@ angular.module('HABmin.thingModel', [
         var svcName = "things";
         var svcSetup = "setup";
         var svcTypes = "thing-types";
+        var svcConfig = "config-descriptions";
         var eventSrc;
         var eventSrcLink;
 
@@ -98,7 +99,7 @@ angular.module('HABmin.thingModel', [
                 var payload = angular.fromJson(evt.payload);
                 var topic = evt.topic.split("/");
                 var thing = me.getThing(payload.thingUID);
-                if(thing == null) {
+                if (thing == null) {
                     return;
                 }
 
@@ -270,6 +271,28 @@ angular.module('HABmin.thingModel', [
             return deferred.promise;
         };
 
+        this.getConfig = function (thingUID) {
+            var tStart = new Date().getTime();
+            var deferred = $q.defer();
+
+            RestService.getService(svcConfig).then(
+                function (url) {
+                    $http.get(url + "/thing:" + thingUID)
+                        .success(function (data) {
+                            deferred.resolve(data);
+                        })
+                        .error(function (data, status) {
+                            deferred.reject(data);
+                        });
+                },
+                function () {
+                    deferred.reject(null);
+                }
+            );
+
+            return deferred.promise;
+        };
+
         this.putConfig = function (thing, cfg) {
             var tStart = new Date().getTime();
             var deferred = $q.defer();
@@ -277,8 +300,9 @@ angular.module('HABmin.thingModel', [
             RestService.getService(svcName).then(
                 function (url) {
                     $http.put(url + "/" + thing.UID + "/config", cfg)
-                        .success(function (data) {
-                            deferred.resolve(data);
+                        .success(function (thing) {
+                            me.addOrUpdateThing(thing);
+                            deferred.resolve(thing);
                         })
                         .error(function (data, status) {
                             deferred.reject(data);
@@ -297,8 +321,8 @@ angular.module('HABmin.thingModel', [
             var deferred = $q.defer();
 
             var options = "";
-            if(force == true) {
-                options="?force=true";
+            if (force == true) {
+                options = "?force=true";
             }
             RestService.getService(svcSetup).then(
                 function (url) {
@@ -399,12 +423,24 @@ angular.module('HABmin.thingModel', [
         function _convertType(type, value) {
             switch (type) {
                 case "INTEGER":
+                    if (value == null) {
+                        return 0;
+                    }
                     return Number(value);
                 case "TEXT":
+                    if (value == undefined) {
+                        return "";
+                    }
                     return value.toString();
                 case "BOOLEAN":
+                    if (value == undefined) {
+                        return false;
+                    }
                     return Boolean(value);
                 case "DECIMAL":
+                    if (value == undefined) {
+                        return 0.0;
+                    }
                     break;
             }
         }
