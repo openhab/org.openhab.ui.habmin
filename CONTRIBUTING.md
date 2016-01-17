@@ -20,7 +20,7 @@ To compile for release, run ```grunt compile```. This will generate a minified v
 and also put a zipped ```debug``` and ```release``` versions into the ```output``` folder.
 
 ## Language Translations
-If you want to add a translation for your language, then you need to copy the files in ```/src/app/languages```
+If you want to add a translation for your language, then you need to copy the files in ```/src/languages```
 and copy the folder ```en-GB``` and rename it to your language (eg ```de-DE```). The folder name is
 ```language-country``` and you should be able find the
 [language](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) and
@@ -107,3 +107,8 @@ for tags, or merge your commits before creating the pull request.
 Anything not tagged in the above format will simply not appear in the changelog, so you can choose yourself if it
 shows up (again, be considerate).
 
+# Contribution Requirements
+
+- Contributions are only accepted through Github pull requests.
+- When you contribute, you agree to give a non-exclusive license to @cdjackson to use that contribution in any context.
+- If you use content provided by another party, it must be appropriately licensed using an open source license (MIT, EPL, Apache).
