@@ -8,7 +8,6 @@
  */
 package org.openhab.ui.habmin.internal.services.zwave;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,13 +28,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * <p>This class acts as a REST resource for items and provides different methods to interact with them,
- * like retrieving lists of items, sending commands to them or checking a single status.</p>
- * 
- * <p>The typical content types are plain text for status values and XML or JSON(P) for more complex data
- * structures</p>
- * 
- * <p>This resource is registered with the Jersey servlet.</p>
+ * <p>
+ * This class acts as a REST resource for items and provides different methods to interact with them,
+ * like retrieving lists of items, sending commands to them or checking a single status.
+ * </p>
+ *
+ * <p>
+ * The typical content types are plain text for status values and XML or JSON(P) for more complex data
+ * structures
+ * </p>
+ *
+ * <p>
+ * This resource is registered with the Jersey servlet.
+ * </p>
  *
  * @author Chris Jackson
  * @since 1.4.0
@@ -43,88 +48,84 @@ import org.slf4j.LoggerFactory;
 @Path(ZWaveConfigResource.PATH)
 public class ZWaveConfigResource implements RESTResource {
 
-	private static final Logger logger = LoggerFactory.getLogger(ZWaveConfigResource.class); 
-	
-	// The URI path to this resource
+    private static final Logger logger = LoggerFactory.getLogger(ZWaveConfigResource.class);
+
+    // The URI path to this resource
     public static final String PATH = "habmin/zwave";
 
     static private Map<String, OpenHABConfigurationService> configurationServices = new HashMap<String, OpenHABConfigurationService>();
-    
-	static void addConfigurationService(OpenHABConfigurationService service) {
-		configurationServices.put(service.getCommonName(), service);
-	}
 
-	static public Map<String, OpenHABConfigurationService> getConfigurationServices() {
-		return configurationServices;
-	}
-
-	static void removeConfigurationService(OpenHABConfigurationService service) {
-		configurationServices.remove(service.getCommonName());
-	}
-
-	@Context UriInfo uriInfo;
-	@GET
-	@Path("{domain: .+}")
-    @Produces( { MediaType.APPLICATION_JSON })
-    public Response getConfig(
-    		@Context HttpHeaders headers,
-    		@PathParam("domain") String domain) {
-		logger.trace("Received HTTP GET request at '{}'.", uriInfo.getPath());
-
-		OpenHABConfigurationService cfg = getConfigurationServices().get("ZWave");
-
-		if(cfg == null) {
-			return Response.notAcceptable(null).build();
-		}
-
-		ConfigServiceListBean cfgList = new ConfigServiceListBean();
-		cfgList.records = cfg.getConfiguration(domain);
-
-    	Object responseObject = cfgList;
-    	return Response.ok(responseObject).build();
+    public static void addConfigurationService(OpenHABConfigurationService service) {
+        configurationServices.put(service.getCommonName(), service);
     }
 
-	@PUT
-	@Path("action/{domain: .+}")
-    @Produces( { MediaType.APPLICATION_JSON })
-    public Response putAction(
-    		@Context HttpHeaders headers,
-    		@PathParam("domain") String domain, String action) {
-		logger.trace("Received HTTP PUT request at '{}'.", uriInfo.getPath());
-
-		OpenHABConfigurationService cfg = getConfigurationServices().get("ZWave");
-
-		if(cfg == null) {
-			return Response.notAcceptable(null).build();
-		}
-
-		cfg.doAction(domain, action);
-		
-		ConfigServiceListBean cfgList = new ConfigServiceListBean();
-
-    	Object responseObject = cfgList;
-    	return Response.ok(responseObject).build();
+    static public Map<String, OpenHABConfigurationService> getConfigurationServices() {
+        return configurationServices;
     }
 
-	@PUT
-	@Path("set/{domain: .+}")
-    @Produces( { MediaType.APPLICATION_JSON })
-    public Response putSet(
-    		@Context HttpHeaders headers,
-    		@PathParam("domain") String domain, String set) {
-		logger.trace("Received HTTP PUT request at '{}'.", uriInfo.getPath());
+    public static void removeConfigurationService(OpenHABConfigurationService service) {
+        configurationServices.remove(service.getCommonName());
+    }
 
-		OpenHABConfigurationService cfg = getConfigurationServices().get("ZWave");
+    @Context
+    UriInfo uriInfo;
 
-		if(cfg == null) {
-			return Response.notAcceptable(null).build();
-		}
+    @GET
+    @Path("{domain: .+}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response getConfig(@Context HttpHeaders headers, @PathParam("domain") String domain) {
+        logger.trace("Received HTTP GET request at '{}'.", uriInfo.getPath());
 
-		cfg.doSet(domain, set);
-		
-		ConfigServiceListBean cfgList = new ConfigServiceListBean();
+        OpenHABConfigurationService cfg = getConfigurationServices().get("ZWave");
 
-    	Object responseObject = cfgList;
-    	return Response.ok(responseObject).build();
+        if (cfg == null) {
+            return Response.notAcceptable(null).build();
+        }
+
+        ConfigServiceListBean cfgList = new ConfigServiceListBean();
+        cfgList.records = cfg.getConfiguration(domain);
+
+        Object responseObject = cfgList;
+        return Response.ok(responseObject).build();
+    }
+
+    @PUT
+    @Path("action/{domain: .+}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response putAction(@Context HttpHeaders headers, @PathParam("domain") String domain, String action) {
+        logger.trace("Received HTTP PUT request at '{}'.", uriInfo.getPath());
+
+        OpenHABConfigurationService cfg = getConfigurationServices().get("ZWave");
+
+        if (cfg == null) {
+            return Response.notAcceptable(null).build();
+        }
+
+        cfg.doAction(domain, action);
+
+        ConfigServiceListBean cfgList = new ConfigServiceListBean();
+
+        Object responseObject = cfgList;
+        return Response.ok(responseObject).build();
+    }
+
+    @PUT
+    @Path("set/{domain: .+}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response putSet(@Context HttpHeaders headers, @PathParam("domain") String domain, String set) {
+        logger.trace("Received HTTP PUT request at '{}'.", uriInfo.getPath());
+
+        OpenHABConfigurationService cfg = getConfigurationServices().get("ZWave");
+
+        if (cfg == null) {
+            return Response.notAcceptable(null).build();
+        }
+
+        cfg.doSet(domain, set);
+
+        ConfigServiceListBean cfgList = new ConfigServiceListBean();
+
+        Object responseObject = cfgList;
+        return Response.ok(responseObject).build();
     }
 }
