@@ -237,10 +237,11 @@
    * @constructor
    * @param {object} $animate
    * @param {object} inputModifiedConfig
+   * @param {function} $timeout
    *
    * @returns {object}
    */
-  function ngModelModifiedFactory ($animate, inputModifiedConfig) {
+  function ngModelModifiedFactory ($animate, inputModifiedConfig, $timeout) {
 
     // Shortcut.
     var config = inputModifiedConfig;
@@ -352,18 +353,23 @@
          */
         function setPristine () {
 
-          // Calling overloaded method.
-          originalSetPristine.apply(this, arguments);
+          stabilizeValue(function () {
 
-          // Updating parameters.
-          modelCtrl.masterValue = modelCtrl.$modelValue;
-          modelCtrl.modified = false;
+            // Calling overloaded method.
+            originalSetPristine.apply(this, arguments);
 
-          // Notifying the form.
-          formCtrl.$$notifyModelModifiedStateChanged(modelCtrl);
+            // Updating parameters.
+            modelCtrl.masterValue = modelCtrl.$modelValue;
+            modelCtrl.modified = false;
 
-          // Re-decorating the element.
-          updateCssClasses();
+            // Notifying the form.
+            formCtrl.$$notifyModelModifiedStateChanged(modelCtrl);
+
+            // Re-decorating the element.
+            updateCssClasses();
+
+          });
+
         }
 
         /**
@@ -377,10 +383,23 @@
           }
         }
 
+        /**
+         * Stabilizes model's value.
+         * This is required for directives such as Angular UI TinyMCE.
+         */
+        function stabilizeValue (callback) {
+          var initialValue = modelCtrl.$modelValue;
+          modelCtrl.$modelValue = null;
+          $timeout(function () {
+            modelCtrl.$modelValue = initialValue;
+            $timeout(callback, 0);
+          }, 0);
+        }
+
       }
     };
   }
-  ngModelModifiedFactory.$inject = ['$animate', 'inputModifiedConfig'];
+  ngModelModifiedFactory.$inject = ['$animate', 'inputModifiedConfig', '$timeout'];
 
   /**
    * Returns true if specified values are equal, false otherwise.

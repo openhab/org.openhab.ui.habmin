@@ -1,5 +1,13 @@
 # angular-input-modified changelog
 
+## Version 2.2.5
+(30 Jul 2015)
+
+- Added mechanism for model's value stabilization.
+  This is required for some directives like Angular UI TinyMCE.
+  Also, see [this issue](https://github.com/angular-ui/ui-tinymce/issues/156)
+
+
 ## Version 2.2.0
 (02 May 2015)
 
