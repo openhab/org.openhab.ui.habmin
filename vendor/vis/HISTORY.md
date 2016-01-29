@@ -2,7 +2,103 @@
 http://visjs.org
 
 
-## 2015-01-01, version 4.9.0
+## 2016-01-08, version 4.12.0
+
+### Timeline
+
+- Fixed #1527: error when creating/updating a Timeline without data.
+- Fixed #1127: `doubleClick` event not being fired.
+- Fixed #1554: wrong cursor on readonly range items.
+
+### Network
+
+- Fixed #1531, #1335:  border distances for arrow positioning
+- Fixed findNode method. It now does not return internal objects anymore.
+- Fixed #1529, clustering and declustering now respects the original settings of the edges for physics and hidden.
+- Fixed #1406, control nodes are now drawn immediately without a second redraw.
+- Fixed #1404, made the array returned by findNode match the docs.
+- Added #1138, enable the user to define the color of the shadows for nodes and edges.
+- Fixed #1528, #1278, avoided ID's being cast to string for methods that return ID's as well as storePositions casting to string.
+- Fixed upscaling when the window size increases.
+- Accepted pull request #1544, thanks @felixhayashi!
+- Fixed documented bug in #1544.
+
+
+## 2015-12-18, version 4.11.0
+
+### Network
+
+- Expose `setSelection` method. Thanks @zefrog.
+
+### Timeline
+
+- Fixed #1441: Height of subgroups not immediately updated after updating
+  data in a DataSet or DataView.
+- Fixed #1491: Problem using ctrl+drag in combination with using a `DataView`,
+  and an issue with ctrl+drag when using `snap: null`.
+- Fixed #1486: Item range sometimes wrongly calculated on IE in case of old dates.
+- Fixed #1523: end of data range wrongly determined.
+
+### Graph2d
+
+- Large refactoring of Graph2d code base:
+  - Implemented a new option for `shaded.orientation` to always shade towards zero.
+  - Implemented a new option for `shaded.orientation` to follow another group (fill in between)
+  - Implemented line-graph stacking
+  - Fixed support for using a `DataView` in Graph2d.
+  - Implemented a new zindex option for controlling svg rendering order.
+  - Performance updates and fixes
+
+### DataSet
+- Fixed #1487: DataSet cannot remove an item with id `0` correctly.
+
+### DataView
+- Added the map() function from DataSet.
+
+
+## 2015-11-27, version 4.10.0
+
+### General
+
+- Fixed #1353: Custom bundling with browserify requiring manual installation
+  of `babelify`.  
+
+### Network
+
+- Implemented new method `setSelection({nodes:[...], edges: [...]})`.
+  Thanks @zefrog.
+- Fixed #1343: Connected edges are now deselected too when deselecting a node.
+- Fixed #1398: Support nodes start with the correct positions.
+- Fixed #1324: Labels now scale again.
+- Fixed #1362: Layout of hierarchicaly systems no longer overlaps NODES.
+- Fixed #1414: Fixed color references for nodes and edges.
+- Fixed #1408: Unclustering without release function respects fixed positions now.
+- Fixed #1358: Fixed example for clustering on zoom.
+- Fixed #1416: Fixed error in improvedLayout.
+- Improvements on hierarchical layout.
+
+### Timeline
+
+- Implemented option `itemsAlwaysDraggable`, See #1395. Thanks @liuqingc.
+- Implemented option `multiselectPerGroup`. Thanks @hansmaulwurf23.
+- Implemented property `oldData` on change events of the DataSet, and
+  deprecated the `data` property which wrongly contained new data instead of
+  old data. Thanks @hansmaulwurf23.
+- Implemented option `maxMinorChars` to customize the width of the grid.
+- Expose `vis.timeline.Core` for customization purposes.
+- Fixed #1449, #1393: text of minor grids sometimes not being drawn.
+
+### Graph2d
+
+- Fixed #1385: Draw lines on top of bars.
+- Fixed #1461 and #1345: Reset order of SVG elements in legend icons.
+
+### DataSet/DataView
+
+- Performance improvements (see #1381). Thanks @phimimms.
+
+
+## 2015-10-01, version 4.9.0
 
 ### Network
 
