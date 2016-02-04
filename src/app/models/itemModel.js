@@ -13,6 +13,7 @@ angular.module('HABmin.itemModel', [
 
     .service('ItemModel', function ($http, $q, $rootScope, UserService, RestService) {
         var svcName = "items";
+        var svcNameLinks = "links";
         var itemList = [];
         var url = UserService.getServer() + '/rest/items';
         var eventSrc;
@@ -209,10 +210,35 @@ angular.module('HABmin.itemModel', [
         };
 
         this.putItem = function (item) {
+            if(item.tags === undefined) {
+                item.tags = [];
+            }
+            if(item.groups == undefined) {
+                item.groups = [];
+            }
             var deferred = $q.defer();
             RestService.getService(svcName).then(
                 function (url) {
                     $http.put(url + "/" + item.name, item)
+                        .success(function (data) {
+                            deferred.resolve(data);
+                        })
+                        .error(function (data, status) {
+                            deferred.reject(data);
+                        });
+                },
+                function () {
+                    deferred.reject(null);
+                }
+            );
+            return deferred.promise;
+        };
+
+        this.linkItem = function (thing, channel, item) {
+            var deferred = $q.defer();
+            RestService.getService(svcNameLinks).then(
+                function (url) {
+                    $http.put(url + "/" + item.name + "/" + thing.UID + ':' + channel.id)
                         .success(function (data) {
                             deferred.resolve(data);
                         })

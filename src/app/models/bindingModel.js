@@ -81,7 +81,7 @@ angular.module('HABmin.bindingModel', [
                 function (url) {
                     if (url == null) {
                         defDisc.resolve();
-                        return;
+                        return defDisc.promise;
                     }
 
                     $http.get(url)
@@ -134,7 +134,7 @@ angular.module('HABmin.bindingModel', [
                 function (url) {
                     if (url == null) {
                         deferred.resolve(false);
-                        return;
+                        return deferred.promise;
                     }
 
                     $http.post(url + "/bindings/" + binding + "/scan") //, {bindingId: binding})

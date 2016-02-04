@@ -13,9 +13,11 @@ angular.module('Config.Things', [
     'ngLocalize',
     'HABmin.userModel',
     'HABmin.itemModel',
+    'HABmin.configModel',
     'HABmin.thingModel',
     'HABmin.bindingModel',
     'HABmin.smarthomeModel',
+    'HABmin.channelTypeModel',
     'Config.parameter',
     'Config.ItemEdit',
     'angular-growl',
@@ -71,7 +73,7 @@ angular.module('Config.Things', [
     })
 
     .controller('ThingConfigCtrl',
-    function ($scope, $q, ThingConfigService, locale, growl, $timeout, $window, $http, $interval, UserService, ThingModel, BindingModel, ItemModel, itemEdit, SmartHomeModel) {
+    function ($scope, $q, ThingConfigService, locale, growl, $timeout, $window, $http, $interval, UserService, ThingModel, ConfigModel, BindingModel, ItemModel, itemEdit, SmartHomeModel, ChannelTypeModel) {
         $scope.panelDisplayed = 'PROPERTIES';
         $scope.thingCnt = -1;
 
@@ -231,7 +233,9 @@ angular.module('Config.Things', [
 
             for (var cnt = 0; cnt < $scope.selectedThingType.configParameters.length; cnt++) {
                 if ($scope.selectedThingType.configParameters[cnt].groupName == null ||
-                    $scope.selectedThingType.configParameters[cnt].groupName == "") {
+                    $scope.selectedThingType.configParameters[cnt].groupName == "" ||
+                    $scope.selectedThingType.parameterGroups[$scope.selectedThingType.configParameters[cnt].groupName] ==
+                    null) {
                     return true;
                 }
             }
@@ -294,8 +298,6 @@ angular.module('Config.Things', [
             $scope.panelDisplayed = 'PROPERTIES';
 
             $scope.selectedThingType = $scope.getThingType(thing);
-
-            // Ensure the options are converted to the correct type
             if ($scope.selectedThingType == null) {
                 return;
             }
@@ -310,6 +312,26 @@ angular.module('Config.Things', [
                 }
             );
 
+            // Get all the channel types
+            angular.forEach($scope.selectedThingType.channels, function (channel) {
+                ChannelTypeModel.getChannelType(channel.typeUID).then(
+                    function (cfg) {
+                        channel.channelType = cfg;
+
+                        // Ensure the options are converted to the correct type
+                        angular.forEach(channel.channelType.configParameters, function (parameter) {
+                            angular.forEach(parameter.options, function (option) {
+                                option.value = ThingModel.convertType(parameter.type, option.value);
+                            });
+                        });
+                    },
+                    function () {
+                        channel.channelType = null;
+                    }
+                );
+            });
+
+            // Ensure the options are converted to the correct type
             angular.forEach($scope.selectedThingType.configParameters, function (parameter) {
                 angular.forEach(parameter.options, function (option) {
                     option.value = ThingModel.convertType(parameter.type, option.value);
@@ -342,12 +364,21 @@ angular.module('Config.Things', [
             return [];
         };
 
-        $scope.editItem = function (itemName) {
+        $scope.editItem = function (itemName, channel) {
+            // Find the item we want to edit
             for (var i = 0; i < $scope.itemList.length; i++) {
                 if ($scope.itemList[i].name == itemName) {
-                    itemEdit.edit($scope.itemList[i]);
+                    itemEdit.edit($scope.selectedThing, channel, $scope.itemList[i]);
                 }
             }
+        };
+
+        $scope.addItem = function (channel) {
+            itemEdit.edit($scope.selectedThing, channel, {});
+        };
+
+        $scope.deleteItem = function (item) {
+            ItemModel.deleteItem(item);
         };
 
         $scope.getItem = function (itemName) {
@@ -384,11 +415,7 @@ angular.module('Config.Things', [
                         growl.success(locale.getString("habmin.thingChannelEnabledOk",
                             {thing: $scope.selectedThing.item.label, channel: channel.label}));
 
-                        ThingModel.getThing($scope.selectedThing.UID).then(
-                            function (data) {
-                                $scope.selectedThing = data;
-                            }
-                        );
+                        $scope.selectedThing = ThingModel.getThing($scope.selectedThing.UID);
                     },
                     function () {
                         growl.warning(locale.getString("habmin.thingChannelDisabledError",
@@ -485,10 +512,14 @@ angular.module('Config.Things', [
                         {name: name}));
                 }
             );
-
         };
 
-        $scope.thingDelete = function (thing, force) {
+        $scope.thingDelete = function (thing) {
+            // TODO - detect if this is in the removing state and send force true
+//            if(thing.)
+//            thing.
+            var force = true;
+
             ThingModel.deleteThing(thing, force).then(
                 function () {
                     var name = "";
@@ -512,10 +543,22 @@ angular.module('Config.Things', [
             );
         };
 
-        $scope.doAction = function (config) {
+        $scope.doAction = function (config, value) {
+            if (value === undefined) {
+                value = 0;
+            }
             var cfg = {};
-            cfg[config.name] = 0;
-            ThingModel.putConfig($scope.selectedThing, cfg);
+            cfg[config.name] = ThingModel.convertType(config.type, value, false);
+            ThingModel.putConfig($scope.selectedThing, cfg).then(
+                function () {
+                    growl.success(locale.getString("habmin.thingActionSentOk",
+                        {name: name}));
+                },
+                function () {
+                    growl.error(locale.getString("habmin.thingActionSentError",
+                        {name: name}));
+                }
+            )
         };
 
         $scope.createNewThing = function (binding) {
@@ -604,10 +647,20 @@ angular.module('Config.Things', [
     .controller('ThingConfigMenuCtrl',
     function ($scope, ThingConfigService, BindingModel, locale, growl) {
         $scope.tooltipDiscover = locale.getString('habmin.mainDiscovery');
+        $scope.tooltipManualAdd = locale.getString('habmin.mainAddThing');
+
+        $scope.discoveryEnabled = true;
 
         BindingModel.getList().then(
             function (bindings) {
                 $scope.bindings = bindings;
+
+                // Set a flag if at least one binding is discoverable
+                angular.forEach($scope.bindings, function (binding) {
+                    if (binding.discovery) {
+                        $scope.discoveryEnabled = true;
+                    }
+                });
             },
             function (reason) {
                 // Handle failure

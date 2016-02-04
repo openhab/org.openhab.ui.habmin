@@ -121,7 +121,15 @@
                             </span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li class="header">There are {{notificationCntNew}} new things</li>
+                            <li class="header">There are {{notificationCntNew}} new things
+                                <button type="button" class="btn btn-xs btn-default pull-right"
+                                        ng-class="{'disabled':notificationCntNew==0}"
+                                        ng-confirm-click="clearInbox()"
+                                        i18n-attr="{'ngConfirmMessage': 'habmin.discoveryClearConfirmMsg','ngConfirmTitle': 'habmin.discoveryClearConfirmTitle','ngConfirmNoBtn': 'common.cancel', 'ngConfirmYesBtn': 'common.ok'}">
+                                <span class="fa fa-fw fa-times-circle text-danger"></span>
+                                    <span i18n="common.clear"></span>
+                                </button>
+                            </li>
                             <li>
                                 <!-- inner menu: contains the actual data -->
                                 <ul class="menu">

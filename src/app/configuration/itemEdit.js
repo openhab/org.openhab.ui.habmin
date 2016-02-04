@@ -17,7 +17,7 @@ angular.module('Config.ItemEdit', [
 ])
     .service('itemEdit',
     function ($modal, $rootScope, growl, locale, UserService, ItemModel, SmartHomeModel) {
-        this.edit = function (item) {
+        this.edit = function (thing, channel, item) {
             var scope = $rootScope.$new();
             scope.item = angular.copy(item);
             scope.itemtypes = SmartHomeModel.itemtypes;
@@ -37,10 +37,20 @@ angular.module('Config.ItemEdit', [
              */
             var controller = function ($scope, $modalInstance) {
                 $scope.ok = function (result) {
-                    $scope.item.groupNames = [].concat($scope.item.groupNames);
+                    if ($scope.item.groupNames != null) {
+                        $scope.item.groupNames = [].concat($scope.item.groupNames);
+                    }
                     ItemModel.putItem($scope.item).then(
-                        function () {
-                            $modalInstance.close($scope.item);
+                        function (newItem) {
+                            ItemModel.linkItem(thing, channel, newItem).then(
+                                function () {
+                                    $modalInstance.close($scope.item);
+                                },
+                                function () {
+                                    growl.warning(locale.getString("habmin.itemSaveFailed",
+                                        {name: $scope.item.label}));
+                                }
+                            );
                         },
                         function () {
                             growl.warning(locale.getString("habmin.itemSaveFailed",

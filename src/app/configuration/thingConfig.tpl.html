@@ -49,7 +49,7 @@
                         </a>
                     </li>
                     <li role="presentation" class="divider"></li>
-                    <li ng-repeat="binding in bindings" ng-class="{'disabled': binding.disabled}">
+                    <li ng-repeat="binding in bindings | orderBy:'name'" ng-class="{'disabled': binding.disabled}">
                         <a ng-click="toggleBindingFilter(binding)">
                             <span ng-class="{'fa-fw fa': true, 'fa-check-square-o': filterBindings.indexOf(binding.id)==-1}"></span>
                             <habmin-icon class="fa fa-fw" icon="{{binding.icon}}"></habmin-icon>
@@ -63,14 +63,17 @@
         <!-- Body -->
         <div class="list-group habmin-list" resize-panel>
             <!-- THING LIST -->
-            <div ng-if="thingCnt!=-1 && insertMode==false" ng-repeat="thing in things | filter:filterFunction">
+            <div ng-if="thingCnt!=-1 && insertMode==false"
+                 ng-repeat="thing in things | filter:filterFunction | orderBy:'label'">
                 <a role="presentation" class="list-group-item"
                    ng-class="{'active': thing.UID==selectedThing.UID, 'disabled': getThingType(thing)==null}"
                    ng-click="selectThing(thing)">
                     <table style="background-color: transparent">
                         <tr>
                             <td class="text-large" rowspan="2">
-                                <span ng-switch="thing.statusInfo.status">
+                                <span ng-switch="thing.statusInfo.status"
+                                      tooltip-placement="top" tooltip="{{thing.statusInfo.description}}" tooltip-popup-delay="500"
+                                      tooltip-enable="true" tooltip-trigger tooltip-animation="false" tooltip-append-to-body="true">
                                     <span ng-switch-when="ONLINE"
                                           class="fa fa-fw fa-check-circle text-success"></span>
                                     <span ng-switch-when="OFFLINE"
@@ -182,18 +185,20 @@
                     <span class="sr-only">Dropdown</span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
-                    <li ng-repeat="config in selectedThingConfig.parameters">
-                        <a ng-if="config.groupName=='actions'" ng-click="doAction(config)">
+                    <li ng-repeat="config in actionList = (selectedThingConfig.parameters | filter:{groupName:'actions'} | filter:((showAdvancedSettings && {advanced:'true'}) || {advanced:'false'}))">
+                        <a ng-click="doAction(config)">
                             <span class="fa fa-fw"></span>
-                            <span class="fa fa-fw fa-user-plus"></span>
+                            <span class="fa fa-fw fa-cog"></span>
                             <span>{{config.label}}</span>
                         </a>
                     </li>
 
+                    <li ng-if="actionList.length" class="divider"></li>
+
                     <li>
                         <a ng-click="showAdvancedSettings=!showAdvancedSettings">
                             <span class="fa fa-fw" ng-class="{'fa-check-square-o': showAdvancedSettings}"></span>
-                            <span class="fa fa-fw fa-user-plus"></span>
+                            <span class="fa fa-fw fa-cogs"></span>
                             <span i18n="habmin.thingAdvancedMode"></span>
                         </a>
                     </li>
@@ -327,7 +332,7 @@
                 </div>
 
                 <!-- CONFIGURATION GROUPS -->
-                <div ng-repeat="group in selectedThingConfig.parameterGroups">
+                <div ng-repeat="group in selectedThingConfig.parameterGroups | filter:{name: '!actions'}">
                     <div>
                         <a role="presentation"
                            ng-class="{'list-group-item list-group-item-heading':true, 'active': panelDisplayed=='CONFIG-{{group.name}}'}"
@@ -395,7 +400,7 @@
                                        placeholder="{{channel.category}}">
 
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button" ng-click="channelEnable(channel)">
+                                    <button class="btn btn-default" type="button">
                                         <span ng-if="channelEnabled(channel)"
                                               class="fa fa-check-circle text-success"></span>
                                         <span ng-if="!channelEnabled(channel)"
@@ -404,8 +409,33 @@
                                 </span>
                             </div>
 
+                            <div ng-if="channel.channelType!=null && channel.channelType.parameters!=null && channel.channelType.parameters.length>0">
+                                <div class="thing-items well well-sm">
+                                    <div>
+                                        <strong class="text-muted" i18n="habmin.thingChannelConfiguration"></strong>
+                                    </div>
+                                    <div class="panel-form">
+                                        <div ng-repeat="config in channel.channelType.parameters">
+                                            <div class="form-group">
+                                                <ng-include src="'configuration/eshConfigParam.tpl.html'"></ng-include>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="thing-items well well-sm" ng-switch="getChannelItems(channel).length">
-                                <div ng-switch-when="0" i18n="habmin.thingChannelNoItems"></div>
+                                <div ng-switch-when="0">
+                                    <strong class="text-muted" i18n="habmin.thingChannelNoItems"></strong>
+
+                                    <div class="pull-right">
+                                        <button type="button" class="btn btn-primary btn-xs"
+                                                ng-click="addItem()">
+                                            <span class="fa fa-plus-circle"></span> <span
+                                                i18n="common.add"></span>
+                                        </button>
+                                    </div>
+                                </div>
                                 <div ng-switch-default>
                                     <table class="table table-hover">
                                         <thead>
@@ -416,7 +446,7 @@
                                             <td>
                                                 <div class="pull-right">
                                                     <button type="button" class="btn btn-primary btn-xs"
-                                                            ng-click="editItem(item)">
+                                                            ng-click="addItem(channel)">
                                                         <span class="fa fa-plus-circle"></span> <span
                                                             i18n="common.add"></span>
                                                     </button>
@@ -435,12 +465,12 @@
                                             <td>
                                                 <div class="pull-right">
                                                     <button type="button" class="btn btn-primary btn-xs"
-                                                            ng-click="editItem(item)">
+                                                            ng-click="editItem(item, channel)">
                                                         <span class="fa fa-edit"></span> <span
                                                             i18n="common.Edit"></span>
                                                     </button>
                                                     <button type="button" class="btn btn-primary btn-xs"
-                                                            ng-click="editItem(item)">
+                                                            ng-click="deleteItem(item)">
                                                         <span class="fa fa-trash"></span> <span
                                                             i18n="common.delete"></span>
                                                     </button>

@@ -253,6 +253,15 @@
   border-radius: @border-radius-base;
 }
 
+.panel-heading h3 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: normal;
+  width: 75%;
+  padding-top: 8px;
+}
+
 .panel-footer-small {
   padding: 5px 15px;
 }
@@ -666,7 +675,8 @@ ul {
 
 .thing-items {
   margin-left: 40px;
-  margin-top: 5px;
+  margin-top: 2px;
+  margin-bottom: 0px;
 
   .thing-items-title {
     float: left;
