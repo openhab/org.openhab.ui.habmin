@@ -75,7 +75,7 @@ angular.module('HABmin.chart', [
     })
 
     .controller('ChartCtrl',
-    function ($scope, $q, $stateParams, ChartService, locale, PersistenceDataModel, ChartModel, growl, VisDataSet, $interval, $timeout) {
+    function ($scope, $q, $stateParams, ChartService, locale, ChartModel, growl, VisDataSet, $interval, $timeout) {
         var itemsLoaded = 0;
         var itemsLoading = 0;
         var newChart;
@@ -300,7 +300,7 @@ angular.module('HABmin.chart', [
     })
 
     .controller('ChartCtrlMenu',
-    function ($scope, locale, growl, ChartModel, ChartService, PersistenceServiceModel, PersistenceItemModel, ItemModel, ChartSave) {
+    function ($scope, locale, growl, ChartModel, ChartService, PersistenceServiceModel, ItemModel, ChartSave) {
         $scope.items = [];
 //        $scope.services = ChartService.services;
 
@@ -329,38 +329,18 @@ angular.module('HABmin.chart', [
         // Load the list of items
 //        var pItems = $q.defer();
 //        promises.push(pItems.promise);
-        PersistenceItemModel.get().then(
+        ItemModel.getList().then(
             function (items) {
-                if (items == null) {
-                    ItemModel.getList().then(
-                        function (items) {
-                            $scope.items = items;
-                            if ($scope.items != null) {
-                                $scope.itemsTotal = $scope.items.length;
-                            }
-//                            pItems.resolve();
-                        },
-                        function (reason) {
-                            // handle failure
-                            growl.warning(locale.getString('habmin.chartErrorGettingItems'));
-//                            pItems.resolve();
-                        }
-                    );
-
-                    return;
-                }
-
                 $scope.items = items;
                 if ($scope.items != null) {
                     $scope.itemsTotal = $scope.items.length;
                 }
-
-//                pItems.resolve();
+//                            pItems.resolve();
             },
             function (reason) {
                 // handle failure
                 growl.warning(locale.getString('habmin.chartErrorGettingItems'));
-//                pItems.resolve();
+//                            pItems.resolve();
             }
         );
 
