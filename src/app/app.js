@@ -16,6 +16,7 @@ angular.module('HABmin', [
     'HABmin.chart',
     'HABmin.sitemap',
     'HABmin.rules',
+    'HABmin.configModel',
     'HABmin.chartModel',
     'HABmin.itemModel',
     'HABmin.userModel',
@@ -364,7 +365,6 @@ angular.module('HABmin', [
                     growl.error(locale.getString("habmin.discoveryIgnoreFail", {name: thingUID}));
                 }
             );
-
         };
 
         $scope.ignoreThing = function (thingUID) {
@@ -385,6 +385,29 @@ angular.module('HABmin', [
                 },
                 function () {
                     growl.error(locale.getString("habmin.discoveryDeleteFail", {name: thingUID}));
+                }
+            );
+        };
+
+        $scope.clearInbox = function () {
+            var promises = [];
+            angular.forEach($scope.inbox, function(msg) {
+                InboxModel.thingDelete(msg.thingUID).then(
+                    function () {
+                        InboxModel.refreshInbox();
+                    },
+                    function () {
+                        growl.error(locale.getString("habmin.discoveryDeleteFail", {name: thingUID}));
+                    }
+                );
+            });
+
+            $q.all(promises).then(
+                function () {
+                    InboxModel.refreshInbox();
+                },
+                function () {
+                    growl.error(locale.getString("habmin.discoveryClearFail"));
                 }
             );
         };
