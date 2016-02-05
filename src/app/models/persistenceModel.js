@@ -13,7 +13,7 @@ angular.module('HABmin.persistenceModel', [
 ])
 
     .service("PersistenceServiceModel", function ($http, $q, RestService) {
-        var svcName = "rest/persistence";
+        var svcName = "persistence";
         var serviceList = [];
 
         this.getList = function () {
@@ -51,6 +51,8 @@ angular.module('HABmin.persistenceModel', [
     })
 
     .service('PersistenceDataModel', function ($http, $q, RestService, UserService) {
+        var svcName = "persistence";
+
         this.get = function (service, item, start, stop) {
             var deferred = $q.defer();
             var parms = {};
@@ -130,9 +132,9 @@ angular.module('HABmin.persistenceModel', [
                     $http.get(url  + "/" + item,
                         {
                             params: {
-                                service: service,
-                                starttime: requestStart,
-                                endtime: requestStop
+                                servicename: service,
+                                starttime: new Date(requestStart).toISOString(),
+                                endtime: new Date(requestStop).toISOString()
                             }
                         })
                         .success(function (data) {

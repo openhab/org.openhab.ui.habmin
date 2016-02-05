@@ -11,6 +11,7 @@ angular.module('Config.Bindings', [
     'ui.router',
     'ui.bootstrap',
     'ngLocalize',
+    'HABmin.configModel',
     'HABmin.userModel',
     'HABmin.bindingModel',
     'Config.parameter',
@@ -40,7 +41,8 @@ angular.module('Config.Bindings', [
     })
 
     .controller('BindingConfigCtrl',
-    function BindingConfigCtrl($scope, locale, growl, $timeout, $window, $http, $interval, UserService, BindingModel) {
+    function BindingConfigCtrl($scope, locale, growl, $timeout, $window, $http, $interval, UserService, BindingModel, ConfigModel) {
+        $scope.panelDisplayed = 'DESCRIPTION';
         $scope.bindings = null;
         $scope.bindingsCnt = -1;
         BindingModel.getList().then(
@@ -55,8 +57,61 @@ angular.module('Config.Bindings', [
         );
 
         $scope.selectBinding = function (binding) {
+            $scope.setPanelDisplayed("DESCRIPTION");
             $scope.selectedBinding = binding;
+
+            if(binding.configDescriptionURI != null) {
+                // Get the configuration
+                ConfigModel.getConfig(binding.configDescriptionURI).then(
+                    function (cfg) {
+                        $scope.bindingConfig = cfg;
+                    },
+                    function () {
+                        $scope.bindingConfig = null;
+                    }
+                );
+            }
         };
+
+        $scope.setPanelDisplayed = function (panel) {
+            $scope.panelDisplayed = panel;
+        };
+
+        $scope.bindingHasUngroupedParams = function () {
+            if ($scope.bindingConfig == null || $scope.bindingConfig.parameters == null) {
+                return false;
+            }
+
+            for (var cnt = 0; cnt < $scope.bindingConfig.parameters.length; cnt++) {
+                if ($scope.bindingConfig.parameters[cnt].groupName == null ||
+                    $scope.bindingConfig.parameters[cnt].groupName == "" ||
+                    $scope.bindingConfig.parameterGroups[$scope.bindingConfig.parameters[cnt].groupName] == null) {
+                    return true;
+                }
+            }
+        };
+
+        $scope.configGroupFilter = function (config, group) {
+            // Sanity check
+            if (config == null) {
+                return false;
+            }
+
+            // Are we looking for ungrouped parameters
+            if (group == null) {
+                if (config.groupName == null || config.groupName == "" || $scope.bindingConfig.parameterGroups[config.groupName] == null) {
+                    return true;
+                }
+                return false;
+            }
+
+            if (config.groupName == group) {
+                return true;
+            }
+
+            return false;
+        };
+
     })
 
 ;
