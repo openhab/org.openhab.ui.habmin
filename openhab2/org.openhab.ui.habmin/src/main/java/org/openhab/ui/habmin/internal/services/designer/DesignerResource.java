@@ -28,6 +28,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import org.eclipse.smarthome.config.core.ConfigConstants;
 import org.eclipse.smarthome.core.items.ItemRegistry;
 import org.eclipse.smarthome.io.rest.RESTResource;
 import org.eclipse.smarthome.ui.items.ItemUIRegistry;
@@ -46,276 +47,273 @@ import com.thoughtworks.xstream.io.xml.StaxDriver;
 @Path(DesignerResource.PATH)
 public class DesignerResource implements RESTResource {
 
-	private static final Logger logger = LoggerFactory.getLogger(DesignerResource.class);
+    private static final Logger logger = LoggerFactory.getLogger(DesignerResource.class);
 
-	protected static final String DESIGN_FILE = "designer.xml";
+    protected static final String DESIGN_FILE = "designer.xml";
 
-	public static final String PATH = "habmin/designer";
+    public static final String PATH = "habmin/designer";
 
-	@Context
-	UriInfo uriInfo;
+    @Context
+    UriInfo uriInfo;
 
-	static private ItemUIRegistry itemUIRegistry;
+    static private ItemUIRegistry itemUIRegistry;
 
-	public void setItemUIRegistry(ItemUIRegistry itemUIRegistry) {
-		DesignerResource.itemUIRegistry = itemUIRegistry;
-	}
+    public void setItemUIRegistry(ItemUIRegistry itemUIRegistry) {
+        DesignerResource.itemUIRegistry = itemUIRegistry;
+    }
 
-	public void unsetItemUIRegistry(ItemRegistry itemUIRegistry) {
-		DesignerResource.itemUIRegistry = null;
-	}
+    public void unsetItemUIRegistry(ItemRegistry itemUIRegistry) {
+        DesignerResource.itemUIRegistry = null;
+    }
 
-	static public ItemUIRegistry getItemUIRegistry() {
-		return itemUIRegistry;
-	}
+    static public ItemUIRegistry getItemUIRegistry() {
+        return itemUIRegistry;
+    }
 
-	@GET
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response getDesigns(@Context HttpHeaders headers) {
-		logger.debug("Received HTTP GET request at '{}'", uriInfo.getPath());
+    @GET
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response getDesigns(@Context HttpHeaders headers) {
+        logger.debug("Received HTTP GET request at '{}'", uriInfo.getPath());
 
-		Object responseObject = getDesignBeans();
-		return Response.ok(responseObject).build();
-	}
+        Object responseObject = getDesignBeans();
+        return Response.ok(responseObject).build();
+    }
 
-	@GET
-	@Path("/{designref: [0-9]*}")
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response getDesignRef(@Context HttpHeaders headers,
-			@PathParam("designref") Integer designref
-			) {
-		logger.debug("Received HTTP GET request at '{}'.", uriInfo.getPath());
+    @GET
+    @Path("/{designref: [0-9]*}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response getDesignRef(@Context HttpHeaders headers, @PathParam("designref") Integer designref) {
+        logger.debug("Received HTTP GET request at '{}'.", uriInfo.getPath());
 
-		Object responseObject = getDesignBean(designref);
-		return Response.ok(responseObject).build();
-	}
-	
-	@DELETE
-	@Path("/{designref: [0-9]*}")
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response deleteDesignRef(@Context HttpHeaders headers,
-			@PathParam("designref") Integer designref
-			) {
-		logger.debug("Received HTTP DELETE request at '{}'.", uriInfo.getPath());
+        Object responseObject = getDesignBean(designref);
+        return Response.ok(responseObject).build();
+    }
 
-		Object responseObject = deleteDesignBean(designref);
-		return Response.ok(responseObject).build();
-	}
-	
-	@PUT
-	@Path("/{designref: [0-9]*}")
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response putDesignRef(@Context HttpHeaders headers,
-			@PathParam("designref") Integer designref, 
-			DesignerBean updatedDesign
-			) {
-		logger.debug("Received HTTP PUT request at '{}'.", uriInfo.getPath());
+    @DELETE
+    @Path("/{designref: [0-9]*}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response deleteDesignRef(@Context HttpHeaders headers, @PathParam("designref") Integer designref) {
+        logger.debug("Received HTTP DELETE request at '{}'.", uriInfo.getPath());
 
-		Object responseObject = putDesignBean(designref, updatedDesign);
-		return Response.ok(responseObject).build();
-	}
-	
-	@POST
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response postDesignRef(@Context HttpHeaders headers,
-			DesignerBean updatedDesign
-			) {
-		logger.debug("Received HTTP POST request at '{}'", uriInfo.getPath());
+        Object responseObject = deleteDesignBean(designref);
+        return Response.ok(responseObject).build();
+    }
 
-		Object responseObject = putDesignBean(0, updatedDesign);
-		return Response.ok(responseObject).build();
-	}
+    @PUT
+    @Path("/{designref: [0-9]*}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response putDesignRef(@Context HttpHeaders headers, @PathParam("designref") Integer designref,
+            DesignerBean updatedDesign) {
+        logger.debug("Received HTTP PUT request at '{}'.", uriInfo.getPath());
 
-	private DesignerListBean getDesignBeans() {
-		DesignerListBean designs = loadDesigns();
-		DesignerListBean newList = new DesignerListBean();
+        Object responseObject = putDesignBean(designref, updatedDesign);
+        return Response.ok(responseObject).build();
+    }
 
-		// We only want to return the id and name
-		for (DesignerBean i : designs.designs) {
-			DesignerBean newDesign = new DesignerBean();
-			newDesign.id = i.id;
-			newDesign.name = i.name;
+    @POST
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response postDesignRef(@Context HttpHeaders headers, DesignerBean updatedDesign) {
+        logger.debug("Received HTTP POST request at '{}'", uriInfo.getPath());
 
-			newList.designs.add(newDesign);
-		}
+        Object responseObject = putDesignBean(0, updatedDesign);
+        return Response.ok(responseObject).build();
+    }
 
-		return newList;
-	}
+    private DesignerListBean getDesignBeans() {
+        DesignerListBean designs = loadDesigns();
+        DesignerListBean newList = new DesignerListBean();
 
-	private DesignerBean getDesignBean(Integer designRef) {
-		DesignerListBean designs = loadDesigns();
+        // We only want to return the id and name
+        for (DesignerBean i : designs.designs) {
+            DesignerBean newDesign = new DesignerBean();
+            newDesign.id = i.id;
+            newDesign.name = i.name;
 
-		for (DesignerBean i : designs.designs) {
-			if(i.id.intValue() == designRef) {
-				i.source = DesignerRuleCreator.loadSource(i.id, i.name);
-				return i;
-			}
-		}
+            newList.designs.add(newDesign);
+        }
 
-		return null;
-	}
+        return newList;
+    }
 
-	private DesignerListBean deleteDesignBean(Integer designRef) {
-		DesignerListBean designs = loadDesigns();
+    private DesignerBean getDesignBean(Integer designRef) {
+        DesignerListBean designs = loadDesigns();
 
-		DesignerBean foundDesign = null;
-		// Loop through the designs list
-		for(DesignerBean i : designs.designs) {
-			if(i.id.intValue() == designRef) {
-				// If it was found in the list, remember it...
-				foundDesign = i;
-			}
-		}
+        for (DesignerBean i : designs.designs) {
+            if (i.id.intValue() == designRef) {
+                i.source = DesignerRuleCreator.loadSource(i.id, i.name);
+                return i;
+            }
+        }
 
-		// If it was found in the list, remove it...
-		if(foundDesign != null)
-			designs.designs.remove(foundDesign);
+        return null;
+    }
 
-		saveDesigns(designs);
+    private DesignerListBean deleteDesignBean(Integer designRef) {
+        DesignerListBean designs = loadDesigns();
 
-		return getDesignBeans();
-	}
+        DesignerBean foundDesign = null;
+        // Loop through the designs list
+        for (DesignerBean i : designs.designs) {
+            if (i.id.intValue() == designRef) {
+                // If it was found in the list, remember it...
+                foundDesign = i;
+            }
+        }
 
-	private DesignerListBean loadDesigns() {
-		DesignerListBean designs = null;
+        // If it was found in the list, remove it...
+        if (foundDesign != null) {
+            designs.designs.remove(foundDesign);
+        }
 
-		logger.debug("Loading Designs.");
-		FileInputStream fin;
-		try {
-			long timerStart = System.currentTimeMillis();
+        saveDesigns(designs);
 
-			fin = new FileInputStream(HABminConstants.getDataDirectory() + DESIGN_FILE);
+        return getDesignBeans();
+    }
 
-			XStream xstream = new XStream(new StaxDriver());
-			xstream.alias("designlist", DesignerListBean.class);
-			xstream.alias("field", DesignerFieldBean.class);
-			xstream.alias("mutation", DesignerMutationBean.class);
-			xstream.alias("child", DesignerChildBean.class);
-			xstream.processAnnotations(DesignerListBean.class);
-			xstream.processAnnotations(DesignerMutationBean.class);
-			xstream.processAnnotations(DesignerBean.class);
-			xstream.processAnnotations(DesignerBlockBean.class);
-			xstream.processAnnotations(DesignerChildBean.class);
-			xstream.processAnnotations(DesignerCommentBean.class);
-			xstream.processAnnotations(DesignerFieldBean.class);
+    private DesignerListBean loadDesigns() {
+        DesignerListBean designs = null;
 
-			designs = (DesignerListBean) xstream.fromXML(fin);
+        logger.debug("Loading Designs.");
+        FileInputStream fin;
+        try {
+            long timerStart = System.currentTimeMillis();
 
-			fin.close();
+            fin = new FileInputStream(
+                    ConfigConstants.getUserDataFolder() + "/" + HABminConstants.HABMIN_DATA_DIR + DESIGN_FILE);
 
-			long timerStop = System.currentTimeMillis();
-			logger.debug("Designs loaded in {}ms.", timerStop - timerStart);
+            XStream xstream = new XStream(new StaxDriver());
+            xstream.alias("designlist", DesignerListBean.class);
+            xstream.alias("field", DesignerFieldBean.class);
+            xstream.alias("mutation", DesignerMutationBean.class);
+            xstream.alias("child", DesignerChildBean.class);
+            xstream.processAnnotations(DesignerListBean.class);
+            xstream.processAnnotations(DesignerMutationBean.class);
+            xstream.processAnnotations(DesignerBean.class);
+            xstream.processAnnotations(DesignerBlockBean.class);
+            xstream.processAnnotations(DesignerChildBean.class);
+            xstream.processAnnotations(DesignerCommentBean.class);
+            xstream.processAnnotations(DesignerFieldBean.class);
 
-		} catch (FileNotFoundException e) {
-			designs = new DesignerListBean();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+            designs = (DesignerListBean) xstream.fromXML(fin);
 
-		if(designs.designs == null)
-			designs.designs = new ArrayList<DesignerBean>();
+            fin.close();
 
-		return designs;
-	}
+            long timerStop = System.currentTimeMillis();
+            logger.debug("Designs loaded in {}ms.", timerStop - timerStart);
 
-	/**
-	 * 
-	 * @param designRef The reference for this design. This should be 0 to create a new design.
-	 * @param bean
-	 * @return
-	 */
-	private DesignerBean putDesignBean(Integer designRef, DesignerBean bean) {
-		// Sanity check.
-		// designRef is 0 for a new design
-		// if it's not 0, then bean.id must either be missing, or it must be the same as designRef
-		if(designRef != 0 && bean.id != null && bean.id.intValue() != designRef.intValue()) {
-			logger.error("Inconsistent id in HTTP call '{}' and structure '{}'", designRef, bean.id);
-			return null;
-		}
-		
-		// Load the existing list
-		DesignerListBean list = loadDesigns();
+        } catch (FileNotFoundException e) {
+            designs = new DesignerListBean();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-		int high = 0;
+        if (designs.designs == null) {
+            designs.designs = new ArrayList<DesignerBean>();
+        }
 
-		DesignerBean foundDesign = null;
-		// Loop through the designs list
-		for(DesignerBean i : list.designs) {
-			if(i.id > high)
-				high = i.id;
-			if(i.id.intValue() == designRef) {
-				// If it was found in the list, remember it...
-				foundDesign = i;
-			}
-		}
+        return designs;
+    }
 
-		// If it was found in the list, remove it...
-		if(foundDesign != null) {
-			list.designs.remove(foundDesign);
-		}
-		
-		// Set id if this is a new design
-		if(bean.id == null) {
-			bean.id = high + 1;
-		}
-		
-		// Sanity check the name
-		if(bean.name == null) {
-			bean.name = "";
-		}
+    /**
+     *
+     * @param designRef The reference for this design. This should be 0 to create a new design.
+     * @param bean
+     * @return
+     */
+    private DesignerBean putDesignBean(Integer designRef, DesignerBean bean) {
+        // Sanity check.
+        // designRef is 0 for a new design
+        // if it's not 0, then bean.id must either be missing, or it must be the same as designRef
+        if (designRef != 0 && bean.id != null && bean.id.intValue() != designRef.intValue()) {
+            logger.error("Inconsistent id in HTTP call '{}' and structure '{}'", designRef, bean.id);
+            return null;
+        }
 
-		// Now save the updated version
-		list.designs.add(bean);
-		saveDesigns(list);
-		
-		bean.source = DesignerRuleCreator.saveRule(bean.id, bean.name, bean.block);
+        // Load the existing list
+        DesignerListBean list = loadDesigns();
 
-		return bean;
-	}
+        int high = 0;
 
-	private boolean saveDesigns(DesignerListBean designs) {
-		File folder = new File(HABminConstants.getDataDirectory());
-		// create path for serialization.
-		if (!folder.exists()) {
-			logger.debug("Creating directory {}", HABminConstants.getDataDirectory());
-			folder.mkdirs();
-		}
-		
-		FileOutputStream fout;
-		try {
-			long timerStart = System.currentTimeMillis();
+        DesignerBean foundDesign = null;
+        // Loop through the designs list
+        for (DesignerBean i : list.designs) {
+            if (i.id > high) {
+                high = i.id;
+            }
+            if (i.id.intValue() == designRef) {
+                // If it was found in the list, remember it...
+                foundDesign = i;
+            }
+        }
 
-			fout = new FileOutputStream(HABminConstants.getDataDirectory() + DESIGN_FILE);
+        // If it was found in the list, remove it...
+        if (foundDesign != null) {
+            list.designs.remove(foundDesign);
+        }
 
-			XStream xstream = new XStream(new StaxDriver());
-			xstream.alias("designlist", DesignerListBean.class);
-			xstream.alias("field", DesignerFieldBean.class);
-			xstream.alias("mutation", DesignerMutationBean.class);
-			xstream.alias("child", DesignerChildBean.class);
-			xstream.processAnnotations(DesignerListBean.class);
-			xstream.processAnnotations(DesignerMutationBean.class);
-			xstream.processAnnotations(DesignerBean.class);
-			xstream.processAnnotations(DesignerBlockBean.class);
-			xstream.processAnnotations(DesignerChildBean.class);
-			xstream.processAnnotations(DesignerCommentBean.class);
-			xstream.processAnnotations(DesignerFieldBean.class);
+        // Set id if this is a new design
+        if (bean.id == null) {
+            bean.id = high + 1;
+        }
 
-			xstream.toXML(designs, fout);
+        // Sanity check the name
+        if (bean.name == null) {
+            bean.name = "";
+        }
 
-			fout.close();
+        // Now save the updated version
+        list.designs.add(bean);
+        saveDesigns(list);
 
-			long timerStop = System.currentTimeMillis();
-			logger.debug("Designs saved in {}ms.", timerStop - timerStart);
-		} catch (FileNotFoundException e) {
-			logger.debug("Unable to open Designs for SAVE - ", e);
+        bean.source = DesignerRuleCreator.saveRule(bean.id, bean.name, bean.block);
 
-			return false;
-		} catch (IOException e) {
-			logger.debug("Unable to write Designs for SAVE - ", e);
+        return bean;
+    }
 
-			return false;
-		}
+    private boolean saveDesigns(DesignerListBean designs) {
+        File folder = new File(ConfigConstants.getUserDataFolder() + "/" + HABminConstants.HABMIN_DATA_DIR);
+        // create path for serialization.
+        if (!folder.exists()) {
+            logger.debug("Creating directory {}", HABminConstants.getDataDirectory());
+            folder.mkdirs();
+        }
 
-		return true;
-	}
+        FileOutputStream fout;
+        try {
+            long timerStart = System.currentTimeMillis();
+
+            fout = new FileOutputStream(
+                    ConfigConstants.getUserDataFolder() + "/" + HABminConstants.HABMIN_DATA_DIR + DESIGN_FILE);
+
+            XStream xstream = new XStream(new StaxDriver());
+            xstream.alias("designlist", DesignerListBean.class);
+            xstream.alias("field", DesignerFieldBean.class);
+            xstream.alias("mutation", DesignerMutationBean.class);
+            xstream.alias("child", DesignerChildBean.class);
+            xstream.processAnnotations(DesignerListBean.class);
+            xstream.processAnnotations(DesignerMutationBean.class);
+            xstream.processAnnotations(DesignerBean.class);
+            xstream.processAnnotations(DesignerBlockBean.class);
+            xstream.processAnnotations(DesignerChildBean.class);
+            xstream.processAnnotations(DesignerCommentBean.class);
+            xstream.processAnnotations(DesignerFieldBean.class);
+
+            xstream.toXML(designs, fout);
+
+            fout.close();
+
+            long timerStop = System.currentTimeMillis();
+            logger.debug("Designs saved in {}ms.", timerStop - timerStart);
+        } catch (FileNotFoundException e) {
+            logger.debug("Unable to open Designs for SAVE - ", e);
+
+            return false;
+        } catch (IOException e) {
+            logger.debug("Unable to write Designs for SAVE - ", e);
+
+            return false;
+        }
+
+        return true;
+    }
 }

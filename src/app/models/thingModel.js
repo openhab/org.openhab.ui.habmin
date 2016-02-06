@@ -240,10 +240,12 @@ angular.module('HABmin.thingModel', [
             var tStart = new Date().getTime();
             var deferred = $q.defer();
 
-            RestService.getService(svcSetup).then(
-                function (url) {
-                    // If the UID ends with a colon, then it's new
-                    if (thing.UID.slice(-1) == ':') {
+
+            // If the UID ends with a colon, then it's new
+            // This is temporary until ESH supports thing labels
+            if (thing.UID.slice(-1) == ':') {
+                RestService.getService(svcSetup).then(
+                    function (url) {
                         thing.UID += new Date().getTime().toString(16);
                         $http.post(url + "/things", thing)
                             .success(function (data) {
@@ -252,9 +254,25 @@ angular.module('HABmin.thingModel', [
                             .error(function (data, status) {
                                 deferred.reject(data);
                             });
+                    });
+                return;
+            }
+
+            RestService.getService(svcName).then(
+                function (url) {
+                    // If the UID ends with a colon, then it's new
+                    if (thing.UID.slice(-1) == ':') {
+                        thing.UID += new Date().getTime().toString(16);
+                        $http.post(url, thing)
+                            .success(function (data) {
+                                deferred.resolve(data);
+                            })
+                            .error(function (data, status) {
+                                deferred.reject(data);
+                            });
                     }
                     else {
-                        $http.put(url + "/things", thing)
+                        $http.put(url + "/" + thing.UID, thing)
                             .success(function (data) {
                                 deferred.resolve(data);
                             })

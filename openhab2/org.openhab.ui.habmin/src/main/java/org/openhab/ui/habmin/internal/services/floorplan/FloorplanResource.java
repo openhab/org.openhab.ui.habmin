@@ -26,6 +26,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.codec.binary.Base64;
+import org.eclipse.smarthome.config.core.ConfigConstants;
 import org.eclipse.smarthome.io.rest.RESTResource;
 import org.openhab.ui.habmin.HABminConstants;
 import org.slf4j.Logger;
@@ -98,10 +99,9 @@ public class FloorplanResource implements RESTResource {
     }
 
     @GET
-    @Produces({ "image/jpeg" })
     @Path("/{floorplanID: [0-9]*}/image")
-    public Response httpGetFloorplanImage(@Context HttpHeaders headers, @PathParam("floorplanID") String floorplanID,
-            String filedata) {
+    @Produces({ "image/jpeg" })
+    public Response httpGetFloorplanImage(@Context HttpHeaders headers, @PathParam("floorplanID") String floorplanID) {
 
         File folder = new File(HABminConstants.getDataDirectory());
         // Create path.
@@ -207,8 +207,9 @@ public class FloorplanResource implements RESTResource {
         FloorplanListBean floorplans = loadFloorplans();
 
         for (FloorplanConfigBean i : floorplans.entries) {
-            if (i.id.intValue() == floorplanRef)
+            if (i.id.intValue() == floorplanRef) {
                 return i;
+            }
         }
 
         return null;
@@ -246,18 +247,18 @@ public class FloorplanResource implements RESTResource {
     }
 
     private boolean saveFloorplans(FloorplanListBean floorplan) {
-        File folder = new File(HABminConstants.getDataDirectory());
+        File folder = new File(ConfigConstants.getUserDataFolder() + "/" + HABminConstants.HABMIN_DATA_DIR);
         // create path for serialization.
         if (!folder.exists()) {
-            logger.debug("Creating directory {}", HABminConstants.getDataDirectory());
             folder.mkdirs();
         }
 
         try {
             long timerStart = System.currentTimeMillis();
 
-            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream(HABminConstants.getDataDirectory() + FLOORPLAN_FILE), "UTF-8"));
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
+                    ConfigConstants.getUserDataFolder() + "/" + HABminConstants.HABMIN_DATA_DIR + FLOORPLAN_FILE),
+                    "UTF-8"));
 
             XStream xstream = new XStream(new StaxDriver());
             xstream.alias("floorplans", FloorplanListBean.class);
@@ -291,7 +292,8 @@ public class FloorplanResource implements RESTResource {
         try {
             long timerStart = System.currentTimeMillis();
 
-            fin = new FileInputStream(HABminConstants.getDataDirectory() + FLOORPLAN_FILE);
+            fin = new FileInputStream(
+                    ConfigConstants.getUserDataFolder() + "/" + HABminConstants.HABMIN_DATA_DIR + FLOORPLAN_FILE);
 
             XStream xstream = new XStream(new StaxDriver());
             xstream.alias("floorplans", FloorplanListBean.class);

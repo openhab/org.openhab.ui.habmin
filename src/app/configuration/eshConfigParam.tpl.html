@@ -1,9 +1,9 @@
-<label for="CONFIGLABEL-{{config.name}}" class="control-label">{{config.label}}</label>
+<label for="CONFIGLABEL-{{cfgType}}-{{config.name}}" class="control-label">{{config.label}}</label>
 
 <div ng-if="config.options!=null && config.options.length!=0 && config.multiple==true">
     <!-- Multiple select dropdown -->
-    <ui-select id="CONFIGLABEL-{{config.name}}"
-               ng-model="selectedThing.configuration[config.name]"
+    <ui-select id="CONFIGLABEL-{{cfgType}}-{{config.name}}"
+               ng-model="cfgModel"
                theme="bootstrap"
                name="{{config.name}}"
                search-enabled="false"
@@ -22,8 +22,8 @@
 
 <div ng-if="config.options!=null && config.options.length!=0 && config.multiple!=true && config.limitToOptions==true">
     <!-- Single select dropdown -->
-    <ui-select id="CONFIGLABEL-{{config.name}}"
-               ng-model="selectedThing.configuration[config.name]"
+    <ui-select id="CONFIGLABEL-{{cfgType}}-{{config.name}}"
+               ng-model="cfgModel"
                theme="bootstrap"
                name="{{config.name}}"
                search-enabled="false"
@@ -41,8 +41,8 @@
 
 <div ng-if="config.options!=null && config.options.length!=0 && config.multiple!=true && !config.limitToOptions==true">
     <!-- Single select dropdown, but allowing other entries -->
-    <ui-select id="CONFIGLABEL-{{config.name}}"
-               ng-model="selectedThing.configuration[config.name]"
+    <ui-select id="CONFIGLABEL-{{cfgType}}-{{config.name}}"
+               ng-model="cfgModel"
                theme="bootstrap"
                name="{{config.name}}"
                search-enabled="false"
@@ -63,8 +63,8 @@
            class="form-control"
            name="{{config.name}}"
            ng-dirty ng-required="{{config.required}}"
-           id="CONFIGLABEL-{{config.name}}"
-           ng-model="selectedThing.configuration[config.name]"
+           id="CONFIGLABEL-{{cfgType}}-{{config.name}}"
+           ng-model="cfgModel"
             >
 </div>
 

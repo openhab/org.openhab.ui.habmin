@@ -72,8 +72,10 @@
                         <tr>
                             <td class="text-large" rowspan="2">
                                 <span ng-switch="thing.statusInfo.status"
-                                      tooltip-placement="top" tooltip="{{thing.statusInfo.description}}" tooltip-popup-delay="500"
-                                      tooltip-enable="true" tooltip-trigger tooltip-animation="false" tooltip-append-to-body="true">
+                                      tooltip-placement="top" tooltip="{{thing.statusInfo.description}}"
+                                      tooltip-popup-delay="500"
+                                      tooltip-enable="true" tooltip-trigger tooltip-animation="false"
+                                      tooltip-append-to-body="true">
                                     <span ng-switch-when="ONLINE"
                                           class="fa fa-fw fa-check-circle text-success"></span>
                                     <span ng-switch-when="OFFLINE"
@@ -347,7 +349,8 @@
                         <div ng-repeat="config in selectedThingConfig.parameters">
                             <div class="form-group"
                                  ng-if="configGroupFilter(config, group.name) && (!config.advanced||showAdvancedSettings)">
-                                <ng-include src="'configuration/eshConfigParam.tpl.html'"></ng-include>
+                                <ng-include ng-init="cfgType='CFG';cfgModel=selectedThing.configuration[config.name]"
+                                            src="'configuration/eshConfigParam.tpl.html'"></ng-include>
                             </div>
                         </div>
                     </div>
@@ -368,7 +371,8 @@
                         <div ng-repeat="config in selectedThingConfig.parameters">
                             <div class="form-group"
                                  ng-if="configGroupFilter(config, null) && (!config.advanced||showAdvancedSettings)">
-                                <ng-include src="'configuration/eshConfigParam.tpl.html'"></ng-include>
+                                <ng-include ng-init="cfgType='CFG';cfgModel=selectedThing.configuration[config.name]"
+                                            src="'configuration/eshConfigParam.tpl.html'"></ng-include>
                             </div>
                         </div>
                     </div>
@@ -384,31 +388,32 @@
                 </div>
                 <div collapse="panelDisplayed!='CHANNELS'"
                      class="panel-form">
-                    <div ng-repeat="channel in selectedThingType.channels">
+                    <div ng-repeat="channel in selectedThing.channels">
+                        <!-- Channel Information -->
                         <div class="form-group">
-                            <label for="CHANNELLABEL{{$index+1}}" class="control-label">{{channel.label}}</label>
+                            <label for="CHANNELLABEL{{$index+1}}"
+                                   class="control-label">{{channel.channelType.label}}</label>
 
                             <div class="input-group">
                                 <span class="input-group-addon category-icon">
-                                    <habmin-icon category="{{channel.category}}"></habmin-icon>
+                                    <habmin-icon category="{{channel.channelType.category}}"></habmin-icon>
                                 </span>
                                 <input type="text"
                                        class="form-control"
                                        id="CHANNELLABEL{{$index+1}}"
                                        readonly="true"
-                                       value="{{channel.description}}"
-                                       placeholder="{{channel.category}}">
+                                       value="{{channel.channelType.description}}"
+                                       placeholder="{{channel.channelType.category}}">
 
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button">
-                                        <span ng-if="channelEnabled(channel)"
+                                <span class="input-group-addon">
+                                        <span ng-if="channel.linkedItems.length>0"
                                               class="fa fa-check-circle text-success"></span>
-                                        <span ng-if="!channelEnabled(channel)"
+                                        <span ng-if="channel.linkedItems.length==0"
                                               class="fa fa-times-circle text-danger"></span>
-                                    </button>
                                 </span>
                             </div>
 
+                            <!-- Channel Configuration Form -->
                             <div ng-if="channel.channelType!=null && channel.channelType.parameters!=null && channel.channelType.parameters.length>0">
                                 <div class="thing-items well well-sm">
                                     <div>
@@ -416,15 +421,17 @@
                                     </div>
                                     <div class="panel-form">
                                         <div ng-repeat="config in channel.channelType.parameters">
-                                            <div class="form-group">
-                                                <ng-include src="'configuration/eshConfigParam.tpl.html'"></ng-include>
+                                            <div ng-form="{{channel.id}}" class="form-group">
+                                                <ng-include
+                                                        ng-init="cfgType='CHAN';cfgModel=channel.configuration[config.name]"
+                                                        src="'configuration/eshConfigParam.tpl.html'"></ng-include>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="thing-items well well-sm" ng-switch="getChannelItems(channel).length">
+                            <div class="thing-items well well-sm" ng-switch="channel.linkedItems.length">
                                 <div ng-switch-when="0">
                                     <strong class="text-muted" i18n="habmin.thingChannelNoItems"></strong>
 
@@ -454,11 +461,12 @@
                                             </td>
                                         </thead>
                                         <tbody>
-                                        <tr ng-repeat="item in getChannelItems(channel)">
+                                        <tr ng-repeat="itemName in channel.linkedItems"
+                                                ng-init="item=getItem(itemName)">
                                             <td class="span-hover">
                                                 <habmin-icon class="fa fa-fw"
-                                                             itemtype="{{getItem(item).type}}"></habmin-icon>
-                                                {{getItem(item).label}}
+                                                             itemtype="{{item.type}}"></habmin-icon>
+                                                {{item.label}}
                                                 <span class="span-hover-hide fa fa-clipboard" clipboard
                                                       text="getItem(item).name"></span>
                                             </td>

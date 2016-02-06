@@ -231,11 +231,23 @@ angular.module('Config.Things', [
                 return false;
             }
 
-            for (var cnt = 0; cnt < $scope.selectedThingType.configParameters.length; cnt++) {
-                if ($scope.selectedThingType.configParameters[cnt].groupName == null ||
-                    $scope.selectedThingType.configParameters[cnt].groupName == "" ||
-                    $scope.selectedThingType.parameterGroups[$scope.selectedThingType.configParameters[cnt].groupName] ==
-                    null) {
+            for (var cnt1 = 0; cnt1 < $scope.selectedThingType.configParameters.length; cnt1++) {
+                // If there's no group name, then it's not grouped
+                if ($scope.selectedThingType.configParameters[cnt1].groupName == null ||
+                    $scope.selectedThingType.configParameters[cnt1].groupName == "") {
+                    return true;
+                }
+
+                // If it has a group name, but the group doesn't exist, then it's ungrouped
+                var found = false;
+                for (var cnt2 = 0; cnt2 < $scope.selectedThingType.parameterGroups.length; cnt2++) {
+                    if ($scope.selectedThingType.parameterGroups[cnt2].name ==
+                        $scope.selectedThingType.configParameters[cnt1].groupName) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (found == false) {
                     return true;
                 }
             }
@@ -282,7 +294,6 @@ angular.module('Config.Things', [
             return null;
         };
 
-
         $scope.channelExists = function (thing, channelId) {
             angular.forEach(thing.channels, function (channel) {
                 if (channel.id == channelId) {
@@ -297,10 +308,18 @@ angular.module('Config.Things', [
             $scope.selectedThing = null;
             $scope.panelDisplayed = 'PROPERTIES';
 
+            // We make a copy here so that we're not editing the live version
+            $scope.selectedThing = angular.copy(thing);//ThingModel.getThing(thing.UID));
+
             $scope.selectedThingType = $scope.getThingType(thing);
             if ($scope.selectedThingType == null) {
                 return;
             }
+            angular.forEach($scope.selectedThingType.configParameters, function (parameter) {
+                $scope.selectedThing.configuration[parameter.name] =
+                    ThingModel.convertType(parameter.type, $scope.selectedThing.configuration[parameter.name],
+                        parameter.multiple);
+            });
 
             // Get the configuration
             ThingModel.getConfig(thing.UID).then(
@@ -313,8 +332,8 @@ angular.module('Config.Things', [
             );
 
             // Get all the channel types
-            angular.forEach($scope.selectedThingType.channels, function (channel) {
-                ChannelTypeModel.getChannelType(channel.typeUID).then(
+            angular.forEach($scope.selectedThing.channels, function (channel) {
+                ChannelTypeModel.getChannelType(channel.channelTypeUID).then(
                     function (cfg) {
                         channel.channelType = cfg;
 
@@ -338,13 +357,6 @@ angular.module('Config.Things', [
                 });
             });
 
-            // We make a copy here so that we're not editing the live version
-            $scope.selectedThing = angular.copy(ThingModel.getThing(thing.UID));
-            angular.forEach($scope.selectedThingType.configParameters, function (parameter) {
-                $scope.selectedThing.configuration[parameter.name] =
-                    ThingModel.convertType(parameter.type, $scope.selectedThing.configuration[parameter.name],
-                        parameter.multiple);
-            });
             $timeout(function () {
                 $scope.thingConfigForm.$setPristine();
                 $scope.formLoaded = true;
@@ -364,17 +376,17 @@ angular.module('Config.Things', [
             return [];
         };
 
-        $scope.editItem = function (itemName, channel) {
-            // Find the item we want to edit
-            for (var i = 0; i < $scope.itemList.length; i++) {
-                if ($scope.itemList[i].name == itemName) {
-                    itemEdit.edit($scope.selectedThing, channel, $scope.itemList[i]);
-                }
-            }
+        $scope.editItem = function (item, channel) {
+            itemEdit.edit($scope.selectedThing, channel, item);
         };
 
         $scope.addItem = function (channel) {
-            itemEdit.edit($scope.selectedThing, channel, {});
+            var newItem = {
+                label: channel.channelType.label,
+                type: channel.itemType + 'Item',
+                category: channel.channelType.category
+            };
+            itemEdit.edit($scope.selectedThing, channel, newItem);
         };
 
         $scope.deleteItem = function (item) {
@@ -388,6 +400,15 @@ angular.module('Config.Things', [
                 }
             }
             return {label: itemName};
+        };
+
+        $scope.getChannel = function (channelId) {
+            for (var cnt = 0; cnt < $scope.selectedThing.channels.length; cnt++) {
+                if ($scope.selectedThing.channels[cnt].id == channelId) {
+                    return $scope.selectedThing.channels[cnt];
+                }
+            }
+            return null;
         };
 
         $scope.channelEnable = function (channel) {
@@ -443,8 +464,54 @@ angular.module('Config.Things', [
             return false;
         };
 
+        $scope.getChannelType = function (channelId) {
+            for (var cnt = 0; cnt < $scope.selectedThingType.channels.length; cnt++) {
+                if ($scope.selectedThingType.channels[cnt].id == channelId) {
+                    return $scope.selectedThingType.channels[cnt];
+                }
+            }
+
+            return null;
+        };
+
         $scope.thingSave = function () {
             var promises = [];
+
+            // Check if anything at thing level needs updating
+            var thingUpdated = false;
+            if ($scope.thingConfigForm.modifiedChildFormsCount != 0) {
+                angular.forEach($scope.thingConfigForm.modifiedChildForms, function (childForm) {
+                    var channel = $scope.getChannel(childForm.$name);
+                    if (channel == null) {
+                        return;
+                    }
+
+                    // Get the channel type so we can get the type information
+                    var channelType = $scope.getChannelType(channel.id);
+                    if (channelType == null) {
+                        return;
+                    }
+
+                    // Loop over all the modified parameters
+                    angular.forEach(childForm.modifiedModels, function (model) {
+                        // Get the configuration description
+                        for (var cnt = 0; cnt < channelType.channelType.parameters.length; cnt++) {
+                            if (channelType.channelType.parameters[cnt].name == model.$name) {
+                                channel.configuration[model.$name] =
+                                    ThingModel.convertType(channelType.channelType.parameters[cnt].type, model.$modelValue,
+                                        channelType.channelType.parameters[cnt].multiple);
+
+                                thingUpdated = true;
+                            }
+                        }
+                    });
+                });
+            }
+
+            if(thingUpdated == true) {
+                promises.push(ThingModel.putThing($scope.selectedThing));
+            }
+
             // Check if the linked item information has changed
             if ($scope.thingConfigForm.itemLabel.$dirty === true ||
                 $scope.thingConfigForm.itemCategory.$dirty === true || $scope.thingConfigForm.itemGroups.$dirty) {
@@ -479,11 +546,10 @@ angular.module('Config.Things', [
                 }
 
                 $scope.selectedThing.configuration[parameter.name] =
-                    ThingModel.convertType(parameter.type, $scope.selectedThing.configuration[parameter.name],
+                    ThingModel.convertType(parameter.type, $scope.thingConfigForm[parameter.name].$modelValue,
                         parameter.multiple);
-
-                workToDo = true;
                 dirtyCfg[parameter.name] = $scope.selectedThing.configuration[parameter.name];
+                workToDo = true;
             });
 
             // Is there anything for us to do?

@@ -32,6 +32,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import org.eclipse.smarthome.config.core.ConfigConstants;
 import org.eclipse.smarthome.io.rest.RESTResource;
 import org.openhab.ui.habmin.HABminConstants;
 import org.slf4j.Logger;
@@ -44,15 +45,15 @@ import com.thoughtworks.xstream.io.xml.StaxDriver;
  * <p>
  * This class acts as a REST resource for history data and provides different methods to interact with the, persistence
  * store
- * 
+ *
  * <p>
  * The typical content types are plain text for status values and XML or JSON(P) for more complex data structures
  * </p>
- * 
+ *
  * <p>
  * This resource is registered with the Jersey servlet.
  * </p>
- * 
+ *
  * @author Chris Jackson
  * @since 1.3.0
  */
@@ -134,8 +135,9 @@ public class DashboardResource implements RESTResource {
         DashboardConfigBean foundDashboard = null;
         // Loop through the interface list
         for (DashboardConfigBean i : list.entries) {
-            if (i.id > high)
+            if (i.id > high) {
                 high = i.id;
+            }
             if (i.id.intValue() == dashboardRef) {
                 // If it was found in the list, remember it...
                 foundDashboard = i;
@@ -182,8 +184,9 @@ public class DashboardResource implements RESTResource {
         DashboardListBean dashboards = loadDashboards();
 
         for (DashboardConfigBean i : dashboards.entries) {
-            if (i.id.intValue() == dashboardRef)
+            if (i.id.intValue() == dashboardRef) {
                 return i;
+            }
         }
 
         return null;
@@ -223,7 +226,7 @@ public class DashboardResource implements RESTResource {
     }
 
     private boolean saveDashboards(DashboardListBean dashboard) {
-        File folder = new File(HABminConstants.getDataDirectory());
+        File folder = new File(ConfigConstants.getUserDataFolder() + "/" + HABminConstants.HABMIN_DATA_DIR);
         // create path for serialization.
         if (!folder.exists()) {
             logger.debug("Creating directory {}", HABminConstants.getDataDirectory());
@@ -234,7 +237,8 @@ public class DashboardResource implements RESTResource {
             long timerStart = System.currentTimeMillis();
 
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
-                    HABminConstants.getDataDirectory() + DASHBOARD_FILE), "UTF-8"));
+                    ConfigConstants.getUserDataFolder() + "/" + HABminConstants.HABMIN_DATA_DIR + DASHBOARD_FILE),
+                    "UTF-8"));
 
             XStream xstream = getXStream();
             xstream.toXML(dashboard, out);
@@ -263,7 +267,8 @@ public class DashboardResource implements RESTResource {
         try {
             long timerStart = System.currentTimeMillis();
 
-            fin = new FileInputStream(HABminConstants.getDataDirectory() + DASHBOARD_FILE);
+            fin = new FileInputStream(
+                    ConfigConstants.getUserDataFolder() + "/" + HABminConstants.HABMIN_DATA_DIR + DASHBOARD_FILE);
 
             XStream xstream = getXStream();
             dashboards = (DashboardListBean) xstream.fromXML(fin);

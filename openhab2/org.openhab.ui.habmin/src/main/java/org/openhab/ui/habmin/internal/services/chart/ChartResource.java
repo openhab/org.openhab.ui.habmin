@@ -32,6 +32,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import org.eclipse.smarthome.config.core.ConfigConstants;
 import org.eclipse.smarthome.core.items.ItemRegistry;
 import org.eclipse.smarthome.io.rest.RESTResource;
 import org.eclipse.smarthome.ui.items.ItemUIRegistry;
@@ -46,272 +47,276 @@ import com.thoughtworks.xstream.io.xml.StaxDriver;
  * <p>
  * This class acts as a REST resource for history data and provides different
  * methods to interact with the, persistence store
- * 
+ *
  * <p>
  * The typical content types are plain text for status values and XML or JSON(P)
  * for more complex data structures
  * </p>
- * 
+ *
  * <p>
  * This resource is registered with the Jersey servlet.
  * </p>
- * 
+ *
  * @author Chris Jackson
  * @since 1.3.0
  */
 @Path(ChartResource.PATH)
 public class ChartResource implements RESTResource {
 
-	private static String CHART_FILE = "charts.xml";
+    private static String CHART_FILE = "charts.xml";
 
-	private static final Logger logger = LoggerFactory.getLogger(ChartResource.class);
+    private static final Logger logger = LoggerFactory.getLogger(ChartResource.class);
 
-	/** The URI path to this resource */
-	public static final String PATH = "habmin/charts";
+    /** The URI path to this resource */
+    public static final String PATH = "habmin/charts";
 
-	@Context
-	UriInfo uriInfo;
-	
-	static private ItemUIRegistry itemUIRegistry;
+    @Context
+    UriInfo uriInfo;
 
-	public void setItemUIRegistry(ItemUIRegistry itemUIRegistry) {
-		ChartResource.itemUIRegistry = itemUIRegistry;
-	}
+    static private ItemUIRegistry itemUIRegistry;
 
-	public void unsetItemUIRegistry(ItemRegistry itemUIRegistry) {
-		ChartResource.itemUIRegistry = null;
-	}
+    public void setItemUIRegistry(ItemUIRegistry itemUIRegistry) {
+        ChartResource.itemUIRegistry = itemUIRegistry;
+    }
 
-	static public ItemUIRegistry getItemUIRegistry() {
-		return itemUIRegistry;
-	}
+    public void unsetItemUIRegistry(ItemRegistry itemUIRegistry) {
+        ChartResource.itemUIRegistry = null;
+    }
 
-	@GET
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response httpGetCharts(@Context HttpHeaders headers) {
-		logger.trace("Received HTTP GET request at '{}'.", uriInfo.getPath());
+    static public ItemUIRegistry getItemUIRegistry() {
+        return itemUIRegistry;
+    }
 
-		Object responseObject = getChartList();
-		return Response.ok(responseObject).build();
-	}
+    @GET
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response httpGetCharts(@Context HttpHeaders headers) {
+        logger.trace("Received HTTP GET request at '{}'.", uriInfo.getPath());
 
-	@POST
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response httpPostCharts(@Context HttpHeaders headers,
-			ChartConfigBean chart) {
-		logger.trace("Received HTTP POST request at '{}'.", uriInfo.getPath());
+        Object responseObject = getChartList();
+        return Response.ok(responseObject).build();
+    }
 
-		Object responseObject = putChartBean(0, chart);
-		return Response.ok(responseObject).build();
-	}
+    @POST
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response httpPostCharts(@Context HttpHeaders headers, ChartConfigBean chart) {
+        logger.trace("Received HTTP POST request at '{}'.", uriInfo.getPath());
 
-	@PUT
-	@Path("/{chartId: [a-zA-Z_0-9]*}")
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response httpPutCharts(@Context HttpHeaders headers,
-			@PathParam("chartId") Integer chartId, ChartConfigBean chart) {
-		logger.trace("Received HTTP PUT request at '{}'.", uriInfo.getPath());
+        Object responseObject = putChartBean(0, chart);
+        return Response.ok(responseObject).build();
+    }
 
-		Object responseObject = putChartBean(chartId, chart);
-		return Response.ok(responseObject).build();
-	}
+    @PUT
+    @Path("/{chartId: [a-zA-Z_0-9]*}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response httpPutCharts(@Context HttpHeaders headers, @PathParam("chartId") Integer chartId,
+            ChartConfigBean chart) {
+        logger.trace("Received HTTP PUT request at '{}'.", uriInfo.getPath());
 
-	@DELETE
-	@Path("/{chartId: [a-zA-Z_0-9]*}")
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response httpDeleteCharts(@Context HttpHeaders headers, @QueryParam("type") String type,
-			@PathParam("chartId") Integer chartId) {
-		logger.trace("Received HTTP DELETE request at '{}'.", uriInfo.getPath());
+        Object responseObject = putChartBean(chartId, chart);
+        return Response.ok(responseObject).build();
+    }
 
-		Object responseObject = deleteChart(chartId);
-		return Response.ok(responseObject).build();
-	}
+    @DELETE
+    @Path("/{chartId: [a-zA-Z_0-9]*}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response httpDeleteCharts(@Context HttpHeaders headers, @QueryParam("type") String type,
+            @PathParam("chartId") Integer chartId) {
+        logger.trace("Received HTTP DELETE request at '{}'.", uriInfo.getPath());
 
-	@GET
-	@Path("/{chartId: [a-zA-Z_0-9]*}")
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response httpGetCharts(@Context HttpHeaders headers,
-			@PathParam("chartId") Integer chartId) {
-		logger.trace("Received HTTP GET request at '{}'.", uriInfo.getPath());
+        Object responseObject = deleteChart(chartId);
+        return Response.ok(responseObject).build();
+    }
 
-		Object responseObject = getChart(chartId);
-		return Response.ok(responseObject).build();
-	}
+    @GET
+    @Path("/{chartId: [a-zA-Z_0-9]*}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response httpGetCharts(@Context HttpHeaders headers, @PathParam("chartId") Integer chartId) {
+        logger.trace("Received HTTP GET request at '{}'.", uriInfo.getPath());
 
-	static public org.eclipse.smarthome.core.items.Item getItem(String itemname) {
-		ItemUIRegistry registry = getItemUIRegistry();
-		if (registry != null) {
-			try {
-				org.eclipse.smarthome.core.items.Item item;
-				item = registry.getItem(itemname);
+        Object responseObject = getChart(chartId);
+        return Response.ok(responseObject).build();
+    }
 
-				return item;
-			} catch (org.eclipse.smarthome.core.items.ItemNotFoundException e) {
-				logger.debug(e.getMessage());
-			}
-		}
-		return null;
-	}
+    static public org.eclipse.smarthome.core.items.Item getItem(String itemname) {
+        ItemUIRegistry registry = getItemUIRegistry();
+        if (registry != null) {
+            try {
+                org.eclipse.smarthome.core.items.Item item;
+                item = registry.getItem(itemname);
 
-	private ChartConfigBean putChartBean(Integer chartRef, ChartConfigBean bean) {
-		if (chartRef == 0) {
-			bean.id = null;
-		} else {
-			bean.id = chartRef;
-		}
+                return item;
+            } catch (org.eclipse.smarthome.core.items.ItemNotFoundException e) {
+                logger.debug(e.getMessage());
+            }
+        }
+        return null;
+    }
 
-		// Load the existing list
-		ChartListBean list = loadCharts();
+    private ChartConfigBean putChartBean(Integer chartRef, ChartConfigBean bean) {
+        if (chartRef == 0) {
+            bean.id = null;
+        } else {
+            bean.id = chartRef;
+        }
 
-		int high = 0;
+        // Load the existing list
+        ChartListBean list = loadCharts();
 
-		ChartConfigBean foundChart = null;
-		// Loop through the interface list
-		for (ChartConfigBean i : list.entries) {
-			if (i.id > high)
-				high = i.id;
-			if (i.id.intValue() == chartRef) {
-				// If it was found in the list, remember it...
-				foundChart = i;
-			}
-		}
+        int high = 0;
 
-		// If it was found in the list, remove it...
-		if (foundChart != null) {
-			list.entries.remove(foundChart);
-		}
+        ChartConfigBean foundChart = null;
+        // Loop through the interface list
+        for (ChartConfigBean i : list.entries) {
+            if (i.id > high) {
+                high = i.id;
+            }
+            if (i.id.intValue() == chartRef) {
+                // If it was found in the list, remember it...
+                foundChart = i;
+            }
+        }
 
-		// Set defaults if this is a new chart
-		if (bean.id == null) {
-			bean.id = high + 1;
-		}
+        // If it was found in the list, remove it...
+        if (foundChart != null) {
+            list.entries.remove(foundChart);
+        }
 
-		// Now save the updated version
-		list.entries.add(bean);
-		saveCharts(list);
+        // Set defaults if this is a new chart
+        if (bean.id == null) {
+            bean.id = high + 1;
+        }
 
-		return bean;
-	}
+        // Now save the updated version
+        list.entries.add(bean);
+        saveCharts(list);
 
-	private List<ChartConfigBean> getChartList() {
-		ChartListBean charts = loadCharts();
-//		ChartListBean newList = new ChartListBean();
-		List<ChartConfigBean> list = new ArrayList<ChartConfigBean>();
+        return bean;
+    }
 
-		// We only want to return the id and name
-		for (ChartConfigBean i : charts.entries) {
-			ChartConfigBean newChart = new ChartConfigBean();
-			newChart.id = i.id;
-			newChart.name = i.name;
-			newChart.icon = i.icon;
+    private List<ChartConfigBean> getChartList() {
+        ChartListBean charts = loadCharts();
+        // ChartListBean newList = new ChartListBean();
+        List<ChartConfigBean> list = new ArrayList<ChartConfigBean>();
 
-			list.add(newChart);
-		}
+        // We only want to return the id and name
+        for (ChartConfigBean i : charts.entries) {
+            ChartConfigBean newChart = new ChartConfigBean();
+            newChart.id = i.id;
+            newChart.name = i.name;
+            newChart.icon = i.icon;
 
-		return list;
-	}
+            list.add(newChart);
+        }
 
-	private ChartConfigBean getChart(Integer chartRef) {
-		ChartListBean charts = loadCharts();
+        return list;
+    }
 
-		for (ChartConfigBean i : charts.entries) {
-			if (i.id.intValue() == chartRef)
-				return i;
-		}
+    private ChartConfigBean getChart(Integer chartRef) {
+        ChartListBean charts = loadCharts();
 
-		return null;
-	}
+        for (ChartConfigBean i : charts.entries) {
+            if (i.id.intValue() == chartRef) {
+                return i;
+            }
+        }
 
-	private List<ChartConfigBean> deleteChart(Integer chartRef) {
-		ChartListBean charts = loadCharts();
+        return null;
+    }
 
-		ChartConfigBean foundChart = null;
-		for (ChartConfigBean i : charts.entries) {
-			if (i.id.intValue() == chartRef) {
-				// If it was found in the list, remember it...
-				foundChart = i;
-				break;
-			}
-		}
+    private List<ChartConfigBean> deleteChart(Integer chartRef) {
+        ChartListBean charts = loadCharts();
 
-		// If it was found in the list, remove it...
-		if (foundChart != null) {
-			charts.entries.remove(foundChart);
-		}
+        ChartConfigBean foundChart = null;
+        for (ChartConfigBean i : charts.entries) {
+            if (i.id.intValue() == chartRef) {
+                // If it was found in the list, remember it...
+                foundChart = i;
+                break;
+            }
+        }
 
-		saveCharts(charts);
+        // If it was found in the list, remove it...
+        if (foundChart != null) {
+            charts.entries.remove(foundChart);
+        }
 
-		return getChartList();
-	}
+        saveCharts(charts);
 
-	private boolean saveCharts(ChartListBean chart) {
-		File folder = new File(HABminConstants.getDataDirectory());
-		// create path for serialization.
-		if (!folder.exists()) {
-			logger.debug("Creating directory {}", HABminConstants.getDataDirectory());
-			folder.mkdirs();
-		}
+        return getChartList();
+    }
 
-		try {
-			long timerStart = System.currentTimeMillis();
-			
-			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(HABminConstants.getDataDirectory() + CHART_FILE),"UTF-8"));
+    private boolean saveCharts(ChartListBean chart) {
+        File folder = new File(ConfigConstants.getUserDataFolder() + "/" + HABminConstants.HABMIN_DATA_DIR);
+        // create path for serialization.
+        if (!folder.exists()) {
+            logger.debug("Creating directory {}", HABminConstants.getDataDirectory());
+            folder.mkdirs();
+        }
 
-			XStream xstream = new XStream(new StaxDriver());
-			xstream.alias("charts", ChartListBean.class);
-			xstream.alias("chart", ChartConfigBean.class);
-			xstream.alias("item", ChartItemConfigBean.class);
-			xstream.alias("axis", ChartAxisConfigBean.class);
-			xstream.processAnnotations(ChartListBean.class);
+        try {
+            long timerStart = System.currentTimeMillis();
 
-			xstream.toXML(chart, out);
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(
+                            ConfigConstants.getUserDataFolder() + "/" + HABminConstants.HABMIN_DATA_DIR + CHART_FILE),
+                    "UTF-8"));
 
-			out.close();
+            XStream xstream = new XStream(new StaxDriver());
+            xstream.alias("charts", ChartListBean.class);
+            xstream.alias("chart", ChartConfigBean.class);
+            xstream.alias("item", ChartItemConfigBean.class);
+            xstream.alias("axis", ChartAxisConfigBean.class);
+            xstream.processAnnotations(ChartListBean.class);
 
-			long timerStop = System.currentTimeMillis();
-			logger.debug("Chart list saved in {}ms.", timerStop - timerStart);
-		} catch (FileNotFoundException e) {
-			logger.debug("Unable to open Chart list for SAVE - ", e);
+            xstream.toXML(chart, out);
 
-			return false;
-		} catch (IOException e) {
-			logger.debug("Unable to write Chart list for SAVE - ", e);
+            out.close();
 
-			return false;
-		}
+            long timerStop = System.currentTimeMillis();
+            logger.debug("Chart list saved in {}ms.", timerStop - timerStart);
+        } catch (FileNotFoundException e) {
+            logger.debug("Unable to open Chart list for SAVE - ", e);
 
-		return true;
-	}
+            return false;
+        } catch (IOException e) {
+            logger.debug("Unable to write Chart list for SAVE - ", e);
 
-	private ChartListBean loadCharts() {
-		ChartListBean charts = null;
+            return false;
+        }
 
-		FileInputStream fin;
-		try {
-			long timerStart = System.currentTimeMillis();
+        return true;
+    }
 
-			fin = new FileInputStream(HABminConstants.getDataDirectory() + CHART_FILE);
+    private ChartListBean loadCharts() {
+        ChartListBean charts = null;
 
-			XStream xstream = new XStream(new StaxDriver());
-			xstream.alias("charts", ChartListBean.class);
-			xstream.alias("chart", ChartConfigBean.class);
-			xstream.alias("item", ChartItemConfigBean.class);
-			xstream.alias("axis", ChartAxisConfigBean.class);
-			xstream.processAnnotations(ChartListBean.class);
+        FileInputStream fin;
+        try {
+            long timerStart = System.currentTimeMillis();
 
-			charts = (ChartListBean) xstream.fromXML(fin);
+            fin = new FileInputStream(
+                    ConfigConstants.getUserDataFolder() + "/" + HABminConstants.HABMIN_DATA_DIR + CHART_FILE);
 
-			fin.close();
+            XStream xstream = new XStream(new StaxDriver());
+            xstream.alias("charts", ChartListBean.class);
+            xstream.alias("chart", ChartConfigBean.class);
+            xstream.alias("item", ChartItemConfigBean.class);
+            xstream.alias("axis", ChartAxisConfigBean.class);
+            xstream.processAnnotations(ChartListBean.class);
 
-			long timerStop = System.currentTimeMillis();
-			logger.debug("Charts loaded in {}ms.", timerStop - timerStart);
+            charts = (ChartListBean) xstream.fromXML(fin);
 
-		} catch (FileNotFoundException e) {
-			charts = new ChartListBean();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+            fin.close();
 
-		return charts;
-	}
+            long timerStop = System.currentTimeMillis();
+            logger.debug("Charts loaded in {}ms.", timerStop - timerStart);
+
+        } catch (FileNotFoundException e) {
+            charts = new ChartListBean();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return charts;
+    }
 }
