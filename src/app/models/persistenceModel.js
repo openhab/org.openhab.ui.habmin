@@ -13,12 +13,13 @@ angular.module('HABmin.persistenceModel', [
 ])
 
     .service("PersistenceServiceModel", function ($http, $q, RestService) {
+        var svcName = "persistence";
         var serviceList = [];
 
         this.getList = function () {
             var tStart = new Date().getTime();
             var deferred = $q.defer();
-            RestService.getService('habmin/persistence').then(
+            RestService.getService(svcName).then(
                 function (url) {
                     $http.get(url)
                         .success(function (data) {
@@ -50,6 +51,8 @@ angular.module('HABmin.persistenceModel', [
     })
 
     .service('PersistenceDataModel', function ($http, $q, RestService, UserService) {
+        var svcName = "persistence";
+
         this.get = function (service, item, start, stop) {
             var deferred = $q.defer();
             var parms = {};
@@ -124,13 +127,14 @@ angular.module('HABmin.persistenceModel', [
             console.log("Request start", start, requestStart, "stop", stop, requestStop);
             console.log("HTML GET start at", new Date().getTime() - tStart);
 
-            RestService.getService('habmin/persistence').then(
+            RestService.getService(svcName).then(
                 function (url) {
-                    $http.get(url + "/" + service + "/" + item,
+                    $http.get(url  + "/" + item,
                         {
                             params: {
-                                starttime: requestStart,
-                                endtime: requestStop
+                                servicename: service,
+                                starttime: new Date(requestStart).toISOString(),
+                                endtime: new Date(requestStop).toISOString()
                             }
                         })
                         .success(function (data) {
@@ -236,53 +240,6 @@ angular.module('HABmin.persistenceModel', [
 
                 return data;
             }
-        };
-    })
-
-    // Item model - currently only used for OH1
-    .service('PersistenceItemModel', function ($http, $q, UserService, RestService) {
-        this.url = UserService.getServer() + '/services/habmin/persistence/items';
-        this.get = function () {
-            var itemList = [];
-            var tStart = new Date().getTime();
-            var deferred = $q.defer();
-
-            RestService.getService('habmin/persistenceitem').then(
-                function (url) {
-                    if (url == null) {
-                        deferred.resolve(null);
-                        return;
-                    }
-
-                    $http.get(url)
-                        .success(function (data) {
-                            console.log("Fetch completed in", new Date().getTime() - tStart);
-
-                            itemList = [].concat(data.items);
-                            angular.forEach(itemList, function (item) {
-                                if (item.label == null) {
-                                    item.stateDescription = {
-                                        pattern: ""
-                                    };
-                                    item.label = item.name;
-                                    return;
-                                }
-                                item.stateDescription = {
-                                    pattern: item.format
-                                };
-                            });
-
-                            deferred.resolve(itemList);
-                        })
-                        .error(function (data, status) {
-                            deferred.reject(data);
-                        });
-                },
-                function () {
-                    deferred.reject(null);
-                }
-            );
-            return deferred.promise;
         };
     })
 ;

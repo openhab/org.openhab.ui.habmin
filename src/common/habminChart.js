@@ -5,7 +5,7 @@
  * This software is copyright of Chris Jackson under the GPL license.
  * Note that this licence may be changed at a later date.
  *
- * (c) 2014-2015 Chris Jackson (chris@cd-jackson.com)
+ * (c) 2014-2016 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('habminChart', [
     'ngLocalize',
@@ -17,7 +17,7 @@ angular.module('habminChart', [
 ])
 
     .directive('habminChart',
-    function (PersistenceItemModel, PersistenceDataModel, ChartModel, UserService, VisDataSet, growl, locale) {
+    function (PersistenceDataModel, ChartModel, UserService, VisDataSet, growl, locale) {
         return {
             restrict: 'E',
             scope: {
