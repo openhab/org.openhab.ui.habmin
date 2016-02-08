@@ -193,6 +193,8 @@
   "thingWizardBinding": "Binding",
   "thingWizardType": "Thing Type",
   "thingWizardConfigure": "Configure",
+  "thingDeleteItemOk": "Item successfully deleted from channel",
+  "thingDeleteItemFailed": "Error deleting item from channel",
   "discoveryStartOk": "Discovery started for binding <b><i>{name}</i></b>",
   "discoveryStartFail": "Discovery failed for binding <b><i>{name}</i></b>",
   "discoveryIgnoreFail": "Failed to ignore <b><i>{name}</i></b>",

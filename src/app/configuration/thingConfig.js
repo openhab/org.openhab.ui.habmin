@@ -390,7 +390,14 @@ angular.module('Config.Things', [
         };
 
         $scope.deleteItem = function (item) {
-            ItemModel.deleteItem(item);
+            ItemModel.deleteItem(item).then(
+                function() {
+                    growl.success(locale.getString("habmin.thingDeleteItemOk"));
+                },
+                function(){
+                    growl.success(locale.getString("habmin.thingDeleteItemFailed"));
+                }
+            );
         };
 
         $scope.getItem = function (itemName) {

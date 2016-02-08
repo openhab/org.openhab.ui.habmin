@@ -163,7 +163,7 @@ angular.module('HABmin', [
     ])
 
     .controller('HABminCtrl',
-    function HABminCtrl($scope, $state, $window, $timeout, $interval, $rootScope, locale, ChartModel, ItemModel, ThingModel, DashboardModel, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, InboxModel, RestService, UpdateService, EventModel, ServerMonitor) {
+    function HABminCtrl($scope, $q, $state, $window, $timeout, $interval, $rootScope, locale, ChartModel, ItemModel, ThingModel, DashboardModel, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, InboxModel, RestService, UpdateService, EventModel, ServerMonitor) {
         $scope.$state = $state;
 
         $scope.isLoggedIn = UserService.isLoggedIn;

@@ -383,7 +383,7 @@
                     <a role="presentation" ng-class="{'list-group-item':true, 'active': panelDisplayed=='CHANNELS'}"
                        ng-click="setPanelDisplayed('CHANNELS')">
                         <span class="fa fa-fw fa-navicon"></span>
-                        <span i18n="habmin.thingChannels"></span> <span ng-if="selectedThingType.channels.length">[{{selectedThingType.channels.length}}]</span>
+                        <span i18n="habmin.thingChannels"></span> <span ng-if="selectedThing.channels.length">[{{selectedThing.channels.length}}]</span>
                     </a>
                 </div>
                 <div collapse="panelDisplayed!='CHANNELS'"
@@ -437,7 +437,7 @@
 
                                     <div class="pull-right">
                                         <button type="button" class="btn btn-primary btn-xs"
-                                                ng-click="addItem()">
+                                                ng-click="addItem(channel)">
                                             <span class="fa fa-plus-circle"></span> <span
                                                 i18n="common.add"></span>
                                         </button>
