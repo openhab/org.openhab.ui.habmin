@@ -454,6 +454,12 @@ angular.module('HABmin.thingModel', [
                     if (value == undefined) {
                         return false;
                     }
+                    if(value == "false") {
+                        return false;
+                    }
+                    if(value == "true") {
+                        return true;
+                    }
                     return Boolean(value);
                 case "DECIMAL":
                     if (value == undefined) {
@@ -464,19 +470,20 @@ angular.module('HABmin.thingModel', [
         }
 
         this.convertType = function (type, value, multiple) {
+            var retValue = null;
             if (multiple) {
-                value = [].concat(value);
+                retValue = [].concat(value);
             }
             if (angular.isArray(value)) {
                 angular.forEach(value, function (val) {
-                    val = _convertType(type, val);
+                    retValue = _convertType(type, val);
                 });
             }
             else {
-                value = _convertType(type, value);
+                retValue = _convertType(type, value);
             }
 
-            return value;
+            return retValue;
         };
 
     })

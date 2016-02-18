@@ -316,9 +316,7 @@ angular.module('Config.Things', [
                 return;
             }
             angular.forEach($scope.selectedThingType.configParameters, function (parameter) {
-                $scope.selectedThing.configuration[parameter.name] =
-                    ThingModel.convertType(parameter.type, $scope.selectedThing.configuration[parameter.name],
-                        parameter.multiple);
+                $scope.selectedThing.configuration[parameter.name] = $scope.selectedThing.configuration[parameter.name].toString();
             });
 
             // Get the configuration
@@ -340,7 +338,7 @@ angular.module('Config.Things', [
                         // Ensure the options are converted to the correct type
                         angular.forEach(channel.channelType.configParameters, function (parameter) {
                             angular.forEach(parameter.options, function (option) {
-                                option.value = ThingModel.convertType(parameter.type, option.value);
+                                option.value = option.value.toString();
                             });
                         });
                     },
@@ -353,7 +351,7 @@ angular.module('Config.Things', [
             // Ensure the options are converted to the correct type
             angular.forEach($scope.selectedThingType.configParameters, function (parameter) {
                 angular.forEach(parameter.options, function (option) {
-                    option.value = ThingModel.convertType(parameter.type, option.value);
+                    option.value = option.value.toString();
                 });
             });
 
@@ -386,6 +384,12 @@ angular.module('Config.Things', [
                 type: channel.itemType + 'Item',
                 category: channel.channelType.category
             };
+
+            if(channel.linkedItems.length == 0) {
+                newItem.name = $scope.selectedThing.UID + "_" + channel.id;
+                newItem.name = newItem.name.replace(/:/g, "_");
+            }
+
             itemEdit.edit($scope.selectedThing, channel, newItem);
         };
 
@@ -395,7 +399,7 @@ angular.module('Config.Things', [
                     growl.success(locale.getString("habmin.thingDeleteItemOk"));
                 },
                 function(){
-                    growl.success(locale.getString("habmin.thingDeleteItemFailed"));
+                    growl.warning(locale.getString("habmin.thingDeleteItemFailed"));
                 }
             );
         };
@@ -552,10 +556,8 @@ angular.module('Config.Things', [
                     return;
                 }
 
-                $scope.selectedThing.configuration[parameter.name] =
-                    ThingModel.convertType(parameter.type, $scope.thingConfigForm[parameter.name].$modelValue,
+                dirtyCfg[parameter.name] = ThingModel.convertType(parameter.type, $scope.thingConfigForm[parameter.name].$modelValue,
                         parameter.multiple);
-                dirtyCfg[parameter.name] = $scope.selectedThing.configuration[parameter.name];
                 workToDo = true;
             });
 
