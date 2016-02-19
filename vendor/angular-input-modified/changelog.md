@@ -1,5 +1,23 @@
 # angular-input-modified changelog
 
+## Version 2.3.2
+(15 Feb 2016)
+
+- Added CommonJS support
+
+
+## Version 2.3.1
+(10 Feb 2016)
+
+- Refactored `reset()` functionality, it is much more reliable now
+
+
+## Version 2.3.0
+(26 Dec 2015)
+
+- Added form change event
+
+
 ## Version 2.2.5
 (30 Jul 2015)
 

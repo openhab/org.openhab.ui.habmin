@@ -57,7 +57,7 @@ This module also supports animations if `ngAnimate` module is available.
 
 ### Install library with NPM
 
-`npm install --save angular-input-modified`
+`npm i --save angular-input-modified`
 
 
 ### Add library to your page
@@ -124,6 +124,24 @@ It's all up to you!
 
 Please see [the special demo][demo-excluded-elements].
 
+### Listening for form changes
+
+When a form is modified, it fires the `inputModified.formChanged` event.
+Parent scopes can listen to this event.
+Modification flag and reference to the form controller are passed to event listener.
+Following is an example of parent scope listening to this event.
+
+```javascript
+/**
+ * @param {object}  event
+ * @param {boolean} modified
+ * @param {object}  formCtrl
+ */
+$scope.$on('inputModified.formChanged', function (event, modified, formCtrl) {
+  // Process the modified event,
+  // use formCtrl.$name to get the form name.
+});
+```
 
 ## API
 
@@ -180,11 +198,15 @@ angular.module('Application', ['ngInputModified'])
 | modifiedChildFormsCount  | `integer`  | The number of modified child forms
 | modifiedChildForms       | `array`    | The list of modified child form controllers
 
-
 | Method          | Description
 |-----------------|------------------------------------------------------------------------
 | reset()         | Resets all input fields of the form to their initial states
 | $setPristine()  | Makes form pristine by making all child forms and form fields pristine
+
+| Event                      | Listener Attributes        | Description
+|----------------------------|----------------------------|------------------------------------------------------------------------
+| inputModified.formChanged  | event, modified, formCtrl  | Fired up through the scope chain when form is changed
+
 
 
 ### bsModifiable
@@ -223,8 +245,9 @@ Cheers!
 
 Node.js must be installed in your OS.
 
-- Install [Gulp][gulp] by running `npm install -g gulp`
 - clone the repo
+- `npm i && bower install` to initialize the project
+- install [Gulp][gulp] by running `npm i -g gulp`
 - run `gulp demo` in the repo's root directory
 - open `http://localhost:8888/`
 
@@ -235,7 +258,7 @@ Fork, clone, create a feature branch, commit, create a PR.
 
 Run:
 
-- `npm install && bower install` to initialize the project
+- `npm i && bower install` to initialize the project
 - `gulp build` to re-build the dist files
 - `gulp demo` to run local webserver with demos
 - `gulp demo-deploy` to deploy GitHub Pages
@@ -255,7 +278,7 @@ Thank you!
 
 The MIT License (MIT)
 
-Copyright (c) 2014 - 2015 Slava Fomin II, BETTER SOLUTIONS
+Copyright (c) 2014 - 2016 Slava Fomin II, BETTER SOLUTIONS
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

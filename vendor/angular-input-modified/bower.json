@@ -1,18 +1,21 @@
 {
-    "name": "angular-input-modified",
-    "description": "Angular.js module to detect and indicate input modifications",
-    "version": "2.2.5",
-    "main": "dist/angular-input-modified.js",
-    "ignore" : [
-        "demos",
-        "emblem/emblem.eps",
-        "src",
-        "tests",
-        ".*",
-        "gulpfile.js",
-        "package.json"
-    ],
-    "dependencies": {
-        "angular": "~1"
-    }
+  "name": "angular-input-modified",
+  "description": "Angular.js module to detect and indicate input modifications",
+  "version": "2.3.2",
+  "main": "dist/angular-input-modified.js",
+  "ignore": [
+    "demos",
+    "emblem/emblem.eps",
+    "src",
+    "tests",
+    ".*",
+    "gulpfile.js",
+    "package.json"
+  ],
+  "dependencies": {
+    "angular": "~1"
+  },
+  "devDependencies": {
+    "angular-ui-tinymce": "~0.0.10"
+  }
 }
