@@ -216,9 +216,9 @@ angular.module('Config.Things', [
                 return false;
             }
 
-            for (var i = 0; i < $scope.selectedThingType.configParameters.length; i++) {
-                if ($scope.selectedThingType.configParameters[i].groupName == group.name &&
-                    !($scope.selectedThingType.configParameters[i].advanced == true)) {
+            for (var i = 0; i < $scope.selectedThingConfig.parameters.length; i++) {
+                if ($scope.selectedThingConfig.parameters[i].groupName == group.name &&
+                    !($scope.selectedThingConfig.parameters[i].advanced == true)) {
                     return true;
                 }
             }
@@ -227,22 +227,22 @@ angular.module('Config.Things', [
         };
 
         $scope.thingHasUngroupedParams = function () {
-            if ($scope.selectedThingType == null || $scope.selectedThingType.configParameters == null) {
+            if ($scope.selectedThingConfig == null || $scope.selectedThingConfig.parameters == null) {
                 return false;
             }
 
-            for (var cnt1 = 0; cnt1 < $scope.selectedThingType.configParameters.length; cnt1++) {
+            for (var cnt1 = 0; cnt1 < $scope.selectedThingConfig.parameters.length; cnt1++) {
                 // If there's no group name, then it's not grouped
-                if ($scope.selectedThingType.configParameters[cnt1].groupName == null ||
-                    $scope.selectedThingType.configParameters[cnt1].groupName == "") {
+                if ($scope.selectedThingConfig.parameters[cnt1].groupName == null ||
+                    $scope.selectedThingConfig.parameters[cnt1].groupName == "") {
                     return true;
                 }
 
                 // If it has a group name, but the group doesn't exist, then it's ungrouped
                 var found = false;
-                for (var cnt2 = 0; cnt2 < $scope.selectedThingType.parameterGroups.length; cnt2++) {
-                    if ($scope.selectedThingType.parameterGroups[cnt2].name ==
-                        $scope.selectedThingType.configParameters[cnt1].groupName) {
+                for (var cnt2 = 0; cnt2 < $scope.selectedThingConfig.parameterGroups.length; cnt2++) {
+                    if ($scope.selectedThingConfig.parameterGroups[cnt2].name ==
+                        $scope.selectedThingConfig.parameters[cnt1].groupName) {
                         found = true;
                         break;
                     }
@@ -251,6 +251,8 @@ angular.module('Config.Things', [
                     return true;
                 }
             }
+
+            return false;
         };
 
         /**
@@ -303,28 +305,59 @@ angular.module('Config.Things', [
         };
 
         $scope.selectThing = function (thing) {
+            console.debug("Selected thing", thing);
             $scope.formLoaded = false;
             $scope.newThing = false;
             $scope.selectedThing = null;
             $scope.panelDisplayed = 'PROPERTIES';
 
             // We make a copy here so that we're not editing the live version
-            $scope.selectedThing = angular.copy(thing);//ThingModel.getThing(thing.UID));
+            $scope.selectedThing = angular.copy(thing);
 
             $scope.selectedThingType = $scope.getThingType(thing);
             if ($scope.selectedThingType == null) {
+                console.error("selectedThingType is null!");
                 return;
             }
-            angular.forEach($scope.selectedThingType.configParameters, function (parameter) {
-                $scope.selectedThing.configuration[parameter.name] = $scope.selectedThing.configuration[parameter.name].toString();
-            });
 
             // Get the configuration
             ThingModel.getConfig(thing.UID).then(
                 function (cfg) {
                     $scope.selectedThingConfig = cfg;
+
+                    // Convert all configuration values to strings for processing internally...
+                    // We'll convert them back later!
+                    angular.forEach($scope.selectedThingConfig.parameters, function (parameter) {
+                        var val = $scope.selectedThing.configuration[parameter.name];
+                        if (val == null) {
+                            val = "";
+                        }
+                        if (parameter.multiple == true) {
+                            if (val == "") {
+                                val = [];
+                            }
+                            else {
+                                val = [].concat(val);
+                            }
+                            angular.forEach(val, function (option) {
+                                option = option.toString();
+                            });
+                            $scope.selectedThing.configuration[parameter.name] = val;
+                        }
+                        else {
+                            $scope.selectedThing.configuration[parameter.name] = val.toString();
+                        }
+                    });
+
+                    // Ensure the options are converted to the correct type
+                    angular.forEach($scope.selectedThingConfig.parameters, function (parameter) {
+                        angular.forEach(parameter.options, function (option) {
+                            option.value = option.value.toString();
+                        });
+                    });
                 },
                 function () {
+                    console.error("No configuration returned");
                     $scope.selectedThingConfig = null;
                 }
             );
@@ -343,16 +376,10 @@ angular.module('Config.Things', [
                         });
                     },
                     function () {
+                        console.error("No channels returned");
                         channel.channelType = null;
                     }
                 );
-            });
-
-            // Ensure the options are converted to the correct type
-            angular.forEach($scope.selectedThingType.configParameters, function (parameter) {
-                angular.forEach(parameter.options, function (option) {
-                    option.value = option.value.toString();
-                });
             });
 
             $timeout(function () {
@@ -385,7 +412,7 @@ angular.module('Config.Things', [
                 category: channel.channelType.category
             };
 
-            if(channel.linkedItems.length == 0) {
+            if (channel.linkedItems.length == 0) {
                 newItem.name = $scope.selectedThing.UID + "_" + channel.id;
                 newItem.name = newItem.name.replace(/:/g, "_");
             }
@@ -395,10 +422,10 @@ angular.module('Config.Things', [
 
         $scope.deleteItem = function (item) {
             ItemModel.deleteItem(item).then(
-                function() {
+                function () {
                     growl.success(locale.getString("habmin.thingDeleteItemOk"));
                 },
-                function(){
+                function () {
                     growl.warning(locale.getString("habmin.thingDeleteItemFailed"));
                 }
             );
@@ -509,7 +536,8 @@ angular.module('Config.Things', [
                         for (var cnt = 0; cnt < channelType.channelType.parameters.length; cnt++) {
                             if (channelType.channelType.parameters[cnt].name == model.$name) {
                                 channel.configuration[model.$name] =
-                                    ThingModel.convertType(channelType.channelType.parameters[cnt].type, model.$modelValue,
+                                    ThingModel.convertType(channelType.channelType.parameters[cnt].type,
+                                        model.$modelValue,
                                         channelType.channelType.parameters[cnt].multiple);
 
                                 thingUpdated = true;
@@ -519,7 +547,7 @@ angular.module('Config.Things', [
                 });
             }
 
-            if(thingUpdated == true) {
+            if (thingUpdated == true) {
                 promises.push(ThingModel.putThing($scope.selectedThing));
             }
 
@@ -547,7 +575,7 @@ angular.module('Config.Things', [
             var workToDo = false;
 
             // Perform type conversion to ensure that any INTEGER types are sent as a number
-            angular.forEach($scope.selectedThingType.configParameters, function (parameter, key) {
+            angular.forEach($scope.selectedThingConfig.parameters, function (parameter, key) {
                 // If this value doesn't exist in the object, then return!
                 // This can happen for advanced parameters when not in advanced mode
                 // If this value hasn't changed, then don't send an update
@@ -556,7 +584,8 @@ angular.module('Config.Things', [
                     return;
                 }
 
-                dirtyCfg[parameter.name] = ThingModel.convertType(parameter.type, $scope.thingConfigForm[parameter.name].$modelValue,
+                dirtyCfg[parameter.name] =
+                    ThingModel.convertType(parameter.type, $scope.thingConfigForm[parameter.name].$modelValue,
                         parameter.multiple);
                 workToDo = true;
             });

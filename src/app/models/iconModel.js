@@ -145,6 +145,7 @@ angular.module('HABmin.iconModel', []
             comment: 'fa fa-comment',
             communication: 'fa fa-tty',
             compass: 'fa fa-compass',
+            config: ' fa fa-cogs',
             database: 'fa fa-database',
             folder: 'fa fa-folder',
             health: 'fa fa-ambulance',

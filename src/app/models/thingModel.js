@@ -57,8 +57,7 @@ angular.module('HABmin.thingModel', [
         this.listen = function () {
             eventSrc = new EventSource("/rest/events?topics=smarthome/things/*");
             eventSrc.addEventListener('message', function (event) {
-                console.log(event.type);
-                console.log(event.data);
+                console.debug("Received event in thingModel", event.type);
 
                 var evt = angular.fromJson(event.data);
                 var payload = angular.fromJson(evt.payload);
@@ -476,7 +475,7 @@ angular.module('HABmin.thingModel', [
             }
             if (angular.isArray(value)) {
                 angular.forEach(value, function (val) {
-                    retValue = _convertType(type, val);
+                    val = _convertType(type, val);
                 });
             }
             else {
