@@ -17,7 +17,7 @@ angular.module('Config.ItemEdit', [
 ])
     .service('itemEdit',
     function ($modal, $rootScope, growl, locale, UserService, ItemModel, SmartHomeModel) {
-        this.edit = function (thing, channel, item) {
+        this.edit = function (thing, channel, item, create) {
             var scope = $rootScope.$new();
             scope.item = angular.copy(item);
             scope.itemtypes = SmartHomeModel.itemtypes;
@@ -42,19 +42,43 @@ angular.module('Config.ItemEdit', [
                     }
                     ItemModel.putItem($scope.item).then(
                         function (newItem) {
+                            if(create != true) {
+                                $modalInstance.close($scope.item);
+                                growl.success(locale.getString("habmin.itemSaveOk",
+                                    {name: $scope.item.label}));
+
+                                return;
+                            }
+
                             ItemModel.linkItem(thing, channel, newItem).then(
                                 function () {
                                     $modalInstance.close($scope.item);
-                                },
-                                function () {
-                                    growl.warning(locale.getString("habmin.itemSaveFailed",
+                                    growl.success(locale.getString("habmin.itemSaveOk",
                                         {name: $scope.item.label}));
+                                },
+                                function (response) {
+                                    var msg;
+                                    if(response != null && response.error != null) {
+                                        msg = response.error.message;
+                                    }
+                                    else {
+                                        msg = locale.getString("common.noResponse");
+                                    }
+                                    growl.warning(locale.getString("habmin.itemSaveFailed",
+                                        {name: $scope.item.label, message: msg}));
                                 }
                             );
                         },
-                        function () {
+                        function (response) {
+                            var msg;
+                            if(response != null && response.error != null) {
+                                msg = response.error.message;
+                            }
+                            else {
+                                msg = locale.getString("common.noResponse");
+                            }
                             growl.warning(locale.getString("habmin.itemSaveFailed",
-                                {name: $scope.item.label}));
+                                {name: $scope.item.label, message: msg}));
                         }
                     );
                 };

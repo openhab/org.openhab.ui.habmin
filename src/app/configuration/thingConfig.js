@@ -417,7 +417,7 @@ angular.module('Config.Things', [
                 newItem.name = newItem.name.replace(/:/g, "_");
             }
 
-            itemEdit.edit($scope.selectedThing, channel, newItem);
+            itemEdit.edit($scope.selectedThing, channel, newItem, true);
         };
 
         $scope.deleteItem = function (item) {
