@@ -200,7 +200,7 @@
                     <li>
                         <a ng-click="showAdvancedSettings=!showAdvancedSettings">
                             <span class="fa fa-fw" ng-class="{'fa-check-square-o': showAdvancedSettings}"></span>
-                            <span class="fa fa-fw fa-cogs"></span>
+                            <span class="fa fa-fw fa-mortar-board"></span>
                             <span i18n="habmin.thingAdvancedMode"></span>
                         </a>
                     </li>
@@ -210,7 +210,7 @@
 
         <!-- Body -->
         <div class="list-group habmin-list" resize-panel>
-            <form name="thingConfigForm" novalidate ng-show="formLoaded" style="height:100%">
+            <form name="thingConfigForm" novalidate ng-show="formLoaded" class="ng-hide-add" style="height:100%">
                 <!-- DESCRIPTION -->
                 <div>
                     <a role="presentation"
@@ -462,13 +462,21 @@
                                         </thead>
                                         <tbody>
                                         <tr ng-repeat="itemName in channel.linkedItems"
-                                                ng-init="item=getItem(itemName)">
+                                            ng-init="item=getItem(itemName)">
                                             <td class="span-hover">
                                                 <habmin-icon class="fa fa-fw"
                                                              itemtype="{{item.type}}"></habmin-icon>
                                                 {{item.label}}
-                                                <span class="span-hover-hide fa fa-clipboard" clipboard
-                                                      text="getItem(item).name"></span>
+                                                <span tooltip-placement="top" tooltip="copy item name to clipboard"
+                                                      tooltip-popup-delay="1500"
+                                                      tooltip-enable="true" tooltip-trigger tooltip-animation="false"
+                                                      tooltip-append-to-body="true">
+                                                    <span class="span-hover-hide fa fa-clipboard" clipboard
+                                                          text="item.name"
+                                                          on-copied="copySuccess(item.name)"
+                                                          on-error="copyFailure(err)">
+                                                    </span>
+                                                </span>
                                             </td>
                                             <td>
                                                 <div class="pull-right">

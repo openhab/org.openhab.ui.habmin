@@ -20,5 +20,6 @@
   "areYouSure": "Are You Sure?",
   "loading": "loading...",
   "Edit": "Edit",
-  "noResponse": "No Response"
+  "noResponse": "No Response",
+  "clipboardError": "Error copying to clipboard"
 }

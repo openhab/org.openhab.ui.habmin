@@ -222,6 +222,7 @@
   "itemSaveFailed": "Error saving item <b><i>{name}</i></b>.<br>{message}",
   "itemDelete": "Delete Item",
   "itemDeleteCheck": "Are you sure you want to delete the item?",
+  "itemNameCopiedOk": "Item name <b><i>{name}</i></b> copied to clipboard",
   "errorLoadingSitemaps": "Error loading the sitemap list!",
   "period1Second": "1 Second",
   "period5Seconds": "5 Seconds",

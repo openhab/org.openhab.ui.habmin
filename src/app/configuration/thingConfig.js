@@ -311,26 +311,43 @@ angular.module('Config.Things', [
             $scope.selectedThing = null;
             $scope.panelDisplayed = 'PROPERTIES';
 
-            // We make a copy here so that we're not editing the live version
-            $scope.selectedThing = angular.copy(thing);
+            $scope.thingConfigForm.reset();
 
-            $scope.selectedThingType = $scope.getThingType(thing);
-            if ($scope.selectedThingType == null) {
-                console.error("selectedThingType is null!");
-                return;
-            }
+            var promises = {};
 
             // Get the configuration
-            ThingModel.getConfig(thing.UID).then(
-                function (cfg) {
-                    $scope.selectedThingConfig = cfg;
+            promises.config = ThingModel.getConfig(thing.UID);
+
+            // Get the channels
+            angular.forEach(thing.channels, function (channel) {
+                promises[channel.channelTypeUID] = ChannelTypeModel.getChannelType(channel.channelTypeUID);
+            });
+
+            // Wait for all the promises to complete before processing the data
+            $q.all(promises).then(
+                function (values) {
+                    // We make a copy here so that we're not editing the live version
+                    $scope.selectedThing = angular.copy(thing);
+
+                    $scope.selectedThingType = $scope.getThingType(thing);
+                    if ($scope.selectedThingType == null) {
+                        console.error("selectedThingType is null!");
+                        return;
+                    }
+
+                    $scope.selectedThingConfig = values.config;
 
                     // Convert all configuration values to strings for processing internally...
                     // We'll convert them back later!
                     angular.forEach($scope.selectedThingConfig.parameters, function (parameter) {
                         var val = $scope.selectedThing.configuration[parameter.name];
-                        if (val == null) {
-                            val = "";
+                        if (val == null || val == "null") {
+                            if (parameter.defaultValue != null && parameter.defaultValue != "null") {
+                                val = parameter.defaultValue;
+                            }
+                            else {
+                                val = "";
+                            }
                         }
                         if (parameter.multiple == true) {
                             if (val == "") {
@@ -349,43 +366,59 @@ angular.module('Config.Things', [
                         }
                     });
 
-                    // Ensure the options are converted to the correct type
+                    // Ensure the options are converted to a string for internal processing
                     angular.forEach($scope.selectedThingConfig.parameters, function (parameter) {
                         angular.forEach(parameter.options, function (option) {
                             option.value = option.value.toString();
                         });
                     });
-                },
-                function () {
-                    console.error("No configuration returned");
-                    $scope.selectedThingConfig = null;
-                }
-            );
 
-            // Get all the channel types
-            angular.forEach($scope.selectedThing.channels, function (channel) {
-                ChannelTypeModel.getChannelType(channel.channelTypeUID).then(
-                    function (cfg) {
-                        channel.channelType = cfg;
+                    // Process all the channel types
+                    angular.forEach($scope.selectedThing.channels, function (channel) {
+                        channel.channelType = values[channel.channelTypeUID];
 
-                        // Ensure the options are converted to the correct type
-                        angular.forEach(channel.channelType.configParameters, function (parameter) {
+                        // Ensure the options are converted to a string for internal processing
+                        angular.forEach(channel.channelType.parameters, function (parameter) {
+                            var val = channel.configuration[parameter.name];
+                            if (val == null || val == "null") {
+                                if (parameter.defaultValue != null && parameter.defaultValue != "null") {
+                                    val = parameter.defaultValue;
+                                }
+                                else {
+                                    val = "";
+                                }
+                            }
+                            if (parameter.multiple == true) {
+                                if (val == "") {
+                                    val = [];
+                                }
+                                else {
+                                    val = [].concat(val);
+                                }
+                                angular.forEach(val, function (option) {
+                                    option = option.toString();
+                                });
+                                channel.configuration[parameter.name] = val;
+                            }
+                            else {
+                                channel.configuration[parameter.name] = val.toString();
+                            }
+
                             angular.forEach(parameter.options, function (option) {
                                 option.value = option.value.toString();
                             });
                         });
-                    },
-                    function () {
-                        console.error("No channels returned");
-                        channel.channelType = null;
-                    }
-                );
-            });
+                    });
 
-            $timeout(function () {
-                $scope.thingConfigForm.$setPristine();
-                $scope.formLoaded = true;
-            });
+                    $timeout(function () {
+                        $scope.thingConfigForm.$setPristine();
+                        $scope.formLoaded = true;
+                    });
+                },
+                function () {
+                    console.error("No configuration returned");
+                }
+            );
         };
 
         $scope.getChannelItems = function (channel) {
@@ -412,6 +445,7 @@ angular.module('Config.Things', [
                 category: channel.channelType.category
             };
 
+            // If there's no items currently associated with this channel then use the auto name...
             if (channel.linkedItems.length == 0) {
                 newItem.name = $scope.selectedThing.UID + "_" + channel.id;
                 newItem.name = newItem.name.replace(/:/g, "_");
@@ -525,20 +559,24 @@ angular.module('Config.Things', [
                     }
 
                     // Get the channel type so we can get the type information
-                    var channelType = $scope.getChannelType(channel.id);
-                    if (channelType == null) {
-                        return;
+//                    var channelType = $scope.getChannelType(channel.id);
+//                    if (channelType == null) {
+//                        return;
+//                    }
+
+                    if (channel.configuration == null) {
+                        channel.configuration = {};
                     }
 
                     // Loop over all the modified parameters
                     angular.forEach(childForm.modifiedModels, function (model) {
                         // Get the configuration description
-                        for (var cnt = 0; cnt < channelType.channelType.parameters.length; cnt++) {
-                            if (channelType.channelType.parameters[cnt].name == model.$name) {
+                        for (var cnt = 0; cnt < channel.channelType.parameters.length; cnt++) {
+                            if (channel.channelType.parameters[cnt].name == model.$name) {
                                 channel.configuration[model.$name] =
-                                    ThingModel.convertType(channelType.channelType.parameters[cnt].type,
+                                    ThingModel.convertType(channel.channelType.parameters[cnt].type,
                                         model.$modelValue,
-                                        channelType.channelType.parameters[cnt].multiple);
+                                        channel.channelType.parameters[cnt].multiple);
 
                                 thingUpdated = true;
                             }
@@ -605,13 +643,18 @@ angular.module('Config.Things', [
                     }
                     growl.success(locale.getString("habmin.thingSuccessSavingThing",
                         {name: name}));
-                    $scope.thingConfigForm.$setPristine();
+
+                    $timeout(function () {
+                        $scope.thingConfigForm.$setPristine();
+                    });
                 },
                 function () {
                     var name = "";
                     if ($scope.selectedThing.item != null) {
                         name = $scope.selectedThing.item.label;
                     }
+
+                    // TODO: Display the error
                     growl.error(locale.getString("habmin.thingErrorSavingThing",
                         {name: name}));
                 }
@@ -699,13 +742,7 @@ angular.module('Config.Things', [
 
                     // Handle any type conversion and default parameters
                     angular.forEach(type.configParameters, function (parameter) {
-                        if (parameter.type == 'BOOLEAN') {
-                            $scope.selectedThing.configuration[parameter.name] =
-                                parameter.defaultValue === 'true' ? true : false;
-                        }
-                        else {
-                            $scope.selectedThing.configuration[parameter.name] = parameter.defaultValue;
-                        }
+                        ThingModel.convertType(parameter.type, parameter.defaultValue, parameter.multiple);
                     });
 
                     if ($scope.selectedThing.item != null) {
@@ -745,6 +782,14 @@ angular.module('Config.Things', [
                         {name: thing.item.label}));
                 }
             );
+        };
+
+        $scope.copySuccess = function (itemName) {
+            growl.success(locale.getString("habmin.itemNameCopiedOk", {name: itemName}));
+        };
+
+        $scope.copyFailure = function (error) {
+            growl.warning(locale.getString("common.clipboardError"));
         };
     })
 
