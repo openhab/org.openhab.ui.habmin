@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h3 class="modal-title" i18n="habmin.scheduleEditTitle"></h3>
+    <h3 class="modal-title" i18n="schedule.EditTitle"></h3>
 </div>
 <div class="modal-body">
     <ul class="nav nav-tabs">
@@ -12,7 +12,7 @@
     <div ng-show="tabDisplayed=='event'">
         <form class="form-horizontal" role="form">
             <div class="form-group">
-                <label for="inputLabel" class="control-label" i18n="habmin.scheduleEditLabel"></label>
+                <label for="inputLabel" class="control-label" i18n="schedule.EditLabel"></label>
 
                 <div>
                     <input type="text" ng-model="event.label" class="form-control" id="inputLabel"
@@ -21,7 +21,7 @@
             </div>
 
             <div class="form-group">
-                <label class="control-label" i18n="habmin.scheduleEditStart"></label>
+                <label class="control-label" i18n="schedule.EditStart"></label>
 
                 <p class="input-group">
                     <input type="text" class="form-control" datetime-picker="dd MMM yyyy HH:mm"
@@ -35,7 +35,7 @@
             </div>
 
             <div class="form-group">
-                <label class="control-label" i18n="habmin.scheduleEditDaily"></label>
+                <label class="control-label" i18n="schedule.EditDaily"></label>
 
                 <div>
                     <form-select-yes-no ng-model="event.daily" placeholder="Label"/>
@@ -43,7 +43,7 @@
             </div>
 
             <div class="form-group">
-                <label for="inputRepeat" class="control-label" i18n="habmin.scheduleEditRepeat"></label>
+                <label for="inputRepeat" class="control-label" i18n="schedule.EditRepeat"></label>
 
                 <div>
                     <ui-select id="inputRepeat"
@@ -51,7 +51,7 @@
                                theme="bootstrap"
                                search-enabled="false"
                             >
-                        <ui-select-match i18n-attr="{placeholder: 'habmin.scheduleEditRepeat'}">
+                        <ui-select-match i18n-attr="{placeholder: 'schedule.EditRepeat'}">
                             {{$select.selected.label}}
                         </ui-select-match>
                         <ui-select-choices repeat="repeat.period as repeat in repeater">

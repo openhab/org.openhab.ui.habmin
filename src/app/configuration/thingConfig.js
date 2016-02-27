@@ -46,7 +46,7 @@ angular.module('Config.Things', [
                 // Make sure the localisation files are resolved before the controller runs
                 localisations: function ($q, locale) {
                     return $q.all([
-                        locale.ready('habmin'),
+                        locale.ready('thing'),
                         locale.ready('smarthome')
                     ]);
                 }
@@ -150,7 +150,7 @@ angular.module('Config.Things', [
             },
             function (reason) {
                 // Handle failure
-                growl.warning(locale.getString("habmin.mainErrorGettingBindings"));
+                growl.warning(locale.getString("habmin.ErrorGettingBindings"));
             }
         );
 
@@ -379,6 +379,9 @@ angular.module('Config.Things', [
 
                         // Ensure the options are converted to a string for internal processing
                         angular.forEach(channel.channelType.parameters, function (parameter) {
+                            if(channel.configuration == null) {
+                                channel.configuration = {};
+                            }
                             var val = channel.configuration[parameter.name];
                             if (val == null || val == "null") {
                                 if (parameter.defaultValue != null && parameter.defaultValue != "null") {
@@ -457,10 +460,10 @@ angular.module('Config.Things', [
         $scope.deleteItem = function (item) {
             ItemModel.deleteItem(item).then(
                 function () {
-                    growl.success(locale.getString("habmin.thingDeleteItemOk"));
+                    growl.success(locale.getString("thing.DeleteItemOk"));
                 },
                 function () {
-                    growl.warning(locale.getString("habmin.thingDeleteItemFailed"));
+                    growl.warning(locale.getString("thing.DeleteItemFailed"));
                 }
             );
         };
@@ -487,8 +490,8 @@ angular.module('Config.Things', [
             if ($scope.channelEnabled(channel)) {
                 ThingModel.disableChannel($scope.selectedThing.UID + ":" + channel.id).then(
                     function () {
-                        growl.success(locale.getString("habmin.thingChannelDisabledOk",
-                            {thing: $scope.selectedThing.item.label, channel: channel.label}));
+                        growl.success(locale.getString("thing.ChannelDisabledOk",
+                            {thing: $scope.selectedThing.label, channel: channel.label}));
 
                         ThingModel.getThing($scope.selectedThing.UID).then(
                             function (data) {
@@ -497,22 +500,22 @@ angular.module('Config.Things', [
                         );
                     },
                     function () {
-                        growl.warning(locale.getString("habmin.thingChannelDisabledError",
-                            {thing: $scope.selectedThing.item.label, channel: channel.label}));
+                        growl.warning(locale.getString("thing.ChannelDisabledError",
+                            {thing: $scope.selectedThing.label, channel: channel.label}));
                     }
                 );
             }
             else {
                 ThingModel.enableChannel($scope.selectedThing.UID + ":" + channel.id).then(
                     function () {
-                        growl.success(locale.getString("habmin.thingChannelEnabledOk",
-                            {thing: $scope.selectedThing.item.label, channel: channel.label}));
+                        growl.success(locale.getString("thing.ChannelEnabledOk",
+                            {thing: $scope.selectedThing.label, channel: channel.label}));
 
                         $scope.selectedThing = ThingModel.getThing($scope.selectedThing.UID);
                     },
                     function () {
-                        growl.warning(locale.getString("habmin.thingChannelDisabledError",
-                            {thing: $scope.selectedThing.item.label, channel: channel.label}));
+                        growl.warning(locale.getString("thing.ChannelDisabledError",
+                            {thing: $scope.selectedThing.label, channel: channel.label}));
                     }
                 );
             }
@@ -585,27 +588,14 @@ angular.module('Config.Things', [
                 });
             }
 
-            if (thingUpdated == true) {
-                promises.push(ThingModel.putThing($scope.selectedThing));
+            // Check if the linked item information has changed
+            if ($scope.thingConfigForm.thingLabel.$dirty === true) {
+                //|| $scope.thingConfigForm.itemCategory.$dirty === true || $scope.thingConfigForm.itemGroups.$dirty) {
+                thingUpdated = true;
             }
 
-            // Check if the linked item information has changed
-            if ($scope.thingConfigForm.itemLabel.$dirty === true ||
-                $scope.thingConfigForm.itemCategory.$dirty === true || $scope.thingConfigForm.itemGroups.$dirty) {
-                // We need to check if the item exists - if it doesn't we need to create it...
-                if ($scope.selectedThing.item.name == null) {
-                    // Item doesn't exist - create it
-                    // TODO: Once ESH supports linking a new item to a thing
-                    //   $scope.selectedThing.item.name = $scope.selectedThing.UID.split(':').join('_');
-                    //   $scope.selectedThing.item.type = "GroupItem";
-                    //   $scope.selectedThing.item.tags = ["thing"];
-                    //   $scope.selectedThing.item.members = [];
-                    //   $scope.selectedThing.item.groupNames = [];
-                }
-                else {
-                    // For now, only save the item if it already exists
-                    promises.push(ItemModel.putItem($scope.selectedThing.item));
-                }
+            if (thingUpdated == true) {
+                promises.push(ThingModel.putThing($scope.selectedThing));
             }
 
             // Keep track of configs that have changed
@@ -641,7 +631,7 @@ angular.module('Config.Things', [
                     if ($scope.selectedThing.item != null) {
                         name = $scope.selectedThing.item.label;
                     }
-                    growl.success(locale.getString("habmin.thingSuccessSavingThing",
+                    growl.success(locale.getString("thing.SuccessSavingThing",
                         {name: name}));
 
                     $timeout(function () {
@@ -655,7 +645,7 @@ angular.module('Config.Things', [
                     }
 
                     // TODO: Display the error
-                    growl.error(locale.getString("habmin.thingErrorSavingThing",
+                    growl.error(locale.getString("thing.ErrorSavingThing",
                         {name: name}));
                 }
             );
@@ -673,7 +663,7 @@ angular.module('Config.Things', [
                     if (thing.item != null) {
                         name = thing.item.label;
                     }
-                    growl.success(locale.getString("habmin.thingSuccessDeletingThing",
+                    growl.success(locale.getString("thing.SuccessDeletingThing",
                         {name: name}));
                     $scope.selectedThing = null;
                     $scope.formLoaded = false;
@@ -684,7 +674,7 @@ angular.module('Config.Things', [
                     if (thing.item != null) {
                         name = thing.item.label;
                     }
-                    growl.error(locale.getString("habmin.thingErrorDeletingThing",
+                    growl.error(locale.getString("thing.ErrorDeletingThing",
                         {name: name}));
                 }
             );
@@ -698,11 +688,11 @@ angular.module('Config.Things', [
             cfg[config.name] = ThingModel.convertType(config.type, value, false);
             ThingModel.putConfig($scope.selectedThing, cfg).then(
                 function () {
-                    growl.success(locale.getString("habmin.thingActionSentOk",
+                    growl.success(locale.getString("thing.ActionSentOk",
                         {name: name}));
                 },
                 function () {
-                    growl.error(locale.getString("habmin.thingActionSentError",
+                    growl.error(locale.getString("thing.ActionSentError",
                         {name: name}));
                 }
             )
@@ -778,14 +768,14 @@ angular.module('Config.Things', [
                     });
                 },
                 function () {
-                    growl.warning(locale.getString("habmin.thingErrorGettingThing",
+                    growl.warning(locale.getString("thing.ErrorGettingThing",
                         {name: thing.item.label}));
                 }
             );
         };
 
         $scope.copySuccess = function (itemName) {
-            growl.success(locale.getString("habmin.itemNameCopiedOk", {name: itemName}));
+            growl.success(locale.getString("item.NameCopiedOk", {name: itemName}));
         };
 
         $scope.copyFailure = function (error) {
@@ -795,8 +785,8 @@ angular.module('Config.Things', [
 
     .controller('ThingConfigMenuCtrl',
     function ($scope, ThingConfigService, BindingModel, locale, growl) {
-        $scope.tooltipDiscover = locale.getString('habmin.mainDiscovery');
-        $scope.tooltipManualAdd = locale.getString('habmin.mainAddThing');
+        $scope.tooltipDiscover = locale.getString('habmin.Discovery');
+        $scope.tooltipManualAdd = locale.getString('habmin.AddThing');
 
         $scope.discoveryEnabled = true;
 
@@ -813,17 +803,17 @@ angular.module('Config.Things', [
             },
             function (reason) {
                 // Handle failure
-                growl.warning(locale.getString("habmin.mainErrorGettingBindings"));
+                growl.warning(locale.getString("habmin.ErrorGettingBindings"));
             }
         );
 
         $scope.startDiscovery = function (binding) {
             BindingModel.startDiscovery(binding.id).then(
                 function () {
-                    growl.success(locale.getString("habmin.discoveryStartOk", {name: binding.name}));
+                    growl.success(locale.getString("discovery.StartOk", {name: binding.name}));
                 },
                 function () {
-                    growl.error(locale.getString("habmin.discoveryStartFail", {name: binding.name}));
+                    growl.error(locale.getString("discovery.StartFail", {name: binding.name}));
                 }
             );
         };

@@ -4,7 +4,7 @@
                 i18n="common.properties"></span></button>
         <div class="dashboard-toolbar btn-group dropdown">
             <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
-                <span class="fa fa-plus-square-o"></span> <span i18n="habmin.dashboardAddWidget"></span>
+                <span class="fa fa-plus-square-o"></span> <span i18n="dashboard.AddWidget"></span>
                 <span class="caret"></span>
                 <span class="sr-only">Dropdown</span>
             </button>
@@ -12,37 +12,37 @@
                 <li>
                     <a role="presentation" ng-click="addWidget('Chart')">
                         <span class="fa fa-fw fa-area-chart"></span>
-                        <span i18n="habmin.dashboardAddChart"></span>
+                        <span i18n="dashboard.AddChart"></span>
                     </a>
                 </li>
                 <li>
                     <a ng-click="addWidget('Gauge')">
                         <span class="fa fa-fw fa-dashboard"></span>
-                        <span i18n="habmin.dashboardAddGauge"></span>
+                        <span i18n="dashboard.AddGauge"></span>
                     </a>
                 </li>
                 <li>
                     <a ng-click="addWidget('Image')">
                         <span class="fa fa-fw fa-picture-o"></span>
-                        <span i18n="habmin.dashboardAddImage"></span>
+                        <span i18n="dashboard.AddImage"></span>
                     </a>
                 </li>
                 <li>
                     <a ng-click="addWidget('Group')">
                         <span class="fa fa-fw fa-sliders"></span>
-                        <span i18n="habmin.dashboardAddGroup"></span>
+                        <span i18n="dashboard.AddGroup"></span>
                     </a>
                 </li>
                 <li>
                     <a ng-click="addWidget('GroupBar')">
                         <span class="fa fa-fw fa-sliders"></span>
-                        <span i18n="habmin.dashboardAddGroup"></span>
+                        <span i18n="dashboardAddGroup"></span>
                     </a>
                 </li>
                 <li>
                     <a ng-click="addWidget('Floor')">
                         <span class="fa fa-fw fa-home"></span>
-                        <span i18n="habmin.dashboardAddFloorplan"></span>
+                        <span i18n="dashboard.AddFloorplan"></span>
                     </a>
                 </li>
             </ul>
@@ -59,12 +59,12 @@
         </button>
         <button class="btn btn-sm btn-default" ng-confirm-click="clearDashboard()"
                 ng-disabled="dashboard.widgets.length==0"
-                i18n-attr="{'ngConfirmMessage': 'habmin.dashboardClearText','ngConfirmTitle': 'habmin.dashboardClearTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}">
+                i18n-attr="{'ngConfirmMessage': 'dashboard.ClearText','ngConfirmTitle': 'dashboard.ClearTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}">
             <span class="fa fa-file-o"></span> <span i18n="common.clear"></span>
         </button>
         <button class="btn btn-sm btn-default" ng-confirm-click="deleteDashboard()"
                 ng-disabled="dashboard.id==0"
-                i18n-attr="{'ngConfirmMessage': 'habmin.dashboardDeleteText','ngConfirmTitle': 'habmin.dashboardDeleteTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}">
+                i18n-attr="{'ngConfirmMessage': 'dashboard.DeleteText','ngConfirmTitle': 'dashboard.DeleteTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}">
             <span class="fa fa-trash-o"></span> <span i18n="common.delete"></span>
         </button>
     </div>

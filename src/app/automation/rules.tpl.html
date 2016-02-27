@@ -4,14 +4,14 @@
         <div class="panel-heading">
             <button type="button" class="btn btn-default"
                     ng-confirm-click="newRule()" ng-confirm-if="isDirty"
-                    data-i18n-attr="{'ngConfirmMessage': 'habmin.ruleUnsavedChangesCheck','ngConfirmTitle': 'habmin.ruleUnsavedChangesTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
+                    data-i18n-attr="{'ngConfirmMessage': 'rule.UnsavedChangesCheck','ngConfirmTitle': 'rule.UnsavedChangesTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
                     data-rulename="{{selectedRule.name}}">
                 <span class="fa fa-plus"></span>
                 <span i18n="common.new"></span>
             </button>
             <button type="button" ng-confirm-click="deleteRule()"
                     ng-class="{'btn btn-default':true, 'disabled':!selectedRule}"
-                    data-i18n-attr="{'ngConfirmMessage': 'habmin.ruleDeleteRuleCheck','ngConfirmTitle': 'habmin.ruleDeleteRuleTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
+                    data-i18n-attr="{'ngConfirmMessage': 'rule.DeleteRuleCheck','ngConfirmTitle': 'rule.DeleteRuleTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
                     data-rulename="{{selectedRule.name}}">
                 <span class="fa fa-trash-o"></span>
                 <span i18n="common.delete"></span>
@@ -23,7 +23,7 @@
             <div ng-repeat="choice in blockRules">
                 <a role="presentation" ng-class="{'list-group-item':true, 'active':choice==selectedRule}"
                    ng-confirm-click="selectBlock(choice)" ng-confirm-if="$parent.isDirty"
-                   data-i18n-attr="{'ngConfirmMessage': 'habmin.ruleUnsavedChangesCheck','ngConfirmTitle': 'habmin.ruleUnsavedChangesTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
+                   data-i18n-attr="{'ngConfirmMessage': 'rule.UnsavedChangesCheck','ngConfirmTitle': 'rule.UnsavedChangesTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
                    data-rulename={{selectedRule.name}}">
                     <span class="fa fa-fw fa-puzzle-piece"></span>
                     <span>{{choice.name}}</span>
@@ -33,7 +33,7 @@
             <div ng-repeat="choice in codeRules">
                 <a role="presentation" ng-class="{'list-group-item':true, 'active':choice==selectedRule}"
                    ng-confirm-click="selectRule(choice)" ng-confirm-if="$parent.isDirty"
-                   data-i18n-attr="{'ngConfirmMessage': 'habmin.ruleUnsavedChangesCheck','ngConfirmTitle': 'habmin.ruleUnsavedChangesTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
+                   data-i18n-attr="{'ngConfirmMessage': 'rule.UnsavedChangesCheck','ngConfirmTitle': 'rule.UnsavedChangesTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes'}"
                    rulename={{selectedRule.name}}">
                     <span class="fa fa-fw fa-code"></span>
                     <span>{{choice.name}}</span>
@@ -47,7 +47,7 @@
             </div>
             <div ng-if="rulesTotal==0" class="list-group-item text-center">
                 <span class="fa fa-exclamation-triangle text-warning"></span>
-                <span i18n="habmin.ruleNoRules"></span>
+                <span i18n="rule.NoRules"></span>
             </div>
         </div>
 
@@ -77,12 +77,12 @@
                         ng-class="{'btn btn-sm btn-default':true, 'active':editSource==false, 'disabled':selectedRule.type=='code'}"
                         ng-click="showRule()">
                     <span class="fa fa-puzzle-piece"></span>
-                    <span i18n="habmin.ruleRule"></span>
+                    <span i18n="rule.Rule"></span>
                 </button>
                 <button type="button" ng-class="{'btn btn-sm btn-default':true, 'active':editSource==true}"
                         ng-click="showSource()">
                     <span class="fa fa-code"></span>
-                    <span i18n="habmin.ruleSource"></span>
+                    <span i18n="rule.Source"></span>
                 </button>
             </div>
         </div>

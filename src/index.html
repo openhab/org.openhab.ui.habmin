@@ -125,7 +125,7 @@
                                 <button type="button" class="btn btn-xs btn-default pull-right"
                                         ng-class="{'disabled':notificationCntNew==0}"
                                         ng-confirm-click="clearInbox()"
-                                        i18n-attr="{'ngConfirmMessage': 'habmin.discoveryClearConfirmMsg','ngConfirmTitle': 'habmin.discoveryClearConfirmTitle','ngConfirmNoBtn': 'common.cancel', 'ngConfirmYesBtn': 'common.ok'}">
+                                        i18n-attr="{'ngConfirmMessage': 'discovery.ClearConfirmMsg','ngConfirmTitle': 'discovery.ClearConfirmTitle','ngConfirmNoBtn': 'common.cancel', 'ngConfirmYesBtn': 'common.ok'}">
                                 <span class="fa fa-fw fa-times-circle text-danger"></span>
                                     <span i18n="common.clear"></span>
                                 </button>
@@ -149,13 +149,13 @@
                                                 </button>
                                                 <button type="button" class="btn btn-xs btn-default"
                                                         ng-confirm-click="ignoreThing(msg.thingUID)"
-                                                        i18n-attr="{'ngConfirmMessage': 'habmin.discoveryIgnoreConfirmMsg','ngConfirmTitle': 'habmin.discoveryIgnoreConfirmTitle','ngConfirmNoBtn': 'common.cancel', 'ngConfirmYesBtn': 'common.ok'}">
+                                                        i18n-attr="{'ngConfirmMessage': 'discovery.IgnoreConfirmMsg','ngConfirmTitle': 'discovery.IgnoreConfirmTitle','ngConfirmNoBtn': 'common.cancel', 'ngConfirmYesBtn': 'common.ok'}">
                                                     <span class="fa fa-fw fa-dot-circle-o text-warning"></span>
                                                     <span i18n="common.ignore"></span>
                                                 </button>
                                                 <button type="button" class="btn btn-xs btn-default"
                                                         ng-confirm-click="deleteThing(msg.thingUID)"
-                                                        i18n-attr="{'ngConfirmMessage': 'habmin.discoveryDeleteConfirmMsg','ngConfirmTitle': 'habmin.discoveryDeleteConfirmTitle','ngConfirmNoBtn': 'common.cancel', 'ngConfirmYesBtn': 'common.ok'}">
+                                                        i18n-attr="{'ngConfirmMessage': 'discovery.DeleteConfirmMsg','ngConfirmTitle': 'discovery.DeleteConfirmTitle','ngConfirmNoBtn': 'common.cancel', 'ngConfirmYesBtn': 'common.ok'}">
                                                     <span class="fa fa-fw fa-times-circle text-danger"></span>
                                                     <span i18n="common.delete"></span>
                                                 </button>
@@ -193,7 +193,7 @@
                 <!-- CHARTS MENU -->
                 <li class="treeview" ng-class="{active: $state.includes('chart')}">
                     <a href="#">
-                        <i class="fa fa-fw fa-bar-chart"></i> <span i18n="habmin.mainCharts"></span> <i class="fa fa-angle-left pull-right"></i>
+                        <i class="fa fa-fw fa-bar-chart"></i> <span i18n="habmin.Charts"></span> <i class="fa fa-angle-left pull-right"></i>
                     </a>
                     <ul class="treeview-menu">
                         <li ng-repeat="chart in charts">
@@ -207,7 +207,7 @@
                         <li ui-sref="chart">
                             <a>
                                 <i class="fa fa-fw fa-area-chart"></i>
-                                <span i18n="habmin.mainChartEditor"></span>
+                                <span i18n="habmin.ChartEditor"></span>
                             </a>
                         </li>
                     </ul>
@@ -215,7 +215,7 @@
                 <!-- DASHBOARD MENU -->
                 <li class="treeview" ng-class="{active: $state.includes('dashboard')}">
                     <a href="#">
-                        <i class="fa fa-fw fa-dashboard"></i> <span i18n="habmin.mainDashboard"></span> <i class="fa fa-angle-left pull-right"></i>
+                        <i class="fa fa-fw fa-dashboard"></i> <span i18n="habmin.Dashboard"></span> <i class="fa fa-angle-left pull-right"></i>
                     </a>
                     <ul class="treeview-menu">
                         <li ng-repeat="dashboard in dashboards">
@@ -231,7 +231,7 @@
                             ui-sref-opts="{ reload: true }">
                             <a>
                                 <span class="fa fa-fw fa-th"></span>
-                                <span i18n="habmin.mainDashboardNew"></span>
+                                <span i18n="habmin.DashboardNew"></span>
                             </a>
                         </li>
                     </ul>
@@ -240,26 +240,26 @@
                 <li class="treeview">
                     <a href="#">
                         <i class="fa fa-cogs"></i>
-                        <span i18n="habmin.mainAutomation"></span>
+                        <span i18n="habmin.Automation"></span>
                         <i class="fa fa-angle-left pull-right"></i>
                     </a>
                     <ul class="treeview-menu">
                         <li ui-sref="rules">
                             <a>
                                 <i class="fa fa-fw fa-puzzle-piece"></i>
-                                <span i18n="habmin.mainRules"></span>
+                                <span i18n="habmin.Rules"></span>
                             </a>
                         </li>
                         <li ui-sref="scheduler">
                             <a>
                                 <i class="fa fa-fw fa-clock-o"></i>
-                                <span i18n="habmin.mainScheduler"></span>
+                                <span i18n="habmin.Scheduler"></span>
                             </a>
                         </li>
                         <li ui-sref="scheduler" class="disabled">
                             <a>
                                 <i class="fa fa-fw fa-at"></i>
-                                <span i18n="habmin.mainNotifications"></span>
+                                <span i18n="habmin.Notifications"></span>
                             </a>
                         </li>
                     </ul>
@@ -268,7 +268,7 @@
                 <li class="treeview">
                     <a href="#">
                         <i class="fa fa-sitemap"></i>
-                        <span i18n="habmin.mainSitemaps"></span>
+                        <span i18n="habmin.Sitemaps"></span>
                         <i class="fa fa-angle-left pull-right"></i>
                     </a>
                     <ul class="treeview-menu">
@@ -285,26 +285,26 @@
                 <li class="treeview">
                     <a href="#">
                         <i class="fa fa-wrench"></i>
-                        <span i18n="habmin.mainConfiguration"></span>
+                        <span i18n="habmin.Configuration"></span>
                         <i class="fa fa-angle-left pull-right"></i>
                     </a>
                     <ul class="treeview-menu">
                         <li ui-sref="bindings" ng-class="{active: $state.includes('bindings')}">
                             <a>
                                 <i class="fa fa-fw fa-random"></i>
-                                <span i18n="habmin.mainBindings"></span>
+                                <span i18n="habmin.Bindings"></span>
                             </a>
                         </li>
                         <li ui-sref="things" ng-class="{active: $state.includes('things')}">
                             <a>
                                 <i class="fa fa-fw fa-plug"></i>
-                                <span i18n="habmin.mainThings"></span>
+                                <span i18n="habmin.Things"></span>
                             </a>
                         </li>
                         <li ui-sref="items" ng-class="{active: $state.includes('items')}">
                             <a>
                                 <i class="fa fa-fw fa-map-signs"></i>
-                                <span i18n="habmin.mainItems"></span>
+                                <span i18n="habmin.Items"></span>
                             </a>
                         </li>
                         <li>
@@ -319,14 +319,14 @@
                 <li class="treeview">
                     <a href="#">
                         <i class="fa fa-laptop"></i>
-                        <span i18n="habmin.mainTools"></span>
+                        <span i18n="habmin.Tools"></span>
                         <i class="fa fa-angle-left pull-right"></i>
                     </a>
                     <ul class="treeview-menu">
                         <li ui-sref="tools/zwave/logreader" ng-class="{active: $state.includes('tools/zwave/logreader')}">
                             <a>
                                 <i class="fa fa-fw fa-info-circle"></i>
-                                <span i18n="habmin.mainZWaveLogReader"></span>
+                                <span i18n="habmin.ZWaveLogReader"></span>
                             </a>
                         </li>
                     </ul>
@@ -335,14 +335,14 @@
                 <li class="treeview">
                     <a href="#">
                         <i class="fa fa-users"></i>
-                        <span i18n="habmin.mainUsers"></span>
+                        <span i18n="habmin.Users"></span>
                         <i class="fa fa-angle-left pull-right"></i>
                     </a>
                     <ul class="treeview-menu">
                         <li ui-sref="user" ng-class="{active: $state.includes('user')}">
                             <a>
                                 <i class="fa fa-fw fa-user"></i>
-                                <span i18n="habmin.mainUserPreferences"></span>
+                                <span i18n="habmin.UserPreferences"></span>
                             </a>
                         </li>
                     </ul>

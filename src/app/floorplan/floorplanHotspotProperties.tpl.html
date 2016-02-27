@@ -1,18 +1,18 @@
 <div class="modal-header">
-    <h3 class="modal-title" i18n="habmin.floorplanHotspotTitle"></h3>
+    <h3 class="modal-title" i18n="floorplan.HotspotTitle"></h3>
 </div>
 <div class="modal-body">
     <form class="form" role="form">
 
         <div class="form-group">
-            <label for="inputItem" class="control-label" i18n="habmin.floorplanHotspotItem"></label>
+            <label for="inputItem" class="control-label" i18n="floorplan.HotspotItem"></label>
 
             <div>
                 <ui-select id="inputItem"
                            ng-model="hotspot.itemId"
                            theme="bootstrap"
                         >
-                    <ui-select-match i18n-attr="{placeholder: 'habmin.floorplanHotspotItemPlaceholder'}">
+                    <ui-select-match i18n-attr="{placeholder: 'floorplan.HotspotItemPlaceholder'}">
                         <habmin-icon class="fa fa-fw" category="{{$select.selected.category}}"></habmin-icon>
                         &nbsp;{{$select.selected.label}}
                         <span ng-if="getParentThingItem($select.selected)!=null">&nbsp;({{getParentThingItem($select.selected).label}})</span>

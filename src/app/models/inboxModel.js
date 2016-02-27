@@ -42,14 +42,14 @@ angular.module('HABmin.inboxModel', [
                         break;
                     case 'InboxAddedEvent':
                         inboxContents.push(payload);
-                        growl.success(locale.getString('habmin.discoveryNewThing', {name: payload.label}));
+                        growl.success(locale.getString('discovery.NewThing', {name: payload.label}));
                         break;
                 }
 
                 /*
                  if (evt.topic.indexOf("smarthome/inbox/added") === 0) {
                  inboxContents.push(evt.object);
-                 growl.success(locale.getString('habmin.discoveryNewThing', {name: evt.object.label}));
+                 growl.success(locale.getString('discovery.NewThing', {name: evt.object.label}));
                  }
                  else if (evt.topic.indexOf("smarthome/inbox/removed") === 0) {
                  for (var a = 0; a < inboxContents.length; a++) {

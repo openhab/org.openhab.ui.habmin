@@ -228,10 +228,10 @@ angular.module('HABmin.chartSave', [
 
                     ChartModel.putChart(query).then(
                         function () {
-                            growl.success(locale.getString('habmin.chartSaveSuccess', {chartName: query.name}));
+                            growl.success(locale.getString('chart.SaveSuccess', {chartName: query.name}));
                         },
                         function (error) {
-                            growl.warning(locale.getString('habmin.chartSaveError',
+                            growl.warning(locale.getString('chart.SaveError',
                                 {chartName: query.name, error: error}));
                         });
 

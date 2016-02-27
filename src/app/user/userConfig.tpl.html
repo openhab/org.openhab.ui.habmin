@@ -27,12 +27,12 @@
                        ng-class="{'list-group-item config-panel-title':true, 'active': panelDisplayed=='GENERAL'}"
                        ng-click="setPanelDisplayed('GENERAL')">
                         <span class="fa fa-fw fa-book"></span>
-                        <span i18n="habmin.userGeneralPrefTitle"></span>
+                        <span i18n="user.GeneralPrefTitle"></span>
                     </a>
                 </div>
                 <div collapse="panelDisplayed!='GENERAL'" class="panel-form">
                     <div class="form-group">
-                        <label for="inputLanguage" class="col-sm-3 control-label" i18n="habmin.userLanguage"></label>
+                        <label for="inputLanguage" class="col-sm-3 control-label" i18n="user.Language"></label>
 
                         <div class="col-sm-9">
                             <ui-select id="inputLanguage"
@@ -40,7 +40,7 @@
                                        theme="bootstrap"
                                        search-enabled="false"
                                     >
-                                <ui-select-match i18n-attr="{placeholder: 'habmin.userLanguageSelect'}">
+                                <ui-select-match i18n-attr="{placeholder: 'user.LanguageSelect'}">
                                     <span ng-bind-html="$select.selected.name"></span>&nbsp;(<span ng-bind-html="$select.selected.desc"></span>)
                                 </ui-select-match>
                                 <ui-select-choices repeat="language.id as language in languages | orderBy: 'name'">

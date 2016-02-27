@@ -66,7 +66,7 @@ angular.module('Config.Discovery', [
             },
             function (reason) {
                 // Handle failure
-                growl.warning(locale.getString("habmin.mainErrorGettingBindings"));
+                growl.warning(locale.getString("habmin.ErrorGettingBindings"));
             }
         );
 
@@ -90,7 +90,7 @@ angular.module('Config.Discovery', [
                     InboxModel.refreshInbox();
                 },
                 function () {
-                    growl.error(locale.getString("habmin.discoveryIgnoreFail", {name: $scope.selectedThing.name}));
+                    growl.error(locale.getString("discovery.IgnoreFail", {name: $scope.selectedThing.name}));
                 }
             );
 
@@ -102,7 +102,7 @@ angular.module('Config.Discovery', [
                     InboxModel.refreshInbox();
                 },
                 function () {
-                    growl.error(locale.getString("habmin.discoveryIgnoreFail", {name: $scope.selectedThing.name}));
+                    growl.error(locale.getString("discovery.IgnoreFail", {name: $scope.selectedThing.name}));
                 }
             );
         };
@@ -114,7 +114,7 @@ angular.module('Config.Discovery', [
                     $scope.selectedThing = null;
                 },
                 function () {
-                    growl.error(locale.getString("habmin.discoveryDeleteFail", {name: $scope.selectedThing.name}));
+                    growl.error(locale.getString("discovery.DeleteFail", {name: $scope.selectedThing.name}));
                 }
             );
         };

@@ -52,7 +52,7 @@ angular.module('Config.Bindings', [
             },
             function (reason) {
                 // Handle failure
-                growl.warning(locale.getString("habmin.mainErrorGettingBindings"));
+                growl.warning(locale.getString("habmin.ErrorGettingBindings"));
             }
         );
 

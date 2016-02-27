@@ -307,9 +307,9 @@ angular.module('HABmin.chart', [
         $scope.itemsTotal = -1;
         $scope.itemsSelected = 0;
 
-        $scope.tooltipItems = locale.getString('habmin.chartSelectItems');
-        $scope.tooltipSave = locale.getString('habmin.chartSaveChart');
-        $scope.tooltipDelete = locale.getString('habmin.chartDeleteChart');
+        $scope.tooltipItems = locale.getString('chart.SelectItems');
+        $scope.tooltipSave = locale.getString('chart.SaveChart');
+        $scope.tooltipDelete = locale.getString('chart.DeleteChart');
 
         // Load the list of persistence services
         PersistenceServiceModel.getList().then(
@@ -322,7 +322,7 @@ angular.module('HABmin.chart', [
             },
             function (reason) {
                 // handle failure
-                growl.warning(locale.getString('habmin.chartErrorGettingServices'));
+                growl.warning(locale.getString('chart.ErrorGettingServices'));
             }
         );
 
@@ -339,7 +339,7 @@ angular.module('HABmin.chart', [
             },
             function (reason) {
                 // handle failure
-                growl.warning(locale.getString('habmin.chartErrorGettingItems'));
+                growl.warning(locale.getString('chart.ErrorGettingItems'));
 //                            pItems.resolve();
             }
         );
@@ -416,10 +416,10 @@ angular.module('HABmin.chart', [
 
             ChartModel.deleteChart(ChartService.selectedChart.id).then(
                 function () {
-                    growl.success(locale.getString('habmin.chartDeleteOk', {name: ChartService.selectedChart.name}));
+                    growl.success(locale.getString('chart.DeleteOk', {name: ChartService.selectedChart.name}));
                 },
                 function () {
-                    growl.warning(locale.getString('habmin.chartDeleteError', {name: ChartService.selectedChart.name}));
+                    growl.warning(locale.getString('chart.DeleteError', {name: ChartService.selectedChart.name}));
                 }
             );
         };
@@ -433,7 +433,7 @@ angular.module('HABmin.chart', [
 
             // Otherwise save the existing chart
             var chart = {};
-            chart.name = locale.getString('habmin.chartSaveNewName');
+            chart.name = locale.getString('chart.SaveNewName');
             chart.period = 86400;
             chart.items = [];
 

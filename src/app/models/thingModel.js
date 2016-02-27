@@ -19,7 +19,6 @@ angular.module('HABmin.thingModel', [
     .service('ThingModel', function ($http, $q, $rootScope, ItemModel, UserService, RestService) {
         var thingList = [];
         var svcName = "things";
-        var svcSetup = "setup";
         var svcTypes = "thing-types";
         var svcConfig = "config-descriptions";
         var eventSrc;
@@ -45,11 +44,6 @@ angular.module('HABmin.thingModel', [
             // Aggregate the data - only update what we've been given
             for (var i in newThing) {
                 thing[i] = newThing[i];
-
-                // If any items are updated, link to the item from the items list
-                if (i == "item") {
-                    thing.item = ItemModel.getItem(thing.item.name);
-                }
             }
             return thing;
         };
@@ -57,7 +51,7 @@ angular.module('HABmin.thingModel', [
         this.listen = function () {
             eventSrc = new EventSource("/rest/events?topics=smarthome/things/*");
             eventSrc.addEventListener('message', function (event) {
-                console.debug("Received event in thingModel", event.type);
+                console.debug("Received event in thingModel", event);
 
                 var evt = angular.fromJson(event.data);
                 var payload = angular.fromJson(evt.payload);
@@ -87,30 +81,6 @@ angular.module('HABmin.thingModel', [
                         break;
                 }
 //                $rootScope.$apply();
-            });
-
-            eventSrcLink = new EventSource("/rest/events?topics=smarthome/links/*");
-            eventSrcLink.addEventListener('message', function (event) {
-                console.log(event.type);
-                console.log(event.data);
-
-                var evt = angular.fromJson(event.data);
-                var payload = angular.fromJson(evt.payload);
-                var topic = evt.topic.split("/");
-                var thing = me.getThing(payload.thingUID);
-                if (thing == null) {
-                    return;
-                }
-
-                switch (evt.type) {
-                    case 'ItemThingLinkAddedEvent':
-                        thing.item = ItemModel.getItem(payload.itemName);
-                        break;
-                    case 'ItemThingLinkRemovedEvent':
-                        thing.item = null;
-                        break;
-                }
-
             });
         };
 
@@ -239,46 +209,43 @@ angular.module('HABmin.thingModel', [
             var tStart = new Date().getTime();
             var deferred = $q.defer();
 
+            // If the UID ends with a colon, then it's new
+            // This is temporary until ESH supports thing labels
+            RestService.getService(svcName).then(
+                function (url) {
+                    $http.put(url + "/" + thing.UID, thing)
+                        .success(function (data) {
+                            deferred.resolve(data);
+                        })
+                        .error(function (data, status) {
+                            deferred.reject(data);
+                        });
+
+                },
+                function () {
+                    deferred.reject(null);
+                }
+            );
+
+            return deferred.promise;
+        };
+
+        this.postThing = function (thing) {
+            var tStart = new Date().getTime();
+            var deferred = $q.defer();
 
             // If the UID ends with a colon, then it's new
             // This is temporary until ESH supports thing labels
-            if (thing.UID.slice(-1) == ':') {
-                RestService.getService(svcSetup).then(
-                    function (url) {
-                        thing.UID += new Date().getTime().toString(16);
-                        $http.post(url + "/things", thing)
-                            .success(function (data) {
-                                deferred.resolve(data);
-                            })
-                            .error(function (data, status) {
-                                deferred.reject(data);
-                            });
-                    });
-                return;
-            }
-
             RestService.getService(svcName).then(
                 function (url) {
-                    // If the UID ends with a colon, then it's new
-                    if (thing.UID.slice(-1) == ':') {
-                        thing.UID += new Date().getTime().toString(16);
-                        $http.post(url, thing)
-                            .success(function (data) {
-                                deferred.resolve(data);
-                            })
-                            .error(function (data, status) {
-                                deferred.reject(data);
-                            });
-                    }
-                    else {
-                        $http.put(url + "/" + thing.UID, thing)
-                            .success(function (data) {
-                                deferred.resolve(data);
-                            })
-                            .error(function (data, status) {
-                                deferred.reject(data);
-                            });
-                    }
+                    thing.UID += ':' + new Date().getTime().toString(16);
+                    $http.post(url, thing)
+                        .success(function (data) {
+                            deferred.resolve(data);
+                        })
+                        .error(function (data, status) {
+                            deferred.reject(data);
+                        });
                 },
                 function () {
                     deferred.reject(null);
@@ -341,53 +308,9 @@ angular.module('HABmin.thingModel', [
             if (force == true) {
                 options = "?force=true";
             }
-            RestService.getService(svcSetup).then(
+            RestService.getService(svcName).then(
                 function (url) {
-                    $http['delete'](url + "/things/" + thing.UID + options)
-                        .success(function (data) {
-                            deferred.resolve(data);
-                        })
-                        .error(function (data, status) {
-                            deferred.reject(data);
-                        });
-                },
-                function () {
-                    deferred.reject(null);
-                }
-            );
-
-            return deferred.promise;
-        };
-
-        this.enableChannel = function (channel) {
-            var tStart = new Date().getTime();
-            var deferred = $q.defer();
-
-            RestService.getService(svcSetup).then(
-                function (url) {
-                    $http.put(url + "/things/channels/" + channel, {channelUID: channel})
-                        .success(function (data) {
-                            deferred.resolve(data);
-                        })
-                        .error(function (data, status) {
-                            deferred.reject(data);
-                        });
-                },
-                function () {
-                    deferred.reject(null);
-                }
-            );
-
-            return deferred.promise;
-        };
-
-        this.disableChannel = function (channel) {
-            var tStart = new Date().getTime();
-            var deferred = $q.defer();
-
-            RestService.getService(svcSetup).then(
-                function (url) {
-                    $http['delete'](url + "/things/channels/" + channel, {channelUID: channel})
+                    $http['delete'](url + '/' + thing.UID + options)
                         .success(function (data) {
                             deferred.resolve(data);
                         })
@@ -453,10 +376,10 @@ angular.module('HABmin.thingModel', [
                     if (value == undefined) {
                         return false;
                     }
-                    if(value == "false") {
+                    if (value == "false") {
                         return false;
                     }
-                    if(value == "true") {
+                    if (value == "true") {
                         return true;
                     }
                     return Boolean(value);

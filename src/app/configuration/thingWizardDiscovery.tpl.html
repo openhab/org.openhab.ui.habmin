@@ -1,17 +1,17 @@
 <label>Configure Thing...</label>
 <div class="form-group">
-    <label for="inputThingLabel" class="control-label" i18n="habmin.thingLabel"></label>
+    <label for="inputThingLabel" class="control-label" i18n="thing.Label"></label>
     <input type="text"
            class="form-control"
            id="inputThingLabel"
            name="itemLabel"
            ng-model="selectedThing.item.label"
-           i18n-attr="{placeholder: 'habmin.itemSelectLabel'}">
+           i18n-attr="{placeholder: 'item.SelectLabel'}">
 </div>
 
 <div class="form-group"
      ng-if="selectedThingType.bridge==false && selectedThingType.supportedBridgeTypeUIDs!=null && selectedThingType.supportedBridgeTypeUIDs.length>0">
-    <label for="inputBridge" class="control-label" i18n="habmin.thingEditBridge"></label>
+    <label for="inputBridge" class="control-label" i18n="thing.EditBridge"></label>
 
     <div>
         <ui-select id="inputBridge"
@@ -19,7 +19,7 @@
                    theme="bootstrap"
                    search-enabled="false"
                 >
-            <ui-select-match i18n-attr="{placeholder: 'habmin.thingSelectBridge'}">
+            <ui-select-match i18n-attr="{placeholder: 'thing.SelectBridge'}">
                 <habmin-icon class="fa fa-fw"
                              category="{{$select.selected.item.category}}"></habmin-icon>
                 {{$select.selected.item.label}}
@@ -35,7 +35,7 @@
 </div>
 
 <div class="form-group">
-    <label for="inputCategory" class="control-label" i18n="habmin.itemEditCategory"></label>
+    <label for="inputCategory" class="control-label" i18n="item.EditCategory"></label>
 
     <div>
         <ui-select id="inputCategory"
@@ -44,7 +44,7 @@
                    name="itemCategory"
                    search-enabled="false"
                 >
-            <ui-select-match i18n-attr="{placeholder: 'habmin.itemSelectCategory'}">
+            <ui-select-match i18n-attr="{placeholder: 'item.SelectCategory'}">
                 <habmin-icon class="fa fa-fw" category="{{$select.selected.id}}"></habmin-icon>
                 {{$select.selected.name}}
             </ui-select-match>
@@ -57,7 +57,7 @@
 </div>
 
 <div class="form-group">
-    <label for="inputGroups" class="control-label" i18n="habmin.itemEditGroups"></label>
+    <label for="inputGroups" class="control-label" i18n="item.EditGroups"></label>
 
     <div>
         <ui-select id="inputGroups"
@@ -67,7 +67,7 @@
                    name="itemGroups"
                    multiple
                 >
-            <ui-select-match i18n-attr="{placeholder: 'habmin.itemSelectGroup'}">
+            <ui-select-match i18n-attr="{placeholder: 'item.SelectGroup'}">
                 <habmin-icon class="fa fa-fw" category="{{$item.category}}"></habmin-icon>
                 {{$item.label}}
             </ui-select-match>

@@ -841,9 +841,9 @@ module.exports = function (grunt) {
         'build',
         'copy:compile_assets', 'copy:compile_languages', 'clean:css', 'cssmin', 'json-minify',
         'concat:compile_js', 'ngAnnotate', 'uglify', 'index:compile', 'htmlmin:compile',
-        'compress',
-        'clean:jar_final', 'copy:jar_final',
-        'compile_cordova'
+//        'compress',
+//        'clean:jar_final', 'copy:jar_final',
+//        'compile_cordova'
     ]);
 
     /**

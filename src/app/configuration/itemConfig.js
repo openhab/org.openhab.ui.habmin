@@ -33,7 +33,7 @@ angular.module('Config.Items', [
             resolve: {
                 // Make sure the localisation files are resolved before the controller runs
                 localisations: function (locale) {
-                    return locale.ready('habmin');
+                    return locale.ready('item');
                 }
             }
         });
@@ -68,7 +68,7 @@ angular.module('Config.Items', [
             },
             function (reason) {
                 // Handle failure
-                growl.warning(locale.getString("habmin.mainErrorGettingBindings"));
+                growl.warning(locale.getString("habmin.ErrorGettingBindings"));
             }
         );
 

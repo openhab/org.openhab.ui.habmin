@@ -33,7 +33,7 @@ angular.module('serverMonitor', [
                             template: '<div class="modal-body"><h3 class="text-center">' +
                             '<span class="fa fa-exclamation-triangle text-danger"></span>' +
                             '&nbsp;' +
-                            '<span i18n="habmin.mainStatusOffline"></span>' +
+                            '<span i18n="habmin.StatusOffline"></span>' +
                             '</h3></div>',
                             windowClass: UserService.getTheme()
                         });

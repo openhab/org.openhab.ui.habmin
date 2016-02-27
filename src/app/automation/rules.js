@@ -48,7 +48,7 @@ angular.module('HABmin.rules', [
                 deletable: false,
                 movable: false,
                 fields: [
-                    {name: "NAME", value: locale.getString('habmin.ruleNewRuleTitle')}
+                    {name: "NAME", value: locale.getString('rule.NewRuleTitle')}
                 ]
             }
         ];
@@ -104,7 +104,7 @@ angular.module('HABmin.rules', [
             },
             function (reason) {
                 // handle failure
-                growl.warning(locale.getString('habmin.ruleErrorLoadingRuleList'));
+                growl.warning(locale.getString('rule.ErrorLoadingRuleList'));
                 $scope.rulesTotal = $scope.blockRules.length + $scope.codeRules.length;
             }
         );
@@ -119,7 +119,7 @@ angular.module('HABmin.rules', [
             },
             function (reason) {
                 // handle failure
-                growl.warning(locale.getString('habmin.ruleErrorLoadingRuleList'));
+                growl.warning(locale.getString('rule.ErrorLoadingRuleList'));
                 $scope.rulesTotal = $scope.blockRules.length + $scope.codeRules.length;
             }
         );
@@ -161,7 +161,7 @@ angular.module('HABmin.rules', [
                 },
                 function (reason) {
                     // handle failure
-                    growl.warning(locale.getString('habmin.ruleErrorLoadingRule', [rule.name, reason]));
+                    growl.warning(locale.getString('rule.ErrorLoadingRule', [rule.name, reason]));
                 }
             );
         };
@@ -184,7 +184,7 @@ angular.module('HABmin.rules', [
                 },
                 function (reason) {
                     // handle failure
-                    growl.warning(locale.getString('habmin.ruleErrorLoadingRule', [rule.name, reason]));
+                    growl.warning(locale.getString('rule.ErrorLoadingRule', [rule.name, reason]));
                 }
             );
         };
@@ -291,7 +291,7 @@ angular.module('HABmin.rules', [
  '<div class="modal-body">' +
  '<form class="form-horizontal" role="form">' +
  '<div class="form-group">' +
- '<label for="inputOption" class="col-sm-3 control-label" i18n="habmin.ruleValue"></label>' +
+ '<label for="inputOption" class="col-sm-3 control-label" i18n="rule.Value"></label>' +
  '<div class="col-sm-9">' +
  '<input type="text" class="form-control" ng-model="dlg.value">' +
  '</div>' +

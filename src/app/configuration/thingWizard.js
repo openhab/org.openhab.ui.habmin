@@ -59,7 +59,7 @@ angular.module('Config.ThingWizard', [
             },
             function (reason) {
                 // Handle failure
-                growl.warning(locale.getString("habmin.mainErrorGettingBindings"));
+                growl.warning(locale.getString("habmin.ErrorGettingBindings"));
             }
         );
 
@@ -105,12 +105,9 @@ angular.module('Config.ThingWizard', [
                 function (type) {
                     $scope.selectedThingType = type;
                     $scope.selectedThing = {
-                        UID: type.UID + ":",
-                        item: {
-                            // Default the thing name to the thing type name
-                            label: type.label,
-                            groupNames: []
-                        },
+                        UID: type.UID,
+                        thingTypeUID: type.UID,
+                        label: type.label,
                         configuration: {}
                     };
 
@@ -125,9 +122,9 @@ angular.module('Config.ThingWizard', [
                         }
                     });
 
-                    if ($scope.selectedThing.item != null) {
-                        $scope.selectedThing.item.category = ThingModel.getThingTypeCategory($scope.selectedThingType);
-                    }
+//                    if ($scope.selectedThing.item != null) {
+//                        $scope.selectedThing.item.category = ThingModel.getThingTypeCategory($scope.selectedThingType);
+//                    }
 
                     // If this thing requires a bridge, see how many things are current defined of the type required
                     // If there's only one, then use it by default
@@ -158,8 +155,8 @@ angular.module('Config.ThingWizard', [
 //                    });
                 },
                 function () {
-                    growl.warning(locale.getString("habmin.thingErrorGettingThing",
-                        {name: thing.item.label}));
+                    growl.warning(locale.getString("thing.ErrorGettingThing",
+                        {name: thing.label}));
                 }
             );
 
@@ -177,12 +174,12 @@ angular.module('Config.ThingWizard', [
                         parameter.multiple);
             });
 
-            ThingModel.putThing($scope.selectedThing).then(
+            ThingModel.postThing($scope.selectedThing).then(
                 function () {
                     $state.go('/things');
                 },
                 function () {
-                    growl.error(locale.getString("habmin.thingErrorSavingThing",
+                    growl.error(locale.getString("thing.ErrorSavingThing",
                         {name: name}));
                 }
             );

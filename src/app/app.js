@@ -264,7 +264,7 @@ angular.module('HABmin', [
                                 },
                                 function (reason) {
                                     // Handle failure
-                                    growl.warning(locale.getString('habmin.mainErrorLoadingInbox'));
+                                    growl.warning(locale.getString('habmin.ErrorLoadingInbox'));
                                 }
                             );
 
@@ -275,7 +275,7 @@ angular.module('HABmin', [
                                 function (reason) {
                                     $scope.dashboards = [];
                                     // Handle failure
-                                    growl.warning(locale.getString('habmin.mainErrorLoadingDashboards'));
+                                    growl.warning(locale.getString('habmin.ErrorLoadingDashboards'));
                                 }
                             );
 
@@ -286,7 +286,7 @@ angular.module('HABmin', [
                                 function (reason) {
                                     $scope.sitemaps = [];
                                     // Handle failure
-                                    growl.warning(locale.getString('habmin.mainErrorLoadingSitemaps'));
+                                    growl.warning(locale.getString('habmin.ErrorLoadingSitemaps'));
                                 }
                             );
 
@@ -309,7 +309,7 @@ angular.module('HABmin', [
                 function (reason) {
                     // Handle failure
                     // TODO: Maybe remove this and just let the monitor handle it?
-                    growl.warning(locale.getString('habmin.mainOpenHABOffline'));
+                    growl.warning(locale.getString('habmin.OpenHABOffline'));
                 }
             );
         }
@@ -348,10 +348,10 @@ angular.module('HABmin', [
         $scope.startDiscovery = function (binding) {
             BindingModel.startDiscovery(binding.id).then(
                 function () {
-                    growl.success(locale.getString("habmin.discoveryStartOk", {name: binding.name}));
+                    growl.success(locale.getString("discovery.StartOk", {name: binding.name}));
                 },
                 function () {
-                    growl.error(locale.getString("habmin.discoveryStartFail", {name: binding.name}));
+                    growl.error(locale.getString("discovery.StartFail", {name: binding.name}));
                 }
             );
         };
@@ -362,7 +362,7 @@ angular.module('HABmin', [
                     InboxModel.refreshInbox();
                 },
                 function () {
-                    growl.error(locale.getString("habmin.discoveryIgnoreFail", {name: thingUID}));
+                    growl.error(locale.getString("discovery.IgnoreFail", {name: thingUID}));
                 }
             );
         };
@@ -373,7 +373,7 @@ angular.module('HABmin', [
                     InboxModel.refreshInbox();
                 },
                 function () {
-                    growl.error(locale.getString("habmin.discoveryIgnoreFail", {name: thingUID}));
+                    growl.error(locale.getString("discovery.IgnoreFail", {name: thingUID}));
                 }
             );
         };
@@ -384,7 +384,7 @@ angular.module('HABmin', [
                     InboxModel.refreshInbox();
                 },
                 function () {
-                    growl.error(locale.getString("habmin.discoveryDeleteFail", {name: thingUID}));
+                    growl.error(locale.getString("discovery.DeleteFail", {name: thingUID}));
                 }
             );
         };
@@ -397,7 +397,7 @@ angular.module('HABmin', [
                         InboxModel.refreshInbox();
                     },
                     function () {
-                        growl.error(locale.getString("habmin.discoveryDeleteFail", {name: thingUID}));
+                        growl.error(locale.getString("discovery.DeleteFail", {name: thingUID}));
                     }
                 );
             });
@@ -407,7 +407,7 @@ angular.module('HABmin', [
                     InboxModel.refreshInbox();
                 },
                 function () {
-                    growl.error(locale.getString("habmin.discoveryClearFail"));
+                    growl.error(locale.getString("discovery.ClearFail"));
                 }
             );
         };

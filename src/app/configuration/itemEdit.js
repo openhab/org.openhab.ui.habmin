@@ -44,7 +44,7 @@ angular.module('Config.ItemEdit', [
                         function (newItem) {
                             if(create != true) {
                                 $modalInstance.close($scope.item);
-                                growl.success(locale.getString("habmin.itemSaveOk",
+                                growl.success(locale.getString("item.SaveOk",
                                     {name: $scope.item.label}));
 
                                 return;
@@ -53,7 +53,7 @@ angular.module('Config.ItemEdit', [
                             ItemModel.linkItem(thing, channel, newItem).then(
                                 function () {
                                     $modalInstance.close($scope.item);
-                                    growl.success(locale.getString("habmin.itemSaveOk",
+                                    growl.success(locale.getString("item.SaveOk",
                                         {name: $scope.item.label}));
                                 },
                                 function (response) {
@@ -64,7 +64,7 @@ angular.module('Config.ItemEdit', [
                                     else {
                                         msg = locale.getString("common.noResponse");
                                     }
-                                    growl.warning(locale.getString("habmin.itemSaveFailed",
+                                    growl.warning(locale.getString("item.SaveFailed",
                                         {name: $scope.item.label, message: msg}));
                                 }
                             );
@@ -77,7 +77,7 @@ angular.module('Config.ItemEdit', [
                             else {
                                 msg = locale.getString("common.noResponse");
                             }
-                            growl.warning(locale.getString("habmin.itemSaveFailed",
+                            growl.warning(locale.getString("item.SaveFailed",
                                 {name: $scope.item.label, message: msg}));
                         }
                     );

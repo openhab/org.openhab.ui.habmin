@@ -35,7 +35,7 @@
             </div>
             <div ng-if="bindingsCnt==0" class="list-group-item text-center">
                 <span class="fa fa-exclamation-triangle text-warning"></span>
-                <span i18n="habmin.bindingNoneFound"></span>
+                <span i18n="binding.NoneFound"></span>
             </div>
         </div>
 
@@ -51,14 +51,14 @@
         <!-- Header -->
         <div class="panel-heading">
             <h3 class="panel-title pull-left">
-                <span i18n="habmin.bindingInformation"></span>&nbsp;<span><i>{{selectedBinding.name}}</i></span>
+                <span i18n="binding.Information"></span>&nbsp;<span><i>{{selectedBinding.name}}</i></span>
 </h3>
             <div class="pull-right btn-group dropdown">
                 <button type="button"
                         class="btn btn-default dropdown-toggle"
                         data-toggle="dropdown">
                     <span class="fa fa-cog"></span>
-                    <span i18n="habmin.thingTools"></span>
+                    <span i18n="thing.Tools"></span>
                     <span class="caret"></span>
                     <span class="sr-only">Dropdown</span>
                 </button>
@@ -75,7 +75,7 @@
                         <a ng-click="showAdvancedSettings=!showAdvancedSettings">
                             <span class="fa fa-fw" ng-class="{'fa-check-square-o': showAdvancedSettings}"></span>
                             <span class="fa fa-fw fa-user-plus"></span>
-                            <span i18n="habmin.thingAdvancedMode"></span>
+                            <span i18n="thing.AdvancedMode"></span>
                         </a>
                     </li>
                 </ul>
@@ -92,19 +92,19 @@
                        ng-class="{'list-group-item config-panel-title':true, 'active': panelDisplayed=='DESCRIPTION'}"
                        ng-click="setPanelDisplayed('DESCRIPTION')">
                         <span class="fa fa-fw fa-book"></span>
-                        <span i18n="habmin.thingDescription"></span>
+                        <span i18n="thing.Description"></span>
                     </a>
                 </div>
                 <div collapse="panelDisplayed!='DESCRIPTION'" class="panel-form">
                     <div class="habmin-info">
-                        <label i18n="habmin.bindingDescription"></label>
+                        <label i18n="binding.Description"></label>
 
                         <div class="well well-sm" ng-bind-html="selectedBinding.description">
                         </div>
                     </div>
 
                     <div class="habmin-info">
-                        <label i18n="habmin.bindingAuthor"></label>
+                        <label i18n="binding.Author"></label>
 
                         <div class="well well-sm">
                             {{selectedBinding.author}}
@@ -142,7 +142,7 @@
                            ng-class="{'list-group-item list-group-item-heading':true, 'active': panelDisplayed=='CONFIG-ungrouped'}"
                            ng-click="setPanelDisplayed('CONFIG-ungrouped')">
                             <span class="fa fa-fw fa-wrench"></span>
-                            <span i18n="habmin.thingConfiguration"></span>
+                            <span i18n="thing.Configuration"></span>
                         </a>
                     </div>
                     <div collapse="$parent.panelDisplayed!='CONFIG-ungrouped'"

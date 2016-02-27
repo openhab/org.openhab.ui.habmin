@@ -51,7 +51,7 @@
             </div>
             <div ng-if="bindingsCnt==0" class="list-group-item text-center">
                 <span class="fa fa-exclamation-triangle text-warning"></span>
-                <span i18n="habmin.bindingNoneFound"></span>
+                <span i18n="binding.NoneFound"></span>
             </div>
         </div>
 
@@ -84,7 +84,7 @@
                     class="btn btn-default"
                     ng-disabled="!formLoaded || newItem"
                     ng-confirm-click="itemDelete()" ng-confirm-icon="warning"
-                    i18n-attr="{'ngConfirmMessage': 'habmin.itemDeleteCheck','ngConfirmTitle': 'habmin.itemDelete','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes' }">
+                    i18n-attr="{'ngConfirmMessage': 'item.DeleteCheck','ngConfirmTitle': 'item.Delete','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes' }">
                 <span class="fa fa-trash"></span>
                 <span class="hidden-xs hidden-sm" i18n="common.delete"></span>
             </button>

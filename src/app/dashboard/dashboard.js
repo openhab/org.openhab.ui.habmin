@@ -123,11 +123,11 @@ angular.module('HABmin.dashboard', [
                                 $scope.isDirty = false;
 
                                 $scope.dashboard.id = dashboard.id;
-                                growl.success(locale.getString('habmin.dashboardSaveOk',
+                                growl.success(locale.getString('dashboard.SaveOk',
                                     {name: $scope.dashboard.name}));
                             },
                             function () {
-                                growl.warning(locale.getString('habmin.dashboardSaveError',
+                                growl.warning(locale.getString('dashboard.SaveError',
                                     {name: $scope.dashboard.name}));
                             }
                         );
@@ -139,10 +139,10 @@ angular.module('HABmin.dashboard', [
                     function (dashboard) {
                         $scope.isDirty = false;
                         $scope.dashboard.id = dashboard.id;
-                        growl.success(locale.getString('habmin.dashboardSaveOk', {name: $scope.dashboard.name}));
+                        growl.success(locale.getString('dashboard.SaveOk', {name: $scope.dashboard.name}));
                     },
                     function () {
-                        growl.warning(locale.getString('habmin.dashboardSaveError', {name: $scope.dashboard.name}));
+                        growl.warning(locale.getString('dashboard.SaveError', {name: $scope.dashboard.name}));
                     }
                 );
             }
@@ -153,10 +153,10 @@ angular.module('HABmin.dashboard', [
                 function () {
                     $scope.clearDashboard();
                     $scope.isDirty = false;
-                    growl.success(locale.getString('habmin.dashboardDeleteOk', {name: $scope.dashboard.name}));
+                    growl.success(locale.getString('dashboard.DeleteOk', {name: $scope.dashboard.name}));
                 },
                 function () {
-                    growl.warning(locale.getString('habmin.dashboardDeleteError', {name: $scope.dashboard.name}));
+                    growl.warning(locale.getString('dashboard.DeleteError', {name: $scope.dashboard.name}));
                 }
             );
         };
@@ -285,7 +285,7 @@ angular.module('HABmin.dashboard', [
 
     .controller('DashboardCtrlMenu',
     function ($scope, $rootScope, locale) {
-        $scope.tooltipEdit = locale.getString('habmin.mainDashboardEdit');
+        $scope.tooltipEdit = locale.getString('habmin.DashboardEdit');
 
         $scope.dashboardEdit = function () {
             $rootScope.$broadcast("dashboardEdit");

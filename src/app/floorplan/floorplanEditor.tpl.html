@@ -4,7 +4,7 @@
     <div class="panel panel-default">
         <!-- Header -->
         <div class="panel-heading clearfix">
-            <span class="panel-title pull-left" i18n="habmin.floorplanEditor"></span>
+            <span class="panel-title pull-left" i18n="floorplan.Editor"></span>
             <div class="btn-group pull-right">
                 <button type="button"
                         class="btn btn-default"
@@ -44,7 +44,7 @@
             </div>
             <div ng-if="bindingsCnt==0" class="list-group-item text-center">
                 <span class="fa fa-exclamation-triangle text-warning"></span>
-                <span i18n="habmin.bindingNoneFound"></span>
+                <span i18n="binding.NoneFound"></span>
             </div>
         </div>
 
@@ -61,7 +61,7 @@
         <div class="panel-heading">
              <span class="btn btn-default btn-file" ng-disabled="selectedFloorplan==null">
                 <span class="fa fa-picture-o"></span>
-                <span i18n="habmin.floorplanSelectImage"></span>
+                <span i18n="floorplan.SelectImage"></span>
                 <input onchange="angular.element(this).scope().selectImage(this.files[0]);this.value = '';" type="file"/>
             </span>
             <button type="button"
@@ -83,7 +83,7 @@
                     class="btn btn-default"
                     ng-confirm-click="floorplanDelete()" ng-confirm-icon="warning"
                     ng-disabled="selectedFloorplan==null || selectedFloorplan.id==null"
-                    i18n-attr="{'ngConfirmMessage': 'habmin.floorplanDeleteCheck','ngConfirmTitle': 'habmin.floorplanDelete','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes' }">
+                    i18n-attr="{'ngConfirmMessage': 'floorplan.DeleteCheck','ngConfirmTitle': 'floorplan.Delete','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes' }">
                 <span class="fa fa-trash"></span>
                 <span class="hidden-xs hidden-sm" i18n="common.delete"></span>
             </button>

@@ -37,7 +37,7 @@ angular.module('FloorplanEditor', [
             resolve: {
                 // Make sure the localisation files are resolved before the controller runs
                 localisations: function (locale) {
-                    return locale.ready('habmin');
+                    return locale.ready('floorplan');
                 }
             }
         });
@@ -138,7 +138,7 @@ angular.module('FloorplanEditor', [
             function save() {
                 FloorplanModel.putFloorplan($scope.selectedFloorplan).then(
                     function () {
-                        growl.success(locale.getString('habmin.floorplanSaveOk',
+                        growl.success(locale.getString('floorplan.SaveOk',
                             {name: $scope.selectedFloorplan.name}));
 
                         $scope.selectedFloorplan.imgBase64 = null;
@@ -147,7 +147,7 @@ angular.module('FloorplanEditor', [
                         $scope.isDirty = false;
                     },
                     function () {
-                        growl.warning(locale.getString('habmin.floorplanSaveError',
+                        growl.warning(locale.getString('floorplan.SaveError',
                             {name: $scope.selectedFloorplan.name}));
                     }
                 );

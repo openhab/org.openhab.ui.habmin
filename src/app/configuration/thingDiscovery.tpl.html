@@ -16,12 +16,12 @@
                     <li><a ng-click="listNew=!listNew">
                         <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': listNew}"></span>
                         <span class="fa fa-fw fa-plus-circle text-success"></span>
-                        <span i18n="habmin.thingNew"></span>
+                        <span i18n="thing.New"></span>
                     </a></li>
                     <li><a ng-click="listIgnored=!listIgnored">
                         <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': listIgnored}"></span>
                         <span class="fa fa-fw fa-dot-circle-o text-muted"></span>
-                        <span i18n="habmin.thingIgnored"></span>
+                        <span i18n="thing.Ignored"></span>
                     </a></li>
                 </ul>
             </div>
@@ -30,7 +30,7 @@
             <div class="btn-group dropdown pull-right">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                     <span class="fa fa-plus-square"></span>
-                    <span i18n="habmin.thingSearch"></span>
+                    <span i18n="thing.Search"></span>
                     <span class="caret"></span>
                     <span class="sr-only">Dropdown</span>
                 </button>
@@ -76,7 +76,7 @@
             </div>
             <div ng-if="inboxCnt==0" class="list-group-item text-center">
                 <span class="fa fa-exclamation-triangle text-warning"></span>
-                <span i18n="habmin.thingNoneFound"></span>
+                <span i18n="thing.NoneFound"></span>
             </div>
         </div>
 
@@ -98,14 +98,14 @@
             </button>
             <button type="button" ng-class="{'btn btn-default':true, 'disabled':!selectedThing}"
                     ng-confirm-click="ignoreThing()"
-                    i18n-attr="{'ngConfirmMessage': 'habmin.discoveryIgnoreConfirmMsg','ngConfirmTitle': 'habmin.discoveryIgnoreConfirmTitle','ngConfirmNoBtn': 'common.cancel', 'ngConfirmYesBtn': 'common.ok'}"
+                    i18n-attr="{'ngConfirmMessage': 'discovery.IgnoreConfirmMsg','ngConfirmTitle': 'discovery.IgnoreConfirmTitle','ngConfirmNoBtn': 'common.cancel', 'ngConfirmYesBtn': 'common.ok'}"
                     >
                 <span class="fa fa-fw fa-dot-circle-o"></span>
                 <span i18n="common.ignore"></span>
             </button>
             <button type="button" ng-class="{'btn btn-default':true, 'disabled':!selectedThing}"
                     ng-confirm-click="deleteThing()"
-                    i18n-attr="{'ngConfirmMessage': 'habmin.discoveryDeleteConfirmMsg','ngConfirmTitle': 'habmin.discoveryDeleteConfirmTitle','ngConfirmNoBtn': 'common.cancel', 'ngConfirmYesBtn': 'common.ok'}"
+                    i18n-attr="{'ngConfirmMessage': 'discovery.DeleteConfirmMsg','ngConfirmTitle': 'discovery.DeleteConfirmTitle','ngConfirmNoBtn': 'common.cancel', 'ngConfirmYesBtn': 'common.ok'}"
                     >
                 <span class="fa fa-fw fa-times-circle"></span>
                 <span i18n="common.delete"></span>

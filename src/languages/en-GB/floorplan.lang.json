@@ -1,0 +1,16 @@
+{
+  "Editor": "Floorplan Editor",
+  "SelectImage": "Select Image",
+  "UploadTitle": "Upload Floorplan",
+  "UploadName": "Floorplan Name",
+  "HotspotTitle": "Hotspot Properties",
+  "HotspotItem": "Item",
+  "HotspotItemPlaceholder": "Select Item...",
+  "PropertiesTitle": "Floorplan Properties",
+  "PropertiesName": "Name",
+  "PropertiesCategory": "Category",
+  "Delete": "Delete Floorplan",
+  "DeleteCheck": "Are you sure you wnat to delete this floorplan?",
+  "SaveOk": "Floorplan <b><i>{name}</i></b> saved successfully",
+  "SaveError": "Error saving floorplan <b><i>{name}</i></b>"
+}

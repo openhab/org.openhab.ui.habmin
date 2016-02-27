@@ -1,13 +1,13 @@
 <form class="form" role="form">
     <div class="form-group">
-        <label for="inputItem" class="control-label" i18n="habmin.dashboardGaugeItem"></label>
+        <label for="inputItem" class="control-label" i18n="dashboard.GaugeItem"></label>
 
         <div>
             <ui-select id="inputItem"
                        ng-model="options.itemId"
                        theme="bootstrap"
                     >
-                <ui-select-match i18n-attr="{placeholder: 'habmin.dashboardGaugeItemPlaceholder'}">
+                <ui-select-match i18n-attr="{placeholder: 'dashboard.GaugeItemPlaceholder'}">
                     <habmin-icon class="fa fa-fw" category="{{$select.selected.category}}"></habmin-icon>
                     &nbsp;{{$select.selected.label}}
                 </ui-select-match>
@@ -18,7 +18,7 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="inputTheme" class="control-label" i18nx="habmin.dashboardGaugeItem">Theme</label>
+        <label for="inputTheme" class="control-label" i18nx="dashboard.GaugeItem">Theme</label>
 
         <div>
             <ui-select id="inputTheme"
@@ -27,7 +27,7 @@
                        search-enabled="false"
                        on-select="selectTheme($item)"
                     >
-                <ui-select-match i18n-attr="{placeholder: 'habmin.dashboardGaugeItemPlaceholder'}">
+                <ui-select-match i18n-attr="{placeholder: 'dashboard.GaugeItemPlaceholder'}">
                     {{$select.selected.name}}
                 </ui-select-match>
                 <ui-select-choices repeat="theme.id as theme in gaugeThemes">
@@ -38,35 +38,35 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="inputTitle" class="control-label" i18n="habmin.dashboardGaugeLabel"></label>
+        <label for="inputTitle" class="control-label" i18n="dashboard.GaugeLabel"></label>
         <div>
             <input type="text" ng-model="options.title" class="form-control" id="inputTitle" placeholder="Label">
         </div>
     </div>
 
     <div class="form-group">
-        <label for="inputUnits" class="control-label" i18n="habmin.dashboardGaugeUnits"></label>
+        <label for="inputUnits" class="control-label" i18n="dashboard.GaugeUnits"></label>
         <div>
             <input type="text" ng-model="options.units" class="form-control" id="inputUnits" placeholder="Label">
         </div>
     </div>
 
     <div class="form-group">
-        <label for="inputMinimum" class="control-label" i18n="habmin.dashboardGaugeMinimum"></label>
+        <label for="inputMinimum" class="control-label" i18n="dashboard.GaugeMinimum"></label>
         <div>
             <input type="number" ng-model="options.scaleMin" class="form-control" id="inputMinimum" placeholder="Label">
         </div>
     </div>
 
     <div class="form-group">
-        <label for="inputMaximum" class="control-label" i18n="habmin.dashboardGaugeMaximum"></label>
+        <label for="inputMaximum" class="control-label" i18n="dashboard.GaugeMaximum"></label>
 
         <div>
             <input type="number" ng-model="model.scaleMax" class="form-control" id="inputMaximum" placeholder="Label">
         </div>
     </div>
     <div class="form-group">
-        <label for="inputBarWidth" class="control-label" i18n="habmin.dashboardGaugeBarWidth"></label>
+        <label for="inputBarWidth" class="control-label" i18n="dashboard.GaugeBarWidth"></label>
 
         <div>
             <input type="number" ng-model="options.barWidth" class="form-control" id="inputBarWidth"
@@ -74,7 +74,7 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="inputBorderWidth" class="control-label" i18n="habmin.dashboardGaugeBorderWidth"></label>
+        <label for="inputBorderWidth" class="control-label" i18n="dashboard.GaugeBorderWidth"></label>
 
         <div>
             <input type="number" ng-model="options.borderWidth" class="form-control" id="inputBorderWidth"
@@ -82,14 +82,14 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="inputScaleAngle" class="control-label" i18n="habmin.dashboardGaugeScaleAngle"></label>
+        <label for="inputScaleAngle" class="control-label" i18n="dashboard.GaugeScaleAngle"></label>
 
         <div>
             <input type="number" ng-model="options.angle" class="form-control" id="inputScaleAngle" placeholder="Label">
         </div>
     </div>
     <div class="form-group">
-        <label for="inputZeroPosition" class="control-label" i18n="habmin.dashboardGaugeZeroPosition"></label>
+        <label for="inputZeroPosition" class="control-label" i18n="dashboard.GaugeZeroPosition"></label>
 
         <div>
             <input type="number" ng-model="options.rotate" class="form-control" id="inputZeroPosition"
@@ -97,7 +97,7 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="inputKnobAngle" class="control-label" i18n="habmin.dashboardGaugeBarAngle"></label>
+        <label for="inputKnobAngle" class="control-label" i18n="dashboard.GaugeBarAngle"></label>
 
         <div>
             <input type="number" ng-model="options.barAngle" class="form-control" id="inputKnobAngle"
@@ -106,14 +106,14 @@
     </div>
 
     <div class="form-group">
-        <label for="inputEndCap" class="control-label" i18n="habmin.dashboardGaugeEndCap"></label>
+        <label for="inputEndCap" class="control-label" i18n="dashboard.GaugeEndCap"></label>
 
         <div>
             <ui-select id="inputEndCap"
                        ng-model="options.lineCap"
                        theme="bootstrap"
                     >
-                <ui-select-match i18n-attr="{placeholder: 'habmin.dashboardGaugeEndCap'}">{{$select.selected.name}}
+                <ui-select-match i18n-attr="{placeholder: 'dashboard.GaugeEndCap'}">{{$select.selected.name}}
                 </ui-select-match>
                 <ui-select-choices repeat="cap.id as cap in endCaps">
                     {{cap.name}}
