@@ -49,8 +49,8 @@ angular.module('HABmin.bindingModel', [
                             angular.forEach(data, function (newBinding) {
                                 var found = false;
                                 angular.forEach(bindingList, function (binding) {
-                                    if(binding.id == newBinding.id) {
-                                        for(var i in newBinding){
+                                    if (binding.id == newBinding.id) {
+                                        for (var i in newBinding) {
                                             binding[i] = newBinding[i];
                                         }
                                         found = true;
@@ -58,7 +58,7 @@ angular.module('HABmin.bindingModel', [
                                 });
 
                                 // Is this a new binding we've not seen before?
-                                if(found == false) {
+                                if (found == false) {
                                     bindingList.push(newBinding);
                                 }
                             });
@@ -93,13 +93,13 @@ angular.module('HABmin.bindingModel', [
                             angular.forEach(data, function (newBinding) {
                                 var found = false;
                                 angular.forEach(bindingList, function (binding) {
-                                    if(binding.id == newBinding) {
+                                    if (binding.id == newBinding) {
                                         binding.discovery = true;
                                         found = true;
                                     }
                                 });
 
-                                if(found == false) {
+                                if (found == false) {
                                     bindingList.push({id: newBinding, discovery: true});
                                 }
                             });

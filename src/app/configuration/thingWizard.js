@@ -128,7 +128,7 @@ angular.module('Config.ThingWizard', [
 
                     // If this thing requires a bridge, see how many things are current defined of the type required
                     // If there's only one, then use it by default
-                    if (type.supportedBridgeTypeUIDs != null && type.supportedBridgeTypeUIDs.length != 0) {
+                    if (type.supportedBridgeTypeUIDs != null && type.supportedBridgeTypeUIDs.length !== 0) {
                         var bridgeFound = null;
                         angular.forEach($scope.things, function (thing) {
                             // Check if this is a supported bridge
@@ -143,7 +143,7 @@ angular.module('Config.ThingWizard', [
                         });
 
                         // If we found a single bridge, it's now in bridgeFound
-                        if (bridgeFound != null && bridgeFound != "") {
+                        if (bridgeFound != null && bridgeFound !== "") {
                             $scope.selectedThing.bridgeUID = bridgeFound;
                         }
                     }
@@ -183,6 +183,6 @@ angular.module('Config.ThingWizard', [
                         {name: name}));
                 }
             );
-        }
+        };
 
     });

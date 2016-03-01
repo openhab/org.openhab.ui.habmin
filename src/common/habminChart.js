@@ -130,7 +130,7 @@ angular.module('habminChart', [
                     $scope.startTime = $scope.stopTime - (86400 * 1000);
                     _initChart($scope.stopTime - $scope.startTime);
 
-                    angular.forEach(listeners, function(listener) {
+                    angular.forEach(listeners, function (listener) {
                         listener();
                     });
 
@@ -156,7 +156,7 @@ angular.module('habminChart', [
                             _addChartItem(itemRef, response);
 
                             listeners.push($scope.$on('smarthome/items/' + itemRef + "/state", function (event, state) {
-                                if($scope.liveupdate === false) {
+                                if ($scope.liveupdate === false) {
                                     return;
                                 }
                                 var num = Number(state.value);
@@ -435,7 +435,7 @@ angular.module('habminChart', [
 
                 $scope.graphEvents = {
                     rangechanged: $scope.onRangeChanged,
-                    onload: function(chart) {
+                    onload: function (chart) {
                         graph2d = chart;
                         if ($scope.events.onload != null) {
                             $scope.events.onload(chart);
@@ -470,8 +470,8 @@ angular.module('habminChart', [
                     _displayItems($scope.items);
                 });
 
-                $scope.$on('$destroy', function() {
-                    angular.forEach(listeners, function(listener) {
+                $scope.$on('$destroy', function () {
+                    angular.forEach(listeners, function (listener) {
                         listener();
                     })
                 });

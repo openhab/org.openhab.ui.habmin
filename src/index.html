@@ -41,44 +41,44 @@
         Loading...
     </div>
 
-<% if(buildtype == 'cordova') { %>
-<!-- Include PhoneGap -->
+    <% if(buildtype == 'cordova') { %>
+    <!-- Include PhoneGap -->
     <script type="text/javascript" src="cordova.js"></script>
-<% } %>
+    <% } %>
 
-<!-- compiled CSS --><% styles.forEach( function ( file ) { %>
+    <!-- compiled CSS --><% styles.forEach( function ( file ) { %>
     <link rel="stylesheet" type="text/css" href="<%= file %>"/>
-<% }); %>
+    <% }); %>
 
 
-<!-- compiled JavaScript --><% scripts.forEach( function ( file ) { %>
+    <!-- compiled JavaScript --><% scripts.forEach( function ( file ) { %>
     <script type="text/javascript" src="<%= file %>"></script>
-<% }); %>
+    <% }); %>
 
-<script type="text/javascript">
-    document.HABminVersionString = "<%= version %>";
-    document.HABminVersionDate = "<%= grunt.template.today('yyyy-mm-dd\'T\'HH:MM:ss') %>";
+    <script type="text/javascript">
+        document.HABminVersionString = "<%= version %>";
+        document.HABminVersionDate = "<%= grunt.template.today('yyyy-mm-dd\'T\'HH:MM:ss') %>";
 
-    <%
-    if (buildtype == 'cordova') { %>
-        <!-- Handle application startup for Cordova -->
-        document.HABminCordova = true;
-        $(document).ready(function () {
-            document.addEventListener("deviceready", function onDeviceReady() {
+        <%
+        if (buildtype == 'cordova') { %>
+            <!-- Handle application startup for Cordova -->
+            document.HABminCordova = true;
+            $(document).ready(function () {
+                document.addEventListener("deviceready", function onDeviceReady() {
+                    angular.bootstrap(document, ['HABmin']);
+                }, true);
+            });
+        <%
+        } else { %>
+            <!-- Handle application startup within browser -->
+            document.HABminCordova = false;
+            $(document).ready(function () {
                 angular.bootstrap(document, ['HABmin']);
-            }, true);
-        });
-    <%
-    } else { %>
-        <!-- Handle application startup within browser -->
-        document.HABminCordova = false;
-        $(document).ready(function () {
-            angular.bootstrap(document, ['HABmin']);
-        });
-    <%
-    }
-    %>
-</script>
+            });
+        <%
+        }
+        %>
+    </script>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini fixed">
@@ -126,14 +126,14 @@
                                         ng-class="{'disabled':notificationCntNew==0}"
                                         ng-confirm-click="clearInbox()"
                                         i18n-attr="{'ngConfirmMessage': 'discovery.ClearConfirmMsg','ngConfirmTitle': 'discovery.ClearConfirmTitle','ngConfirmNoBtn': 'common.cancel', 'ngConfirmYesBtn': 'common.ok'}">
-                                <span class="fa fa-fw fa-times-circle text-danger"></span>
+                                    <span class="fa fa-fw fa-times-circle text-danger"></span>
                                     <span i18n="common.clear"></span>
                                 </button>
                             </li>
                             <li>
                                 <!-- inner menu: contains the actual data -->
                                 <ul class="menu">
-                                    <li ng-repeat="msg in inbox" ng-if="msg.flag=='NEW'">
+                                    <li ng-repeat="msg in inbox | orderBy:'label'" ng-if="msg.flag=='NEW'">
                                         <a>
                                             <div class="pull-left">
                                                 <small class="label pull-right bg-green">new</small>
@@ -141,6 +141,7 @@
                                             <h4>
                                                 {{msg.label}}
                                             </h4>
+
                                             <p>
                                                 <button type="button" class="btn btn-xs btn-default"
                                                         ng-click="saveThing(msg.thingUID, msg.label)">
@@ -162,7 +163,7 @@
                                             </p>
                                         </a>
                                     </li>
-                                 </ul>
+                                </ul>
                             </li>
                             <li class="footer"><a><span i18n="common.close"></span></a></li>
                         </ul>
@@ -193,7 +194,8 @@
                 <!-- CHARTS MENU -->
                 <li class="treeview" ng-class="{active: $state.includes('chart')}">
                     <a href="#">
-                        <i class="fa fa-fw fa-bar-chart"></i> <span i18n="habmin.Charts"></span> <i class="fa fa-angle-left pull-right"></i>
+                        <i class="fa fa-fw fa-bar-chart"></i> <span i18n="habmin.Charts"></span> <i
+                            class="fa fa-angle-left pull-right"></i>
                     </a>
                     <ul class="treeview-menu">
                         <li ng-repeat="chart in charts">
@@ -215,7 +217,8 @@
                 <!-- DASHBOARD MENU -->
                 <li class="treeview" ng-class="{active: $state.includes('dashboard')}">
                     <a href="#">
-                        <i class="fa fa-fw fa-dashboard"></i> <span i18n="habmin.Dashboard"></span> <i class="fa fa-angle-left pull-right"></i>
+                        <i class="fa fa-fw fa-dashboard"></i> <span i18n="habmin.Dashboard"></span> <i
+                            class="fa fa-angle-left pull-right"></i>
                     </a>
                     <ul class="treeview-menu">
                         <li ng-repeat="dashboard in dashboards">
@@ -323,7 +326,8 @@
                         <i class="fa fa-angle-left pull-right"></i>
                     </a>
                     <ul class="treeview-menu">
-                        <li ui-sref="tools/zwave/logreader" ng-class="{active: $state.includes('tools/zwave/logreader')}">
+                        <li ui-sref="tools/zwave/logreader"
+                            ng-class="{active: $state.includes('tools/zwave/logreader')}">
                             <a>
                                 <i class="fa fa-fw fa-info-circle"></i>
                                 <span i18n="habmin.ZWaveLogReader"></span>
@@ -356,8 +360,10 @@
     <div class="content-wrapper">
         <!-- Main content -->
         <section class="content container-fluid habmin-body" ui-view="main">
-        </section><!-- /.content -->
-    </div><!-- /.content-wrapper -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
@@ -372,47 +378,57 @@
             <div class="tab-pane" id="control-sidebar-home-tab">
                 <h3 class="control-sidebar-heading">Recent Activity</h3>
                 <ul class="control-sidebar-menu">
-                </ul><!-- /.control-sidebar-menu -->
+                </ul>
+                <!-- /.control-sidebar-menu -->
 
                 <h3 class="control-sidebar-heading">Tasks Progress</h3>
                 <ul class="control-sidebar-menu">
-                </ul><!-- /.control-sidebar-menu -->
+                </ul>
+                <!-- /.control-sidebar-menu -->
 
-            </div><!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-pane -->
 
             <!-- Settings tab content -->
             <div class="tab-pane" id="control-sidebar-settings-tab">
                 <form method="post">
                     <h3 class="control-sidebar-heading">General Settings</h3>
+
                     <div class="form-group">
                         <label class="control-sidebar-subheading">
                             Report panel usage
                             <input type="checkbox" class="pull-right" checked>
                         </label>
+
                         <p>
                             Some information about this general settings option
                         </p>
-                    </div><!-- /.form-group -->
+                    </div>
+                    <!-- /.form-group -->
 
                     <div class="form-group">
                         <label class="control-sidebar-subheading">
                             Allow mail redirect
                             <input type="checkbox" class="pull-right" checked>
                         </label>
+
                         <p>
                             Other sets of options are available
                         </p>
-                    </div><!-- /.form-group -->
+                    </div>
+                    <!-- /.form-group -->
 
                     <div class="form-group">
                         <label class="control-sidebar-subheading">
                             Expose author name in posts
                             <input type="checkbox" class="pull-right" checked>
                         </label>
+
                         <p>
                             Allow the user to show his name in blog posts
                         </p>
-                    </div><!-- /.form-group -->
+                    </div>
+                    <!-- /.form-group -->
 
                     <h3 class="control-sidebar-heading">Chat Settings</h3>
 
@@ -421,25 +437,30 @@
                             Show me as online
                             <input type="checkbox" class="pull-right" checked>
                         </label>
-                    </div><!-- /.form-group -->
+                    </div>
+                    <!-- /.form-group -->
 
                     <div class="form-group">
                         <label class="control-sidebar-subheading">
                             Turn off notifications
                             <input type="checkbox" class="pull-right">
                         </label>
-                    </div><!-- /.form-group -->
+                    </div>
+                    <!-- /.form-group -->
 
                     <div class="form-group">
                         <label class="control-sidebar-subheading">
                             Delete chat history
                             <a href="javascript::;" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
                         </label>
-                    </div><!-- /.form-group -->
+                    </div>
+                    <!-- /.form-group -->
                 </form>
-            </div><!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-pane -->
         </div>
-    </aside><!-- /.control-sidebar -->
+    </aside>
+    <!-- /.control-sidebar -->
     <!-- Add the sidebar's background. This div must be placed
          immediately after the control sidebar -->
     <div class="control-sidebar-bg"></div>
@@ -448,7 +469,8 @@
     <div growl>
     </div>
 
-</div><!-- ./wrapper -->
+</div>
+<!-- ./wrapper -->
 
 </body>
 </html>

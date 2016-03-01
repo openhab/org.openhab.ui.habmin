@@ -12,7 +12,8 @@
                     &nbsp;{{$select.selected.label}}
                 </ui-select-match>
                 <ui-select-choices repeat="item.name as item in items | filter: {label: $select.search }">
-                    <habmin-icon class="fa fa-fw" category="{{item.category}}"></habmin-icon>&nbsp;{{item.label}}
+                    <habmin-icon class="fa fa-fw" category="{{item.category}}"></habmin-icon>
+                    &nbsp;{{item.label}}
                 </ui-select-choices>
             </ui-select>
         </div>
@@ -39,6 +40,7 @@
     </div>
     <div class="form-group">
         <label for="inputTitle" class="control-label" i18n="dashboard.GaugeLabel"></label>
+
         <div>
             <input type="text" ng-model="options.title" class="form-control" id="inputTitle" placeholder="Label">
         </div>
@@ -46,6 +48,7 @@
 
     <div class="form-group">
         <label for="inputUnits" class="control-label" i18n="dashboard.GaugeUnits"></label>
+
         <div>
             <input type="text" ng-model="options.units" class="form-control" id="inputUnits" placeholder="Label">
         </div>
@@ -53,6 +56,7 @@
 
     <div class="form-group">
         <label for="inputMinimum" class="control-label" i18n="dashboard.GaugeMinimum"></label>
+
         <div>
             <input type="number" ng-model="options.scaleMin" class="form-control" id="inputMinimum" placeholder="Label">
         </div>

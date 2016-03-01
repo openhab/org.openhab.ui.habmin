@@ -1,0 +1,16 @@
+{
+  "Editor": "Editor Mappa",
+  "SelectImage": "Seleziona Immagine",
+  "UploadTitle": "Carica Mappa",
+  "UploadName": "Nome Mappa",
+  "HotspotTitle": "Proprietà Hotspot",
+  "HotspotItem": "Elemento",
+  "HotspotItemPlaceholder": "Seleziona elemento...",
+  "PropertiesTitle": "Proprietà Mappa",
+  "PropertiesName": "Nome",
+  "PropertiesCategory": "Categoria",
+  "Delete": "Elimina Mappa",
+  "DeleteCheck": "Sei sicuro di voler cancellare questa mappa?",
+  "SaveOk": "Mappa <b><i>{name}</i></b> salvata con successo",
+  "SaveError": "Errore salvataggio mappa <b><i>{name}</i></b>"
+}

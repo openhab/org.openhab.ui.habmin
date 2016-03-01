@@ -35,7 +35,7 @@ angular.module('ResizePanel', [])
                 }, true);
 
                 w.bind('resize', function () {
-                    if(!$scope.$$phase) {
+                    if (!$scope.$$phase) {
                         $scope.$apply();
                     }
                 });

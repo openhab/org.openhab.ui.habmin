@@ -1,0 +1,18 @@
+{
+  "EditTitle": "Modifica Elemento",
+  "EditName": "Nome",
+  "EditLabel": "Etichetta",
+  "EditFormat": "Formato",
+  "EditType": "Tipo Elemento",
+  "EditCategory": "Categoria",
+  "EditGroups": "Gruppi",
+  "SelectName": "Inserisci nome...",
+  "SelectLabel": "Inserisci etichetta...",
+  "SelectCategory": "Seleziona Categoria...",
+  "SelectGroup": "Seleziona Gruppo...",
+  "SelectType": "Seleziona Tipologia...",
+  "SaveOk": "Elemento <b><i>{name}</i></b> salvato",
+  "SaveFailed": "Errore salvataggio elemento <b><i>{name}</i></b>.<br>{message}",
+  "Delete": "Elimina Elemento",
+  "DeleteCheck": "Sei sicuro di voler eliminare questo elemento?"
+}

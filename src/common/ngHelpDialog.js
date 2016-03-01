@@ -17,7 +17,7 @@ angular.module('ngHelpDialog', [
 
             link: function (scope, element, attrs) {
                 element.bind('click', function () {
-                    if(attrs.ngConfirmIf !== undefined && !$parse(attrs.ngConfirmIf)(scope)) {
+                    if (attrs.ngConfirmIf !== undefined && !$parse(attrs.ngConfirmIf)(scope)) {
                         $timeout(function () {
                             scope.$apply(attrs.ngConfirmClick);
                         });
@@ -37,7 +37,7 @@ angular.module('ngHelpDialog', [
                             $modalInstance.dismiss('cancel');
                         };
                     };
-                    
+
                     return $modal.open({
                         scope: newScope,
                         backdrop: 'static',

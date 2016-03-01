@@ -1,0 +1,13 @@
+{
+  "StartOk": "Scansione iniziata per il binding <b><i>{name}</i></b>",
+  "StartFail": "Scansione fallita per il binding <b><i>{name}</i></b>",
+  "IgnoreFail": "Impossibile da ignorare <b><i>{name}</i></b>",
+  "DeleteConfirmMsg": "Sei sicuro di voler cancellare l'oggetto dall'inbox?",
+  "DeleteConfirmTitle": "Cancellazione Oggetto Da Inbox",
+  "IgnoreConfirmMsg": "Sei sicuro di voler ignorare l'oggetto nell'inbox?",
+  "IgnoreConfirmTitle": "Ignora Oggetto In Inbox",
+  "NewThing": "Nuovo oggetto scoperto <b><i>{name}</i></b>.",
+  "ClearConfirmTitle": "Pulisci Inbox",
+  "ClearConfirmMsg": "Sei sicuro di voler pulire la scansione inbox. Tutti gli oggetti saranno rimossi e dovranno essere riscansionati!",
+  "ClearFail": "Pulizia inbox fallita per uno o più elementi!"
+}

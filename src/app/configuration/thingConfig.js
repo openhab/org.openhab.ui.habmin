@@ -198,7 +198,7 @@ angular.module('Config.Things', [
 
             // Are we looking for ungrouped parameters
             if (group == null) {
-                if (config.groupName == null || config.groupName == "") {
+                if (config.groupName == null || config.groupName === "") {
                     return true;
                 }
                 return false;
@@ -212,13 +212,13 @@ angular.module('Config.Things', [
         };
 
         $scope.configGroupAdvanced = function (group) {
-            if (group.advanced == true || group == null || group.length == 0) {
+            if (group.advanced === true || group == null || group.length === 0) {
                 return false;
             }
 
             for (var i = 0; i < $scope.selectedThingConfig.parameters.length; i++) {
                 if ($scope.selectedThingConfig.parameters[i].groupName == group.name &&
-                    !($scope.selectedThingConfig.parameters[i].advanced == true)) {
+                    ($scope.selectedThingConfig.parameters[i].advanced === false)) {
                     return true;
                 }
             }
@@ -234,7 +234,7 @@ angular.module('Config.Things', [
             for (var cnt1 = 0; cnt1 < $scope.selectedThingConfig.parameters.length; cnt1++) {
                 // If there's no group name, then it's not grouped
                 if ($scope.selectedThingConfig.parameters[cnt1].groupName == null ||
-                    $scope.selectedThingConfig.parameters[cnt1].groupName == "") {
+                    $scope.selectedThingConfig.parameters[cnt1].groupName === "") {
                     return true;
                 }
 
@@ -247,7 +247,7 @@ angular.module('Config.Things', [
                         break;
                     }
                 }
-                if (found == false) {
+                if (found === false) {
                     return true;
                 }
             }
@@ -349,8 +349,8 @@ angular.module('Config.Things', [
                                 val = "";
                             }
                         }
-                        if (parameter.multiple == true) {
-                            if (val == "") {
+                        if (parameter.multiple === true) {
+                            if (val === "") {
                                 val = [];
                             }
                             else {
@@ -379,7 +379,7 @@ angular.module('Config.Things', [
 
                         // Ensure the options are converted to a string for internal processing
                         angular.forEach(channel.channelType.parameters, function (parameter) {
-                            if(channel.configuration == null) {
+                            if (channel.configuration == null) {
                                 channel.configuration = {};
                             }
                             var val = channel.configuration[parameter.name];
@@ -391,8 +391,8 @@ angular.module('Config.Things', [
                                     val = "";
                                 }
                             }
-                            if (parameter.multiple == true) {
-                                if (val == "") {
+                            if (parameter.multiple === true) {
+                                if (val === "") {
                                     val = [];
                                 }
                                 else {
@@ -449,7 +449,7 @@ angular.module('Config.Things', [
             };
 
             // If there's no items currently associated with this channel then use the auto name...
-            if (channel.linkedItems.length == 0) {
+            if (channel.linkedItems.length === 0) {
                 newItem.name = $scope.selectedThing.UID + "_" + channel.id;
                 newItem.name = newItem.name.replace(/:/g, "_");
             }
@@ -554,7 +554,7 @@ angular.module('Config.Things', [
 
             // Check if anything at thing level needs updating
             var thingUpdated = false;
-            if ($scope.thingConfigForm.modifiedChildFormsCount != 0) {
+            if ($scope.thingConfigForm.modifiedChildFormsCount !== 0) {
                 angular.forEach($scope.thingConfigForm.modifiedChildForms, function (childForm) {
                     var channel = $scope.getChannel(childForm.$name);
                     if (channel == null) {
@@ -594,7 +594,7 @@ angular.module('Config.Things', [
                 thingUpdated = true;
             }
 
-            if (thingUpdated == true) {
+            if (thingUpdated === true) {
                 promises.push(ThingModel.putThing($scope.selectedThing));
             }
 
@@ -695,7 +695,7 @@ angular.module('Config.Things', [
                     growl.error(locale.getString("thing.ActionSentError",
                         {name: name}));
                 }
-            )
+            );
         };
 
         $scope.createNewThing = function (binding) {
@@ -741,7 +741,7 @@ angular.module('Config.Things', [
 
                     // If this thing requires a bridge, see how many things are current defined of the type required
                     // If there's only one, then use it by default
-                    if (type.supportedBridgeTypeUIDs != null && type.supportedBridgeTypeUIDs.length != 0) {
+                    if (type.supportedBridgeTypeUIDs != null && type.supportedBridgeTypeUIDs.length !== 0) {
                         var bridgeFound = null;
                         angular.forEach($scope.things, function (thing) {
                             // Check if this is a supported bridge
@@ -756,7 +756,7 @@ angular.module('Config.Things', [
                         });
 
                         // If we found a single bridge, it's now in bridgeFound
-                        if (bridgeFound != null && bridgeFound != "") {
+                        if (bridgeFound != null && bridgeFound !== "") {
                             $scope.selectedThing.bridgeUID = bridgeFound;
                         }
                     }

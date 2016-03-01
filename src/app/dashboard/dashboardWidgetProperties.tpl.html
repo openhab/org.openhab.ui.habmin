@@ -60,7 +60,7 @@
             <dashboard-general-properties ng-show="showTab==0" model="general"></dashboard-general-properties>
             <div ng-show="showTab==1">
                 <dashboard-button-properties ng-if="widget.type=='Button'"
-                                            options="widget.options"></dashboard-button-properties>
+                                             options="widget.options"></dashboard-button-properties>
                 <dashboard-chart-properties ng-if="widget.type=='Chart'"
                                             options="widget.options"></dashboard-chart-properties>
                 <dashboard-gauge-properties ng-if="widget.type=='Gauge'"
@@ -70,9 +70,9 @@
                 <dashboard-group-properties ng-if="widget.type=='Group'"
                                             options="widget.options"></dashboard-group-properties>
                 <dashboard-groupbar-properties ng-if="widget.type=='GroupBar'"
-                                            options="widget.options"></dashboard-groupbar-properties>
+                                               options="widget.options"></dashboard-groupbar-properties>
                 <dashboard-floorplan-properties ng-if="widget.type=='Floor'"
-                                            options="widget.options"></dashboard-floorplan-properties>
+                                                options="widget.options"></dashboard-floorplan-properties>
             </div>
         </div>
     </div>

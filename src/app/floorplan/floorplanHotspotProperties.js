@@ -22,7 +22,7 @@ angular.module('floorplanHotspotProperties', [
 
             // Ensure hotspot is an object
             // If it is, then make a copy of what we've been passed
-            if(hotspot !== null && typeof hotspot === 'object') {
+            if (hotspot !== null && typeof hotspot === 'object') {
                 scope.hotspot = angular.copy(hotspot);
             }
             else {
@@ -40,7 +40,7 @@ angular.module('floorplanHotspotProperties', [
                 }
             );
 
-            scope.getParentThingItem = function(item) {
+            scope.getParentThingItem = function (item) {
                 return ItemModel.getParentThingItem(item);
             };
 

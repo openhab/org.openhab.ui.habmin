@@ -32,7 +32,8 @@
                            search-enabled="false"
                         >
                     <ui-select-match i18n-attr="{placeholder: 'user.LanguageSelect'}">
-                        <span ng-bind-html="$select.selected.name"></span>&nbsp;(<span ng-bind-html="$select.selected.desc"></span>)
+                        <span ng-bind-html="$select.selected.name"></span>&nbsp;(<span
+                            ng-bind-html="$select.selected.desc"></span>)
                     </ui-select-match>
                     <ui-select-choices repeat="language.id as language in model.languages | orderBy: 'name'">
                         <div class="language-select"

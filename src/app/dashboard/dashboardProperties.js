@@ -21,7 +21,7 @@ angular.module('dashboardProperties', [
 
             // Ensure dashboard is an object
             // If it is, then make a copy of what we've been passed
-            if(dashboard !== null && typeof dashboard === 'object') {
+            if (dashboard !== null && typeof dashboard === 'object') {
                 scope.dashboard = angular.copy(dashboard);
             }
             else {

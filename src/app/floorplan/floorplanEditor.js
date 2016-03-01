@@ -46,19 +46,19 @@ angular.module('FloorplanEditor', [
     .controller('FloorplanEditor',
     function FloorplanEditorCtrl($scope, $sce, locale, growl, FloorplanModel, floorplanProperties, floorplanHotspotProperties) {
         $scope.floorplanList = [];
-        $scope.selectedFloorplan = null ;
+        $scope.selectedFloorplan = null;
         $scope.floorplanImageUpdated = false;
         $scope.isDirty = false;
 
         FloorplanModel.getList().then(
-            function(list) {
+            function (list) {
                 $scope.floorplanList = list;
             }
         );
 
-        $scope.selectFloorplan = function(floorplan) {
+        $scope.selectFloorplan = function (floorplan) {
             FloorplanModel.getFloorplan(floorplan.id).then(
-                function(fp){
+                function (fp) {
                     $scope.selectedFloorplan = fp;
                     $scope.floorplanImage = "/rest/habmin/floorplan/" + floorplan.id + "/image";
                 }
@@ -71,7 +71,7 @@ angular.module('FloorplanEditor', [
          */
         $scope.imgClicked = function (event) {
             // Make sure this is on the image
-            if(event.toElement.localName != "img") {
+            if (event.toElement.localName != "img") {
                 return;
             }
 
@@ -92,27 +92,27 @@ angular.module('FloorplanEditor', [
 
         $scope.editHotspot = function (hotspot) {
             floorplanHotspotProperties.editOptions(hotspot).then(
-                function(result) {
-                    if(result == null) {
+                function (result) {
+                    if (result == null) {
                         return;
                     }
 
-                    if(result.cmd == 'save' || result.cmd == 'delete') {
+                    if (result.cmd == 'save' || result.cmd == 'delete') {
                         // First we want to remove the current hotspot from the list
                         var pnt = -1;
-                        for(var i = 0; i < $scope.selectedFloorplan.hotspots.length; i++) {
+                        for (var i = 0; i < $scope.selectedFloorplan.hotspots.length; i++) {
                             if ($scope.selectedFloorplan.hotspots[i] == hotspot) {
                                 pnt = i;
                                 break;
                             }
                         }
 
-                        if(pnt != -1) {
+                        if (pnt != -1) {
                             $scope.selectedFloorplan.hotspots.splice(pnt, 1);
                         }
                     }
 
-                    if(result.cmd == 'save') {
+                    if (result.cmd == 'save') {
                         // Then if we're saving it, we add the new one back it
                         $scope.selectedFloorplan.hotspots.push(result.hotspot);
                     }
@@ -155,7 +155,7 @@ angular.module('FloorplanEditor', [
 
             // If we have a new image file loaded, then load the file before saving
             // Otherwise, just save!
-            if($scope.newFile != null) {
+            if ($scope.newFile != null) {
                 var reader = new FileReader();
                 reader.onload = function (e) {
                     $scope.selectedFloorplan.imgBase64 = window.btoa(e.target.result);

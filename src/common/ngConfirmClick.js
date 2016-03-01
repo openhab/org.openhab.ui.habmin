@@ -17,7 +17,7 @@ angular.module('ngConfirmClick', [
 
             link: function (scope, element, attrs) {
                 element.bind('click', function () {
-                    if(attrs.ngConfirmIf !== undefined && !$parse(attrs.ngConfirmIf)(scope)) {
+                    if (attrs.ngConfirmIf !== undefined && !$parse(attrs.ngConfirmIf)(scope)) {
                         $timeout(function () {
                             scope.$apply(attrs.ngConfirmClick);
                         });
@@ -32,7 +32,7 @@ angular.module('ngConfirmClick', [
                     newScope.noMsg = attrs.ngConfirmNoBtn || "No";
 
                     var icon = "";
-                    if(attrs.ngConfirmIcon != null) {
+                    if (attrs.ngConfirmIcon != null) {
                         switch (attrs.ngConfirmIcon.toLowerCase()) {
                             case 'danger':
                                 icon = "text-danger fa fa-exclamation";
@@ -62,10 +62,10 @@ angular.module('ngConfirmClick', [
                         };
                     };
 
-                    if(icon) {
+                    if (icon) {
                         newScope.alert = '<span class="text-large ' + icon + '"></span>';
                     }
-                    
+
                     return $modal.open({
                         scope: newScope,
                         backdrop: 'static',

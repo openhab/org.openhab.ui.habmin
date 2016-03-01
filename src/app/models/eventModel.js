@@ -7,8 +7,7 @@
  *
  * (c) 2014-2015 Chris Jackson (chris@cd-jackson.com)
  */
-angular.module('HABmin.eventModel', [
-])
+angular.module('HABmin.eventModel', [])
 
     .service('EventModel', function ($rootScope) {
         var eventSrc;

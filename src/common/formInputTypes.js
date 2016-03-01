@@ -60,7 +60,7 @@ angular.module('formSelectInput', [
                 placeholder: '='
             },
             controller: function ($scope) {
-                SmartHomeModel.ready().then(function() {
+                SmartHomeModel.ready().then(function () {
                     $scope.categories = SmartHomeModel.categories;
                 });
             }

@@ -1,0 +1,10 @@
+{
+  "StartOk": "Recherche démarrée pour le binding <b><i>{name}</i></b>",
+  "StartFail": "Recherche abortée pour le binding <b><i>{name}</i></b>",
+  "IgnoreFail": "Impossible d'ignorer <b><i>{name}</i></b>",
+  "DeleteConfirmMsg": "Etes-vous sur de vouloir supprimer l'objet de la boite?",
+  "DeleteConfirmTitle": "Supprimer l'objet de la boite",
+  "IgnoreConfirmMsg": "Etes-vous sur de vouloir ignorer l'objet de la boite?",
+  "IgnoreConfirmTitle": "Ignorer l'objet de la boite",
+  "NewThing": "Nouvel objet découvert <b><i>{name}</i></b>."
+}

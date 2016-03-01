@@ -60,7 +60,7 @@ angular.module('Config.Bindings', [
             $scope.setPanelDisplayed("DESCRIPTION");
             $scope.selectedBinding = binding;
 
-            if(binding.configDescriptionURI != null) {
+            if (binding.configDescriptionURI != null) {
                 // Get the configuration
                 ConfigModel.getConfig(binding.configDescriptionURI).then(
                     function (cfg) {
@@ -84,7 +84,7 @@ angular.module('Config.Bindings', [
 
             for (var cnt = 0; cnt < $scope.bindingConfig.parameters.length; cnt++) {
                 if ($scope.bindingConfig.parameters[cnt].groupName == null ||
-                    $scope.bindingConfig.parameters[cnt].groupName == "" ||
+                    $scope.bindingConfig.parameters[cnt].groupName === "" ||
                     $scope.bindingConfig.parameterGroups[$scope.bindingConfig.parameters[cnt].groupName] == null) {
                     return true;
                 }
@@ -99,7 +99,8 @@ angular.module('Config.Bindings', [
 
             // Are we looking for ungrouped parameters
             if (group == null) {
-                if (config.groupName == null || config.groupName == "" || $scope.bindingConfig.parameterGroups[config.groupName] == null) {
+                if (config.groupName == null || config.groupName === "" ||
+                    $scope.bindingConfig.parameterGroups[config.groupName] == null) {
                     return true;
                 }
                 return false;

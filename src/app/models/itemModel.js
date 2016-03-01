@@ -210,10 +210,10 @@ angular.module('HABmin.itemModel', [
         };
 
         this.putItem = function (item) {
-            if(item.tags === undefined) {
+            if (item.tags === undefined) {
                 item.tags = [];
             }
-            if(item.groups == undefined) {
+            if (item.groups == undefined) {
                 item.groups = [];
             }
             var deferred = $q.defer();

@@ -26,7 +26,7 @@ angular.module('dashboardItemWidgets', [
             link: function ($scope, element, attrs, controller) {
                 // First poll the current value
                 var item = ItemModel.getItem($scope.item.name);
-                if(item != null) {
+                if (item != null) {
                     $scope.item.value = item.state;
                 }
 
@@ -58,7 +58,7 @@ angular.module('dashboardItemWidgets', [
             link: function ($scope, element, attrs, controller) {
                 // First poll the current value
                 var item = ItemModel.getItem($scope.item.name);
-                if(item != null) {
+                if (item != null) {
                     $scope.updateValue(item.state);
                 }
 
@@ -68,7 +68,7 @@ angular.module('dashboardItemWidgets', [
                     $scope.$apply();
                 });
 
-                $scope.updateValue = function(value) {
+                $scope.updateValue = function (value) {
                     // Handle state translation
                     switch ($scope.item.type) {
                         case "DimmerItem":
@@ -88,7 +88,7 @@ angular.module('dashboardItemWidgets', [
                             }
                             break;
                     }
-                }
+                };
             }
         };
     })

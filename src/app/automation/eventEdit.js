@@ -34,7 +34,7 @@ angular.module('Automation.editEvent', [
             doModal(event);
         };
 
-        function doModal (event) {
+        function doModal(event) {
             var scope = $rootScope.$new();
             scope.tabDisplayed = "event";
             scope.event = angular.copy(event);
@@ -83,7 +83,7 @@ angular.module('Automation.editEvent', [
                 windowClass: UserService.getTheme(),
                 scope: scope
             }).result;
-        };
+        }
     })
 
 ;

@@ -23,6 +23,10 @@ angular.module('Config.ItemEdit', [
             scope.itemtypes = SmartHomeModel.itemtypes;
             scope.categories = SmartHomeModel.categories;
 
+            if (scope.tags == null) {
+                scope.tags = [];
+            }
+
             scope.items = [];
             ItemModel.getList().then(
                 function (list) {
@@ -42,7 +46,7 @@ angular.module('Config.ItemEdit', [
                     }
                     ItemModel.putItem($scope.item).then(
                         function (newItem) {
-                            if(create != true) {
+                            if (create !== true) {
                                 $modalInstance.close($scope.item);
                                 growl.success(locale.getString("item.SaveOk",
                                     {name: $scope.item.label}));
@@ -58,7 +62,7 @@ angular.module('Config.ItemEdit', [
                                 },
                                 function (response) {
                                     var msg;
-                                    if(response != null && response.error != null) {
+                                    if (response != null && response.error != null) {
                                         msg = response.error.message;
                                     }
                                     else {
@@ -71,7 +75,7 @@ angular.module('Config.ItemEdit', [
                         },
                         function (response) {
                             var msg;
-                            if(response != null && response.error != null) {
+                            if (response != null && response.error != null) {
                                 msg = response.error.message;
                             }
                             else {

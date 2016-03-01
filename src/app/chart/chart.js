@@ -166,16 +166,16 @@ angular.module('HABmin.chart', [
 
         $scope.refreshChart = function () {
             // Make sure the directive detects the change - use copy
-            if (ChartService.selectedChart == undefined) {
-                var update = ChartService.graphItems;
+            if (ChartService.selectedChart === undefined) {
+                var updateItem = ChartService.graphItems;
                 $timeout(function () {
-                    ChartService.graphItems = angular.copy(update);
+                    ChartService.graphItems = angular.copy(updateItem);
                 });
             }
             else {
-                var update = ChartService.selectedChart;
+                var updateChart = ChartService.selectedChart;
                 $timeout(function () {
-                    ChartService.selectedChart = angular.copy(update);
+                    ChartService.selectedChart = angular.copy(updateChart);
                 });
             }
             ChartService.graphItems = undefined;

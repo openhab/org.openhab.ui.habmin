@@ -174,17 +174,17 @@ angular.module('HABmin', [
 
         // List of current themes
         // TODO: Consolidate this with the user selection
-/*        var themes = ['yeti', 'paper', 'slate'];
-        $scope.setTheme = function (theme) {
-            // Make sure the theme exists!
-            // Setting an invalid theme will completely screw the presentation
-            if (themes.indexOf(theme.toLowerCase()) == -1) {
-                return;
-            }
+        /*        var themes = ['yeti', 'paper', 'slate'];
+         $scope.setTheme = function (theme) {
+         // Make sure the theme exists!
+         // Setting an invalid theme will completely screw the presentation
+         if (themes.indexOf(theme.toLowerCase()) == -1) {
+         return;
+         }
 
-            $('html').removeClass();
-            $('html').addClass(theme);
-        };*/
+         $('html').removeClass();
+         $('html').addClass(theme);
+         };*/
 
         $scope.$on("habminTheme", function (event, theme) {
 //            $scope.setTheme(theme);
@@ -232,6 +232,7 @@ angular.module('HABmin', [
             $scope.clockTime = m.format("HH:mm");
             $scope.clockDay = m.format("ddd Do MMM");
         }
+
         updateClock();
 
         // Create a poll timer to update the time every 5 seconds
@@ -391,7 +392,7 @@ angular.module('HABmin', [
 
         $scope.clearInbox = function () {
             var promises = [];
-            angular.forEach($scope.inbox, function(msg) {
+            angular.forEach($scope.inbox, function (msg) {
                 InboxModel.thingDelete(msg.thingUID).then(
                     function () {
                         InboxModel.refreshInbox();

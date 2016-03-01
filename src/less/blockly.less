@@ -1,11 +1,10 @@
 @blockly-sprites: "sprites.png";
 
-
 .blocklySvg {
   background-color: @panel-bg;
   border: 1px solid @panel-default-border;
   border-radius: @panel-border-radius;
-  overflow: hidden;  /* IE overflows by default. */
+  overflow: hidden; /* IE overflows by default. */
 }
 
 .blocklyWidgetDiv {
@@ -50,32 +49,32 @@
   stroke-linecap: round;
 }
 
-.blocklySelected>.blocklyPath {
+.blocklySelected > .blocklyPath {
   stroke-width: 3px;
   stroke: #fc3;
 }
 
-.blocklySelected>.blocklyPathLight {
+.blocklySelected > .blocklyPathLight {
   display: none;
 }
 
-.blocklyDragging>.blocklyPath,
-.blocklyDragging>.blocklyPathLight {
+.blocklyDragging > .blocklyPath,
+.blocklyDragging > .blocklyPathLight {
   fill-opacity: .8;
   stroke-opacity: .8;
 }
 
-.blocklyDragging>.blocklyPathDark {
+.blocklyDragging > .blocklyPathDark {
   display: none;
 }
 
-.blocklyDisabled>.blocklyPath {
+.blocklyDisabled > .blocklyPath {
   fill-opacity: .5;
   stroke-opacity: .5;
 }
 
-.blocklyDisabled>.blocklyPathLight,
-.blocklyDisabled>.blocklyPathDark {
+.blocklyDisabled > .blocklyPathLight,
+.blocklyDisabled > .blocklyPathDark {
   display: none;
 }
 
@@ -86,22 +85,22 @@
   fill: @text-color;
 }
 
-.blocklyNonEditableText>text {
+.blocklyNonEditableText > text {
   pointer-events: none;
 }
 
-.blocklyNonEditableText>rect,
-.blocklyEditableText>rect {
+.blocklyNonEditableText > rect,
+.blocklyEditableText > rect {
   fill: white;
   fill-opacity: .6;
 }
 
-.blocklyNonEditableText>text,
-.blocklyEditableText>text {
+.blocklyNonEditableText > text,
+.blocklyEditableText > text {
   fill: #000;
 }
 
-.blocklyEditableText:hover>rect {
+.blocklyEditableText:hover > rect {
   stroke-width: 2;
   stroke: #fff;
 }
@@ -154,12 +153,12 @@
   stroke: #ccc;
 }
 
-.blocklyIconGroup:hover>.blocklyIconShield {
+.blocklyIconGroup:hover > .blocklyIconShield {
   fill: #00f;
   stroke: #fff;
 }
 
-.blocklyIconGroup:hover>.blocklyIconMark {
+.blocklyIconGroup:hover > .blocklyIconMark {
   fill: #fff;
 }
 
@@ -221,7 +220,7 @@
   fill: #444;
 }
 
-.blocklyScrollbarBackground:hover+.blocklyScrollbarKnob,
+.blocklyScrollbarBackground:hover + .blocklyScrollbarKnob,
 .blocklyScrollbarKnob:hover {
   fill: #777;
 }
@@ -321,20 +320,20 @@
   background-position: -16px -1px;
 }
 
-.blocklyTreeSelected>.blocklyTreeIconClosedLtr {
+.blocklyTreeSelected > .blocklyTreeIconClosedLtr {
   background-position: -32px -17px;
 }
 
-.blocklyTreeSelected>.blocklyTreeIconClosedRtl {
+.blocklyTreeSelected > .blocklyTreeIconClosedRtl {
   background-position: 0px -17px;
 }
 
-.blocklyTreeSelected>.blocklyTreeIconOpen {
+.blocklyTreeSelected > .blocklyTreeIconOpen {
   background-position: -16px -17px;
 }
 
 .blocklyTreeIconNone,
-.blocklyTreeSelected>.blocklyTreeIconNone {
+.blocklyTreeSelected > .blocklyTreeIconNone {
   background-position: -48px -1px;
 }
 
@@ -347,7 +346,7 @@
   vertical-align: middle;
 }
 
-.blocklyTreeSelected  {
+.blocklyTreeSelected {
   background-color: @navbar-default-link-active-bg !important;
 }
 
@@ -431,7 +430,7 @@
   outline: none;
   padding: 4px 0;
   position: absolute;
-  z-index: 20000;  /* Arbitrary, but some apps depend on it... */
+  z-index: 20000; /* Arbitrary, but some apps depend on it... */
 }
 
 /* Copied from: goog/css/menuitem.css */
@@ -519,11 +518,11 @@
   color: @dropdown-link-hover-color;
   /* Use an explicit top and bottom border so that the selection is visible',
    * in high contrast mode. */
-//  border-color: #d6e9f8;
-//  border-style: dotted;
-//  border-width: 1px 0;
-//  padding-bottom: 3px;
-//  padding-top: 3px;
+  //  border-color: #d6e9f8;
+  //  border-style: dotted;
+  //  border-width: 1px 0;
+  //  padding-bottom: 3px;
+  //  padding-top: 3px;
 }
 
 /* State: selected/checked. */

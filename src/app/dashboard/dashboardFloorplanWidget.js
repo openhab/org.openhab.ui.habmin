@@ -26,7 +26,7 @@ angular.module('dashboardFloorWidget', [
                     }
                 );
 
-                $scope.clickHotspot = function(hotspot) {
+                $scope.clickHotspot = function (hotspot) {
 
                 };
             }

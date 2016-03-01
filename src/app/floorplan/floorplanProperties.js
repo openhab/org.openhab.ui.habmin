@@ -21,7 +21,7 @@ angular.module('FloorplanProperties', [
 
             // Ensure floorplan is an object
             // If it is, then make a copy of what we've been passed
-            if(floorplan !== null && typeof floorplan === 'object') {
+            if (floorplan !== null && typeof floorplan === 'object') {
                 scope.floorplan = angular.copy(floorplan);
             }
             else {

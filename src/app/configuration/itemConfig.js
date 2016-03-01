@@ -77,13 +77,13 @@ angular.module('Config.Items', [
             $scope.formLoaded = true;
         };
 
-        $scope.getParentThingItem = function(item) {
+        $scope.getParentThingItem = function (item) {
             return ItemModel.getParentThingItem(item);
         };
 
-        $scope.itemDelete = function() {
+        $scope.itemDelete = function () {
             ItemModel.deleteItem($scope.selectedItem);
-        }
+        };
     })
 
 ;

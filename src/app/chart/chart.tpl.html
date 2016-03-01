@@ -60,7 +60,7 @@
                 <span class="fa fa-refresh"></span>
             </button>
         </div>
-        
+
         <div ng-show="graphLoaded" class="pull-right hidden-xs hidden-sm">
             <h6>{{graphTimeline}}&nbsp;</h6>
         </div>
@@ -69,7 +69,8 @@
     <!-- Graph -->
     <div class="panel-body" style="padding:3px;" resize-panel>
         <habmin-chart ng-show="true" style="display:inline-block;height:100%;width:100%"
-                      items="graphItems()" chart="selectedChart().id" liveupdate="liveupdate" service="persistenceService()" events="graphEvents">
+                      items="graphItems()" chart="selectedChart().id" liveupdate="liveupdate"
+                      service="persistenceService()" events="graphEvents">
         </habmin-chart>
     </div>
     <div ng-show="chartLoading==true" class="chart-loading"><span class="fa fa-spin fa-circle-o-notch"></span></div>

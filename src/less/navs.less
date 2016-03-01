@@ -5,8 +5,8 @@
 
 .nav {
   > li > a:hover,
-    > li > a:active,
-    > li > a:focus {
+  > li > a:active,
+  > li > a:focus {
     color: #444;
     background: #f7f7f7;
   }
@@ -31,13 +31,14 @@
   }
   > li.active > a,
   > li.active > a:hover,
-    > li.active > a:focus {
+  > li.active > a:focus {
     border-top-color: @light-blue;
   }
   > li.active > a {
     font-weight: 600;
   }
 }
+
 /* NAV STACKED */
 .nav-stacked {
   > li > a {
@@ -93,8 +94,8 @@
       }
       &:not(.active) {
         > a:hover,
-          > a:focus,
-          > a:active {
+        > a:focus,
+        > a:active {
           border-color: transparent;
         }
       }
@@ -127,7 +128,7 @@
 
     //Pulled to the right
     &.pull-right {
-      float: none!important;
+      float: none !important;
       > li {
         float: right;
       }
@@ -166,7 +167,7 @@
 
   .dropdown.open > a {
     &:active,
-      &:focus {
+    &:focus {
       background: transparent;
       color: #999;
     }
@@ -177,11 +178,11 @@
 .pagination {
   > li > a {
     background: #fafafa;
-    color: #666;    
+    color: #666;
   }
   &.pagination-flat {
     > li > a {
-      .border-radius(0)!important;
+      .border-radius(0) !important;
     }
   }
 }

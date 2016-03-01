@@ -52,7 +52,7 @@ angular.module('HABmin.restModel', [
                     console.log("REST Fetch completed in", new Date().getTime() - tStart);
 
                     // Handle the online status
-                    if(errorCnt == 2) {
+                    if (errorCnt == 2) {
                         errorCnt = 0;
                         $rootScope.$broadcast('habminOnline', true);
                     }
@@ -97,7 +97,7 @@ angular.module('HABmin.restModel', [
                 .error(function (data, status) {
                     console.log("REST Processing failed in", new Date().getTime() - tStart);
                     // Handle the online status
-                    if(errorCnt++ == 2) {
+                    if (errorCnt++ == 2) {
                         errorCnt--;
                         $rootScope.$broadcast('habminOnline', false);
                     }

@@ -1,4 +1,5 @@
-;(function (global) {
+;
+(function (global) {
 
     if ("EventSource" in global) {
         return;
@@ -53,13 +54,14 @@
                         // on success
                         if (eventsource.readyState == eventsource.CONNECTING) {
                             eventsource.readyState = eventsource.OPEN;
-                            eventsource.dispatchEvent('open', { type: 'open' });
+                            eventsource.dispatchEvent('open', {type: 'open'});
                         }
 
                         var responseText = '';
                         try {
                             responseText = this.responseText || '';
-                        } catch (e) {}
+                        } catch (e) {
+                        }
 
                         // process this.responseText
                         var parts = responseText.substr(cache.length).split("\n"),
@@ -76,8 +78,10 @@
                             if (line.indexOf('event') === 0) {
                                 eventType = line.replace(/event:?\s*/, '');
                             } else if (line.indexOf('retry') === 0) {
-                                retry = parseInt(line.replace(/retry:?\s*/, ''),10);
-                                if(!isNaN(retry)) { interval = retry; }
+                                retry = parseInt(line.replace(/retry:?\s*/, ''), 10);
+                                if (!isNaN(retry)) {
+                                    interval = retry;
+                                }
                             } else if (line.indexOf('data') === 0) {
                                 data.push(line.replace(/data:?\s*/, ''));
                             } else if (line.indexOf('id:') === 0) {
@@ -102,7 +106,7 @@
                         if (this.readyState == 4) { // and some other status
                             // dispatch error
                             eventsource.readyState = eventsource.CONNECTING;
-                            eventsource.dispatchEvent('error', { type: 'error' });
+                            eventsource.dispatchEvent('error', {type: 'error'});
                             pollAgain(interval);
                         } else if (this.readyState === 0) { // likely aborted
                             pollAgain(interval);
@@ -122,7 +126,7 @@
                 eventsource._xhr = xhr;
 
             } catch (e) { // in an attempt to silence the errors
-                eventsource.dispatchEvent('error', { type: 'error', data: e.message }); // ???
+                eventsource.dispatchEvent('error', {type: 'error', data: e.message}); // ???
             }
         }
 

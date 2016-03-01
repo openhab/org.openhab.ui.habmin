@@ -44,10 +44,10 @@ angular.module('HABmin.scheduler', [
             id: "1",
             name: "Heating",
             events: [
-                {title: 'Morning (20C)', start: new Date(y, m, d,5, 30), end: new Date(y, m, d,8)},
-                {title: 'Day (18C)', start: new Date(y, m, d,8, 0), end: new Date(y, m, d,15, 30)},
-                {title: 'Evening (21C)', start: new Date(y, m, d,15, 30), end: new Date(y, m, d,22,0)},
-                {title: 'Night (17C)', start: new Date(y, m, d,22, 0), end: new Date(y, m, d+1,5,30)}
+                {title: 'Morning (20C)', start: new Date(y, m, d, 5, 30), end: new Date(y, m, d, 8)},
+                {title: 'Day (18C)', start: new Date(y, m, d, 8, 0), end: new Date(y, m, d, 15, 30)},
+                {title: 'Evening (21C)', start: new Date(y, m, d, 15, 30), end: new Date(y, m, d, 22, 0)},
+                {title: 'Night (17C)', start: new Date(y, m, d, 22, 0), end: new Date(y, m, d + 1, 5, 30)}
             ]
         };
 
@@ -117,18 +117,19 @@ angular.module('HABmin.scheduler', [
         $scope.changeView = function (view) {
             $scope.view = view;
             if ($scope.view != "timeline") {
-                uiCalendarConfig.calendars.calendar.fullCalendar('changeView', view)
+                uiCalendarConfig.calendars.calendar.fullCalendar('changeView', view);
                 $timeout(function () {
-                    uiCalendarConfig.calendars.calendar.fullCalendar('changeView', view)
+                    uiCalendarConfig.calendars.calendar.fullCalendar('changeView', view);
                 });
             }
         };
 
         $scope.stepDate = function (step) {
             if ($scope.view == "timeline") {
-                switch(step) {
+                switch (step) {
                     case 'today':
-                        $scope.timeline.setWindow(new Date().setHours(0,0,0,0), new Date().setHours(0,0,0,0) + 86400000);
+                        $scope.timeline.setWindow(new Date().setHours(0, 0, 0, 0),
+                            new Date().setHours(0, 0, 0, 0) + 86400000);
                         break;
                 }
             }
@@ -195,7 +196,7 @@ angular.module('HABmin.scheduler', [
             });
         });
 
-        $scope.onLoaded = function(timeline) {
+        $scope.onLoaded = function (timeline) {
             $scope.timeline = timeline;
         };
 
@@ -228,10 +229,10 @@ angular.module('HABmin.scheduler', [
             };
 
             $scope.graphEvents = {
-            // rangechange: $scope.onRangeChange,
-            // rangechanged: $scope.onRangeChanged,
-             onload: $scope.onLoaded
-             };
+                // rangechange: $scope.onRangeChange,
+                // rangechanged: $scope.onRangeChanged,
+                onload: $scope.onLoaded
+            };
 
             $scope.timelineData = {
                 items: items,

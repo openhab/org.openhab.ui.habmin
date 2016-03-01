@@ -129,7 +129,7 @@ angular.module('HABmin.persistenceModel', [
 
             RestService.getService(svcName).then(
                 function (url) {
-                    $http.get(url  + "/" + item,
+                    $http.get(url + "/" + item,
                         {
                             params: {
                                 servicename: service,
@@ -142,7 +142,7 @@ angular.module('HABmin.persistenceModel', [
                             console.log("HTML GET data is", data);
 
                             var persistence = null;
-                            if(data.datapoints != 0) {
+                            if (data.datapoints != 0) {
                                 persistence = [].concat(data.data);
                             }
                             /*

@@ -5,6 +5,7 @@
         <!-- Header -->
         <div class="panel-heading clearfix">
             <span class="panel-title pull-left" i18n="floorplan.Editor"></span>
+
             <div class="btn-group pull-right">
                 <button type="button"
                         class="btn btn-default"
@@ -62,7 +63,8 @@
              <span class="btn btn-default btn-file" ng-disabled="selectedFloorplan==null">
                 <span class="fa fa-picture-o"></span>
                 <span i18n="floorplan.SelectImage"></span>
-                <input onchange="angular.element(this).scope().selectImage(this.files[0]);this.value = '';" type="file"/>
+                <input onchange="angular.element(this).scope().selectImage(this.files[0]);this.value = '';"
+                       type="file"/>
             </span>
             <button type="button"
                     class="btn btn-default"
