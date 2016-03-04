@@ -682,7 +682,7 @@ angular.module('Config.Things', [
 
         $scope.doAction = function (config, value) {
             if (value === undefined) {
-                value = 0;
+                value = config.default;
             }
             var cfg = {};
             cfg[config.name] = ThingModel.convertType(config.type, value, false);
