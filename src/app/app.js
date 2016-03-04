@@ -71,12 +71,14 @@ angular.module('HABmin', [
     .value('localeSupported', {
         'en-GB': {name: "English", desc: "United Kingdom"},
         'de-DE': {name: "Deutsch", desc: "Deutschland"},
-        'fr-FR': {name: "Fran&ccedil;ais", desc: "France"}
+        'fr-FR': {name: "Fran&ccedil;ais", desc: "France"},
+        'it-IT': {name: "Italiano", desc: "Italia"}
     })
     .value('localeFallbacks', {
         'en': 'en-GB',
         'de': 'de-DE',
-        'fr': 'fr-FR'
+        'fr': 'fr-FR',
+        'it': 'it-IT'
     })
 
     .config(function myAppConfig($stateProvider, $urlRouterProvider, growlProvider, pickAColorProvider, ngBlocklyProvider, uiSelectConfig) {

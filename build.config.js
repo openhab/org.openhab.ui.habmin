@@ -142,7 +142,7 @@ module.exports = {
             'vendor/flag-icon-css/flags/4x3/de.svg',
             'vendor/flag-icon-css/flags/4x3/fr.svg',
             'vendor/flag-icon-css/flags/4x3/gb.svg',
-            'vendor/flag-icon-css/flags/4x3/pl.svg'
+            'vendor/flag-icon-css/flags/4x3/it.svg'
         ]
     },
 
@@ -159,7 +159,8 @@ module.exports = {
     languages: [
         'de-DE',
         'en-GB',
-        'fr-FR'
+        'fr-FR',
+        'it-IT'
     ],
 
     /**
