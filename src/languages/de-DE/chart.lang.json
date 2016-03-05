@@ -16,7 +16,7 @@
   "ErrorGettingServices": "Fehler beim Laden des Persistenzdienstes",
   "ErrorGettingCharts": "Fehler beim Laden der Diagrammliste!",
   "ErrorGettingItems": "Fehler beim Laden der Itemliste!",
-  "ErrorLoadingItem": "Fehler beim Laden der Daten von Item'<i>{1}</i>'!",
+  "ErrorLoadingItem": "Fehler beim Laden der Daten von Item'{1}'!",
   "SaveNewName": "Neues Diagramm",
   "SaveChartTitle": "Diagramm speichern",
   "SaveGeneral": "Allgemeine Einstellungen",
@@ -52,5 +52,6 @@
   "SaveTitle": "Diagrammtitel",
   "SavePeriod": "Voreingestellte Zeit",
   "SaveSuccess": "Diagramm <i>{chartName}</i> erfolgreich gespeichert.",
-  "SaveError": "Fehler beim Speichern des Diagramms: <i>{chartName}</i>:<BR><b><i>{error}</i></b>."
+  "SaveError": "Fehler beim Speichern des Diagramms: <i>{chartName}</i>:<BR><b><i>{error}</i></b>.",
+  "SelectItems": "Wähle Items"
 }

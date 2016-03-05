@@ -1,0 +1,15 @@
+{
+  "UploadName": "Gebäudeplan-Name",
+  "SelectImage": "Wähle Bild",
+  "UploadTitle": "Upload Gebäudeplan",
+  "Editor": "Gebäudeplan-Editor",
+  "HotspotItem": "Item",
+  "PropertiesTitle": "Dashboard-Eigenschaften",
+  "HotspotItemPlaceholder": "Wähle Item ...",
+  "PropertiesName": "Name",
+  "PropertiesCategory": "Kategorie",
+  "DeleteCheck": "Soll dieser Gebäudeplan wirklich gelöscht werden?",
+  "Delete": "Löschen",
+  "SaveError": "Fehler beim Speichern des Diagramms: {chartName}:{error}.",
+  "SaveOk": "Gebäudeplan {name} erfolgreich gespeichert."
+}

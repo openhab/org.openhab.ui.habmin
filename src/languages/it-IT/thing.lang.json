@@ -35,7 +35,6 @@
   "ErrorDeletingThing": "Errore eliminazione oggetto <b><i>{name}</i></b>!",
   "ActionSentOk": "Invio azione ok",
   "ActionSentError": "Errore invio azione",
-  "WizardBinding": "",
   "WizardType": "Tipo Oggetto",
   "WizardConfigure": "Configura",
   "DeleteItemOk": "Elemento eliminato con successo dal canale",

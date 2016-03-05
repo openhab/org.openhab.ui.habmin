@@ -76,5 +76,7 @@
   "NeverReceived": "never",
   "RemoveFailedTitle": "Delete Failed Node",
   "RemoveFailedText": "Are you sure you wish to delete node '{nodenumber}' from the network?",
-  "Unknown": "Unknown"
+  "Unknown": "Unknown",
+  "ThingName": "Thing Name",
+  "GenericClass": "Generic Class"
 }

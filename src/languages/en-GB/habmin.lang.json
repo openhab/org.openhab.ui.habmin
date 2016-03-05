@@ -26,12 +26,12 @@
   "Configuration": "Configuration",
   "Tools": "Tools",
   "ZWaveLogReader": "Z-Wave Log Viewer",
-  "ZWaveNetworkViewer": "Z-Wave Network Viewer",
   "ChartPreferences": "Chart Defaults",
   "GeneralPreferences": "General Settings",
   "ErrorLoadingSitemaps": "Error loading the sitemap list!",
   "ErrorLoadingDashboards": "Error loading dashboard list!",
   "ErrorLoadingInbox": "Error loading inbox!",
   "ErrorGettingBindings": "Error loading list of bindings!",
-  "OpenHABOffline": "OpenHAB is offline!"
+  "OpenHABOffline": "OpenHAB is offline!",
+  "ZWaveNetworkViewer": "Z-Wave Network Viewer"
 }
