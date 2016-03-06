@@ -78,5 +78,6 @@
   "RemoveFailedText": "Are you sure you wish to delete node '{nodenumber}' from the network?",
   "Unknown": "Unknown",
   "ThingName": "Thing Name",
-  "GenericClass": "Generic Class"
+  "GenericClass": "Generic Class",
+  "Neighbors": "Neighbours"
 }

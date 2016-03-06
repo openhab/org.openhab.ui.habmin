@@ -39,5 +39,8 @@
   "WizardType": "Thing Type",
   "WizardConfigure": "Configure",
   "DeleteItemOk": "Item successfully deleted from channel",
-  "DeleteItemFailed": "Error deleting item from channel"
+  "DeleteItemFailed": "Error deleting item from channel",
+  "UID": "UID (Unique Identifier)",
+  "SelectUID": "Enter unique identifier...",
+  "SelectLabel": "Enter label..."
 }

@@ -4,5 +4,18 @@
   "Online": "En ligne",
   "Offline": "Hors ligne",
   "Search": "Démarrer recherche",
-  "NoneFound": "Pas d'objet trouvé"
+  "NoneFound": "Pas d'objet trouvé",
+  "StatusOnline": "En ligne",
+  "StatusUninitialised": "Non initialisé",
+  "StatusInitialising": "Initialisation",
+  "StatusOffline": "Hors ligne",
+  "StatusRemoving": "Suppression",
+  "ShowAll": "Montrer tout",
+  "Tools": "Outils",
+  "AdvancedMode": "Montrer les paramètres avancés",
+  "Description": "Description",
+  "Properties": "Propriétés",
+  "Configuration": "Paramètres de configuration",
+  "Channels": "Canaux",
+  "ChannelConfiguration": "Configuration du canal"
 }

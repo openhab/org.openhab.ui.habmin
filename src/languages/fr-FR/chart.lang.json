@@ -51,6 +51,9 @@
   "SaveName": "Nom du graphique",
   "SaveTitle": "Titre du graphique",
   "SavePeriod": "Période par défaut",
-  "SaveSuccess": "Le graphique <i>{chartName}</i> a été enregistré avec succès.",
-  "SaveError": "Erreur de sauvegarde du graphique <i>{chartName}</i>:<BR><b><i>{error}</i></b>."
+  "SaveSuccess": "Le graphique {chartName} a été enregistré avec succès.",
+  "SaveError": "Erreur de sauvegarde du graphique {chartName}:{error}.",
+  "SaveItemStyle": "Style de graphique",
+  "SaveItemStyleLine": "Ligne",
+  "SaveItemStyleBar": "Barre"
 }

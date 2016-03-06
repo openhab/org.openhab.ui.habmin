@@ -42,7 +42,7 @@ angular.module('HABmin.dashboard', [
                 localisations: function ($q, locale) {
                     return $q.all([
                         locale.ready('common'),
-                        locale.ready('habmin')
+                        locale.ready('dashboard')
                     ]);
                 }
             }

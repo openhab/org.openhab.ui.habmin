@@ -1,5 +1,5 @@
-<a name="0.1.0"></a>
-## 0.1.0 (2016-02-23)
+<a name="0.1.1"></a>
+### 0.1.1 (2016-03-06)
 
 
 #### Bug Fixes
@@ -14,7 +14,8 @@
 * **Floorplan:**
   * Fix bug saving floorplan images ([fb5bad98](git@github.com:cdjackson/HABmin2/commit/fb5bad9824c349ab9af7aea14c695cb713cdc2d5))
   * Highlight hotspots when value updated ([9e477059](git@github.com:cdjackson/HABmin2/commit/9e4770599c29ddf4ee85a7e5f73bac218c2ed1bf))
-* **Items:** Fixed item delete URL ([791cb185](git@github.com:cdjackson/HABmin2/commit/791cb185c285c7cf2f621c651ef8dfaeb9eafc3b))
+* **Items:**
+  * Fixed item delete URL ([791cb185](git@github.com:cdjackson/HABmin2/commit/791cb185c285c7cf2f621c651ef8dfaeb9eafc3b))
 * **Sitemap:**
   * Fixed slider when sending 0% level fixes #79 ([a502f62f](git@github.com:cdjackson/HABmin2/commit/a502f62f44808b281112b0ce02ad746f5d8ed967))
   * Fix value displayed in sitemap Text widget ([8455995b](git@github.com:cdjackson/HABmin2/commit/8455995b00ebf723a2ede653be8a5c036ca05732))
@@ -44,8 +45,8 @@
   * Add menu button to delete current chart ([f52cadfd](git@github.com:cdjackson/HABmin2/commit/f52cadfdf76b4df5855879a5f1a8d36435991ef6))
   * Add refresh button to chart toolbar to update current chart ([36013a6a](git@github.com:cdjackson/HABmin2/commit/36013a6a308635b7fa28c3f0962e4c28b7512c02))
   * Make chart display full width and add dropdown for item selection ([0f860f6e](git@github.com:cdjackson/HABmin2/commit/0f860f6ee65398a44602bc0b92651205bc4e4c72))
-* **Floorpan:** Added dirty checking and SAVE button highlighting ([e7d517a9](git@github.com:cdjackson/HABmin2/commit/e7d517a90c6eef2f1739058cf608fc46ac314406))
 * **Floorplan:**
+  * Added dirty checking and SAVE button highlighting ([e7d517a9](git@github.com:cdjackson/HABmin2/commit/e7d517a90c6eef2f1739058cf608fc46ac314406))
   * Don't display hotspots until image loaded ([aca3e846](git@github.com:cdjackson/HABmin2/commit/aca3e84685ca9b6dec6fbf54f578ff57dbb1b6b2))
   * Add support for uploading floorplan images ([360d54d5](git@github.com:cdjackson/HABmin2/commit/360d54d5b4a3ef6e494eb7ef90ecbc3371772c59))
 * **Items:**
@@ -57,6 +58,8 @@
   * Add color picker widget to sitemap ([866f1b28](git@github.com:cdjackson/HABmin2/commit/866f1b280a64184acbbc8e20eaca27c9e82f90c3))
   * Update sitemap widgets to use SSE ([199a706e](git@github.com:cdjackson/HABmin2/commit/199a706ed9eacb9a33a2b36f1878d28bb399a7cf))
 * **Things:**
+  * Updated UI to allow thing UID to be manually specified ([de728fce](git@github.com:cdjackson/HABmin2/commit/de728fce1f47883993d5d2926de0ebf802e0bba2))
+  * Send default value for config actions ([b75656f9](git@github.com:cdjackson/HABmin2/commit/b75656f93692fa608c72f1cc861210fccf242238))
   * Improved handling of default values in parameters ([5ca14b9d](git@github.com:cdjackson/HABmin2/commit/5ca14b9d77a307c438979c2f75c78ee7c8a596cf))
   * Provide function for editing channel configuration ([12f8472a](git@github.com:cdjackson/HABmin2/commit/12f8472a5ed8205e766d093ae9184237cf733290))
   * Add button to copy item name to clipboard ([9eddbca8](git@github.com:cdjackson/HABmin2/commit/9eddbca89b43379b0f245cd72dc9b8c0877eb534))
@@ -68,13 +71,17 @@
   * Select default bridge when creating thing if there's only a single bridge ([bdc8240e](git@github.com:cdjackson/HABmin2/commit/bdc8240ed81c714f0ecb1cdbfb62e3ef9c457e09), closes [#64](git@github.com:cdjackson/HABmin2/issues/64))
   * Provide default thing name when adding new thing ([8109054b](git@github.com:cdjackson/HABmin2/commit/8109054b3223596d0bb44c26431df69d47d9a731))
 * **UI:**
+  * Add Italian translation ([942c5f06](git@github.com:cdjackson/HABmin2/commit/942c5f06cd5e0beb19aa970e81a219ffda80d581))
   * Add 'clear inbox' button to inbox list ([8014fa1d](git@github.com:cdjackson/HABmin2/commit/8014fa1d2d72b1280811cab0cc68cdba5c11d33c))
   * Add tooltips to navbar menu icons ([6052799b](git@github.com:cdjackson/HABmin2/commit/6052799b154063653f920c69e98e3e916b67c1a0))
   * Add clock to taskbar ([90140949](git@github.com:cdjackson/HABmin2/commit/901409497c17730675e1512eb0280f51613b7f1f))
   * Add full screen mode ([67af4319](git@github.com:cdjackson/HABmin2/commit/67af4319acd03955c462ef7b1ca718aba943a2ce))
   * Updated icon fonts ([ec6d36d4](git@github.com:cdjackson/HABmin2/commit/ec6d36d413d0b887b340ef0ab07464644ebade66))
   * Disable 'show all' checkbox in new thing notification if no ignored things ([4259a5e1](git@github.com:cdjackson/HABmin2/commit/4259a5e17ce2eec927a17c471a5809013d75893c))
-* **User:** Update user configuration form to use new layout ([0eb54e4b](git@github.com:cdjackson/HABmin2/commit/0eb54e4b526412c17fd1904075f8a7411df7a459))
+* **User:**
+  * Update user configuration form to use new layout ([0eb54e4b](git@github.com:cdjackson/HABmin2/commit/0eb54e4b526412c17fd1904075f8a7411df7a459))
+* **ZWave:**
+  * Add network diagram for OH2 binding ([4704ff44](git@github.com:cdjackson/HABmin2/commit/4704ff446f5ca0236e50ee6c64d49e257d451d30))
 
 
 <a name="0.0.15"></a>

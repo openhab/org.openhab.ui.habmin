@@ -11,8 +11,7 @@ angular.module('ZWaveNetwork', [
     'ui.router',
     'ui.bootstrap',
     'ngLocalize',
-    'HABmin.userModel',
-    'HABmin.restModel',
+    'HABmin.iconModel',
     'HABmin.thingModel',
     'angular-growl',
     'Binding.config',
@@ -40,7 +39,7 @@ angular.module('ZWaveNetwork', [
     })
 
     .controller('ZwaveNetworkCtrl',
-    function ZwaveNetworkCtrl($scope, locale, growl, $timeout, $window, $http, $interval, ThingModel, UserService, RestService) {
+    function ZwaveNetworkCtrl($scope, locale, growl, $timeout, $window, $http, $interval, ThingModel, ImgFactory) {
         var deviceClassIcons = {
             "PC_CONTROLLER": "desktop-computer",
             "PORTABLE_REMOTE_CONTROLLER": "remote-control",
@@ -48,45 +47,15 @@ angular.module('ZWaveNetwork', [
             "POWER_SWITCH_MULTILEVEL": "light-control",
             "ROUTING_SENSOR_BINARY": "door-open",
             "SWITCH_REMOTE_MULTILEVEL": "temperature",
-            "ALARM_SENSOR_ROUTING": "alarm"
+
+            "BINARY_SWITCH": "Switch",
+            "MULTILEVEL_SWITCH": "DimmableLight"
         };
-
-        $scope.devices = [];
-
-        ThingModel.getList().then(
-            function (list) {
-                var bridge;
-
-                // Get all the Z-Wave devices
-                angular.forEach(list, function(thing) {
-                    // Check if there are properties, and if so, if this is a z-wave node
-                    if(thing.properties == null) {
-                        return;
-                    }
-                    if(thing.properties["zwave_nodeid"] == null) {
-                        return;
-                    }
-
-                    // Is this our controller?
-                    if(thing.bridgeUID == null) {
-                        bridge = thing;
-                    }
-
-                    // Add it...
-                    $scope.devices.push(thing);
-                });
-
-                if(bridge != null) {
-                    createNetworkMap(bridge);
-                }
-            }
-        );
 
         $scope.networkOptions = {
             layout: {
                 hierarchical: {
                     enabled: true,
-//                    layout: "direction",
                     sortMethod: "directed",
                     direction: "UD"
                 }
@@ -101,6 +70,37 @@ angular.module('ZWaveNetwork', [
                 dragNodes: true
             }
         };
+
+        $scope.devices = [];
+
+        ThingModel.getList().then(
+            function (list) {
+                var bridge;
+
+                // Get all the Z-Wave devices
+                angular.forEach(list, function (thing) {
+                    // Check if there are properties, and if so, if this is a z-wave node
+                    if (thing.properties == null) {
+                        return;
+                    }
+                    if (thing.properties["zwave_nodeid"] == null) {
+                        return;
+                    }
+
+                    // Is this our controller?
+                    if (thing.bridgeUID == null) {
+                        bridge = thing;
+                    }
+
+                    // Add it...
+                    $scope.devices.push(thing);
+                });
+
+                if (bridge != null) {
+                    createNetworkMap(bridge);
+                }
+            }
+        );
 
         $scope.showPanel = function (panel) {
             if ($scope.panelDisplayed == panel) {
@@ -124,7 +124,7 @@ angular.module('ZWaveNetwork', [
 
                 // Add all the neighbour routes
                 var neighbours = [];
-                if(device.properties["zwave_neighbours"] != null) {
+                if (device.properties["zwave_neighbours"] != null) {
                     neighbours = device.properties["zwave_neighbours"].split(",");
                 }
                 angular.forEach(neighbours, function (neighbour) {
@@ -134,6 +134,16 @@ angular.module('ZWaveNetwork', [
                         if (edge.from == neighbour && edge.to == device.properties["zwave_nodeid"]) {
                             edge.color = "green";
                             edge.style = "line";
+                            edge.arrows = {
+                                to: {
+                                    enabled: false,
+                                    scaleFactor: 0.5
+                                },
+                                from: {
+                                    enabled: false,
+                                    scaleFactor: 0.5
+                                }
+                            };
                             edge.width = 3;
 
                             found = true;
@@ -146,6 +156,16 @@ angular.module('ZWaveNetwork', [
                         newEdge.to = neighbour;
                         newEdge.color = "red";
                         newEdge.style = "arrow";
+                        newEdge.arrows = {
+                            to: {
+                                enabled: true,
+                                scaleFactor: 0.5
+                            },
+                            from: {
+                                enabled: false,
+                                scaleFactor: 0.5
+                            }
+                        };
                         newEdge.width = 1;
                         edges.push(newEdge);
 
@@ -169,10 +189,31 @@ angular.module('ZWaveNetwork', [
                 if (device.properties["zwave_neighbours"] === undefined) {
                     console.log("No neighbors for node ", device.properties["zwave_nodeid"]);
                 }
+
                 // Add the node
-                var newNode = {};
+                var newNode = {
+                    label: "",
+                    title: device.label
+                };
                 newNode.id = device.properties["zwave_nodeid"];
-                newNode.label = device.properties["zwave_nodeid"];//device.label;
+//                if (device.properties["zwave_class_generic"] != null &&
+//                    deviceClassIcons[device.properties["zwave_class_generic"]] != null) {
+                newNode.title = "<table>" +
+                "<tr>" +
+                "<td>" + locale.getString("zwave.Node") + "</td><td>" + device.properties["zwave_nodeid"] +
+                "</td>" +
+                "</tr>" +
+                "<td>" + locale.getString("zwave.ThingName") + "</td><td>" + device.label + "</td></tr>";
+                if (deviceClassIcons[device.properties["zwave_class_generic"]] != null) {
+                    newNode.title += "<tr><td>" + locale.getString("zwave.GenericClass") + "</td><td><span class='" +
+                    ImgFactory.lookupCategory(deviceClassIcons[device.properties["zwave_class_generic"]]) +
+                    "'></span> " + device.properties["zwave_class_generic"] + "</td></tr>";
+                }
+                "<tr><td>" + locale.getString("zwave.Neighbours") + "</td>" +
+                "<td>" + device.properties["zwave_neighbours"] + "</td></tr>";
+                newNode.title += "</table>";
+//                }
+                newNode.label += device.properties["zwave_nodeid"];
                 if (root === device.properties["zwave_nodeid"]) {
                     newNode.level = 0;
                 }
@@ -183,15 +224,15 @@ angular.module('ZWaveNetwork', [
                 newNode.borderWidth = 2;    // TODO: put this in general options?
                 newNode.color = {};
 
-                if (device.listening === false) {
-                    newNode.color.background = "grey";
+                if (device.properties["zwave_listening"] === "false") {
+                    newNode.color.border = "rgb(204, 102, 153)";
                 }
                 switch (device.statusInfo.status) {
                     case "ONLINE":
-                        newNode.color.border = "green";
+                        newNode.color.background = "rgb(204, 255, 204)";
                         break;
                     case "OFFLINE":
-                        newNode.color.border = "red";
+                        newNode.color.background = "rgb(255, 51, 0)";
                         break;
                     default:
                         newNode.color.border = "grey";
@@ -210,7 +251,7 @@ angular.module('ZWaveNetwork', [
             // Check the root devices neighbors
             doneNodes = [root.properties["zwave_nodeid"]];
             var neighbours = [];
-            if(root.properties["zwave_neighbours"] != null) {
+            if (root.properties["zwave_neighbours"] != null) {
                 neighbours = root.properties["zwave_neighbours"].split(",");
             }
             angular.forEach(neighbours, function (neighbour) {
@@ -224,7 +265,7 @@ angular.module('ZWaveNetwork', [
             // Calculate the max level, and also set the root position
             var maxLevel = 0;
             angular.forEach(nodes, function (node) {
-                if(node.id == root.properties["zwave_nodeid"]) {
+                if (node.id == root.properties["zwave_nodeid"]) {
                     node.level = 0;
                 }
 
@@ -269,7 +310,7 @@ angular.module('ZWaveNetwork', [
                     }
                     // Check this devices neighbours
                     var neighbours = [];
-                    if(device.properties["zwave_neighbours"] != null) {
+                    if (device.properties["zwave_neighbours"] != null) {
                         neighbours = device.properties["zwave_neighbours"].split(",");
                     }
                     angular.forEach(neighbours, function (neighbour) {

@@ -7,7 +7,7 @@
   "NetworkInclude": "Inclure périphérique",
   "NetworkExclude": "Exclure périphérique",
   "NetworkUpdate": "Mettre à jour le contrôleur secondaire",
-  "NetworkReset": "Faire un soft reset du contrôleur",
+  "NetworkReset": "Faire une réinitialisation soft du contrôleur",
   "NetworkHeal": "Soigner le réseau",
   "NetworkReplicate": "Dupliquer la configuration réseau du primaire",
   "ActionOk": "Requête envoyée au serveur avec succès",
@@ -16,7 +16,7 @@
   "BatteryPower": "Périphérique sur batterie.",
   "BatteryPowerLevel": "Périphérique sur batterie. Le niveau de batterie est à {1}%.",
   "UnknownPower": "La source d'alimentation est inconnue.",
-  "SoftResetConfirmTitle": "Confirmer le Soft Reset",
+  "SoftResetConfirmTitle": "Confirmer la réinitialisation soft",
   "SoftResetConfirmMessage": "Cela va faire un reste du controleur. Cela ne changera pas le réseau, et c'est généralement indolore toutefois certains controleurs ZWave-PLUS peuvent rester bloqués.",
   "DeviceHeal": "Soigner le périphérique",
   "Configuration": "Paramètres de configuration",
@@ -30,7 +30,7 @@
   "Stage": "Ce périphérique est {1} et a été vu la dernière fois {2}.{3}",
   "Stageundefined": "Inconnu",
   "StageEMPTYNODE": "Initialisation",
-  "StagePROTOINFO": "Récupération du protocol",
+  "StagePROTOINFO": "Récupération d'information du protocole",
   "StageWAIT": "En attente",
   "StagePING": "Ping en cours",
   "StageDETAILS": "Récupération des détails du noeud",
@@ -73,5 +73,8 @@
   "NeverReceived": "Jamais",
   "RemoveFailedTitle": "Supprimer le noeud échoué",
   "RemoveFailedText": "Etes-vous sur de vouloir supprimer le noeud '{nodenumber}' du réseau ?",
-  "Unknown": "Inconnu"
+  "Unknown": "Inconnu",
+  "NetworkDefault": "Réinitialisation du contrôleur aux valeurs par défaut",
+  "HardResetConfirmTitle": "Confirmer la réinitialisation complète",
+  "HardResetConfirmMessage": "Le contrôleur sera réinitialiser aux valeurs par défaut. Le réseau sera complétement réinitialiser et il faudra ré-inclure tous les périphériques.VOUS AVEZ ETE PREVENU!!"
 }
