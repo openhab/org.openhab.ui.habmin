@@ -19,6 +19,7 @@ angular.module('Config.ItemEdit', [
     function ($modal, $rootScope, growl, locale, UserService, ItemModel, SmartHomeModel) {
         this.edit = function (thing, channel, item, create) {
             var scope = $rootScope.$new();
+            scope.newItem = create;
             scope.item = angular.copy(item);
             scope.itemtypes = SmartHomeModel.itemtypes;
             scope.categories = SmartHomeModel.categories;

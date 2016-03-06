@@ -105,7 +105,7 @@ angular.module('Config.ThingWizard', [
                 function (type) {
                     $scope.selectedThingType = type;
                     $scope.selectedThing = {
-                        UID: type.UID,
+                        UID: type.UID + ':' + new Date().getTime().toString(16),
                         thingTypeUID: type.UID,
                         label: type.label,
                         configuration: {}

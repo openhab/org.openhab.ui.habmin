@@ -234,11 +234,8 @@ angular.module('HABmin.thingModel', [
             var tStart = new Date().getTime();
             var deferred = $q.defer();
 
-            // If the UID ends with a colon, then it's new
-            // This is temporary until ESH supports thing labels
             RestService.getService(svcName).then(
                 function (url) {
-                    thing.UID += ':' + new Date().getTime().toString(16);
                     $http.post(url, thing)
                         .success(function (data) {
                             deferred.resolve(data);

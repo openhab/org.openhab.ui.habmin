@@ -1,4 +1,15 @@
 <label>Configure Thing...</label>
+
+<div class="form-group">
+    <label for="inputThingUID" class="control-label" i18n="thing.UID"></label>
+    <input type="text"
+           class="form-control"
+           id="inputThingUID"
+           name="itemUID"
+           ng-model="selectedThing.UID"
+           i18n-attr="{placeholder: 'thing.SelectUID'}">
+</div>
+
 <div class="form-group">
     <label for="inputThingLabel" class="control-label" i18n="thing.Label"></label>
     <input type="text"
@@ -6,7 +17,7 @@
            id="inputThingLabel"
            name="itemLabel"
            ng-model="selectedThing.label"
-           i18n-attr="{placeholder: 'item.SelectLabel'}">
+           i18n-attr="{placeholder: 'thing.SelectLabel'}">
 </div>
 
 <div class="form-group"
