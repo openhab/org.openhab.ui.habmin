@@ -253,6 +253,25 @@ angular.module('HABmin.itemModel', [
             return deferred.promise;
         };
 
+        this.unlinkItem = function (thing, channel, item) {
+            var deferred = $q.defer();
+            RestService.getService(svcNameLinks).then(
+                function (url) {
+                    $http.delete(url + "/" + item.name + "/" + thing.UID + ':' + channel.id)
+                        .success(function (data) {
+                            deferred.resolve(data);
+                        })
+                        .error(function (data, status) {
+                            deferred.reject(data);
+                        });
+                },
+                function () {
+                    deferred.reject(null);
+                }
+            );
+            return deferred.promise;
+        };
+
         this.deleteItem = function (item) {
             var tStart = new Date().getTime();
             var deferred = $q.defer();

@@ -35,23 +35,39 @@ angular.module('HABmin.thingModel', [
              }
              var thing = thingList[newThing.UID];*/
 
+            // Get the thing from the list - don't use the new one!
             var thing = me.getThing(newThing.UID);
             if (thing == null) {
+                // Didn't exist, so add it.
                 thing = newThing;
                 thingList.push(thing);
             }
-
-            // Aggregate the data - only update what we've been given
-            for (var i in newThing) {
-                thing[i] = newThing[i];
+            else {
+                // Aggregate the data - only update what we've been given
+                for (var i in newThing) {
+                    thing[i] = newThing[i];
+                }
             }
             return thing;
         };
 
+        this.getChannelFromThing = function (channelUID) {
+            for (var a = 0; a < thingList.length; a++) {
+                for (var b = 0; b < thingList[a].channels.length; b++) {
+                    if (thingList[a].UID + ":" + thingList[a].channels[b].id == channelUID) {
+                        return thingList[a].channels[b];
+                    }
+                }
+            }
+
+            return null;
+        };
+
         this.listen = function () {
+            // Things event listener
             eventSrc = new EventSource("/rest/events?topics=smarthome/things/*");
             eventSrc.addEventListener('message', function (event) {
-                console.debug("Received event in thingModel", event);
+                console.debug("Received thing event in thingModel", event);
 
                 var evt = angular.fromJson(event.data);
                 var payload = angular.fromJson(evt.payload);
@@ -80,7 +96,37 @@ angular.module('HABmin.thingModel', [
                         me.addOrUpdateThing(payload);
                         break;
                 }
-//                $rootScope.$apply();
+            });
+
+            // Channel link event listener
+            eventSrc = new EventSource("/rest/events?topics=smarthome/links/*");
+            eventSrc.addEventListener('message', function (event) {
+                console.debug("Received link event in thingModel", event.data);
+
+                var evt = angular.fromJson(event.data);
+                var payload = angular.fromJson(evt.payload);
+                var topic = evt.topic.split("/");
+
+                var channel = me.getChannelFromThing(payload.channelUID);
+                if(channel == null) {
+                    return;
+                }
+
+                switch (evt.type) {
+                    case 'ItemChannelLinkAddedEvent':
+                        channel.linkedItems = [].concat(channel.linkedItems);
+                        channel.linkedItems.push(payload.itemName);
+                        break;
+                    case 'ItemChannelLinkRemovedEvent':
+                        for (var i = 0; i < channel.linkedItems.length; i++) {
+                            if(channel.linkedItems[i] == payload.itemName) {
+                                channel.linkedItems.splice(i, 1);
+                                break;
+                            }
+                        }
+                        break;
+                }
+                $rootScope.$apply();
             });
         };
 

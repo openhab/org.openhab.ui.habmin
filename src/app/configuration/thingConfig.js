@@ -328,6 +328,8 @@ angular.module('Config.Things', [
                 function (values) {
                     // We make a copy here so that we're not editing the live version
                     $scope.selectedThing = angular.copy(thing);
+                    // But keep references to the 'real' channels so they update correctly
+                    $scope.selectedThing.channels = thing.channels;
 
                     $scope.selectedThingType = $scope.getThingType(thing);
                     if ($scope.selectedThingType == null) {
@@ -457,10 +459,18 @@ angular.module('Config.Things', [
             itemEdit.edit($scope.selectedThing, channel, newItem, true);
         };
 
-        $scope.deleteItem = function (item) {
-            ItemModel.deleteItem(item).then(
+        $scope.deleteItem = function (item, channel) {
+            // We need to first unlink the channel, then delete the item...
+            ItemModel.unlinkItem($scope.selectedThing, channel, item).then(
                 function () {
-                    growl.success(locale.getString("thing.DeleteItemOk"));
+                    ItemModel.deleteItem(item).then(
+                        function () {
+                            growl.success(locale.getString("thing.DeleteItemOk"));
+                        },
+                        function () {
+                            growl.warning(locale.getString("thing.DeleteItemFailed"));
+                        }
+                    );
                 },
                 function () {
                     growl.warning(locale.getString("thing.DeleteItemFailed"));
