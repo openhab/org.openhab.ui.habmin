@@ -421,7 +421,9 @@ angular.module('Config.Things', [
                     });
                 },
                 function () {
-                    console.error("No configuration returned");
+                    // Handle failure
+                    // TODO: Set error
+                    growl.warning(locale.getString("thing.ErrorGettingThing", {error : ""}));
                 }
             );
         };

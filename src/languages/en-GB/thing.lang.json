@@ -42,5 +42,6 @@
   "DeleteItemFailed": "Error deleting item from channel",
   "UID": "UID (Unique Identifier)",
   "SelectUID": "Enter unique identifier...",
-  "SelectLabel": "Enter label..."
+  "SelectLabel": "Enter label...",
+  "ErrorGettingThing": "Error getting information on thing: {error}"
 }
