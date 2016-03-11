@@ -25,7 +25,8 @@ angular.module('Config.Things', [
     'ResizePanel',
     'showOverflow',
     'ngHelpDialog',
-    'ngInputModified'
+    'ngInputModified',
+    'ngPromiseExtras'
 ])
 
     .config(function config($stateProvider) {
@@ -324,8 +325,9 @@ angular.module('Config.Things', [
             });
 
             // Wait for all the promises to complete before processing the data
-            $q.all(promises).then(
+            $q.allSettled(promises).then(
                 function (values) {
+
                     // We make a copy here so that we're not editing the live version
                     $scope.selectedThing = angular.copy(thing);
                     // But keep references to the 'real' channels so they update correctly
@@ -419,14 +421,10 @@ angular.module('Config.Things', [
                         $scope.thingConfigForm.$setPristine();
                         $scope.formLoaded = true;
                     });
-                },
-                function () {
-                    // Handle failure
-                    // TODO: Set error
-                    growl.warning(locale.getString("thing.ErrorGettingThing", {error : ""}));
                 }
-            );
+            )
         };
+
 
         $scope.getChannelItems = function (channel) {
             if ($scope.selectedThing == null || $scope.selectedThing.channels == null) {
@@ -795,7 +793,8 @@ angular.module('Config.Things', [
         };
     })
 
-    .controller('ThingConfigMenuCtrl',
+    .
+    controller('ThingConfigMenuCtrl',
     function ($scope, ThingConfigService, BindingModel, locale, growl) {
         $scope.tooltipDiscover = locale.getString('habmin.Discovery');
         $scope.tooltipManualAdd = locale.getString('habmin.AddThing');
