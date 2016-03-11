@@ -132,5 +132,7 @@
   "period4Months": "4 Mesi",
   "period6Months": "6 Mesi",
   "period9Months": "9 Mesi",
-  "period1Year": "1 Anno"
+  "period1Year": "1 Anno",
+  "clipboardError": "Errore copiando negli appunti",
+  "GroupSelectName": "Seleziona gruppo..."
 }

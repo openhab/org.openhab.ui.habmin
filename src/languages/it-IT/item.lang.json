@@ -11,8 +11,9 @@
   "SelectCategory": "Seleziona Categoria...",
   "SelectGroup": "Seleziona Gruppo...",
   "SelectType": "Seleziona Tipologia...",
-  "SaveOk": "Elemento <b><i>{name}</i></b> salvato",
-  "SaveFailed": "Errore salvataggio elemento <b><i>{name}</i></b>.<br>{message}",
-  "Delete": "Elimina Elemento",
-  "DeleteCheck": "Sei sicuro di voler eliminare questo elemento?"
+  "SaveOk": "Elemento {name} salvato",
+  "SaveFailed": "Errore salvataggio elemento {name}.{message}",
+  "Delete": "Elimina",
+  "DeleteCheck": "Sei sicuro di voler eliminare questo oggetto.Se clicchi Si l'oggetto e gli elementi associati verranno eliminati!",
+  "NameCopiedOk": "Elemento con nome {name} copiato negli appunti"
 }

@@ -31,5 +31,12 @@
   "ErrorLoadingDashboards": "Errore di caricamento lista cruscotti!",
   "ErrorLoadingInbox": "Errore caricamento inbox!",
   "ErrorGettingBindings": "Errore di caricamento lista bindings!",
-  "OpenHABOffline": "OpenHAB è offline!"
+  "OpenHABOffline": "OpenHAB è offline!",
+  "Login": "Accedi",
+  "Dashboard": "Cruscotto",
+  "DashboardNew": "Nuovo Cruscotto",
+  "DashboardEdit": "Modifica Cruscotto",
+  "DashboardOrganise": "Organizza Cruscotti",
+  "Charts": "Grafici",
+  "ChartEditor": "Editor del Grafico"
 }

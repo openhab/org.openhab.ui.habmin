@@ -33,5 +33,22 @@
   "GaugeMinimum": "Valore Minimo",
   "GaugeMaximum": "Valore Massimo",
   "GroupName": "Nome Gruppo",
-  "FloorName": "Nome Mappa"
+  "FloorName": "Nome Mappa",
+  "FloorSelectName": "Seleziona una mappa...",
+  "GroupItems": "Proprietà Elemento",
+  "ImageName": "Nome Immagine",
+  "ImageURL": "URL Immagine",
+  "ImageSource": "Sorgente Immagine",
+  "GeneralTitle": "Titolo",
+  "GeneralBorder": "Tipo Bordo Widget",
+  "GeneralLink": "Cruscotto da collegare quando premuto",
+  "SaveOk": "Elemento {name} salvato",
+  "SaveError": "Errore di salvataggio grafico {chartName}:{error}.",
+  "DeleteOk": "Grafico {name} cancellato con successo",
+  "DeleteError": "Errore eliminando il grafico {name}.",
+  "PropertiesCategory": "Categoria",
+  "PropertiesTitle": "Proprietà Mappa",
+  "PropertiesName": "Nome",
+  "PropertiesIcon": "Icona",
+  "PropertiesShowMenu": "Elenca Cruscotto nel Menu"
 }

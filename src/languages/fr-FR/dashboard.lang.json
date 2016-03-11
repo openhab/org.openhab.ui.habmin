@@ -1,0 +1,9 @@
+{
+  "GeneralTitle": "Titre",
+  "DeleteOk": "Graphique {name} supprimé avec succès",
+  "SaveError": "Erreur de sauvegarde du graphique {chartName}:{error}.",
+  "DeleteError": "Erreur lors de la suppression du graphique {name}.",
+  "PropertiesCategory": "Catégorie",
+  "PropertiesName": "Nom",
+  "PropertiesIcon": "Icône"
+}

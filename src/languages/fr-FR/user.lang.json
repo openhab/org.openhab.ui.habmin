@@ -1,0 +1,11 @@
+{
+  "ChartPeriod": "Intervalle du graphique",
+  "ChartPrefTitle": "Configuration du graphique",
+  "ChartLegend": "Montrer la légende",
+  "Theme": "Thème",
+  "GeneralPrefTitle": "Configuration générale",
+  "Name": "Nom",
+  "ThemeSelect": "Choisir votre thème...",
+  "Language": "Langue",
+  "LanguageSelect": "Choisir votre langue..."
+}
