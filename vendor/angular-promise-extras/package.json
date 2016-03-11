@@ -1,0 +1,29 @@
+{
+  "name": "angular-promise-extras",
+  "version": "0.1.3",
+  "description": "Adds some extra functions to $q like $q.allSettled",
+  "main": "angular-promise-extras.js",
+  "scripts": {
+    "test": "bower install && karma start --single-run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ohjames/angular-promise-extras.git"
+  },
+  "keywords": [
+    "angular"
+  ],
+  "author": "James Pike <github@chilon.net>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ohjames/angular-promise-extras/issues"
+  },
+  "homepage": "https://github.com/ohjames/angular-promise-extras#readme",
+  "devDependencies": {
+    "jasmine-core": "^2.3.0",
+    "karma": "^0.12.31",
+    "karma-cli": "0.0.4",
+    "karma-jasmine": "^0.3.5",
+    "karma-phantomjs-launcher": "^0.1.4"
+  }
+}

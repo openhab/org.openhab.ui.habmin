@@ -381,7 +381,7 @@
                 </div>
 
                 <!-- CHANNELS -->
-                <div>
+                <div ng-show="selectedThing.channels != null && selectedThing.channels.length != 0">
                     <a role="presentation" ng-class="{'list-group-item':true, 'active': panelDisplayed=='CHANNELS'}"
                        ng-click="setPanelDisplayed('CHANNELS')">
                         <span class="fa fa-fw fa-navicon"></span>
