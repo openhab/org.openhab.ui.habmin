@@ -327,6 +327,11 @@ angular.module('Config.Things', [
             // Wait for all the promises to complete before processing the data
             $q.allSettled(promises).then(
                 function (values) {
+                    for(var value in values) {
+                        if(values[value].state == 'fulfilled') {
+                            values[value] = values[value].value;
+                        }
+                    }
 
                     // We make a copy here so that we're not editing the live version
                     $scope.selectedThing = angular.copy(thing);
@@ -454,6 +459,7 @@ angular.module('Config.Things', [
             if (channel.linkedItems.length === 0) {
                 newItem.name = $scope.selectedThing.UID + "_" + channel.id;
                 newItem.name = newItem.name.replace(/:/g, "_");
+                newItem.name = newItem.name.replace(/-/g, "_");
             }
 
             itemEdit.edit($scope.selectedThing, channel, newItem, true);
