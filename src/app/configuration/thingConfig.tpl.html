@@ -187,7 +187,7 @@
                     <span class="sr-only">Dropdown</span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
-                    <li ng-repeat="config in actionList = (selectedThingConfig.parameters | filter:{groupName:'actions'} | filter:((showAdvancedSettings && {advanced:'true'}) || {advanced:'false'}))">
+                    <li ng-repeat="config in actionList = (selectedThingConfig.parameters | filter:checkActions())">
                         <a ng-click="doAction(config)">
                             <span class="fa fa-fw"></span>
                             <span class="fa fa-fw fa-cog"></span>

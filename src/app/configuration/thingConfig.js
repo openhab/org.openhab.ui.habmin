@@ -171,6 +171,18 @@ angular.module('Config.Things', [
             return true;
         };
 
+        $scope.checkActions = function() {
+            return function( config ) {
+                if (config.groupName != 'actions') {
+                    return false;
+                }
+                if (config.advanced == false) {
+                    return true;
+                }
+                return $scope.showAdvancedSettings;
+            }
+        };
+
         $scope.toggleStatusFilter = function (status) {
             var p = $scope.filterStatus.indexOf(status);
             if (p == -1) {
