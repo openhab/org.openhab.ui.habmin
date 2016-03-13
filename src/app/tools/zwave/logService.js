@@ -886,7 +886,42 @@ angular.module('ZWaveLogReader', [])
                 name: "MANUFACTURER_PROPRIETARY"
             },
             152: {
-                name: "SECURITY"
+                name: "SECURITY",
+                commands: {
+                    2: {
+                        name: "SUPPORTED_GET"
+                    },
+                    3: {
+                        name: "SUPPORTED_REPORT"
+                    },
+                    4: {
+                        name: "SCHEME_GET"
+                    },
+                    5: {
+                        name: "SCHEME_REPORT"
+                    },
+                    6: {
+                        name: "KEY_SET"
+                    },
+                    7: {
+                        name: "KEY_VERIFY"
+                    },
+                    8: {
+                        name: "SCHEME_INHERIT"
+                    },
+                    64: {
+                        name: "NONCE_GET"
+                    },
+                    128: {
+                        name: "NONCE_REPORT"
+                    },
+                    129: {
+                        name: "ENCAP"
+                    },
+                    193: {
+                        name: "ENCAP_NONCE_GET"
+                    }
+                }
             },
             156: {
                 name: "SENSOR_ALARM",
