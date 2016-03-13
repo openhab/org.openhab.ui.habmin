@@ -89,7 +89,7 @@ angular.module('Config.ThingWizard', [
             $scope.newThings = [];
             angular.forEach($scope.thingTypes, function (thingType) {
                 var uid = thingType.UID.split(":");
-                if (uid[0] == binding.id) {
+                if (uid[0] == binding.id && thingType.listed == true) {
                     $scope.newThings.push(thingType);
                 }
             });

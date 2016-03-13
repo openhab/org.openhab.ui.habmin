@@ -126,7 +126,7 @@
                                         ng-class="{'disabled':notificationCntNew==0}"
                                         ng-confirm-click="clearInbox()"
                                         i18n-attr="{'ngConfirmMessage': 'discovery.ClearConfirmMsg','ngConfirmTitle': 'discovery.ClearConfirmTitle','ngConfirmNoBtn': 'common.cancel', 'ngConfirmYesBtn': 'common.ok'}">
-                                    <span class="fa fa-fw fa-times-circle text-danger"></span>
+                                    <span class="fa fa-fw fa-trash text-danger"></span>
                                     <span i18n="common.clear"></span>
                                 </button>
                             </li>
@@ -157,7 +157,7 @@
                                                 <button type="button" class="btn btn-xs btn-default"
                                                         ng-confirm-click="deleteThing(msg.thingUID)"
                                                         i18n-attr="{'ngConfirmMessage': 'discovery.DeleteConfirmMsg','ngConfirmTitle': 'discovery.DeleteConfirmTitle','ngConfirmNoBtn': 'common.cancel', 'ngConfirmYesBtn': 'common.ok'}">
-                                                    <span class="fa fa-fw fa-times-circle text-danger"></span>
+                                                    <span class="fa fa-fw fa-trash text-danger"></span>
                                                     <span i18n="common.delete"></span>
                                                 </button>
                                             </p>
@@ -292,20 +292,20 @@
                         <i class="fa fa-angle-left pull-right"></i>
                     </a>
                     <ul class="treeview-menu">
-                        <li ui-sref="bindings" ng-class="{active: $state.includes('bindings')}">
-                            <a>
+                        <li>
+                            <a ui-sref="bindings" ng-class="{active: $state.includes('bindings')}">
                                 <i class="fa fa-fw fa-random"></i>
                                 <span i18n="habmin.Bindings"></span>
                             </a>
                         </li>
-                        <li ui-sref="things" ng-class="{active: $state.includes('things')}">
-                            <a>
+                        <li>
+                            <a ui-sref="things" ng-class="{active: $state.includes('things')}">
                                 <i class="fa fa-fw fa-plug"></i>
                                 <span i18n="habmin.Things"></span>
                             </a>
                         </li>
-                        <li ui-sref="items" ng-class="{active: $state.includes('items')}">
-                            <a>
+                        <li>
+                            <a ui-sref="items" ng-class="{active: $state.includes('items')}">
                                 <i class="fa fa-fw fa-map-signs"></i>
                                 <span i18n="habmin.Items"></span>
                             </a>
