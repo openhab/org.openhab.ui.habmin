@@ -95,7 +95,7 @@ angular.module('HABmin.itemModel', [
         };
 
         this.getList = function (refresh) {
-            // TODO: Only get the list once, then rely on SSE unless we refresh
+            // Only get the list once, then rely on SSE unless we refresh
             var tStart = new Date().getTime();
             var deferred = $q.defer();
 
@@ -238,7 +238,9 @@ angular.module('HABmin.itemModel', [
             var deferred = $q.defer();
             RestService.getService(svcNameLinks).then(
                 function (url) {
-                    $http.put(url + "/" + item.name + "/" + thing.UID + ':' + channel.id)
+                    // TODO: Fix once channelUID added to channel
+                    var channelUID = thing.UID + ":" + channel.id;
+                    $http.put(url + "/" + item.name + "/" + channelUID)
                         .success(function (data) {
                             deferred.resolve(data);
                         })
@@ -257,7 +259,9 @@ angular.module('HABmin.itemModel', [
             var deferred = $q.defer();
             RestService.getService(svcNameLinks).then(
                 function (url) {
-                    $http.delete(url + "/" + item.name + "/" + thing.UID + ':' + channel.id)
+                    // TODO: Fix once channelUID added to channel
+                    var channelUID = thing.UID + ":" + channel.id;
+                    $http.delete(url + "/" + item.name + "/" + channelUID)
                         .success(function (data) {
                             deferred.resolve(data);
                         })

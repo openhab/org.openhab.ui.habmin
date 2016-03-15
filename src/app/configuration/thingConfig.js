@@ -20,6 +20,7 @@ angular.module('Config.Things', [
     'HABmin.channelTypeModel',
     'Config.parameter',
     'Config.ItemEdit',
+    'Config.ItemLink',
     'angular-growl',
     'Binding.config',
     'ResizePanel',
@@ -74,7 +75,7 @@ angular.module('Config.Things', [
     })
 
     .controller('ThingConfigCtrl',
-    function ($scope, $q, ThingConfigService, locale, growl, $timeout, $window, $http, $interval, UserService, ThingModel, ConfigModel, BindingModel, ItemModel, itemEdit, SmartHomeModel, ChannelTypeModel) {
+    function ($scope, $q, ThingConfigService, locale, growl, $timeout, $window, $http, $interval, UserService, ThingModel, ConfigModel, BindingModel, ItemModel, itemEdit, itemLink, SmartHomeModel, ChannelTypeModel) {
         $scope.panelDisplayed = 'PROPERTIES';
         $scope.thingCnt = -1;
 
@@ -298,10 +299,8 @@ angular.module('Config.Things', [
          * @returns thingType
          */
         $scope.getThingType = function (thing) {
-            var uid = thing.UID.split(':', 2).join(':');
-
             for (var i = 0; i < $scope.thingTypes.length; i++) {
-                if ($scope.thingTypes[i].UID == uid) {
+                if ($scope.thingTypes[i].UID == thing.thingTypeUID) {
                     return $scope.thingTypes[i];
                 }
             }
@@ -460,6 +459,10 @@ angular.module('Config.Things', [
             itemEdit.edit($scope.selectedThing, channel, item);
         };
 
+        $scope.linkItem = function (item, channel) {
+            itemLink.edit($scope.selectedThing, channel, item);
+        };
+
         $scope.addItem = function (channel) {
             var newItem = {
                 label: channel.channelType.label,
@@ -467,11 +470,12 @@ angular.module('Config.Things', [
                 category: channel.channelType.category
             };
 
-            // If there's no items currently associated with this channel then use the auto name...
-            if (channel.linkedItems.length === 0) {
-                newItem.name = $scope.selectedThing.UID + "_" + channel.id;
-                newItem.name = newItem.name.replace(/:/g, "_");
-                newItem.name = newItem.name.replace(/-/g, "_");
+            // TODO: Fix once channelUID added to channel
+            var name = $scope.selectedThing.UID + "_" + channel.id;
+            name = name.replace(/:/g, "_");
+            name = name.replace(/-/g, "_");
+            if(ItemModel.getItem(name) == null) {
+                newItem.name = name;
             }
 
             itemEdit.edit($scope.selectedThing, channel, newItem, true);
@@ -710,7 +714,7 @@ angular.module('Config.Things', [
 
         $scope.doAction = function (config, value) {
             if (value === undefined) {
-                value = config.default;
+                value = config.defaultValue;
             }
             var cfg = {};
             cfg[config.name] = ThingModel.convertType(config.type, value, false);

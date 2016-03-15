@@ -439,9 +439,20 @@
 
                                     <div class="pull-right">
                                         <button type="button" class="btn btn-primary btn-xs"
-                                                ng-click="addItem(channel)">
-                                            <span class="fa fa-plus-circle"></span> <span
-                                                i18n="common.add"></span>
+                                                ng-click="linkItem(channel)"
+                                                tooltip-placement="top" tooltip="Link channel to an existing item"
+                                                tooltip-popup-delay="1500"
+                                                tooltip-enable="true" tooltip-trigger tooltip-animation="false"
+                                                tooltip-append-to-body="true">
+                                            <span class="fa fa-link"></span>
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-xs"
+                                                ng-click="addItem(channel)"
+                                                tooltip-placement="top" tooltip="Create a new item and link it to the channel"
+                                                tooltip-popup-delay="1500"
+                                                tooltip-enable="true" tooltip-trigger tooltip-animation="false"
+                                                tooltip-append-to-body="true">
+                                            <span class="fa fa-plus-circle"></span>
                                         </button>
                                     </div>
                                 </div>
@@ -455,9 +466,20 @@
                                             <td>
                                                 <div class="pull-right">
                                                     <button type="button" class="btn btn-primary btn-xs"
-                                                            ng-click="addItem(channel)">
-                                                        <span class="fa fa-plus-circle"></span> <span
-                                                            i18n="common.add"></span>
+                                                            ng-click="linkItem(channel)"
+                                                            tooltip-placement="top" tooltip="Link channel to an existing item"
+                                                            tooltip-popup-delay="1500"
+                                                            tooltip-enable="true" tooltip-trigger tooltip-animation="false"
+                                                            tooltip-append-to-body="true">
+                                                        <span class="fa fa-link"></span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-primary btn-xs"
+                                                            ng-click="addItem(channel)"
+                                                            tooltip-placement="top" tooltip="Create a new item and link it to the channel"
+                                                            tooltip-popup-delay="1500"
+                                                            tooltip-enable="true" tooltip-trigger tooltip-animation="false"
+                                                            tooltip-append-to-body="true">
+                                                        <span class="fa fa-plus-circle"></span>
                                                     </button>
                                                 </div>
                                             </td>
@@ -483,14 +505,20 @@
                                             <td>
                                                 <div class="pull-right">
                                                     <button type="button" class="btn btn-primary btn-xs"
-                                                            ng-click="editItem(item, channel)">
-                                                        <span class="fa fa-edit"></span> <span
-                                                            i18n="common.Edit"></span>
+                                                            ng-click="editItem(item, channel)"
+                                                            tooltip-placement="top" tooltip="Edit the item"
+                                                            tooltip-popup-delay="1500"
+                                                            tooltip-enable="true" tooltip-trigger tooltip-animation="false"
+                                                            tooltip-append-to-body="true">
+                                                        <span class="fa fa-edit"></span>
                                                     </button>
-                                                    <button type="button" class="btn btn-primary btn-xs"
-                                                            ng-click="deleteItem(item, channel)">
-                                                        <span class="fa fa-trash"></span> <span
-                                                            i18n="common.delete"></span>
+                                                    <button type="button" class="btn btn-warning btn-xs"
+                                                            ng-click="deleteItem(item, channel)"
+                                                            tooltip-placement="top" tooltip="Delete the item"
+                                                            tooltip-popup-delay="1500"
+                                                            tooltip-enable="true" tooltip-trigger tooltip-animation="false"
+                                                            tooltip-append-to-body="true">
+                                                        <span class="fa fa-trash"></span>
                                                     </button>
                                                 </div>
                                             </td>

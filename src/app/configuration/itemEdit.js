@@ -28,13 +28,13 @@ angular.module('Config.ItemEdit', [
                 scope.tags = [];
             }
 
+            // Get the items list so we can select groups
             scope.items = [];
             ItemModel.getList().then(
                 function (list) {
                     scope.items = list;
                 }
             );
-
             /**
              * Controller functions get called when the modal closes
              * @param $scope
@@ -69,7 +69,7 @@ angular.module('Config.ItemEdit', [
                                     else {
                                         msg = locale.getString("common.noResponse");
                                     }
-                                    growl.warning(locale.getString("item.SaveFailed",
+                                    growl.warning(locale.getString("item.SaveLinkFailed",
                                         {name: $scope.item.label, message: msg}));
                                 }
                             );
