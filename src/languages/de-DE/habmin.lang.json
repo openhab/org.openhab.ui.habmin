@@ -27,8 +27,10 @@
   "Users": "Benutzer",
   "DashboardOrganise": "Dashboards organisieren",
   "ChartEditor": "Diagramm-Editor",
+  "Bindings": "Bindings",
   "Discovery": "Geräte erkennen",
   "AddThing": "Neues Gerät hinzufügen",
+  "Items": "Elemente",
   "Notifications": "Benachrichtigungen",
   "ErrorLoadingDashboards": "Fehler beim Laden der Dashboard-Lste",
   "ZWaveNetworkViewer": "Z-Wave Netzwerk-Viewer"

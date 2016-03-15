@@ -19,7 +19,7 @@
   "SoftResetConfirmTitle": "Soft Reset bestätigen",
   "SoftResetConfirmMessage": "Controller wird zurückgesetzt. Dies ändert nichts am Netzwerk und funktioniert üblicherweise problemlos. Bei einigen ZWave-PLUS Controllern kann es dennoch zu einem hängenbleiben des Sticks kommen.",
   "DeviceHeal": "Gerät heilen",
-  "Configuration": "Konfigurationsparameter",
+  "Configuration": "Konfiguration",
   "Associations": "Association Groups",
   "Wakeup": "Wakeup Konfiguration",
   "Information": "Geräteinformation",
@@ -73,5 +73,11 @@
   "NeverReceived": "niemals",
   "RemoveFailedTitle": "Fehlerhafte Node löschen",
   "RemoveFailedText": "Sind sie sicher, dass sie die Node '{nodenumber}' aus dem Netzwerk löschen wollen?",
-  "Unknown": "Unbekannt"
+  "Unknown": "Unbekannt",
+  "NetworkDefault": "Controller auf Werkseinstellungen zurücksetzen",
+  "HardResetConfirmTitle": "Hard Reset bestätigen",
+  "HardResetConfirmMessage": "Das wird den Controller auf die Standardeinstellungen zurücksetzen. Das komplette Netzwerk wird zurückgesetzt und alle Geräte müssen neu Eingebunden werden.Sie wurden gewarnt!!",
+  "ThingName": "Thing Name",
+  "GenericClass": "Standardklasse",
+  "Neighbors": "Nachbarn"
 }

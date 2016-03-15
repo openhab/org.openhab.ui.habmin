@@ -1,0 +1,23 @@
+{
+  "Neighbors": "Vicini",
+  "HealRunning": "Cura in esecuzione. Lo stato attuale è {2}",
+  "HealPING": "è stata pingata",
+  "HealPINGEND": "ping nodo",
+  "HealUPDATENEIGHBORS": "aggiornamento vicini",
+  "HealGETASSOCIATIONS": "ottenimento associazioni",
+  "HealSETSUCROUTE": "impostazione route SUC",
+  "HealUPDATEROUTES": "aggiornamento route",
+  "HealUPDATEROUTESNEXT": "aggiornamento route",
+  "HealGETNEIGHBORS": "ottenimento vicini",
+  "HealSAVE": "salvataggio informazioni",
+  "DeviceKill": "Elimina nodi falliti",
+  "DeviceRefresh": "Aggiorna configurazione dispositivo",
+  "DeviceConfiguration": "Configurazione Dispositivo",
+  "DeviceNetworkDiagram": "Diagramma Rete Route",
+  "NeverReceived": "mai",
+  "RemoveFailedTitle": "Elimina Nodo Fallito",
+  "RemoveFailedText": "Sei sicuro di voler cancellare il nodo '{nodenumber}' dalla rete?",
+  "Unknown": "Sconosciuto",
+  "ThingName": "Nome Oggetto",
+  "GenericClass": "Classe Generica"
+}

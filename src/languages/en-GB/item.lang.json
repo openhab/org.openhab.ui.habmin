@@ -15,5 +15,6 @@
   "SaveFailed": "Error saving item <b><i>{name}</i></b>.<br>{message}",
   "Delete": "Delete Item",
   "DeleteCheck": "Are you sure you want to delete the item?",
-  "NameCopiedOk": "Item name <b><i>{name}</i></b> copied to clipboard"
+  "NameCopiedOk": "Item name <b><i>{name}</i></b> copied to clipboard",
+  "SaveLinkFailed": "Error link item to channel for <b><i>{name}</i></b>.<br>{message}"
 }
