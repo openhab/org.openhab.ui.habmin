@@ -22,7 +22,6 @@ angular.module('Config.Things', [
     'Config.ItemEdit',
     'Config.ItemLink',
     'angular-growl',
-    'Binding.config',
     'ResizePanel',
     'showOverflow',
     'ngHelpDialog',
@@ -172,8 +171,8 @@ angular.module('Config.Things', [
             return true;
         };
 
-        $scope.checkActions = function() {
-            return function( config ) {
+        $scope.checkActions = function () {
+            return function (config) {
                 if (config.groupName != 'actions') {
                     return false;
                 }
@@ -327,8 +326,9 @@ angular.module('Config.Things', [
 
             var promises = {};
 
-            // Get the configuration
+            // Get the configuration and config status
             promises.config = ThingModel.getConfig(thing.UID);
+            promises.configStatus = ThingModel.getConfigStatus(thing.UID);
 
             // Get the channels
             angular.forEach(thing.channels, function (channel) {
@@ -338,8 +338,8 @@ angular.module('Config.Things', [
             // Wait for all the promises to complete before processing the data
             $q.allSettled(promises).then(
                 function (values) {
-                    for(var value in values) {
-                        if(values[value].state == 'fulfilled') {
+                    for (var value in values) {
+                        if (values[value].state == 'fulfilled') {
                             values[value] = values[value].value;
                         }
                     }
@@ -348,6 +348,12 @@ angular.module('Config.Things', [
                     $scope.selectedThing = angular.copy(thing);
                     // But keep references to the 'real' channels so they update correctly
                     $scope.selectedThing.channels = thing.channels;
+
+                    // Handle config status
+                    // This is messy. In order to get the event changes flowing directly to the UI
+                    // we need to have an object for each parameter, and then update it in the event handler.
+                    // For now, just take a copy, but below we'll add in any parameter status that dont exist.
+                    $scope.selectedThingStatus = values.configStatus;
 
                     $scope.selectedThingType = $scope.getThingType(thing);
                     if ($scope.selectedThingType == null) {
@@ -360,6 +366,11 @@ angular.module('Config.Things', [
                     // Convert all configuration values to strings for processing internally...
                     // We'll convert them back later!
                     angular.forEach($scope.selectedThingConfig.parameters, function (parameter) {
+                        // Handle config status
+                        if($scope.selectedThingStatus[parameter.name] == null) {
+                            $scope.selectedThingStatus[parameter.name] = {type: ""};
+                        }
+
                         var val = $scope.selectedThing.configuration[parameter.name];
                         if (val == null || val == "null") {
                             if (parameter.defaultValue != null && parameter.defaultValue != "null") {
@@ -456,11 +467,11 @@ angular.module('Config.Things', [
         };
 
         $scope.editItem = function (item, channel) {
-            itemEdit.edit($scope.selectedThing, channel, item);
+            itemEdit.edit(channel, item);
         };
 
-        $scope.linkItem = function (item, channel) {
-            itemLink.edit($scope.selectedThing, channel, item);
+        $scope.linkItem = function (channel) {
+            itemLink.edit(channel);
         };
 
         $scope.addItem = function (channel) {
@@ -474,16 +485,16 @@ angular.module('Config.Things', [
             var name = $scope.selectedThing.UID + "_" + channel.id;
             name = name.replace(/:/g, "_");
             name = name.replace(/-/g, "_");
-            if(ItemModel.getItem(name) == null) {
+            if (ItemModel.getItem(name) == null) {
                 newItem.name = name;
             }
 
-            itemEdit.edit($scope.selectedThing, channel, newItem, true);
+            itemEdit.edit(channel, newItem, true);
         };
 
         $scope.deleteItem = function (item, channel) {
             // We need to first unlink the channel, then delete the item...
-            ItemModel.unlinkItem($scope.selectedThing, channel, item).then(
+            ItemModel.unlinkItem(channel, item).then(
                 function () {
                     ItemModel.deleteItem(item).then(
                         function () {
@@ -569,6 +580,20 @@ angular.module('Config.Things', [
                 }
             }
             return false;
+        };
+
+        $scope.countActiveChannels = function () {
+            if ($scope.selectedThing == null || $scope.selectedThing.channels == null) {
+                return 0;
+            }
+            var linked = 0;
+            for (var cnt = 0; cnt < $scope.selectedThingType.channels.length; cnt++) {
+                if ($scope.selectedThing.channels[cnt].linkedItems.length) {
+                    linked++;
+                }
+            }
+
+            return linked;
         };
 
         $scope.getChannelType = function (channelId) {
@@ -714,7 +739,7 @@ angular.module('Config.Things', [
 
         $scope.doAction = function (config, value) {
             if (value === undefined) {
-                if(config.options.length != 0) {
+                if (config.options.length != 0) {
                     value = config.options[0].value;
                 }
                 else {

@@ -16,7 +16,6 @@ angular.module('Config.Discovery', [
     'HABmin.thingModel',
     'HABmin.bindingModel',
     'angular-growl',
-    'Binding.config',
     'ngVis',
     'ResizePanel'
 ])

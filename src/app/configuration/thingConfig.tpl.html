@@ -351,7 +351,7 @@
                         <div ng-repeat="config in selectedThingConfig.parameters">
                             <div class="form-group"
                                  ng-if="configGroupFilter(config, group.name) && (!config.advanced||showAdvancedSettings)">
-                                <ng-include ng-init="cfgType='CFG';cfgModel=selectedThing.configuration[config.name]"
+                                <ng-include ng-init="cfgType='CFG';cfgModel=selectedThing.configuration[config.name];cfgStatus=selectedThingStatus[config.name]"
                                             src="'configuration/eshConfigParam.tpl.html'"></ng-include>
                             </div>
                         </div>
@@ -385,7 +385,7 @@
                     <a role="presentation" ng-class="{'list-group-item':true, 'active': panelDisplayed=='CHANNELS'}"
                        ng-click="setPanelDisplayed('CHANNELS')">
                         <span class="fa fa-fw fa-navicon"></span>
-                        <span i18n="thing.Channels"></span> <span ng-if="selectedThing.channels.length">[{{selectedThing.channels.length}}]</span>
+                        <span i18n="thing.Channels" data-active="{{countActiveChannels()}}" data-total="{{selectedThing.channels.length}}"></span>
                     </a>
                 </div>
                 <div collapse="panelDisplayed!='CHANNELS'"

@@ -15,7 +15,7 @@
   "Description": "Description",
   "Properties": "Properties",
   "Configuration": "Configuration",
-  "Channels": "Channels",
+  "Channels": "Channels [{active} active, {total} total]",
   "ChannelItems": "Linked Items",
   "ChannelConfiguration": "Channel Configuration",
   "ChannelNoItems": "Channel has no associated items",
@@ -42,5 +42,6 @@
   "DeleteItemFailed": "Error deleting item from channel",
   "UID": "UID (Unique Identifier)",
   "SelectUID": "Enter unique identifier...",
-  "SelectLabel": "Enter label..."
+  "SelectLabel": "Enter label...",
+  "Pending": "pending..."
 }

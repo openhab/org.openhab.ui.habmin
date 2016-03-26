@@ -18,6 +18,8 @@ angular.module('HABmin.thingModel', [
  */
     .service('ThingModel', function ($http, $q, $rootScope, ItemModel, UserService, RestService) {
         var thingList = [];
+        var thingConfigStatusUID = "";
+        var thingConfigStatus = {};
         var svcName = "things";
         var svcTypes = "thing-types";
         var svcConfig = "config-descriptions";
@@ -67,11 +69,10 @@ angular.module('HABmin.thingModel', [
             // Things event listener
             eventSrc = new EventSource("/rest/events?topics=smarthome/things/*");
             eventSrc.addEventListener('message', function (event) {
-                console.debug("Received thing event in thingModel", event);
-
                 var evt = angular.fromJson(event.data);
                 var payload = angular.fromJson(evt.payload);
                 var topic = evt.topic.split("/");
+                console.debug("Received thing event in thingModel", payload);
 
                 switch (evt.type) {
                     case 'ThingStatusInfoEvent':
@@ -95,6 +96,22 @@ angular.module('HABmin.thingModel', [
                     case 'ThingAddedEvent':
                         me.addOrUpdateThing(payload);
                         break;
+                    case 'ConfigStatusInfoEvent':
+                        // If this is a status update for the thing we have stored locally, then update...
+                        if (topic[2] != thingConfigStatusUID) {
+                            break;
+                        }
+
+                        // Remove all...
+                        for (var key in thingConfigStatus) {
+                            thingConfigStatus[key].type = "";
+                        }
+                        // And add them back in...
+                        for (var key in payload.configStatusMessages) {
+                            thingConfigStatus[payload.configStatusMessages[key].parameterName].type =
+                                payload.configStatusMessages[key].type;
+                        }
+                        break;
                 }
             });
 
@@ -108,7 +125,7 @@ angular.module('HABmin.thingModel', [
                 var topic = evt.topic.split("/");
 
                 var channel = me.getChannelFromThing(payload.channelUID);
-                if(channel == null) {
+                if (channel == null) {
                     return;
                 }
 
@@ -119,7 +136,7 @@ angular.module('HABmin.thingModel', [
                         break;
                     case 'ItemChannelLinkRemovedEvent':
                         for (var i = 0; i < channel.linkedItems.length; i++) {
-                            if(channel.linkedItems[i] == payload.itemName) {
+                            if (channel.linkedItems[i] == payload.itemName) {
                                 channel.linkedItems.splice(i, 1);
                                 break;
                             }
@@ -307,6 +324,35 @@ angular.module('HABmin.thingModel', [
                     $http.get(url + "/thing:" + thingUID)
                         .success(function (data) {
                             deferred.resolve(data);
+                        })
+                        .error(function (data, status) {
+                            deferred.reject(data);
+                        });
+                },
+                function () {
+                    deferred.reject(null);
+                }
+            );
+
+            return deferred.promise;
+        };
+
+        this.getConfigStatus = function (thingUID) {
+            var tStart = new Date().getTime();
+            var deferred = $q.defer();
+
+            RestService.getService(svcName).then(
+                function (url) {
+                    thingConfigStatus = [];
+                    thingConfigStatusUID = thingUID;
+                    $http.get(url + "/" + thingUID + "/config/status")
+                        .success(function (data) {
+                            // Turn this into an associative array for easier handling!
+                            thingConfigStatus = {};
+                            angular.forEach(data, function (status) {
+                                thingConfigStatus[status.parameterName] = status;
+                            });
+                            deferred.resolve(thingConfigStatus);
                         })
                         .error(function (data, status) {
                             deferred.reject(data);

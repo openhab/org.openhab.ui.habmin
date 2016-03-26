@@ -16,7 +16,6 @@ angular.module('Config.Bindings', [
     'HABmin.bindingModel',
     'Config.parameter',
     'angular-growl',
-    'Binding.config',
     'ngVis',
     'ResizePanel'
 ])

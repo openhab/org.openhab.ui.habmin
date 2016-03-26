@@ -1,4 +1,9 @@
-<label for="CONFIGLABEL-{{cfgType}}-{{config.name}}" class="control-label">{{config.label}}</label>
+<label for="CONFIGLABEL-{{cfgType}}-{{config.name}}" class="control-label">
+    {{config.label}}
+</label>
+<div ng-show="cfgStatus.type=='PENDING'" class="pull-right">
+    <span class="label label-warning label-as-badge small" i18n="thing.Pending"></span>
+</div>
 
 <div ng-if="config.options!=null && config.options.length!=0 && config.multiple==true">
     <!-- Multiple select dropdown -->

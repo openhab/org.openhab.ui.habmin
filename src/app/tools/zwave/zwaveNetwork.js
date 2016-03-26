@@ -14,7 +14,6 @@ angular.module('ZWaveNetwork', [
     'HABmin.iconModel',
     'HABmin.thingModel',
     'angular-growl',
-    'Binding.config',
     'ngVis',
     'ResizePanel'
 ])

@@ -234,13 +234,11 @@ angular.module('HABmin.itemModel', [
             return deferred.promise;
         };
 
-        this.linkItem = function (thing, channel, item) {
+        this.linkItem = function (channel, item) {
             var deferred = $q.defer();
             RestService.getService(svcNameLinks).then(
                 function (url) {
-                    // TODO: Fix once channelUID added to channel
-                    var channelUID = thing.UID + ":" + channel.id;
-                    $http.put(url + "/" + item.name + "/" + channelUID)
+                    $http.put(url + "/" + item.name + "/" + channel.uid)
                         .success(function (data) {
                             deferred.resolve(data);
                         })
@@ -255,13 +253,11 @@ angular.module('HABmin.itemModel', [
             return deferred.promise;
         };
 
-        this.unlinkItem = function (thing, channel, item) {
+        this.unlinkItem = function (channel, item) {
             var deferred = $q.defer();
             RestService.getService(svcNameLinks).then(
                 function (url) {
-                    // TODO: Fix once channelUID added to channel
-                    var channelUID = thing.UID + ":" + channel.id;
-                    $http.delete(url + "/" + item.name + "/" + channelUID)
+                    $http.delete(url + "/" + item.name + "/" + channel.uid)
                         .success(function (data) {
                             deferred.resolve(data);
                         })
