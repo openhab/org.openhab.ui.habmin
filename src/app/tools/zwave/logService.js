@@ -460,7 +460,7 @@ angular.module('ZWaveLogReader', [])
             },
             74: {
                 name: "AddNodeToNetwork",
-                processor: null
+                processor: processAddNode
             },
             75: {
                 name: "RemoveNodeFromNetwork",
@@ -1991,7 +1991,7 @@ angular.module('ZWaveLogReader', [])
                             setStatus(data, WARNING);
                             break;
                         default:
-                            data.content += "UNKNOWN (" + bytes(1) + ")";
+                            data.content += "UNKNOWN (" + bytes[1] + ")";
                             setStatus(data, WARNING);
                             break;
                     }
@@ -2073,6 +2073,78 @@ angular.module('ZWaveLogReader', [])
                     data.zwaveVersion += String.fromCharCode(HEX2DEC(bytes[i]));
                 }
                 addNodeInfo(data.node, "zwaveVersion", data.zwaveVersion);
+            }
+
+            return data;
+        }
+
+        function processAddNode(node, direction, type, bytes, len) {
+            var data = {result: SUCCESS};
+            if (direction == "TX") {
+                if (type == REQUEST) {
+                    data.content = "Add Node: ";
+                    switch (HEX2DEC(bytes[0]) & 0x7f) {
+                        case 1:
+                            data.content += "ADD_NODE_ANY";
+                            break;
+                        case 2:
+                            data.content += "ADD_NODE_CONTROLLER";
+                            break;
+                        case 3:
+                            data.content += "ADD_NODE_SLAVE";
+                            break;
+                        case 4:
+                            data.content += "ADD_NODE_EXISTING";
+                            break;
+                        case 5:
+                            data.content += "ADD_NODE_STOP";
+                            break;
+                        case 6:
+                            data.content += "ADD_NODE_STOP_FAILED";
+                            break;
+                        default:
+                            data.content += "UNKNOWN (" + bytes[0] + ")";
+                            setStatus(data, WARNING);
+                            break;
+                    }
+
+                    if(HEX2DEC(bytes[0]) & 0x80) {
+                        data.content += "(HI)";
+                    }
+                }
+            }
+            else {
+                if (type == REQUEST) {
+                    data.content = "Add Node: ";
+                    switch (HEX2DEC(bytes[1]) & 0x7f) {
+                        case 1:
+                            data.content += "ADD_NODE_STATUS_LEARN_READY";
+                            break;
+                        case 2:
+                            data.content += "ADD_NODE_STATUS_NODE_FOUND";
+                            break;
+                        case 3:
+                            data.content += "ADD_NODE_STATUS_ADDING_SLAVE (" + HEX2DEC(bytes[1]) + ")";
+                            break;
+                        case 4:
+                            data.content += "ADD_NODE_STATUS_ADDING_CONTROLLER (" + HEX2DEC(bytes[1]) + ")";
+                            break;
+                        case 5:
+                            data.content += "ADD_NODE_STATUS_PROTOCOL_DONE";
+                            break;
+                        case 6:
+                            data.content += "ADD_NODE_STATUS_DONE";
+                            break;
+                        case 7:
+                            data.content += "ADD_NODE_STATUS_FAILED";
+                            break;
+                        default:
+                            data.content += "UNKNOWN (" + bytes[0] + ")";
+                            setStatus(data, WARNING);
+                            break;
+                    }
+                }
+
             }
 
             return data;
