@@ -1,3 +1,36 @@
+<a name="0.1.2"></a>
+### 0.1.2 (2016-03-26)
+
+
+#### Bug Fixes
+
+* **Chart:**
+  * Fixed selection of persistence service ([bed232b7](git@github.com:cdjackson/HABmin2/commit/bed232b7dd770c569da2b8993518781ceb5fa281))
+* **Things:**
+  * Fix linking items to channels ([3a78e5f8](git@github.com:cdjackson/HABmin2/commit/3a78e5f81ac9da5ab26fda90d5d923623f798afc))
+  * Fix value sent when posting actions ([a27db7a8](git@github.com:cdjackson/HABmin2/commit/a27db7a8d3631a15407a8fa0f3bdeb3ff4eb4e33))
+  * Fixed display of advanced/non-advanced actions in tools menu ([77e93087](git@github.com:cdjackson/HABmin2/commit/77e930872a9e2af63f5bbcfbdc1cc7a70f98f310))
+  * Remove - sign from automatically generated item names ([ba84b361](git@github.com:cdjackson/HABmin2/commit/ba84b3617fa31eb8e166e39fa3626d57a1958bce))
+  * Add error message following failure to get thing data ([e1ab021b](git@github.com:cdjackson/HABmin2/commit/e1ab021b1e9de10652792a260a2c0efe6063886f))
+  * Fixed update of item names when channels updated ([a501f524](git@github.com:cdjackson/HABmin2/commit/a501f524083b7a6448b402f3d73f583b9ca7b25d))
+
+
+#### Features
+
+* **Things:**
+  * Added config pending badge ([b9ae4587](git@github.com:cdjackson/HABmin2/commit/b9ae4587fa4cb8ce72b7d1d590cc0fdc6b5783db))
+  * Modify actions to send the first option value ([6a8a05a7](git@github.com:cdjackson/HABmin2/commit/6a8a05a731e4c7b275a6e815e78962ee468e64fb))
+  * Updated editing and linking of items to channels ([494a922c](git@github.com:cdjackson/HABmin2/commit/494a922c04fb2c33b8667909c3f104999dfe67b2))
+  * Hide thing types that are not marked as listed ([03375c67](git@github.com:cdjackson/HABmin2/commit/03375c6745de9b4297f5b867946d109f83b0e578))
+  * Don't show channels tab if there are none ([ad1c5d40](git@github.com:cdjackson/HABmin2/commit/ad1c5d40a31111a5521aef20ad82c5fcc4758ed0))
+* **UI:**
+  * Update Italian translation ([39a24b6e](git@github.com:cdjackson/HABmin2/commit/39a24b6ee803f8d38f1e91e784682639899558ad))
+* **ZWave:**
+  * Added inclusion message display to log processor ([331f32d3](git@github.com:cdjackson/HABmin2/commit/331f32d3705fe9bfb230460b56b9ce9681b55efe))
+  * Add support for security class in log viewer ([8205aaca](git@github.com:cdjackson/HABmin2/commit/8205aaca8fdef23ed1eabc4931bb5b5ce8b67a44))
+
+
+
 <a name="0.1.1"></a>
 ### 0.1.1 (2016-03-06)
 
