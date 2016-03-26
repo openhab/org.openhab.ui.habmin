@@ -3,10 +3,6 @@ HABmin2
 
 HABmin version2 - for openHAB2.
 
-An **OpenHAB2** bundle is now available with initial support for charting and some OH2 features such
-as listing the newly discovered devices. I hope to keep a single source base that supports as many
-OH1 and OH2 features as possible while OH2 is being developped.
-
 The goal of HABmin2 is to provide a modern, professional and portable user interface for openHAB,
 providing both user and administrative functions (eg sitemaps for users, and configuration utilities
 to aid setup). It is written in such a way that it can be compiled as a native application for mobile
