@@ -16,9 +16,9 @@ angular.module('Config.ItemLink', [
 ])
     .service('itemLink',
     function ($modal, $rootScope, growl, locale, UserService, ItemModel, SmartHomeModel) {
-        this.edit = function (thing, channel, item, create) {
+        this.edit = function (channel) {
             var scope = $rootScope.$new();
-            scope.result = {item: ""};
+            scope.result = {name: ""};
             ItemModel.getList().then(function (list) {
                 scope.items = list
             });
@@ -30,11 +30,11 @@ angular.module('Config.ItemLink', [
              */
             var controller = function ($scope, $modalInstance) {
                 $scope.ok = function (result) {
-                    ItemModel.linkItem(thing, channel, scope.result.item).then(
+                    ItemModel.linkItem(channel, scope.result).then(
                         function () {
                             $modalInstance.close($scope.item);
                             growl.success(locale.getString("item.SaveOk",
-                                {name: $scope.item.label}));
+                                {name: $scope.item.name}));
                         },
                         function (response) {
                             var msg;

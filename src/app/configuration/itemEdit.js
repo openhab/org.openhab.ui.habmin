@@ -17,7 +17,7 @@ angular.module('Config.ItemEdit', [
 ])
     .service('itemEdit',
     function ($modal, $rootScope, growl, locale, UserService, ItemModel, SmartHomeModel) {
-        this.edit = function (thing, channel, item, create) {
+        this.edit = function (channel, item, create) {
             var scope = $rootScope.$new();
             scope.newItem = create;
             scope.item = angular.copy(item);
@@ -55,7 +55,7 @@ angular.module('Config.ItemEdit', [
                                 return;
                             }
 
-                            ItemModel.linkItem(thing, channel, newItem).then(
+                            ItemModel.linkItem(channel, newItem).then(
                                 function () {
                                     $modalInstance.close($scope.item);
                                     growl.success(locale.getString("item.SaveOk",

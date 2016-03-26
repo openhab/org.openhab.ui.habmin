@@ -9,11 +9,11 @@
 
             <div>
                 <ui-select id="inputItem"
-                           ng-model="result.item"
+                           ng-model="result.name"
                            theme="bootstrap"
                            search-enabled="true"
                         >
-                    <ui-select-match i18n-attr="{placeholder: 'item.SelectCategory'}">
+                    <ui-select-match i18n-attr="{placeholder: 'item.SelectName'}">
                         <habmin-icon class="fa fa-fw" category="{{$select.selected.category}}"></habmin-icon>
                         <span>{{$select.selected.name}}</span>
                     </ui-select-match>
