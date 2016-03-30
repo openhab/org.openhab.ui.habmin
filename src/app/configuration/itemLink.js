@@ -33,8 +33,7 @@ angular.module('Config.ItemLink', [
                     ItemModel.linkItem(channel, scope.result).then(
                         function () {
                             $modalInstance.close($scope.item);
-                            growl.success(locale.getString("item.SaveOk",
-                                {name: $scope.item.name}));
+                            growl.success(locale.getString("item.LinkOk"));
                         },
                         function (response) {
                             var msg;

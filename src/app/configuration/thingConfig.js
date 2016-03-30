@@ -357,7 +357,7 @@ angular.module('Config.Things', [
 
                     $scope.selectedThingType = $scope.getThingType(thing);
                     if ($scope.selectedThingType == null) {
-                        console.error("selectedThingType is null!");
+                        console.log("selectedThingType is null!");
                         return;
                     }
 
@@ -367,7 +367,7 @@ angular.module('Config.Things', [
                     // We'll convert them back later!
                     angular.forEach($scope.selectedThingConfig.parameters, function (parameter) {
                         // Handle config status
-                        if($scope.selectedThingStatus[parameter.name] == null) {
+                        if ($scope.selectedThingStatus[parameter.name] == null) {
                             $scope.selectedThingStatus[parameter.name] = {type: ""};
                         }
 
@@ -474,6 +474,17 @@ angular.module('Config.Things', [
             itemLink.edit(channel);
         };
 
+        $scope.unlinkItem = function (item, channel) {
+            ItemModel.unlinkItem(channel, item).then(
+                function () {
+                    growl.success(locale.getString("thing.UnlinkItemOk"));
+                },
+                function () {
+                    growl.warning(locale.getString("thing.UnlinkItemFailed"));
+                }
+            );
+        };
+
         $scope.addItem = function (channel) {
             var newItem = {
                 label: channel.channelType.label,
@@ -481,10 +492,7 @@ angular.module('Config.Things', [
                 category: channel.channelType.category
             };
 
-            // TODO: Fix once channelUID added to channel
-            var name = $scope.selectedThing.UID + "_" + channel.id;
-            name = name.replace(/:/g, "_");
-            name = name.replace(/-/g, "_");
+            var name = channel.id.replace(/:/g, "_");
             if (ItemModel.getItem(name) == null) {
                 newItem.name = name;
             }
@@ -583,7 +591,8 @@ angular.module('Config.Things', [
         };
 
         $scope.countActiveChannels = function () {
-            if ($scope.selectedThing == null || $scope.selectedThing.channels == null) {
+            if ($scope.selectedThing == null || $scope.selectedThing.channels == null ||
+                $scope.selectedThingType == null) {
                 return 0;
             }
             var linked = 0;

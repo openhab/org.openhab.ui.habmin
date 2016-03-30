@@ -40,6 +40,8 @@
   "WizardConfigure": "Configure",
   "DeleteItemOk": "Item successfully deleted from channel",
   "DeleteItemFailed": "Error deleting item from channel",
+  "UnlinkItemOk": "Item successfully unlinked from channel",
+  "UnlinkItemFailed": "Error unlinking item from channel",
   "UID": "UID (Unique Identifier)",
   "SelectUID": "Enter unique identifier...",
   "SelectLabel": "Enter label...",

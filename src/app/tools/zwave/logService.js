@@ -921,7 +921,8 @@ angular.module('ZWaveLogReader', [])
                     193: {
                         name: "ENCAP_NONCE_GET"
                     }
-                }
+                },
+                processor: processSecurity
             },
             156: {
                 name: "SENSOR_ALARM",
@@ -1744,6 +1745,23 @@ angular.module('ZWaveLogReader', [])
                 case 20:
                     var version = HEX2DEC(bytes[3]);
                     data.content += " (" + commandClasses[cmdPrm].name + "=V" + version + ")";
+                    break;
+            }
+
+            return data;
+        }
+
+        function processSecurity(node, endpoint, bytes) {
+            var data = {result: SUCCESS};
+
+            var cmdCls = HEX2DEC(bytes[0]);
+            var cmdCmd = HEX2DEC(bytes[1]);
+            var cmdPrm = HEX2DEC(bytes[2]);
+
+            data.content = getCommandClassName(cmdCls, cmdCmd);
+            switch (cmdCmd) {
+                case 5: // SECURITY_SCHEME_REPORT
+                    data.content += " (Scheme " + cmdPrm + ")";
                     break;
             }
 

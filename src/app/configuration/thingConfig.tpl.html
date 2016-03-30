@@ -488,6 +488,14 @@
                                         <tr ng-repeat="itemName in channel.linkedItems"
                                             ng-init="item=getItem(itemName)">
                                             <td class="span-hover">
+                                                <button type="button" class="btn btn-primary btn-xs"
+                                                        ng-click="editItem(item, channel)"
+                                                        tooltip-placement="top" tooltip="Edit the item"
+                                                        tooltip-popup-delay="1500"
+                                                        tooltip-enable="true" tooltip-trigger tooltip-animation="false"
+                                                        tooltip-append-to-body="true">
+                                                    <span class="fa fa-edit"></span>
+                                                </button>
                                                 <habmin-icon class="fa fa-fw"
                                                              itemtype="{{item.type}}"></habmin-icon>
                                                 {{item.label}}
@@ -504,15 +512,15 @@
                                             </td>
                                             <td>
                                                 <div class="pull-right">
-                                                    <button type="button" class="btn btn-primary btn-xs"
-                                                            ng-click="editItem(item, channel)"
-                                                            tooltip-placement="top" tooltip="Edit the item"
+                                                    <button type="button" class="btn btn-warning btn-xs"
+                                                            ng-click="unlinkItem(item, channel)"
+                                                            tooltip-placement="top" tooltip="Unlink the item"
                                                             tooltip-popup-delay="1500"
                                                             tooltip-enable="true" tooltip-trigger tooltip-animation="false"
                                                             tooltip-append-to-body="true">
-                                                        <span class="fa fa-edit"></span>
+                                                        <span class="fa fa-unlink"></span>
                                                     </button>
-                                                    <button type="button" class="btn btn-warning btn-xs"
+                                                    <button type="button" class="btn btn-danger btn-xs"
                                                             ng-click="deleteItem(item, channel)"
                                                             tooltip-placement="top" tooltip="Delete the item"
                                                             tooltip-popup-delay="1500"

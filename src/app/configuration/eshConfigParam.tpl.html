@@ -44,23 +44,17 @@
     </ui-select>
 </div>
 
-<div ng-if="config.options!=null && config.options.length!=0 && config.multiple!=true && !config.limitToOptions==true">
+<div ng-if="config.options!=null && config.options.length!=0 && config.multiple!=true && config.limitToOptions==false">
     <!-- Single select dropdown, but allowing other entries -->
-    <ui-select id="CONFIGLABEL-{{cfgType}}-{{config.name}}"
-               ng-model="cfgModel"
-               theme="bootstrap"
-               name="{{config.name}}"
-               search-enabled="false"
-               ng-disabled="config.readOnly"
-               on-keypress="onComboKeypress"
+
+    <!-- since this doesn't work - use an input box -->
+    <input config-parameter="{{config}}"
+           class="form-control"
+           name="{{config.name}}"
+           ng-dirty ng-required="{{config.required}}"
+           id="CONFIGLABEL-{{cfgType}}-{{config.name}}"
+           ng-model="cfgModel"
             >
-        <ui-select-match>
-            {{$select.selected.label}}
-        </ui-select-match>
-        <ui-select-choices repeat="option.value as option in config.options">
-            <span>{{option.label}}</span>
-        </ui-select-choices>
-    </ui-select>
 </div>
 
 <div ng-if="config.options==null || config.options.length==0">
