@@ -1,0 +1,14 @@
+{
+  "Source": "Quelle",
+  "Rule": "Regel",
+  "NoRules": "Keine Regeln verfügbar",
+  "NewRuleTitle": "Neue Regel",
+  "Value": "Wert",
+  "NoDevices": "Keine Geräte gefunden",
+  "ErrorLoadingRule": "Fehler beim laden der Regel {1}:{2}.",
+  "ErrorLoadingRuleList": "Fehler beim laden der Regel-Liste",
+  "DeleteRuleTitle": "Regel löschen",
+  "UnsavedChangesTitle": "WARNUNG: Nicht gesicherte Änderungen",
+  "DeleteRuleCheck": "Sind Sie sich sicher die Regel '{{selectedRule.name}}' zu löschen?",
+  "UnsavedChangesCheck": "Es sind nicht gespeicherte Änderungen in der Regel  '{rulename}'. Sind Sie sich sicher fortzufahren - wenn Sie Ja wählen werden die Änderungen nicht gespeichert!"
+}

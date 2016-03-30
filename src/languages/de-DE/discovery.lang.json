@@ -1,0 +1,13 @@
+{
+  "StartFail": "Suche für Binding {name} fehlgeschlagen",
+  "IgnoreFail": "Unterdrücken für {name} fehlgeschlagen",
+  "StartOk": "Suche für Binding {name} gestartet",
+  "DeleteConfirmTitle": "Thing aus der Eingangsbox gelöscht.",
+  "IgnoreConfirmMsg": "Sind Sie sich sicher, dass Sie das Thing in der Eingangsbox ignorieren wollen?",
+  "DeleteConfirmMsg": "Sind Sie sich sicher, dass Sie das Thing aus der Eingangsbox löschen wollen?",
+  "IgnoreConfirmTitle": "Thing in der Eingangsbox unterdrücken",
+  "ClearConfirmTitle": "Eingangsbox gelöscht",
+  "NewThing": "Neues Thing gefunden",
+  "ClearFail": "Löschen der Eingangsbox für ein oder mehrere Elemente fehlgeschlagen.",
+  "ClearConfirmMsg": "Sind Sie sich sicher, dass Sie die Eingangsbox löschen möchten. Alle Things werden entfernt und müssen erneut gesucht werden."
+}
