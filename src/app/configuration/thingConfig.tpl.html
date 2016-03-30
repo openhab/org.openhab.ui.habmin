@@ -513,19 +513,23 @@
                                             <td>
                                                 <div class="pull-right">
                                                     <button type="button" class="btn btn-warning btn-xs"
-                                                            ng-click="unlinkItem(item, channel)"
+                                                            ng-confirm-click="unlinkItem(item, channel)"
                                                             tooltip-placement="top" tooltip="Unlink the item"
                                                             tooltip-popup-delay="1500"
                                                             tooltip-enable="true" tooltip-trigger tooltip-animation="false"
-                                                            tooltip-append-to-body="true">
+                                                            tooltip-append-to-body="true"
+                                                            ng-confirm-icon="warning"
+                                                            i18n-attr="{'ngConfirmMessage': 'thing.ChannelUnlinkConfirm','ngConfirmTitle': 'thing.ChannelUnlinkTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes' }">
                                                         <span class="fa fa-unlink"></span>
                                                     </button>
                                                     <button type="button" class="btn btn-danger btn-xs"
-                                                            ng-click="deleteItem(item, channel)"
+                                                            ng-confirm-click="deleteItem(item, channel)"
                                                             tooltip-placement="top" tooltip="Delete the item"
                                                             tooltip-popup-delay="1500"
                                                             tooltip-enable="true" tooltip-trigger tooltip-animation="false"
-                                                            tooltip-append-to-body="true">
+                                                            tooltip-append-to-body="true"
+                                                            ng-confirm-icon="warning"
+                                                            i18n-attr="{'ngConfirmMessage': 'thing.ChannelDeleteConfirm','ngConfirmTitle': 'thing.ChannelDeleteTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes' }">
                                                         <span class="fa fa-trash"></span>
                                                     </button>
                                                 </div>

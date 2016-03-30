@@ -45,5 +45,9 @@
   "UID": "UID (Unique Identifier)",
   "SelectUID": "Enter unique identifier...",
   "SelectLabel": "Enter label...",
-  "Pending": "pending..."
+  "Pending": "pending...",
+  "ChannelUnlinkTitle": "Unlink Item from Channel",
+  "ChannelUnlinkConfirm": "Are you sure you wish to unlink the item from the channel?<br>This will not delete the item, and you will be able to relink it later if you wish.",
+  "ChannelDeleteTitle": "Delete Item from Channel",
+  "ChannelDeleteConfirm": "Are you sure you wish to delete the item and unlink it from the channel?<br>This will completely delete the item!"
 }
