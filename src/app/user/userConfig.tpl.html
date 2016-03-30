@@ -55,9 +55,25 @@
                             </ui-select>
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label for="inputPersistence" class="col-sm-3 control-label" i18n="user.ChartPersistence"></label>
+
+                        <div class="col-sm-9">
+                            <ui-select id="inputPersistence"
+                                       ng-model="model.currentPersistence"
+                                       theme="bootstrap"
+                                       search-enabled="false">
+                                <ui-select-match i18n-attr="{placeholder: 'user.ChartPersistenceSelect'}">
+                                    <span ng-bind-html="$select.selected.name"></span>
+                                </ui-select-match>
+                                <ui-select-choices repeat="service in services">
+                                    <div ng-bind-html="service.name"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
                 </div>
-
-
             </form>
         </div>
 

@@ -17,6 +17,7 @@ angular.module('HABmin.chart', [
     'HABmin.itemModel',
     'HABmin.chartModel',
     'HABmin.chartSave',
+    'HABmin.userModel',
     'HABmin.iconModel',
     'ngVis',
     'ngConfirmClick',
@@ -75,7 +76,7 @@ angular.module('HABmin.chart', [
     })
 
     .controller('ChartCtrl',
-    function ($scope, $q, $stateParams, ChartService, locale, ChartModel, growl, VisDataSet, $interval, $timeout) {
+    function ($scope, $q, $stateParams, ChartService, UserService, locale, ChartModel, growl, VisDataSet, $interval, $timeout) {
         var itemsLoaded = 0;
         var itemsLoading = 0;
         var newChart;
@@ -300,9 +301,8 @@ angular.module('HABmin.chart', [
     })
 
     .controller('ChartCtrlMenu',
-    function ($scope, locale, growl, ChartModel, ChartService, PersistenceServiceModel, ItemModel, ChartSave) {
+    function ($scope, locale, growl, ChartModel, ChartService, UserService, PersistenceServiceModel, ItemModel, ChartSave) {
         $scope.items = [];
-//        $scope.services = ChartService.services;
 
         $scope.itemsTotal = -1;
         $scope.itemsSelected = 0;
@@ -311,12 +311,22 @@ angular.module('HABmin.chart', [
         $scope.tooltipSave = locale.getString('chart.SaveChart');
         $scope.tooltipDelete = locale.getString('chart.DeleteChart');
 
+        if(ChartService.service == null || ChartService.service.length == 0) {
+            ChartService.service = UserService.getPersistence();
+        }
+
         // Load the list of persistence services
         PersistenceServiceModel.getList().then(
             function (data) {
                 $scope.services = data;
                 if ($scope.services.length > 0) {
                     $scope.services[0].selected = true;
+
+                    // Use the first service as the default if there isn't a default set
+                    if(ChartService.service != null) {
+                        return;
+                    }
+
                     ChartService.service = $scope.services[0].name;
                 }
             },

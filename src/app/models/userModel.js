@@ -51,7 +51,8 @@ angular.module('HABmin.userModel', [
         var userConfig = {
             useCache: false,
             theme: "slate",
-            language: "en-GB"
+            language: "en-GB",
+            persistence: ""
         };
 
         // For Cordova, get the server from local storage
@@ -74,6 +75,11 @@ angular.module('HABmin.userModel', [
             userConfig.language = localStorage.getItem('Language');
             locale.setLocale(userConfig.language);
             moment.locale(userConfig.language);
+        }
+
+        // If we've previously saved the persistence service, restore the user selection
+        if (localStorage.getItem('Persistence') != null) {
+            userConfig.persistence = localStorage.getItem('Persistence');
         }
 
         function changeUser(user) {
@@ -125,7 +131,7 @@ angular.module('HABmin.userModel', [
             },
 
             setLanguage: function (language) {
-                // Save the theme to local storage
+                // Save the language to local storage
                 localStorage.setItem('Language', language);
 
                 userConfig.language = language;
@@ -133,6 +139,17 @@ angular.module('HABmin.userModel', [
 
             getLanguage: function () {
                 return userConfig.language;
+            },
+
+            setPersistence: function (persistence) {
+                // Save the persistence service to local storage
+                localStorage.setItem('Persistence', persistence);
+
+                userConfig.persistence = persistence;
+            },
+
+            getPersistence: function () {
+                return userConfig.persistence;
             },
 
             login: function () {

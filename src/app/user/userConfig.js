@@ -12,6 +12,7 @@ angular.module('User.Config', [
     'ui.bootstrap',
     'ngLocalize',
     'HABmin.userModel',
+    'HABmin.persistenceModel',
     'angular-growl',
     'ResizePanel',
     'showOverflow',
@@ -41,10 +42,12 @@ angular.module('User.Config', [
     })
 
     .controller('UserConfigCtrl',
-    function ($scope, $q, locale, growl, $timeout, $window, $http, $interval, UserService, localeSupported) {
+    function ($scope, $q, locale, growl, $timeout, $window, $http, $interval, UserService, PersistenceServiceModel, localeSupported) {
         $scope.panelDisplayed = 'GENERAL';
 
-        $scope.model = {currentLanguage: UserService.getLanguage()};
+        $scope.model = {currentLanguage: UserService.getLanguage(),
+            currentPersistence: UserService.getPersistence()
+        };
         $scope.languages = [];
         var languageOk = false;
         angular.forEach(localeSupported, function (loc, key) {
@@ -64,12 +67,28 @@ angular.module('User.Config', [
             $scope.model.currentLanguage = "en-GB";
         }
 
+        // Load the list of persistence services
+        PersistenceServiceModel.getList().then(
+            function (data) {
+                $scope.services = data;
+                if ($scope.services.length > 0) {
+                    $scope.services[0].selected = true;
+                    ChartService.service = $scope.services[0].name;
+                }
+            },
+            function (reason) {
+                // handle failure
+                growl.warning(locale.getString('chart.ErrorGettingServices'));
+            }
+        );
+
         $scope.setPanelDisplayed = function (panel) {
             $scope.panelDisplayed = panel;
         };
 
         $scope.saveConfig = function () {
             UserService.setLanguage($scope.model.currentLanguage);
+            UserService.setPersistence($scope.model.currentPersistence.name);
             $scope.userConfigForm.$setPristine();
         };
 

@@ -2,6 +2,8 @@
   "ChartPrefTitle": "Chart Settings",
   "ChartPeriod": "Chart Period",
   "ChartLegend": "Show Legend",
+  "ChartPersistence": "Default Persistence Service",
+  "ChartPersistenceSelect": "Select default persistence...",
   "GeneralPrefTitle": "General Settings",
   "Name": "Name",
   "Theme": "Theme",
