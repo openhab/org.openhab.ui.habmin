@@ -28,157 +28,155 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.io.IOUtils;
+import org.eclipse.smarthome.config.core.ConfigConstants;
 import org.eclipse.smarthome.io.rest.RESTResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 /**
  * <p>
  * This class acts as a REST resource for history data and provides different
  * methods to interact with the rule system
- * 
+ *
  * <p>
  * The typical content types are plain text for status values and XML or JSON(P)
  * for more complex data structures
  * </p>
- * 
+ *
  * <p>
  * This resource is registered with the Jersey servlet.
  * </p>
- * 
+ *
  * @author Chris Jackson
- * @since 1.4.0
  */
 @Path(RuleResource.PATH_RULES)
 public class RuleResource implements RESTResource {
 
-	private static final Logger logger = LoggerFactory.getLogger(RuleResource.class);
+    private static final Logger logger = LoggerFactory.getLogger(RuleResource.class);
 
-	/** The URI path to this resource */
-	public static final String PATH_RULES = "habmin/rules";
+    /** The URI path to this resource */
+    public static final String PATH_RULES = "habmin/rules";
 
-	protected static final String RULE_FOLDER = "conf/rules/";
-	protected static final String RULE_FILEEXT = ".rules";
+    protected static final String RULE_FOLDER = "/rules/";
+    protected static final String RULE_FILEEXT = ".rules";
 
-	@Context
-	UriInfo uriInfo;
+    @Context
+    UriInfo uriInfo;
 
-	@GET
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response httpGetModelList(@Context HttpHeaders headers) {
-		logger.debug("Received HTTP GET request at '{}'", uriInfo.getPath());
+    @GET
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response httpGetModelList(@Context HttpHeaders headers) {
+        logger.debug("Received HTTP GET request at '{}'", uriInfo.getPath());
 
-		Object responseObject = getRuleModelList();
-		return Response.ok(responseObject).build();
-	}
+        Object responseObject = getRuleModelList();
+        return Response.ok(responseObject).build();
+    }
 
-	@GET
-	@Path("/{modelname: .+}")
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response httpGetModelSource(@Context HttpHeaders headers,
-			@PathParam("modelname") String modelName) {
-		logger.debug("Received HTTP GET request at '{}'", uriInfo.getPath());
+    @GET
+    @Path("/{modelname: .+}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response httpGetModelSource(@Context HttpHeaders headers, @PathParam("modelname") String modelName) {
+        logger.debug("Received HTTP GET request at '{}'", uriInfo.getPath());
 
-		Object responseObject = getRuleModelSource(modelName);
-		return Response.ok(responseObject).build();
-	}
+        Object responseObject = getRuleModelSource(modelName);
+        return Response.ok(responseObject).build();
+    }
 
-	@PUT
-	@Path("/{modelname: .+}")
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response httpPutModelSource(@Context HttpHeaders headers,
-			@PathParam("modelname") String modelName,
-			RuleSourceBean rule) {
-		logger.debug("Received HTTP PUT request at '{}'", uriInfo.getPath());
+    @PUT
+    @Path("/{modelname: .+}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response httpPutModelSource(@Context HttpHeaders headers, @PathParam("modelname") String modelName,
+            RuleSourceBean rule) {
+        logger.debug("Received HTTP PUT request at '{}'", uriInfo.getPath());
 
-		Object responseObject = putRuleModelSource(modelName, rule);
-		return Response.ok(responseObject).build();
-	}
+        Object responseObject = putRuleModelSource(modelName, rule);
+        return Response.ok(responseObject).build();
+    }
 
-	private RuleSourceListBean getRuleModelList() {
-		RuleSourceListBean beans = new RuleSourceListBean();
+    private RuleSourceListBean getRuleModelList() {
+        RuleSourceListBean beans = new RuleSourceListBean();
 
-		File[] files = new File(RULE_FOLDER).listFiles();
-		if(files == null) {
-			return beans;
-		}
-		
-		for (File file : files) {
-			String modelName = file.getName();
-			
-			if(!modelName.endsWith(RULE_FILEEXT)) {
-				continue;
-			}
-			
-			RuleSourceBean bean = new RuleSourceBean();
-			bean.name = modelName.substring(0, modelName.length() - RULE_FILEEXT.length());
+        File[] files = new File(ConfigConstants.getConfigFolder() + RULE_FOLDER).listFiles();
+        if (files == null) {
+            return beans;
+        }
 
-			beans.rules.add(bean);
-		}
+        for (File file : files) {
+            String modelName = file.getName();
 
-		return beans;
-	}
+            if (!modelName.endsWith(RULE_FILEEXT)) {
+                continue;
+            }
 
-	private RuleSourceBean putRuleModelSource(String modelName, RuleSourceBean rule) {
-		String orgName = RULE_FOLDER + modelName + RULE_FILEEXT;
-		String newName = RULE_FOLDER + modelName + RULE_FILEEXT + ".new";
-		String bakName = RULE_FOLDER + modelName + RULE_FILEEXT + ".bak";
+            RuleSourceBean bean = new RuleSourceBean();
+            bean.name = modelName.substring(0, modelName.length() - RULE_FILEEXT.length());
+
+            beans.rules.add(bean);
+        }
+
+        return beans;
+    }
+
+    private RuleSourceBean putRuleModelSource(String modelName, RuleSourceBean rule) {
+        String orgName = ConfigConstants.getConfigFolder() + RULE_FOLDER + modelName + RULE_FILEEXT;
+        String newName = ConfigConstants.getConfigFolder() + RULE_FOLDER + modelName + RULE_FILEEXT + ".new";
+        String bakName = ConfigConstants.getConfigFolder() + RULE_FOLDER + modelName + RULE_FILEEXT + ".bak";
 
         try {
-          BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(newName),"UTF-8"));
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(newName), "UTF-8"));
 
-          out.write(rule.source);
-          out.close();
-        } catch ( IOException e ) {
-        	// TODO: update
-           e.printStackTrace();
+            out.write(rule.source);
+            out.close();
+        } catch (IOException e) {
+            // TODO: update
+            e.printStackTrace();
         }
-		
-		// Rename the files.
-		File bakFile = new File(bakName);
-		File orgFile = new File(orgName);
-		File newFile = new File(newName);
 
-		// Delete any existing .bak file
-		if (bakFile.exists()) {
-			bakFile.delete();
-		}
+        // Rename the files.
+        File bakFile = new File(bakName);
+        File orgFile = new File(orgName);
+        File newFile = new File(newName);
 
-		// Rename the existing item file to backup
-		orgFile.renameTo(bakFile);
+        // Delete any existing .bak file
+        if (bakFile.exists()) {
+            bakFile.delete();
+        }
 
-		// Rename the new file to the item file
-		newFile.renameTo(orgFile);
+        // Rename the existing item file to backup
+        orgFile.renameTo(bakFile);
 
-		return getRuleModelSource(modelName);
-	}
+        // Rename the new file to the item file
+        newFile.renameTo(orgFile);
 
-	private RuleSourceBean getRuleModelSource(String modelName) {
-		RuleSourceBean rule = new RuleSourceBean();
-		rule.name = modelName;
+        return getRuleModelSource(modelName);
+    }
 
-		FileInputStream inputStream = null;
-		try {
-			inputStream = new FileInputStream(RULE_FOLDER + modelName + RULE_FILEEXT);
-			rule.source = IOUtils.toString(inputStream);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		if (inputStream != null) {
-			try {
-				inputStream.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+    private RuleSourceBean getRuleModelSource(String modelName) {
+        RuleSourceBean rule = new RuleSourceBean();
+        rule.name = modelName;
 
-		return rule;
-	}
+        FileInputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(
+                    ConfigConstants.getConfigFolder() + RULE_FOLDER + modelName + RULE_FILEEXT);
+            rule.source = IOUtils.toString(inputStream);
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        if (inputStream != null) {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
+        return rule;
+    }
 }
