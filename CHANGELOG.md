@@ -1,3 +1,23 @@
+<a name="0.1.3"></a>
+### 0.1.3 (2016-03-31)
+
+
+#### Bug Fixes
+
+* **Rules:**
+  * Update folder used for saving rules ([e0930658](git@github.com:cdjackson/HABmin2/commit/e093065800ce31acdd419832568606bf2cdb9b21))
+
+
+#### Features
+
+* **Things:**
+  * Add confirmation dialogs when deleting items ([b9aa20d3](git@github.com:cdjackson/HABmin2/commit/b9aa20d349f5bf69f686bf6993808ced90bfaa72))
+  * Add unlink button in channels list ([56cb2765](git@github.com:cdjackson/HABmin2/commit/56cb276581cb28137a964112d0b9c21965bde7ec))
+* **UI:**
+  * Updated German translations ([be34d1ab](git@github.com:cdjackson/HABmin2/commit/be34d1abdb5e506f2ec36cdae74a9ca183ec27c0))
+  * Provide user selection for default persistence ([8290cbdb](git@github.com:cdjackson/HABmin2/commit/8290cbdb7d5c0691b210e232ed7181866f649465))
+
+
 <a name="0.1.2"></a>
 ### 0.1.2 (2016-03-26)
 
