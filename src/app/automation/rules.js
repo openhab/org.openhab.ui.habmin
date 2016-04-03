@@ -66,6 +66,9 @@ angular.module('HABmin.rules', [
             mode: 'openhabrules',
             onLoad: function (editor) {
                 $scope.aceEditor = editor;
+            },
+            onChange: function(e) {
+
             }
         };
 
@@ -146,6 +149,7 @@ angular.module('HABmin.rules', [
 
         $scope.selectRule = function (rule) {
             $scope.editSource = false;
+            $scope.selectedRule = rule;
             $scope.selectedRule = rule;
 
             handleDirtyNotification();

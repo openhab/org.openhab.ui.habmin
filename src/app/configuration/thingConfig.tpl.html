@@ -113,24 +113,7 @@
                 </a>
             </div>
 
-            <!-- NEW THING LIST -->
-            <div ng-if="insertMode==true" ng-repeat="thing in newThings">
-                <a role="presentation" ng-class="{'list-group-item':true, 'active': thing.UID==selectedThing.UID}"
-                   ng-click="selectNewThing(thing)">
-                    <table style="background-color: transparent">
-                        <tr>
-                            <td class="text-large" rowspan="2">
-                            </td>
-                            <td>
-                                <span>{{thing.label}}&nbsp;</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-muted small">&nbsp;{{thing.description}}</td>
-                        </tr>
-                    </table>
-                </a>
-            </div>
+
 
             <!-- Cover options for loading, and no devices -->
             <div ng-if="thingCnt==-1" class="list-group-item text-center">
@@ -211,31 +194,45 @@
         <!-- Body -->
         <div class="list-group habmin-list" resize-panel>
             <form name="thingConfigForm" novalidate ng-show="formLoaded" class="ng-hide-add" style="height:100%">
-                <!-- DESCRIPTION -->
+                <!-- OVERVIEW -->
                 <div>
                     <a role="presentation"
-                       ng-class="{'list-group-item config-panel-title':true, 'active': panelDisplayed=='DESCRIPTION'}"
-                       ng-click="setPanelDisplayed('DESCRIPTION')">
+                       ng-class="{'list-group-item config-panel-title':true, 'active': panelDisplayed=='OVERVIEW'}"
+                       ng-click="setPanelDisplayed('OVERVIEW')">
                         <span class="fa fa-fw fa-book"></span>
                         <span i18n="thing.Description"></span>
                     </a>
                 </div>
-                <div collapse="panelDisplayed!='DESCRIPTION'" class="panel-form">
+                <div collapse="panelDisplayed!='OVERVIEW'" class="panel-form">
+                    <div i18n="thing.Label"></div>
                     <div class="well well-sm" ng-bind-html="selectedThingType.label">
                     </div>
+
+                    <div i18n="thing.Description"></div>
                     <div class="well well-sm" ng-bind-html="selectedThingType.description">
-                        ng-bind-html="selectedThingType.description">
                     </div>
 
-                    <div ng-repeat="channel in selectedThingType.channels">
+                    <div ng-repeat="channel in selectedThing.channels">
                         <div>{{channel.label}}</div>
 
                         <div class="well well-sm">
-                            <div ng-repeat="item in getChannelItems(channel)">
-                                <habmin-icon class="fa fa-fw"
-                                             itemtype="{{getItem(item).type}}"></habmin-icon>
-                                {{getItem(item).name}}
-                                {{getItem(item).label}}
+                            <div ng-show="getChannelItems(channel).length" ng-repeat="item in getChannelItems(channel)">
+                                <div style="display:inline-block;">
+                                    <div>
+                                        <habmin-icon class="fa fa-fw"
+                                                     itemtype="{{getItem(item).type}}"></habmin-icon>
+                                        {{getItem(item).label}}
+                                    </div>
+                                    <div class="small">{{getItem(item).name}}</div>
+                                </div>
+                                <div class="pull-right">
+                                    <ng-include bs-modifiable="false"
+                                            ng-init="cfgType='CFG';"
+                                            src="'configuration/itemWidget.tpl.html'">
+                                    </ng-include>
+                                </div>
+                            </div>
+                            <div ng-hide="getChannelItems(channel).length" i18n="common.none">
                             </div>
                         </div>
                     </div>
@@ -351,8 +348,9 @@
                         <div ng-repeat="config in selectedThingConfig.parameters">
                             <div class="form-group"
                                  ng-if="configGroupFilter(config, group.name) && (!config.advanced||showAdvancedSettings)">
-                                <ng-include ng-init="cfgType='CFG';cfgModel=selectedThing.configuration[config.name];cfgStatus=selectedThingStatus[config.name]"
-                                            src="'configuration/eshConfigParam.tpl.html'"></ng-include>
+                                <ng-include
+                                        ng-init="cfgType='CFG';cfgModel=selectedThing.configuration[config.name];cfgStatus=selectedThingStatus[config.name]"
+                                        src="'configuration/eshConfigParam.tpl.html'"></ng-include>
                             </div>
                         </div>
                     </div>
@@ -385,7 +383,8 @@
                     <a role="presentation" ng-class="{'list-group-item':true, 'active': panelDisplayed=='CHANNELS'}"
                        ng-click="setPanelDisplayed('CHANNELS')">
                         <span class="fa fa-fw fa-navicon"></span>
-                        <span i18n="thing.Channels" data-active="{{countActiveChannels()}}" data-total="{{selectedThing.channels.length}}"></span>
+                        <span i18n="thing.Channels" data-active="{{countActiveChannels()}}"
+                              data-total="{{selectedThing.channels.length}}"></span>
                     </a>
                 </div>
                 <div collapse="panelDisplayed!='CHANNELS'"
@@ -448,7 +447,8 @@
                                         </button>
                                         <button type="button" class="btn btn-primary btn-xs"
                                                 ng-click="addItem(channel)"
-                                                tooltip-placement="top" tooltip="Create a new item and link it to the channel"
+                                                tooltip-placement="top"
+                                                tooltip="Create a new item and link it to the channel"
                                                 tooltip-popup-delay="1500"
                                                 tooltip-enable="true" tooltip-trigger tooltip-animation="false"
                                                 tooltip-append-to-body="true">
@@ -467,17 +467,21 @@
                                                 <div class="pull-right">
                                                     <button type="button" class="btn btn-primary btn-xs"
                                                             ng-click="linkItem(channel)"
-                                                            tooltip-placement="top" tooltip="Link channel to an existing item"
+                                                            tooltip-placement="top"
+                                                            tooltip="Link channel to an existing item"
                                                             tooltip-popup-delay="1500"
-                                                            tooltip-enable="true" tooltip-trigger tooltip-animation="false"
+                                                            tooltip-enable="true" tooltip-trigger
+                                                            tooltip-animation="false"
                                                             tooltip-append-to-body="true">
                                                         <span class="fa fa-link"></span>
                                                     </button>
                                                     <button type="button" class="btn btn-primary btn-xs"
                                                             ng-click="addItem(channel)"
-                                                            tooltip-placement="top" tooltip="Create a new item and link it to the channel"
+                                                            tooltip-placement="top"
+                                                            tooltip="Create a new item and link it to the channel"
                                                             tooltip-popup-delay="1500"
-                                                            tooltip-enable="true" tooltip-trigger tooltip-animation="false"
+                                                            tooltip-enable="true" tooltip-trigger
+                                                            tooltip-animation="false"
                                                             tooltip-append-to-body="true">
                                                         <span class="fa fa-plus-circle"></span>
                                                     </button>
@@ -516,7 +520,8 @@
                                                             ng-confirm-click="unlinkItem(item, channel)"
                                                             tooltip-placement="top" tooltip="Unlink the item"
                                                             tooltip-popup-delay="1500"
-                                                            tooltip-enable="true" tooltip-trigger tooltip-animation="false"
+                                                            tooltip-enable="true" tooltip-trigger
+                                                            tooltip-animation="false"
                                                             tooltip-append-to-body="true"
                                                             ng-confirm-icon="warning"
                                                             i18n-attr="{'ngConfirmMessage': 'thing.ChannelUnlinkConfirm','ngConfirmTitle': 'thing.ChannelUnlinkTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes' }">
@@ -526,7 +531,8 @@
                                                             ng-confirm-click="deleteItem(item, channel)"
                                                             tooltip-placement="top" tooltip="Delete the item"
                                                             tooltip-popup-delay="1500"
-                                                            tooltip-enable="true" tooltip-trigger tooltip-animation="false"
+                                                            tooltip-enable="true" tooltip-trigger
+                                                            tooltip-animation="false"
                                                             tooltip-append-to-body="true"
                                                             ng-confirm-icon="warning"
                                                             i18n-attr="{'ngConfirmMessage': 'thing.ChannelDeleteConfirm','ngConfirmTitle': 'thing.ChannelDeleteTitle','ngConfirmNoBtn': 'common.no', 'ngConfirmYesBtn': 'common.yes' }">

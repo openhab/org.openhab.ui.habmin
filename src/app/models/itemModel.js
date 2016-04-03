@@ -20,6 +20,28 @@ angular.module('HABmin.itemModel', [
 
         var me = this;
 
+        // Here we add the items list to the rootScope so we can watch for changes.
+        // We keep a 'local' copy of the state so we can detect changes.
+        // When changes come in from the server, we update both copies.
+        // When changes are made locally, we can detect this and send the update to the server.
+        // This system allows the item to be updated anywhere in the UI and we will automatically
+        // detect the change and send to the server...
+        $rootScope.itemList = itemList;
+        $rootScope.$watch(function () {
+                for (var i = 0; i < itemList.length; i++) {
+                    if (itemList[i].stateLocal != itemList[i].state) {
+                        itemList[i].stateLocal = itemList[i].state;
+                        console.log("We updated", itemList[i].name, "to", itemList[i].state);
+                        if (itemList[i].type == "SwitchItem") {
+                            me.sendCommand(itemList[i].name, itemList[i].stateLocal);
+                        }
+                    }
+                }
+            }
+            , function (newVal) {
+                console.log("Updated to ", newVal);
+            }, true);
+
         this.addOrUpdateItem = function (newItem) {
             // If this is a new thing, add it to the list
             /*            if(itemList[newItem.name] === undefined) {
@@ -29,6 +51,7 @@ angular.module('HABmin.itemModel', [
 
             var item = me.getItem(newItem.name);
             if (item == null) {
+                // Item doesn't exist - add it
                 item = newItem;
                 itemList.push(item);
             }
@@ -51,6 +74,9 @@ angular.module('HABmin.itemModel', [
             // Aggregate the data - only update what we've been given
             for (var i in newItem) {
                 item[i] = newItem[i];
+                if (i == "state") {
+                    item['stateLocal'] = newItem[i];
+                }
             }
 
             return item;
@@ -70,16 +96,22 @@ angular.module('HABmin.itemModel', [
                     case 'ItemStateEvent':
                         // Broadcast an event so we update any widgets or listeners
                         $rootScope.$broadcast(evt.topic, payload);
-                        if (itemList[topic[2]] === undefined) {
-                            break;
-                        }
-                        itemList[topic[2]].state = payload.value;
+                        // Here we actually get value and type
+                        me.addOrUpdateItem(
+                            {
+                                name: topic[2],
+                                state: payload.value,
+                                stateLocal: payload.value
+                            }
+                        );
                         break;
                     case 'ItemUpdatedEvent':
                         me.addOrUpdateItem(payload[0]);
                         break;
                     case 'ItemAddedEvent':
                         me.addOrUpdateItem(payload);
+                        break;
+                    case 'ItemCommandEvent':
                         break;
                     case 'ItemRemovedEvent':
                         for (var i = 0; i < itemList.length; i++) {
@@ -90,7 +122,6 @@ angular.module('HABmin.itemModel', [
                         }
                         break;
                 }
-//                $rootScope.$apply();
             });
         };
 
@@ -116,13 +147,7 @@ angular.module('HABmin.itemModel', [
                         .success(function (data) {
                             console.log("Fetch completed in", new Date().getTime() - tStart);
 
-                            // Handle difference between OH1 and OH2
-                            if (data.item != null) {
-                                data = [].concat(data.item);
-                            }
-                            else {
-                                data = [].concat(data);
-                            }
+                            data = [].concat(data);
 
                             // Add every item in the root items list to our local copy
                             angular.forEach(data, function (item) {

@@ -26,7 +26,8 @@ angular.module('Config.Things', [
     'showOverflow',
     'ngHelpDialog',
     'ngInputModified',
-    'ngPromiseExtras'
+    'ngPromiseExtras',
+    'sitemapSwitchWidget'
 ])
 
     .config(function config($stateProvider) {
@@ -492,7 +493,7 @@ angular.module('Config.Things', [
                 category: channel.channelType.category
             };
 
-            var name = channel.id.replace(/:/g, "_");
+            var name = channel.uid.replace(/:/g, "_");
             if (ItemModel.getItem(name) == null) {
                 newItem.name = name;
             }
@@ -591,12 +592,11 @@ angular.module('Config.Things', [
         };
 
         $scope.countActiveChannels = function () {
-            if ($scope.selectedThing == null || $scope.selectedThing.channels == null ||
-                $scope.selectedThingType == null) {
+            if ($scope.selectedThing == null || $scope.selectedThing.channels == null) {
                 return 0;
             }
             var linked = 0;
-            for (var cnt = 0; cnt < $scope.selectedThingType.channels.length; cnt++) {
+            for (var cnt = 0; cnt < $scope.selectedThing.channels.length; cnt++) {
                 if ($scope.selectedThing.channels[cnt].linkedItems.length) {
                     linked++;
                 }

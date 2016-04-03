@@ -5,12 +5,16 @@
     this.onLabel = 'On';
     this.offLabel = 'Off';
     this.knobLabel = '\u00a0';
+    this.onValue= true;
+    this.offValue= false;
 
     var self = this;
     this.$get = function() {
       return {
         onLabel: self.onLabel,
+        onValue: self.onValue,
         offLabel: self.offLabel,
+        offValue: self.offValue,
         knobLabel: self.knobLabel
       };
     };
@@ -24,11 +28,13 @@
       scope: {
         disabled: '@',
         onLabel: '@',
+        onValue: '@',
         offLabel: '@',
+        offValue: '@',
         knobLabel: '@'
       },
       template: '<div role="radio" class="toggle-switch" ng-class="{ \'disabled\': disabled }">' +
-          '<div class="toggle-switch-animate" ng-class="{\'switch-off\': !model, \'switch-on\': model}">' +
+          '<div class="toggle-switch-animate" ng-class="{\'switch-off\': !state, \'switch-on\': state}">' +
           '<span class="switch-left" ng-bind="onLabel"></span>' +
           '<span class="knob" ng-bind="knobLabel"></span>' +
           '<span class="switch-right" ng-bind="offLabel"></span>' +
@@ -36,7 +42,9 @@
           '</div>',
       compile: function(element, attrs) {
         if (!attrs.onLabel) { attrs.onLabel = toggleSwitchConfig.onLabel; }
+        if (!attrs.onValue) { attrs.onValue = toggleSwitchConfig.onValue; }
         if (!attrs.offLabel) { attrs.offLabel = toggleSwitchConfig.offLabel; }
+        if (!attrs.offValue) { attrs.offValue = toggleSwitchConfig.offValue; }
         if (!attrs.knobLabel) { attrs.knobLabel = toggleSwitchConfig.knobLabel; }
 
         return this.link;
@@ -56,6 +64,7 @@
         });
 
         ngModelCtrl.$formatters.push(function(modelValue){
+          scope.state = modelValue == scope.onValue ? true : false;
           return modelValue;
         });
 
@@ -73,7 +82,8 @@
 
         scope.toggle = function toggle() {
           if(!scope.disabled) {
-            scope.model = !scope.model;
+            scope.state = !scope.state;
+            scope.model = scope.state ? scope.onValue : scope.offValue;
             ngModelCtrl.$setViewValue(scope.model);
           }
         };
