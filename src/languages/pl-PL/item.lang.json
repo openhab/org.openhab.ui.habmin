@@ -1,0 +1,22 @@
+{
+  "EditTitle" :  "Edytuj Element",
+  "EditName"  :  "Nazwa",
+  "EditLabel" :  "Etykieta",
+  "EditFormat"  :  "Format",
+  "EditType"  :  "Typ Elementu",
+  "EditCategory"  :  "Kategoria",
+  "EditGroups"  :  "Grupy",
+  "SelectName"  :  "Wprowadź nazwę...",
+  "SelectLabel" :  "Wprowadź etykietę...",
+  "SelectCategory"  :  "Wybierz kategorię...",
+  "SelectGroup" :  "Wybierz groupy...",
+  "SelectType"  :  "Wybierz typ...",
+  "LinkOk"  :  "Element powiązany z kanałem",
+  "SaveOk"  :  "Element <b><i>{name}</i></b> zapisany pomyślnie",
+  "SaveFailed"  :  "Błąd zapisu elementu <b><i>{name}</i></b>.<br>{message}",
+  "Delete"  :  "Usuń Element",
+  "DeleteCheck" :  "Czy na pewno chcesz usunąć element?",
+  "NameCopiedOk"  :  "Nazwa elementu <b><i>{name}</i></b> skopiowana do schowka",
+  "SaveLinkFailed"  :  "Błąd powiązania elementu z kanałem dla <b><i>{name}</i></b>.<br>{message}",
+  "LinkTitle" :  "Powiąż Element z Kanałem"
+}
