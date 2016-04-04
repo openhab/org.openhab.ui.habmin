@@ -71,12 +71,14 @@ angular.module('HABmin', [
     .value('localeSupported', {
         'en-GB': {name: "English", desc: "United Kingdom"},
         'de-DE': {name: "Deutsch", desc: "Deutschland"},
+        'pl-PL': {name: "Polski", desc: "Polska"},
         'fr-FR': {name: "Fran&ccedil;ais", desc: "France"},
         'it-IT': {name: "Italiano", desc: "Italia"}
     })
     .value('localeFallbacks', {
         'en': 'en-GB',
         'de': 'de-DE',
+        'pl': 'pl-PL',
         'fr': 'fr-FR',
         'it': 'it-IT'
     })

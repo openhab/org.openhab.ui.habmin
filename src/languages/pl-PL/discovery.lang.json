@@ -1,0 +1,13 @@
+{
+  "StartOk" :  "Wykrywanie rozpoczęte dla powiązania <b><i>{name}</i></b>",
+  "StartFail" :  "Wykrywanie nie powiodło się dla powiązania <b><i>{name}</i></b>",
+  "IgnoreFail"  :  "Nie udało się zignorować <b><i>{name}</i></b>",
+  "DeleteConfirmMsg"  :  "Czy na pewno chcesz usunąć rzecz ze skrzynki odbiorczej?",
+  "DeleteConfirmTitle"  :  "Usuń rzecz ze skrzynki odbiorczej",
+  "IgnoreConfirmMsg"  :  "Czy na pewno chcesz zignorować rzecz ze skrzynki odbiorczej?",
+  "IgnoreConfirmTitle"  :  "Zignoruj rzecz w skrzynce odbiorczej",
+  "NewThing"  :  "Nowa rzecz odkryta - <b><i>{name}</i></b>.",
+  "ClearConfirmTitle" :  "Wyczyść skrzynkę odbiorczą",
+  "ClearConfirmMsg" :  "Czy na pewno chcesz wyczyścić skrzynkę wykrywania? Wszystkie rzeczy zostaną usunięte i będą musiały zostać wykryte na nowo!",
+  "ClearFail" :  "Czyszczenie skrzynki nie powiodło się dla jednej lub więcej rzeczy!"
+}
