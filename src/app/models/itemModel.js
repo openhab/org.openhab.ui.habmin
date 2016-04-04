@@ -32,8 +32,14 @@ angular.module('HABmin.itemModel', [
                     if (itemList[i].stateLocal != itemList[i].state) {
                         itemList[i].stateLocal = itemList[i].state;
                         console.log("We updated", itemList[i].name, "to", itemList[i].state);
-                        if (itemList[i].type == "SwitchItem") {
-                            me.sendCommand(itemList[i].name, itemList[i].stateLocal);
+                        switch (itemList[i].type) {
+                            case "SwitchItem":
+                                // TODO: Perform conversions
+                                me.sendCommand(itemList[i].name, itemList[i].stateLocal);
+                                break;
+                            case "DimmerItem":
+                                me.sendCommand(itemList[i].name, itemList[i].stateLocal);
+                                break;
                         }
                     }
                 }

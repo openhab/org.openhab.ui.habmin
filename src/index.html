@@ -122,13 +122,21 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li class="header">There are {{notificationCntNew}} new things
-                                <button type="button" class="btn btn-xs btn-default pull-right"
-                                        ng-class="{'disabled':notificationCntNew==0}"
-                                        ng-confirm-click="clearInbox()"
-                                        i18n-attr="{'ngConfirmMessage': 'discovery.ClearConfirmMsg','ngConfirmTitle': 'discovery.ClearConfirmTitle','ngConfirmNoBtn': 'common.cancel', 'ngConfirmYesBtn': 'common.ok'}">
-                                    <span class="fa fa-fw fa-trash text-danger"></span>
-                                    <span i18n="common.clear"></span>
-                                </button>
+                                <span class="pull-right">
+                                    <button type="button" class="btn btn-xs btn-default"
+                                            ng-confirm-click="approveInbox()"
+                                            i18n-attr="{'ngConfirmMessage': 'discovery.ApproveAllConfirmMsg','ngApproveAllTitle': 'discovery.ApproveAllConfirmTitle','ngConfirmNoBtn': 'common.cancel', 'ngConfirmYesBtn': 'common.ok'}">
+                                        <span class="fa fa-fw fa-plus-circle text-success"></span>
+                                        <span i18n="common.addAll"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-xs btn-default"
+                                            ng-class="{'disabled':notificationCntNew==0}"
+                                            ng-confirm-click="clearInbox()"
+                                            i18n-attr="{'ngConfirmMessage': 'discovery.ClearConfirmMsg','ngConfirmTitle': 'discovery.ClearConfirmTitle','ngConfirmNoBtn': 'common.cancel', 'ngConfirmYesBtn': 'common.ok'}">
+                                        <span class="fa fa-fw fa-trash text-danger"></span>
+                                        <span i18n="common.clear"></span>
+                                    </button>
+                                </span>
                             </li>
                             <li>
                                 <!-- inner menu: contains the actual data -->

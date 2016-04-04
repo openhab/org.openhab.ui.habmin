@@ -417,6 +417,29 @@ angular.module('HABmin', [
             );
         };
 
+        $scope.approveInbox = function () {
+            var promises = [];
+            angular.forEach($scope.inbox, function (msg) {
+                InboxModel.thingApprove(msg.thingUID, msg.label).then(
+                    function () {
+                        InboxModel.refreshInbox();
+                    },
+                    function () {
+                        growl.error(locale.getString("discovery.DeleteFail", {name: thingUID}));
+                    }
+                );
+            });
+
+            $q.all(promises).then(
+                function () {
+                    InboxModel.refreshInbox();
+                },
+                function () {
+                    growl.error(locale.getString("discovery.ClearFail"));
+                }
+            );
+        };
+
         // Check if there's a newer version available
         UpdateService.checkForUpdates();
 

@@ -3,6 +3,10 @@
         <toggle-switch ng-model="getItem(item).state" on-label="ON" on-value="ON" off-label="OFF" off-value="OFF"></toggle-switch>
     </span>
 
+    <span ng-switch-when="DimmerItem">
+        <toggle-switch ng-model="getItem(item).state" on-label="ON" on-value="ON" off-label="OFF" off-value="OFF"></toggle-switch>
+    </span>
+
     <span ng-switch-default>
         {{getItem(item).state}}
     </span>

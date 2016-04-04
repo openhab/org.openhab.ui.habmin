@@ -9,5 +9,7 @@
   "NewThing": "New thing discovered <b><i>{name}</i></b>.",
   "ClearConfirmTitle": "Clear Inbox",
   "ClearConfirmMsg": "Are you sure you wish to clear the discovery inbox. All things will be removed and will need to be rediscovered!",
-  "ClearFail": "Clearing the inbox failed for one or more entries!"
+  "ClearFail": "Clearing the inbox failed for one or more entries!",
+  "ApproveAllConfirmMsg": "Are you sure you wish to add all entries in the inbox to as new things?",
+  "ApproveAllConfirmTitle": "Approve All Inbox Entries"
 }
