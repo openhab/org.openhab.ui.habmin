@@ -9,7 +9,7 @@
  */
 angular.module('ZWaveLogReader', [])
 
-    .service('ZWaveLogReader', function ($q, $timeout) {
+    .service('ZWaveLogReader', function ($q) {
         // Constant definitions
         var REQUEST = "Request";
         var RESPONSE = "Response";

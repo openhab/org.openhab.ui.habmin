@@ -1,6 +1,11 @@
 <span ng-switch="getItem(item).type">
     <span ng-switch-when="SwitchItem">
-        <toggle-switch ng-model="getItem(item).state" on-label="ON" on-value="ON" off-label="OFF" off-value="OFF"></toggle-switch>
+        <span ng-if="channel.channelType.stateDescription.readOnly">
+            {{getValue(channel, getItem(item).state)}}
+        </span>
+        <span ng-if="!channel.channelType.stateDescription.readOnly">
+            <toggle-switch ng-model="getItem(item).state" on-label="ON" on-value="ON" off-label="OFF" off-value="OFF"></toggle-switch>
+        </span>
     </span>
 
     <span ng-switch-when="DimmerItem">
@@ -8,6 +13,6 @@
     </span>
 
     <span ng-switch-default>
-        {{getItem(item).state}}
+        {{getValue(channel, getItem(item).state)}}
     </span>
 </span>

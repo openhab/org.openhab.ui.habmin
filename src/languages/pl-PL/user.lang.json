@@ -1,13 +1,13 @@
 {
-  "ChartPrefTitle"  :  "Ustawienia wykresu",
-  "ChartPeriod" :  "Okres wykresu",
-  "ChartLegend" :  "Pokaż legendę",
-  "ChartPersistence"  :  "Domyślny serwis trwałości",
-  "ChartPersistenceSelect"  :  "Wybierz domyślny serwis trwałości...",
-  "GeneralPrefTitle"  :  "Ustawienia ogólne",
-  "Name"  :  "Nazwa",
-  "Theme" :  "Kompozycja",
-  "ThemeSelect" :  "Wybierz kompozycję...",
-  "Language"  :  "Język",
-  "LanguageSelect"  :  "Wybierz język..."
+  "ChartPrefTitle": "Ustawienia wykresu",
+  "ChartPeriod": "Okres wykresu",
+  "ChartLegend": "Pokaż legendę",
+  "ChartPersistence": "Domyślny serwis trwałości",
+  "ChartPersistenceSelect": "Wybierz domyślny serwis trwałości...",
+  "GeneralPrefTitle": "Ustawienia ogólne",
+  "Name": "Nazwa",
+  "Theme": "Kompozycja",
+  "ThemeSelect": "Wybierz kompozycję...",
+  "Language": "Język",
+  "LanguageSelect": "Wybierz język..."
 }

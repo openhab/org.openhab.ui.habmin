@@ -520,6 +520,22 @@ angular.module('Config.Things', [
             );
         };
 
+        $scope.getValue = function(channel, value) {
+            if(value == "NULL") {
+                return "";
+            }
+            if(channel == null || channel.channelType == null || channel.channelType.stateDescription == null) {
+                return value;
+            }
+            for(var state in channel.channelType.stateDescription.options) {
+                if(channel.channelType.stateDescription.options[state].value == value) {
+                    return state.label;
+                }
+            }
+
+            return value;
+        };
+
         $scope.getItem = function (itemName) {
             for (var i = 0; i < $scope.itemList.length; i++) {
                 if ($scope.itemList[i].name == itemName) {
