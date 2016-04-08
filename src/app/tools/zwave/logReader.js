@@ -8,7 +8,6 @@
  * (c) 2014-2015 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('ZWaveLogViewer', [
-    'ZWaveLogReader',
     'ui.router',
     'ui.bootstrap',
     'angular-growl',
@@ -39,7 +38,7 @@ angular.module('ZWaveLogViewer', [
     })
 
     .controller('ZWaveLogReaderCtrl',
-    function ZWaveLogReaderCtrl($scope, locale, growl, ZWaveLogReader, VisDataSet, $interval, $timeout) {
+    function ZWaveLogReaderCtrl($scope, locale, growl, VisDataSet, $interval, $timeout) {
         /**
          * Function called when a line is clicked so we can add data to the popup
          * @param selected
@@ -161,10 +160,10 @@ angular.module('ZWaveLogViewer', [
             $scope.selectedNode = {};
             $scope.showOption = "LIST";
 
-            ZWaveLogReader.loadLogfile(file).then(function () {
-                $scope.data = ZWaveLogReader.getData();
-                $scope.countLines = ZWaveLogReader.getLinesProcessed();
-                $scope.nodes = ZWaveLogReader.getNodes();
+            $scope.logReader.loadLogfile(file).then(function () {
+                $scope.data = $scope.logReader.getData();
+                $scope.countLines = $scope.logReader.getLinesProcessed();
+                $scope.nodes = $scope.logReader.getNodes();
                 $scope.countEntries = $scope.data.length;
 
                 // Display all nodes to start
@@ -174,16 +173,18 @@ angular.module('ZWaveLogViewer', [
             });
         }
 
-        $scope.logName = ZWaveLogReader.getFileName();
+        $scope.logReader = new ZWaveLogReader();
+
+        $scope.logName = $scope.logReader.getFileName();
         if ($scope.logName === "") {
             $scope.logState = "empty";
         }
         else {
             $scope.logState = "loaded";
         }
-        $scope.data = ZWaveLogReader.getData();
-        $scope.nodes = ZWaveLogReader.getNodes();
-        $scope.countLines = ZWaveLogReader.getLinesProcessed();
+        $scope.data = $scope.logReader.getData();
+        $scope.nodes = $scope.logReader.getNodes();
+        $scope.countLines = $scope.logReader.getLinesProcessed();
         $scope.countEntries = $scope.data.length;
         $scope.checkAllNodes();
 

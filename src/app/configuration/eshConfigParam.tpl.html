@@ -48,12 +48,12 @@
     <!-- Single select dropdown, but allowing other entries -->
 
     <!-- since this doesn't work - use an input box -->
-    <input config-parameter="{{config}}"
-           class="form-control"
+    <bootstrap-combo
            name="{{config.name}}"
            ng-dirty ng-required="{{config.required}}"
            id="CONFIGLABEL-{{cfgType}}-{{config.name}}"
            ng-model="cfgModel"
+           data-dropdown-data="config.options"
             >
 </div>
 

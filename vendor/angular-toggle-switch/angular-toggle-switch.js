@@ -64,7 +64,10 @@
         });
 
         ngModelCtrl.$formatters.push(function(modelValue){
-          scope.state = modelValue == scope.onValue ? true : false;
+            if(modelValue == 0) {
+                modelValue = scope.offValue;
+            }
+          scope.state = modelValue == scope.offValue ? false : true;
           return modelValue;
         });
 

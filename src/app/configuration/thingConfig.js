@@ -27,7 +27,8 @@ angular.module('Config.Things', [
     'ngHelpDialog',
     'ngInputModified',
     'ngPromiseExtras',
-    'sitemapSwitchWidget'
+    'sitemapSwitchWidget',
+    'bootstrapCombo'
 ])
 
     .config(function config($stateProvider) {
