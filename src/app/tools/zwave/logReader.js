@@ -187,6 +187,5 @@ angular.module('ZWaveLogViewer', [
         $scope.countLines = $scope.logReader.getLinesProcessed();
         $scope.countEntries = $scope.data.length;
         $scope.checkAllNodes();
-
     })
 ;

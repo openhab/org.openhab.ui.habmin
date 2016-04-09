@@ -530,7 +530,7 @@ angular.module('Config.Things', [
             }
             for(var state in channel.channelType.stateDescription.options) {
                 if(channel.channelType.stateDescription.options[state].value == value) {
-                    return state.label;
+                    return channel.channelType.stateDescription.options[state].label;
                 }
             }
 
