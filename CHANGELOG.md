@@ -1,3 +1,23 @@
+<a name="0.1.4"></a>
+### 0.1.4 (2016-04-10)
+
+
+#### Bug Fixes
+
+* **UI**
+  * Fixed error handling state conversions
+
+
+#### Features
+
+* **Things:**
+  * Update thing overview to provide channel status and button control
+  * Add 'Add All' button to discovery inbox
+* **UI**
+  * Add Polish translation
+  * Add combobox widget for thing configuration
+
+
 <a name="0.1.3"></a>
 ### 0.1.3 (2016-03-31)
 
