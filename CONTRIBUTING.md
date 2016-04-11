@@ -20,8 +20,10 @@ To compile for release, run ```grunt compile```. This will generate a minified v
 and also put a zipped ```debug``` and ```release``` versions into the ```output``` folder.
 
 ## Language Translations
-If you want to add a translation for your language, then you need to copy the files in ```/src/languages```
-and copy the folder ```en-GB``` and rename it to your language (eg ```de-DE```). The folder name is
+There is an online translation form at [cd-jackson.com](http://www.cd-jackson.com). This will allow you to provide translations for each string using a simple form and is the recommended way to provide the translations. You should register on the site and then email to get edit access. Using the online form should reduce misformatting and errors.
+
+It is also possible to copy the files in ```/src/languages```
+and copy the folder ```en-GB``` and rename them to your language (eg ```de-DE```). The folder name is
 ```language-country``` and you should be able find the
 [language](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) and
 [country](https://en.wikipedia.org/wiki/ISO_3166-1) codes from these links.
