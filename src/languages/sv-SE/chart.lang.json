@@ -16,7 +16,7 @@
   "ErrorGettingServices": "Fel vid inläsning av lagringstjänst!",
   "ErrorGettingCharts": "Fel vid inläsning av graflista!",
   "ErrorGettingItems": "Fel vid inläsning av saklista!",
-  "ErrorLoadingItem": "Fel vis inläsning av sak '<i>{1}</i>'!",
+  "ErrorLoadingItem": "Fel vid inläsning av sak '<i>{1}</i>'!",
   "SaveNewName": "Ny graf",
   "SaveChartTitle": "Spara graf",
   "SaveGeneral": "Generella inställningar",
