@@ -576,7 +576,24 @@ function ZWaveLogReader() {
         },
         39: {
             name: "SWITCH_ALL",
-            processor: null
+            processor: null,
+            commands: {
+                1: {
+                    name: "SWITCH_ALL_SET"
+                },
+                2: {
+                    name: "SWITCH_ALL_GET"
+                },
+                3: {
+                    name: "SWITCH_ALL_REPORT"
+                },
+                4: {
+                    name: "SWITCH_ALL_ON"
+                },
+                5: {
+                    name: "SWITCH_ALL_OFF"
+                }
+            }
         },
         40: {
             name: "SWITCH_TOGGLE_BINARY",
@@ -697,6 +714,20 @@ function ZWaveLogReader() {
         86: {
             name: "CRC_16_ENCAP"
         },
+        91: {
+            name: "CENTRAL_SCENE",
+            commands: {
+                1: {
+                    name: "CENTRAL_SCENE_GET"
+                },
+                2: {
+                    name: "CENTRAL_SCENE_REPORT"
+                },
+                3: {
+                    name: "CENTRAL_SCENE_SET"
+                }
+            }
+        },
         94: {
             name: "ZWAVE_PLUS_INFO",
             commands: {
@@ -771,7 +802,18 @@ function ZWaveLogReader() {
         },
         99: {
             name: "USER_CODE",
-            processor: null
+            processor: null,
+            commands: {
+                1: {
+                    name: "USER_CODE_SET"
+                },
+                2: {
+                    name: "USER_CODE_GET"
+                },
+                3: {
+                    name: "USER_CODE_REPORT"
+                }
+            }
         },
         112: {
             name: "CONFIGURATION",
@@ -792,16 +834,22 @@ function ZWaveLogReader() {
             name: "ALARM",
             processor: null,
             commands: {
+                1: {
+                    name: "ALARM_EVENTSUPPORTED_GET"
+                },
+                2: {
+                    name: "ALARM_EVENTSUPPORTED_REPORT"
+                },
                 4: {
                     name: "ALARM_GET"
                 },
                 5: {
                     name: "ALARM_REPORT"
                 },
-                6: {
+                7: {
                     name: "ALARM_SUPPORTED_GET"
                 },
-                7: {
+                8: {
                     name: "ALARM_SUPPORTED_REPORT"
                 }
             }
@@ -925,7 +973,7 @@ function ZWaveLogReader() {
             name: "MULTI_CMD",
             commands: {
                 1: {
-                    name: "MULTI_COMMMAND_ENCAP"
+                    name: "MULTI_CMD_ENCAP"
                 }
             }
         },
@@ -1060,13 +1108,13 @@ function ZWaveLogReader() {
         {
             string: "Is awake with",
             ref: "Wakeup",
-            content: "Node is AWAKE",
+            content: "Node is <span class='label label-success'>AWAKE</span>",
             status: INFO
         },
         {
             string: "Went to sleep",
             ref: "Wakeup",
-            content: "Node is ASLEEP",
+            content: "Node is <span class='label label-important'>ASLEEP</span>",
             status: INFO
         },
         {
@@ -1317,7 +1365,9 @@ function ZWaveLogReader() {
         };
 
         if (message.indexOf("started") != -1) {
-            data.content = "Binding started. Version " + message.substr(message.indexOf("Version") + 8);
+            data.content =
+                "Binding started. Version <span class='label'>" + message.substr(message.indexOf("Version") + 8) +
+                "</span>";
         }
         else if (message.indexOf("stopped") != -1) {
             data.content = "Binding stopped.";
@@ -1455,11 +1505,14 @@ function ZWaveLogReader() {
                 var interval = HEX2DEC(bytes[2]) * 65536 + HEX2DEC(bytes[3]) * 256 + HEX2DEC(bytes[4]);
                 addNodeInfo(node, "wakeupInterval", interval);
                 addNodeInfo(node, "wakeupNode", HEX2DEC(bytes[5]));
-                data.content = "Wakeup period: " + getNodeInfo(node, "wakeupInterval") + "(s), reporting to <span class='label label-warning'>";
-                if(HEX2DEC(bytes[5]) == "FF") {
+                data.content = "Wakeup period: " + getNodeInfo(node, "wakeupInterval") +
+                "(s), reporting to <span class='label label-warning'>";
+                if (HEX2DEC(bytes[5]) == 0) {
+                    data.content += "NOT SET";
+                } else if (HEX2DEC(bytes[5]) == 255) {
                     data.content += "BROADCAST";
                 } else {
-                    data.content += "NODE " + getNodeInfo(node, "wakeupNode");
+                    data.content += "NODE " + HEX2DEC(bytes[5]);
                 }
                 data.content += "</span>";
                 if (interval === 0) {
@@ -1492,17 +1545,13 @@ function ZWaveLogReader() {
                 var groupReport = HEX2DEC(bytes[2]);
                 var maxNodes = HEX2DEC(bytes[3]);
                 var following = HEX2DEC(bytes[4]);
-                data.content += " <span class='label'>GROUP_" + groupReport + "</span> Max:" + maxNodes + " [";
+                data.content += " <span class='label'>GROUP_" + groupReport + "</span> Max:" + maxNodes + " ";
                 for (var a = 5; a < bytes.length; a++) {
-                    if (a != 5) {
-                        data.content += ",";
-                    }
-                    data.content += HEX2DEC(bytes[a]);
+                    data.content += "<span class='label label-warning'>NODE " + HEX2DEC(bytes[a]) + "</span>";
                 }
-                if(bytes.length == 5) {
-                    data.content += "empty";
+                if (bytes.length == 5) {
+                    data.content += "<span class='label label-inverse'>empty</span>";
                 }
-                data.content += "]";
                 break;
             case 6:             // ASSOCIATION_GROUPINGSREPORT
                 var groupCnt = HEX2DEC(bytes[2]);
@@ -1648,8 +1697,7 @@ function ZWaveLogReader() {
     var meterSensors = {
         0: {
             name: "UNKNOWN",
-            scales: {
-            }
+            scales: {}
         },
         1: {
             name: "ELECTRIC",
@@ -1721,7 +1769,8 @@ function ZWaveLogReader() {
                         data.content += " <span class='label'>UNKNOWN SCALE " + typeGet + "</span>";
                     }
                     else {
-                        data.content += " <span class='label'>" + meterSensors[meterType].name + "_" + meterSensors[meterType].scales[typeGet].name + "</span>";
+                        data.content += " <span class='label'>" + meterSensors[meterType].name + "_" +
+                        meterSensors[meterType].scales[typeGet].name + "</span>";
                     }
                 }
                 break;
@@ -1735,7 +1784,7 @@ function ZWaveLogReader() {
                 else {
                     data.content += " " + meterSensors[typeReport].name + "_";
 
-                    if(meterSensors[typeReport].scales[scale] == null) {
+                    if (meterSensors[typeReport].scales[scale] == null) {
                         data.content += scale;
                     }
                     else {
@@ -1777,7 +1826,7 @@ function ZWaveLogReader() {
         24: "SoilTemperature",
         25: "SeismicIntensity",
         26: "SeismicMagnitude",
-        27: "Ultraviolet",
+        27: "ULTRAVIOLET",
         28: "ElectricalResistivity",
         29: "ElectricalConductivity",
         30: "Loudness",
@@ -1816,7 +1865,7 @@ function ZWaveLogReader() {
                 if (bytes.length >= 3) {
                     var typeGet = HEX2DEC(bytes[2]);
                     if (multilevelSensors[typeGet] == null) {
-                        data.content += " <span class='label'>" + typeGet +"</span>";
+                        data.content += " <span class='label'>" + typeGet + "</span>";
                     }
                     else {
                         data.content += " <span class='label'>" + multilevelSensors[typeGet] + "</span>";
@@ -1850,14 +1899,17 @@ function ZWaveLogReader() {
         switch (cmdCmd) {
             case 18:
                 data.content += " <span class='label'>APPLICATION_VERSION</span>";
-                data.content += " <span class='label'>" + HEX2DEC(bytes[5]) + "." + HEX2DEC(bytes[6]) + "</span>";
+                data.content +=
+                    " <span class='label'>VERSION " + HEX2DEC(bytes[5]) + "." + HEX2DEC(bytes[6]) + "</span>";
                 break;
             case 19:
                 data.content += " <span class='label'>" + commandClasses[cmdPrm].name + "</span>";
                 break;
             case 20:
                 var version = HEX2DEC(bytes[3]);
-                data.content += " <span class='label'>" + commandClasses[cmdPrm].name + "</span> <span class='badge badge-success'>VERSION " + version + "</span>";
+                data.content +=
+                    " <span class='label'>" + commandClasses[cmdPrm].name + "</span> <span class='label'>VERSION " +
+                    version + "</span>";
                 break;
         }
 
@@ -1906,8 +1958,11 @@ function ZWaveLogReader() {
         addNodeInfo(node, "manufacturer", bytes[2] + bytes[3]);
         addNodeInfo(node, "deviceType", bytes[4] + bytes[5]);
         addNodeInfo(node, "deviceID", bytes[6] + bytes[7]);
-        data.content = "Manufacturer Info: " + getNodeInfo(node, "manufacturer") + ":" +
-        getNodeInfo(node, "deviceType") + ":" + getNodeInfo(node, "deviceID");
+        var cmdCls = HEX2DEC(bytes[0]);
+        var cmdCmd = HEX2DEC(bytes[1]);
+        data.content = getCommandClassName(cmdCls, cmdCmd);
+        data.content += " <span class='label'>" + getNodeInfo(node, "manufacturer") + ":" +
+        getNodeInfo(node, "deviceType") + ":" + getNodeInfo(node, "deviceID") + "</span>";
 
         return data;
     }
@@ -2012,7 +2067,8 @@ function ZWaveLogReader() {
                 // Check if the function contains the class name
                 if (cmdClass.funct != null && cmdClass.funct.indexOf(cmdClass.name) == -1) {
                     // No - we need to have both
-                    cmdClass.content = "<span class='badge badge-success'>" + cmdClass.class + "</span> " + cmdClass.funct;
+                    cmdClass.content =
+                        "<span class='badge badge-success'>" + cmdClass.class + "</span> " + cmdClass.funct;
                 }
                 else if (cmdClass.funct != null) {
                     cmdClass.content = "<span class='badge badge-success'>" + cmdClass.funct + "</span>";
@@ -2036,7 +2092,13 @@ function ZWaveLogReader() {
             else {
                 data.node = 255;
                 addNodeInfo(data.node, "sucID", HEX2DEC(bytes[0]));
-                data.content = "SUC ID: " + getNodeInfo(255, "sucID");
+                if (HEX2DEC(bytes[0]) == 0) {
+                    data.content = "SUC ID: <span class='label label-inverse'>NOT SET</span>";
+                }
+                else {
+                    data.content =
+                        "SUC ID: <span class='label label-warning'>NODE " + getNodeInfo(255, "sucID") + "</span>";
+                }
             }
         }
 
@@ -2054,7 +2116,8 @@ function ZWaveLogReader() {
                 data.node = 255;
                 addNodeInfo(data.node, "homeID", bytes[0] + bytes[1] + bytes[2] + bytes[3]);
                 addNodeInfo(data.node, "controllerID", HEX2DEC(bytes[4]));
-                data.content = "MemoryGetId: HomeID <span class='label'>" + getNodeInfo(data.node, "homeID") + "</span> ControllerID <span class='label'>" +
+                data.content = "MemoryGetId: HomeID <span class='label'>" + getNodeInfo(data.node, "homeID") +
+                "</span> ControllerID <span class='label label-warning'>NODE " +
                 getNodeInfo(data.node, "controllerID") + "</span>";
             }
         }
@@ -2160,7 +2223,7 @@ function ZWaveLogReader() {
             if (type == REQUEST) {
                 var state = HEX2DEC(bytes[0]);
                 data.node = HEX2DEC(bytes[1]);
-                data.content = "ApplicationUpdate::";
+                data.content = "ApplicationUpdate ";
                 if (appUpdateState[state] != null) {
                     data.content += "<span class='label'>" + appUpdateState[state] + "</span>";
                 }
@@ -2248,7 +2311,7 @@ function ZWaveLogReader() {
                 }
                 data.content += "</span>";
                 if (HEX2DEC(bytes[0]) & 0x80) {
-                    data.content += " <span class='label label-important'>HI</span>";
+                    data.content += " <span class='label label-important'>HIGH POWER</span>";
                 }
             }
         }
@@ -2422,8 +2485,8 @@ function ZWaveLogReader() {
             addNodeInfo(data.node, "manufacturer", bytes[2] + bytes[3]);
             addNodeInfo(data.node, "deviceType", bytes[4] + bytes[5]);
             addNodeInfo(data.node, "deviceID", bytes[6] + bytes[7]);
-            data.content = "Controller Info: " + getNodeInfo(data.node, "manufacturer") + ":" +
-            getNodeInfo(data.node, "deviceType") + ":" + getNodeInfo(data.node, "deviceID");
+            data.content = "Controller Info <span class='label'>" + getNodeInfo(data.node, "manufacturer") + ":" +
+            getNodeInfo(data.node, "deviceType") + ":" + getNodeInfo(data.node, "deviceID") + "</span>";
         }
 
         return data;
@@ -2503,7 +2566,8 @@ function ZWaveLogReader() {
             sendData.node = node;
             sendData.callback = callbackTx;
             sendData.cmdClass = cmdClass;
-            sendData.content = "SendData <span class='badge badge-info'>" + callbackTx + "</span> Sent " + cmdClass.content;
+            sendData.content =
+                "SendData <span class='badge badge-info'>" + callbackTx + "</span> Sent " + cmdClass.content;
 
             lastSendData.node = node;
             lastSendData.callback = callbackTx;
@@ -2569,13 +2633,15 @@ function ZWaveLogReader() {
                 // This is just the response to say it was sent
                 if (HEX2DEC(bytes[0]) > 0) {
                     // Success
-                    sendData.content = "SendData <span class='badge badge-success'>" + lastSendData.callback + "</span> Sent OK";
+                    sendData.content =
+                        "SendData <span class='badge badge-success'>" + lastSendData.callback + "</span> Sent OK";
                     setStatus(sendData, SUCCESS);
                 }
                 else {
                     // Error
                     setStatus(sendData, ERROR);
-                    sendData.content = "SendData <span class='badge badge-important'>" + lastSendData.callback + "</span> Not sent!";
+                    sendData.content =
+                        "SendData <span class='badge badge-important'>" + lastSendData.callback + "</span> Not sent!";
                 }
             }
         }
