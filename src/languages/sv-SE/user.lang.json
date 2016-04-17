@@ -1,0 +1,13 @@
+{
+  "ChartPrefTitle": "Grafinställningar",
+  "ChartPeriod": "Grafperiod",
+  "ChartLegend": "Visa teckenförklaring",
+  "ChartPersistence": "Lagringstjänst som standard",
+  "ChartPersistenceSelect": "Välj standard lagringstjänst...",
+  "GeneralPrefTitle": "Allmänna inställnignar",
+  "Name": "Namn",
+  "Theme": "Tema",
+  "ThemeSelect": "Välj tema...",
+  "Language": "Språk",
+  "LanguageSelect": "Välj språk..."
+}
