@@ -664,17 +664,82 @@ function ZWaveLogReader() {
             },
             processor: processMeter
         },
+        61: {
+            name: "METER_TBL",
+            commands: {
+                1: {
+                    name: "METER_TBL_TABLE_ID_GET"
+                },
+                2: {
+                    name: "METER_TBL_TABLE_ID_REPORT"
+                },
+                3: {
+                    name: "METER_TBL_TABLE_CAPABILITY_GET"
+                },
+                4: {
+                    name: "METER_TBL_REPORT"
+                },
+                5: {
+                    name: "METER_TBL_CURRENT_DATA_GET"
+                },
+                6: {
+                    name: "METER_TBL_CURRENT_DATA_REPORT"
+                }
+            }
+        },
         64: {
             name: "THERMOSTAT_MODE",
-            processor: null
+            processor: null,
+            commands: {
+                1: {
+                    name: "THERMOSTAT_MODE_SET"
+                },
+                2: {
+                    name: "THERMOSTAT_MODE_GET"
+                },
+                3: {
+                    name: "THERMOSTAT_MODE_REPORT"
+                },
+                4: {
+                    name: "THERMOSTAT_MODE_SUPPORTED_GET"
+                },
+                5: {
+                    name: "THERMOSTAT_MODE_SUPPORTED_REPORT"
+                }
+            }
         },
         66: {
             name: "THERMOSTAT_OPERATING_STATE",
-            processor: null
+            processor: null,
+            commands: {
+                2: {
+                    name: "THERMOSTAT_OPERATING_STATE_GET"
+                },
+                3: {
+                    name: "THERMOSTAT_OPERATING_STATE_REPORT"
+                }
+            }
         },
         67: {
             name: "THERMOSTAT_SETPOINT",
-            processor: null
+            processor: null,
+            commands: {
+                1: {
+                    name: "THERMOSTAT_SETPOINT_SET"
+                },
+                2: {
+                    name: "THERMOSTAT_SETPOINT_GET"
+                },
+                3: {
+                    name: "THERMOSTAT_SETPOINT_REPORT"
+                },
+                4: {
+                    name: "THERMOSTAT_SETPOINT_SUPPORTED_GET"
+                },
+                5: {
+                    name: "THERMOSTAT_SETPOINT_SUPPORTED_REPORT"
+                }
+            }
         },
         68: {
             name: "THERMOSTAT_FAN_MODE",
@@ -869,6 +934,29 @@ function ZWaveLogReader() {
         115: {
             name: "POWERLEVEL"
         },
+        119: {
+            name: "NODE_NAMING",
+            commands: {
+                1: {
+                    name: "NODE_NAMING_NAME_SET"
+                },
+                2: {
+                    name: "NODE_NAMING_NAME_GET"
+                },
+                3: {
+                    name: "NODE_NAMING_NAME_REPORT"
+                },
+                4: {
+                    name: "NODE_NAMING_LOCATION_SET"
+                },
+                5: {
+                    name: "NODE_NAMING_LOCATION_GET"
+                },
+                6: {
+                    name: "NODE_NAMING_LOCATION_REPORT"
+                }
+            }
+        },
         122: {
             name: "FIRMWARE_UPDATE_MD"
         },
@@ -881,11 +969,17 @@ function ZWaveLogReader() {
                 3: {
                     name: "BATTERY_REPORT"
                 }
-            }
+            },
+            processor: processBattery
         },
         130: {
             name: "HAIL",
-            processor: null
+            processor: null,
+            commands: {
+                1: {
+                    name: "HAIL"
+                }
+            }
         },
         132: {
             name: "WAKE_UP",
@@ -958,7 +1052,18 @@ function ZWaveLogReader() {
         },
         135: {
             name: "INDICATOR",
-            processor: null
+            processor: null,
+            commands: {
+                1: {
+                    name: "INDICATOR_SET"
+                },
+                2: {
+                    name: "INDICATOR_GET"
+                },
+                3: {
+                    name: "INDICATOR_REPORT"
+                }
+            }
         },
         138: {
             name: "TIME"
@@ -1168,7 +1273,6 @@ function ZWaveLogReader() {
         else {
             name = commandClasses[cmdCls].commands[cmdCmd].name;
         }
-
         return "<span class='badge badge-success'>" + name + "</span>";
     }
 
@@ -1521,6 +1625,32 @@ function ZWaveLogReader() {
                 break;
             case 7:
                 incNodeInfo(node, "wakeupCnt");
+                break;
+        }
+
+        return data;
+    }
+
+    function processBattery(node, endpoint, bytes) {
+        var data = {result: SUCCESS};
+
+        var cmdCls = HEX2DEC(bytes[0]);
+        var cmdCmd = HEX2DEC(bytes[1]);
+        data.content = getCommandClassName(cmdCls, cmdCmd);
+        switch (cmdCmd) {
+            case 3:             // BATTERY_REPORT
+                var level = HEX2DEC(bytes[2]);
+                data.content += " <span class='label ";
+                if (level > 75) {
+                    data.content += "label-success";
+                }
+                else if (level > 40) {
+                    data.content += "label-warning";
+                }
+                else {
+                    data.content += "label-error";
+                }
+                data.content += "'>" + level + "%</span>";
                 break;
         }
 
@@ -1938,16 +2068,19 @@ function ZWaveLogReader() {
 
         var cmdCls = HEX2DEC(bytes[0]);
         var cmdCmd = HEX2DEC(bytes[1]);
-        var cmdCfg = HEX2DEC(bytes[2]);
+
+        data.param_id = HEX2DEC(bytes[2]);
 
         data.content = getCommandClassName(cmdCls, cmdCmd);
-        data.content += " <span class='label'>PARAM_" + cmdCfg + "</span>";
+        data.content += " <span class='label'>PARAM_" + data.param_id + "</span>";
 
         if (cmdCmd == 4) {       // SET
         }
         else if (cmdCmd == 5) {  // GET
         }
         else if (cmdCmd == 6) {  // REPORT
+            data.param_size = HEX2DEC(bytes[3]);
+            data.content += " <span class='label'>size=" + data.param_size + "</span>";
         }
 
         return data;
@@ -2498,13 +2631,15 @@ function ZWaveLogReader() {
             setStatus(data, ERROR);
         } else {
             if (type == REQUEST) {
-                data = processCommandClass(HEX2DEC(bytes[1]), 0, bytes.slice(3));
+                data.cmdClass = processCommandClass(HEX2DEC(bytes[1]), 0, bytes.slice(3));
 
-                createNode(data.node);
-                if (nodes[data.node].classes[data.class] == null) {
-                    nodes[data.node].classes[data.class] = 0;
+                createNode(data.cmdClass.node);
+                if (nodes[data.cmdClass.node].classes[data.cmdClass.class] == null) {
+                    nodes[data.cmdClass.node].classes[data.cmdClass.class] = 0;
                 }
-                nodes[data.node].classes[data.class]++;
+                nodes[data.cmdClass.node].classes[data.cmdClass.class]++;
+                data.content = data.cmdClass.content;
+                data.node = data.cmdClass.node;
             }
             else {
                 setStatus(data, ERROR);

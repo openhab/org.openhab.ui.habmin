@@ -487,6 +487,18 @@ angular.module('Config.Things', [
             );
         };
 
+        $scope.refreshChannelItems = function() {
+            if ($scope.selectedThing == null || $scope.selectedThing.channels == null) {
+                return;
+            }
+
+            for (var c = 0; c < $scope.selectedThing.channels.length; c++) {
+                for(var i = 0; i < $scope.selectedThing.channels[c].linkedItems.length; i++) {
+                    ItemModel.sendCommand($scope.selectedThing.channels[c].linkedItems[i], "REFRESH");
+                }
+            }
+        };
+
         $scope.addItem = function (channel) {
             var newItem = {
                 label: channel.channelType.label,

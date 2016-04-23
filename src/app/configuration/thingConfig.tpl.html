@@ -113,8 +113,6 @@
                 </a>
             </div>
 
-
-
             <!-- Cover options for loading, and no devices -->
             <div ng-if="thingCnt==-1" class="list-group-item text-center">
                 <span class="fa fa-spin fa-refresh"></span>
@@ -235,6 +233,19 @@
                             <div ng-hide="getChannelItems(channel).length" i18n="common.none">
                             </div>
                         </div>
+                    </div>
+
+                    <div ng-if="selectedThing.channels.length">
+                        <button type="button" class="btn"
+                                ng-click="refreshChannelItems()"
+                                tooltip-placement="top" tooltip="Refresh all items on this thing"
+                                tooltip-popup-delay="1500"
+                                tooltip-enable="true" tooltip-trigger
+                                tooltip-animation="false"
+                                tooltip-append-to-body="true">
+                            <span class="fa fa-refresh"></span>
+                            <span>Refresh Items</span>
+                        </button>
                     </div>
                 </div>
 
