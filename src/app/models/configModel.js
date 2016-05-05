@@ -67,7 +67,7 @@ angular.module('HABmin.configModel', [
                     if (value == null) {
                         return 0;
                     }
-                    return Number(value);
+                    return Math.round(value);
                 case "TEXT":
                     if (value == undefined) {
                         return "";
@@ -82,7 +82,7 @@ angular.module('HABmin.configModel', [
                     if (value == undefined) {
                         return 0.0;
                     }
-                    break;
+                    return Number(value);
             }
         }
 

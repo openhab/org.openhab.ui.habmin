@@ -358,21 +358,23 @@ function ZWaveLogReader() {
     function getDeviceClass(basic, generic, specific) {
         var devClass;
         if (deviceClassBasic[basic] != null) {
-            devClass = deviceClassBasic[basic].name + ":";
+            devClass = "<span class='label'>" + deviceClassBasic[basic].name + "</span>";
         }
         else {
-            devClass = basic + ":";
+            devClass = "<span class='label'>" + basic + "</span>";
         }
         if (deviceClass[generic] != null) {
             if (deviceClass[generic].specific != null && deviceClass[generic].specific[specific] != null) {
-                devClass += deviceClass[generic].specific[specific];
+                devClass += " <span class='label'>" + deviceClass[generic].specific[specific] + "</span>";
             }
             else {
-                devClass += deviceClass[generic].name + ":" + specific;
+                devClass += " <span class='label'>" + deviceClass[generic].name + "</span>";
+                devClass += " <span class='label'>" + specific + "</span>";
             }
         }
         else {
-            devClass += generic + ":" + specific;
+            devClass += " <span class='label'>" + generic + "</span>";
+            devClass += " <span class='label'>" + specific + "</span>";
         }
         return devClass;
     }
@@ -779,6 +781,29 @@ function ZWaveLogReader() {
         86: {
             name: "CRC_16_ENCAP"
         },
+        89: {
+            name: "ASSOCIATION_GROUP_INFO",
+            commands: {
+                1: {
+                    name: "ASSOCIATION_GROUP_INFO_NAME_GET"
+                },
+                2: {
+                    name: "ASSOCIATION_GROUP_INFO_NAME_REPORT"
+                },
+                3: {
+                    name: "ASSOCIATION_GROUP_INFO_GET"
+                },
+                4: {
+                    name: "ASSOCIATION_GROUP_INFO_REPORT"
+                },
+                5: {
+                    name: "ASSOCIATION_GROUP_COMMAND_GET"
+                },
+                6: {
+                    name: "ASSOCIATION_GROUP_COMMAND_REPORT"
+                }
+            }
+        },
         91: {
             name: "CENTRAL_SCENE",
             commands: {
@@ -817,26 +842,26 @@ function ZWaveLogReader() {
                     name: "MULTI_INSTANCE_ENCAP"
                 },
                 7: {
-                    name: "MULTI_CHANNEL_ENDPOINT_GET"
+                    name: "MULTI_INSTANCE_ENDPOINT_GET"
                 },
                 8: {
-                    name: "MULTI_CHANNEL_ENDPOINT_REPORT"
+                    name: "MULTI_INSTANCE_ENDPOINT_REPORT"
                 },
                 9: {
-                    name: "MULTI_CHANNEL_CAPABILITY_GET"
+                    name: "MULTI_INSTANCE_CAPABILITY_GET"
                 },
                 10: {
-                    name: "MULTI_CHANNEL_CAPABILITY_REPORT",
+                    name: "MULTI_INSTANCE_CAPABILITY_REPORT",
                     processor: processMultiChannelReport
                 },
                 11: {
-                    name: "MULTI_CHANNEL_ENDPOINT_FIND"
+                    name: "MULTI_INSTANCE_ENDPOINT_FIND"
                 },
                 12: {
-                    name: "MULTI_CHANNEL_ENDPOINT_FIND_REPORT"
+                    name: "MULTI_INSTANCE_ENDPOINT_FIND_REPORT"
                 },
                 13: {
-                    name: "MULTI_CHANNEL_ENCAP",
+                    name: "MULTI_INSTANCE_ENCAP",
                     processor: processMultiChannelEncap
                 }
             }
@@ -933,6 +958,44 @@ function ZWaveLogReader() {
         },
         115: {
             name: "POWERLEVEL"
+        },
+        117: {
+            name: "PROTECTION",
+            commands: {
+                1: {
+                    name: "PROTECTION_SET"
+                },
+                2: {
+                    name: "PROTECTION_GET"
+                },
+                3: {
+                    name: "PROTECTION_REPORT"
+                },
+                4: {
+                    name: "PROTECTION_SUPPORTED_GET"
+                },
+                5: {
+                    name: "PROTECTION_SUPPORTED_REPORT"
+                },
+                6: {
+                    name: "PROTECTION_EXCLUSIVECONTROL_SET"
+                },
+                7: {
+                    name: "PROTECTION_EXCLUSIVECONTROL_GET"
+                },
+                8: {
+                    name: "PROTECTION_EXCLUSIVECONTROL_REPORT"
+                },
+                9: {
+                    name: "PROTECTION_TIMEOUT_SET"
+                },
+                10: {
+                    name: "PROTECTION_TIMEOUT_GET"
+                },
+                11: {
+                    name: "PROTECTION_TIMEOUT_REPORT"
+                }
+            }
         },
         119: {
             name: "NODE_NAMING",
@@ -1069,7 +1132,19 @@ function ZWaveLogReader() {
             name: "TIME"
         },
         139: {
-            name: "TIME_PARAMETERS"
+            name: "TIME_PARAMETERS",
+            commands: {
+                1: {
+                    name: "TIME_PARAMETERS_SET"
+                },
+                2: {
+                    name: "TIME_PARAMETERS_GET"
+                },
+                3: {
+                    name: "TIME_PARAMETERS_REPORT"
+                }
+            },
+            processor: processTimeParameters
         },
         142: {
             name: "MULTI_INSTANCE_ASSOCIATION"
@@ -1693,6 +1768,45 @@ function ZWaveLogReader() {
         return data;
     }
 
+    function zeroPad(num, size) {
+        var s = num + "";
+        while (s.length < size) s = "0" + s;
+        return s;
+    }
+
+    function processTimeParameters(node, endpoint, bytes) {
+        var data = {result: SUCCESS};
+
+        var cmdCls = HEX2DEC(bytes[0]);
+        var cmdCmd = HEX2DEC(bytes[1]);
+        data.content = getCommandClassName(cmdCls, cmdCmd);
+        switch (cmdCmd) {
+            case 1:             // SET
+            case 3:             // REPORT
+                var year = HEX2DEC(bytes[2]) << 8 | HEX2DEC(bytes[3]);
+                var month = HEX2DEC(bytes[4]);
+                var day = HEX2DEC(bytes[5]);
+                var hour = HEX2DEC(bytes[6]);
+                var minute = HEX2DEC(bytes[7]);
+                var second = HEX2DEC(bytes[8]);
+
+                if(year == 0 && month == 0 && day == 0 && hour == 0 && minute == 0 && second == 0) {
+                    data.content += " <span class='label label-warning'>TIME NOT SET</span>"
+                }
+                else {
+                    data.content += " <span class='label'>" +
+                    zeroPad(hour, 2) + ":" +
+                    zeroPad(minute, 2) + ":" +
+                    zeroPad(second, 2) + " " +
+                    day + "/" + month + "/" + year +
+                    "</span>";
+                }
+                break;
+        }
+
+        return data;
+    }
+
     var alarmSensors = {
         0: "General",
         1: "Smoke",
@@ -1764,18 +1878,18 @@ function ZWaveLogReader() {
 
     var binarySensors = {
         0: "Unknown",
-        1: "General",
-        2: "Smoke",
+        1: "GENERAL",
+        2: "SMOKE",
         3: "Carbon Monoxide",
         4: "Carbon Dioxide",
-        5: "Heat",
-        6: "Water",
+        5: "HEAT",
+        6: "WATER",
         7: "Freeze",
         8: "Tamper",
         9: "Aux",
         10: "Door/Window",
-        11: "Tilt",
-        12: "Motion",
+        11: "TILT",
+        12: "MOTION",
         13: "Glass Break"
     };
 
@@ -2127,6 +2241,8 @@ function ZWaveLogReader() {
         var devClass = getDeviceClass(getNodeInfo(node, "basicClass"), generic, specific);
         addNodeEndpointInfo(node, data.endPoint, "deviceClass", devClass);
         var cmdClass = getDeviceCommand(generic);
+
+        data.content += " " + devClass;
 
         addNodeItem(node, data.endPoint, data.endPoint, cmdClass);
         return data;
