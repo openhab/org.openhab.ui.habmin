@@ -65,88 +65,9 @@ angular.module('HABmin.sitemapModel', [
         };
 
         this.initWatch = function (page, onData) {
-            if (socket != null) {
-                this.cancelWatch();
-            }
-
-            var request = {
-                url: sitemapURL + "/" + page,
-//            contentType: 'application/json',
-                headers: {'Accept': 'application/json'},
-                disableCaching: true,
-                maxRequest: 256,
-                method: "GET",
-                fallbackMethod: "GET",
-                dropHeaders: false,
-                logLevel: 'debug',
-//            force_transport: 'websocket',
-//            fallbackProtocol: 'streaming',
-                transport: 'long-polling',
-                fallbackTransport: 'polling',
-                attachHeadersAsQueryString: true,
-//            trackMessageLength: false,
-                reconnectInterval: 5000,
-//            enableXDR: true,
-                timeout: 59000//,
-//            connectTimeout: 3000,
-//            pollingInterval: 60000
-            };
-
-            if ($http.defaults.headers.common['Authorization'] !== undefined) {
-                request.headers['Authorization'] = $http.defaults.headers.common['Authorization'];
-            }
-
-            request.onOpen = function (response) {
-                console.log("onOpen", response);
-            };
-
-            request.onClientTimeout = function (response) {
-                console.log("onClientTimeout", response);
-                setTimeout(function () {
-//                socket = atmosphere.init(request);
-                }, request.reconnectInterval);
-            };
-
-            request.onReopen = function (response) {
-                console.log("onReopen", response);
-            };
-
-            //For demonstration of how you can customize the fallbackTransport using the onTransportFailure function
-            request.onTransportFailure = function (errorMsg, request) {
-                console.log("onTransportFailure", errorMsg, request);
-            };
-
-            request.onMessage = function (response) {
-                console.log("onMessage", response);
-                if (response.responseBody == null || response.responseBody.length < 2) {
-                    return;
-                }
-                var msg = response.responseBody.replace(/http:\/\//g, "-");
-                onData(angular.fromJson(msg));
-            };
-
-            request.onClose = function (response) {
-                console.log("onClose", response);
-            };
-
-            request.onError = function (response) {
-                console.log("onError", response);
-            };
-
-            request.onReconnect = function (request, response) {
-                console.log("Reconnect", request, response);
-            };
-
-            console.log("Socket request is:", request);
-            socket = $.atmosphere.subscribe(request);
-            console.log("Socket response is:", socket);
         };
 
         this.cancelWatch = function () {
-            if (socket != null) {
-                socket.close();
-                socket = null;
-            }
         };
 
     });

@@ -78,7 +78,6 @@ module.exports = {
             'vendor/angular-cookies/angular-cookies.js',
             'vendor/angular-growl-v2/build/angular-growl.js',
             'vendor/angular-toggle-switch/angular-toggle-switch.js',
-            'vendor/jquery-atmosphere/jquery.atmosphere.js',
             'vendor/tinycolor/tinycolor.js',
             'vendor/pick-a-color/src/js/pick-a-color.js',
             'vendor/angular-pick-a-color/src/angular-pick-a-color.js',
