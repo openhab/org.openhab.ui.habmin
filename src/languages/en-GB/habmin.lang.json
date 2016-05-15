@@ -33,5 +33,6 @@
   "ErrorLoadingInbox": "Error loading inbox!",
   "ErrorGettingBindings": "Error loading list of bindings!",
   "OpenHABOffline": "OpenHAB is offline!",
-  "ZWaveNetworkViewer": "Z-Wave Network Viewer"
+  "ZWaveNetworkViewer": "Z-Wave Network Viewer",
+  "Extensions": "Extensions"
 }

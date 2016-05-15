@@ -34,6 +34,7 @@ angular.module('HABmin', [
     'FloorplanEditor',
     'ZWaveLogViewer',
     'ZWaveNetwork',
+    'Config.Extensions',
     'Config.Bindings',
     'Config.Things',
     'Config.Items',
