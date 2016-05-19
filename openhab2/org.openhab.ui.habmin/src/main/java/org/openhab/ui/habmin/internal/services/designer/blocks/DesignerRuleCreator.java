@@ -91,10 +91,10 @@ public abstract class DesignerRuleCreator {
 
     protected Item getItem(String name) {
         try {
-            if (DesignerResource.getItemUIRegistry() == null) {
+            if (DesignerResource.getItemRegistry() == null) {
                 return null;
             }
-            return DesignerResource.getItemUIRegistry().getItem(name);
+            return DesignerResource.getItemRegistry().getItem(name);
         } catch (org.eclipse.smarthome.core.items.ItemNotFoundException e) {
             return null;
         }
