@@ -58,15 +58,15 @@ public class DesignerResource implements RESTResource {
 
     static private ItemUIRegistry itemUIRegistry;
 
-    public void setItemUIRegistry(ItemUIRegistry itemUIRegistry) {
+    public void setItemRegistry(ItemUIRegistry itemUIRegistry) {
         DesignerResource.itemUIRegistry = itemUIRegistry;
     }
 
-    public void unsetItemUIRegistry(ItemRegistry itemUIRegistry) {
+    public void unsetItemRegistry(ItemRegistry itemUIRegistry) {
         DesignerResource.itemUIRegistry = null;
     }
 
-    static public ItemUIRegistry getItemUIRegistry() {
+    static public ItemUIRegistry getItemRegistry() {
         return itemUIRegistry;
     }
 

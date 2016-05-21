@@ -173,6 +173,14 @@ angular.module('Config.Things', [
             return true;
         };
 
+        $scope.dec2hex = function(value, places) {
+            var template = "";
+            for(var c = 0; c < places; c++) {
+                template += "0";
+            }
+            return (template + Number(value).toString(16)).substr(-places);
+        };
+
         $scope.checkActions = function () {
             return function (config) {
                 if (config.groupName != 'actions') {
@@ -649,6 +657,7 @@ angular.module('Config.Things', [
 
             // Check if anything at thing level needs updating
             var thingUpdated = false;
+            var updatedThing = {};
             if ($scope.thingConfigForm.modifiedChildFormsCount !== 0) {
                 angular.forEach($scope.thingConfigForm.modifiedChildForms, function (childForm) {
                     var channel = $scope.getChannel(childForm.$name);
@@ -683,10 +692,11 @@ angular.module('Config.Things', [
                 });
             }
 
-            // Check if the linked item information has changed
+            // Check if the name has changed
             if ($scope.thingConfigForm.thingLabel.$dirty === true) {
                 //|| $scope.thingConfigForm.itemCategory.$dirty === true || $scope.thingConfigForm.itemGroups.$dirty) {
                 thingUpdated = true;
+                updatedThing['label'] = $scope.thingConfigForm.thingLabel;
             }
 
             if (thingUpdated === true) {
