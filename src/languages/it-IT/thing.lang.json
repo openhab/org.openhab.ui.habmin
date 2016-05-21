@@ -42,5 +42,12 @@
   "DeleteItemFailed": "Errore eliminazione oggetto dal canale",
   "UID": "UID (Identificatore Univoco)",
   "SelectUID": "Inserisci identificatore univoco...",
-  "SelectLabel": "Inserisci etichetta..."
+  "SelectLabel": "Inserisci etichetta...",
+  "Pending": "in attesa...",
+  "UnlinkItemOk": "Elemento scollegato dal canale con successo",
+  "UnlinkItemFailed": "Errore nello scollegamento dell'elemento dal canale",
+  "ChannelUnlinkTitle": "Scollega elemento dal Canale",
+  "ChannelUnlinkConfirm": "Sei sicuro di voler scollegare l'elemento dal canale?<br />Questo non cancellerà l'elemento e sarai in grado di ricollegarlo più tardi se lo desideri",
+  "ChannelDeleteTitle": "Elimina Elemento dal Canale",
+  "ChannelDeleteConfirm": "Sei sicuro di voler eliminare l'elemento e scollegarlo dal canale?<br />Questo eliminerà completamente l'elemento!"
 }

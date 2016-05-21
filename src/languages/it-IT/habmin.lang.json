@@ -38,5 +38,7 @@
   "DashboardEdit": "Modifica Cruscotto",
   "DashboardOrganise": "Organizza Cruscotti",
   "Charts": "Grafici",
-  "ChartEditor": "Editor del Grafico"
+  "ChartEditor": "Editor del Grafico",
+  "ChartPreferences": "Predefinite Grafico",
+  "ZWaveNetworkViewer": "Visualizzatore Rete Z-Wave"
 }

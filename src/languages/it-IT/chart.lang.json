@@ -56,5 +56,5 @@
   "SavePeriod": "Periodo Predefinito",
   "SaveLegend": "Mostra Legenda",
   "SaveSuccess": "Grafico <i>{chartName}</i> salvato con successo.",
-  "SaveError": "Errore di salvataggio grafico <i>{chartName}</i>:<BR><b><i>{error}</i></b>."
+  "SaveError": "Errore di salvataggio grafico <i>{chartName}</i>:<BR /><b><i>{error}</i></b>."
 }
