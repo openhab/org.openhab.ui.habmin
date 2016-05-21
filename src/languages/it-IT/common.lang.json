@@ -134,5 +134,7 @@
   "period9Months": "9 Mesi",
   "period1Year": "1 Anno",
   "clipboardError": "Errore copiando negli appunti",
-  "GroupSelectName": "Seleziona gruppo..."
+  "GroupSelectName": "Seleziona gruppo...",
+  "none": "Nessuno",
+  "addAll": "Aggiungi Tutti"
 }

@@ -10,14 +10,12 @@
   "close": "Close",
   "ignore": "Ignore",
   "add": "Add",
-  "addAll": "Add All",
   "disabled": "Disabled",
   "properties": "Properties",
   "filter": "Filter",
   "time": "Time",
   "new": "New",
   "delete": "Delete",
-  "none": "None",
   "areYouSure": "Are You Sure?",
   "loading": "loading...",
   "Edit": "Edit",
@@ -58,5 +56,7 @@
   "period4Months": "4 Months",
   "period6Months": "6 Months",
   "period9Months": "9 Months",
-  "period1Year": "1 Year"
+  "period1Year": "1 Year",
+  "none": "None",
+  "addAll": "Add All"
 }

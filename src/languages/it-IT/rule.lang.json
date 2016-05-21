@@ -4,7 +4,7 @@
   "Value": "Valore",
   "NoRules": "Nessuna Regola Disponibile",
   "NewRuleTitle": "Nuova Regola",
-  "ErrorLoadingRule": "Errore caricamento regola <i>{1}</i>:<BR><b><i>{2}</i></b>.",
+  "ErrorLoadingRule": "Errore caricamento regola <i>{1}</i>:<BR /><b><i>{2}</i></b>.",
   "ErrorLoadingRuleList": "Errore caricamento elenco regole.",
   "DeleteRuleTitle": "Elimina Regola",
   "DeleteRuleCheck": "Sei sicuro di voler cancellare la regola '{{selectedRule.name}}'?",

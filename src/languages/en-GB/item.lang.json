@@ -11,12 +11,12 @@
   "SelectCategory": "Select category...",
   "SelectGroup": "Select groups...",
   "SelectType": "Select type...",
-  "LinkOk": "Item linked to channel",
   "SaveOk": "Item <b><i>{name}</i></b> saved ok",
   "SaveFailed": "Error saving item <b><i>{name}</i></b>.<br>{message}",
   "Delete": "Delete Item",
   "DeleteCheck": "Are you sure you want to delete the item?",
   "NameCopiedOk": "Item name <b><i>{name}</i></b> copied to clipboard",
   "SaveLinkFailed": "Error link item to channel for <b><i>{name}</i></b>.<br>{message}",
-  "LinkTitle": "Link Item To Channel"
+  "LinkTitle": "Link Item To Channel",
+  "LinkOk": "Item linked to channel"
 }

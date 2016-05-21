@@ -9,5 +9,7 @@
   "NewThing": "Nuovo oggetto scoperto <b><i>{name}</i></b>.",
   "ClearConfirmTitle": "Pulisci Inbox",
   "ClearConfirmMsg": "Sei sicuro di voler pulire la scansione inbox. Tutti gli oggetti saranno rimossi e dovranno essere riscansionati!",
-  "ClearFail": "Pulizia inbox fallita per uno o più elementi!"
+  "ClearFail": "Pulizia inbox fallita per uno o più elementi!",
+  "ApproveAllConfirmMsg": "Sei sicuro di voler aggiungere tutti gli elementi dell'inbox come nuovi oggetti?",
+  "ApproveAllConfirmTitle": "Approva tutti gli elementi in Inbox"
 }

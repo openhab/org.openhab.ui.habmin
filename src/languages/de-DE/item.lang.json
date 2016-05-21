@@ -11,10 +11,10 @@
   "SelectCategory": "Kategorie wählen ...",
   "SelectGroup": "Gruppen wählen ...",
   "SelectType": "Typ auswählen ...",
-  "SaveOk": "Dashboard {name} erfolgreich gespeichert",
+  "SaveOk": "Dashboard <b><i>{name}</i></b> erfolgreich gespeichert",
   "Delete": "Löschen",
-  "SaveFailed": "Fehler beim Speichern des Elements {name}. {message}",
+  "SaveFailed": "Fehler beim Speichern des Elements <b><i>{name}</i></b>.<br />{message}",
   "DeleteCheck": "Soll dieser Gebäudeplan wirklich gelöscht werden?",
-  "NameCopiedOk": "Name des Elements {name} in die Zwischenablage kopiert",
-  "SaveLinkFailed": "Fehler beim Verknüpfen des Elements mit dem Channel {name}. {message}"
+  "NameCopiedOk": "Name des Elements <b><i>{name}</i></b> in die Zwischenablage kopiert",
+  "SaveLinkFailed": "Fehler beim Verknüpfen des Elements mit dem Channel <b><i>{name}</i></b>.<br />{message}"
 }

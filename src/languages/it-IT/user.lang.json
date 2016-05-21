@@ -7,5 +7,7 @@
   "Theme": "Tema",
   "ThemeSelect": "Seleziona il tuo tema...",
   "Language": "Lingua",
-  "LanguageSelect": "Seleziona la tua lingua..."
+  "LanguageSelect": "Seleziona la tua lingua...",
+  "ChartPersistence": "Sistema Predefinito di Archiviazione",
+  "ChartPersistenceSelect": "Seleziona sistema di archiviazione predefinito..."
 }

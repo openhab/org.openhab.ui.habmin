@@ -12,7 +12,7 @@
   "Tools": "Tools",
   "AdvancedMode": "Show advanced settings",
   "Label": "Label",
-  "Description": "Overview",
+  "Description": "Description",
   "Properties": "Properties",
   "Configuration": "Configuration",
   "Channels": "Channels [{active} active, {total} total]",
@@ -40,15 +40,14 @@
   "WizardConfigure": "Configure",
   "DeleteItemOk": "Item successfully deleted from channel",
   "DeleteItemFailed": "Error deleting item from channel",
-  "UnlinkItemOk": "Item successfully unlinked from channel",
-  "UnlinkItemFailed": "Error unlinking item from channel",
   "UID": "UID (Unique Identifier)",
   "SelectUID": "Enter unique identifier...",
   "SelectLabel": "Enter label...",
   "Pending": "pending...",
+  "UnlinkItemOk": "Item successfully unlinked from channel",
+  "UnlinkItemFailed": "Error unlinking item from channel",
   "ChannelUnlinkTitle": "Unlink Item from Channel",
   "ChannelUnlinkConfirm": "Are you sure you wish to unlink the item from the channel?<br>This will not delete the item, and you will be able to relink it later if you wish.",
   "ChannelDeleteTitle": "Delete Item from Channel",
-  "ChannelDeleteConfirm": "Are you sure you wish to delete the item and unlink it from the channel?<br>This will completely delete the item!",
-  "Attributes": "Attributes"
+  "ChannelDeleteConfirm": "Are you sure you wish to delete the item and unlink it from the channel?<br>This will completely delete the item!"
 }

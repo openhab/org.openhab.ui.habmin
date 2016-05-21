@@ -15,5 +15,8 @@
   "SaveFailed": "Errore salvataggio elemento {name}.{message}",
   "Delete": "Elimina",
   "DeleteCheck": "Sei sicuro di voler eliminare questo oggetto.Se clicchi Si l'oggetto e gli elementi associati verranno eliminati!",
-  "NameCopiedOk": "Elemento con nome {name} copiato negli appunti"
+  "NameCopiedOk": "Elemento con nome {name} copiato negli appunti",
+  "SaveLinkFailed": "Errore nel collegamento dell'elemento al canale per <b><i>{name}</i></b>.<br />{message}",
+  "LinkOk": "Elemento collegato al canale",
+  "LinkTitle": "Collega Elemento a Canale"
 }
