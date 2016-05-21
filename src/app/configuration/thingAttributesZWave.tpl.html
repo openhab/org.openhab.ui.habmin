@@ -1,0 +1,88 @@
+<div class="row">
+    <div class="col-md-4" i18n="zwave.Node"></div>
+    <div class="col-md-8">{{selectedThing.properties['zwave_nodeid']}}</div>
+</div>
+
+<div class="row">
+    <div class="col-md-4" i18n="zwave.Manufacturer"></div>
+    <div class="col-md-8">{{dec2hex(selectedThing.properties['zwave_manufacturer'], 4)}}</div>
+</div>
+<div class="row">
+    <div class="col-md-4" i18n="zwave.TypeId"></div>
+    <div class="col-md-8">{{dec2hex(selectedThing.properties['zwave_devicetype'],
+        4)}}:{{dec2hex(selectedThing.properties['zwave_deviceid'], 4)}}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4" i18n="zwave.FirmwareVersion"></div>
+    <div class="col-md-8">{{selectedThing.properties['zwave_version']}}</div>
+</div>
+
+<div class="row" ng-if="selectedThing.properties['zwave_plus_devicetype']">
+    <div class="col-md-4" i18n="zwave.ZWavePlusDeviceType"></div>
+    <div class="col-md-8">{{selectedThing.properties['zwave_plus_devicetype']}}</div>
+</div>
+
+<div class="row">
+    <div class="col-md-4" i18n="zwave.BasicClass"></div>
+    <div class="col-md-8">{{selectedThing.properties['zwave_class_basic']}}</div>
+</div>
+<div class="row">
+    <div class="col-md-4" i18n="zwave.GenericClass"></div>
+    <div class="col-md-8">{{selectedThing.properties['zwave_class_generic']}}</div>
+</div>
+<div class="row">
+    <div class="col-md-4" i18n="zwave.SpecificClass"></div>
+    <div class="col-md-8">{{selectedThing.properties['zwave_class_specific']}}</div>
+</div>
+
+<div class="row">
+    <div class="col-md-4" i18n="zwave.Routing"></div>
+    <div class="col-md-8">
+        <span ng-switch="selectedThing.properties['zwave_routing']">
+            <span ng-switch-when="true" class="fa fa-check-circle-o text-success"></span>
+            <span ng-switch-when="false" class="fa fa-times-circle-o text-danger"></span>
+            <span ng-switch-default class="fa fa-question-circle-o text-warning"></span>
+        </span>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4" i18n="zwave.Listening"></div>
+    <div class="col-md-8">
+        <span ng-switch="selectedThing.properties['zwave_listening']">
+            <span ng-switch-when="true" class="fa fa-check-circle-o text-success"></span>
+            <span ng-switch-when="false" class="fa fa-times-circle-o text-danger"></span>
+            <span ng-switch-default class="fa fa-question-circle-o text-warning"></span>
+        </span>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4" i18n="zwave.FrequentlyListening"></div>
+    <div class="col-md-8">
+        <span ng-switch="selectedThing.properties['zwave_frequent']">
+            <span ng-switch-when="true" class="fa fa-check-circle-o text-success"></span>
+            <span ng-switch-when="false" class="fa fa-times-circle-o text-danger"></span>
+            <span ng-switch-default class="fa fa-question-circle-o text-warning"></span>
+        </span>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4" i18n="zwave.Beaming"></div>
+    <div class="col-md-8">
+        <span ng-switch="selectedThing.properties['zwave_beaming']">
+            <span ng-switch-when="true" class="fa fa-check-circle-o text-success"></span>
+            <span ng-switch-when="false" class="fa fa-times-circle-o text-danger"></span>
+            <span ng-switch-default class="fa fa-question-circle-o text-warning"></span>
+        </span>
+    </div>
+</div>
+
+<div class="row" ng-if="selectedThing.properties['zwave_wakeup_time']">
+    <div class="col-md-4" i18n="zwave.WakeupTime"></div>
+    <div class="col-md-8">{{selectedThing.properties['zwave_wakeup_time']}}</div>
+</div>
+
+<div class="row" ng-if="selectedThing.properties['zwave_neighbours']">
+    <div class="col-md-4" i18n="zwave.Neighbors"></div>
+    <div class="col-md-8">{{selectedThing.properties['zwave_neighbours'].split(",").join(", ")}}</div>
+</div>
