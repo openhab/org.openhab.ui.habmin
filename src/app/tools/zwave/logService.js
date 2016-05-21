@@ -918,7 +918,7 @@ function ZWaveLogReader() {
             }
         },
         102: {
-            name: "BARRIER_OPERATOR",
+            name: "BARRIER_OPERATOR"
         },
         112: {
             name: "CONFIGURATION",
@@ -1411,6 +1411,11 @@ function ZWaveLogReader() {
             ref: "Security"
         },
         {
+            string: "SECURITY_SENT",
+            processor: processSecureDataTx,
+            ref: "Security"
+        },
+        {
             string: "SECURITY_RECEIVED",
             processor: processSecureDataRx,
             ref: "Security"
@@ -1713,9 +1718,28 @@ function ZWaveLogReader() {
         var bytes = clearData.split(' ');
 
         // First byte is sequence field
-        HEX2DEC(bytes[0]);
+//        HEX2DEC(bytes[0]);
 
         data.endClassPacket = processCommandClass(node, 0, bytes.slice(1));
+
+        data.content = content + data.endClassPacket.content;
+        return data
+    }
+
+    function processSecureDataTx(node, process, message) {
+        var data = {
+            node: node
+        };
+
+        var content = "<span class='badge badge-info'><span class='text-error icon-lock'></span>SECURE TXD</span> ";
+
+        var clearData = message.substr(message.indexOf("SECURITY_SENT ") + 14).trim();
+        var bytes = clearData.split(' ');
+
+        // First byte is sequence field
+//        HEX2DEC(bytes[0]);
+
+        data.endClassPacket = processCommandClass(node, 0, bytes);
 
         data.content = content + data.endClassPacket.content;
         return data

@@ -225,8 +225,8 @@
                                 </div>
                                 <div class="pull-right">
                                     <ng-include bs-modifiable="false"
-                                            ng-init="cfgType='CFG';"
-                                            src="'configuration/itemWidget.tpl.html'">
+                                                ng-init="cfgType='CFG';"
+                                                src="'configuration/itemWidget.tpl.html'">
                                     </ng-include>
                                 </div>
                             </div>
@@ -560,6 +560,28 @@
                     </div>
                 </div>
 
+                <!-- ATTRIBUTES -->
+                <div>
+                    <a role="presentation"
+                       ng-class="{'list-group-item config-panel-title':true, 'active': panelDisplayed=='ATTRIBUTES'}"
+                       ng-click="setPanelDisplayed('ATTRIBUTES')">
+                        <span class="fa fa-fw fa-pencil-square"></span>
+                        <span i18n="thing.Attributes"></span>
+                    </a>
+                </div>
+                <div collapse="panelDisplayed!='ATTRIBUTES'" class="panel-form">
+                    <div ng-switch="selectedThing.thingTypeUID.split(':')[0]">
+                        <div ng-switch-when="zwave">
+                            <ng-include src="'configuration/thingAttributesZWave.tpl.html'"></ng-include>
+                        </div>
+
+                        <div ng-switch-default>
+                            <div class="row" ng-repeat="(attName, attValue) in selectedThing.properties">
+                                <div class="col-md-4">{{attName}}</div>
+                                <div class="col-md-8">{{attValue}}</div>
+                            </div>
+                        </div>
+                    </div>
             </form>
         </div>
 
