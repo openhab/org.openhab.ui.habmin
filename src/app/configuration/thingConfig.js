@@ -661,7 +661,7 @@ angular.module('Config.Things', [
         $scope.thingSave = function () {
             var promises = [];
 
-            // Check if anything at thing level needs updating
+            // Check if anything at thing level needs updating (ie Channel Configuration)
             var thingUpdated = false;
             var updatedThing = {};
             if ($scope.thingConfigForm.modifiedChildFormsCount !== 0) {

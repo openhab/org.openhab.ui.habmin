@@ -12,21 +12,51 @@ angular.module('bootstrapCombo', [
     .directive('bootstrapCombo', function ($compile) {
         return {
             restrict: 'E',
+            require: "ngModel",
             scope: {
                 items: '=dropdownData',
                 selectedItem: '=preselectedItem',
                 ngModel: '=',
                 placeholder: '@'
             },
-            link: function (scope, element, attrs) {
+            link: function (scope, element, attrs,ngModel) {
+                scope.value = scope.ngModel;
+                for(var item in scope.items) {
+                    if(scope.items[item].value == parseInt(scope.ngModel)) {
+                        scope.value = scope.items[item].label;
+                        break;
+                    }
+                }
 
                 scope.selectVal = function (item) {
-                    scope.ngModel = item.value;
+                    scope.value = item.label;
+                    ngModel.$setViewValue(item.value);
                 };
+
+                ngModel.$render = function() {
+                    var value = ngModel.$viewValue;
+                    for(var item in scope.items) {
+                        if(scope.items[item].value == parseInt(ngModel.$viewValue)) {
+                            value = scope.items[item].label;
+                            break;
+                        }
+                    }
+                    scope.value = value;
+                };
+
+                scope.$watch("value", function() {
+                    for(var item in scope.items) {
+                        if(scope.items[item].label == scope.value) {
+                            ngModel.$setViewValue(scope.items[item].value);
+                            return;
+                        }
+                    }
+                    ngModel.$setViewValue(scope.value);
+                });
 
                 var html = '';
                 html += '  <div class="input-group">';
-                html += '    <input class="form-control" type="text" data-ng-model ="ngModel" data-ng-attr-placeholder="{{placeholder}}" />';
+                html += '    <input class="form-control" type="text" ng-model="value" ng-attr-placeholder="{{placeholder}}" />';
                 html += '    <div class="input-group-btn" data-ng-if="items.length">';
                 html += '      <div class="btn-group ">';
                 html += '        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" >';
