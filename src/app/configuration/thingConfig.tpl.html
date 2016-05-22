@@ -277,8 +277,7 @@
                             <ui-select id="inputBridge"
                                        ng-model="selectedThing.bridgeUID"
                                        theme="bootstrap"
-                                       search-enabled="false"
-                                    >
+                                       search-enabled="false">
                                 <ui-select-match i18n-attr="{placeholder: 'thing.SelectBridge'}">
                                     <habmin-icon class="fa fa-fw"
                                                  category="{{$select.selected.item.category}}"></habmin-icon>
@@ -561,7 +560,7 @@
                 </div>
 
                 <!-- ATTRIBUTES -->
-                <div>
+                <div ng-show="selectedThingHasProperties">
                     <a role="presentation"
                        ng-class="{'list-group-item config-panel-title':true, 'active': panelDisplayed=='ATTRIBUTES'}"
                        ng-click="setPanelDisplayed('ATTRIBUTES')">

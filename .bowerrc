@@ -1,5 +1,7 @@
 {
   "directory": "vendor",
-  "json": "bower.json"
+  "interactive": true,
+  "color": true,
+  "save": true
 }
 

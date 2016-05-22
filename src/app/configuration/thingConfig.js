@@ -87,6 +87,7 @@ angular.module('Config.Things', [
         $scope.newThing = false;
         $scope.insertMode = false;
 
+        $scope.selectedThingHasProperties = false;
         $scope.showAdvancedSettings = false;
 
         $scope.filterStatus = [];
@@ -332,6 +333,11 @@ angular.module('Config.Things', [
             $scope.selectedThing = null;
             $scope.panelDisplayed = 'PROPERTIES';
 
+            $scope.selectedThingHasProperties = false;
+            for(var key in thing.properties){
+                $scope.selectedThingHasProperties = true;
+                break;
+            }
             $scope.thingConfigForm.reset();
 
             var promises = {};
