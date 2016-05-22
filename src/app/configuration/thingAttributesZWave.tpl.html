@@ -5,12 +5,14 @@
 
 <div class="row">
     <div class="col-md-4" i18n="zwave.Manufacturer"></div>
-    <div class="col-md-8">{{dec2hex(selectedThing.properties['zwave_manufacturer'], 4)}}</div>
+    <div class="col-md-8" ng-if="selectedThing.properties['zwave_manufacturer']">
+        {{dec2hex(selectedThing.properties['zwave_manufacturer'], 4)}}
+    </div>
 </div>
 <div class="row">
     <div class="col-md-4" i18n="zwave.TypeId"></div>
-    <div class="col-md-8">{{dec2hex(selectedThing.properties['zwave_devicetype'],
-        4)}}:{{dec2hex(selectedThing.properties['zwave_deviceid'], 4)}}
+    <div class="col-md-8" ng-if="selectedThing.properties['zwave_devicetype']">
+        {{dec2hex(selectedThing.properties['zwave_devicetype'],4)}}:{{dec2hex(selectedThing.properties['zwave_deviceid'],4)}}
     </div>
 </div>
 <div class="row">
