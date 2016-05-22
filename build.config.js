@@ -161,7 +161,9 @@ module.exports = {
         'de-DE',
         'en-GB',
         'fr-FR',
-        'it-IT'
+        'it-IT',
+        'pl-PL',
+        'sv-SE'
     ],
 
     /**

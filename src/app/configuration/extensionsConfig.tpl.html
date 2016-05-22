@@ -3,16 +3,16 @@
     <div class="panel panel-default">
         <!-- Header -->
         <div class="panel-heading">
-            Extension Sets
+            <span i18n="extensions.ExtensionTypes"></span>
         </div>
 
         <!-- Body -->
         <div class="list-group habmin-list" resize-panel>
-            <!-- BINDING LIST -->
+            <!-- EXTENSION TYPE LIST -->
             <div ng-if="typesCnt>0" ng-repeat="extensionType in extensionTypes | orderBy:'label'">
                 <a role="presentation" ng-class="{'list-group-item':true, 'active': extensionType==selectedType}"
                    ng-click="selectType(extensionType)">
-                   <span>{{extensionType.label}}&nbsp;</span>
+                    <span>{{extensionType.label}}&nbsp;</span>
                 </a>
             </div>
 
@@ -38,113 +38,41 @@
     <div class="panel panel-default">
         <!-- Header -->
         <div class="panel-heading">
-            <h3 class="panel-title pull-left">
-                <span i18n="binding.Information"></span>&nbsp;<span><i>{{selectedBinding.name}}</i></span>
-            </h3>
-
-            <div class="pull-right btn-group dropdown">
-                <button type="button"
-                        class="btn btn-default dropdown-toggle"
-                        data-toggle="dropdown">
-                    <span class="fa fa-cog"></span>
-                    <span i18n="thing.Tools"></span>
-                    <span class="caret"></span>
-                    <span class="sr-only">Dropdown</span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li ng-repeat="config in selectedThingConfig.parameters">
-                        <a ng-if="config.groupName=='actions'" ng-click="doAction(config)">
-                            <span class="fa fa-fw"></span>
-                            <span class="fa fa-fw fa-user-plus"></span>
-                            <span>{{config.label}}</span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a ng-click="showAdvancedSettings=!showAdvancedSettings">
-                            <span class="fa fa-fw" ng-class="{'fa-check-square-o': showAdvancedSettings}"></span>
-                            <span class="fa fa-fw fa-user-plus"></span>
-                            <span i18n="thing.AdvancedMode"></span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div class="clearfix"></div>
+            <span i18n="extensions.Extensions"></span>
         </div>
 
         <!-- Body -->
         <div class="list-group habmin-list" resize-panel>
-            <form name="thingConfigForm" novalidate ng-show="selectedBinding" style="height:100%">
-                <!-- DESCRIPTION -->
-                <div>
-                    <a role="presentation"
-                       ng-class="{'list-group-item config-panel-title':true, 'active': panelDisplayed=='DESCRIPTION'}"
-                       ng-click="setPanelDisplayed('DESCRIPTION')">
-                        <span class="fa fa-fw fa-book"></span>
-                        <span i18n="thing.Description"></span>
-                    </a>
-                </div>
-                <div collapse="panelDisplayed!='DESCRIPTION'" class="panel-form">
-                    <div class="habmin-info">
-                        <label i18n="binding.Description"></label>
 
-                        <div class="well well-sm" ng-bind-html="selectedBinding.description">
-                        </div>
-                    </div>
+            <!-- EXTENSION LIST -->
+            <div ng-if="extensionsCnt>0"
+                 ng-repeat="extension in extensions | filter: {type: selectedType.id} | orderBy:'label'">
+                <a role="presentation" ng-class="{'list-group-item':true, 'active': extension==selectedType}">
+                    <span ng-show="extension.inprogress">
+                        <span class="fa fa-fw fa-spin fa-circle-o-notch text-warning"></span>
+                    </span>
+                    <span ng-hide="extension.inprogress">
+                        <span ng-if="extension.installed" class="fa fa-fw fa-check-circle-o text-success"></span>
+                        <span ng-if="!extension.installed" class="fa fa-fw fa-circle-o text-muted"></span>
+                    </span>
+                    <span>{{extension.label}}&nbsp;</span>
 
-                    <div class="habmin-info">
-                        <label i18n="binding.Author"></label>
-
-                        <div class="well well-sm">
-                            {{selectedBinding.author}}
-                        </div>
-                    </div>
-                </div>
-
-
-                <!-- CONFIGURATION GROUPS -->
-                <div ng-repeat="group in bindingConfig.parameterGroups">
-                    <div>
-                        <a role="presentation"
-                           ng-class="{'list-group-item list-group-item-heading':true, 'active': panelDisplayed=='CONFIG-{{group.name}}'}"
-                           ng-click="setPanelDisplayed('CONFIG-{{group.name}}')"
-                           ng-if="configGroupAdvanced(group)||showAdvancedSettings">
-                            <habmin-icon class="fa-fw" cfgcontext="{{group.context}}"></habmin-icon>
-                            <span>{{group.label}}</span>
-                        </a>
-                    </div>
-                    <div collapse="$parent.panelDisplayed!='CONFIG-{{group.name}}'"
-                         class="panel-form">
-                        <div ng-repeat="config in bindingConfig.parameters">
-                            <div class="form-group"
-                                 ng-if="configGroupFilter(config, group.name) && (!config.advanced||showAdvancedSettings)">
-                                <ng-include src="'configuration/eshConfigParam.tpl.html'"></ng-include>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CONFIGURATION UNGROUPED -->
-                <div ng-if="bindingHasUngroupedParams()">
-                    <div>
-                        <a role="presentation"
-                           ng-class="{'list-group-item list-group-item-heading':true, 'active': panelDisplayed=='CONFIG-ungrouped'}"
-                           ng-click="setPanelDisplayed('CONFIG-ungrouped')">
-                            <span class="fa fa-fw fa-wrench"></span>
-                            <span i18n="thing.Configuration"></span>
-                        </a>
-                    </div>
-                    <div collapse="$parent.panelDisplayed!='CONFIG-ungrouped'"
-                         class="panel-form">
-                        <div ng-repeat="config in bindingConfig.parameters">
-                            <div class="form-group"
-                                 ng-if="configGroupFilter(config, null) && (!config.advanced||showAdvancedSettings)">
-                                <ng-include src="'configuration/eshConfigParam.tpl.html'"></ng-include>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
+                    <span class="pull-right" ng-hide="extension.inprogress">
+                        <button type="button" class="btn btn-xs btn-default"
+                                ng-if="!extension.installed"
+                                ng-click="installExtension(extension)">
+                            <span class="fa fa-fw fa-plus-circle text-success"></span>
+                            <span i18n="extensions.Install"></span>
+                        </button>
+                        <button type="button" class="btn btn-xs btn-default"
+                                ng-if="extension.installed"
+                                ng-click="uninstallExtension(extension)">
+                            <span class="fa fa-fw fa-trash text-danger"></span>
+                            <span i18n="extensions.Uninstall"></span>
+                        </button>
+                    </span>
+                </a>
+            </div>
         </div>
 
         <!-- Footer -->

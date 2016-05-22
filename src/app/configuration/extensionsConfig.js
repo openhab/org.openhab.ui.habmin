@@ -13,9 +13,7 @@ angular.module('Config.Extensions', [
     'ngLocalize',
     'HABmin.userModel',
     'HABmin.extensionModel',
-    'Config.parameter',
     'angular-growl',
-    'ngVis',
     'ResizePanel'
 ])
 
@@ -32,7 +30,7 @@ angular.module('Config.Extensions', [
             resolve: {
                 // Make sure the localisation files are resolved before the controller runs
                 localisations: function (locale) {
-                    return locale.ready('habmin');
+                    return locale.ready('extensions');
                 }
             }
         });
@@ -40,42 +38,45 @@ angular.module('Config.Extensions', [
 
     .controller('ExtensionsConfigCtrl',
     function BindingConfigCtrl($scope, locale, growl, $timeout, $window, $http, $interval, UserService, ExtensionModel) {
-        $scope.panelDisplayed = 'DESCRIPTION';
+        $scope.extensions = null;
         $scope.extensionTypes = null;
-        $scope.bindingsCnt = -1;
+        $scope.typesCnt = -1;
+        $scope.extensionsCnt = -1;
+
+        ExtensionModel.getExtensions().then(
+            function (extensions) {
+                $scope.extensions = extensions;
+                $scope.extensionsCnt = extensions.length;
+            },
+            function (reason) {
+                // Handle failure
+                growl.warning(locale.getString("extensions.ErrorGettingExtensions"));
+            }
+        );
 
         ExtensionModel.getTypes().then(
             function (extensionTypes) {
                 $scope.extensionTypes = extensionTypes;
                 $scope.typesCnt = extensionTypes.length;
+                $scope.selectedType = $scope.extensionTypes[0];
             },
             function (reason) {
                 // Handle failure
-                growl.warning(locale.getString("habmin.ErrorGettingBindings"));
+                growl.warning(locale.getString("extensions.ErrorGettingExtensions"));
             }
         );
 
-        $scope.selectBinding = function (binding) {
-            $scope.setPanelDisplayed("DESCRIPTION");
-            $scope.selectedBinding = binding;
-
-            if (binding.configDescriptionURI != null) {
-                // Get the configuration
-                ConfigModel.getConfig(binding.configDescriptionURI).then(
-                    function (cfg) {
-                        $scope.bindingConfig = cfg;
-                    },
-                    function () {
-                        $scope.bindingConfig = null;
-                    }
-                );
-            }
+        $scope.selectType = function (extensionType) {
+            $scope.selectedType = extensionType;
         };
 
-        $scope.setPanelDisplayed = function (panel) {
-            $scope.panelDisplayed = panel;
+        $scope.installExtension = function (extension) {
+            ExtensionModel.installExtension(extension);
         };
 
+        $scope.uninstallExtension = function (extension) {
+            ExtensionModel.uninstallExtension(extension);
+        };
 
     })
 
