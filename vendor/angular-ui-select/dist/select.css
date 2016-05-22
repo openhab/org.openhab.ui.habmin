@@ -1,7 +1,7 @@
 /*!
  * ui-select
  * http://github.com/angular-ui/ui-select
- * Version: 0.12.1 - 2015-08-06T13:28:34.992Z
+ * Version: 0.17.1 - 2016-05-16T19:31:33.034Z
  * License: MIT
  */
 
@@ -23,6 +23,11 @@
   outline: 0 !important;
   left: 0px !important;
   top: 0px !important;
+}
+
+
+.ui-select-choices-row:hover {
+  background-color: #f5f5f5;
 }
 
 /* Select2 theme */
@@ -55,10 +60,6 @@ body > .select2-container.open {
     border-top-right-radius: 0;
 }
 .ui-select-container[theme="select2"].direction-up .ui-select-dropdown {
-    bottom: 100%;
-    top: auto;
-    position: absolute;
-
     border-radius: 4px; /* FIXME hardcoded value :-/ */
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
@@ -101,10 +102,6 @@ body > .select2-container.open {
 
 /* Handle up direction Selectize */
 .ui-select-container[theme="selectize"].direction-up .ui-select-dropdown {
-    bottom: 100%;
-    top: auto;
-    position: absolute;
-
     box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.25);
 
     margin-top: -2px; /* FIXME hardcoded value :-/ */
@@ -164,13 +161,12 @@ body > .select2-container.open {
 }
 
 /* See Scrollable Menu with Bootstrap 3 http://stackoverflow.com/questions/19227496 */
-.ui-select-bootstrap > .ui-select-choices {
+.ui-select-bootstrap > .ui-select-choices ,.ui-select-bootstrap > .ui-select-no-choice {
   width: 100%;
   height: auto;
   max-height: 200px;
   overflow-x: hidden;
   margin-top: -1px;
-  min-width: 50px;
 }
 
 body > .ui-select-bootstrap.open {
@@ -204,7 +200,11 @@ body > .ui-select-bootstrap.open {
   position: relative;
 }
 
-.ui-select-multiple .ui-select-match-item.dropping-before:before {
+.ui-select-multiple .ui-select-match-item.dropping .ui-select-match-close {
+  pointer-events: none;
+}
+
+.ui-select-multiple:hover .ui-select-match-item.dropping-before:before {
   content: "";
   position: absolute;
   top: 0;
@@ -214,7 +214,7 @@ body > .ui-select-bootstrap.open {
   border-left: 1px solid #428bca;
 }
 
-.ui-select-multiple .ui-select-match-item.dropping-after:after {
+.ui-select-multiple:hover .ui-select-match-item.dropping-after:after {
   content: "";
   position: absolute;
   top: 0;
@@ -222,19 +222,6 @@ body > .ui-select-bootstrap.open {
   height: 100%;
   margin-left: 2px;
   border-right: 1px solid #428bca;
-}
-
-.ui-select-bootstrap .ui-select-placeholder {
-    color: #999;
-    opacity: 1;
-}
-
-.ui-select-bootstrap .ui-select-placeholder {
-    color: #999;
-}
-
-.ui-select-bootstrap .ui-select-placeholder {
-    color: #999;
 }
 
 .ui-select-bootstrap .ui-select-choices-row>a {
@@ -280,9 +267,5 @@ body > .ui-select-bootstrap.open {
 
 /* Handle up direction Bootstrap */
 .ui-select-container[theme="bootstrap"].direction-up .ui-select-dropdown {
-    bottom: 100%;
-    top: auto;
-    position: absolute;
-
     box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.25);
 }
