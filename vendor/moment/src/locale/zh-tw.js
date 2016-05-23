@@ -15,12 +15,12 @@ export default moment.defineLocale('zh-tw', {
         LTS : 'Ah點m分s秒',
         L : 'YYYY年MMMD日',
         LL : 'YYYY年MMMD日',
-        LLL : 'YYYY年MMMD日LT',
-        LLLL : 'YYYY年MMMD日ddddLT',
+        LLL : 'YYYY年MMMD日Ah點mm分',
+        LLLL : 'YYYY年MMMD日ddddAh點mm分',
         l : 'YYYY年MMMD日',
         ll : 'YYYY年MMMD日',
-        lll : 'YYYY年MMMD日LT',
-        llll : 'YYYY年MMMD日ddddLT'
+        lll : 'YYYY年MMMD日Ah點mm分',
+        llll : 'YYYY年MMMD日ddddAh點mm分'
     },
     meridiemParse: /早上|上午|中午|下午|晚上/,
     meridiemHour : function (hour, meridiem) {
@@ -77,15 +77,15 @@ export default moment.defineLocale('zh-tw', {
         future : '%s內',
         past : '%s前',
         s : '幾秒',
-        m : '一分鐘',
+        m : '1分鐘',
         mm : '%d分鐘',
-        h : '一小時',
+        h : '1小時',
         hh : '%d小時',
-        d : '一天',
+        d : '1天',
         dd : '%d天',
-        M : '一個月',
+        M : '1個月',
         MM : '%d個月',
-        y : '一年',
+        y : '1年',
         yy : '%d年'
     }
 });

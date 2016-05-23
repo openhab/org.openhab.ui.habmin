@@ -2,8 +2,9 @@
 //! locale : chuvash (cv)
 //! author : Anatoly Mironov : https://github.com/mirontoli
 
-(function (global, factory) {
-   typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('../moment')) :
+;(function (global, factory) {
+   typeof exports === 'object' && typeof module !== 'undefined'
+       && typeof require === 'function' ? factory(require('../moment')) :
    typeof define === 'function' && define.amd ? define(['moment'], factory) :
    factory(global.moment)
 }(this, function (moment) { 'use strict';
@@ -17,11 +18,11 @@
         weekdaysMin : 'вр_тн_ыт_юн_кҫ_эр_шм'.split('_'),
         longDateFormat : {
             LT : 'HH:mm',
-            LTS : 'LT:ss',
+            LTS : 'HH:mm:ss',
             L : 'DD-MM-YYYY',
             LL : 'YYYY [ҫулхи] MMMM [уйӑхӗн] D[-мӗшӗ]',
-            LLL : 'YYYY [ҫулхи] MMMM [уйӑхӗн] D[-мӗшӗ], LT',
-            LLLL : 'dddd, YYYY [ҫулхи] MMMM [уйӑхӗн] D[-мӗшӗ], LT'
+            LLL : 'YYYY [ҫулхи] MMMM [уйӑхӗн] D[-мӗшӗ], HH:mm',
+            LLLL : 'dddd, YYYY [ҫулхи] MMMM [уйӑхӗн] D[-мӗшӗ], HH:mm'
         },
         calendar : {
             sameDay: '[Паян] LT [сехетре]',

@@ -6,6 +6,7 @@ import { Moment, isMoment } from '../moment/constructor';
 import { getLocale } from '../locale/locales';
 import { hooks } from '../utils/hooks';
 import checkOverflow from './check-overflow';
+import { isValid } from './valid';
 
 import { configFromStringAndArray }  from './from-string-and-array';
 import { configFromStringAndFormat } from './from-string-and-format';
@@ -14,9 +15,19 @@ import { configFromArray }           from './from-array';
 import { configFromObject }          from './from-object';
 
 function createFromConfig (config) {
+    var res = new Moment(checkOverflow(prepareConfig(config)));
+    if (res._nextDay) {
+        // Adding is smart enough around DST
+        res.add(1, 'd');
+        res._nextDay = undefined;
+    }
+
+    return res;
+}
+
+export function prepareConfig (config) {
     var input = config._i,
-        format = config._f,
-        res;
+        format = config._f;
 
     config._locale = config._locale || getLocale(config._l);
 
@@ -40,22 +51,19 @@ function createFromConfig (config) {
         configFromInput(config);
     }
 
-    res = new Moment(checkOverflow(config));
-    if (res._nextDay) {
-        // Adding is smart enough around DST
-        res.add(1, 'd');
-        res._nextDay = undefined;
+    if (!isValid(config)) {
+        config._d = null;
     }
 
-    return res;
+    return config;
 }
 
 function configFromInput(config) {
     var input = config._i;
     if (input === undefined) {
-        config._d = new Date();
+        config._d = new Date(hooks.now());
     } else if (isDate(input)) {
-        config._d = new Date(+input);
+        config._d = new Date(input.valueOf());
     } else if (typeof input === 'string') {
         configFromString(config);
     } else if (isArray(input)) {

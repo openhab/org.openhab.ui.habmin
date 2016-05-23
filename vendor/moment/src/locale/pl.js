@@ -43,14 +43,14 @@ export default moment.defineLocale('pl', {
     monthsShort : 'sty_lut_mar_kwi_maj_cze_lip_sie_wrz_paź_lis_gru'.split('_'),
     weekdays : 'niedziela_poniedziałek_wtorek_środa_czwartek_piątek_sobota'.split('_'),
     weekdaysShort : 'nie_pon_wt_śr_czw_pt_sb'.split('_'),
-    weekdaysMin : 'N_Pn_Wt_Śr_Cz_Pt_So'.split('_'),
+    weekdaysMin : 'Nd_Pn_Wt_Śr_Cz_Pt_So'.split('_'),
     longDateFormat : {
         LT : 'HH:mm',
-        LTS : 'LT:ss',
+        LTS : 'HH:mm:ss',
         L : 'DD.MM.YYYY',
         LL : 'D MMMM YYYY',
-        LLL : 'D MMMM YYYY LT',
-        LLLL : 'dddd, D MMMM YYYY LT'
+        LLL : 'D MMMM YYYY HH:mm',
+        LLLL : 'dddd, D MMMM YYYY HH:mm'
     },
     calendar : {
         sameDay: '[Dziś o] LT',

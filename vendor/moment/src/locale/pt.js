@@ -10,13 +10,14 @@ export default moment.defineLocale('pt', {
     weekdays : 'Domingo_Segunda-Feira_Terça-Feira_Quarta-Feira_Quinta-Feira_Sexta-Feira_Sábado'.split('_'),
     weekdaysShort : 'Dom_Seg_Ter_Qua_Qui_Sex_Sáb'.split('_'),
     weekdaysMin : 'Dom_2ª_3ª_4ª_5ª_6ª_Sáb'.split('_'),
+    weekdaysParseExact : true,
     longDateFormat : {
         LT : 'HH:mm',
-        LTS : 'LT:ss',
+        LTS : 'HH:mm:ss',
         L : 'DD/MM/YYYY',
         LL : 'D [de] MMMM [de] YYYY',
-        LLL : 'D [de] MMMM [de] YYYY LT',
-        LLLL : 'dddd, D [de] MMMM [de] YYYY LT'
+        LLL : 'D [de] MMMM [de] YYYY HH:mm',
+        LLLL : 'dddd, D [de] MMMM [de] YYYY HH:mm'
     },
     calendar : {
         sameDay: '[Hoje às] LT',

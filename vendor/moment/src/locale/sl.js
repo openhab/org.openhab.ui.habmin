@@ -78,16 +78,18 @@ function processRelativeTime(number, withoutSuffix, key, isFuture) {
 export default moment.defineLocale('sl', {
     months : 'januar_februar_marec_april_maj_junij_julij_avgust_september_oktober_november_december'.split('_'),
     monthsShort : 'jan._feb._mar._apr._maj._jun._jul._avg._sep._okt._nov._dec.'.split('_'),
+    monthsParseExact: true,
     weekdays : 'nedelja_ponedeljek_torek_sreda_četrtek_petek_sobota'.split('_'),
     weekdaysShort : 'ned._pon._tor._sre._čet._pet._sob.'.split('_'),
     weekdaysMin : 'ne_po_to_sr_če_pe_so'.split('_'),
+    weekdaysParseExact : true,
     longDateFormat : {
         LT : 'H:mm',
-        LTS : 'LT:ss',
+        LTS : 'H:mm:ss',
         L : 'DD. MM. YYYY',
         LL : 'D. MMMM YYYY',
-        LLL : 'D. MMMM YYYY LT',
-        LLLL : 'dddd, D. MMMM YYYY LT'
+        LLL : 'D. MMMM YYYY H:mm',
+        LLLL : 'dddd, D. MMMM YYYY H:mm'
     },
     calendar : {
         sameDay  : '[danes ob] LT',

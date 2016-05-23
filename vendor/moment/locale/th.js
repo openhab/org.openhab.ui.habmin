@@ -2,8 +2,9 @@
 //! locale : thai (th)
 //! author : Kridsada Thanabulpong : https://github.com/sirn
 
-(function (global, factory) {
-   typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('../moment')) :
+;(function (global, factory) {
+   typeof exports === 'object' && typeof module !== 'undefined'
+       && typeof require === 'function' ? factory(require('../moment')) :
    typeof define === 'function' && define.amd ? define(['moment'], factory) :
    factory(global.moment)
 }(this, function (moment) { 'use strict';
@@ -12,16 +13,18 @@
     var th = moment.defineLocale('th', {
         months : 'มกราคม_กุมภาพันธ์_มีนาคม_เมษายน_พฤษภาคม_มิถุนายน_กรกฎาคม_สิงหาคม_กันยายน_ตุลาคม_พฤศจิกายน_ธันวาคม'.split('_'),
         monthsShort : 'มกรา_กุมภา_มีนา_เมษา_พฤษภา_มิถุนา_กรกฎา_สิงหา_กันยา_ตุลา_พฤศจิกา_ธันวา'.split('_'),
+        monthsParseExact: true,
         weekdays : 'อาทิตย์_จันทร์_อังคาร_พุธ_พฤหัสบดี_ศุกร์_เสาร์'.split('_'),
         weekdaysShort : 'อาทิตย์_จันทร์_อังคาร_พุธ_พฤหัส_ศุกร์_เสาร์'.split('_'), // yes, three characters difference
         weekdaysMin : 'อา._จ._อ._พ._พฤ._ศ._ส.'.split('_'),
+        weekdaysParseExact : true,
         longDateFormat : {
             LT : 'H นาฬิกา m นาที',
-            LTS : 'LT s วินาที',
+            LTS : 'H นาฬิกา m นาที s วินาที',
             L : 'YYYY/MM/DD',
             LL : 'D MMMM YYYY',
-            LLL : 'D MMMM YYYY เวลา LT',
-            LLLL : 'วันddddที่ D MMMM YYYY เวลา LT'
+            LLL : 'D MMMM YYYY เวลา H นาฬิกา m นาที',
+            LLLL : 'วันddddที่ D MMMM YYYY เวลา H นาฬิกา m นาที'
         },
         meridiemParse: /ก่อนเที่ยง|หลังเที่ยง/,
         isPM: function (input) {

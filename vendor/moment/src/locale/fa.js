@@ -34,13 +34,14 @@ export default moment.defineLocale('fa', {
     weekdays : 'یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_جمعه_شنبه'.split('_'),
     weekdaysShort : 'یک\u200cشنبه_دوشنبه_سه\u200cشنبه_چهارشنبه_پنج\u200cشنبه_جمعه_شنبه'.split('_'),
     weekdaysMin : 'ی_د_س_چ_پ_ج_ش'.split('_'),
+    weekdaysParseExact : true,
     longDateFormat : {
         LT : 'HH:mm',
-        LTS : 'LT:ss',
+        LTS : 'HH:mm:ss',
         L : 'DD/MM/YYYY',
         LL : 'D MMMM YYYY',
-        LLL : 'D MMMM YYYY LT',
-        LLLL : 'dddd, D MMMM YYYY LT'
+        LLL : 'D MMMM YYYY HH:mm',
+        LLLL : 'dddd, D MMMM YYYY HH:mm'
     },
     meridiemParse: /قبل از ظهر|بعد از ظهر/,
     isPM: function (input) {

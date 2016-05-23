@@ -16,16 +16,18 @@ export default moment.defineLocale('fy', {
             return monthsShortWithDots[m.month()];
         }
     },
+    monthsParseExact : true,
     weekdays : 'snein_moandei_tiisdei_woansdei_tongersdei_freed_sneon'.split('_'),
     weekdaysShort : 'si._mo._ti._wo._to._fr._so.'.split('_'),
     weekdaysMin : 'Si_Mo_Ti_Wo_To_Fr_So'.split('_'),
+    weekdaysParseExact : true,
     longDateFormat : {
         LT : 'HH:mm',
-        LTS : 'LT:ss',
+        LTS : 'HH:mm:ss',
         L : 'DD-MM-YYYY',
         LL : 'D MMMM YYYY',
-        LLL : 'D MMMM YYYY LT',
-        LLLL : 'dddd D MMMM YYYY LT'
+        LLL : 'D MMMM YYYY HH:mm',
+        LLLL : 'dddd D MMMM YYYY HH:mm'
     },
     calendar : {
         sameDay: '[hjoed om] LT',

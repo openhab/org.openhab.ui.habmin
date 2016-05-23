@@ -7,16 +7,18 @@ import moment from '../moment';
 export default moment.defineLocale('ca', {
     months : 'gener_febrer_març_abril_maig_juny_juliol_agost_setembre_octubre_novembre_desembre'.split('_'),
     monthsShort : 'gen._febr._mar._abr._mai._jun._jul._ag._set._oct._nov._des.'.split('_'),
+    monthsParseExact : true,
     weekdays : 'diumenge_dilluns_dimarts_dimecres_dijous_divendres_dissabte'.split('_'),
     weekdaysShort : 'dg._dl._dt._dc._dj._dv._ds.'.split('_'),
     weekdaysMin : 'Dg_Dl_Dt_Dc_Dj_Dv_Ds'.split('_'),
+    weekdaysParseExact : true,
     longDateFormat : {
         LT : 'H:mm',
-        LTS : 'LT:ss',
+        LTS : 'H:mm:ss',
         L : 'DD/MM/YYYY',
         LL : 'D MMMM YYYY',
-        LLL : 'D MMMM YYYY LT',
-        LLLL : 'dddd D MMMM YYYY LT'
+        LLL : 'D MMMM YYYY H:mm',
+        LLLL : 'dddd D MMMM YYYY H:mm'
     },
     calendar : {
         sameDay : function () {

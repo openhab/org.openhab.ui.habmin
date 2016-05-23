@@ -10,14 +10,15 @@ export default moment.defineLocale('cy', {
     weekdays: 'Dydd Sul_Dydd Llun_Dydd Mawrth_Dydd Mercher_Dydd Iau_Dydd Gwener_Dydd Sadwrn'.split('_'),
     weekdaysShort: 'Sul_Llun_Maw_Mer_Iau_Gwe_Sad'.split('_'),
     weekdaysMin: 'Su_Ll_Ma_Me_Ia_Gw_Sa'.split('_'),
+    weekdaysParseExact : true,
     // time formats are the same as en-gb
     longDateFormat: {
         LT: 'HH:mm',
-        LTS : 'LT:ss',
+        LTS : 'HH:mm:ss',
         L: 'DD/MM/YYYY',
         LL: 'D MMMM YYYY',
-        LLL: 'D MMMM YYYY LT',
-        LLLL: 'dddd, D MMMM YYYY LT'
+        LLL: 'D MMMM YYYY HH:mm',
+        LLLL: 'dddd, D MMMM YYYY HH:mm'
     },
     calendar: {
         sameDay: '[Heddiw am] LT',

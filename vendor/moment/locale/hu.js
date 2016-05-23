@@ -2,8 +2,9 @@
 //! locale : hungarian (hu)
 //! author : Adam Brunner : https://github.com/adambrunner
 
-(function (global, factory) {
-   typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('../moment')) :
+;(function (global, factory) {
+   typeof exports === 'object' && typeof module !== 'undefined'
+       && typeof require === 'function' ? factory(require('../moment')) :
    typeof define === 'function' && define.amd ? define(['moment'], factory) :
    factory(global.moment)
 }(this, function (moment) { 'use strict';
@@ -51,11 +52,11 @@
         weekdaysMin : 'v_h_k_sze_cs_p_szo'.split('_'),
         longDateFormat : {
             LT : 'H:mm',
-            LTS : 'LT:ss',
+            LTS : 'H:mm:ss',
             L : 'YYYY.MM.DD.',
             LL : 'YYYY. MMMM D.',
-            LLL : 'YYYY. MMMM D., LT',
-            LLLL : 'YYYY. MMMM D., dddd LT'
+            LLL : 'YYYY. MMMM D. H:mm',
+            LLLL : 'YYYY. MMMM D., dddd H:mm'
         },
         meridiemParse: /de|du/i,
         isPM: function (input) {

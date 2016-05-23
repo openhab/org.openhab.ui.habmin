@@ -14,9 +14,9 @@ export default moment.defineLocale('en-ca', {
         LT : 'h:mm A',
         LTS : 'h:mm:ss A',
         L : 'YYYY-MM-DD',
-        LL : 'D MMMM, YYYY',
-        LLL : 'D MMMM, YYYY LT',
-        LLLL : 'dddd, D MMMM, YYYY LT'
+        LL : 'MMMM D, YYYY',
+        LLL : 'MMMM D, YYYY h:mm A',
+        LLLL : 'dddd, MMMM D, YYYY h:mm A'
     },
     calendar : {
         sameDay : '[Today at] LT',
@@ -51,4 +51,3 @@ export default moment.defineLocale('en-ca', {
         return number + output;
     }
 });
-

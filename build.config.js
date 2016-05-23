@@ -117,7 +117,8 @@ module.exports = {
             'vendor/slimScroll/jquery.slimscroll.js',
             'vendor/angular-slimscroll/angular-slimscroll.js',
             'vendor/angular-clipboard/angular-clipboard.js',
-            'vendor/angular-promise-extras/angular-promise-extras.js'
+            'vendor/angular-promise-extras/angular-promise-extras.js',
+            'vendor/angular-moment/angular-moment.js'
         ],
         css: [
             'vendor/angular-growl-v2/build/angular-growl.css',
