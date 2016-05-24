@@ -1,3 +1,31 @@
+<a name"0.1.5"></a>
+### 0.1.5 (2016-05-24)
+
+
+#### Bug Fixes
+
+* **Things:**
+  * Fixed freeform combobox editor ([cc1f65b9](https://github.com/cdjackson/HABmin2/commit/cc1f65b9))
+
+
+#### Features
+
+* **Extensions:**
+  * Add dynamic feedback of extension install in progress ([f006e359](https://github.com/cdjackson/HABmin2/commit/f006e359))
+* **Items:**
+  * Add tagging to item editor ([e20c646a](https://github.com/cdjackson/HABmin2/commit/e20c646a))
+* **Things:**
+  * Add thing property/attribute display ([85173b91](https://github.com/cdjackson/HABmin2/commit/85173b91))
+  * Added refresh button to manually refresh the items linked to a thing ([a8c6d2ad](https://github.com/cdjackson/HABmin2/commit/a8c6d2ad))
+* **UI:**
+  * Add extensions interfaces ([1e58b21c](https://github.com/cdjackson/HABmin2/commit/1e58b21c))
+  * Add Swedish translation ([16779e15](https://github.com/cdjackson/HABmin2/commit/16779e15))
+* **ZWave:**
+  * Improve rendering of device last wakeup time ([f8158ee8](https://github.com/cdjackson/HABmin2/commit/f8158ee8))
+  * Add Z-Wave specific attribute template ([b6ee2add](https://github.com/cdjackson/HABmin2/commit/b6ee2add))
+  * Add Z-Wave Plus Device Types ([f79fdcaf](https://github.com/cdjackson/HABmin2/commit/f79fdcaf))
+
+
 <a name="0.1.4"></a>
 ### 0.1.4 (2016-04-10)
 
