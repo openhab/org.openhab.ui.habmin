@@ -235,8 +235,8 @@
                         </div>
                     </div>
 
-                    <div ng-if="selectedThing.channels.length">
-                        <button type="button" class="btn"
+                    <div ng-if="selectedThing.channels.length" class="pull-right">
+                        <button type="button" class="btn btn-xs"
                                 ng-click="refreshChannelItems()"
                                 tooltip-placement="top" tooltip="Refresh all items on this thing"
                                 tooltip-popup-delay="1500"
@@ -244,7 +244,7 @@
                                 tooltip-animation="false"
                                 tooltip-append-to-body="true">
                             <span class="fa fa-refresh"></span>
-                            <span>Refresh Items</span>
+                            <span i18n="thing.RefreshItems">Refresh Items</span>
                         </button>
                     </div>
                 </div>

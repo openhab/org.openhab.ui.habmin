@@ -28,7 +28,8 @@ angular.module('Config.Things', [
     'ngInputModified',
     'ngPromiseExtras',
     'sitemapSwitchWidget',
-    'bootstrapCombo'
+    'bootstrapCombo',
+    'angularMoment'
 ])
 
     .config(function config($stateProvider) {
