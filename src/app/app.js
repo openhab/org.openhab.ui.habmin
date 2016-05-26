@@ -75,7 +75,8 @@ angular.module('HABmin', [
         'pl-PL': {name: "Polski", desc: "Polska"},
         'fr-FR': {name: "Fran&ccedil;ais", desc: "France"},
         'it-IT': {name: "Italiano", desc: "Italia"},
-        'sv-SE': {name: "Svenska", desc: "Sverige"}
+        'sv-SE': {name: "Svenska", desc: "Sverige"},
+        'nl-NL': {name: "Dutch", desc: "Netherlands"}
     })
     .value('localeFallbacks', {
         'en': 'en-GB',
@@ -83,7 +84,8 @@ angular.module('HABmin', [
         'pl': 'pl-PL',
         'fr': 'fr-FR',
         'it': 'it-IT',
-        'sv': 'sv-SE'
+        'sv': 'sv-SE',
+        'nl': 'nl-NL'
     })
 
     .config(function myAppConfig($stateProvider, $urlRouterProvider, growlProvider, pickAColorProvider, ngBlocklyProvider, uiSelectConfig) {

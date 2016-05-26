@@ -1,0 +1,13 @@
+{
+  "ChartPrefTitle": "Grafiek instellingen",
+  "ChartPeriod": "Grafiek periode",
+  "ChartLegend": "Toon lagenda",
+  "GeneralPrefTitle": "Algemene instellingen",
+  "Name": "Naam",
+  "Theme": "Thema",
+  "ThemeSelect": "Selecteer thema...",
+  "Language": "Taal",
+  "LanguageSelect": "Selecteer taal...",
+  "ChartPersistence": "Standaard persistentie dienst",
+  "ChartPersistenceSelect": "Selecteer de standaard persistentie..."
+}
