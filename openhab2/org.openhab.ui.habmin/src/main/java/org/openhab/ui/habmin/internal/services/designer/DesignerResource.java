@@ -31,7 +31,6 @@ import javax.ws.rs.core.UriInfo;
 import org.eclipse.smarthome.config.core.ConfigConstants;
 import org.eclipse.smarthome.core.items.ItemRegistry;
 import org.eclipse.smarthome.io.rest.RESTResource;
-import org.eclipse.smarthome.ui.items.ItemUIRegistry;
 import org.openhab.ui.habmin.HABminConstants;
 import org.openhab.ui.habmin.internal.services.designer.blocks.DesignerRuleCreator;
 import org.slf4j.Logger;
@@ -56,18 +55,18 @@ public class DesignerResource implements RESTResource {
     @Context
     UriInfo uriInfo;
 
-    static private ItemUIRegistry itemUIRegistry;
+    static private ItemRegistry itemRegistry;
 
-    public void setItemRegistry(ItemUIRegistry itemUIRegistry) {
-        DesignerResource.itemUIRegistry = itemUIRegistry;
+    public void setItemRegistry(ItemRegistry itemRegistry) {
+        DesignerResource.itemRegistry = itemRegistry;
     }
 
-    public void unsetItemRegistry(ItemRegistry itemUIRegistry) {
-        DesignerResource.itemUIRegistry = null;
+    public void unsetItemRegistry(ItemRegistry itemRegistry) {
+        DesignerResource.itemRegistry = null;
     }
 
-    static public ItemUIRegistry getItemRegistry() {
-        return itemUIRegistry;
+    static public ItemRegistry getItemRegistry() {
+        return itemRegistry;
     }
 
     @GET
