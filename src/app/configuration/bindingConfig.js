@@ -57,6 +57,7 @@ angular.module('Config.Bindings', [
 
         $scope.selectBinding = function (binding) {
             $scope.setPanelDisplayed("DESCRIPTION");
+            $scope.bindingConfig = null;
             $scope.selectedBinding = binding;
 
             if (binding.configDescriptionURI != null) {
