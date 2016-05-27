@@ -175,9 +175,9 @@ angular.module('Config.Things', [
             return true;
         };
 
-        $scope.dec2hex = function(value, places) {
+        $scope.dec2hex = function (value, places) {
             var template = "";
-            for(var c = 0; c < places; c++) {
+            for (var c = 0; c < places; c++) {
                 template += "0";
             }
             return (template + Number(value).toString(16)).substr(-places);
@@ -335,7 +335,7 @@ angular.module('Config.Things', [
             $scope.panelDisplayed = 'PROPERTIES';
 
             $scope.selectedThingHasProperties = false;
-            for(var key in thing.properties){
+            for (var key in thing.properties) {
                 $scope.selectedThingHasProperties = true;
                 break;
             }
@@ -496,19 +496,26 @@ angular.module('Config.Things', [
                 function () {
                     growl.success(locale.getString("thing.UnlinkItemOk"));
                 },
-                function () {
-                    growl.warning(locale.getString("thing.UnlinkItemFailed"));
+                function (response) {
+                    var msg;
+                    if (response != null && response.error != null) {
+                        msg = response.error.message;
+                    }
+                    else {
+                        msg = locale.getString("common.noResponse");
+                    }
+                    growl.warning(locale.getString("thing.UnlinkItemFailed", {message: msg}));
                 }
             );
         };
 
-        $scope.refreshChannelItems = function() {
+        $scope.refreshChannelItems = function () {
             if ($scope.selectedThing == null || $scope.selectedThing.channels == null) {
                 return;
             }
 
             for (var c = 0; c < $scope.selectedThing.channels.length; c++) {
-                for(var i = 0; i < $scope.selectedThing.channels[c].linkedItems.length; i++) {
+                for (var i = 0; i < $scope.selectedThing.channels[c].linkedItems.length; i++) {
                     ItemModel.sendCommand($scope.selectedThing.channels[c].linkedItems[i], "REFRESH");
                 }
             }
@@ -537,26 +544,40 @@ angular.module('Config.Things', [
                         function () {
                             growl.success(locale.getString("thing.DeleteItemOk"));
                         },
-                        function () {
-                            growl.warning(locale.getString("thing.DeleteItemFailed"));
+                        function (response) {
+                            var msg;
+                            if (response != null && response.error != null) {
+                                msg = response.error.message;
+                            }
+                            else {
+                                msg = locale.getString("common.noResponse");
+                            }
+                            growl.warning(locale.getString("thing.DeleteItemFailed", {message: msg}));
                         }
                     );
                 },
-                function () {
-                    growl.warning(locale.getString("thing.DeleteItemFailed"));
+                function (response) {
+                    var msg;
+                    if (response != null && response.error != null) {
+                        msg = response.error.message;
+                    }
+                    else {
+                        msg = locale.getString("common.noResponse");
+                    }
+                    growl.warning(locale.getString("thing.DeleteItemFailed", {message: msg}));
                 }
             );
         };
 
-        $scope.getValue = function(channel, value) {
-            if(value == "NULL") {
+        $scope.getValue = function (channel, value) {
+            if (value == "NULL") {
                 return "";
             }
-            if(channel == null || channel.channelType == null || channel.channelType.stateDescription == null) {
+            if (channel == null || channel.channelType == null || channel.channelType.stateDescription == null) {
                 return value;
             }
-            for(var state in channel.channelType.stateDescription.options) {
-                if(channel.channelType.stateDescription.options[state].value == value) {
+            for (var state in channel.channelType.stateDescription.options) {
+                if (channel.channelType.stateDescription.options[state].value == value) {
                     return channel.channelType.stateDescription.options[state].label;
                 }
             }
