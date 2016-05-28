@@ -16,6 +16,7 @@ angular.module('serverMonitor', [
     .service('ServerMonitor',
     function ($modal, $rootScope, ChartModel, growl, locale, UserService) {
         var modalInstance = null;
+        var reset = false;
 
         /**
          * Listen for the online/offline broadcasts and display a modal
@@ -24,7 +25,15 @@ angular.module('serverMonitor', [
         this.monitor = function () {
             $rootScope.$on("habminOnline", function (event, status) {
                 if (status == false) {
-                    if (modalInstance == null) {
+                    if (modalInstance == null && reset == false) {
+                        reset = true;
+                        var scope = $rootScope.$new();
+
+                        scope.cancel = function () {
+                            modalInstance.dismiss("cancel");
+                            modalInstance = null;
+                        };
+
                         modalInstance = $modal.open({
                             backdrop: 'static',
                             keyboard: true,
@@ -34,14 +43,21 @@ angular.module('serverMonitor', [
                             '<span class="fa fa-exclamation-triangle text-danger"></span>' +
                             '&nbsp;' +
                             '<span i18n="habmin.StatusOffline"></span>' +
-                            '</h3></div>',
-                            windowClass: UserService.getTheme()
+                            '</h3></div>' +
+                            '<div class="modal-footer">' +
+                            '<button class="btn btn-xs btn-warning" type="button" ng-click="cancel()" i18n="common.close"></button>' +
+                            '</div>',
+                            windowClass: UserService.getTheme(),
+                            scope: scope
                         });
                     }
                 }
-                else if (modalInstance != null) {
-                    modalInstance.close();
-                    modalInstance = null;
+                else {
+                    reset = false;
+                    if (modalInstance != null) {
+                        modalInstance.close();
+                        modalInstance = null;
+                    }
                 }
             });
         };
