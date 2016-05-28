@@ -12,7 +12,7 @@ angular.module('HABmin.extensionModel', [
     'ngLocalize'
 ])
 
-    .service('ExtensionModel', function ($http, $q,locale, growl) {
+    .service('ExtensionModel', function ($http, $q, locale, growl) {
         var extensionList = [];
         var extensionTypeList = [];
         var eventSrc;
@@ -34,15 +34,15 @@ angular.module('HABmin.extensionModel', [
                             if (extensionList[i].id == topic[2]) {
                                 extensionList[i].inprogress = false;
 
-                                if(topic[3] == "installed") {
+                                if (topic[3] == "installed") {
                                     extensionList[i].installed = true;
                                     growl.error(locale.getString("extensions.InstallOk", {extension: payload[0]}));
                                 }
-                                if(topic[3] == "uninstalled") {
+                                if (topic[3] == "uninstalled") {
                                     extensionList[i].installed = false;
                                     growl.error(locale.getString("extensions.UninstallOk", {extension: payload[0]}));
                                 }
-                                if(topic[3] == "failed") {
+                                if (topic[3] == "failed") {
                                     growl.error(locale.getString("extensions.CommandFailed", {message: payload[1]}));
                                 }
                                 break;

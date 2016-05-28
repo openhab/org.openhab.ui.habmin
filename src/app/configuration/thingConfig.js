@@ -469,7 +469,6 @@ angular.module('Config.Things', [
             )
         };
 
-
         $scope.getChannelItems = function (channel) {
             if ($scope.selectedThing == null || $scope.selectedThing.channels == null) {
                 return [];

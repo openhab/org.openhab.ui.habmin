@@ -35,6 +35,7 @@ angular.module('HABmin', [
     'ZWaveLogViewer',
     'ZWaveNetwork',
     'Config.Extensions',
+    'Config.Services',
     'Config.Bindings',
     'Config.Things',
     'Config.Items',

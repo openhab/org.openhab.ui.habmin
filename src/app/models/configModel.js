@@ -24,6 +24,15 @@ angular.module('HABmin.configModel', [
                 function (url) {
                     $http.get(url + "/" + uri)
                         .success(function (data) {
+                            angular.forEach(data.parameters, function (param) {
+                                if (param.type == "BOOLEAN" && (param.options == null || param.options.length == 0)) {
+                                    param.options = [
+                                        {label: "true", value: "true"},
+                                        {label: "false", value: "false"}
+                                    ];
+                                }
+                            });
+
                             deferred.resolve(data);
                         })
                         .error(function (data, status) {

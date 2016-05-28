@@ -75,7 +75,6 @@ angular.module('HABmin.persistenceModel', [
 
             var cacheState;
 
-
             var now = new Date().getTime();
 
             // Read the start and stop times

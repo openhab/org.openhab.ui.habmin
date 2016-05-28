@@ -37,9 +37,9 @@ angular.module('Config.Extensions', [
     })
 
     .controller('ExtensionsConfigCtrl',
-    function BindingConfigCtrl($scope, locale, growl, $timeout, $window, $http, $interval, UserService, ExtensionModel) {
-        $scope.extensions = null;
-        $scope.extensionTypes = null;
+    function ExtensionsConfigCtrl($scope, locale, growl, $timeout, $window, $http, $interval, UserService, ExtensionModel) {
+        $scope.extensions = [];
+        $scope.extensionTypes = [];
         $scope.typesCnt = -1;
         $scope.extensionsCnt = -1;
 
