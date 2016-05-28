@@ -1,8 +1,8 @@
 {
   "FormTitle": "Wymagane Logowanie",
-  "Version": "HABmin version",
-  "Server": "Serwer",
-  "User": "Login",
   "Password": "Hasło",
-  "Submit": "Zaloguj się"
+  "Server": "Serwer",
+  "Submit": "Zaloguj się",
+  "User": "Login",
+  "Version": "HABmin version"
 }

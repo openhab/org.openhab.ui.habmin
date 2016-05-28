@@ -1,6 +1,6 @@
 {
-  "NoneFound": "Brak powiązań",
-  "Information": "Właściwości powiązania",
   "Author": "Główny autor",
-  "Description": "Opis"
+  "Description": "Opis",
+  "Information": "Właściwości powiązania",
+  "NoneFound": "Brak powiązań"
 }

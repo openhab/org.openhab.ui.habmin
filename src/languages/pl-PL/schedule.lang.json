@@ -1,8 +1,8 @@
 {
-  "EditTitle": "Edytuj zdarzenie",
-  "EditStart": "Czas rozpoczęcia",
+  "EditDaily": "Całodzienne",
   "EditEnd": "Czas zakończenia",
   "EditLabel": "Tytuł",
-  "EditDaily": "Całodzienne",
-  "EditRepeat": "Powtórzenie"
+  "EditRepeat": "Powtórzenie",
+  "EditStart": "Czas rozpoczęcia",
+  "EditTitle": "Edytuj zdarzenie"
 }

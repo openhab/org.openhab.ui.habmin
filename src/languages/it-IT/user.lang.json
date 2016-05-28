@@ -1,13 +1,13 @@
 {
-  "ChartPrefTitle": "Impostazioni Grafico",
-  "ChartPeriod": "Periodo Grafico",
   "ChartLegend": "Mostra Legenda",
+  "ChartPeriod": "Periodo Grafico",
+  "ChartPersistence": "Sistema Predefinito di Archiviazione",
+  "ChartPersistenceSelect": "Seleziona sistema di archiviazione predefinito...",
+  "ChartPrefTitle": "Impostazioni Grafico",
   "GeneralPrefTitle": "Impostazioni Generali",
-  "Name": "Nome",
-  "Theme": "Tema",
-  "ThemeSelect": "Seleziona il tuo tema...",
   "Language": "Lingua",
   "LanguageSelect": "Seleziona la tua lingua...",
-  "ChartPersistence": "Sistema Predefinito di Archiviazione",
-  "ChartPersistenceSelect": "Seleziona sistema di archiviazione predefinito..."
+  "Name": "Nome",
+  "Theme": "Tema",
+  "ThemeSelect": "Seleziona il tuo tema..."
 }

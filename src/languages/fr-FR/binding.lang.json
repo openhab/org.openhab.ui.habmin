@@ -1,6 +1,6 @@
 {
   "Author": "Auteur",
+  "Description": "Description",
   "Information": "Information sur le périphérique",
-  "NoneFound": "Pas d'objet trouvé",
-  "Description": "Description"
+  "NoneFound": "Pas d'objet trouvé"
 }

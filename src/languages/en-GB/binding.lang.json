@@ -1,6 +1,6 @@
 {
-  "NoneFound": "No bindings found",
-  "Information": "Binding Information",
   "Author": "Primary Author",
-  "Description": "Description"
+  "Description": "Description",
+  "Information": "Binding Information",
+  "NoneFound": "No bindings found"
 }

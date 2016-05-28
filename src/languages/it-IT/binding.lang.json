@@ -1,6 +1,6 @@
 {
-  "NoneFound": "Nessun bindings trovato",
-  "Information": "Informazioni Binding",
   "Author": "Autore Primario",
-  "Description": "Descrizione"
+  "Description": "Descrizione",
+  "Information": "Informazioni Binding",
+  "NoneFound": "Nessun bindings trovato"
 }

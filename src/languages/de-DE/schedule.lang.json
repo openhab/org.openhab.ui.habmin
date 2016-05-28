@@ -1,8 +1,8 @@
 {
-  "EditStart": "Beginn",
-  "EditEnd": "Ende",
-  "EditTitle": "Element bearbeiten",
   "EditDaily": "Ganztägiges Ereignis",
+  "EditEnd": "Ende",
   "EditLabel": "Beschreibung",
-  "EditRepeat": "Wiederholungsintervall"
+  "EditRepeat": "Wiederholungsintervall",
+  "EditStart": "Beginn",
+  "EditTitle": "Element bearbeiten"
 }

@@ -1,13 +1,13 @@
 {
-  "ChartPrefTitle": "Grafiek instellingen",
-  "ChartPeriod": "Grafiek periode",
   "ChartLegend": "Toon lagenda",
+  "ChartPeriod": "Grafiek periode",
+  "ChartPersistence": "Standaard persistentie dienst",
+  "ChartPersistenceSelect": "Selecteer de standaard persistentie...",
+  "ChartPrefTitle": "Grafiek instellingen",
   "GeneralPrefTitle": "Algemene instellingen",
-  "Name": "Naam",
-  "Theme": "Thema",
-  "ThemeSelect": "Selecteer thema...",
   "Language": "Taal",
   "LanguageSelect": "Selecteer taal...",
-  "ChartPersistence": "Standaard persistentie dienst",
-  "ChartPersistenceSelect": "Selecteer de standaard persistentie..."
+  "Name": "Naam",
+  "Theme": "Thema",
+  "ThemeSelect": "Selecteer thema..."
 }

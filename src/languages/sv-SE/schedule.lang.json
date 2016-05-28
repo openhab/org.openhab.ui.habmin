@@ -1,8 +1,8 @@
 {
-  "EditTitle": "Regidera händelse",
-  "EditStart": "Starttid",
+  "EditDaily": "Heldagshändelse",
   "EditEnd": "Sluttid",
   "EditLabel": "Titel",
-  "EditDaily": "Heldagshändelse",
-  "EditRepeat": "Repetitionsintervall"
+  "EditRepeat": "Repetitionsintervall",
+  "EditStart": "Starttid",
+  "EditTitle": "Regidera händelse"
 }

@@ -1,8 +1,8 @@
 {
   "FormTitle": "Inloggning krävs",
-  "Version": "HABmin version",
-  "Server": "Server",
-  "User": "Användarnamn",
   "Password": "Lösenord",
-  "Submit": "Logga in"
+  "Server": "Server",
+  "Submit": "Logga in",
+  "User": "Användarnamn",
+  "Version": "HABmin version"
 }

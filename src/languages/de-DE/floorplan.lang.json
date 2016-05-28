@@ -1,16 +1,16 @@
 {
-  "HotspotTitle": "Hotspot-Eigenschaften",
-  "UploadName": "Gebäudeplan-Name",
-  "SelectImage": "Wähle Bild",
-  "UploadTitle": "Upload Gebäudeplan",
+  "Delete": "Löschen",
+  "DeleteCheck": "Soll dieser Gebäudeplan wirklich gelöscht werden?",
   "Editor": "Gebäudeplan-Editor",
   "HotspotItem": "Item",
-  "PropertiesTitle": "Dashboard-Eigenschaften",
   "HotspotItemPlaceholder": "Wähle Item ...",
-  "PropertiesName": "Name",
+  "HotspotTitle": "Hotspot-Eigenschaften",
   "PropertiesCategory": "Kategorie",
-  "DeleteCheck": "Soll dieser Gebäudeplan wirklich gelöscht werden?",
-  "Delete": "Löschen",
+  "PropertiesName": "Name",
+  "PropertiesTitle": "Dashboard-Eigenschaften",
   "SaveError": "Fehler beim Speichern {name}",
-  "SaveOk": "Dashboard {name} erfolgreich gespeichert"
+  "SaveOk": "Dashboard {name} erfolgreich gespeichert",
+  "SelectImage": "Wähle Bild",
+  "UploadName": "Gebäudeplan-Name",
+  "UploadTitle": "Upload Gebäudeplan"
 }

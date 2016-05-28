@@ -1,6 +1,6 @@
 {
-  "NoneFound": "Geen bindingen gevonden",
-  "Information": "Binding informatie",
   "Author": "Auteur",
-  "Description": "Beschrijving"
+  "Description": "Beschrijving",
+  "Information": "Binding informatie",
+  "NoneFound": "Geen bindingen gevonden"
 }

@@ -1,8 +1,8 @@
 {
   "FormTitle": "Login Requis",
-  "Version": "HABmin version",
-  "Server": "Serveur",
-  "User": "Utilisateur",
   "Password": "Mot de passe",
-  "Submit": "Login"
+  "Server": "Serveur",
+  "Submit": "Login",
+  "User": "Utilisateur",
+  "Version": "HABmin version"
 }

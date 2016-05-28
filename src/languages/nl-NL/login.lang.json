@@ -1,8 +1,8 @@
 {
   "FormTitle": "Inloggen vereist",
-  "Version": "HABmin versie",
-  "Server": "Server",
-  "User": "Gebruikersnaam",
   "Password": "Passwoord",
-  "Submit": "Inloggen"
+  "Server": "Server",
+  "Submit": "Inloggen",
+  "User": "Gebruikersnaam",
+  "Version": "HABmin versie"
 }

@@ -1,11 +1,11 @@
 {
-  "ChartPrefTitle": "Diagramm Einstellungen",
-  "ChartPeriod": "Diagramm Zeitraum",
   "ChartLegend": "Beschreibungen anzeigen",
+  "ChartPeriod": "Diagramm Zeitraum",
+  "ChartPrefTitle": "Diagramm Einstellungen",
   "GeneralPrefTitle": "Allgemeine Einstellungen",
-  "Theme": "Theme",
-  "Name": "Name",
-  "ThemeSelect": "Theme auswählen ...",
   "Language": "Sprache",
-  "LanguageSelect": "Sprache auswählen ..."
+  "LanguageSelect": "Sprache auswählen ...",
+  "Name": "Name",
+  "Theme": "Theme",
+  "ThemeSelect": "Theme auswählen ..."
 }

@@ -1,13 +1,13 @@
 {
-  "ChartPrefTitle": "Chart Settings",
-  "ChartPeriod": "Chart Period",
   "ChartLegend": "Show Legend",
+  "ChartPeriod": "Chart Period",
+  "ChartPersistence": "Default Persistence Service",
+  "ChartPersistenceSelect": "Select default persistence...",
+  "ChartPrefTitle": "Chart Settings",
   "GeneralPrefTitle": "General Settings",
-  "Name": "Name",
-  "Theme": "Theme",
-  "ThemeSelect": "Select your theme...",
   "Language": "Language",
   "LanguageSelect": "Select your language...",
-  "ChartPersistence": "Default Persistence Service",
-  "ChartPersistenceSelect": "Select default persistence..."
+  "Name": "Name",
+  "Theme": "Theme",
+  "ThemeSelect": "Select your theme..."
 }

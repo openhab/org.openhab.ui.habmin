@@ -1,8 +1,8 @@
 {
-  "EditTitle": "Edit Event",
-  "EditStart": "Start Time",
+  "EditDaily": "All Day Event",
   "EditEnd": "End Time",
   "EditLabel": "Title",
-  "EditDaily": "All Day Event",
-  "EditRepeat": "Repeat Interval"
+  "EditRepeat": "Repeat Interval",
+  "EditStart": "Start Time",
+  "EditTitle": "Edit Event"
 }

@@ -1,8 +1,8 @@
 {
   "FormTitle": "Accesso Richiesto",
-  "Version": "Versione HABmin",
-  "Server": "Server",
-  "User": "Nome Utente",
   "Password": "Password",
-  "Submit": "Accesso"
+  "Server": "Server",
+  "Submit": "Accesso",
+  "User": "Nome Utente",
+  "Version": "Versione HABmin"
 }

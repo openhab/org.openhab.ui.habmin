@@ -1,8 +1,8 @@
 {
-  "Version": "HABmin-Version",
   "FormTitle": "Anmeldung erforderlich",
+  "Password": "Kennwort",
   "Server": "Server",
-  "User": "Benutzername",
   "Submit": "Absenden",
-  "Password": "Kennwort"
+  "User": "Benutzername",
+  "Version": "HABmin-Version"
 }

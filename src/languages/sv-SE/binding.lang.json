@@ -1,6 +1,6 @@
 {
-  "NoneFound": "Inga bindningar funna",
-  "Information": "Bindningsinformation",
   "Author": "Huvudsaklig skapare",
-  "Description": "Beskrivning"
+  "Description": "Beskrivning",
+  "Information": "Bindningsinformation",
+  "NoneFound": "Inga bindningar funna"
 }

@@ -1,8 +1,8 @@
 {
-  "EditTitle": "Aanpassen gebeurtenis",
-  "EditStart": "Start tijd",
+  "EditDaily": "Duurt hele dag gebeurtenis",
   "EditEnd": "Eind tijd",
   "EditLabel": "Titel",
-  "EditDaily": "Duurt hele dag gebeurtenis",
-  "EditRepeat": "Herhaal interval"
+  "EditRepeat": "Herhaal interval",
+  "EditStart": "Start tijd",
+  "EditTitle": "Aanpassen gebeurtenis"
 }
