@@ -7,9 +7,12 @@
  *
  * (c) 2014-2016 Chris Jackson (chris@cd-jackson.com)
  */
-angular.module('HABmin.extensionModel', [])
+angular.module('HABmin.extensionModel', [
+    'angular-growl',
+    'ngLocalize'
+])
 
-    .service('ExtensionModel', function ($http, $q, UserService, RestService) {
+    .service('ExtensionModel', function ($http, $q,locale, growl) {
         var extensionList = [];
         var extensionTypeList = [];
         var eventSrc;
@@ -29,13 +32,19 @@ angular.module('HABmin.extensionModel', [])
                     case 'ExtensionEvent':
                         for (var i = 0; i < extensionList.length; i++) {
                             if (extensionList[i].id == topic[2]) {
+                                extensionList[i].inprogress = false;
+
                                 if(topic[3] == "installed") {
                                     extensionList[i].installed = true;
+                                    growl.error(locale.getString("extensions.InstallOk", {extension: payload[0]}));
                                 }
                                 if(topic[3] == "uninstalled") {
                                     extensionList[i].installed = false;
+                                    growl.error(locale.getString("extensions.UninstallOk", {extension: payload[0]}));
                                 }
-                                extensionList[i].inprogress = false;
+                                if(topic[3] == "failed") {
+                                    growl.error(locale.getString("extensions.CommandFailed", {message: payload[1]}));
+                                }
                                 break;
                             }
                         }
