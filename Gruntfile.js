@@ -8,7 +8,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-contrib-watch');
+//  grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-conventional-changelog');
@@ -22,7 +22,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-shell');
-    grunt.loadNpmTasks('grunt-lesslint')
+    grunt.loadNpmTasks('grunt-lesslint');
+    grunt.loadNpmTasks('grunt-string-replace');
 
     /**
      * Load in our build configuration file.
@@ -708,6 +709,62 @@ module.exports = function (grunt) {
                 },
                 command: 'phonegap build android'
             }
+        },
+
+        /**
+         * String Replace functions to update android manifest
+         */
+        'string-replace': {
+            versionCode: { // update the version code stored in package.json
+                options: {
+                    replacements: [
+                        {
+                            pattern: /['"]androidVersionCode['"]:.*?['"](\d*)['"]/ig,
+                            replacement: function (match, p1, offset, string) {
+                                return '"androidVersionCode": "' + (parseInt(p1) + 1) + '"';
+                            }
+                        }
+                    ]
+                },
+                files: {
+                    'package.json': 'package.json'
+                }
+            },
+
+            androidVersionCode: { // update the version code stored in AndroidManifest.xml
+                options: {
+                    replacements: [
+                        {
+                            pattern: /android:versionCode=['"](\d*)['"]/ig,
+                            replacement: function (match, p1, offset, string) {
+                                var pkg = grunt.file.readJSON('package.json');
+                                grunt.log.writeln("pkg.androidVersionCode: " + pkg.androidVersionCode);
+                                grunt.log.writeln('Returning: ' + 'android:versionCode="' + pkg.androidVersionCode + '"');
+                                return 'android:versionCode="' + pkg.androidVersionCode + '"';
+                            }
+                        }
+                    ]
+                },
+                files: {
+                    'cordova/platforms/android/AndroidManifest.xml': 'cordova/platforms/android/AndroidManifest.xml'
+                }
+            },
+            androidVersionName: { // update the version name stored in AndroidManifest.xml
+                options: {
+                    replacements: [
+                        {
+                            pattern: /android:versionName=['"]([0-9.]*)['"]/ig,
+                            replacement: function (match, p1, offset, string) {
+                                var pkg = grunt.file.readJSON('package.json');
+                                return 'android:versionName="' + pkg.version + '"';
+                            }
+                        }
+                    ]
+                },
+                files: {
+                    'cordova/platforms/android/AndroidManifest.xml': 'cordova/platforms/android/AndroidManifest.xml'
+                }
+            }
         }
     };
 
@@ -820,14 +877,18 @@ module.exports = function (grunt) {
      * Phonegap compiler - internal...
      */
     grunt.registerTask('build_cordova', [
-        'copy:cordova_build', 'index:cordova', 'shell:build_android', 'copy:cordova_android'
+        'copy:cordova_build', 'index:cordova',
+        'string-replace:versionCode', 'string-replace:androidVersionCode', 'string-replace:androidVersionName',
+        'shell:build_android', 'copy:cordova_android'
     ]);
 
     /**
      * Phonegap compiler - internal...
      */
     grunt.registerTask('compile_cordova', [
-        'copy:cordova_build', 'index:cordova', 'shell:build_android', 'copy:cordova_android'
+        'copy:cordova_build', 'index:cordova',
+        'string-replace:versionCode', 'string-replace:androidVersionCode', 'string-replace:androidVersionName',
+        'shell:build_android', 'copy:cordova_android'
     ]);
 
     /**

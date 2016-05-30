@@ -8,6 +8,8 @@
   "Language": "Language",
   "LanguageSelect": "Select your language...",
   "Name": "Name",
+  "ServerAddress": "Address",
+  "ServerPrefTitle": "Server Settings",
   "Theme": "Theme",
   "ThemeSelect": "Select your theme..."
 }
