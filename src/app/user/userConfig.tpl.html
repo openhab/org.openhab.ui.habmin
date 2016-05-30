@@ -23,8 +23,8 @@
             <form name="userConfigForm" novalidate style="height:100%">
                 <!-- GENERAL -->
                 <div>
-                    <a role="presentation"
-                       ng-class="{'list-group-item config-panel-title':true, 'active': panelDisplayed=='GENERAL'}"
+                    <a role="presentation" class="list-group-item config-panel-title"
+                       ng-class="{'active': panelDisplayed=='GENERAL'}"
                        ng-click="setPanelDisplayed('GENERAL')">
                         <span class="fa fa-fw fa-book"></span>
                         <span i18n="user.GeneralPrefTitle"></span>
@@ -32,9 +32,8 @@
                 </div>
                 <div collapse="panelDisplayed!='GENERAL'" class="panel-form">
                     <div class="form-group">
-                        <label for="inputLanguage" class="col-sm-3 control-label" i18n="user.Language"></label>
+                        <label for="inputLanguage" class="control-label" i18n="user.Language"></label>
 
-                        <div class="col-sm-9">
                             <ui-select id="inputLanguage"
                                        ng-model="model.currentLanguage"
                                        theme="bootstrap"
@@ -53,13 +52,11 @@
                                     </div>
                                 </ui-select-choices>
                             </ui-select>
-                        </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="inputPersistence" class="col-sm-3 control-label" i18n="user.ChartPersistence"></label>
+                        <label for="inputPersistence" class="control-label" i18n="user.ChartPersistence"></label>
 
-                        <div class="col-sm-9">
                             <ui-select id="inputPersistence"
                                        ng-model="model.currentPersistence"
                                        theme="bootstrap"
@@ -72,6 +69,25 @@
                                 </ui-select-choices>
                             </ui-select>
                         </div>
+                </div>
+
+                <!-- SERVER SETTINGS -->
+                <div ng-if="document.HABminCordova">
+                    <a role="presentation" class="list-group-item config-panel-title"
+                       ng-class="{'active': panelDisplayed=='SERVER'}"
+                       ng-click="setPanelDisplayed('SERVER')">
+                        <span class="fa fa-fw fa-desktop"></span>
+                        <span i18n="user.ServerPrefTitle"></span>
+                    </a>
+                </div>
+                <div collapse="panelDisplayed!='SERVER'" class="panel-form">
+                    <div class="form-group">
+                        <label for="inputServerAddress" class="control-label" i18n="user.ServerAddress"></label>
+
+                            <input id="inputServerAddress"
+                                   class="form-control"
+                                   ng-dirty
+                                   ng-model="model.serverAddress">
                     </div>
                 </div>
             </form>

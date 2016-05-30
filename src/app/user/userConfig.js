@@ -45,8 +45,10 @@ angular.module('User.Config', [
     function ($scope, $q, locale, growl, $timeout, $window, $http, $interval, UserService, PersistenceServiceModel, localeSupported) {
         $scope.panelDisplayed = 'GENERAL';
 
-        $scope.model = {currentLanguage: UserService.getLanguage(),
-            currentPersistence: UserService.getPersistence()
+        $scope.model = {
+            currentLanguage: UserService.getLanguage(),
+            currentPersistence: UserService.getPersistence(),
+            serverAddress: UserService.getServer()
         };
         $scope.languages = [];
         var languageOk = false;
@@ -89,6 +91,8 @@ angular.module('User.Config', [
         $scope.saveConfig = function () {
             UserService.setLanguage($scope.model.currentLanguage);
             UserService.setPersistence($scope.model.currentPersistence.name);
+            UserService.setServer($scope.model.serverAddress);
+
             $scope.userConfigForm.$setPristine();
         };
 

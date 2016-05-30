@@ -2,6 +2,7 @@
   "author": "Chris Jackson",
   "name": "HABmin2",
   "version": "0.1.6",
+  "androidVersionCode": "2",
   "homepage": "https://github.com/cdjackson/HABmin2",
   "licenses": {
     "type": "GPL",
@@ -39,6 +40,7 @@
     "grunt-contrib-cssmin": "~0.11.0",
     "grunt-shell": "~1.1.1",
     "karma-chrome-launcher": "~0.1.8",
-    "grunt-lesslint": "~1.1.14"
+    "grunt-lesslint": "~1.1.14",
+    "grunt-string-replace": "~1.2.1"
   }
 }
