@@ -208,9 +208,9 @@ function ZWaveLogReader() {
             }
         },
         0x07: {
-            name: "GARAGE_DOOR",
+            name: "SENSOR_NOTIFICATION",
             specific: {
-                1: "SIMPLE_GARAGE_DOOR"
+                1: "NOTIFICATION_SENSOR"
             }
         },
         0x08: {
@@ -3309,20 +3309,20 @@ function ZWaveLogReader() {
                         if (sendData.responseTime != "Unknown") {
                             updateNodeResponse(node, sendData.responseTime);
                         }
-                        sendData.content += "ACK'd by device in " + sendData.responseTime +
+                        sendData.content += "<span class='badge badge-success'>ACK RECEIVED</span> from device in " + sendData.responseTime +
                         "ms";
                         break;
                     case 1:		// COMPLETE_NO_ACK
                         updateNodeResponse(node, -1);
                         setStatus(sendData, WARNING);
-                        sendData.content += "No ACK after " + sendData.responseTime + "ms";
+                        sendData.content += "<span class='badge badge-warning'>NO ACK</span> after " + sendData.responseTime + "ms";
                         sendData.warnFlag = true;
                         sendData.warnMessage = "No ack received from device";
                         break;
                     case 2:		// COMPLETE_FAIL
                         updateNodeResponse(node, -1);
                         setStatus(sendData, ERROR);
-                        sendData.content += "Failed in " + sendData.responseTime + "ms";
+                        sendData.content += "<span class='badge badge-important'>FAILED</span> after " + sendData.responseTime + "ms";
                         break;
                     case 3:		// COMPLETE_NOT_IDLE
                         updateNodeResponse(node, -1);
