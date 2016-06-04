@@ -172,7 +172,7 @@ angular.module('habminChart', [
                         },
                         function (reason) {
                             // Handle failure
-                            growl.warning(locale.getString('habmin.chartErrorLoadingItem', itemRef));
+                            growl.warning(locale.getString('habmin.ErrorLoadingItem', itemRef));
                         }
                     );
                 }
@@ -426,7 +426,7 @@ angular.module('habminChart', [
                             },
                             function (reason) {
                                 // Handle failure
-                                growl.warning(locale.getString('habmin.chartErrorLoadingItem', item.item));
+                                growl.warning(locale.getString('habmin.ErrorLoadingItem', item.item));
                                 cnt--;
                             }
                         );
