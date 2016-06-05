@@ -47,7 +47,7 @@ angular.module('User.Config', [
 
         $scope.model = {
             currentLanguage: UserService.getLanguage(),
-            currentPersistence: UserService.getPersistence(),
+            currentPersistence: "",
             serverAddress: UserService.getServer()
         };
         $scope.languages = [];
@@ -73,9 +73,15 @@ angular.module('User.Config', [
         PersistenceServiceModel.getList().then(
             function (data) {
                 $scope.services = data;
-                if ($scope.services.length > 0) {
-                    $scope.services[0].selected = true;
-                    ChartService.service = $scope.services[0].name;
+//                if ($scope.services.length > 0) {
+//                    $scope.services[0].selected = true;
+//                    ChartService.service = $scope.services[0].name;
+//                }
+                // Find the default service
+                for (var service in $scope.services) {
+                    if ($scope.services[service].name == UserService.getPersistence()) {
+                        $scope.model.currentPersistence = $scope.services[service];
+                    }
                 }
             },
             function (reason) {

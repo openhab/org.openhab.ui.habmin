@@ -311,7 +311,7 @@ angular.module('HABmin.chart', [
         $scope.tooltipSave = locale.getString('chart.SaveChart');
         $scope.tooltipDelete = locale.getString('chart.DeleteChart');
 
-        if(ChartService.service == null || ChartService.service.length == 0) {
+        if (ChartService.service == null || ChartService.service.length == 0) {
             ChartService.service = UserService.getPersistence();
         }
 
@@ -320,13 +320,23 @@ angular.module('HABmin.chart', [
             function (data) {
                 $scope.services = data;
                 if ($scope.services.length > 0) {
-                    $scope.services[0].selected = true;
+                    // Check that the default service exists
+                    if (ChartService.service != null) {
+                        var found = false;
+                        for (var service in $scope.services) {
+                            if ($scope.services[service].name == ChartService.service) {
+                                found = true;
+                                break;
+                            }
+                        }
 
-                    // Use the first service as the default if there isn't a default set
-                    if(ChartService.service != null) {
-                        return;
+                        if (found == true) {
+                            return;
+                        }
                     }
 
+                    // Use the first service as the default if there isn't a default set
+                    $scope.services[0].selected = true;
                     ChartService.service = $scope.services[0].name;
                 }
             },
