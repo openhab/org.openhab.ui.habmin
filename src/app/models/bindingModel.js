@@ -9,10 +9,11 @@
  */
 angular.module('HABmin.bindingModel', [
     'HABmin.userModel',
-    'HABmin.restModel'
+    'HABmin.restModel',
+    'angular-growl',
 ])
 
-    .service('BindingModel', function ($http, $q, UserService, RestService) {
+    .service('BindingModel', function ($http, $q, UserService, RestService, growl) {
         var svcBind = "bindings";
         var svcDisc = "discovery";
         var iconList = {
@@ -22,6 +23,28 @@ angular.module('HABmin.bindingModel', [
             zwave: {icon: "zwave"}
         };
         var bindingList = [];
+        var eventSrc;
+
+        var me = this;
+
+        this.listen = function () {
+            eventSrc = new EventSource("/rest/events?topics=smarthome/binding/*");
+
+            eventSrc.addEventListener('message', function (event) {
+                console.log(event.data);
+
+                var evt = angular.fromJson(event.data);
+                var payload = angular.fromJson(evt.payload);
+                var topic = evt.topic.split("/");
+
+                switch (evt.type) {
+                    case 'BindingEvent':
+                        growl.warning(payload.message);
+                        break;
+                }
+            });
+        };
+
 
         this.getList = function () {
             var tStart = new Date().getTime();

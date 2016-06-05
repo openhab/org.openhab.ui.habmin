@@ -462,6 +462,7 @@ angular.module('HABmin', [
         }, 100);
 
         EventModel.listen();
+        BindingModel.listen();
     })
 
     .filter('orderObjectBy', function () {
