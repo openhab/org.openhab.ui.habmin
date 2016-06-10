@@ -13,7 +13,7 @@
                name="{{config.name}}"
                search-enabled="false"
                multiple
-               limit="config.multipleLimit"
+               limit="{{config.multipleLimit}}"
                ng-disabled="config.readOnly">
         <ui-select-match>
             {{$item.label}}
