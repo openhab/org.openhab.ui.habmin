@@ -527,7 +527,7 @@ angular.module('Config.Things', [
                 category: channel.channelType.category
             };
 
-            var name = channel.uid.replace(/:/g, "_");
+            var name = channel.uid.replace(/[:-]/g, "_");
             if (ItemModel.getItem(name) == null) {
                 newItem.name = name;
             }
