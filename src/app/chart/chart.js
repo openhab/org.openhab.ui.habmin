@@ -45,7 +45,8 @@ angular.module('HABmin.chart', [
                 localisations: function ($q, locale) {
                     return $q.all([
                         locale.ready('common'),
-                        locale.ready('habmin')
+                        locale.ready('habmin'),
+                        locale.ready('chart')
                     ]);
                 }
             }

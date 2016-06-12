@@ -1,3 +1,4 @@
 {
-  "ErrorGettingServices": "Error getting service list"
+  "ErrorGettingServices": "Error getting service list",
+  "Services": "Services"
 }

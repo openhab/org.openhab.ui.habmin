@@ -33,8 +33,11 @@ angular.module('HABmin.rules', [
             data: {pageTitle: 'Rules'},
             resolve: {
                 // Make sure the localisation files are resolved before the controller runs
-                localisations: function (locale) {
-                    return locale.ready('habmin');
+                localisations: function ($q, locale) {
+                    return $q.all([
+                        locale.ready('habmin'),
+                        locale.ready('rule')
+                    ]);
                 }
             }
         });
@@ -67,7 +70,7 @@ angular.module('HABmin.rules', [
             onLoad: function (editor) {
                 $scope.aceEditor = editor;
             },
-            onChange: function(e) {
+            onChange: function (e) {
 
             }
         };

@@ -615,6 +615,14 @@ function ZWaveLogReader() {
             name: "SCENE_ACTIVATION",
             processor: null
         },
+        44: {
+            name: "SCENE_ACTUATOR_CONF",
+            processor: null
+        },
+        45: {
+            name: "SCENE_CONTROLLER_CONF",
+            processor: null
+        },
         48: {
             name: "SENSOR_BINARY",
             commands: {
