@@ -59,7 +59,7 @@
                         class="btn btn-default dropdown-toggle"
                         data-toggle="dropdown">
                     <span class="fa fa-cog"></span>
-                    <span i18n="thing.Tools"></span>
+                    <span i18n="habmin.Tools"></span>
                     <span class="caret"></span>
                     <span class="sr-only">Dropdown</span>
                 </button>
@@ -76,7 +76,7 @@
                         <a ng-click="showAdvancedSettings=!showAdvancedSettings">
                             <span class="fa fa-fw" ng-class="{'fa-check-square-o': showAdvancedSettings}"></span>
                             <span class="fa fa-fw fa-user-plus"></span>
-                            <span i18n="thing.AdvancedMode"></span>
+                            <span i18n="habmin.AdvancedMode"></span>
                         </a>
                     </li>
                 </ul>
@@ -93,12 +93,12 @@
                        ng-class="{'list-group-item config-panel-title':true, 'active': panelDisplayed=='DESCRIPTION'}"
                        ng-click="setPanelDisplayed('DESCRIPTION')">
                         <span class="fa fa-fw fa-book"></span>
-                        <span i18n="thing.Description"></span>
+                        <span i18n="habmin.Description"></span>
                     </a>
                 </div>
                 <div collapse="panelDisplayed!='DESCRIPTION'" class="panel-form">
                     <div class="habmin-info">
-                        <label i18n="binding.Description"></label>
+                        <label i18n="habmin.Description"></label>
 
                         <div class="well well-sm" ng-bind-html="selectedBinding.description">
                         </div>
@@ -111,6 +111,28 @@
                             {{selectedBinding.author}}
                         </div>
                     </div>
+                </div>
+
+                <!-- THING TYPES -->
+                <div>
+                    <a role="presentation"
+                       ng-class="{'list-group-item config-panel-title':true, 'active': panelDisplayed=='THINGS'}"
+                       ng-click="setPanelDisplayed('THINGS')">
+                        <span class="fa fa-fw fa-plug"></span>
+                        <span i18n="binding.ThingTypes"></span>
+                    </a>
+                </div>
+                <div collapse="panelDisplayed!='THINGS'" class="panel-form">
+                    <table class="table table-striped">
+                        <tr ng-repeat="thingType in thingTypes | orderBy: 'label'" class="row"
+                             ng-if="bindingThingType(thingType)">
+                            <td>
+                                <div>{{thingType.label}}</div>
+                                <div class="small">{{thingType.properties.vendor}} {{thingType.properties.modelId}}</div>
+                                <div class="small single-line" ng-bind-html="thingType.description"></div>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
 
                 <!-- CONFIGURATION GROUPS -->
@@ -142,7 +164,7 @@
                            ng-class="{'list-group-item list-group-item-heading':true, 'active': panelDisplayed=='CONFIG-ungrouped'}"
                            ng-click="setPanelDisplayed('CONFIG-ungrouped')">
                             <span class="fa fa-fw fa-wrench"></span>
-                            <span i18n="thing.Configuration"></span>
+                            <span i18n="habmin.Configuration"></span>
                         </a>
                     </div>
                     <div collapse="$parent.panelDisplayed!='CONFIG-ungrouped'"

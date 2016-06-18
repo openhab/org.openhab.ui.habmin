@@ -1,5 +1,6 @@
 {
   "AddThing": "Add new Thing",
+  "AdvancedMode": "Show advanced settings",
   "Automation": "Automation",
   "Bindings": "Bindings",
   "ChartEditor": "Chart Editor",
@@ -10,8 +11,10 @@
   "DashboardEdit": "Edit Dashboard",
   "DashboardNew": "New Dashboard",
   "DashboardOrganise": "Organise Dashboards",
+  "Description": "Description",
   "Discovery": "Thing Discovery",
   "ErrorGettingBindings": "Error loading list of bindings!",
+  "ErrorGettingThings": "Error loading the list of things!",
   "ErrorLoadingDashboards": "Error loading dashboard list!",
   "ErrorLoadingInbox": "Error loading inbox!",
   "ErrorLoadingSitemaps": "Error loading the sitemap list!",

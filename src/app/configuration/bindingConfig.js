@@ -14,6 +14,7 @@ angular.module('Config.Bindings', [
     'HABmin.configModel',
     'HABmin.userModel',
     'HABmin.bindingModel',
+    'HABmin.thingModel',
     'Config.parameter',
     'angular-growl',
     'ngVis',
@@ -32,18 +33,24 @@ angular.module('Config.Bindings', [
             data: {pageTitle: 'Bindings'},
             resolve: {
                 // Make sure the localisation files are resolved before the controller runs
-                localisations: function (locale) {
-                    return locale.ready('habmin');
+                localisations: function ($q, locale) {
+                    return $q.all([
+                        locale.ready('habmin'),
+                        locale.ready('binding')
+                    ]);
                 }
             }
         });
     })
 
     .controller('BindingConfigCtrl',
-    function BindingConfigCtrl($scope, locale, growl, $timeout, $window, $http, $interval, UserService, BindingModel, ConfigModel) {
+    function BindingConfigCtrl($scope, locale, growl, $timeout, $window, $http, $interval, UserService, BindingModel, ConfigModel, ThingModel) {
         $scope.panelDisplayed = 'DESCRIPTION';
-        $scope.bindings = null;
+        $scope.bindings = [];
         $scope.bindingsCnt = -1;
+        $scope.thingTypes = [];
+        $scope.thingTypesCnt = -1;
+
         BindingModel.getList().then(
             function (bindings) {
                 $scope.bindings = bindings;
@@ -52,6 +59,17 @@ angular.module('Config.Bindings', [
             function (reason) {
                 // Handle failure
                 growl.warning(locale.getString("habmin.ErrorGettingBindings"));
+            }
+        );
+
+        ThingModel.getThingTypes().then(
+            function (list) {
+                $scope.thingTypes = list;
+                $scope.thingTypesCnt = list.length;
+            },
+            function (reason) {
+                // Handle failure
+                growl.warning(locale.getString("habmin.ErrorGettingThings"));
             }
         );
 
@@ -75,6 +93,18 @@ angular.module('Config.Bindings', [
 
         $scope.setPanelDisplayed = function (panel) {
             $scope.panelDisplayed = panel;
+        };
+
+        $scope.bindingThingType = function (thingType) {
+            if ($scope.selectedBinding == null) {
+                return false;
+            }
+
+            var bindingId = thingType.UID.split(":")[0];
+            if (bindingId == $scope.selectedBinding.id) {
+                return true;
+            }
+            return false;
         };
 
         $scope.bindingHasUngroupedParams = function () {

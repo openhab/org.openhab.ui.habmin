@@ -2,5 +2,6 @@
   "Author": "Primary Author",
   "Description": "Description",
   "Information": "Binding Information",
-  "NoneFound": "No bindings found"
+  "NoneFound": "No bindings found",
+  "ThingTypes": "Supported Thing Types"
 }

@@ -32,6 +32,7 @@
   "HealWaiting": "wartend",
   "Information": "Geräteinformation",
   "MainsPower": "Gerät wird mit Netzspannung versorgt.",
+  "Manufacturer": "Hersteller",
   "Neighbors": "Nachbarn",
   "NetworkDefault": "Controller auf Werkseinstellungen zurücksetzen",
   "NetworkExclude": "Gerät aus dem Netzwerk löschen",
@@ -79,5 +80,12 @@
   "Unknown": "Unbekannt",
   "UnknownDevice": "Unbekanntes Gerät",
   "UnknownPower": "Spannungsquelle des Gerätes ist nicht bekannt.",
-  "Wakeup": "Wakeup Konfiguration"
+  "Wakeup": "Wakeup Konfiguration",
+  "ZWPlus_DEW_POINT_SENSOR": "Taupunktsensor",
+  "ZWPlus_HUMIDITY_SENSOR": "Luftfeuchtigkeitssensor (RH)",
+  "ZWPlus_LUMINANCE_SENSOR": "Helligkeitssensor",
+  "ZWPlus_RAIN_RATE_SENSOR": "Regensensor",
+  "ZWPlus_SMOKE_ALARM_SENSOR": "Rauchmelder",
+  "ZWPlus_ULTRAVIOLET_SENSOR": "UV-Sensor",
+  "ZWPlus_UNKNOWN_TYPE": "Unbekannt"
 }

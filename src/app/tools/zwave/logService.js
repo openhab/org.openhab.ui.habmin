@@ -516,7 +516,11 @@ function ZWaveLogReader() {
     var commandClasses = {
         0: {
             name: "NO_OPERATION",
-            processor: null
+            commands: {
+                1: {
+                    name: "NO_OPERATION_PING"
+                }
+            }
         },
         32: {
             name: "BASIC",
@@ -926,7 +930,34 @@ function ZWaveLogReader() {
             }
         },
         102: {
-            name: "BARRIER_OPERATOR"
+            name: "BARRIER_OPERATOR",
+            commands: {
+                1: {
+                    name: "BARRIER_OPERATOR_SET"
+                },
+                2: {
+                    name: "BARRIER_OPERATOR_GET"
+                },
+                3: {
+                    name: "BARRIER_OPERATOR_REPORT"
+                },
+                4: {
+                    name: "BARRIER_OPERATOR_SIGNAL_SUPPORTED_GET"
+                },
+                5: {
+                    name: "BARRIER_OPERATOR_SIGNAL_SUPPORTED_REPORT"
+                },
+                6: {
+                    name: "BARRIER_OPERATOR_SIGNAL_SET"
+                },
+                7: {
+                    name: "BARRIER_OPERATOR_SIGNAL_GET"
+                },
+                8: {
+                    name: "BARRIER_OPERATOR_SIGNAL_REPORT"
+                }
+            },
+            processor: processBarrier
         },
         112: {
             name: "CONFIGURATION",
@@ -1952,6 +1983,40 @@ function ZWaveLogReader() {
                     data.content += "label-error";
                 }
                 data.content += "'>" + level + "%</span>";
+                break;
+        }
+
+        return data;
+    }
+
+    function processBarrier(node, endpoint, bytes) {
+        var data = {result: SUCCESS};
+
+        var cmdCls = HEX2DEC(bytes[0]);
+        var cmdCmd = HEX2DEC(bytes[1]);
+        data.content = getCommandClassName(cmdCls, cmdCmd);
+        switch (cmdCmd) {
+            case 3:             // BARRIER_REPORT
+                var state = HEX2DEC(bytes[2]);
+                data.content += " <span class='label'>";
+                switch(state) {
+                    case 0:
+                        data.content += "CLOSED";
+                        break;
+                    case 252:
+                        data.content += "CLOSING";
+                        break;
+                    case 253:
+                        data.content += "STOPPED";
+                        break;
+                    case 254:
+                        data.content += "OPENING";
+                        break;
+                    case 255:
+                        data.content += "OPEN";
+                        break;
+                }
+                data.content += "</span>";
                 break;
         }
 

@@ -1,4 +1,6 @@
 {
+  "ApproveAllConfirmMsg": "Sind Sie sich sicher, dass Sie alle Einträge aus der Eingangsbox als neue Things hinzufügen möchten?",
+  "ApproveAllConfirmTitle": "Genehmige alle Einträge in der Eingangsbox",
   "ClearConfirmMsg": "Sind Sie sich sicher, dass Sie die Eingangsbox löschen möchten. Alle Things werden entfernt und müssen erneut gesucht werden.",
   "ClearConfirmTitle": "Eingangsbox gelöscht",
   "ClearFail": "Löschen der Eingangsbox für ein oder mehrere Elemente fehlgeschlagen.",

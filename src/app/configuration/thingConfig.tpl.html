@@ -163,7 +163,7 @@
                         class="btn btn-default dropdown-toggle"
                         data-toggle="dropdown">
                     <span class="fa fa-cog"></span>
-                    <span i18n="thing.Tools"></span>
+                    <span i18n="habmin.Tools"></span>
                     <span class="caret"></span>
                     <span class="sr-only">Dropdown</span>
                 </button>
@@ -182,7 +182,7 @@
                         <a ng-click="showAdvancedSettings=!showAdvancedSettings">
                             <span class="fa fa-fw" ng-class="{'fa-check-square-o': showAdvancedSettings}"></span>
                             <span class="fa fa-fw fa-mortar-board"></span>
-                            <span i18n="thing.AdvancedMode"></span>
+                            <span i18n="habmin.AdvancedMode"></span>
                         </a>
                     </li>
                 </ul>
@@ -198,7 +198,7 @@
                        ng-class="{'list-group-item config-panel-title':true, 'active': panelDisplayed=='OVERVIEW'}"
                        ng-click="setPanelDisplayed('OVERVIEW')">
                         <span class="fa fa-fw fa-book"></span>
-                        <span i18n="thing.Description"></span>
+                        <span i18n="habmin.Description"></span>
                     </a>
                 </div>
                 <div collapse="panelDisplayed!='OVERVIEW'" class="panel-form">
@@ -206,7 +206,7 @@
                     <div class="well well-sm" ng-bind-html="selectedThingType.label">
                     </div>
 
-                    <div i18n="thing.Description"></div>
+                    <div i18n="habmin.Description"></div>
                     <div class="well well-sm" ng-bind-html="selectedThingType.description">
                     </div>
 
@@ -373,7 +373,7 @@
                            ng-class="{'list-group-item list-group-item-heading':true, 'active': panelDisplayed=='CONFIG-ungrouped'}"
                            ng-click="setPanelDisplayed('CONFIG-ungrouped')">
                             <span class="fa fa-fw fa-wrench"></span>
-                            <span i18n="thing.Configuration"></span>
+                            <span i18n="habmin.Configuration"></span>
                         </a>
                     </div>
                     <div collapse="$parent.panelDisplayed!='CONFIG-ungrouped'"

@@ -103,6 +103,10 @@ angular.module('Config.Things', [
         ThingModel.getList().then(
             function (list) {
                 $scope.things = list;
+            },
+            function (reason) {
+                // Handle failure
+                growl.warning(locale.getString("habmin.ErrorGettingThings"));
             }
         );
 
