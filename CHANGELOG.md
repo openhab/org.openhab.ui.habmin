@@ -1,3 +1,43 @@
+<a name"0.1.6"></a>
+### 0.1.6 (2016-06-19)
+
+
+#### Bug Fixes
+
+* **Bindings:**
+  * Remove binding config if binding has no configuration defined ([f2dfe24b](https://github.com/cdjackson/HABmin2/commit/f2dfe24b), closes [#174](https://github.com/cdjackson/HABmin2/issues/174))
+* **Chart:**
+  * Fix saving of default persistence service ([8b452709](https://github.com/cdjackson/HABmin2/commit/8b452709))
+  * Fix error message when chart data can't be loaded ([326927a2](https://github.com/cdjackson/HABmin2/commit/326927a2), closes [#179](https://github.com/cdjackson/HABmin2/issues/179))
+* **Dashboard:**
+  * Fixed string error with group widget ([93b0d582](https://github.com/cdjackson/HABmin2/commit/93b0d582))
+* **Designer:**
+  * Fix item registry SCR connection ([7d702900](https://github.com/cdjackson/HABmin2/commit/7d702900))
+* **Things:**
+  * Fixed error with multiple select dropdown not allowing selection ([a95e02ca](https://github.com/cdjackson/HABmin2/commit/a95e02ca))
+  * Fixed default item name to remove dashes ([edcfb932](https://github.com/cdjackson/HABmin2/commit/edcfb932))
+* **UI:**
+  * Update string loading in chart and rules ([dd2e6f7c](https://github.com/cdjackson/HABmin2/commit/dd2e6f7c))
+  * Fix error with Safari not working with edit boxes ([c5664ea5](https://github.com/cdjackson/HABmin2/commit/c5664ea5))
+
+
+#### Features
+
+* **Bindings:**
+  * Add list of thing types supported by binding ([c878517b](https://github.com/cdjackson/HABmin2/commit/c878517b))
+* **Extensions:**
+  * Added processing of failed commands with growl notification ([10f45372](https://github.com/cdjackson/HABmin2/commit/10f45372))
+* **Mobile:**
+  * Add server configuration to user preferences ([5dd9cb31](https://github.com/cdjackson/HABmin2/commit/5dd9cb31))
+* **Services:**
+  * Added interface to configure ESH services ([3e46f6ca](https://github.com/cdjackson/HABmin2/commit/3e46f6ca))
+* **Things:**
+  * Add search capability to item link dialog ([b1a84775](https://github.com/cdjackson/HABmin2/commit/b1a84775))
+* **UI:**
+  * Add button to close "Server Offline" message box ([6e828133](https://github.com/cdjackson/HABmin2/commit/6e828133), closes [#104](https://github.com/cdjackson/HABmin2/issues/104))
+  * Add Dutch translation ([1aa1a770](https://github.com/cdjackson/HABmin2/commit/1aa1a770))
+
+
 <a name"0.1.5"></a>
 ### 0.1.5 (2016-05-24)
 
