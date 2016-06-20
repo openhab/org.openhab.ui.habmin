@@ -100,52 +100,68 @@ angular.module('Config.Things', [
                 $scope.categories = SmartHomeModel.categories;
             });
 
-        ThingModel.getList().then(
-            function (list) {
-                $scope.things = list;
-            },
-            function (reason) {
-                // Handle failure
-                growl.warning(locale.getString("habmin.ErrorGettingThings"));
-            }
-        );
+        var promises = {};
+
+        promises.things = ThingModel.getList();
+        //.then(
+        //    function (list) {
+        //      $scope.things = list;
+        //},
+        //   function (reason) {
+        // Handle failure
+        //     growl.warning(locale.getString("habmin.ErrorGettingThings"));
+        //      }
+        //);
 
         // If the list ever changes, update the counter
-        $scope.$watch("things", function () {
-            if ($scope.things === undefined) {
-                return;
-            }
-            if ($scope.things == null) {
-                $scope.thingCnt = 0;
-            }
-            else {
-                $scope.thingCnt = $scope.things.length;
+        /*
+         $scope.$watch("things", function () {
+         if ($scope.things === undefined) {
+         return;
+         }
+         if ($scope.things == null) {
+         $scope.thingCnt = 0;
+         }
+         else {
+         $scope.thingCnt = $scope.things.length;
 
-                // Loop through all the things and derive battery status
-                // TODO: Maybe this should move to the ThingModel?
-                angular.forEach($scope.things, function (thing) {
-                    for (var i = 0; i < thing.channels.length; i++) {
-                        if (thing.channels[i].id == "battery-level") {
-                            /*ItemModel.getItem(thing.channels[i].linkedItems[0]).then(
-                             function (item) {
-                             if (item == null) {
-                             thing.batteryIcon = "fa fa-question-circle";
-                             }
-                             }
-                             );*/
+         // Loop through all the things and derive battery status
+         // TODO: Maybe this should move to the ThingModel?
+         angular.forEach($scope.things, function (thing) {
+         for (var i = 0; i < thing.channels.length; i++) {
+         if (thing.channels[i].id == "battery-level") {
+         //ItemModel.getItem(thing.channels[i].linkedItems[0]).then(
+         //function (item) {
+         //if (item == null) {
+         //thing.batteryIcon = "fa fa-question-circle";
+         //}
+         //}
+         //);
 
-                            return;
-                        }
-                    }
-                });
-            }
-        }, true);
+         return;
+         }
+         }
+         });
+         }
+         }, true);
+         */
 
-        ThingModel.getThingTypes().then(
-            function (list) {
-                $scope.thingTypes = list;
-            }
-        );
+        promises.types = ThingModel.getThingTypes();
+
+        $q.allSettled(promises).then(
+            function (values) {
+                if (values.things.state == 'fulfilled') {
+                    $scope.things = values.things.value;
+                    $scope.thingCnt = $scope.things.length;
+                }
+                else {
+                    growl.warning(locale.getString("habmin.ErrorGettingThings"));
+                }
+                if (values.types.state == 'fulfilled') {
+                    $scope.thingTypes = values.types.value;
+                }
+            });
+
 
         ItemModel.getList().then(
             function (list) {
