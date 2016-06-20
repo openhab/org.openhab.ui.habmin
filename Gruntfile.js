@@ -753,7 +753,7 @@ module.exports = function (grunt) {
                 options: {
                     replacements: [
                         {
-                            pattern: /android:versionName=['"]([0-9.]*)['"]/ig,
+                            pattern: /android:versionName=['"](\d.*)['"]/ig,
                             replacement: function (match, p1, offset, string) {
                                 var pkg = grunt.file.readJSON('package.json');
                                 return 'android:versionName="' + pkg.version + '"';
