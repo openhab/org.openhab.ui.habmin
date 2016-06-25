@@ -145,7 +145,8 @@ module.exports = {
             'vendor/flag-icon-css/flags/4x3/it.svg',
             'vendor/flag-icon-css/flags/4x3/nl.svg',
             'vendor/flag-icon-css/flags/4x3/pl.svg',
-            'vendor/flag-icon-css/flags/4x3/se.svg'
+            'vendor/flag-icon-css/flags/4x3/se.svg',
+            'vendor/flag-icon-css/flags/4x3/dk.svg'
         ]
     },
 
@@ -165,7 +166,8 @@ module.exports = {
         'fr-FR',
         'it-IT',
         'pl-PL',
-        'sv-SE'
+        'sv-SE',
+        'da-DK'
     ],
 
     /**

@@ -4,7 +4,7 @@
   "DeleteChartCheck": "Sind sie sicher, dass sie das Diagramm löschen wollen?",
   "DeleteError": "Fehler beim Löschen des Diagramms {name}",
   "DeleteOk": "Diagramm  {name} erfolgreich gelöscht",
-  "EditChart": "Diagramm  bearbeiten",
+  "EditChart": "Diagramm bearbeiten",
   "ErrorGettingCharts": "Fehler beim Laden der Diagrammliste!",
   "ErrorGettingItems": "Fehler beim Laden der Liste!",
   "ErrorGettingServices": "Fehler beim Laden des Persistenzdienstes",
@@ -30,7 +30,7 @@
   "SaveAxesMinimum": "Minimum",
   "SaveAxesTextColor": "Textfarbe",
   "SaveChart": "Diagramm speichern",
-  "SaveChartTitle": "Diagramm speichern",
+  "SaveChartTitle": "Diagramm Speichern",
   "SaveError": "Fehler beim Speichern des Diagramms <i>{chartName}</i>:<BR /><b><i>{error}</i></b>.",
   "SaveGeneral": "Allgemeine Einstellungen",
   "SaveItemAxes": "Achse",
@@ -55,7 +55,7 @@
   "SaveRightAxis": "Einstellung der rechten Achse",
   "SaveSuccess": "Diagramm {chartName} erfolgreich gespeichert.",
   "SaveTitle": "Diagrammtitel",
-  "SelectItems": "Wähle Element",
+  "SelectItems": "Elemente wählen",
   "SelectedItems": "Ausgewählte Items",
-  "TotalItems": "Alle Elemente"
+  "TotalItems": "Alle elemente"
 }

@@ -25,7 +25,7 @@
   "EditBridge": "Bridge",
   "ErrorDeletingThing": "Error deleting thing <b><i>{name}</i></b>!",
   "ErrorGettingThing": "Error loading thing <b><i>{name}</i></b>",
-  "ErrorSavingThing": "Error saving thing <b><i>{name}</i></b>",
+  "ErrorSavingThing": "Error saving thing <b><i>{name}</i></b>.<br>{error}",
   "Ignored": "Ignored",
   "Label": "Label",
   "New": "New",

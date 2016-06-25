@@ -71,22 +71,24 @@ angular.module('HABmin', [
     // These strings will be treated as HTML so special HTML character codes can be used
     // to support international character sets.
     .value('localeSupported', {
-        'en-GB': {name: "English", desc: "United Kingdom"},
+        'da-DK': {name: "Danish", desc: "Denmark"},
         'de-DE': {name: "Deutsch", desc: "Deutschland"},
-        'pl-PL': {name: "Polski", desc: "Polska"},
+        'nl-NL': {name: "Dutch", desc: "Netherlands"},
+        'en-GB': {name: "English", desc: "United Kingdom"},
         'fr-FR': {name: "Fran&ccedil;ais", desc: "France"},
         'it-IT': {name: "Italiano", desc: "Italia"},
-        'sv-SE': {name: "Svenska", desc: "Sverige"},
-        'nl-NL': {name: "Dutch", desc: "Netherlands"}
+        'pl-PL': {name: "Polski", desc: "Polska"},
+        'sv-SE': {name: "Svenska", desc: "Sverige"}
     })
     .value('localeFallbacks', {
-        'en': 'en-GB',
+        'da': 'da-DK',
         'de': 'de-DE',
-        'pl': 'pl-PL',
+        'en': 'en-GB',
         'fr': 'fr-FR',
         'it': 'it-IT',
-        'sv': 'sv-SE',
-        'nl': 'nl-NL'
+        'nl': 'nl-NL',
+        'pl': 'pl-PL',
+        'sv': 'sv-SE'
     })
 
     .config(function myAppConfig($stateProvider, $urlRouterProvider, growlProvider, pickAColorProvider, ngBlocklyProvider, uiSelectConfig) {
@@ -309,7 +311,7 @@ angular.module('HABmin', [
                                 function (reason) {
                                     $scope.charts = [];
                                     // Handle failure
-                                    growl.warning(locale.getString('habmin.chartErrorGettingCharts'));
+                                    growl.warning(locale.getString('habmin.ErrorGettingCharts'));
                                 }
                             );
 
