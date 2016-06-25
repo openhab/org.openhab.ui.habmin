@@ -162,7 +162,6 @@ angular.module('Config.Things', [
                 }
             });
 
-
         ItemModel.getList().then(
             function (list) {
                 $scope.itemList = list;
@@ -776,29 +775,35 @@ angular.module('Config.Things', [
             }
 
             // Now wait for any promises to complete before notifying our users
-            $q.all(promises).then(
-                function () {
-                    $scope.newThing = false;
-                    var name = "";
-                    if ($scope.selectedThing.item != null) {
-                        name = $scope.selectedThing.item.label;
+            $q.allSettled(promises).then(
+                function (values) {
+                    var error = "";
+                    for (var value in values) {
+                        if (values[value].state == 'fulfilled') {
+                            values[value] = values[value].value;
+                        }
                     }
-                    growl.success(locale.getString("thing.SuccessSavingThing",
-                        {name: name}));
 
-                    $timeout(function () {
-                        $scope.thingConfigForm.$setPristine();
-                    });
-                },
-                function () {
                     var name = "";
                     if ($scope.selectedThing.item != null) {
                         name = $scope.selectedThing.item.label;
                     }
 
-                    // TODO: Display the error
-                    growl.error(locale.getString("thing.ErrorSavingThing",
-                        {name: name}));
+                    if (error.length == 0) {
+                        $scope.newThing = false;
+
+                        growl.success(locale.getString("thing.SuccessSavingThing",
+                            {name: name}));
+
+                        $timeout(function () {
+                            $scope.thingConfigForm.$setPristine();
+                        });
+                    }
+                    else {
+                        growl.error(locale.getString("thing.ErrorSavingThing",
+                            {name: name, error: error}));
+                    }
+
                 }
             );
         };
@@ -893,7 +898,8 @@ angular.module('Config.Things', [
                     });
 
                     if ($scope.selectedThing.item != null) {
-                        $scope.selectedThing.item.category = ThingModel.getThingTypeCategory($scope.selectedThingType);
+                        $scope.selectedThing.item.category =
+                            ThingModel.getThingTypeCategory($scope.selectedThingType);
                     }
 
                     // If this thing requires a bridge, see how many things are current defined of the type required
@@ -938,7 +944,8 @@ angular.module('Config.Things', [
         $scope.copyFailure = function (error) {
             growl.warning(locale.getString("common.clipboardError"));
         };
-    })
+    }
+)
 
     .
     controller('ThingConfigMenuCtrl',
