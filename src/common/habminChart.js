@@ -103,10 +103,10 @@ angular.module('habminChart', [
                 }
 
                 function _displayChart(id) {
-                    tStart = new Date().getTime();
+                    tStart = new moment().valueOf();
                     ChartModel.getChart(id).then(
                         function (chart) {
-                            $scope.stopTime = Math.floor((new Date()).getTime());
+                            $scope.stopTime = Math.floor((new moment()).valueOf());
                             $scope.startTime = $scope.stopTime - (chart.period * 1000);
                             _initChart($scope.stopTime - $scope.startTime);
 
@@ -126,7 +126,7 @@ angular.module('habminChart', [
 
                 function _displayItems(items) {
                     items = [].concat(items);
-                    $scope.stopTime = Math.floor((new Date()).getTime());
+                    $scope.stopTime = Math.floor((new moment()).valueOf());
                     $scope.startTime = $scope.stopTime - (86400 * 1000);
                     _initChart($scope.stopTime - $scope.startTime);
 

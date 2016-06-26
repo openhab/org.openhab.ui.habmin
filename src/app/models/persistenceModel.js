@@ -55,7 +55,7 @@ angular.module('HABmin.persistenceModel', [
 
         this.get = function (service, item, start, stop) {
             var deferred = $q.defer();
-            var parms = {};
+//            var parms = {};
 
             var tStart = new Date().getTime();
 
@@ -75,7 +75,7 @@ angular.module('HABmin.persistenceModel', [
 
             var cacheState;
 
-            var now = new Date().getTime();
+            var now = new moment().valueOf();
 
             // Read the start and stop times
             var cacheStart = Number(localStorage.getItem(storeName + '.start'));
@@ -132,8 +132,8 @@ angular.module('HABmin.persistenceModel', [
                         {
                             params: {
                                 servicename: service,
-                                starttime: new Date(requestStart).toISOString(),
-                                endtime: new Date(requestStop).toISOString()
+                                starttime: new moment(requestStart).toISOString(),
+                                endtime: new moment(requestStop).toISOString()
                             }
                         })
                         .success(function (data) {
