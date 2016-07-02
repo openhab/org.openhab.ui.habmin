@@ -740,9 +740,14 @@ angular.module('Config.Things', [
 
             // Check if the name has changed
             if ($scope.thingConfigForm.thingLabel.$dirty === true) {
-                //|| $scope.thingConfigForm.itemCategory.$dirty === true || $scope.thingConfigForm.itemGroups.$dirty) {
                 thingUpdated = true;
                 updatedThing['label'] = $scope.thingConfigForm.thingLabel;
+            }
+
+            // Check if the location has changed
+            if ($scope.thingConfigForm.thingLocation.$dirty === true) {
+                thingUpdated = true;
+                updatedThing['location'] = $scope.thingConfigForm.thingLocation;
             }
 
             if (thingUpdated === true) {

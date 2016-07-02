@@ -45,6 +45,7 @@
   "StatusUninitialised": "Non Inizializzato",
   "SuccessDeletingThing": "Oggetto {name} e tutti gli elementi collegati sono stati eliminati",
   "SuccessSavingThing": "Oggetto {name} salvato con successo",
+  "Tags": "Tags",
   "Tools": "Strumenti",
   "UID": "UID (Identificatore Univoco)",
   "UnlinkItemFailed": "Errore nella disconnessione dell'elemento dal canale",

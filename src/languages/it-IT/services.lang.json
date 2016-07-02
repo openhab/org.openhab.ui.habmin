@@ -1,3 +1,4 @@
 {
-  "ErrorGettingServices": "Errore nell'ottenimento della lista servizi"
+  "ErrorGettingServices": "Errore nell'ottenimento della lista servizi",
+  "Services": "Servizi"
 }
