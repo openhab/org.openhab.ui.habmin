@@ -86,7 +86,7 @@ angular.module('HABmin.configModel', [
                     if (value == undefined) {
                         return false;
                     }
-                    return Boolean(value);
+                    return (value == "true");
                 case "DECIMAL":
                     if (value == undefined) {
                         return 0.0;
