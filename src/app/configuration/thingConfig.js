@@ -680,7 +680,8 @@ angular.module('Config.Things', [
             }
             var linked = 0;
             for (var cnt = 0; cnt < $scope.selectedThing.channels.length; cnt++) {
-                if ($scope.selectedThing.channels[cnt].linkedItems.length) {
+                if ($scope.selectedThing.channels[cnt].linkedItems != null &&
+                    $scope.selectedThing.channels[cnt].linkedItems.length) {
                     linked++;
                 }
             }
@@ -748,6 +749,13 @@ angular.module('Config.Things', [
             if ($scope.thingConfigForm.thingLocation.$dirty === true) {
                 thingUpdated = true;
                 updatedThing['location'] = $scope.thingConfigForm.thingLocation;
+            }
+
+            // Check if the bridge has changed
+            if ($scope.thingConfigForm.thingBridge != null &&
+                $scope.thingConfigForm.thingBridge.$dirty === true) {
+                thingUpdated = true;
+                updatedThing['bridgeUID'] = $scope.thingConfigForm.thingBridge;
             }
 
             if (thingUpdated === true) {

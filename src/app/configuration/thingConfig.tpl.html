@@ -109,6 +109,9 @@
                             </td>
                         </tr>
                     </table>
+                    <div class="small text-danger">
+                        {{thing.statusInfo.description}}
+                    </div>
                     <span class="thing-battery" ng-class="thing.batteryIcon"></span>
                 </a>
             </div>
@@ -203,12 +206,10 @@
                 </div>
                 <div collapse="panelDisplayed!='OVERVIEW'" class="panel-form">
                     <div i18n="thing.Label"></div>
-                    <div class="well well-sm" ng-bind-html="selectedThingType.label">
-                    </div>
+                    <div class="well well-sm" ng-bind-html="selectedThingType.label"></div>
 
                     <div i18n="habmin.Description"></div>
-                    <div class="well well-sm" ng-bind-html="selectedThingType.description">
-                    </div>
+                    <div class="well well-sm" ng-bind-html="selectedThingType.description"></div>
 
                     <div ng-repeat="channel in selectedThing.channels">
                         <div>{{channel.label}}</div>
@@ -287,6 +288,7 @@
                             <ui-select id="inputBridge"
                                        ng-model="selectedThing.bridgeUID"
                                        theme="bootstrap"
+                                       name="thingBridge"
                                        search-enabled="false">
                                 <ui-select-match i18n-attr="{placeholder: 'thing.SelectBridge'}">
                                     <habmin-icon class="fa fa-fw"
