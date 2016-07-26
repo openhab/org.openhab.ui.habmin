@@ -13,14 +13,14 @@ angular.module('UserChartPrefs', [
     'HABmin.userModel'
 ])
     .service('UserChartPrefs',
-    function ($modal, $rootScope, locale, UserService) {
+    function ($uibModal, $rootScope, locale, UserService) {
         this.showModal = function () {
-            var controller = function ($scope, $modalInstance) {
+            var controller = function ($scope, $uibModalInstance) {
                 $scope.ok = function (result) {
-                    $modalInstance.close(result);
+                    $uibModalInstance.close(result);
                 };
                 $scope.cancel = function (result) {
-                    $modalInstance.dismiss('cancel');
+                    $uibModalInstance.dismiss('cancel');
                 };
             };
 
@@ -46,7 +46,7 @@ angular.module('UserChartPrefs', [
             ];
             scope.period = scope.periodOptions[1];
 
-            return $modal.open({
+            return $uibModal.open({
                 backdrop: 'static',
                 keyboard: true,
                 modalFade: true,

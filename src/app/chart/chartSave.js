@@ -17,7 +17,7 @@ angular.module('HABmin.chartSave', [
     'HABmin.userModel'
 ])
     .service('ChartSave',
-    function ($modal, $rootScope, ChartModel, growl, locale, UserService) {
+    function ($uibModal, $rootScope, ChartModel, growl, locale, UserService) {
         /**
          * Edits a chart given it's chart id.
          * First it loads the chart from the server, then calls the editor
@@ -115,9 +115,9 @@ angular.module('HABmin.chartSave', [
             /**
              * Controller functions get called when the modal closes
              * @param $scope
-             * @param $modalInstance
+             * @param $uibModalInstance
              */
-            var controller = function ($scope, $modalInstance) {
+            var controller = function ($scope, $uibModalInstance) {
                 $scope.ok = function (result) {
                     var query = {};
 
@@ -235,14 +235,14 @@ angular.module('HABmin.chartSave', [
                                 {chartName: query.name, error: error}));
                         });
 
-                    $modalInstance.close(result);
+                    $uibModalInstance.close(result);
                 };
                 $scope.cancel = function (result) {
-                    $modalInstance.dismiss('cancel');
+                    $uibModalInstance.dismiss('cancel');
                 };
             };
 
-            return $modal.open({
+            return $uibModal.open({
                 backdrop: 'static',
                 keyboard: true,
                 modalFade: true,

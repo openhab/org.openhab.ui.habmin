@@ -40,6 +40,7 @@ angular.module('HABmin', [
     'Config.Things',
     'Config.Items',
     'Config.ThingWizard',
+    'Config.Persistence',
     'UserChartPrefs',
     'UserGeneralPrefs',
     'ui.router',
@@ -55,7 +56,8 @@ angular.module('HABmin', [
     'ngAnimate',
     'ngTouch',
     'angularScreenfull',
-    'serverMonitor'
+    'serverMonitor',
+    "xeditable"
 ])
     .value('localeConf', {
         basePath: 'languages',
@@ -160,9 +162,8 @@ angular.module('HABmin', [
         });
     })
 
-    .run([
-        '$templateCache',
-        function ($templateCache) {
+    .run(
+        function ($templateCache, editableOptions) {
             // Update the notification template. The use of <button> causes problems with some templates
             $templateCache.put('templates/growl/growl.html',
                 '<div class="growl-container" ng-class="wrapperClasses()">' +
@@ -171,8 +172,11 @@ angular.module('HABmin', [
                 '<h4 class="growl-title" ng-show="message.title" ng-bind="message.title"></h4>' +
                 '<div class="growl-message" ng-bind-html="message.text"></div></div></div>'
             );
+
+            editableOptions.theme = 'bs3';
+            editableOptions.icon_set = 'font-awesome';
         }
-    ])
+    )
 
     .controller('HABminCtrl',
     function HABminCtrl($scope, $q, $state, $window, $timeout, $interval, $rootScope, locale, ChartModel, ItemModel, ThingModel, DashboardModel, SitemapModel, growl, UserService, UserChartPrefs, UserGeneralPrefs, BindingModel, InboxModel, RestService, UpdateService, EventModel, ServerMonitor) {

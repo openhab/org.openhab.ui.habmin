@@ -17,7 +17,7 @@
                         <span class="fa fa-fw fa-book"></span> {{serviceType.label}}
                     </a>
                 </div>
-                <div collapse="panelDisplayed!='SVC-{{serviceType.id}}'">
+                <div uib-collapse="panelDisplayed!='SVC-{{serviceType.id}}'">
                     <div ng-repeat="service in services | filter: {category: serviceType.id} | orderBy:'label'">
                         <a role="presentation" class="list-group-item"
                            ng-class="{'active': service==selectedService}"
@@ -71,7 +71,7 @@
                             <span>{{group.label}} {{cfgPanelDisplayed}}</span>
                         </a>
                     </div>
-                    <div collapse="$parent.cfgPanelDisplayed!='CONFIG-{{group.name}}'"
+                    <div uib-collapse="$parent.cfgPanelDisplayed!='CONFIG-{{group.name}}'"
                          class="panel-form">
                         <div ng-repeat="config in serviceConfig.parameters">
                             <div class="form-group"
@@ -94,7 +94,7 @@
                             <span i18n="thing.Configuration"></span>
                         </a>
                     </div>
-                    <div collapse="cfgPanelDisplayed!='CONFIG-ungrouped'"
+                    <div uib-collapse="cfgPanelDisplayed!='CONFIG-ungrouped'"
                          class="panel-form">
                         <div ng-repeat="config in serviceConfig.parameters">
                             <div class="form-group"

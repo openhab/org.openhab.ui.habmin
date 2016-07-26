@@ -16,7 +16,7 @@ angular.module('Automation.editEvent', [
     'ngLocalize'
 ])
     .service('eventEdit',
-    function ($modal, $rootScope, growl, locale, UserService, ItemModel, SmartHomeModel) {
+    function ($uibModal, $rootScope, growl, locale, UserService, ItemModel, SmartHomeModel) {
         this.add = function (date) {
             var event = {
                 start: date.format(),
@@ -53,14 +53,14 @@ angular.module('Automation.editEvent', [
             /**
              * Controller functions get called when the modal closes
              * @param $scope
-             * @param $modalInstance
+             * @param $uibModalInstance
              */
-            var controller = function ($scope, $modalInstance) {
+            var controller = function ($scope, $uibModalInstance) {
                 $scope.ok = function (result) {
                     $scope.item.groupNames = [].concat($scope.item.groupNames);
                     ItemModel.putItem($scope.item).then(
                         function () {
-                            $modalInstance.close($scope.item);
+                            $uibModalInstance.close($scope.item);
                         },
                         function () {
                             growl.warning(locale.getString("habmin.itemSaveFailed",
@@ -69,11 +69,11 @@ angular.module('Automation.editEvent', [
                     );
                 };
                 $scope.cancel = function (result) {
-                    $modalInstance.dismiss('cancel');
+                    $uibModalInstance.dismiss('cancel');
                 };
             };
 
-            return $modal.open({
+            return $uibModal.open({
                 backdrop: 'static',
                 keyboard: true,
                 modalFade: true,

@@ -13,7 +13,7 @@ angular.module('UserGeneralPrefs', [
     'ngLocalize'
 ])
     .service('UserGeneralPrefs',
-    function ($modal, $rootScope, UserService, localeSupported, locale) {
+    function ($uibModal, $rootScope, UserService, localeSupported, locale) {
         this.showModal = function () {
             var scope = $rootScope.$new();
             scope.model = {};
@@ -46,19 +46,19 @@ angular.module('UserGeneralPrefs', [
                 });
             });
 
-            var controller = function ($scope, $modalInstance) {
+            var controller = function ($scope, $uibModalInstance) {
                 $scope.ok = function (result) {
                     UserService.setTheme(scope.model.theme);
                     UserService.setLanguage(scope.model.language);
 
-                    $modalInstance.close(result);
+                    $uibModalInstance.close(result);
                 };
                 $scope.cancel = function (result) {
-                    $modalInstance.dismiss('cancel');
+                    $uibModalInstance.dismiss('cancel');
                 };
             };
 
-            return $modal.open({
+            return $uibModal.open({
                 backdrop: 'static',
                 keyboard: true,
                 modalFade: true,

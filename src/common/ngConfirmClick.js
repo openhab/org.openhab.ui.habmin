@@ -11,7 +11,7 @@ angular.module('ngConfirmClick', [
     'ui.bootstrap',
     'ngSanitize'
 ])
-    .directive('ngConfirmClick', function ($window, $modal, $rootScope, $timeout, $parse, $sce) {
+    .directive('ngConfirmClick', function ($window, $uibModal, $rootScope, $timeout, $parse, $sce) {
         return {
             restrict: 'A',
 
@@ -49,16 +49,16 @@ angular.module('ngConfirmClick', [
                         }
                     }
 
-                    var controller = function ($scope, $modalInstance) {
+                    var controller = function ($scope, $uibModalInstance) {
                         $scope.ok = function (result) {
-                            $modalInstance.close(result);
+                            $uibModalInstance.close(result);
 
                             $timeout(function () {
                                 scope.$apply(attrs.ngConfirmClick);
                             });
                         };
                         $scope.cancel = function (result) {
-                            $modalInstance.dismiss('cancel');
+                            $uibModalInstance.dismiss('cancel');
                         };
                     };
 
@@ -66,7 +66,7 @@ angular.module('ngConfirmClick', [
                         newScope.alert = '<span class="text-large ' + icon + '"></span>';
                     }
 
-                    return $modal.open({
+                    return $uibModal.open({
                         scope: newScope,
                         backdrop: 'static',
                         keyboard: true,

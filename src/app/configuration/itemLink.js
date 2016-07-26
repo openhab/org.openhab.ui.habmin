@@ -15,7 +15,7 @@ angular.module('Config.ItemLink', [
     'ngLocalize'
 ])
     .service('itemLink',
-    function ($modal, $rootScope, growl, locale, UserService, ItemModel, SmartHomeModel) {
+    function ($uibModal, $rootScope, growl, locale, UserService, ItemModel, SmartHomeModel) {
         this.edit = function (channel) {
             var scope = $rootScope.$new();
             scope.result = {name: ""};
@@ -26,13 +26,13 @@ angular.module('Config.ItemLink', [
             /**
              * Controller functions get called when the modal closes
              * @param $scope
-             * @param $modalInstance
+             * @param $uibModalInstance
              */
-            var controller = function ($scope, $modalInstance) {
+            var controller = function ($scope, $uibModalInstance) {
                 $scope.ok = function (result) {
                     ItemModel.linkItem(channel, scope.result).then(
                         function () {
-                            $modalInstance.close($scope.item);
+                            $uibModalInstance.close($scope.item);
                             growl.success(locale.getString("item.LinkOk"));
                         },
                         function (response) {
@@ -49,11 +49,11 @@ angular.module('Config.ItemLink', [
                     );
                 };
                 $scope.cancel = function (result) {
-                    $modalInstance.dismiss('cancel');
+                    $uibModalInstance.dismiss('cancel');
                 };
             };
 
-            return $modal.open({
+            return $uibModal.open({
                 backdrop: 'static',
                 keyboard: true,
                 modalFade: true,

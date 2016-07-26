@@ -1,7 +1,8 @@
 {
+  "InstalledBindings": "Installed Bindings",
+  "Information": "Binding Information",
   "Author": "Primary Author",
   "Description": "Description",
-  "Information": "Binding Information",
   "NoneFound": "No bindings found",
   "ThingTypes": "Supported Thing Types"
 }

@@ -552,7 +552,8 @@ function ZWaveLogReader() {
                 3: {
                     name: "SWITCH_BINARY_REPORT"
                 }
-            }
+            },
+            processor: processSwitchBinary
         },
         38: {
             name: "SWITCH_MULTILEVEL",
@@ -2227,6 +2228,30 @@ function ZWaveLogReader() {
         return data;
     }
 
+    function processSwitchBinary(node, endpoint, bytes) {
+        var data = {result: SUCCESS};
+
+        var cmdCls = HEX2DEC(bytes[0]);
+        var cmdCmd = HEX2DEC(bytes[1]);
+        data.content = getCommandClassName(cmdCls, cmdCmd);
+        switch (cmdCmd) {
+            case 1:				// SWITCH_BINARY_SET
+            case 3:             // SWITCH_BINARY_REPORT
+                if (HEX2DEC(bytes[2]) == 0) {
+                    data.content += " <span class='label'>OFF</span>";
+                }
+                else if (HEX2DEC(bytes[2]) == 255) {
+                    data.content += " <span class='label'>ON</span>";
+                }
+                else {
+                    data.content += " <span class='label label-error'>UNKNOWN</span>";
+                }
+                break;
+        }
+
+        return data;
+    }
+
     var binarySensors = {
         0: "UNKNOWN",
         1: "GENERAL",
@@ -2584,17 +2609,6 @@ function ZWaveLogReader() {
         getNodeInfo(node, "deviceType") + ":" + getNodeInfo(node, "deviceID") + "</span>";
 
         return data;
-    }
-
-    function processSwitchBinary(node, endpoint, bytes) {
-        var cmdCls = HEX2DEC(bytes[0]);
-        var cmdCmd = HEX2DEC(bytes[1]);
-
-        if (cmdCmd == 6) {       // REPORT
-            addNodeItem(node, endpoint, "SWITCH", commandClasses[cmdCls].name);
-        }
-
-        return {result: SUCCESS};
     }
 
     function processMultiChannelReport(node, endpoint, bytes) {
@@ -3431,7 +3445,9 @@ function ZWaveLogReader() {
     function processPacketTX(node, process, message) {
         packetsSent++;
         lastPacketTx = processPacket("TX", node, process, message);
-        lastPacketTx.queueLen = txQueueLen;
+        if(lastPacketTx != null) {
+            lastPacketTx.queueLen = txQueueLen;
+        }
         return lastPacketTx;
     }
 

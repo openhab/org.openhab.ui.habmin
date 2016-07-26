@@ -14,7 +14,7 @@ angular.module('dashboardWidgetProperties', [
     'ngLocalize'
 ])
     .service('dashboardWidgetProperties',
-    function ($modal, $rootScope, growl, locale, UserService) {
+    function ($uibModal, $rootScope, growl, locale, UserService) {
         this.editOptions = function (widget) {
             var scope = $rootScope.$new();
             scope.showTab = 0;
@@ -23,20 +23,20 @@ angular.module('dashboardWidgetProperties', [
             /**
              * Controller functions get called when the modal closes
              * @param $scope
-             * @param $modalInstance
+             * @param $uibModalInstance
              */
-            var controller = function ($scope, $modalInstance) {
+            var controller = function ($scope, $uibModalInstance) {
                 $scope.ok = function (result) {
                     widget.options = scope.widget.options;
 
-                    $modalInstance.close(result);
+                    $uibModalInstance.close(result);
                 };
                 $scope.cancel = function (result) {
-                    $modalInstance.dismiss('cancel');
+                    $uibModalInstance.dismiss('cancel');
                 };
             };
 
-            return $modal.open({
+            return $uibModal.open({
                 backdrop: 'static',
                 keyboard: true,
                 modalFade: true,
