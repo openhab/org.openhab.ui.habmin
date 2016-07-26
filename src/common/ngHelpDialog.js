@@ -11,7 +11,7 @@ angular.module('ngHelpDialog', [
     'ui.bootstrap',
     'ngSanitize'
 ])
-    .directive('ngHelpDialog', function ($window, $modal, $rootScope, $timeout, $parse, $sce) {
+    .directive('ngHelpDialog', function ($window, $uibModal, $rootScope, $timeout, $parse, $sce) {
         return {
             restrict: 'A',
 
@@ -29,16 +29,16 @@ angular.module('ngHelpDialog', [
                     newScope.message = attrs.ngHelpMessage;
                     newScope.titleMsg = attrs.ngHelpTitle;
 
-                    var controller = function ($scope, $modalInstance) {
+                    var controller = function ($scope, $uibModalInstance) {
                         $scope.ok = function (result) {
-                            $modalInstance.close(result);
+                            $uibModalInstance.close(result);
                         };
                         $scope.cancel = function (result) {
-                            $modalInstance.dismiss('cancel');
+                            $uibModalInstance.dismiss('cancel');
                         };
                     };
 
-                    return $modal.open({
+                    return $uibModal.open({
                         scope: newScope,
                         backdrop: 'static',
                         keyboard: true,

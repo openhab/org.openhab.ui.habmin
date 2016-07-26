@@ -15,7 +15,7 @@ angular.module('dashboardProperties', [
     'formSelectInput'
 ])
     .service('dashboardProperties',
-    function ($modal, $rootScope, growl, locale, UserService) {
+    function ($uibModal, $rootScope, growl, locale, UserService) {
         this.editOptions = function (dashboard) {
             var scope = $rootScope.$new();
 
@@ -34,21 +34,21 @@ angular.module('dashboardProperties', [
             /**
              * Controller functions get called when the modal closes
              * @param $scope
-             * @param $modalInstance
+             * @param $uibModalInstance
              */
-            var controller = function ($scope, $modalInstance) {
+            var controller = function ($scope, $uibModalInstance) {
                 $scope.ok = function (result) {
                     // Convert the 'menu' to a boolean
                     scope.dashboard.menu = !(scope.dashboard.menu === "no");
 
-                    $modalInstance.close(scope.dashboard);
+                    $uibModalInstance.close(scope.dashboard);
                 };
                 $scope.cancel = function (result) {
-                    $modalInstance.dismiss('cancel');
+                    $uibModalInstance.dismiss('cancel');
                 };
             };
 
-            return $modal.open({
+            return $uibModal.open({
                 backdrop: 'static',
                 keyboard: true,
                 modalFade: true,

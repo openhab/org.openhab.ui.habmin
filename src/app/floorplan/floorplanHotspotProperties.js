@@ -16,7 +16,7 @@ angular.module('floorplanHotspotProperties', [
     'HABmin.itemModel'
 ])
     .service('floorplanHotspotProperties',
-    function ($modal, $rootScope, growl, locale, UserService, ItemModel) {
+    function ($uibModal, $rootScope, growl, locale, UserService, ItemModel) {
         this.editOptions = function (hotspot) {
             var scope = $rootScope.$new();
 
@@ -47,23 +47,23 @@ angular.module('floorplanHotspotProperties', [
             /**
              * Controller functions get called when the modal closes
              * @param $scope
-             * @param $modalInstance
+             * @param $uibModalInstance
              */
-            var controller = function ($scope, $modalInstance) {
+            var controller = function ($scope, $uibModalInstance) {
                 $scope.ok = function (result) {
                     // Copy over the properties
                     hotspot.itemId = scope.hotspot.itemId;
-                    $modalInstance.close({cmd: 'save', hotspot: scope.hotspot});
+                    $uibModalInstance.close({cmd: 'save', hotspot: scope.hotspot});
                 };
                 $scope.cancel = function (result) {
-                    $modalInstance.dismiss({cmd: 'cancel'});
+                    $uibModalInstance.dismiss({cmd: 'cancel'});
                 };
                 $scope.delete = function (result) {
-                    $modalInstance.close({cmd: 'delete'});
+                    $uibModalInstance.close({cmd: 'delete'});
                 };
             };
 
-            return $modal.open({
+            return $uibModal.open({
                 backdrop: 'static',
                 keyboard: true,
                 modalFade: true,

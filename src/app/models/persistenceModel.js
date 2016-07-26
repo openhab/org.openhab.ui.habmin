@@ -48,12 +48,96 @@ angular.module('HABmin.persistenceModel', [
             );
             return deferred.promise;
         };
+
+        this.getItems = function (service) {
+            var deferred = $q.defer();
+            RestService.getService(svcName).then(
+                function (url) {
+                    $http.get(url + "/items",
+                        {
+                            params: {
+                                servicename: service
+                            }
+                        })
+                        .success(function (services) {
+                            services = [].concat(services);
+
+                            deferred.resolve(services);
+                        })
+                        .error(function (data, status) {
+                            deferred.reject(data);
+                        });
+
+                    return deferred.promise;
+                },
+                function () {
+                    deferred.reject(null);
+                }
+            );
+            return deferred.promise;
+        };
+
+        this.deleteData = function (service, item, start, end) {
+            var deferred = $q.defer();
+            RestService.getService(svcName).then(
+                function (url) {
+                    $http.delete(url + "/" + item,
+                        {
+                            params: {
+                                servicename: service,
+                                starttime: start,
+                                endtime: end
+                            }
+                        })
+                        .success(function (response) {
+                            deferred.resolve(response);
+                        })
+                        .error(function (data, status) {
+                            deferred.reject(data);
+                        });
+
+                    return deferred.promise;
+                },
+                function () {
+                    deferred.reject(null);
+                }
+            );
+            return deferred.promise;
+        };
+
+        this.putData = function (service, item, time, state) {
+            var deferred = $q.defer();
+            RestService.getService(svcName).then(
+                function (url) {
+                    $http.put(url + "/" + item, {},
+                        {
+                            params: {
+                                servicename: service,
+                                time: time,
+                                state: state
+                            }
+                        })
+                        .success(function (response) {
+                            deferred.resolve(response);
+                        })
+                        .error(function (data, status) {
+                            deferred.reject(data);
+                        });
+
+                    return deferred.promise;
+                },
+                function () {
+                    deferred.reject(null);
+                }
+            );
+            return deferred.promise;
+        };
     })
 
     .service('PersistenceDataModel', function ($http, $q, RestService, UserService) {
         var svcName = "persistence";
 
-        this.get = function (service, item, start, stop) {
+        this.get = function (service, item, start, stop, page, pagelength) {
             var deferred = $q.defer();
 //            var parms = {};
 
@@ -126,15 +210,22 @@ angular.module('HABmin.persistenceModel', [
             console.log("Request start", start, requestStart, "stop", stop, requestStop);
             console.log("HTML GET start at", new Date().getTime() - tStart);
 
+            var parameters = {
+                servicename: service,
+                starttime: new moment(requestStart).toISOString(),
+                endtime: new moment(requestStop).toISOString()
+            };
+
+            if (page != undefined) {
+                parameters.page = page;
+                parameters.pagelength = pagelength;
+            }
+
             RestService.getService(svcName).then(
                 function (url) {
                     $http.get(url + "/" + item,
                         {
-                            params: {
-                                servicename: service,
-                                starttime: new moment(requestStart).toISOString(),
-                                endtime: new moment(requestStop).toISOString()
-                            }
+                            params: parameters
                         })
                         .success(function (data) {
                             console.log("HTML GET completed in", new Date().getTime() - tStart);

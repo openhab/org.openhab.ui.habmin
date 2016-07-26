@@ -16,7 +16,7 @@ angular.module('Config.ItemEdit', [
     'ngLocalize'
 ])
     .service('itemEdit',
-    function ($modal, $rootScope, growl, locale, UserService, ItemModel, SmartHomeModel) {
+    function ($uibModal, $rootScope, growl, locale, UserService, ItemModel, SmartHomeModel) {
         this.edit = function (channel, item, create) {
             var scope = $rootScope.$new();
             scope.newItem = create;
@@ -38,9 +38,9 @@ angular.module('Config.ItemEdit', [
             /**
              * Controller functions get called when the modal closes
              * @param $scope
-             * @param $modalInstance
+             * @param $uibModalInstance
              */
-            var controller = function ($scope, $modalInstance) {
+            var controller = function ($scope, $uibModalInstance) {
                 $scope.ok = function (result) {
                     if ($scope.item.groupNames != null) {
                         $scope.item.groupNames = [].concat($scope.item.groupNames);
@@ -48,7 +48,7 @@ angular.module('Config.ItemEdit', [
                     ItemModel.putItem($scope.item).then(
                         function (newItem) {
                             if (create !== true) {
-                                $modalInstance.close($scope.item);
+                                $uibModalInstance.close($scope.item);
                                 growl.success(locale.getString("item.SaveOk",
                                     {name: $scope.item.label}));
 
@@ -57,7 +57,7 @@ angular.module('Config.ItemEdit', [
 
                             ItemModel.linkItem(channel, newItem).then(
                                 function () {
-                                    $modalInstance.close($scope.item);
+                                    $uibModalInstance.close($scope.item);
                                     growl.success(locale.getString("item.SaveOk",
                                         {name: $scope.item.label}));
                                 },
@@ -88,11 +88,11 @@ angular.module('Config.ItemEdit', [
                     );
                 };
                 $scope.cancel = function (result) {
-                    $modalInstance.dismiss('cancel');
+                    $uibModalInstance.dismiss('cancel');
                 };
             };
 
-            return $modal.open({
+            return $uibModal.open({
                 backdrop: 'static',
                 keyboard: true,
                 modalFade: true,

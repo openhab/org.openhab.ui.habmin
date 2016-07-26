@@ -277,13 +277,13 @@ angular.module('HABmin.rules', [
  $scope.dlg.title = prompt;
  $scope.dlg.value = value;
 
- var controller = function ($modalInstance) {
+ var controller = function ($uibModalInstance) {
  $scope.dlg.ok = function () {
  callback($scope.dlg.value);
- $modalInstance.close();
+ $uibModalInstance.close();
  };
  $scope.dlg.cancel = function () {
- $modalInstance.dismiss();
+ $uibModalInstance.dismiss();
  };
  };
 

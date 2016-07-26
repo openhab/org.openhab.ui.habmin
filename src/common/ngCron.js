@@ -10,7 +10,7 @@
 angular.module('ngCron', [
     'ui.bootstrap'
 ])
-    .directive('ngCron', function ($window, $modal, $rootScope, $timeout) {
+    .directive('ngCron', function ($window, $uibModal, $rootScope, $timeout) {
         return {
             restrict: 'E',
 

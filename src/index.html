@@ -331,9 +331,15 @@
                             </a>
                         </li>
                         <li>
+                            <a ui-sref="persistence" ng-class="{active: $state.includes('persistence')}">
+                                <i class="fa fa-fw fa-database"></i>
+                                <span i18n="habmin.Persistence"></span>
+                            </a>
+                        </li>
+                        <li>
                             <a ui-sref="floorplan/editor" ng-class="{active: $state.includes('items')}">
                                 <i class="fa fa-fw fa-home"></i>
-                                <span>Floorplan Editor</span>
+                                <span i18n="habmin.Floorplan"></span>
                             </a>
                         </li>
                     </ul>

@@ -118,7 +118,8 @@ module.exports = {
             'vendor/angular-slimscroll/angular-slimscroll.js',
             'vendor/angular-clipboard/angular-clipboard.js',
             'vendor/angular-promise-extras/angular-promise-extras.js',
-            'vendor/angular-moment/angular-moment.js'
+            'vendor/angular-moment/angular-moment.js',
+            'vendor/angular-xeditable/dist/js/xeditable.js'
         ],
         css: [
             'vendor/angular-growl-v2/build/angular-growl.css',
@@ -131,7 +132,8 @@ module.exports = {
             'vendor/weather-icons/css/weather-icons.css',
             'vendor/fullcalendar/dist/fullcalendar.css',
             'vendor/angular-ui-select/dist/select.css',
-            'vendor/vis/dist/vis.css'
+            'vendor/vis/dist/vis.css',
+            'vendor/angular-xeditable/dist/css/xeditable.css'
         ],
         assets: [
             'vendor/oa-font/fonts/*',

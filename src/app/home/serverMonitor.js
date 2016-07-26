@@ -14,7 +14,7 @@ angular.module('serverMonitor', [
     'HABmin.userModel'
 ])
     .service('ServerMonitor',
-    function ($modal, $rootScope, ChartModel, growl, locale, UserService) {
+    function ($uibModal, $rootScope, ChartModel, growl, locale, UserService) {
         var modalInstance = null;
         var reset = false;
 
@@ -34,7 +34,7 @@ angular.module('serverMonitor', [
                             modalInstance = null;
                         };
 
-                        modalInstance = $modal.open({
+                        modalInstance = $uibModal.open({
                             backdrop: 'static',
                             keyboard: true,
                             modalFade: true,

@@ -3,16 +3,16 @@
     <div class="panel panel-default">
         <!-- Header -->
         <div class="panel-heading">
-            <!-- FILTER BUTTON -->
-            <div class="btn-group dropdown">
-                <button type="button" class="btn btn-default dropdown-toggle" ng-disabledx="logState!='loaded'"
-                        ng-init="filterOpen=false" ng-click="filterOpen=!filterOpen">
+            <div class="btn-group" uib-dropdown>
+                <!-- FILTER BUTTON -->
+                <button type="button"
+                        class="btn btn-default"
+                        uib-dropdown-toggle>
                     <span ng-class="{'fa fa-filter': true, 'text-warning': filterBindings.length || filterStatus.length}"></span>
                     <span i18n="common.filter"></span>
                     <span class="caret"></span>
-                    <span class="sr-only">Dropdown</span>
                 </button>
-                <ul class="dropdown-menu" role="menu">
+                <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
                     <li>
                         <a ng-click="toggleStatusFilter('UNINITIALIZED')">
                             <span ng-class="{'fa fa-fw': true, 'fa-check-square-o': filterStatus.indexOf('UNINITIALIZED')==-1}"></span>
@@ -161,34 +161,35 @@
                 <span class="hidden-xs hidden-sm" i18n="common.delete"></span>
             </button>
 
-            <div class="pull-right btn-group dropdown">
-                <button type="button"
-                        class="btn btn-default dropdown-toggle"
-                        data-toggle="dropdown">
-                    <span class="fa fa-cog"></span>
-                    <span i18n="habmin.Tools"></span>
-                    <span class="caret"></span>
-                    <span class="sr-only">Dropdown</span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li ng-repeat="config in actionList = (selectedThingConfig.parameters | filter:checkActions())">
-                        <a ng-click="doAction(config)">
-                            <span class="fa fa-fw"></span>
-                            <span class="fa fa-fw fa-cog"></span>
-                            <span>{{config.label}}</span>
-                        </a>
-                    </li>
+            <div class="pull-right btn-group">
+                <div class="pull-right btn-group" uib-dropdown>
+                    <button type="button"
+                            class="btn btn-default"
+                            uib-dropdown-toggle>
+                        <span class="fa fa-cog"></span>
+                        <span i18n="habmin.Tools"></span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                        <li ng-repeat="config in actionList = (selectedThingConfig.parameters | filter:checkActions())">
+                            <a ng-click="doAction(config)">
+                                <span class="fa fa-fw"></span>
+                                <span class="fa fa-fw fa-cog"></span>
+                                <span>{{config.label}}</span>
+                            </a>
+                        </li>
 
-                    <li ng-if="actionList.length" class="divider"></li>
+                        <li ng-if="actionList.length" class="divider"></li>
 
-                    <li>
-                        <a ng-click="showAdvancedSettings=!showAdvancedSettings">
-                            <span class="fa fa-fw" ng-class="{'fa-check-square-o': showAdvancedSettings}"></span>
-                            <span class="fa fa-fw fa-mortar-board"></span>
-                            <span i18n="habmin.AdvancedMode"></span>
-                        </a>
-                    </li>
-                </ul>
+                        <li>
+                            <a ng-click="showAdvancedSettings=!showAdvancedSettings">
+                                <span class="fa fa-fw" ng-class="{'fa-check-square-o': showAdvancedSettings}"></span>
+                                <span class="fa fa-fw fa-mortar-board"></span>
+                                <span i18n="habmin.AdvancedMode"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
 
@@ -204,7 +205,7 @@
                         <span i18n="habmin.Description"></span>
                     </a>
                 </div>
-                <div collapse="panelDisplayed!='OVERVIEW'" class="panel-form">
+                <div uib-collapse="panelDisplayed!='OVERVIEW'" class="panel-form">
                     <div i18n="thing.Label"></div>
                     <div class="well well-sm" ng-bind-html="selectedThingType.label"></div>
 
@@ -259,7 +260,7 @@
                         <span i18n="thing.Properties"></span>
                     </a>
                 </div>
-                <div collapse="panelDisplayed!='PROPERTIES'" class="panel-form">
+                <div uib-collapse="panelDisplayed!='PROPERTIES'" class="panel-form">
                     <div class="form-group">
                         <label for="inputThingLabel" class="control-label" i18n="thing.Label"></label>
                         <input type="text"
@@ -365,7 +366,7 @@
                             <span>{{group.label}}</span>
                         </a>
                     </div>
-                    <div collapse="$parent.panelDisplayed!='CONFIG-{{group.name}}'"
+                    <div uib-collapse="$parent.panelDisplayed!='CONFIG-{{group.name}}'"
                          class="panel-form">
                         <div ng-repeat="config in selectedThingConfig.parameters">
                             <div class="form-group"
@@ -388,7 +389,7 @@
                             <span i18n="habmin.Configuration"></span>
                         </a>
                     </div>
-                    <div collapse="$parent.panelDisplayed!='CONFIG-ungrouped'"
+                    <div uib-collapse="$parent.panelDisplayed!='CONFIG-ungrouped'"
                          class="panel-form">
                         <div ng-repeat="config in selectedThingConfig.parameters">
                             <div class="form-group"
@@ -409,7 +410,7 @@
                               data-total="{{selectedThing.channels.length}}"></span>
                     </a>
                 </div>
-                <div collapse="panelDisplayed!='CHANNELS'"
+                <div uib-collapse="panelDisplayed!='CHANNELS'"
                      class="panel-form">
                     <div ng-repeat="channel in selectedThing.channels">
                         <!-- Channel Information -->
@@ -580,7 +581,7 @@
                         <span i18n="thing.Attributes"></span>
                     </a>
                 </div>
-                <div collapse="panelDisplayed!='ATTRIBUTES'" class="panel-form">
+                <div uib-collapse="panelDisplayed!='ATTRIBUTES'" class="panel-form">
                     <div ng-switch="selectedThing.thingTypeUID.split(':')[0]">
                         <div ng-switch-when="zwave">
                             <ng-include src="'configuration/thingAttributesZWave.tpl.html'"></ng-include>
