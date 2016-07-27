@@ -25,7 +25,7 @@
         <!-- Body -->
         <div class="list-group habmin-list" resize-panel>
             <!-- BINDING LIST -->
-            <div ng-repeat="item in items | orderBy:'name'">
+            <div ng-repeat="item in serviceItems | orderBy:'name'">
                 <a role="presentation" ng-class="{'list-group-item':true, 'active': item==selectedItem}"
                    ng-click="selectItem(item)">
                     <table style="background-color: transparent; width: 100%;">

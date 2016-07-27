@@ -160,7 +160,8 @@ angular.module('Config.Things', [
                 if (values.types.state == 'fulfilled') {
                     $scope.thingTypes = values.types.value;
                 }
-            });
+            }
+        );
 
         ItemModel.getList().then(
             function (list) {
@@ -960,8 +961,7 @@ angular.module('Config.Things', [
     }
 )
 
-    .
-    controller('ThingConfigMenuCtrl',
+    .controller('ThingConfigMenuCtrl',
     function ($scope, ThingConfigService, BindingModel, locale, growl) {
         $scope.tooltipDiscover = locale.getString('habmin.Discovery');
         $scope.tooltipManualAdd = locale.getString('habmin.AddThing');

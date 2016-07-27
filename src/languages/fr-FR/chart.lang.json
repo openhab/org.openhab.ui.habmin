@@ -1,7 +1,7 @@
 {
   "ChartList": "Graphiques",
   "DeleteChart": "Supprimer le graphique",
-  "DeleteChartCheck": "Etes-vous sur de vouloir supprimer ce graphique?",
+  "DeleteChartCheck": "Etes-vous sûr de vouloir supprimer ce graphique?",
   "DeleteError": "Erreur lors de la suppression du graphique <b><i>{name}</i></b>.",
   "DeleteOk": "Graphique <b><i>{name}</i></b> supprimé avec succès",
   "EditChart": "Editer le graphique",
@@ -48,12 +48,14 @@
   "SaveItemStyleBar": "Barre",
   "SaveItemStyleLine": "Ligne",
   "SaveLeftAxis": "Paramètres de l'axe Gauche",
+  "SaveLegend": "Afficher la légende",
   "SaveName": "Nom du graphique",
   "SaveNewName": "Nouveau graphique",
   "SavePeriod": "Période par défaut",
   "SaveRightAxis": "Paramètres de l'axe Droit",
   "SaveSuccess": "Le graphique {chartName} a été enregistré avec succès.",
   "SaveTitle": "Titre du graphique",
+  "SelectItems": "Choisir les items",
   "SelectedItems": "Items sélectionnés",
   "TotalItems": "Nombre d'Items"
 }
