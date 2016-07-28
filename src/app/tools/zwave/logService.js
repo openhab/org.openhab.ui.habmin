@@ -1241,7 +1241,28 @@ function ZWaveLogReader() {
             processor: processTimeParameters
         },
         142: {
-            name: "MULTI_INSTANCE_ASSOCIATION"
+            name: "MULTI_INSTANCE_ASSOCIATION",
+            commands: {
+                1: {
+                    name: "MULTI_INSTANCE_ASSOCIATION_SET"
+                },
+                2: {
+                    name: "MULTI_INSTANCE_ASSOCIATION_GET"
+                },
+                3: {
+                    name: "MULTI_INSTANCE_ASSOCIATION_REPORT"
+                },
+                4: {
+                    name: "MULTI_INSTANCE_ASSOCIATION_REMOVE"
+                },
+                5: {
+                    name: "MULTI_INSTANCE_ASSOCIATION_GROUPINGS_GET"
+                },
+                6: {
+                    name: "MULTI_INSTANCE_ASSOCIATION_GROUPINGS_REPORT"
+                }
+            },
+            processor: processMultiAssociation
         },
         143: {
             name: "MULTI_CMD",
@@ -2054,6 +2075,33 @@ function ZWaveLogReader() {
         return data;
     }
 
+    function processMultiAssociation(node, endpoint, bytes) {
+        var data = {
+            result: SUCCESS,
+            node: node
+        };
+
+        var cmdCls = HEX2DEC(bytes[0]);
+        var cmdCmd = HEX2DEC(bytes[1]);
+        data.content = getCommandClassName(cmdCls, cmdCmd);
+        switch (cmdCmd) {
+            case 1:             // SET
+            case 2:             // GET
+            case 3:             // REPORT
+            case 4:             // REMOVE
+                var groupGet = HEX2DEC(bytes[2]);
+                data.content += " <span class='label'>GROUP_" + groupGet + "</span>";
+                break;
+            case 6:             // ASSOCIATION_GROUPINGSREPORT
+                var groupCnt = HEX2DEC(bytes[2]);
+                addNodeInfo(node, "associationGroups", groupCnt);
+                data.content += " <span class='label'>Supports " + groupCnt + " groups</span>";
+                break;
+        }
+
+        return data;
+    }
+
     function processAssociation(node, endpoint, bytes) {
         var data = {
             result: SUCCESS,
@@ -2064,6 +2112,7 @@ function ZWaveLogReader() {
         var cmdCmd = HEX2DEC(bytes[1]);
         data.content = getCommandClassName(cmdCls, cmdCmd);
         switch (cmdCmd) {
+            case 1:             // SET
             case 2:             // ASSOCIATION_GET
                 var groupGet = HEX2DEC(bytes[2]);
                 data.content += " <span class='label'>GROUP_" + groupGet + "</span>";
@@ -2099,10 +2148,18 @@ function ZWaveLogReader() {
 
         var cmdCls = HEX2DEC(bytes[0]);
         var cmdCmd = HEX2DEC(bytes[1]);
+        var groupGet = HEX2DEC(bytes[2]);
+
         data.content = getCommandClassName(cmdCls, cmdCmd);
         switch (cmdCmd) {
             case 1:             // ASSOCIATION_GROUP_INFO_NAME_GET
-                var groupGet = HEX2DEC(bytes[2]);
+            case 4:             // ASSOCIATION_GROUP_INFO_REPORT
+            case 6:             // ASSOCIATION_GROUP_INFO_LIST_REPORT
+                data.content += " <span class='label'>GROUP_" + groupGet + "</span>";
+                break;
+            case 3:             // ASSOCIATION_GROUP_INFO_GET
+            case 5:             // ASSOCIATION_GROUP_INFO_LIST_GET
+                groupGet = HEX2DEC(bytes[3]);
                 data.content += " <span class='label'>GROUP_" + groupGet + "</span>";
                 break;
             case 2:             // ASSOCIATION_GROUP_INFO_NAME_REPORT

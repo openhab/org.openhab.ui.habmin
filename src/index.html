@@ -113,14 +113,14 @@
                         <div style="font-size: 10px;">{{clockDay}}</div>
                     </li>
                     <!-- THING DISCOVERY (INBOX) MENU -->
-                    <li class="dropdown discovery-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <li class="dropdown discovery-menu" uib-dropdown>
+                        <a href="#" uib-dropdown-toggle class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-plug"></i>
                             <span ng-if="notificationCntNew && !notificationError" class="label label-success">
                                 {{notificationCntNew}}
                             </span>
                         </a>
-                        <ul class="dropdown-menu">
+                        <ul uib-dropdown-menu class="dropdown-menu">
                             <li class="header">There are {{notificationCntNew}} new things
                                 <span class="pull-right">
                                     <button type="button" class="btn btn-xs btn-default"
