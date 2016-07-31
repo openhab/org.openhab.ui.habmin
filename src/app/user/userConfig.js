@@ -47,7 +47,7 @@ angular.module('User.Config', [
 
         $scope.model = {
             currentLanguage: UserService.getLanguage(),
-            currentPersistence: "",
+            currentPersistence: UserService.getPersistence(),
             serverAddress: UserService.getServer()
         };
         $scope.languages = [];
