@@ -7,12 +7,12 @@ module.exports = {
      * development and the `compile_dir` folder is where our app resides once it's
      * completely built.
      */
-    build_dir: 'build',
-    compile_dir: 'bin',
+    build_dir: 'target/web/build',
+    compile_dir: 'target/web/bin',
     cordova_dir: 'cordova',
-    output_dir: 'output',
-    bundle_dir: 'openhab2/org.openhab.ui.habmin/web',
-    language_dir: 'src/languages',
+    output_dir: 'target/web/output',
+    bundle_dir: 'web',
+    language_dir: 'src/web/languages',
 
     /**
      * This is a collection of file patterns that refer to our app code (the
@@ -24,14 +24,14 @@ module.exports = {
      * app's unit tests.
      */
     app_files: {
-        js: [ 'src/**/*.js', '!src/**/*.spec.js', '!src/assets/**/*.js' ],
-        jsunit: [ 'src/**/*.spec.js' ],
+        js: [ 'src/web/**/*.js', '!src/web/**/*.spec.js', '!src/web/assets/**/*.js' ],
+        jsunit: [ 'src/web/**/*.spec.js' ],
 
-        atpl: [ 'src/app/**/*.tpl.html' ],
-        ctpl: [ 'src/common/**/*.tpl.html' ],
+        atpl: [ 'src/web/app/**/*.tpl.html' ],
+        ctpl: [ 'src/web/common/**/*.tpl.html' ],
 
-        html: [ 'src/index.html' ],
-        less: 'src/less/main.less'
+        html: [ 'src/web/index.html' ],
+        less: 'src/web/less/main.less'
     },
 
     /**

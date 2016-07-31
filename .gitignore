@@ -10,3 +10,4 @@ openhab2/org.openhab.ui.habmin/target
 openhab2/localrepo
 .idea/
 npm-debug.log
+target/
