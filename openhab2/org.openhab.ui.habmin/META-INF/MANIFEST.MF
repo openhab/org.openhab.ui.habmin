@@ -2,11 +2,10 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: HABmin User Interface
 Bundle-SymbolicName: org.openhab.ui.habmin
-Bundle-Version: 0.8.0.qualifier
+Bundle-Version: 0.9.0.qualifier
 Bundle-Vendor: cd-jackson.com
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: javax.servlet,
- javax.servlet.http,
+Import-Package: javax.servlet.http,
  javax.ws.rs,
  javax.ws.rs.core,
  org.apache.commons.io,
