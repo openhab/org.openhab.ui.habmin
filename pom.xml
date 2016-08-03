@@ -63,6 +63,7 @@
                 <executions>
                     <execution>
                         <goals>
+                            <goal>npm</goal>
                             <goal>grunt</goal>
                         </goals>
                     </execution>
