@@ -80,6 +80,7 @@ angular.module('HABmin', [
         'fr-FR': {name: "Fran&ccedil;ais", desc: "France"},
         'it-IT': {name: "Italiano", desc: "Italia"},
         'pl-PL': {name: "Polski", desc: "Polska"},
+        'ru-RU': {name: "Russian", desc: "Russia"},
         'sv-SE': {name: "Svenska", desc: "Sverige"}
     })
     .value('localeFallbacks', {
@@ -90,6 +91,7 @@ angular.module('HABmin', [
         'it': 'it-IT',
         'nl': 'nl-NL',
         'pl': 'pl-PL',
+        'ru': 'ru-RU',
         'sv': 'sv-SE'
     })
 

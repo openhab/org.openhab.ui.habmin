@@ -5,10 +5,8 @@ cordova/platforms
 cordova/www
 bin/
 build/
-openhab2/org.openhab.ui.habmin/web
-openhab2/org.openhab.ui.habmin/target
-openhab2/localrepo
 .idea/
 npm-debug.log
 target/
 target-grunt/
+web/
