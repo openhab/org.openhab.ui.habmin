@@ -122,7 +122,7 @@ module.exports = function (grunt) {
                     {
                         src: ['**'],
                         dest: '<%= build_dir %>/assets/',
-                        cwd: 'src/assets',
+                        cwd: 'src/web/assets',
                         expand: true
                     }
                 ]
@@ -132,7 +132,7 @@ module.exports = function (grunt) {
                     {
                         src: ['**'],
                         dest: '<%= build_dir %>/languages/',
-                        cwd: 'src/languages',
+                        cwd: 'src/web/languages',
                         expand: true
                     }
                 ]
@@ -153,7 +153,7 @@ module.exports = function (grunt) {
                     {
                         src: ['<%= app_files.js %>'],
                         dest: '<%= build_dir %>/',
-                        cwd: '.',
+                        cwd: 'src/web',
                         expand: true
                     }
                 ]
@@ -407,7 +407,7 @@ module.exports = function (grunt) {
              */
             app: {
                 options: {
-                    base: 'src/app',
+                    base: 'src/web/app',
                     htmlmin: {
                         collapseBooleanAttributes: true,
                         collapseWhitespace: true,
@@ -478,7 +478,7 @@ module.exports = function (grunt) {
                 dir: '<%= build_dir %>',
                 src: [
                     '<%= vendor_files.js %>',
-                    '<%= build_dir %>/src/**/*.js',
+                    '<%= build_dir %>/**/*.js',
                     '<%= html2js.common.dest %>',
                     '<%= html2js.app.dest %>',
                     '<%= build_dir %>/assets/**/*.css',
@@ -672,7 +672,7 @@ module.exports = function (grunt) {
             options: {
             }
         };
-        taskConfig.less[skin].files[skin_css] = 'src/less/skins/' + skin + '.less';
+        taskConfig.less[skin].files[skin_css] = 'src/web/less/skins/' + skin + '.less';
         skinTasksBuild.push('less:' + skin);
 
 //        grunt.log.write(taskConfig.less[skin].files[skin_css]);
@@ -684,7 +684,7 @@ module.exports = function (grunt) {
                 compress: true
             }
         };
-        taskConfig.less[skin + '_compile'].files[skin_css] = 'src/less/skins/<%= skin %>.less';
+        taskConfig.less[skin + '_compile'].files[skin_css] = 'src/web/less/skins/<%= skin %>.less';
         skinTasksCompile.push('less:' + skin + '_compile');
     });
     grunt.registerTask('skins_build', skinTasksBuild);
@@ -822,15 +822,29 @@ module.exports = function (grunt) {
             return file.replace(dirRE, '');
         });
 
+        var jsFilesVendor = [];
+        var jsFilesApp = [];
+        for(var jscnt=0; jscnt < jsFiles.length; jscnt++) {
+            if(jsFiles[jscnt].indexOf("vendor/") == 0) {
+                jsFilesVendor.push(jsFiles[jscnt]);
+            }
+            else {
+                jsFilesApp.push(jsFiles[jscnt]);
+            }
+        }
+
+        jsFiles = jsFilesVendor;
+        jsFiles = jsFiles.concat(jsFilesApp);
+
         // Make sure that our main file and skins are last so they over-ride any classes
         var cssFiles = [];
         var cssFilesApp = [];
-        for(var cnt=0; cnt < cssFilesRaw.length; cnt++) {
-            if(cssFilesRaw[cnt].indexOf("assets/" + pkg.name + "-skin") == 0) {
-                cssFilesApp.push(cssFilesRaw[cnt]);
+        for(var csscnt=0; csscnt < cssFilesRaw.length; csscnt++) {
+            if(cssFilesRaw[csscnt].indexOf("assets/" + pkg.name + "-skin") == 0) {
+                cssFilesApp.push(cssFilesRaw[csscnt]);
             }
-            else if(cssFilesRaw[cnt].indexOf("assets/" + pkg.name) != 0) {
-                cssFiles.push(cssFilesRaw[cnt]);
+            else if(cssFilesRaw[csscnt].indexOf("assets/" + pkg.name) != 0) {
+                cssFiles.push(cssFilesRaw[csscnt]);
             }
         }
         cssFiles.push("assets/" + pkg.name + ".css");

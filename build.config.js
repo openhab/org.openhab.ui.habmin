@@ -24,13 +24,13 @@ module.exports = {
      * app's unit tests.
      */
     app_files: {
-        js: [ 'src/web/**/*.js', '!src/web/**/*.spec.js', '!src/web/assets/**/*.js' ],
+        js: [ '**/*.js', '!**/*.spec.js', '!assets/**/*.js' ],
         jsunit: [ 'src/web/**/*.spec.js' ],
 
         atpl: [ 'src/web/app/**/*.tpl.html' ],
         ctpl: [ 'src/web/common/**/*.tpl.html' ],
 
-        html: [ 'src/web/index.html' ],
+        html:  'src/web/index.html' ,
         less: 'src/web/less/main.less'
     },
 

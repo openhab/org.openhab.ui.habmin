@@ -59,7 +59,7 @@
             <plugin>
                 <groupId>pl.allegro</groupId>
                 <artifactId>grunt-maven-plugin</artifactId>
-                <version>1.4.1</version>
+                <version>1.5.1</version>
                 <executions>
                     <execution>
                         <goals>

@@ -11,3 +11,4 @@ openhab2/localrepo
 .idea/
 npm-debug.log
 target/
+target-grunt/
