@@ -1,5 +1,5 @@
 {
-  "directory": "vendor",
+  "directory": "bower_modules",
   "interactive": true,
   "color": true,
   "save": true

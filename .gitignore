@@ -1,5 +1,7 @@
 *.sw*
 *~
+node/
+bower_modules/
 node_modules/
 cordova/platforms
 cordova/www
