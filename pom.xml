@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -16,7 +16,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    
+
     <repositories>
         <!-- openHAB snapshots -->
         <repository>
@@ -31,21 +31,21 @@
                 <updatePolicy>always</updatePolicy>
             </snapshots>
         </repository>
-        
+
         <!-- SmartHome p2 repository -->
         <repository>
             <id>p2-smarthome</id>
             <url>http://download.eclipse.org/smarthome/updates-stable</url>
             <layout>p2</layout>
         </repository>
-        
+
         <!-- openHAB core p2 repository -->
         <repository>
             <id>p2-openhab-core</id>
             <url>https://dl.bintray.com/openhab/p2/openhab-core/2.0.0.x</url>
             <layout>p2</layout>
         </repository>
-        
+
         <!-- openHAB dependencies p2 repository -->
         <repository>
             <id>p2-openhab-deps-repo</id>
@@ -57,15 +57,51 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>pl.allegro</groupId>
-                <artifactId>grunt-maven-plugin</artifactId>
-                <version>1.5.1</version>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.0</version>
+
                 <executions>
+
                     <execution>
+                        <id>install node and npm</id>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                        <configuration>
+                            <nodeVersion>v6.3.1</nodeVersion>
+                            <npmVersion>3.10.6</npmVersion>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>npm install</id>
                         <goals>
                             <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install</arguments>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>bower install</id>
+                        <goals>
+                            <goal>bower</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install</arguments>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>grunt build</id>
+                        <goals>
                             <goal>grunt</goal>
                         </goals>
+                        <configuration>
+                            <arguments>build</arguments>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
