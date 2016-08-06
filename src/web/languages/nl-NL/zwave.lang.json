@@ -17,7 +17,7 @@
   "FirmwareVersion": "Firmware versie",
   "FrequentlyListening": "Frequent Luisteren",
   "GenericClass": "Algemene klasse",
-  "HardResetConfirmMessage": "Dit zal de controller op de standaardwaarden resetten. Het zal het netwerk volledig resetten en je moet alle apparaten opnieuw initialiseren.<br /><span class="'text-warning">U BENT GEWAARSCHUWD!!</span>",
+  "HardResetConfirmMessage": "Dit zal de controller op de standaardwaarden resetten. Het zal het netwerk volledig resetten en je moet alle apparaten opnieuw initialiseren.<br /><span class='text-warning'>U BENT GEWAARSCHUWD!!</span>",
   "HardResetConfirmTitle": "Bevestig harde reset",
   "HealDone": "klaar",
   "HealFailed": "mislukt",
