@@ -1,5 +1,5 @@
 {
-  "directory": "bower_modules",
+  "directory": "target/bower_modules",
   "interactive": true,
   "color": true,
   "save": true

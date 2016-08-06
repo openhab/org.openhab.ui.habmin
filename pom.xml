@@ -60,9 +60,12 @@
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
                 <version>1.0</version>
+                
+                <configuration>
+                    <installDirectory>target</installDirectory>
+                </configuration>
 
                 <executions>
-
                     <execution>
                         <id>install node and npm</id>
                         <goals>
@@ -91,16 +94,6 @@
                         </goals>
                         <configuration>
                             <arguments>install</arguments>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>grunt build</id>
-                        <goals>
-                            <goal>grunt</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>build</arguments>
                         </configuration>
                     </execution>
                 </executions>

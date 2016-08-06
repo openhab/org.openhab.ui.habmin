@@ -67,6 +67,7 @@ angular.module('HABmin.thingModel', [
 
         this.listen = function () {
             // Things event listener
+            return;
             eventSrc = new EventSource("/rest/events?topics=smarthome/things/*");
             eventSrc.addEventListener('message', function (event) {
                 var evt = angular.fromJson(event.data);
