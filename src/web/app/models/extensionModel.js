@@ -19,6 +19,7 @@ angular.module('HABmin.extensionModel', [
         var me = this;
 
         this.listen = function () {
+            return;
             eventSrc = new EventSource("/rest/events?topics=smarthome/extensions/*");
 
             eventSrc.addEventListener('message', function (event) {
