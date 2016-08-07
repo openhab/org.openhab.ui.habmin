@@ -60,9 +60,15 @@
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
                 <version>1.0</version>
-                
+
                 <configuration>
+                    <srcdir>${basedir}/src/web</srcdir>
+                    <outputdir>${basedir}/web</outputdir>
                     <installDirectory>target</installDirectory>
+                    <triggerfiles>
+                        <triggerfile>Gulpfile.js</triggerfile>
+                        <triggerfile>package.json</triggerfile>
+                    </triggerfiles>
                 </configuration>
 
                 <executions>
@@ -96,7 +102,20 @@
                             <arguments>install</arguments>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <id>grunt build</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>grunt</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>--verbose</arguments>
+                        </configuration>
+                    </execution>
+
                 </executions>
+
             </plugin>
         </plugins>
     </build>
