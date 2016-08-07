@@ -14,7 +14,6 @@ angular.module('HABmin.serviceModel', [
 
     .service('ServiceModel', function ($http, $q, locale, growl) {
         var serviceList = [];
-        var eventSrc;
         var me = this;
 
         this.getServices = function () {
