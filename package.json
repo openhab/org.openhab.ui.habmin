@@ -8,14 +8,14 @@
     "type": "GPL",
     "url": "https://raw.github.com/cdjackson/HABmin2/master/LICENSE"
   },
-  "bugs": "https://github.com/cdjackson/HABmin2/issues",
+  "bugs": "https://github.com/openhab/org.openhab.ui.habmin/issues",
   "repository": {
     "type": "git",
-    "url": "git@github.com:cdjackson/HABmin2.git"
+    "url": "git@github.com:openhab/org.openhab.ui.habmin.git"
   },
-  "dependencies": {
+  "devDependencies": {
     "bower": "1.7.9",
-    "grunt": "1.0.0",
+    "grunt": "v1.0.1",
     "grunt-cli": "1.2.0",
     "grunt-json-minify": "1.1.0",
     "grunt-contrib-less": "1.3.0",
