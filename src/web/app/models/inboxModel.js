@@ -22,6 +22,7 @@ angular.module('HABmin.inboxModel', [
         var me = this;
 
         this.listen = function () {
+            return;
             eventSrc = new EventSource("/rest/events?topics=smarthome/inbox/*");
 
             eventSrc.addEventListener('message', function (event) {

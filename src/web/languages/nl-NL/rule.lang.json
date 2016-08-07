@@ -10,5 +10,5 @@
   "DeleteRuleTitle": "Verwijder regel",
   "DeleteRuleCheck": "Weet u zeker dat u regel '{{selectedRule.name}}' wilt verwijderen?",
   "UnsavedChangesTitle": "Waarschuwing: niet opgeslagen wijzigingen",
-  "UnsavedChangesCheck": "Er zijn niet opgeslagen wijzigingen in de regel '{rulename}'. Weet u zeker dat u wilt verdergaan? Als u op Ja klikt zullen de wijzigingen verloren gaan"!"
+  "UnsavedChangesCheck": "Er zijn niet opgeslagen wijzigingen in de regel '{rulename}'. Weet u zeker dat u wilt verdergaan? Als u op Ja klikt zullen de wijzigingen verloren gaan!"
 }

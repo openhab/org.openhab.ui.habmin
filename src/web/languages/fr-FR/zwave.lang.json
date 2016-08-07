@@ -13,7 +13,7 @@
   "DeviceTools": "Outils Périphérique",
   "ErrorLoadingDevices": "Erreur de chargement de la liste des périphériques.",
   "GenericClass": "Classe générique",
-  "HardResetConfirmMessage": "Le contrôleur sera réinitialisé aux valeurs par défaut. Le réseau sera complétement réinitialisé et il faudra ré-inclure tous les périphériques.<br /><span class="'text-warning">VOUS AVEZ ETE PREVENU!!</span>",
+  "HardResetConfirmMessage": "Le contrôleur sera réinitialisé aux valeurs par défaut. Le réseau sera complétement réinitialisé et il faudra ré-inclure tous les périphériques.<br /><span class='text-warning'>VOUS AVEZ ETE PREVENU!!</span>",
   "HardResetConfirmTitle": "Confirmer la réinitialisation complète",
   "HealDone": "Fait",
   "HealFailed": "Echoué",
