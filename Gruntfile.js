@@ -898,13 +898,13 @@ module.exports = function (grunt) {
         var jsFilesVendor = [];
         var libFiles = this.data.lib;//[0].split(',');
         for (var libcnt = 0; libcnt < libFiles.length; libcnt++) {
-            grunt.log.writeln(libFiles[libcnt]);
+//            grunt.log.writeln(libFiles[libcnt]);
             jsFilesVendor.push("lib/" + libFiles[libcnt]);
         }
 
         var jsFilesApp = [];
         for (var jscnt = 0; jscnt < jsFiles.length; jscnt++) {
-            grunt.log.writeln(jsFiles[jscnt]);
+  //          grunt.log.writeln(jsFiles[jscnt]);
         //    var fname = "assets/" + jsFiles[jscnt].replace(/^.*[\\\/]/, '');
           //  if (jsFiles[jscnt].indexOf("lib/") == 0) {
               //  jsFilesVendor.push(jsFiles[jscnt]);
