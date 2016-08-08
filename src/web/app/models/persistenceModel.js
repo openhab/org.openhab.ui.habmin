@@ -56,7 +56,7 @@ angular.module('HABmin.persistenceModel', [
                     $http.get(url + "/items",
                         {
                             params: {
-                                servicename: service
+                                serviceId: service
                             }
                         })
                         .success(function (services) {
@@ -81,10 +81,10 @@ angular.module('HABmin.persistenceModel', [
             var deferred = $q.defer();
             RestService.getService(svcName).then(
                 function (url) {
-                    $http.delete(url + "/" + item,
+                    $http.delete(url + "/items/" + item,
                         {
                             params: {
-                                servicename: service,
+                                serviceId: service,
                                 starttime: start,
                                 endtime: end
                             }
@@ -109,10 +109,10 @@ angular.module('HABmin.persistenceModel', [
             var deferred = $q.defer();
             RestService.getService(svcName).then(
                 function (url) {
-                    $http.put(url + "/" + item, {},
+                    $http.put(url + "/items/" + item, {},
                         {
                             params: {
-                                servicename: service,
+                                serviceId: service,
                                 time: time,
                                 state: state
                             }
@@ -211,7 +211,7 @@ angular.module('HABmin.persistenceModel', [
             console.log("HTML GET start at", new Date().getTime() - tStart);
 
             var parameters = {
-                servicename: service,
+                serviceId: service,
                 starttime: new moment(requestStart).toISOString(),
                 endtime: new moment(requestStop).toISOString()
             };
@@ -223,7 +223,7 @@ angular.module('HABmin.persistenceModel', [
 
             RestService.getService(svcName).then(
                 function (url) {
-                    $http.get(url + "/" + item,
+                    $http.get(url + "/items/" + item,
                         {
                             params: parameters
                         })

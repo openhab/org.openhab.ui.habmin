@@ -72,7 +72,7 @@ angular.module('Config.Persistence', [
                     $scope.selectedService = null;
 
                     for (var c = 0; c < $scope.services.length; c++) {
-                        if ($scope.services[c].name == UserService.getPersistence()) {
+                        if ($scope.services[c].id == UserService.getPersistence()) {
                             $scope.selectedService = $scope.services[c];
                             break;
                         }
@@ -105,7 +105,7 @@ angular.module('Config.Persistence', [
                 $scope.serviceEditable = false;
             }
 
-            PersistenceServiceModel.getItems($scope.selectedService.name).then(
+            PersistenceServiceModel.getItems($scope.selectedService.id).then(
                 function (items) {
                     $scope.serviceItems = items;
                 },
@@ -126,7 +126,7 @@ angular.module('Config.Persistence', [
         };
 
         $scope.selectPage = function () {
-            PersistenceDataModel.get($scope.selectedService.name, $scope.selectedItem.name, "1980-01-01T00:00:00Z",
+            PersistenceDataModel.get($scope.selectedService.id, $scope.selectedItem.name, "1980-01-01T00:00:00Z",
                 "2035-01-01T00:00:00Z", $scope.currentPage - 1, $scope.pageSize).then(
                 function (data) {
                     $scope.dataPage = data;
@@ -147,12 +147,12 @@ angular.module('Config.Persistence', [
 
         $scope.removeRecord = function (recordTime) {
             var date = new moment(recordTime).toISOString();
-            PersistenceServiceModel.deleteData($scope.selectedService.name, $scope.selectedItem.name, date, date)
+            PersistenceServiceModel.deleteData($scope.selectedService.id, $scope.selectedItem.name, date, date)
         };
 
         $scope.updateRecord = function (recordTime, value) {
             var date = new moment(recordTime).toISOString();
-            PersistenceServiceModel.putData($scope.selectedService.name, $scope.selectedItem.name, date, value)
+            PersistenceServiceModel.putData($scope.selectedService.id, $scope.selectedItem.name, date, value)
         };
     })
 ;
