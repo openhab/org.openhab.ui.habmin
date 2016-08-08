@@ -89,6 +89,7 @@ angular.module('HABmin.itemModel', [
         };
 
         this.listen = function () {
+            return;
             eventSrc = new EventSource("/rest/events?topics=smarthome/items/*");
 
             eventSrc.addEventListener('message', function (event) {

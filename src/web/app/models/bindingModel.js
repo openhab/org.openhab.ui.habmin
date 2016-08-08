@@ -28,6 +28,7 @@ angular.module('HABmin.bindingModel', [
         var me = this;
 
         this.listen = function () {
+            return;
             eventSrc = new EventSource("/rest/events?topics=smarthome/binding/*");
 
             eventSrc.addEventListener('message', function (event) {
