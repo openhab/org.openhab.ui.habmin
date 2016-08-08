@@ -28,6 +28,10 @@ angular.module('Config.ItemEdit', [
                 scope.tags = [];
             }
 
+            if(scope.item == null || scope.item.name == null || scope.item.name.length == 0) {
+                scope.newItem = true;
+            }
+
             // Get the items list so we can select groups
             scope.items = [];
             ItemModel.getList().then(
