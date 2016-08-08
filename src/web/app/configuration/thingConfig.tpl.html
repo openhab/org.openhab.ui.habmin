@@ -360,7 +360,7 @@
                     <div>
                         <a role="presentation"
                            ng-class="{'list-group-item list-group-item-heading':true, 'active': panelDisplayed=='CONFIG-{{group.name}}'}"
-                           ng-click="setPanelDisplayed('CONFIG-{{group.name}}')"
+                           ng-click="setPanelDisplayed('CONFIG-'+group.name)"
                            ng-if="configGroupAdvanced(group)||showAdvancedSettings">
                             <habmin-icon class="fa-fw" cfgcontext="{{group.context}}"></habmin-icon>
                             <span>{{group.label}}</span>
@@ -410,8 +410,7 @@
                               data-total="{{selectedThing.channels.length}}"></span>
                     </a>
                 </div>
-                <div uib-collapse="panelDisplayed!='CHANNELS'"
-                     class="panel-form">
+                <div uib-collapse="panelDisplayed!='CHANNELS'" class="panel-form">
                     <div ng-repeat="channel in selectedThing.channels">
                         <!-- Channel Information -->
                         <div class="form-group">
