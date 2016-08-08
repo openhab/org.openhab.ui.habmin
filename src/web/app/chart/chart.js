@@ -325,7 +325,7 @@ angular.module('HABmin.chart', [
                     if (ChartService.service != null) {
                         var found = false;
                         for (var service in $scope.services) {
-                            if ($scope.services[service].name == ChartService.service) {
+                            if ($scope.services[service].id == ChartService.service) {
                                 found = true;
                                 break;
                             }
@@ -338,7 +338,7 @@ angular.module('HABmin.chart', [
 
                     // Use the first service as the default if there isn't a default set
                     $scope.services[0].selected = true;
-                    ChartService.service = $scope.services[0].name;
+                    ChartService.service = $scope.services[0].id;
                 }
             },
             function (reason) {
@@ -378,14 +378,14 @@ angular.module('HABmin.chart', [
 
         $scope.selectService = function (svc) {
             angular.forEach($scope.services, function (service) {
-                if (service.name == svc.name) {
+                if (service.id == svc.id) {
                     service.selected = true;
                 }
                 else {
                     service.selected = false;
                 }
             });
-            ChartService.service = svc.name;
+            ChartService.service = svc.id;
         };
 
         $scope.clearList = function () {
