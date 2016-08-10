@@ -8,6 +8,7 @@
  * (c) 2014-2015 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('HABmin.thingModel', [
+    'HABmin.eventModel',
     'HABmin.userModel',
     'HABmin.restModel'
 ])
@@ -16,7 +17,7 @@ angular.module('HABmin.thingModel', [
  * thingList is an object. This allows us to perform fast lookups without looping through the array.
  *
  */
-    .service('ThingModel', function ($http, $q, $rootScope, ItemModel, UserService, RestService) {
+    .service('ThingModel', function ($http, $q, $rootScope, ItemModel, EventModel, UserService, RestService) {
         var thingList = [];
         var thingConfigStatusUID = "";
         var thingConfigStatus = {};
@@ -66,86 +67,85 @@ angular.module('HABmin.thingModel', [
         };
 
         this.listen = function () {
-            // Things event listener
+            EventModel.registerEvent('ThingStatusInfoEvent', this.thingStatusInfoEvent);
+            EventModel.registerEvent('ThingUpdatedEvent', this.thingUpdatedEvent);
+            EventModel.registerEvent('ThingRemovedEvent', this.thingRemovedEvent);
+            EventModel.registerEvent('ThingAddedEvent', this.thingAddedEvent);
+            EventModel.registerEvent('ConfigStatusInfoEvent', this.configStatusInfoEvent);
+
+            EventModel.registerEvent('ItemChannelLinkAddedEvent', this.itemChannelLinkAddedEvent);
+            EventModel.registerEvent('ItemChannelLinkRemovedEvent', this.itemChannelLinkRemovedEvent);
+        };
+
+        this.thingStatusInfoEvent = function (event, payload) {
+            var topic = event.topic.split("/");
+            var thing = me.getThing(topic[2]);
+            if (thing != null) {
+                thing.statusInfo = payload;
+            }
+        };
+
+        this.thingUpdatedEvent = function (event, payload) {
+            me.addOrUpdateThing(payload[0]);
+        };
+
+        this.thingRemovedEvent = function (event, payload) {
+            var topic = event.topic.split("/");
+            for (var i = 0; i < thingList.length; i++) {
+                if (thingList[i].UID == topic[2]) {
+                    thingList.splice(i, 1);
+                    break;
+                }
+            }
+        };
+
+        this.thingAddedEvent = function (event, payload) {
+            me.addOrUpdateThing(payload);
+        };
+
+        this.configStatusInfoEvent = function (event, payload) {
+            var topic = event.topic.split("/");
+            // If this is a status update for the thing we have stored locally, then update...
+            if (topic[2] != thingConfigStatusUID) {
+                return;
+            }
+
+            // Remove all...
+            for (var key in thingConfigStatus) {
+                thingConfigStatus[key].type = "";
+            }
+            // And add them back in...
+            for (var key in payload.configStatusMessages) {
+                thingConfigStatus[payload.configStatusMessages[key].parameterName].type =
+                    payload.configStatusMessages[key].type;
+            }
+        };
+
+        this.itemChannelLinkAddedEvent = function (event, payload) {
+            var channel = me.getChannelFromThing(payload.channelUID);
+            if (channel == null) {
+                return;
+            }
+
+            channel.linkedItems = [].concat(channel.linkedItems);
+            channel.linkedItems.push(payload.itemName);
+        };
+
+        this.itemChannelLinkRemovedEvent = function (event, payload) {
+            var channel = me.getChannelFromThing(payload.channelUID);
+            if (channel == null) {
+                return;
+            }
+
+            for (var i = 0; i < channel.linkedItems.length; i++) {
+                if (channel.linkedItems[i] == payload.itemName) {
+                    channel.linkedItems.splice(i, 1);
+                    break;
+                }
+            }
             return;
-            eventSrc = new EventSource("/rest/events?topics=smarthome/things/*");
-            eventSrc.addEventListener('message', function (event) {
-                var evt = angular.fromJson(event.data);
-                var payload = angular.fromJson(evt.payload);
-                var topic = evt.topic.split("/");
-                console.debug("Received thing event in thingModel", payload);
 
-                switch (evt.type) {
-                    case 'ThingStatusInfoEvent':
-                        var thing = me.getThing(topic[2]);
-                        if (thing == null) {
-                            break;
-                        }
-                        thing.statusInfo = payload;
-                        break;
-                    case 'ThingUpdatedEvent':
-                        me.addOrUpdateThing(payload[0]);
-                        break;
-                    case 'ThingRemovedEvent':
-                        for (var i = 0; i < thingList.length; i++) {
-                            if (thingList[i].UID == topic[2]) {
-                                thingList.splice(i, 1);
-                                break;
-                            }
-                        }
-                        break;
-                    case 'ThingAddedEvent':
-                        me.addOrUpdateThing(payload);
-                        break;
-                    case 'ConfigStatusInfoEvent':
-                        // If this is a status update for the thing we have stored locally, then update...
-                        if (topic[2] != thingConfigStatusUID) {
-                            break;
-                        }
-
-                        // Remove all...
-                        for (var key in thingConfigStatus) {
-                            thingConfigStatus[key].type = "";
-                        }
-                        // And add them back in...
-                        for (var key in payload.configStatusMessages) {
-                            thingConfigStatus[payload.configStatusMessages[key].parameterName].type =
-                                payload.configStatusMessages[key].type;
-                        }
-                        break;
-                }
-            });
-
-            // Channel link event listener
-            eventSrc = new EventSource("/rest/events?topics=smarthome/links/*");
-            eventSrc.addEventListener('message', function (event) {
-                console.debug("Received link event in thingModel", event.data);
-
-                var evt = angular.fromJson(event.data);
-                var payload = angular.fromJson(evt.payload);
-                var topic = evt.topic.split("/");
-
-                var channel = me.getChannelFromThing(payload.channelUID);
-                if (channel == null) {
-                    return;
-                }
-
-                switch (evt.type) {
-                    case 'ItemChannelLinkAddedEvent':
-                        channel.linkedItems = [].concat(channel.linkedItems);
-                        channel.linkedItems.push(payload.itemName);
-                        break;
-                    case 'ItemChannelLinkRemovedEvent':
-                        for (var i = 0; i < channel.linkedItems.length; i++) {
-                            if (channel.linkedItems[i] == payload.itemName) {
-                                channel.linkedItems.splice(i, 1);
-                                break;
-                            }
-                        }
-                        break;
-                }
-                $rootScope.$apply();
-            });
+            $rootScope.$apply();
         };
 
         this.getList = function (refresh) {

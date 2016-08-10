@@ -10,11 +10,12 @@
 angular.module('HABmin.inboxModel', [
     'HABmin.userModel',
     'HABmin.restModel',
+    'HABmin.eventModel',
     'angular-growl',
     'ngLocalize'
 ])
 
-    .service('InboxModel', function ($http, $q, growl, locale, UserService, RestService) {
+    .service('InboxModel', function ($http, $q, growl, locale, EventModel, UserService, RestService) {
         var inboxContents = [];
         var svcName = "inbox";
         var eventSrc;
@@ -22,54 +23,8 @@ angular.module('HABmin.inboxModel', [
         var me = this;
 
         this.listen = function () {
-            return;
-            eventSrc = new EventSource("/rest/events?topics=smarthome/inbox/*");
-
-            eventSrc.addEventListener('message', function (event) {
-                console.log(event.data);
-
-                var evt = angular.fromJson(event.data);
-                var payload = angular.fromJson(evt.payload);
-                var topic = evt.topic.split("/");
-
-                switch (evt.type) {
-                    case 'InboxRemovedEvent':
-                        for (var a = 0; a < inboxContents.length; a++) {
-                            if (inboxContents[a].thingUID == topic[2]) {
-                                inboxContents.splice(a, 1);
-                                break;
-                            }
-                        }
-                        break;
-                    case 'InboxAddedEvent':
-                        inboxContents.push(payload);
-                        growl.success(locale.getString('discovery.NewThing', {name: payload.label}));
-                        break;
-                }
-
-                /*
-                 if (evt.topic.indexOf("smarthome/inbox/added") === 0) {
-                 inboxContents.push(evt.object);
-                 growl.success(locale.getString('discovery.NewThing', {name: evt.object.label}));
-                 }
-                 else if (evt.topic.indexOf("smarthome/inbox/removed") === 0) {
-                 for (var a = 0; a < inboxContents.length; a++) {
-                 if (inboxContents[a].thingUID == evt.object.thingUID) {
-                 inboxContents.splice(a, 1);
-                 break;
-                 }
-                 }
-                 }
-                 else if (evt.topic.indexOf("smarthome/inbox/updated") === 0) {
-                 for (var b = 0; b < inboxContents.length; b++) {
-                 if (inboxContents[b].thingUID == evt.object.thingUID) {
-                 inboxContents[b] = evt.object;
-                 break;
-                 }
-                 }
-                 }
-                 */
-            });
+            EventModel.registerEvent('InboxAddedEvent', this.inboxAdded);
+            EventModel.registerEvent('InboxRemovedEvent', this.inboxRemoved);
         };
 
         this.getInbox = function () {
@@ -77,6 +32,21 @@ angular.module('HABmin.inboxModel', [
                 me.refreshInbox();
             }
             return inboxContents;
+        };
+
+        this.inboxAdded = function(event, payload) {
+            inboxContents.push(payload);
+            growl.success(locale.getString('discovery.NewThing', {name: payload.label}));
+        };
+
+        this.inboxRemoved = function(event, payload) {
+            var topic = event.topic.split("/");
+            for (var a = 0; a < inboxContents.length; a++) {
+                if (inboxContents[a].thingUID == topic[2]) {
+                    inboxContents.splice(a, 1);
+                    break;
+                }
+            }
         };
 
         this.refreshInbox = function () {
