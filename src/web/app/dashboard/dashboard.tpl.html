@@ -2,13 +2,14 @@
     <div class="btn-group btn-group-sm" role="group">
         <button class="btn btn-sm btn-primary" ng-click="dashboardProperties()"><i class="fa fa-bookmark-o"></i> <span
                 i18n="common.properties"></span></button>
-        <div class="dashboard-toolbar btn-group dropdown">
-            <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
+
+        <div class="dashboard-toolbar btn-group dropdown" uib-dropdown>
+            <button type="button" class="btn btn-sm btn-primary dropdown-toggle" uib-dropdown-toggle>
                 <span class="fa fa-plus-square-o"></span> <span i18n="dashboard.AddWidget"></span>
                 <span class="caret"></span>
                 <span class="sr-only">Dropdown</span>
             </button>
-            <ul class="dropdown-menu" role="menu">
+            <ul class="dropdown-menu" role="menu" uib-dropdown-menu>
                 <li>
                     <a role="presentation" ng-click="addWidget('Chart')">
                         <span class="fa fa-fw fa-area-chart"></span>
