@@ -11,19 +11,29 @@ angular.module('HABmin.eventModel', [])
 
     .service('EventModel', function ($rootScope) {
         var eventSrc;
+        var events = {};
 
         this.listen = function () {
-            return;
-            eventSrc = new EventSource("/rest/events?topics=smarthome/update/*");
-            eventSrc.addEventListener('message', function (event) {
-                console.log(event.type);
-                console.log(event.data);
+            eventSrc = new EventSource("/rest/events?topics=smarthome/*");
+            eventSrc.addEventListener('message', function (rxEvent) {
+                console.log(rxEvent.type);
+                console.log(rxEvent.data);
 
-                var evt = angular.fromJson(event.data);
+                var event = angular.fromJson(rxEvent.data);
+                var payload = angular.fromJson(event.payload);
+                var topic = event.topic.split("/");
+
+                if(events[event.type] != null) {
+                    events[event.type](event, payload);
+                }
 
                 // Broadcast an event so we update any widgets or listeners
-                $rootScope.$broadcast(evt.topic, evt.object);
+//                $rootScope.$broadcast(evt.topic, evt.object);
             });
         };
+
+        this.registerEvent = function(eventName, eventFunction) {
+            events[eventName] = eventFunction;
+        }
     })
 ;

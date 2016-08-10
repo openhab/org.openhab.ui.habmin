@@ -9,49 +9,42 @@
  */
 angular.module('HABmin.extensionModel', [
     'angular-growl',
+    'HABmin.eventModel',
     'ngLocalize'
 ])
 
-    .service('ExtensionModel', function ($http, $q, locale, growl) {
+    .service('ExtensionModel', function ($http, $q, locale, growl, EventModel) {
         var extensionList = [];
         var extensionTypeList = [];
         var eventSrc;
         var me = this;
 
         this.listen = function () {
-            return;
-            eventSrc = new EventSource("/rest/events?topics=smarthome/extensions/*");
+            EventModel.registerEvent('ExtensionEvent', this.extensionEvent);
+        };
 
-            eventSrc.addEventListener('message', function (event) {
-                console.log(event.data);
+        this.extensionEvent = function (event, payload) {
+            var topic = event.topic.split("/");
 
-                var evt = angular.fromJson(event.data);
-                var payload = angular.fromJson(evt.payload);
-                var topic = evt.topic.split("/");
+            for (var i = 0; i < extensionList.length; i++) {
+                if (extensionList[i].id == topic[2]) {
+                    extensionList[i].inprogress = false;
 
-                switch (evt.type) {
-                    case 'ExtensionEvent':
-                        for (var i = 0; i < extensionList.length; i++) {
-                            if (extensionList[i].id == topic[2]) {
-                                extensionList[i].inprogress = false;
-
-                                if (topic[3] == "installed") {
-                                    extensionList[i].installed = true;
-                                    growl.error(locale.getString("extensions.InstallOk", {extension: payload[0]}));
-                                }
-                                if (topic[3] == "uninstalled") {
-                                    extensionList[i].installed = false;
-                                    growl.error(locale.getString("extensions.UninstallOk", {extension: payload[0]}));
-                                }
-                                if (topic[3] == "failed") {
-                                    growl.error(locale.getString("extensions.CommandFailed", {message: payload[1]}));
-                                }
-                                break;
-                            }
-                        }
-                        break;
+                    if (topic[3] == "installed") {
+                        extensionList[i].installed = true;
+                        growl.error(locale.getString("extensions.InstallOk", {extension: payload[0]}));
+                    }
+                    if (topic[3] == "uninstalled") {
+                        extensionList[i].installed = false;
+                        growl.error(locale.getString("extensions.UninstallOk", {extension: payload[0]}));
+                    }
+                    if (topic[3] == "failed") {
+                        growl.error(locale.getString("extensions.CommandFailed", {message: payload[1]}));
+                    }
+                    break;
                 }
-            });
+
+            }
         };
 
         this.getTypes = function () {

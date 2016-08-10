@@ -8,10 +8,11 @@
  * (c) 2014-2015 Chris Jackson (chris@cd-jackson.com)
  */
 angular.module('HABmin.itemModel', [
-    'HABmin.userModel'
+    'HABmin.userModel',
+    'HABmin.eventModel'
 ])
 
-    .service('ItemModel', function ($http, $q, $rootScope, UserService, RestService) {
+    .service('ItemModel', function ($http, $q, $rootScope, UserService, RestService, EventModel) {
         var svcName = "items";
         var svcNameLinks = "links";
         var itemList = [];
@@ -89,47 +90,46 @@ angular.module('HABmin.itemModel', [
         };
 
         this.listen = function () {
-            return;
-            eventSrc = new EventSource("/rest/events?topics=smarthome/items/*");
+            EventModel.registerEvent('ItemStateEvent', this.itemStateEvent);
+            EventModel.registerEvent('ItemUpdatedEvent', this.itemUpdatedEvent);
+            EventModel.registerEvent('ItemAddedEvent', this.itemAddedEvent);
+            EventModel.registerEvent('ItemCommandEvent', this.itemCommandEvent);
+            EventModel.registerEvent('ItemRemovedEvent', this.itemRemovedEvent);
+        };
 
-            eventSrc.addEventListener('message', function (event) {
-                console.log(event.data);
-
-                var evt = angular.fromJson(event.data);
-                var payload = angular.fromJson(evt.payload);
-                var topic = evt.topic.split("/");
-
-                switch (evt.type) {
-                    case 'ItemStateEvent':
-                        // Broadcast an event so we update any widgets or listeners
-                        $rootScope.$broadcast(evt.topic, payload);
-                        // Here we actually get value and type
-                        me.addOrUpdateItem(
-                            {
-                                name: topic[2],
-                                state: payload.value,
-                                stateLocal: payload.value
-                            }
-                        );
-                        break;
-                    case 'ItemUpdatedEvent':
-                        me.addOrUpdateItem(payload[0]);
-                        break;
-                    case 'ItemAddedEvent':
-                        me.addOrUpdateItem(payload);
-                        break;
-                    case 'ItemCommandEvent':
-                        break;
-                    case 'ItemRemovedEvent':
-                        for (var i = 0; i < itemList.length; i++) {
-                            if (itemList[i].name == topic[2]) {
-                                itemList.splice(i, 1);
-                                break;
-                            }
-                        }
-                        break;
+        this.itemStateEvent = function (event, payload) {
+            var topic = event.topic.split("/");
+            // Broadcast an event so we update any widgets or listeners
+            $rootScope.$broadcast(event.topic, payload);
+            // Here we actually get value and type
+            me.addOrUpdateItem(
+                {
+                    name: topic[2],
+                    state: payload.value,
+                    stateLocal: payload.value
                 }
-            });
+            );
+        };
+
+        this.itemUpdatedEvent = function (event, payload) {
+            me.addOrUpdateItem(payload[0]);
+        };
+
+        this.itemAddedEvent = function (event, payload) {
+            me.addOrUpdateItem(payload);
+        };
+
+        this.itemCommandEvent = function (event, payload) {
+        };
+
+        this.itemRemovedEvent = function (event, payload) {
+            var topic = event.topic.split("/");
+            for (var i = 0; i < itemList.length; i++) {
+                if (itemList[i].name == topic[2]) {
+                    itemList.splice(i, 1);
+                    break;
+                }
+            }
         };
 
         this.getList = function (refresh) {
