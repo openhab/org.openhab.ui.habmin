@@ -11,7 +11,6 @@ angular.module('dashboardGaugeWidget', [
     "angular-dialgauge",
     'angular-growl',
     'HABmin.itemModel',
-    'HABmin.persistenceModel',
     'ngLocalize',
     'ui.select'
 ])
@@ -53,7 +52,7 @@ angular.module('dashboardGaugeWidget', [
         };
     })
 
-    .directive('dashboardGaugeProperties', function ($window, growl, locale, ItemModel, PersistenceItemModel) {
+    .directive('dashboardGaugeProperties', function ($window, growl, locale, ItemModel) {
         return {
             restrict: 'E', // Use as element
             scope: { // Isolate scope
