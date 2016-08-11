@@ -38,11 +38,12 @@ angular.module('Config.Services', [
     })
 
     .controller('ServicesConfigCtrl',
-    function ServicesConfigCtrl($scope, $timeout, locale, growl, ServiceModel, ConfigModel) {
+    function ServicesConfigCtrl($scope, $q, $timeout, locale, growl, ServiceModel, ConfigModel) {
         $scope.services = [];
         $scope.serviceTypes = [];
         $scope.typesCnt = -1;
         $scope.servicesCnt = -1;
+        $scope.panelDisplayed = "undef";
 
         ServiceModel.getServices().then(
             function (services) {
@@ -96,29 +97,36 @@ angular.module('Config.Services', [
             $scope.formLoaded = false;
 
             if (service.configDescriptionURI != null) {
+                var promises = {};
+
                 // Get the configuration
-                ConfigModel.getConfig(service.configDescriptionURI).then(
-                    function (cfg) {
-                        $scope.serviceConfig = cfg;
-                    },
-                    function () {
-                        $scope.serviceConfig = null;
-                    }
-                );
+                promises.description = ConfigModel.getConfig(service.configDescriptionURI);
+                promises.config = ServiceModel.getServiceConfig(service);
 
-                ServiceModel.getServiceConfig(service).then(
-                    function (cfg) {
-                        $scope.serviceConfiguration = cfg;
+                $q.allSettled(promises).then(
+                    function (values) {
+                        if (values.description.state == 'fulfilled') {
+                            $scope.serviceConfig = values.description.value;
+                        }
+                        else {
+                            $scope.serviceConfig = null;
+                        }
 
-                        // Ensure the options are converted to a string for internal processing
-                        angular.forEach($scope.serviceConfiguration.parameters, function (parameter) {
-                            angular.forEach(parameter.options, function (option) {
-                                option.value = option.value.toString();
+                        if (values.config.state == 'fulfilled') {
+                            $scope.serviceConfiguration = values.config.value;
+
+                            // Ensure the options are converted to a string for internal processing
+                            angular.forEach($scope.serviceConfig.parameters, function (parameter) {
+                                $scope.serviceConfiguration[parameter.name] =
+                                    ConfigModel.convertType(parameter.type, $scope.serviceConfiguration[parameter.name],
+                                        parameter.multiple);
+
+                                angular.forEach(parameter.options, function (option) {
+                                    option.value =
+                                        ConfigModel.convertType(parameter.type, option.value, parameter.multiple);
+                                });
                             });
-                        });
-
-                    },
-                    function () {
+                        }
                     }
                 );
             }
@@ -129,7 +137,7 @@ angular.module('Config.Services', [
             });
         };
 
-        $scope.configSave = function() {
+        $scope.configSave = function () {
             var cfgUpdated = false;
 
             var updatedCfg = {};
@@ -147,7 +155,13 @@ angular.module('Config.Services', [
 
             ServiceModel.putServiceConfig($scope.selectedService, updatedCfg).then(
                 function (cfg) {
-                    $scope.configForm.reset();
+                    $scope.configForm.$setPristine();
+
+                    angular.forEach($scope.serviceConfig.parameters, function (parameter) {
+                        $scope.serviceConfiguration[parameter.name] =
+                            ConfigModel.convertType(parameter.type, cfg[parameter.name],
+                                parameter.multiple);
+                    });
                 },
                 function () {
                 }
