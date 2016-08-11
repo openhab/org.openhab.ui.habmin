@@ -794,6 +794,12 @@ function ZWaveLogReader() {
             name: "CLIMATE_CONTROL_SCHEDULE",
             processor: null
         },
+        76: {
+            name: "DOOR_LOCK_LOGGING"
+        },
+        83: {
+            name: "SCHEDULE"
+        },
         86: {
             name: "CRC_16_ENCAP"
         },

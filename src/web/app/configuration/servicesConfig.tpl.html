@@ -3,21 +3,21 @@
     <div class="panel panel-default">
         <!-- Header -->
         <div class="panel-heading">
-            <span i18n="services.Services"></span>
+            <span i18n="services.Services"></span> {{panelDisplayed}}
         </div>
 
         <!-- Body -->
         <div class="list-group habmin-list" resize-panel>
             <!-- SERVICES LIST -->
-            <div ng-if="serviceTypes.length" ng-repeat="serviceType in serviceTypes | orderBy:'label'">
+            <div ng-repeat="serviceType in serviceTypes | orderBy:'label'">
                 <div>
                     <a role="presentation" class="list-group-item config-panel-title"
-                       ng-class="{'active': panelDisplayed=='SVC-{{serviceType.id}}'}"
-                       ng-click="panelDisplayed='SVC-{{serviceType.id}}'">
+                       ng-class="{'active': $parent.panelDisplayed=='SVC-'+serviceType.id}"
+                       ng-click="$parent.panelDisplayed='SVC-'+serviceType.id">
                         <span class="fa fa-fw fa-book"></span> {{serviceType.label}}
                     </a>
                 </div>
-                <div uib-collapse="panelDisplayed!='SVC-{{serviceType.id}}'">
+                <div uib-collapse="panelDisplayed!='SVC-'+serviceType.id">
                     <div ng-repeat="service in services | filter: {category: serviceType.id} | orderBy:'label'">
                         <a role="presentation" class="list-group-item"
                            ng-class="{'active': service==selectedService}"
@@ -64,11 +64,11 @@
                 <div ng-repeat="group in serviceConfig.parameterGroups">
                     <div>
                         <a role="presentation" class="list-group-item list-group-item-heading"
-                           ng-class="{'active': cfgPanelDisplayed=='CONFIG-{{group.name}}'}"
-                           ng-click="cfgPanelDisplayed='CONFIG-{{group.name}}'"
+                           ng-class="{'active': $parent.cfgPanelDisplayed=='CONFIG-'+group.name}"
+                           ng-click="$parent.cfgPanelDisplayed='CONFIG-'+group.name"
                            ng-if="configGroupAdvanced(group)||showAdvancedSettings">
                             <habmin-icon class="fa-fw" cfgcontext="{{group.context}}"></habmin-icon>
-                            <span>{{group.label}} {{cfgPanelDisplayed}}</span>
+                            <span>{{group.label}} {{$parent.cfgPanelDisplayed}}</span>
                         </a>
                     </div>
                     <div uib-collapse="$parent.cfgPanelDisplayed!='CONFIG-{{group.name}}'"
@@ -88,14 +88,13 @@
                 <div ng-if="hasUngroupedParams()">
                     <div>
                         <a role="presentation" class="list-group-item list-group-item-heading"
-                           ng-class="{'active': cfgPanelDisplayed=='CONFIG-ungrouped'}"
-                           ng-click="cfgPanelDisplayed='CONFIG-ungrouped'">
+                           ng-class="{'active': $parent.cfgPanelDisplayed=='CONFIG-ungrouped'}"
+                           ng-click="$parent.cfgPanelDisplayed='CONFIG-ungrouped'">
                             <span class="fa fa-fw fa-wrench"></span>
                             <span i18n="thing.Configuration"></span>
                         </a>
                     </div>
-                    <div uib-collapse="cfgPanelDisplayed!='CONFIG-ungrouped'"
-                         class="panel-form">
+                    <div uib-collapse="$parent.cfgPanelDisplayed!='CONFIG-ungrouped'" class="panel-form">
                         <div ng-repeat="config in serviceConfig.parameters">
                             <div class="form-group"
                                  ng-if="configGroupFilter(config, null) && (!config.advanced||showAdvancedSettings)">
