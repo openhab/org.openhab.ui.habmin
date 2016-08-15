@@ -35,11 +35,15 @@ import org.slf4j.LoggerFactory;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
+import io.swagger.annotations.Api;
+
 @Path(FloorplanResource.PATH)
+@Api(value = FloorplanResource.API)
 public class FloorplanResource implements RESTResource {
 
     /** The URI path to this resource */
     public static final String PATH = "habmin/floorplan";
+    public static final String API = "habmin-floorplan";
 
     private static String FLOORPLAN_FILE = "floorplans.xml";
 

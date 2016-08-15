@@ -43,6 +43,11 @@ import org.slf4j.LoggerFactory;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 /**
  * <p>
  * This class acts as a REST resource for history data and provides different
@@ -58,9 +63,9 @@ import com.thoughtworks.xstream.io.xml.StaxDriver;
  * </p>
  *
  * @author Chris Jackson
- * @since 1.3.0
  */
 @Path(ChartResource.PATH)
+@Api(value = ChartResource.API)
 public class ChartResource implements RESTResource {
 
     private static String CHART_FILE = "charts.xml";
@@ -69,6 +74,7 @@ public class ChartResource implements RESTResource {
 
     /** The URI path to this resource */
     public static final String PATH = "habmin/charts";
+    public static final String API = "habmin-charts";
 
     @Context
     UriInfo uriInfo;
@@ -98,6 +104,8 @@ public class ChartResource implements RESTResource {
 
     @POST
     @Produces({ MediaType.APPLICATION_JSON })
+    @ApiOperation(value = "Creates a new chart.", response = ChartConfigBean.class)
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "OK") })
     public Response httpPostCharts(@Context HttpHeaders headers, ChartConfigBean chart) {
         logger.trace("Received HTTP POST request at '{}'.", uriInfo.getPath());
 
