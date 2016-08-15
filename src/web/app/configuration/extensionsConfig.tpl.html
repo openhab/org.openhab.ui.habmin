@@ -48,6 +48,11 @@
             <div ng-if="extensionsCnt>0"
                  ng-repeat="extension in extensions | filter: {type: selectedType.id} | orderBy:'label'">
                 <a role="presentation" ng-class="{'list-group-item':true, 'active': extension==selectedType}">
+                    <!-- TODO This will break when ESH goes to 1.0 -->
+                    <span ng-if="extension.version.substring(0, 2)=='0.'" class="label label-success small">SmartHome</span>
+                    <span ng-if="extension.version.substring(0, 2)=='1.'" class="label label-warning small">openHAB-1</span>
+                    <span ng-if="extension.version.substring(0, 2)=='2.'" class="label label-success small">openHAB-2</span>
+
                     <span ng-show="extension.inprogress">
                         <span class="fa fa-fw fa-spin fa-circle-o-notch text-warning"></span>
                     </span>
