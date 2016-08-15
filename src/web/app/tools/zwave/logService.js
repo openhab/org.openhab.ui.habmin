@@ -1014,6 +1014,12 @@ function ZWaveLogReader() {
                 5: {
                     name: "MANUFACTURER_SPECIFIC_REPORT",
                     processor: processManufacturer
+                },
+                6: {
+                    name: "MANUFACTURER_SPECIFIC_DEVICE_GET"
+                },
+                7: {
+                    name: "MANUFACTURER_SPECIFIC_DEVICE_REPORT"
                 }
             }
         },
