@@ -47,7 +47,7 @@
             <!-- EXTENSION LIST -->
             <div ng-if="extensionsCnt>0"
                  ng-repeat="extension in extensions | filter: {type: selectedType.id} | orderBy:'label'">
-                <a role="presentation" ng-class="{'list-group-item':true, 'active': extension==selectedType}">
+                <li role="presentation" ng-class="{'list-group-item':true, 'active': extension==selectedType}">
                     <!-- TODO This will break when ESH goes to 1.0 -->
                     <span ng-if="extension.version.substring(0, 2)=='0.'" class="label label-success small">SmartHome</span>
                     <span ng-if="extension.version.substring(0, 2)=='1.'" class="label label-warning small">openHAB-1</span>
@@ -60,7 +60,14 @@
                         <span ng-if="extension.installed" class="fa fa-fw fa-check-circle-o text-success"></span>
                         <span ng-if="!extension.installed" class="fa fa-fw fa-circle-o text-muted"></span>
                     </span>
-                    <span>{{extension.label}}&nbsp;</span>
+                    <span>{{extension.label}}&nbsp;
+                        <!-- TODO This will break when ESH goes to 1.0 -->
+                        <span ng-if="extension.version.substring(0, 2)!='1.' && extension.id.substring(0,8)=='binding-'">
+                            <a ng-href="http://docs.openhab.org/addons/bindings/{{extension.id.substring(8)}}/readme.html" target="_blank">
+                                <span class="fa fa-book"></span>
+                            </a>
+                        </span>
+                    </span>
 
                     <span class="pull-right" ng-hide="extension.inprogress">
                         <button type="button" class="btn btn-xs btn-default"
@@ -76,7 +83,7 @@
                             <span i18n="extensions.Uninstall"></span>
                         </button>
                     </span>
-                </a>
+                </li>
             </div>
         </div>
 
