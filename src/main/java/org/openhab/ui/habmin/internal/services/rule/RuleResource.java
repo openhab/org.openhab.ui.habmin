@@ -33,6 +33,8 @@ import org.eclipse.smarthome.io.rest.RESTResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.swagger.annotations.Api;
+
 /**
  * <p>
  * This class acts as a REST resource for history data and provides different
@@ -49,13 +51,15 @@ import org.slf4j.LoggerFactory;
  *
  * @author Chris Jackson
  */
-@Path(RuleResource.PATH_RULES)
+@Path(RuleResource.PATH)
+@Api(value = RuleResource.API)
 public class RuleResource implements RESTResource {
 
     private static final Logger logger = LoggerFactory.getLogger(RuleResource.class);
 
     /** The URI path to this resource */
-    public static final String PATH_RULES = "habmin/rules";
+    public static final String PATH = "habmin/rules";
+    public static final String API = "habmin-rules";
 
     protected static final String RULE_FOLDER = "/rules/";
     protected static final String RULE_FILEEXT = ".rules";

@@ -39,11 +39,13 @@ import org.slf4j.LoggerFactory;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
+import io.swagger.annotations.Api;
+
 /**
  * @author Chris Jackson
- * @since 1.5.0
  */
 @Path(DesignerResource.PATH)
+@Api(value = DesignerResource.API)
 public class DesignerResource implements RESTResource {
 
     private static final Logger logger = LoggerFactory.getLogger(DesignerResource.class);
@@ -51,6 +53,7 @@ public class DesignerResource implements RESTResource {
     protected static final String DESIGN_FILE = "designer.xml";
 
     public static final String PATH = "habmin/designer";
+    public static final String API = "habmin-designer";
 
     @Context
     UriInfo uriInfo;

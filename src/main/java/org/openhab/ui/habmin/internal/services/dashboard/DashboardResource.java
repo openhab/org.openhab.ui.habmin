@@ -41,6 +41,8 @@ import org.slf4j.LoggerFactory;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
+import io.swagger.annotations.Api;
+
 /**
  * <p>
  * This class acts as a REST resource for history data and provides different methods to interact with the, persistence
@@ -55,9 +57,9 @@ import com.thoughtworks.xstream.io.xml.StaxDriver;
  * </p>
  *
  * @author Chris Jackson
- * @since 1.3.0
  */
 @Path(DashboardResource.PATH)
+@Api(value = DashboardResource.API)
 public class DashboardResource implements RESTResource {
 
     private static String DASHBOARD_FILE = "dashboards.xml";
@@ -66,6 +68,7 @@ public class DashboardResource implements RESTResource {
 
     /** The URI path to this resource */
     public static final String PATH = "habmin/dashboards";
+    public static final String API = "habmin-dashboards";
 
     @Context
     UriInfo uriInfo;

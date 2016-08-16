@@ -5,7 +5,8 @@ Bundle-SymbolicName: org.openhab.ui.habmin
 Bundle-Version: 0.9.0.qualifier
 Bundle-Vendor: cd-jackson.com
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: javax.servlet.http,
+Import-Package: io.swagger.annotations;resolution:=optional,
+ javax.servlet.http,
  javax.ws.rs,
  javax.ws.rs.core,
  org.apache.commons.io,
