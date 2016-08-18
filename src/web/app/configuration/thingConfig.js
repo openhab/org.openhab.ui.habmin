@@ -352,7 +352,7 @@ angular.module('Config.Things', [
             $scope.formLoaded = false;
             $scope.newThing = false;
             $scope.selectedThing = null;
-            $scope.panelDisplayed = 'PROPERTIES';
+            $scope.panelDisplayed = 'OVERVIEW';
 
             $scope.selectedThingHasProperties = false;
             for (var key in thing.properties) {
@@ -890,7 +890,7 @@ angular.module('Config.Things', [
         $scope.selectNewThing = function (thing) {
             $scope.newThing = true;
             $scope.insertMode = false;
-            $scope.panelDisplayed = 'PROPERTIES';
+            $scope.panelDisplayed = 'OVERVIEW';
 
             // Get the thing type
             ThingModel.getThingInfo(thing.UID).then(

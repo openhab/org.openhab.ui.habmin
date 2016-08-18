@@ -9,11 +9,14 @@
         <!-- Body -->
         <div class="list-group habmin-list" resize-panel>
             <!-- EXTENSION TYPE LIST -->
-            <div ng-if="typesCnt>0" ng-repeat="extensionType in extensionTypes | orderBy:'label'">
-                <a role="presentation" ng-class="{'list-group-item':true, 'active': extensionType==selectedType}"
-                   ng-click="selectType(extensionType)">
+            <div ng-if="typesCnt>0"
+                ng-repeat="extensionType in extensionTypes | orderBy:'label'"
+                class="list-group-item"
+                ng-class="{'active': extensionType==selectedType}"
+                ng-click="selectType(extensionType)">
+                <li role="presentation">
                     <span>{{extensionType.label}}&nbsp;</span>
-                </a>
+                </li>
             </div>
 
             <!-- Cover options for loading, and no types -->
@@ -46,8 +49,10 @@
 
             <!-- EXTENSION LIST -->
             <div ng-if="extensionsCnt>0"
-                 ng-repeat="extension in extensions | filter: {type: selectedType.id} | orderBy:'label'">
-                <li role="presentation" ng-class="{'list-group-item':true, 'active': extension==selectedType}">
+                class="list-group-item"
+                ng-class="{'active': extension==selectedType}"
+                ng-repeat="extension in extensions | filter: {type: selectedType.id} | orderBy:'label'">
+                <li role="presentation">
                     <!-- TODO This will break when ESH goes to 1.0 -->
                     <span ng-if="extension.version.substring(0, 2)=='0.'" class="label label-success small">SmartHome</span>
                     <span ng-if="extension.version.substring(0, 2)=='1.'" class="label label-warning small">openHAB-1</span>

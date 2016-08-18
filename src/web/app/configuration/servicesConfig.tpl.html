@@ -18,12 +18,13 @@
                     </a>
                 </div>
                 <div uib-collapse="panelDisplayed!='SVC-'+serviceType.id">
-                    <div ng-repeat="service in services | filter: {category: serviceType.id} | orderBy:'label'">
-                        <a role="presentation" class="list-group-item"
-                           ng-class="{'active': service==selectedService}"
-                           ng-click="selectService(service)">
+                    <div class="list-group-item"
+                        ng-class="{'active': service==selectedService}"
+                        ng-click="selectService(service)"
+                        ng-repeat="service in services | filter: {category: serviceType.id} | orderBy:'label'">
+                        <li role="presentation">
                             {{service.label}}
-                        </a>
+                        </li>
                     </div>
                 </div>
             </div>
