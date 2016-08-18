@@ -12,7 +12,7 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-                    <li ng-repeat="service in services">
+                    <li ng-repeat="service in services"  ng-click="selectService(service)">
                         <a ng-click="selectService(service)">
                             <span class="fa fa-fw" ng-class="{'fa-check': service==selectedService}"></span>
                             <span>{{service.label}}</span>
