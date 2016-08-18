@@ -2715,9 +2715,7 @@ function ZWaveLogReader() {
         data.endClassCode = HEX2DEC(bytes[4]);
         data.endClassPacket = processCommandClass(node, data.endPoint, bytes.slice(4));
 
-        data.content += " <span class='label label-info'>ENDPOINT-" + data.endPoint + "</span>";
-        data.content += " <span class='label label-inverse'>to</span>";
-        data.content += " <span class='label label-info'>ENDPOINT-" + data.endPointDest + "</span>";
+        data.content += " <span class='label label-info'>EP-" + data.endPoint + " -> EP-" + data.endPointDest + "</span>";
         if (data.endClassPacket != null) {
             data.content += " " + data.endClassPacket.content;
         }
