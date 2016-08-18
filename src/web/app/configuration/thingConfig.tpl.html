@@ -64,10 +64,10 @@
         <div class="list-group habmin-list" resize-panel>
             <!-- THING LIST -->
             <div ng-if="thingCnt!=-1 && insertMode==false"
-                 ng-repeat="thing in things | filter:filterFunction | orderBy:'label'">
-                <a role="presentation" class="list-group-item"
-                   ng-class="{'active': thing.UID==selectedThing.UID, 'disabled': getThingType(thing)==null}"
-                   ng-click="selectThing(thing)">
+                 ng-repeat="thing in things | filter:filterFunction | orderBy:'label'"
+                 ng-click="selectThing(thing)">
+                <li role="presentation" class="list-group-item"
+                   ng-class="{'active': thing.UID==selectedThing.UID, 'disabled': getThingType(thing)==null}">
                     <table style="background-color: transparent">
                         <tr>
                             <td class="text-large" rowspan="2">
@@ -109,11 +109,14 @@
                             </td>
                         </tr>
                     </table>
-                    <div class="small text-danger">
-                        {{thing.statusInfo.description}}
-                    </div>
                     <span class="thing-battery" ng-class="thing.batteryIcon"></span>
-                </a>
+                </li>
+               
+                <li class="list-group-item list-group-item-notification small"
+                    ng-class="{'active': thing.UID==selectedThing.UID, 'disabled': getThingType(thing)==null, 'danger':thing.statusInfo.status=='OFFLINE', 'success':thing.statusInfo.status!='OFFLINE'}"
+                    ng-if="thing.statusInfo.description">
+                    {{thing.statusInfo.description}} 
+                </li>
             </div>
 
             <!-- Cover options for loading, and no devices -->

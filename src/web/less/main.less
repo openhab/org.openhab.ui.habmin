@@ -230,10 +230,41 @@
 .habmin-list {
   overflow-y: auto;
   overflow-x: hidden;
+  margin-bottom: 0px;
 
-  .list-group {
+  &.list-group {
+    padding: none;
+    
     .list-group-item {
-      border-bottom: 1px;
+        padding: none;
+    
+        &.list-group-item-notification {
+          text-align: center;
+          list-style-type: none;
+          border-top: none;
+          padding-top: 5px;
+          padding-bottom: 10px;
+          
+          &.danger {
+              background: linear-gradient(to bottom, @list-group-bg, @state-danger-bg);
+              
+              &.active {
+                  background: linear-gradient(to bottom, @list-group-active-bg, @state-danger-bg);
+              }
+          }
+          
+          &.success {
+              background: linear-gradient(to bottom, @list-group-bg, @state-success-bg);
+              
+              &.active {
+                  background: linear-gradient(to bottom, @list-group-active-bg, @state-success-bg);
+              }
+          }
+          
+          &.active {
+              border-color: @list-group-border;
+          }
+      }
     }
   }
 }
