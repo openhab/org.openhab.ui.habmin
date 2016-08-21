@@ -22,18 +22,18 @@ angular.module('HABmin.smarthomeModel', [
             function () {
                 me.itemtypes = [
 //                        {id: 'CallItem', name: locale.getString("smarthome.itemCallItem")},
-                    {id: 'ColorItem', name: locale.getString("smarthome.itemColorItem")},
-                    {id: 'ContactItem', name: locale.getString("smarthome.itemContactItem")},
-                    {id: 'DateTimeItem', name: locale.getString("smarthome.itemDateTimeItem")},
-                    {id: 'DimmerItem', name: locale.getString("smarthome.itemDimmerItem")},
-                    {id: 'GroupItem', name: locale.getString("smarthome.itemGroupItem")},
-                    {id: 'ImageItem', name: locale.getString("smarthome.itemImageItem")},
-                    {id: 'LocationItem', name: locale.getString("smarthome.itemLocationItem")},
-                    {id: 'NumberItem', name: locale.getString("smarthome.itemNumberItem")},
-                    {id: 'PlayerItem', name: locale.getString("smarthome.itemPlayerItem")},
-                    {id: 'RollershutterItem', name: locale.getString("smarthome.itemRollershutterItem")},
-                    {id: 'StringItem', name: locale.getString("smarthome.itemStringItem")},
-                    {id: 'SwitchItem', name: locale.getString("smarthome.itemSwitchItem")}
+                    {id: 'Color', name: locale.getString("smarthome.itemColorItem")},
+                    {id: 'Contact', name: locale.getString("smarthome.itemContactItem")},
+                    {id: 'DateTime', name: locale.getString("smarthome.itemDateTimeItem")},
+                    {id: 'Dimmer', name: locale.getString("smarthome.itemDimmerItem")},
+                    {id: 'Group', name: locale.getString("smarthome.itemGroupItem")},
+                    {id: 'Image', name: locale.getString("smarthome.itemImageItem")},
+                    {id: 'Location', name: locale.getString("smarthome.itemLocationItem")},
+                    {id: 'Number', name: locale.getString("smarthome.itemNumberItem")},
+                    {id: 'Player', name: locale.getString("smarthome.itemPlayerItem")},
+                    {id: 'Rollershutter', name: locale.getString("smarthome.itemRollershutterItem")},
+                    {id: 'String', name: locale.getString("smarthome.itemStringItem")},
+                    {id: 'Switch', name: locale.getString("smarthome.itemSwitchItem")}
                 ];
 
                 me.categories = [

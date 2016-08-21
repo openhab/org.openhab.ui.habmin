@@ -150,7 +150,7 @@ angular.module('sitemapColorWidget', [
                     if ($scope.widget.item !== undefined) {
                         // Handle state translation
                         switch ($scope.widget.item.type) {
-                            case "DimmerItem":
+                            case "Dimmer":
                                 if (parseInt($scope.widget.item.state, 10) > 0) {
                                     $scope.switchValue = true;
                                     $scope.sliderValue = parseInt($scope.widget.item.state, 10);
@@ -160,7 +160,7 @@ angular.module('sitemapColorWidget', [
                                     $scope.sliderValue = 0;
                                 }
                                 break;
-                            case "SwitchItem":
+                            case "Switch":
                                 if ($scope.widget.item.state == "ON") {
                                     $scope.switchValue = true;
                                     $scope.sliderValue = 100;

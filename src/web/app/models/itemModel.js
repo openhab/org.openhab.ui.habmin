@@ -34,11 +34,11 @@ angular.module('HABmin.itemModel', [
                         itemList[i].stateLocal = itemList[i].state;
                         console.log("We updated", itemList[i].name, "to", itemList[i].state);
                         switch (itemList[i].type) {
-                            case "SwitchItem":
+                            case "Switch":
                                 // TODO: Perform conversions
                                 me.sendCommand(itemList[i].name, itemList[i].stateLocal);
                                 break;
-                            case "DimmerItem":
+                            case "Dimmer":
                                 me.sendCommand(itemList[i].name, itemList[i].stateLocal);
                                 break;
                         }
@@ -329,7 +329,7 @@ angular.module('HABmin.itemModel', [
         this.sendCommand = function (item, value) {
             if (typeof value === 'number') {
                 value = value + '';
-            }
+            }SwitchItem
             console.log("Sending command", item, value);
             var deferred = $q.defer();
             $http.post(url + "/" + item, value, {

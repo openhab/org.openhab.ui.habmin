@@ -95,7 +95,7 @@ angular.module('sitemapSwitchWidget', [
                     if ($scope.widget.item !== undefined) {
                         // Handle state translation
                         switch ($scope.widget.item.type) {
-                            case "DimmerItem":
+                            case "Dimmer":
                                 if (parseInt($scope.widget.item.state, 10) > 0) {
                                     $scope.value = true;
                                 }
@@ -103,7 +103,7 @@ angular.module('sitemapSwitchWidget', [
                                     $scope.value = false;
                                 }
                                 break;
-                            case "SwitchItem":
+                            case "Switch":
                                 if ($scope.widget.item.state == "ON") {
                                     $scope.value = true;
                                 }
@@ -111,7 +111,7 @@ angular.module('sitemapSwitchWidget', [
                                     $scope.value = false;
                                 }
                                 break;
-                            case "NumberItem":
+                            case "Number":
                                 $scope.value = $scope.widget.item.state;
                                 break;
                         }

@@ -71,7 +71,7 @@ angular.module('dashboardItemWidgets', [
                 $scope.updateValue = function (value) {
                     // Handle state translation
                     switch ($scope.item.type) {
-                        case "DimmerItem":
+                        case "Dimmer":
                             if (parseInt(value, 10) > 0) {
                                 $scope.value = true;
                             }
@@ -79,7 +79,7 @@ angular.module('dashboardItemWidgets', [
                                 $scope.value = false;
                             }
                             break;
-                        case "SwitchItem":
+                        case "Switch":
                             if (value == "ON") {
                                 $scope.value = true;
                             }
