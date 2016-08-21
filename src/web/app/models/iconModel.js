@@ -125,19 +125,19 @@ angular.module('HABmin.iconModel', []
         };
 
         this.itemIcons = {
-            CallItem: 'fa fa-phone',
-            ColorItem: 'fa fa-paint-brush',
-            ContactItem: 'fa fa-dot-circle-o',
-            DateTimeItem: 'fa fa-clock-o',
-            DimmerItem: 'fa fa-sliders',
-            GroupItem: 'fa fa-group',
-            ImageItem: 'fa fa-image',
-            LocationItem: 'fa fa-street-view',
-            NumberItem: 'fa fa-sort-numeric-asc',
-            PlayerItem: 'fa fa-youtube-play',
-            RollershutterItem: 'fa fa-arrows-v',
-            StringItem: 'fa fa-paragraph',
-            SwitchItem: 'fa fa-power-off'
+            Call: 'fa fa-phone',
+            Color: 'fa fa-paint-brush',
+            Contact: 'fa fa-dot-circle-o',
+            DateTime: 'fa fa-clock-o',
+            Dimmer: 'fa fa-sliders',
+            Group: 'fa fa-group',
+            Image: 'fa fa-image',
+            Location: 'fa fa-street-view',
+            Number: 'fa fa-sort-numeric-asc',
+            Player: 'fa fa-youtube-play',
+            Rollershutter: 'fa fa-arrows-v',
+            String: 'fa fa-paragraph',
+            Switch: 'fa fa-power-off'
         };
 
         this.cfgContextIcons = {

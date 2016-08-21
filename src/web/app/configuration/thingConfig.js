@@ -543,7 +543,7 @@ angular.module('Config.Things', [
         $scope.addItem = function (channel) {
             var newItem = {
                 label: channel.channelType.label,
-                type: channel.itemType + 'Item',
+                type: channel.itemType,
                 category: channel.channelType.category
             };
 
