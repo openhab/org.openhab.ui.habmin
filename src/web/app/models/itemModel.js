@@ -329,7 +329,7 @@ angular.module('HABmin.itemModel', [
         this.sendCommand = function (item, value) {
             if (typeof value === 'number') {
                 value = value + '';
-            }SwitchItem
+            }
             console.log("Sending command", item, value);
             var deferred = $q.defer();
             $http.post(url + "/" + item, value, {
