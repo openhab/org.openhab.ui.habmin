@@ -680,7 +680,30 @@ function ZWaveLogReader() {
             processor: processMeter
         },
         51: {
-            name: "COLOR"
+            name: "COMMAND_CLASS_SWITCH_COLOR",
+            commands: {
+                1: {
+                    name: "SWITCH_COLOR_SUPPORTED_GET"
+                },
+                2: {
+                    name: "SWITCH_COLOR_SUPPORTED_REPORT"
+                },
+                3: {
+                    name: "SWITCH_COLOR_GET"
+                },
+                4: {
+                    name: "SWITCH_COLOR_REPORT"
+                },
+                5: {
+                    name: "SWITCH_COLOR_SET"
+                },
+                6: {
+                    name: "SWITCH_COLOR_START_LEVEL_CHANGE"
+                },
+                7: {
+                    name: "SWITCH_COLOR_STOP_LEVEL_CHANGE"
+                }
+            }
         },
         61: {
             name: "METER_TBL",
