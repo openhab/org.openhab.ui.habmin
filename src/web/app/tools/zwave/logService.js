@@ -865,7 +865,8 @@ function ZWaveLogReader() {
                     name: "MULTI_INSTANCE_REPORT"
                 },
                 6: {
-                    name: "MULTI_INSTANCE_ENCAP"
+                    name: "MULTI_INSTANCE_ENCAP_V1",
+                    processor: processMultiChannelEncapV1
                 },
                 7: {
                     name: "MULTI_INSTANCE_ENDPOINT_GET"
@@ -887,8 +888,8 @@ function ZWaveLogReader() {
                     name: "MULTI_INSTANCE_ENDPOINT_FIND_REPORT"
                 },
                 13: {
-                    name: "MULTI_INSTANCE_ENCAP",
-                    processor: processMultiChannelEncap
+                    name: "MULTI_INSTANCE_ENCAP_V2",
+                    processor: processMultiChannelEncapV2
                 }
             }
         },
@@ -2703,7 +2704,25 @@ function ZWaveLogReader() {
         return data;
     }
 
-    function processMultiChannelEncap(node, endpoint, bytes) {
+    function processMultiChannelEncapV1(node, endpoint, bytes) {
+        var data = {result: SUCCESS};
+
+        var cmdCls = HEX2DEC(bytes[0]);
+        var cmdCmd = HEX2DEC(bytes[1]);
+        data.content = getCommandClassName(cmdCls, cmdCmd);
+
+        data.endPoint = HEX2DEC(bytes[2]);
+        data.endClassCode = HEX2DEC(bytes[3]);
+        data.endClassPacket = processCommandClass(node, data.endPoint, bytes.slice(3));
+
+        data.content += " <span class='label label-info'>EP-" + data.endPoint + "</span>";
+        if (data.endClassPacket != null) {
+            data.content += " " + data.endClassPacket.content;
+        }
+        return data;
+    }
+
+    function processMultiChannelEncapV2(node, endpoint, bytes) {
         var data = {result: SUCCESS};
 
         var cmdCls = HEX2DEC(bytes[0]);
