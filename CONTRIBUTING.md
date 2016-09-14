@@ -1,6 +1,6 @@
-# Contributing to openHAB
+# Contributing to HABmin
 
-Want to hack on openHAB? Awesome! Here are instructions to get you
+Want to hack on HABmin? Awesome! Here are instructions to get you
 started. They are probably not perfect, please let us know if anything
 feels wrong or incomplete.
 
