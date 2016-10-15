@@ -1,0 +1,22 @@
+{
+  "Delete": "Löschen",
+  "DeleteCheck": "Soll dieser Gebäudeplan wirklich gelöscht werden?",
+  "EditCategory": "Kategorie",
+  "EditFormat": "Format",
+  "EditGroups": "Gruppen",
+  "EditLabel": "Beschreibung",
+  "EditName": "Name",
+  "EditTitle": "Element bearbeiten",
+  "EditType": "Element-Typ",
+  "LinkOk": "Element ist mit dem Channel verknüpft",
+  "LinkTitle": "Verknüpfe das Element mit dem Channel",
+  "NameCopiedOk": "Name des Elements <b><i>{name}</i></b> in die Zwischenablage kopiert",
+  "SaveFailed": "Fehler beim Speichern des Elements <b><i>{name}</i></b>.<br />{message}",
+  "SaveLinkFailed": "Fehler beim Verknüpfen des Elements mit dem Channel <b><i>{name}</i></b>.<br />{message}",
+  "SaveOk": "Dashboard <b><i>{name}</i></b> erfolgreich gespeichert",
+  "SelectCategory": "Kategorie wählen ...",
+  "SelectGroup": "Gruppen wählen ...",
+  "SelectLabel": "Beschreibung eingeben ...",
+  "SelectName": "Name eingeben ...",
+  "SelectType": "Typ auswählen ..."
+}

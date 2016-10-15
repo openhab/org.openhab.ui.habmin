@@ -1,0 +1,10 @@
+*.sw*
+*~
+/node/
+/node_modules/
+/cordova/platforms
+/cordova/www
+.idea/
+npm-debug.log
+/target/
+/web/

@@ -1,0 +1,16 @@
+{
+  "Delete": "Elimina",
+  "DeleteCheck": "Sei sicuro di voler eliminare questo oggetto.Se clicchi Si l'oggetto e gli elementi associati verranno eliminati!",
+  "Editor": "Editor Mappa",
+  "HotspotItem": "Elemento",
+  "HotspotItemPlaceholder": "Seleziona elemento...",
+  "HotspotTitle": "Proprietà Hotspot",
+  "PropertiesCategory": "Categoria",
+  "PropertiesName": "Nome",
+  "PropertiesTitle": "Proprietà Mappa",
+  "SaveError": "Errore di salvataggio grafico {chartName}:{error}.",
+  "SaveOk": "Elemento {name} salvato",
+  "SelectImage": "Seleziona Immagine",
+  "UploadName": "Nome Mappa",
+  "UploadTitle": "Carica Mappa"
+}

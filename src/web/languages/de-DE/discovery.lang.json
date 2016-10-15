@@ -1,0 +1,15 @@
+{
+  "ApproveAllConfirmMsg": "Sind Sie sich sicher, dass Sie alle Einträge aus der Eingangsbox als neue Things hinzufügen möchten?",
+  "ApproveAllConfirmTitle": "Genehmige alle Einträge in der Eingangsbox",
+  "ClearConfirmMsg": "Sind Sie sich sicher, dass Sie die Eingangsbox löschen möchten. Alle Things werden entfernt und müssen erneut gesucht werden.",
+  "ClearConfirmTitle": "Eingangsbox gelöscht",
+  "ClearFail": "Löschen der Eingangsbox für ein oder mehrere Elemente fehlgeschlagen.",
+  "DeleteConfirmMsg": "Sind Sie sich sicher, dass Sie das Thing aus der Eingangsbox löschen wollen?",
+  "DeleteConfirmTitle": "Thing aus der Eingangsbox gelöscht.",
+  "IgnoreConfirmMsg": "Sind Sie sich sicher, dass Sie das Thing in der Eingangsbox ignorieren wollen?",
+  "IgnoreConfirmTitle": "Thing in der Eingangsbox unterdrücken",
+  "IgnoreFail": "Unterdrücken für {name} fehlgeschlagen",
+  "NewThing": "Neues Thing gefunden",
+  "StartFail": "Suche für Binding {name} fehlgeschlagen",
+  "StartOk": "Suche für Binding {name} gestartet"
+}
