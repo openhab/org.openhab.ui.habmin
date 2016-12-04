@@ -17,7 +17,7 @@
   "FirmwareVersion": "Firmware version",
   "FrequentlyListening": "Lytter ofte",
   "GenericClass": "Generisk klasse",
-  "HardResetConfirmMessage": "Dette vil nulstille controlleren til standard værdier. Det vil helt nulstille netværket og du skal geninitialisere alle enheder.<br /><span class='text-warning string'>DU ER BLEVET ADVARET!!</span>",
+  "HardResetConfirmMessage": "Dette vil nulstille controlleren til standard værdier. Det vil helt nulstille netværket og du skal geninitialisere alle enheder.<br /><span class="text-warning string">DU ER BLEVET ADVARET!!</span>",
   "HardResetConfirmTitle": "Bekræft Hard Reset",
   "HealDone": "færdig",
   "HealFailed": "fejlt",

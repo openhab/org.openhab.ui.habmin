@@ -17,7 +17,7 @@
   "FirmwareVersion": "Versione Firmware",
   "FrequentlyListening": "Listening Frequente",
   "GenericClass": "Classe Generica",
-  "HardResetConfirmMessage": "Questo reimposterà il controller ai valori predefiniti. Reimposterà completamente la rete e dovrai reinizializzare tutti i dispositivi. <br /><span class='text-warning'>SEI STATO AVVISATO!!</span>",
+  "HardResetConfirmMessage": "Questo reimposterà il controller ai valori predefiniti. Reimposterà completamente la rete e dovrai reinizializzare tutti i dispositivi. <br /><span class="'text-warning">SEI STATO AVVISATO!!</span>",
   "HardResetConfirmTitle": "Conferma Hard Reset",
   "HealDone": "eseguito",
   "HealFailed": "fallito",

@@ -88,6 +88,7 @@
   "Unknown": "Unknown",
   "UnknownDevice": "Unknown device",
   "UnknownPower": "Device power source is unknown.",
+  "UsingSecurity": "Using Security",
   "Wakeup": "Wakeup Configuration",
   "WakeupTime": "Last Wakeup Time",
   "ZWPlus_ACCESS_CONTROL_SENSOR": "Access Control Sensor",
