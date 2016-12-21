@@ -8,6 +8,8 @@
   "Language": "Språk",
   "LanguageSelect": "Välj språk...",
   "Name": "Namn",
+  "ServerAddress": "Adress",
+  "ServerPrefTitle": "Serverinställningar",
   "Theme": "Tema",
   "ThemeSelect": "Välj tema..."
 }

@@ -493,12 +493,12 @@
     </div>
 </div>
 
-<div class="row" ng-if="selectedThing.properties['zwave_wakeup_time']">
+<div class="row" ng-if="selectedThing.properties['zwave_lastwakeup']">
     <div class="col-md-4" i18n="zwave.WakeupTime"></div>
     <div class="col-md-8">
-        <span>{{selectedThing.properties['zwave_wakeup_time'] | amUtc | amLocal | amDateFormat:'dddd, MMMM Do YYYY, hh:mm:ss'}}</span>
+        <span>{{selectedThing.properties['zwave_wakeup_time'] | amUtc | amLocal | amDateFormat:'dddd, MMMM Do YYYY, HH:mm:ss'}}</span>
         <span class="fa fa-history text-muted"></span>
-        <span am-time-ago="selectedThing.properties['zwave_wakeup_time']"></span>
+        <span am-time-ago="selectedThing.properties['zwave_lastwakeup']"></span>
     </div>
 </div>
 
@@ -508,5 +508,14 @@
         {{selectedThing.properties['zwave_neighbours'].split(",").length}} nodes
         <span class="fa fa-exchange text-muted"></span>
         {{selectedThing.properties['zwave_neighbours'].split(",").join(", ")}}
+    </div>
+</div>
+
+<div class="row" ng-if="selectedThing.properties['zwave_lastheal']">
+    <div class="col-md-4" i18n="zwave.LastHeal"></div>
+    <div class="col-md-8">
+        <span>{{selectedThing.properties['zwave_lastheal'] | amUtc | amLocal | amDateFormat:'dddd, MMMM Do YYYY, HH:mm:ss'}}</span>
+        <span class="fa fa-history text-muted"></span>
+        <span am-time-ago="selectedThing.properties['zwave_wakeup_time']"></span>
     </div>
 </div>

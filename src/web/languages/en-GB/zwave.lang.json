@@ -35,6 +35,7 @@
   "HealUnknown": "Heal stage is unknown ({2})",
   "HealWaiting": "waiting",
   "Information": "Device Information",
+  "LastHeal": "Last Heal Time",
   "Listening": "Listening",
   "MainsPower": "Device is mains powered.",
   "Manufacturer": "Manufacturer",

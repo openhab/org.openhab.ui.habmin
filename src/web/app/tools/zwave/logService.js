@@ -1989,6 +1989,7 @@ function ZWaveLogReader() {
         data.content = getCommandClassName(cmdCls, cmdCmd);
 
         switch (cmdCmd) {
+            case 4: // WAKE_UP_INTERVAL_SET
             case 6: // WAKE_UP_INTERVAL_REPORT
                 var interval = HEX2DEC(bytes[2]) * 65536 + HEX2DEC(bytes[3]) * 256 + HEX2DEC(bytes[4]);
                 addNodeInfo(node, "wakeupInterval", interval);
