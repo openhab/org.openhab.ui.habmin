@@ -477,7 +477,7 @@ angular.module('HABmin.thingModel', [
                     if (value == undefined) {
                         return 0.0;
                     }
-                    break;
+                    return Number(value);
             }
         }
 
