@@ -743,24 +743,25 @@ angular.module('Config.Things', [
             // Check if the name has changed
             if ($scope.thingConfigForm.thingLabel.$dirty === true) {
                 thingUpdated = true;
-                updatedThing['label'] = $scope.thingConfigForm.thingLabel;
+                updatedThing['label'] = $scope.thingConfigForm.thingLabel.$modelValue;
             }
 
             // Check if the location has changed
             if ($scope.thingConfigForm.thingLocation.$dirty === true) {
                 thingUpdated = true;
-                updatedThing['location'] = $scope.thingConfigForm.thingLocation;
+                updatedThing['location'] = $scope.thingConfigForm.thingLocation.$modelValue;
             }
 
             // Check if the bridge has changed
             if ($scope.thingConfigForm.thingBridge != null &&
                 $scope.thingConfigForm.thingBridge.$dirty === true) {
                 thingUpdated = true;
-                updatedThing['bridgeUID'] = $scope.thingConfigForm.thingBridge;
+                updatedThing['bridgeUID'] = $scope.thingConfigForm.thingBridge.$modelValue;
             }
 
             if (thingUpdated === true) {
-                promises.push(ThingModel.putThing($scope.selectedThing));
+                updatedThing.UID = $scope.selectedThing.UID;
+                promises.push(ThingModel.putThing(updatedThing));
             }
 
             // Keep track of configs that have changed
