@@ -172,6 +172,14 @@ angular.module('Config.Things', [
         BindingModel.getList().then(
             function (bindings) {
                 $scope.bindings = bindings;
+
+                // Add all bindings into the filter
+                angular.forEach($scope.bindings, function (binding) {
+                    if (binding.discovery) {
+                        $scope.discoveryEnabled = true;
+                    }
+                    $scope.filterBindings.push(binding.id);
+                });
             },
             function (reason) {
                 // Handle failure
@@ -189,6 +197,10 @@ angular.module('Config.Things', [
                 return false;
             }
             if (element.statusInfo != null && $scope.filterStatus.indexOf(element.statusInfo.status) != -1) {
+                return false;
+            }
+            var uid = element.thingTypeUID.split(":");
+            if ($scope.filterBindings.indexOf(uid[0]) == -1) {
                 return false;
             }
 

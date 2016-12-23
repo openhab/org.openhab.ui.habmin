@@ -51,7 +51,7 @@
                     <li role="presentation" class="divider"></li>
                     <li ng-repeat="binding in bindings | orderBy:'name'" ng-class="{'disabled': binding.disabled}">
                         <a ng-click="toggleBindingFilter(binding)">
-                            <span ng-class="{'fa-fw fa': true, 'fa-check-square-o': filterBindings.indexOf(binding.id)==-1}"></span>
+                            <span ng-class="{'fa-fw fa': true, 'fa-check-square-o': filterBindings.indexOf(binding.id)!=-1}"></span>
                             <habmin-icon class="fa fa-fw" icon="{{binding.icon}}"></habmin-icon>
                             <span>{{binding.name}}</span>
                         </a>
