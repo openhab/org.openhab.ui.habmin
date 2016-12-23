@@ -51,6 +51,16 @@
                      data-dropdown-data="config.options">
 </div>
 
+<div ng-if="(config.options==null || config.options.length==0) && config.context=='password'">
+    <input id="CONFIGLABEL-{{cfgType}}-{{config.name}}"
+           type="password"
+           config-parameter="{{config}}"
+           class="form-control"
+           name="{{config.name}}"
+           ng-dirty ng-required="{{config.required}}"
+           ng-model="cfgModel">
+</div>
+
 <div ng-if="config.options==null || config.options.length==0">
     <input id="CONFIGLABEL-{{cfgType}}-{{config.name}}"
            config-parameter="{{config}}"
