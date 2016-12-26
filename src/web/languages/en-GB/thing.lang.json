@@ -48,6 +48,8 @@
   "SuccessDeletingThing": "Thing <b><i>{name}</i></b> and all its items have been deleted",
   "SuccessSavingThing": "Thing <b><i>{name}</i></b> saved successfully",
   "Tags": "Tags",
+  "ThingTypeDescription": "Thing Type Description",
+  "ThingTypeLabel": "Thing Type Label",
   "Tools": "Tools",
   "UID": "UID (Unique Identifier)",
   "UnlinkItemFailed": "Error unlinking item from channel: {message}",

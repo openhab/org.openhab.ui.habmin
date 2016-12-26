@@ -431,11 +431,11 @@ function ZWaveLogReader() {
         },
         70 : {
             name : "AssignReturnRoute",
-            processor : processReturnRoute
+            processor : processAssignReturnRoute
         },
         71 : {
             name : "DeleteReturnRoute",
-            processor : processControllerCmd
+            processor : processDeleteReturnRoute
         },
         72 : {
             name : "RequestNodeNeighborUpdate",
@@ -1403,12 +1403,12 @@ function ZWaveLogReader() {
         content : "Restoring node from file",
         processor : processDeserialiser
     }, {
-        string : "Error deserializing from file",
-        ref : "Info",
-        processor : processDeserialiserError
-    }, {
         string : "internalReceiveCommand",
         ref : "Cmd",
+        processor : processCommand
+    }, {
+        string : " Command received ",
+        ref : "CMD",
         processor : processCommand
     }, {
         string : "Receive Message = ",
@@ -1690,7 +1690,7 @@ function ZWaveLogReader() {
         var data = {
             result : INFO
         };
-        data.content = "Incoming Command: Item '" + message.slice(message.indexOf("itemname = ") + 11, message.indexOf(',')) + "' to '" + message.slice(message.indexOf("Command = ") + 10, -1) + "'";
+        data.content = "<span class='label label-info'>COMMAND RECEIVED</span> <span class='badge badge-warning'>" + message.slice(message.indexOf("Command received ") + 17, message.indexOf(' -->')) + "</span> <span class='label'>" + message.slice(message.indexOf("--> ") + 4) + "</span>";
         return data;
     }
 
@@ -3486,10 +3486,9 @@ function ZWaveLogReader() {
         return data;
     }
 
-    function processReturnRoute(node, direction, type, bytes, len) {
+    function processAssignReturnRoute(node, direction, type, bytes, len) {
         var data = {
-            result : SUCCESS,
-            content : "AssignReturnRoute"
+            result : SUCCESS
         };
         if (direction == "TX") {
             data.node = HEX2DEC(bytes[0]);
@@ -3504,12 +3503,46 @@ function ZWaveLogReader() {
             if (type == REQUEST) {
                 data.node = lastCmd.node;
                 if (HEX2DEC(bytes[1]) == 0) {
-                    data.content += " <span class='label label-success'>SUCCESS</span>";
+                    data.content = " <span class='label label-success'>SUCCESS</span>";
                 } else {
-                    data.content += " <span class='label label-important'>FAILURE</span>";
+                    data.content = " <span class='label label-important'>FAILURE</span>";
                 }
             } else {
                 data.node = lastCmd.node;
+            }
+        }
+
+        return data;
+    }
+
+    function processDeleteReturnRoute(node, direction, type, bytes, len) {
+        var data = {
+            result : SUCCESS
+        };
+        if (direction == "TX") {
+            data.node = HEX2DEC(bytes[0]);
+            createNode(data.node);
+
+            data.content = " <span class='label label-warning'>NODE " + HEX2DEC(bytes[0]) + "</span>";
+
+            lastCmd = {
+                node : data.node
+            };
+        } else {
+            if (type == REQUEST) {
+                data.node = lastCmd.node;
+                if (HEX2DEC(bytes[1]) == 0) {
+                    data.content = " <span class='label label-success'>SUCCESS</span>";
+                } else {
+                    data.content = " <span class='label label-important'>FAILURE</span>";
+                }
+            } else {
+                data.node = lastCmd.node;
+                if (HEX2DEC(bytes[1]) == 0) {
+                    data.content = " <span class='label label-success'>SUCCESS</span>";
+                } else {
+                    data.content = " <span class='label label-important'>FAILURE</span>";
+                }
             }
         }
 

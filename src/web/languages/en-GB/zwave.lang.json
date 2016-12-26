@@ -167,5 +167,6 @@
   "ZWPlus_WINDOW_COVERING_ENDPOINT_AWARE": "Window Covering - Endpoint Aware",
   "ZWPlus_WINDOW_COVERING_NO_POSITION_ENDPOINT": "Window Covering - No Position Endpoint",
   "ZWPlus_WINDOW_COVERING_POSITION_ENDPOINT_AWARE": "Window Covering - Position Endpoint Aware",
-  "ZWavePlusDeviceType": "Z-Wave Plus Type"
+  "ZWavePlusDeviceType": "Z-Wave Plus Node Type",
+  "ZWavePlusRoleType": "Z-Wave Plus Role Type"
 }

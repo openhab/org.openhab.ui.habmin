@@ -424,6 +424,11 @@
     <div class="col-md-8">{{selectedThing.properties['zwave_plus_devicetype']}}</div>
 </div>
 
+<div class="row" ng-if="selectedThing.properties['zwave_plus_roletype']">
+    <div class="col-md-4" i18n="zwave.ZWavePlusRoleType"></div>
+    <div class="col-md-8">{{selectedThing.properties['zwave_plus_roletype']}}</div>
+</div>
+
 <div class="row">
     <div class="col-md-4" i18n="zwave.BasicClass"></div>
     <div class="col-md-8">{{selectedThing.properties['zwave_class_basic']}}</div>
