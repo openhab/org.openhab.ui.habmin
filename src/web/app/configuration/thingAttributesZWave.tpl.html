@@ -502,6 +502,15 @@
     </div>
 </div>
 
+<div class="row" ng-if="selectedThing.properties['zwave_wakeup_time']">
+    <div class="col-md-4" i18n="zwave.WakeupTime"></div>
+    <div class="col-md-8">
+        <span>{{selectedThing.properties['zwave_wakeup_time'] | amUtc | amLocal | amDateFormat:'dddd, MMMM Do YYYY, HH:mm:ss'}}</span>
+        <span class="fa fa-history text-muted"></span>
+        <span am-time-ago="selectedThing.properties['zwave_wakeup_time']"></span>
+    </div>
+</div>
+
 <div class="row" ng-if="selectedThing.properties['zwave_neighbours']">
     <div class="col-md-4" i18n="zwave.Neighbors"></div>
     <div class="col-md-8">
