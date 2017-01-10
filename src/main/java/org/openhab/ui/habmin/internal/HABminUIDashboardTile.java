@@ -35,6 +35,6 @@ public class HABminUIDashboardTile implements DashboardTile {
 
     @Override
     public String getOverlay() {
-        return "html5";
+        return null;
     }
 }
