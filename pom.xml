@@ -42,7 +42,7 @@
         <!-- openHAB core p2 repository -->
         <repository>
             <id>p2-openhab-core</id>
-            <url>https://dl.bintray.com/openhab/p2/openhab-core/2.0.0.x</url>
+            <url>https://dl.bintray.com/openhab/p2/openhab-core/2.0.0.RC1</url>
             <layout>p2</layout>
         </repository>
 
@@ -120,4 +120,5 @@
         </plugins>
     </build>
 
+<version>2.0.0.RC1</version>
 </project>
