@@ -1,6 +1,8 @@
 {
   "Author": "Ursprünglicher Autor",
   "Description": "Beschreibung",
-  "Information": "Binding Information",
-  "NoneFound": "Keine Bindings gefunden"
+  "Information": "Binding-Information",
+  "InstalledBindings": "Installierte Bindings",
+  "NoneFound": "Keine Bindings gefunden",
+  "ThingTypes": "Unterstützte Thing-Typen"
 }

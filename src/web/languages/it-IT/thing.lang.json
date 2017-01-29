@@ -48,6 +48,8 @@
   "SuccessDeletingThing": "Oggetto <b><i>{name}</i></b> e tutti gli elementi collegati sono stati eliminati",
   "SuccessSavingThing": "Oggetto <b><i>{name}</i></b> salvato con successo",
   "Tags": "Tags",
+  "ThingTypeDescription": "Descrizione Tipologia Oggetto",
+  "ThingTypeLabel": "Etichetta Tipologia Oggetto",
   "Tools": "Strumenti",
   "UID": "UID (Identificatore Univoco)",
   "UnlinkItemFailed": "Errore nella disconnessione dell'elemento dal canale: {message}",
