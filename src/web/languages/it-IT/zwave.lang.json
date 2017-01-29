@@ -35,6 +35,7 @@
   "HealUnknown": "Stato cura sconosciuto ({2})",
   "HealWaiting": "attenzione",
   "Information": "Informazioni Dispositivo",
+  "LastHeal": "Ora Ultima Cura",
   "Listening": "Listening",
   "MainsPower": "Dispositivo alimentato da rete.",
   "Manufacturer": "Produttore",
@@ -88,6 +89,7 @@
   "Unknown": "Sconosciuto",
   "UnknownDevice": "Dispositivo Sconosciuto",
   "UnknownPower": "Sorgente alimentazione dispositivo sconosciuta.",
+  "UsingSecurity": "Uso Sicurezza",
   "Wakeup": "Configurazione di Risveglio",
   "WakeupTime": "Ultima Ora Wakeup",
   "ZWPlus_ACCESS_CONTROL_SENSOR": "Sensore Controllo Accesso",
@@ -148,7 +150,7 @@
   "ZWPlus_TANK_CAPACITY_SENSOR": "Sensore Capacità Serbatoio",
   "ZWPlus_TARGET_TEMPERATURE_SENSOR": "Sensore Temperatura Target",
   "ZWPlus_THERMOSTAT_HVAC": "Termostato HVAC",
-  "ZWPlus_THERMOSTAT_SETBACK": "Termostato d'arresto",
+  "ZWPlus_THERMOSTAT_SETBACK": "Setback Termostato",
   "ZWPlus_TIDE_LEVEL_SENSOR": "Sensore Livello Marea",
   "ZWPlus_TIME_SENSOR": "Sensore Tempo",
   "ZWPlus_TV": "Televisione",
@@ -165,5 +167,6 @@
   "ZWPlus_WINDOW_COVERING_ENDPOINT_AWARE": "Tenda - Finecorsa",
   "ZWPlus_WINDOW_COVERING_NO_POSITION_ENDPOINT": "Tenda - Senza Finecorsa",
   "ZWPlus_WINDOW_COVERING_POSITION_ENDPOINT_AWARE": "Tenda - Sensore Posizione",
-  "ZWavePlusDeviceType": "Tipo Z-Wave Plus"
+  "ZWavePlusDeviceType": "Tipo Nodo Z-Wave Plus",
+  "ZWavePlusRoleType": "Tipologia Ruolo Z-Wave Plus"
 }
