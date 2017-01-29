@@ -1,11 +1,15 @@
 {
-  "ChartLegend": "Beschreibungen anzeigen",
-  "ChartPeriod": "Diagramm Zeitraum",
-  "ChartPrefTitle": "Diagramm Einstellungen",
+  "ChartLegend": "Legende anzeigen",
+  "ChartPeriod": "Zeitraum",
+  "ChartPersistence": "Standard-Persistenzdienst",
+  "ChartPersistenceSelect": "Standard-Persistenzdienst auswählen...",
+  "ChartPrefTitle": "Einstellungen",
   "GeneralPrefTitle": "Allgemeine Einstellungen",
   "Language": "Sprache",
   "LanguageSelect": "Sprache auswählen ...",
   "Name": "Name",
+  "ServerAddress": "Serveradresse",
+  "ServerPrefTitle": "Servereinstellungen",
   "Theme": "Theme",
   "ThemeSelect": "Theme auswählen ..."
 }

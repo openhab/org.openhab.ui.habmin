@@ -1,5 +1,5 @@
 {
-  "Delete": "Löschen",
+  "Delete": "Gebäudeplan löschen",
   "DeleteCheck": "Soll dieser Gebäudeplan wirklich gelöscht werden?",
   "Editor": "Gebäudeplan-Editor",
   "HotspotItem": "Item",
@@ -7,10 +7,10 @@
   "HotspotTitle": "Hotspot-Eigenschaften",
   "PropertiesCategory": "Kategorie",
   "PropertiesName": "Name",
-  "PropertiesTitle": "Dashboard-Eigenschaften",
-  "SaveError": "Fehler beim Speichern {name}",
-  "SaveOk": "Dashboard {name} erfolgreich gespeichert",
+  "PropertiesTitle": "Gebäudeplan-Eigenschaften",
+  "SaveError": "Fehler beim Speichern des Gebäudeplans <b><i>{name}</i></b>",
+  "SaveOk": "Gebäudeplan <b><i>{name}</i></b> erfolgreich gespeichert",
   "SelectImage": "Wähle Bild",
   "UploadName": "Gebäudeplan-Name",
-  "UploadTitle": "Upload Gebäudeplan"
+  "UploadTitle": "Gebäudeplan hochladen"
 }
