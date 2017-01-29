@@ -4,16 +4,19 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.openhab.ui</groupId>
-        <artifactId>pom</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
+	    <groupId>org.openhab.core</groupId>
+    	<artifactId>pom</artifactId>
+	    <version>2.1.0-SNAPSHOT</version>
     </parent>
 
+    <groupId>org.openhab.ui</groupId>
     <artifactId>org.openhab.ui.habmin</artifactId>
     <name>HABmin User Interface</name>
     <packaging>eclipse-plugin</packaging>
 
     <properties>
+        <ohcp2.version>2.1.x</ohcp2.version>
+        <ohdr.version>1.0.10</ohdr.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -42,14 +45,14 @@
         <!-- openHAB core p2 repository -->
         <repository>
             <id>p2-openhab-core</id>
-            <url>https://dl.bintray.com/openhab/p2/openhab-core/2.0.0.x</url>
+            <url>https://dl.bintray.com/openhab/p2/openhab-core/${ohcp2.version}</url>
             <layout>p2</layout>
         </repository>
 
         <!-- openHAB dependencies p2 repository -->
         <repository>
             <id>p2-openhab-deps-repo</id>
-            <url>https://dl.bintray.com/openhab/p2/openhab-deps-repo/1.0.6</url>
+            <url>https://dl.bintray.com/openhab/p2/openhab-deps-repo/${ohdr.version}</url>
             <layout>p2</layout>
         </repository>
     </repositories>
@@ -119,5 +122,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
