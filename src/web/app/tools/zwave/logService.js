@@ -1034,7 +1034,8 @@ function ZWaveLogReader() {
                 8 : {
                     name : "ALARM_SUPPORTED_REPORT"
                 }
-            }
+            },
+            processor : processAlarm
         },
         114 : {
             name : "MANUFACTURER_SPECIFIC",
@@ -1411,6 +1412,11 @@ function ZWaveLogReader() {
         ref : "CMD",
         processor : processCommand
     }, {
+        string : " Updating channel state ",
+        ref : "STATE",
+        processor : processState
+
+    }, {
         string : "Receive Message = ",
         ref : "RXPacket",
         processor : processPacketRX
@@ -1688,9 +1694,15 @@ function ZWaveLogReader() {
 
     function processCommand(node, process, message) {
         var data = {
-            result : INFO
         };
         data.content = "<span class='label label-info'>COMMAND RECEIVED</span> <span class='badge badge-warning'>" + message.slice(message.indexOf("Command received ") + 17, message.indexOf(' -->')) + "</span> <span class='label'>" + message.slice(message.indexOf("--> ") + 4) + "</span>";
+        return data;
+    }
+
+    function processState(node, process, message) {
+        var data = {
+        };
+        data.content = "<span class='label label-info'>STATE UPDATE</span> <span class='badge badge-warning'>" + message.slice(message.indexOf("Updating channel state ") + 23, message.indexOf(' to ')) + "</span> <span class='label'>" + message.slice(message.indexOf(" to ") + 4) + "</span>";
         return data;
     }
 
@@ -1792,7 +1804,7 @@ function ZWaveLogReader() {
         data.endClassPacket = processCommandClass(node, 0, bytes);
 
         data.content = content + data.endClassPacket.content;
-        if(lastSecurePkt != null) {
+        if (lastSecurePkt != null) {
             lastSecurePkt.content += data.content;
         }
         return data
@@ -1812,7 +1824,7 @@ function ZWaveLogReader() {
 
         data.endClassPacket = processCommandClass(node, 0, bytes);
         data.content = content + data.endClassPacket.content;
-        if(lastSecurePkt != null) {
+        if (lastSecurePkt != null) {
             lastSecurePkt.content += data.content;
         }
         return data
@@ -2169,6 +2181,88 @@ function ZWaveLogReader() {
                         break;
                 }
                 data.content += "</span>";
+                break;
+        }
+
+        return data;
+    }
+
+    var events = {
+        1 : {
+            name : "SMOKE"
+        },
+        2 : {
+            name : "CO"
+        },
+        3 : {
+            name : "CO2"
+        },
+        4 : {
+            name : "HEAT"
+        },
+        5 : {
+            name : "WATER"
+        },
+        6 : {
+            name : "ACCESS_CONTROL"
+        },
+        7 : {
+            name : "HOME_SECURITY"
+        },
+        8 : {
+            name : "POWER_MANAGEMENT"
+        },
+        9 : {
+            name : "SYSTEM"
+        },
+        10 : {
+            name : "EMERGENCY"
+        },
+        11 : {
+            name : "CLOCK"
+        },
+        12 : {
+            name : "APPLIANCE"
+        },
+        13 : {
+            name : "HOME_HEALTH"
+        },
+        14 : {
+            name : "SIREN"
+        },
+        15 : {
+            name : "WATER_VALVE"
+        },
+        16 : {
+            name : "WEATHER"
+        },
+        17 : {
+            name : "IRRIGATION"
+        },
+        18 : {
+            name : "GAS"
+        }
+    };
+
+    function processAlarm(node, endpoint, bytes) {
+        var data = {
+            result : SUCCESS
+        };
+
+        var cmdCls = HEX2DEC(bytes[0]);
+        var cmdCmd = HEX2DEC(bytes[1]);
+        data.content = getCommandClassName(cmdCls, cmdCmd);
+        switch (cmdCmd) {
+            case 5: // ALARM_REPORT
+                if (bytes.length >= 6) {
+                    data.content += " <span class='label'>";
+                    if (events[HEX2DEC(bytes[6])] == null) {
+                        data.content += "UNKNOWN[" + bytes[6] + "]";
+                    } else {
+                        data.content += events[HEX2DEC(bytes[6])].name;
+                    }
+                    data.content += "<span>";
+                }
                 break;
         }
 
@@ -2764,8 +2858,8 @@ function ZWaveLogReader() {
             case 128: // SECURITY_NONCE_REPORT
                 data.content += " <span class='label'>NONCE ID " + cmdPrm + "</span>";
                 break;
-            case 129:   // ENCAP
-            case 193:   // ENCAP_NONCE_GET
+            case 129: // ENCAP
+            case 193: // ENCAP_NONCE_GET
                 cmdPrm = HEX2DEC(bytes[bytes.length - 9]);
                 data.content += " <span class='label'>NONCE ID " + cmdPrm + "</span>";
                 lastSecurePkt = data;
@@ -3274,7 +3368,7 @@ function ZWaveLogReader() {
                         if (HEX2DEC(bytes[2]) != 0) {
                             data.node = HEX2DEC(bytes[2]);
                             data.content += " <span class='label label-warning'>NODE " + HEX2DEC(bytes[2]) + "</span>";
-                            
+
                             data.expandedContent = "<table class='table table-borderless'>";
                             var lineHeader = "command classes:";
                             var cntrl = false;
@@ -3842,11 +3936,10 @@ function ZWaveLogReader() {
             // NAK
             packet.content = "<span class='label " + (process.ref == "RXPacket" ? "label-success'>RX" : "label-important'>TX") + "</span> <span class='label label-success'>ACK</span>";
             return packet;
-        }
-        else if (frameType == 21) {
-                // NAK
-                packet.content = "<span class='label " + (process.ref == "RXPacket" ? "label-success'>RX" : "label-important'>TX") + "</span> <span class='label label-important'>NAK</span>";
-                return packet;
+        } else if (frameType == 21) {
+            // NAK
+            packet.content = "<span class='label " + (process.ref == "RXPacket" ? "label-success'>RX" : "label-important'>TX") + "</span> <span class='label label-important'>NAK</span>";
+            return packet;
         } else if (frameType == 24) {
             // CAN
             packet.content = "<span class='label " + (process.ref == "RXPacket" ? "label-success'>RX" : "label-important'>TX") + "</span> <span class='label label-important'>CAN</span>";
