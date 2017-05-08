@@ -38,7 +38,7 @@ angular.module('HABmin.userModel', [
 
             authenticated = true;
         }
-        else {
+        else if (storedTime != null) {
             console.log("Removing saved authentication data!");
             // Timeout - remove the password etc.
             localStorage.removeItem('Auth-pass');
