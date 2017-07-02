@@ -22,6 +22,12 @@
         <report.fail.on.error>false</report.fail.on.error>
     </properties>
 
+    <scm>
+        <connection>scm:git:${scm.gitBaseUrl}/org.openhab.ui.habmin.git</connection>
+        <developerConnection>scm:git:${scm.gitBaseUrl}/org.openhab.ui.habmin.git</developerConnection>
+        <url>https://github.com/openhab/org.openhab.ui.habmin</url>
+    </scm>
+
     <build>
         <plugins>
             <plugin>
