@@ -29,6 +29,17 @@
         <url>https://github.com/openhab/org.openhab.ui.habmin</url>
     </scm>
 
+    <distributionManagement>
+        <repository>
+            <id>bintray</id>
+            <url>https://api.bintray.com/maven/openhab/mvn/org.openhab.ui.habmin/;publish=1</url>
+        </repository>
+        <snapshotRepository>
+            <id>jfrog</id>
+            <url>https://openhab.jfrog.io/openhab/libs-snapshot-local</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <build>
         <plugins>
             <plugin>
