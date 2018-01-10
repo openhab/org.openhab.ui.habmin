@@ -440,13 +440,13 @@
                             </div>
 
                             <!-- Channel Configuration Form -->
-                            <div ng-if="channel.channelType!=null && channel.channelType.parameters!=null && channel.channelType.parameters.length>0">
+                            <div ng-if="channel.configDescription!=null && channel.configDescription.parameters!=null && channel.configDescription.parameters.length>0">
                                 <div class="thing-items well well-sm">
                                     <div>
                                         <strong class="text-muted" i18n="thing.ChannelConfiguration"></strong>
                                     </div>
                                     <div class="panel-form">
-                                        <div ng-repeat="config in channel.channelType.parameters">
+                                        <div ng-repeat="config in channel.configDescription.parameters">
                                             <div ng-form="{{channel.id}}" class="form-group">
                                                 <ng-include
                                                         ng-init="cfgType='CHAN';cfgModel=channel.configuration[config.name]"
