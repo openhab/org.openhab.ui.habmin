@@ -381,6 +381,7 @@ angular.module('Config.Things', [
 
             // Get the channels
             angular.forEach(thing.channels, function (channel) {
+                promises[channel.id] = ConfigModel.getConfig("channel:" + thing.UID + ":" + channel.id);
                 promises[channel.channelTypeUID] = ChannelTypeModel.getChannelType(channel.channelTypeUID);
             });
 
@@ -455,10 +456,11 @@ angular.module('Config.Things', [
 
                     // Process all the channel types
                     angular.forEach($scope.selectedThing.channels, function (channel) {
+                        channel.configDescription = values[channel.id];
                         channel.channelType = values[channel.channelTypeUID];
 
                         // Ensure the options are converted to a string for internal processing
-                        angular.forEach(channel.channelType.parameters, function (parameter) {
+                        angular.forEach(channel.configDescription.parameters, function (parameter) {
                             if (channel.configuration == null) {
                                 channel.configuration = {};
                             }
@@ -738,12 +740,12 @@ angular.module('Config.Things', [
                     // Loop over all the modified parameters
                     angular.forEach(childForm.modifiedModels, function (model) {
                         // Get the configuration description
-                        for (var cnt = 0; cnt < channel.channelType.parameters.length; cnt++) {
-                            if (channel.channelType.parameters[cnt].name == model.$name) {
+                        for (var cnt = 0; cnt < channel.configDescription.parameters.length; cnt++) {
+                            if (channel.configDescription.parameters[cnt].name == model.$name) {
                                 channel.configuration[model.$name] =
-                                    ThingModel.convertType(channel.channelType.parameters[cnt].type,
+                                    ThingModel.convertType(channel.configDescription.parameters[cnt].type,
                                         model.$modelValue,
-                                        channel.channelType.parameters[cnt].multiple);
+                                        channel.configDescription.parameters[cnt].multiple);
 
                                 thingUpdated = true;
                             }
@@ -755,25 +757,24 @@ angular.module('Config.Things', [
             // Check if the name has changed
             if ($scope.thingConfigForm.thingLabel.$dirty === true) {
                 thingUpdated = true;
-                updatedThing['label'] = $scope.thingConfigForm.thingLabel.$modelValue;
+                $scope.selectedThing.label = $scope.thingConfigForm.thingLabel.$modelValue;
             }
 
             // Check if the location has changed
             if ($scope.thingConfigForm.thingLocation.$dirty === true) {
                 thingUpdated = true;
-                updatedThing['location'] = $scope.thingConfigForm.thingLocation.$modelValue;
+                $scope.selectedThing.location = $scope.thingConfigForm.thingLocation.$modelValue;
             }
 
             // Check if the bridge has changed
             if ($scope.thingConfigForm.thingBridge != null &&
                 $scope.thingConfigForm.thingBridge.$dirty === true) {
                 thingUpdated = true;
-                updatedThing['bridgeUID'] = $scope.thingConfigForm.thingBridge.$modelValue;
+                $scope.selectedThing.bridgeUID = $scope.thingConfigForm.thingBridge.$modelValue;
             }
 
             if (thingUpdated === true) {
-                updatedThing.UID = $scope.selectedThing.UID;
-                promises.push(ThingModel.putThing(updatedThing));
+                promises.push(ThingModel.putThing($scope.selectedThing));
             }
 
             // Keep track of configs that have changed
